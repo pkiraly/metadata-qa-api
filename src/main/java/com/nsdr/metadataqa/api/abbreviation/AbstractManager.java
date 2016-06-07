@@ -8,10 +8,13 @@ import java.io.UnsupportedEncodingException;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.nio.charset.Charset;
+import java.nio.file.FileSystem;
 import java.nio.file.FileSystemNotFoundException;
+import java.nio.file.FileSystems;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
@@ -35,6 +38,9 @@ public class AbstractManager implements Serializable {
 		Path path = null;
 		try {
 			uri = getClass().getClassLoader().getResource(fileName).toURI();
+			Map<String, String> env = new HashMap<>();
+			env.put("create", "true");
+			FileSystem zipfs = FileSystems.newFileSystem(uri, env);
 			path = Paths.get(uri);
 			List<String> lines = Files.readAllLines(path, Charset.defaultCharset());
 			int i = 1;
