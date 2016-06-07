@@ -7,7 +7,7 @@ import com.nsdr.metadataqa.api.calculator.CompletenessCalculator;
 import com.nsdr.metadataqa.api.model.JsonPathCache;
 import com.jayway.jsonpath.InvalidJsonException;
 import com.nsdr.metadataqa.api.calculator.FieldExtractor;
-import com.nsdr.metadataqa.api.json.EdmBranches;
+import com.nsdr.metadataqa.api.schema.EdmSchema;
 import java.io.IOException;
 import java.net.URISyntaxException;
 import java.nio.charset.Charset;
@@ -52,7 +52,7 @@ public class TestCounter {
 		FieldExtractor fieldExtractor = new FieldExtractor();
 		fieldExtractor.setIdPath("$.identifier");
 
-		completenessCalculator = new CompletenessCalculator(new EdmBranches());
+		completenessCalculator = new CompletenessCalculator(new EdmSchema());
 		// completenessCalculator.setDataProviderManager(new DataProviderManager());
 		// completenessCalculator.setDatasetManager(new DatasetManager());
 
@@ -123,7 +123,7 @@ public class TestCounter {
 
 	@Test
 	public void testExistenceMap() throws URISyntaxException, IOException {
-		completenessCalculator = new CompletenessCalculator(new EdmBranches());
+		completenessCalculator = new CompletenessCalculator(new EdmSchema());
 		// completenessCalculator.setDataProviderManager(new DataProviderManager());
 		// completenessCalculator.setDatasetManager(new DatasetManager());
 		completenessCalculator.setVerbose(true);
@@ -180,7 +180,7 @@ public class TestCounter {
 
 	@Test
 	public void testExistenceList() throws URISyntaxException, IOException {
-		completenessCalculator = new CompletenessCalculator(new EdmBranches());
+		completenessCalculator = new CompletenessCalculator(new EdmSchema());
 		// completenessCalculator.setDataProviderManager(new DataProviderManager());
 		// completenessCalculator.setDatasetManager(new DatasetManager());
 		completenessCalculator.setVerbose(true);

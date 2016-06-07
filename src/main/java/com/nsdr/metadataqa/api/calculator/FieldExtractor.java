@@ -25,8 +25,11 @@ public class FieldExtractor implements Calculator, Serializable {
 	}
 
 	@Override
-	public void calculate(JsonPathCache cache, Counters counters) throws InvalidJsonException {
-		counters.setRecordId(((List<XmlFieldInstance>)cache.get(getIdPath())).get(0).getValue());
+	public void calculate(JsonPathCache cache, Counters counters)
+			throws InvalidJsonException {
+		counters.setRecordId(
+			((List<XmlFieldInstance>)cache.get(getIdPath()))
+				.get(0).getValue());
 		cache.setRecordId(counters.getRecordId());
 	}
 

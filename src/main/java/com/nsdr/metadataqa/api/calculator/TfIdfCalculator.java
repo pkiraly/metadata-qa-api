@@ -2,7 +2,6 @@ package com.nsdr.metadataqa.api.calculator;
 
 import com.nsdr.metadataqa.api.counter.Counters;
 import com.nsdr.metadataqa.api.interfaces.Calculator;
-import com.nsdr.metadataqa.api.json.Branches;
 import com.nsdr.metadataqa.api.model.JsonPathCache;
 import com.nsdr.metadataqa.api.uniqueness.TfIdf;
 import com.nsdr.metadataqa.api.uniqueness.TfIdfExtractor;
@@ -20,6 +19,7 @@ import org.apache.commons.httpclient.HttpStatus;
 import org.apache.commons.httpclient.methods.GetMethod;
 import org.apache.commons.httpclient.params.HttpMethodParams;
 import org.apache.commons.io.IOUtils;
+import com.nsdr.metadataqa.api.schema.Schema;
 
 /**
  *
@@ -36,11 +36,11 @@ public class TfIdfCalculator implements Calculator, Serializable {
 	private static final HttpClient httpClient = new HttpClient();
 	private Map<String, List<TfIdf>> termsCollection;
 	private boolean doCollectTerms = false;
-	private Branches branches;
+	private Schema branches;
 	
 	public TfIdfCalculator() {}
 	
-	public TfIdfCalculator(Branches branches) {
+	public TfIdfCalculator(Schema branches) {
 		this.branches = branches;
 	}
 

@@ -6,12 +6,12 @@ import com.nsdr.metadataqa.api.counter.Counters;
 import com.nsdr.metadataqa.api.interfaces.Calculator;
 import com.nsdr.metadataqa.api.model.JsonPathCache;
 import com.jayway.jsonpath.InvalidJsonException;
-import com.nsdr.metadataqa.api.json.Branches;
 import com.nsdr.metadataqa.api.model.XmlFieldInstance;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Logger;
+import com.nsdr.metadataqa.api.schema.Schema;
 
 /**
  *
@@ -28,7 +28,7 @@ public class CompletenessCalculator<T extends XmlFieldInstance> implements Calcu
 	private List<String> missingFields;
 	private List<String> emptyFields;
 	private List<String> existingFields;
-	private Branches branches;
+	private Schema branches;
 
 	private boolean verbose = false;
 
@@ -45,7 +45,7 @@ public class CompletenessCalculator<T extends XmlFieldInstance> implements Calcu
 		// this.recordID = recordID;
 	}
 
-	public CompletenessCalculator(Branches branches) {
+	public CompletenessCalculator(Schema branches) {
 		this.branches = branches;
 	}
 

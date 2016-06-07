@@ -1,5 +1,7 @@
-package com.nsdr.metadataqa.api.json;
+package com.nsdr.metadataqa.api.schema;
 
+import com.nsdr.metadataqa.api.json.FieldGroup;
+import com.nsdr.metadataqa.api.json.JsonBranch;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.LinkedHashMap;
@@ -10,7 +12,7 @@ import java.util.Map;
  *
  * @author Péter Király <peter.kiraly at gwdg.de>
  */
-public class EdmBranches implements Branches {
+public class EdmSchema implements Schema {
 
 	private final static List<JsonBranch> paths = new ArrayList<>();
 	private final static List<FieldGroup> fieldGroups = new ArrayList<>();

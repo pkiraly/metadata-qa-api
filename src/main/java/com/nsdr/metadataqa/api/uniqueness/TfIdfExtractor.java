@@ -3,13 +3,13 @@ package com.nsdr.metadataqa.api.uniqueness;
 import com.jayway.jsonpath.Configuration;
 import com.jayway.jsonpath.JsonPath;
 import com.jayway.jsonpath.spi.json.JsonProvider;
-import com.nsdr.metadataqa.api.json.Branches;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import com.nsdr.metadataqa.api.schema.Schema;
 
 /**
  *
@@ -18,9 +18,9 @@ import java.util.Set;
 public class TfIdfExtractor {
 
 	private static final JsonProvider jsonProvider = Configuration.defaultConfiguration().jsonProvider();
-	private final Branches branches;
+	private final Schema branches;
 
-	public TfIdfExtractor(Branches branches) {
+	public TfIdfExtractor(Schema branches) {
 		this.branches = branches;
 	}
 

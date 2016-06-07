@@ -1,6 +1,6 @@
 package com.nsdr.metadataqa.api.calculator;
 
-import com.nsdr.metadataqa.api.json.EdmBranches;
+import com.nsdr.metadataqa.api.schema.EdmSchema;
 import com.nsdr.metadataqa.api.json.JsonBranch;
 import com.nsdr.metadataqa.api.abbreviation.DatasetManager;
 import com.nsdr.metadataqa.api.abbreviation.DataProviderManager;
@@ -10,7 +10,6 @@ import com.nsdr.metadataqa.api.interfaces.Calculator;
 import com.nsdr.metadataqa.api.model.EdmFieldInstance;
 import com.nsdr.metadataqa.api.model.JsonPathCache;
 import com.jayway.jsonpath.InvalidJsonException;
-import com.nsdr.metadataqa.api.json.Branches;
 import com.nsdr.metadataqa.api.model.XmlFieldInstance;
 import java.io.Serializable;
 import java.util.Arrays;
@@ -20,6 +19,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.logging.Logger;
 import org.apache.commons.lang3.StringUtils;
+import com.nsdr.metadataqa.api.schema.Schema;
 
 /**
  *
@@ -35,7 +35,7 @@ public class LanguageCalculator implements Calculator, Serializable {
 	private Map<String, String> languageMap;
 
 	private boolean verbose = false;
-	private Branches branches;
+	private Schema branches;
 
 	public LanguageCalculator() {
 		// this.recordID = null;
@@ -45,7 +45,7 @@ public class LanguageCalculator implements Calculator, Serializable {
 		// this.recordID = recordID;
 	}
 
-	public LanguageCalculator(Branches branches) {
+	public LanguageCalculator(Schema branches) {
 		this.branches = branches;
 	}
 

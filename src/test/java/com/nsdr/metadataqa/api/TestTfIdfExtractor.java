@@ -2,7 +2,7 @@ package com.nsdr.metadataqa.api;
 
 import com.jayway.jsonpath.Configuration;
 import com.jayway.jsonpath.spi.json.JsonProvider;
-import com.nsdr.metadataqa.api.json.EdmBranches;
+import com.nsdr.metadataqa.api.schema.EdmSchema;
 import com.nsdr.metadataqa.api.uniqueness.TfIdfExtractor;
 import java.io.IOException;
 import java.net.URISyntaxException;
@@ -58,7 +58,7 @@ public class TestTfIdfExtractor {
 		String jsonString = readContent("general/td-idf-response.json");
 		assertEquals("{", jsonString.substring(0,1));
 
-		TfIdfExtractor extractor = new TfIdfExtractor(new EdmBranches());
+		TfIdfExtractor extractor = new TfIdfExtractor(new EdmSchema());
 		Map<String, Double> results = extractor.extract(jsonString, recordId);
 		assertEquals(6, results.size());
 		assertEquals(new Double(0.0017653998874690505), results.get("dc:title:avg"));

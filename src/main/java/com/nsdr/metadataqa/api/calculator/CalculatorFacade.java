@@ -1,10 +1,11 @@
 package com.nsdr.metadataqa.api.calculator;
 
-import com.nsdr.metadataqa.api.abbreviation.DataProviderManager;
-import com.nsdr.metadataqa.api.abbreviation.DatasetManager;
+import com.jayway.jsonpath.InvalidJsonException;
 import com.nsdr.metadataqa.api.counter.Counters;
 import com.nsdr.metadataqa.api.interfaces.Calculator;
-import com.nsdr.metadataqa.api.json.EdmBranches;
+import com.nsdr.metadataqa.api.schema.EdmSchema;
+import com.nsdr.metadataqa.api.model.JsonPathCache;
+import com.nsdr.metadataqa.api.model.XmlFieldInstance;
 import com.nsdr.metadataqa.api.problemcatalog.EmptyStrings;
 import com.nsdr.metadataqa.api.problemcatalog.LongSubject;
 import com.nsdr.metadataqa.api.problemcatalog.ProblemCatalog;
@@ -15,8 +16,9 @@ import java.util.List;
 /**
  *
  * @author Péter Király <peter.kiraly at gwdg.de>
+ * @param <T>
  */
-public class CalculatorFacade {
+public class CalculatorFacade<T extends XmlFieldInstance> {
 
 	protected final boolean doFieldExistence;
 	protected final boolean doFieldCardinality;
@@ -45,18 +47,12 @@ public class CalculatorFacade {
 		fieldExtractor = new FieldExtractor();
 
 		if (doCompleteness) {
-			completenessCalculator = new CompletenessCalculator(new EdmBranches());
+			completenessCalculator = new CompletenessCalculator(new EdmSchema());
 			calculators.add(completenessCalculator);
-			/*
-			if (doAbbreviate) {
-				completenessCalculator.setDataProviderManager(new DataProviderManager());
-				completenessCalculator.setDatasetManager(new DatasetManager());
-			}
-			*/
 		}
 
 		if (doTfIdf) {
-			tfidfCalculator = new TfIdfCalculator(new EdmBranches());
+			tfidfCalculator = new TfIdfCalculator(new EdmSchema());
 			calculators.add(tfidfCalculator);
 		}
 
@@ -74,6 +70,20 @@ public class CalculatorFacade {
 		counters.doReturnFieldInstanceList(doFieldCardinality);
 		counters.doReturnTfIdfList(doTfIdf);
 		counters.doReturnProblemList(doProblemCatalog);
+	}
+
+	public String calculate(String jsonRecord) throws InvalidJsonException {
+		Counters counters = new Counters();
+		configureCounter(counters);
+
+		JsonPathCache<T> cache = new JsonPathCache<>(jsonRecord);
+
+		for (Calculator calculator : getCalculators()) {
+			calculator.calculate(cache, counters);
+		}
+
+		// return the result of calculations
+		return counters.getFullResults(false, true);
 	}
 
 	public boolean isDoFieldExistence() {
@@ -101,16 +111,7 @@ public class CalculatorFacade {
 	}
 
 	public void doAbbreviate(boolean doAbbreviate) {
-		/*
-		DataProviderManager dataProviderManager = null;
-		DatasetManager datasetManager = null;
-		if (doAbbreviate) {
-			dataProviderManager = new DataProviderManager();
-			datasetManager = new DatasetManager();
-		}
-		completenessCalculator.setDataProviderManager(dataProviderManager);
-		completenessCalculator.setDatasetManager(datasetManager);
-		*/
+		this.doAbbreviate = doAbbreviate;
 	}
 
 }
