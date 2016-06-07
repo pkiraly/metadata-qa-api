@@ -28,7 +28,7 @@ public class AbstractManager implements Serializable {
 
 	private static final Logger logger = Logger.getLogger(AbstractManager.class.getCanonicalName());
 	protected Map<String, Integer> data;
-	private FileSystem fs;
+	private static FileSystem fs;
 
 	public AbstractManager() {
 		data = new LinkedHashMap<>();
