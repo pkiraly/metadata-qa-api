@@ -1,5 +1,6 @@
 package com.nsdr.metadataqa.api.model;
 
+import java.io.Serializable;
 import java.util.Objects;
 import org.apache.commons.lang3.StringUtils;
 
@@ -7,7 +8,7 @@ import org.apache.commons.lang3.StringUtils;
  *
  * @author Péter Király <peter.kiraly at gwdg.de>
  */
-public class XmlFieldInstance {
+public class XmlFieldInstance implements Serializable {
 
 	private String value;
 	private String language;
