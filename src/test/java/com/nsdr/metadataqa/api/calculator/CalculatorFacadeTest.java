@@ -42,9 +42,10 @@ public class CalculatorFacadeTest {
 	public void tearDown() {
 	}
 
-	private void run(CalculatorFacade<? extends XmlFieldInstance> calculatorFacade, String expected)
+	private void run(CalculatorFacade calculatorFacade, String expected)
 			throws URISyntaxException, IOException {
 		String jsonRecord = TestUtils.readFirstLine("general/test.json");
+		calculatorFacade.configure();
 
 		try {
 			Counters counters = new Counters();
@@ -67,16 +68,14 @@ public class CalculatorFacadeTest {
 
 	@Test
 	public void testNoAbbreviate() throws URISyntaxException, IOException {
-		CalculatorFacade<XmlFieldInstance> calculatorFacade = new CalculatorFacade(true, true, true, false, true);
-		calculatorFacade.doAbbreviate(false);
+		CalculatorFacade calculatorFacade = new CalculatorFacade(true, true, true, false, true);
 		String expected = "0.4,1.0,0.181818,0.388889,0.272727,0.5,0.357143,0.75,0.363636,0.4,1,1,0,0,0,0,0,1,1,0,0,0,0,1,0,0,0,0,0,0,0,1,0,0,1,0,0,1,1,1,1,1,1,1,0,1,1,0,0,0,0,0,1,1,0,0,0,0,5,0,0,0,0,0,0,0,1,0,0,1,0,0,1,1,1,1,1,1,1,0,0.0,0.0,0.0";
 		run(calculatorFacade, expected);
 	}
 
 	@Test
 	public void testWithAbbreviate() throws URISyntaxException, IOException {
-		CalculatorFacade<XmlFieldInstance> calculatorFacade = new CalculatorFacade(true, true, true, false, true);
-		calculatorFacade.doAbbreviate(true);
+		CalculatorFacade calculatorFacade = new CalculatorFacade(true, true, true, false, true);
 		String expected = "0.4,1.0,0.181818,0.388889,0.272727,0.5,0.357143,0.75,0.363636,0.4,1,1,0,0,0,0,0,1,1,0,0,0,0,1,0,0,0,0,0,0,0,1,0,0,1,0,0,1,1,1,1,1,1,1,0,1,1,0,0,0,0,0,1,1,0,0,0,0,5,0,0,0,0,0,0,0,1,0,0,1,0,0,1,1,1,1,1,1,1,0,0.0,0.0,0.0";
 		run(calculatorFacade, expected);
 	}

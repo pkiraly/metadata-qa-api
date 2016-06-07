@@ -18,45 +18,57 @@ import java.util.List;
  * @author Péter Király <peter.kiraly at gwdg.de>
  * @param <T>
  */
-public class CalculatorFacade<T extends XmlFieldInstance> {
+public class CalculatorFacade {
 
-	protected final boolean doFieldExistence;
-	protected final boolean doFieldCardinality;
-	protected final boolean doCompleteness;
-	protected final boolean doTfIdf;
-	protected final boolean doProblemCatalog;
-	protected boolean doAbbreviate = false;
+	protected boolean runFieldExistence = true;
+	protected boolean runFieldCardinality = true;
+	protected boolean runCompleteness = true;
+	protected boolean runTfIdf = false;
+	protected boolean runProblemCatalog = false;
+	private boolean changed = false;
+
 	protected List<Calculator> calculators;
 	protected FieldExtractor fieldExtractor;
 	protected CompletenessCalculator completenessCalculator;
 	protected TfIdfCalculator tfidfCalculator;
 	protected LanguageCalculator languageCalculator;
+	
+	private XmlFieldInstance xmlFieldInstance = new XmlFieldInstance();
 
-	public CalculatorFacade(boolean doFieldExistence, boolean doFieldCardinality, 
-			  boolean doCompleteness, boolean doTfIdf, boolean doProblemCatalog) {
-		this.doFieldExistence = doFieldExistence;
-		this.doFieldCardinality = doFieldCardinality;
-		this.doCompleteness = doCompleteness;
-		this.doTfIdf = doTfIdf;
-		this.doProblemCatalog = doProblemCatalog;
-		setupCalculators();
+	public CalculatorFacade() {
 	}
 
-	private void setupCalculators() {
+	public CalculatorFacade(boolean runFieldExistence, boolean runFieldCardinality,
+			boolean runCompleteness, boolean runTfIdf, boolean runProblemCatalog) {
+		this.runFieldExistence = runFieldExistence;
+		this.runFieldCardinality = runFieldCardinality;
+		this.runCompleteness = runCompleteness;
+		this.runTfIdf = runTfIdf;
+		this.runProblemCatalog = runProblemCatalog;
+	}
+
+	protected void changed() {
+		if (changed == true) {
+			configure();
+			changed = false;
+		}
+	}
+
+	public void configure() {
 		calculators = new ArrayList<>();
 		fieldExtractor = new FieldExtractor();
 
-		if (doCompleteness) {
+		if (runCompleteness) {
 			completenessCalculator = new CompletenessCalculator(new EdmSchema());
 			calculators.add(completenessCalculator);
 		}
 
-		if (doTfIdf) {
+		if (runTfIdf) {
 			tfidfCalculator = new TfIdfCalculator(new EdmSchema());
 			calculators.add(tfidfCalculator);
 		}
 
-		if (doProblemCatalog) {
+		if (runProblemCatalog) {
 			ProblemCatalog problemCatalog = new ProblemCatalog();
 			LongSubject longSubject = new LongSubject(problemCatalog);
 			TitleAndDescriptionAreSame titleAndDescriptionAreSame = new TitleAndDescriptionAreSame(problemCatalog);
@@ -64,15 +76,21 @@ public class CalculatorFacade<T extends XmlFieldInstance> {
 			calculators.add(problemCatalog);
 		}
 	}
-	
+
 	public void configureCounter(Counters counters) {
-		counters.doReturnFieldExistenceList(doFieldExistence);
-		counters.doReturnFieldInstanceList(doFieldCardinality);
-		counters.doReturnTfIdfList(doTfIdf);
-		counters.doReturnProblemList(doProblemCatalog);
+		counters.doReturnFieldExistenceList(runFieldExistence);
+		counters.doReturnFieldInstanceList(runFieldCardinality);
+		counters.doReturnTfIdfList(runTfIdf);
+		counters.doReturnProblemList(runProblemCatalog);
 	}
 
 	public String calculate(String jsonRecord) throws InvalidJsonException {
+		return this.<XmlFieldInstance>genericCalculate(jsonRecord);
+	}
+
+	protected <T extends XmlFieldInstance> String genericCalculate(String jsonRecord) 
+			throws InvalidJsonException {
+		changed();
 		Counters counters = new Counters();
 		configureCounter(counters);
 
@@ -82,36 +100,72 @@ public class CalculatorFacade<T extends XmlFieldInstance> {
 			calculator.calculate(cache, counters);
 		}
 
-		// return the result of calculations
 		return counters.getFullResults(false, true);
 	}
 
-	public boolean isDoFieldExistence() {
-		return doFieldExistence;
+	/**
+	
+	@return 
+	*/
+	public boolean runFieldExistence() {
+		return runFieldExistence;
 	}
 
-	public boolean isDoFieldCardinality() {
-		return doFieldCardinality;
+	public void runFieldExistence(boolean runFieldCardinality) {
+		if (this.runFieldExistence != runFieldCardinality) {
+			this.runFieldExistence = runFieldCardinality;
+			changed = true;
+		}
 	}
 
-	public boolean isDoCompleteness() {
-		return doCompleteness;
+	public boolean runFieldCardinality() {
+		return runFieldCardinality;
 	}
 
-	public boolean isDoTfIdf() {
-		return doTfIdf;
+	public void runFieldCardinality(boolean runFieldCardinality) {
+		if (this.runFieldCardinality != runFieldCardinality) {
+			this.runFieldCardinality = runFieldCardinality;
+			changed = true;
+		}
 	}
 
-	public boolean isDoProblemCatalog() {
-		return doProblemCatalog;
+	public boolean runCompleteness() {
+		return runCompleteness;
+	}
+
+	public void runCompleteness(boolean runCompleteness) {
+		if (this.runCompleteness != runCompleteness) {
+			this.runCompleteness = runCompleteness;
+			changed = true;
+		}
+	}
+
+	public boolean runTfIdf() {
+		return runTfIdf;
+	}
+
+	public void runTfIdf(boolean runTfIdf) {
+		if (this.runTfIdf != runTfIdf) {
+			this.runTfIdf = runTfIdf;
+			changed = true;
+		}
+	}
+
+	public boolean runProblemCatalog() {
+		return runProblemCatalog;
+	}
+
+	public void runProblemCatalog(boolean runProblemCatalog) {
+		if (this.runProblemCatalog != runProblemCatalog) {
+			this.runProblemCatalog = runProblemCatalog;
+			changed = true;
+		}
 	}
 
 	public List<Calculator> getCalculators() {
 		return calculators;
 	}
 
-	public void doAbbreviate(boolean doAbbreviate) {
-		this.doAbbreviate = doAbbreviate;
-	}
+
 
 }
