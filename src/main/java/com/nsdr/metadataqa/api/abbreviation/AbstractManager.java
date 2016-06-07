@@ -40,17 +40,13 @@ public class AbstractManager implements Serializable {
 		try {
 			uri = getClass().getClassLoader().getResource(fileName).toURI();
 			Map<String, String> env = new HashMap<>();
-			// env.put("create", "true");
-			System.err.println("uri: " + uri.toString());
+			env.put("create", "true");
 			if (uri.toString().contains("!")) {
 				String[] parts = uri.toString().split("!");
-				// System.err.println("parts[0]: " + parts[0]);
-				// System.err.println("parts[1]: " + parts[1]);
 				if (fs == null) {
 					fs = FileSystems.newFileSystem(URI.create(parts[0]), env);
 				}
 				path = fs.getPath(parts[1]);
-				// FileSystem zipfs = FileSystems.newFileSystem(uri, env);
 			} else {
 				path = Paths.get(uri);
 			}
