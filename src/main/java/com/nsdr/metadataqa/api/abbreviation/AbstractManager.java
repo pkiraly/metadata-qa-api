@@ -28,7 +28,7 @@ public class AbstractManager implements Serializable {
 
 	private static final Logger logger = Logger.getLogger(AbstractManager.class.getCanonicalName());
 	protected Map<String, Integer> data;
-	private FileSystem fs;
+	private static FileSystem fs;
 
 	public AbstractManager() {
 		data = new LinkedHashMap<>();
@@ -40,7 +40,6 @@ public class AbstractManager implements Serializable {
 		try {
 			uri = getClass().getClassLoader().getResource(fileName).toURI();
 			Map<String, String> env = new HashMap<>();
-			env.put("create", "false");
 			if (uri.toString().contains("!")) {
 				String[] parts = uri.toString().split("!");
 				if (fs == null) {
