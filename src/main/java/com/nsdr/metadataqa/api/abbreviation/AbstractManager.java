@@ -28,6 +28,7 @@ public class AbstractManager implements Serializable {
 
 	private static final Logger logger = Logger.getLogger(AbstractManager.class.getCanonicalName());
 	protected Map<String, Integer> data;
+	private FileSystem fs;
 
 	public AbstractManager() {
 		data = new LinkedHashMap<>();
@@ -45,7 +46,9 @@ public class AbstractManager implements Serializable {
 				String[] parts = uri.toString().split("!");
 				// System.err.println("parts[0]: " + parts[0]);
 				// System.err.println("parts[1]: " + parts[1]);
-				FileSystem fs = FileSystems.newFileSystem(URI.create(parts[0]), env);
+				if (fs == null) {
+					fs = FileSystems.newFileSystem(URI.create(parts[0]), env);
+				}
 				path = fs.getPath(parts[1]);
 				// FileSystem zipfs = FileSystems.newFileSystem(uri, env);
 			} else {
