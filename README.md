@@ -8,11 +8,11 @@ If you want to implement it to your collection you have to define a schema, whic
 presentation of an existing metadata schema, and configure the basic facade, which will run the calculation.
 
 ```Java
-EdmCalculatorFacade calculatorFacade = new EdmCalculatorFacade();
+EdmCalculatorFacade calculator = new EdmCalculatorFacade();
 // do some configuration with the accessor of calculator Facade
 for (String jsonRecord : jsonRecords) {
     try {
-        String csv = calculatorFacade.calculate(TestUtils.readFirstLine("general/test.json"));
+        String csv = calculator.measure(jsonRecord);
         // save csv
     } catch (InvalidJsonException e) {
         // handle exception
