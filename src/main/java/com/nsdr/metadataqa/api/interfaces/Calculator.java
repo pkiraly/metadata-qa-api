@@ -9,5 +9,5 @@ import com.nsdr.metadataqa.api.model.JsonPathCache;
  */
 public interface Calculator {
 
-	void calculate(JsonPathCache cache, Counters counters);
+	void measure(JsonPathCache cache, Counters counters);
 }

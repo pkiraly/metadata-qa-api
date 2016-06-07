@@ -54,7 +54,7 @@ public class ProblemCatalog implements Calculator, Serializable, Observable {
 	}
 
 	@Override
-	public void calculate(JsonPathCache cache, Counters counters) {
+	public void measure(JsonPathCache cache, Counters counters) {
 		this.cache = cache;
 		this.results = new LinkedHashMap<>();
 		notifyObservers();

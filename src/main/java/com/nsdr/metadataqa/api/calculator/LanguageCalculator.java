@@ -50,7 +50,7 @@ public class LanguageCalculator implements Calculator, Serializable {
 	}
 
 	@Override
-	public void calculate(JsonPathCache cache, Counters counters) throws InvalidJsonException {
+	public void measure(JsonPathCache cache, Counters counters) throws InvalidJsonException {
 		this.counters = counters;
 
 		languageMap = new LinkedHashMap<>();

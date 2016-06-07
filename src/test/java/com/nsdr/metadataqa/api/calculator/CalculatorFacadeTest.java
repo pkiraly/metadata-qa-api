@@ -54,7 +54,7 @@ public class CalculatorFacadeTest {
 			JsonPathCache<EdmFieldInstance> cache = new JsonPathCache<>(jsonRecord);
 
 			for (Calculator calculator : calculatorFacade.getCalculators()) {
-				calculator.calculate(cache, counters);
+				calculator.measure(cache, counters);
 			}
 
 			// return the result of calculations

@@ -50,7 +50,7 @@ public class CompletenessCalculator<T extends XmlFieldInstance> implements Calcu
 	}
 
 	@Override
-	public void calculate(JsonPathCache cache, Counters counters) throws InvalidJsonException {
+	public void measure(JsonPathCache cache, Counters counters) throws InvalidJsonException {
 		// Object document = JSON_PROVIDER.parse(jsonString);
 		if (verbose) {
 			missingFields = new ArrayList<>();

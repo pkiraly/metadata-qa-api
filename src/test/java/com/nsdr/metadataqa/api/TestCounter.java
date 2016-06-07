@@ -57,8 +57,8 @@ public class TestCounter {
 		// completenessCalculator.setDatasetManager(new DatasetManager());
 
 		JsonPathCache cache = new JsonPathCache(readFirstLine("general/test.json"));
-		fieldExtractor.calculate(cache, counters);
-		completenessCalculator.calculate(cache, counters);
+		fieldExtractor.measure(cache, counters);
+		completenessCalculator.measure(cache, counters);
 	}
 
 	public String readFirstLine(String fileName) throws URISyntaxException, IOException {
@@ -98,7 +98,7 @@ public class TestCounter {
 		thrown.expectMessage("Unexpected character (:) at position 28");
 
 		JsonPathCache cache = new JsonPathCache(readFirstLine("general/invalid.json"));
-		completenessCalculator.calculate(cache, counters);
+		completenessCalculator.measure(cache, counters);
 		fail("Should throw an exception if the JSON string is invalid.");
 	}
 
@@ -129,7 +129,7 @@ public class TestCounter {
 		completenessCalculator.setVerbose(true);
 
 		JsonPathCache cache = new JsonPathCache(readFirstLine("general/test.json"));
-		completenessCalculator.calculate(cache, counters);
+		completenessCalculator.measure(cache, counters);
 		Map<String, Boolean> map = counters.getExistenceMap();
 		assertEquals(35, map.size());
 
@@ -185,7 +185,7 @@ public class TestCounter {
 		// completenessCalculator.setDatasetManager(new DatasetManager());
 		completenessCalculator.setVerbose(true);
 		JsonPathCache cache = new JsonPathCache(readFirstLine("general/test.json"));
-		completenessCalculator.calculate(cache, counters);
+		completenessCalculator.measure(cache, counters);
 		List<Integer> expected = Arrays.asList(new Integer[]{1,1,0,0,0,0,0,1,1,0,0,0,0,1,0,0,0,0,0,0,0,1,0,0,1,0,0,1,1,1,1,1,1,1,0});
 		assertEquals(35, counters.getExistenceList().size());
 		assertEquals(expected, counters.getExistenceList());

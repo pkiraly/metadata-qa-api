@@ -84,11 +84,11 @@ public class CalculatorFacade {
 		counters.doReturnProblemList(runProblemCatalog);
 	}
 
-	public String calculate(String jsonRecord) throws InvalidJsonException {
-		return this.<XmlFieldInstance>genericCalculate(jsonRecord);
+	public String measure(String jsonRecord) throws InvalidJsonException {
+		return this.<XmlFieldInstance>measureWithGenerics(jsonRecord);
 	}
 
-	protected <T extends XmlFieldInstance> String genericCalculate(String jsonRecord) 
+	protected <T extends XmlFieldInstance> String measureWithGenerics(String jsonRecord) 
 			throws InvalidJsonException {
 		changed();
 		Counters counters = new Counters();
@@ -97,7 +97,7 @@ public class CalculatorFacade {
 		JsonPathCache<T> cache = new JsonPathCache<>(jsonRecord);
 
 		for (Calculator calculator : getCalculators()) {
-			calculator.calculate(cache, counters);
+			calculator.measure(cache, counters);
 		}
 
 		return counters.getFullResults(false, true);
