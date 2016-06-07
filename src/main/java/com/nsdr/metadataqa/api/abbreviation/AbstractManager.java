@@ -40,7 +40,7 @@ public class AbstractManager implements Serializable {
 		try {
 			uri = getClass().getClassLoader().getResource(fileName).toURI();
 			Map<String, String> env = new HashMap<>();
-			env.put("create", "true");
+			env.put("create", "false");
 			if (uri.toString().contains("!")) {
 				String[] parts = uri.toString().split("!");
 				if (fs == null) {
