@@ -10,6 +10,7 @@ import com.nsdr.metadataqa.api.problemcatalog.EmptyStrings;
 import com.nsdr.metadataqa.api.problemcatalog.LongSubject;
 import com.nsdr.metadataqa.api.problemcatalog.ProblemCatalog;
 import com.nsdr.metadataqa.api.problemcatalog.TitleAndDescriptionAreSame;
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -18,7 +19,7 @@ import java.util.List;
  * @author Péter Király <peter.kiraly at gwdg.de>
  * @param <T>
  */
-public class CalculatorFacade {
+public class CalculatorFacade implements Serializable {
 
 	protected boolean runFieldExistence = true;
 	protected boolean runFieldCardinality = true;

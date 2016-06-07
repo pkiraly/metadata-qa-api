@@ -29,14 +29,16 @@ public class AbstractManager implements Serializable {
 	}
 
 	protected void initialize(String fileName) {
+		Path path = null;
 		try {
-			Path path = Paths.get(getClass().getClassLoader().getResource(fileName).toURI());
+			path = Paths.get(getClass().getClassLoader().getResource(fileName).toURI());
 			List<String> lines = Files.readAllLines(path, Charset.defaultCharset());
 			int i = 1;
 			for (String line : lines) {
 				data.put(line, i++);
 			}
 		} catch (URISyntaxException | IOException ex) {
+			logger.severe(String.format("Error with file: %s, path: %s.", fileName, path));
 			logger.severe(ex.getLocalizedMessage());
 		}
 	}
