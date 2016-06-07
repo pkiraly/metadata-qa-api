@@ -20,3 +20,5 @@ for (String jsonRecord : jsonRecords) {
 }
 
 ```
+
+For the usage and implementation of the API see https://github.com/pkiraly/europeana-qa-api.
