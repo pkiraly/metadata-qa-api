@@ -42,10 +42,10 @@ public class AbstractManager implements Serializable {
 			// env.put("create", "true");
 			System.err.println("uri: " + uri.toString());
 			if (uri.toString().contains("!")) {
-				final String[] parts = uri.toString().split("!");
+				String[] parts = uri.toString().split("!");
 				// System.err.println("parts[0]: " + parts[0]);
 				// System.err.println("parts[1]: " + parts[1]);
-				final FileSystem fs = FileSystems.newFileSystem(URI.create(parts[0]), env);
+				FileSystem fs = FileSystems.newFileSystem(URI.create(parts[0]), env);
 				path = fs.getPath(parts[1]);
 				// FileSystem zipfs = FileSystems.newFileSystem(uri, env);
 			} else {
