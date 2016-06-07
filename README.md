@@ -8,7 +8,7 @@ If you want to implement it to your collection you have to define a schema, whic
 presentation of an existing metadata schema, and configure the basic facade, which will run the calculation.
 
 ```Java
-EdmCalculatorFacade calculator = new EdmCalculatorFacade();
+CalculatorFacade calculator = new CalculatorFacade();
 // do some configuration with the accessor of calculator Facade
 for (String jsonRecord : jsonRecords) {
     try {
