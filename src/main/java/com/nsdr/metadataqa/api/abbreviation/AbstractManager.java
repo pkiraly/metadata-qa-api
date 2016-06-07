@@ -5,8 +5,10 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.io.Serializable;
 import java.io.UnsupportedEncodingException;
+import java.net.URI;
 import java.net.URISyntaxException;
 import java.nio.charset.Charset;
+import java.nio.file.FileSystemNotFoundException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -29,16 +31,18 @@ public class AbstractManager implements Serializable {
 	}
 
 	protected void initialize(String fileName) {
+		URI uri = null;
 		Path path = null;
 		try {
-			path = Paths.get(getClass().getClassLoader().getResource(fileName).toURI());
+			uri = getClass().getClassLoader().getResource(fileName).toURI();
+			path = Paths.get(uri);
 			List<String> lines = Files.readAllLines(path, Charset.defaultCharset());
 			int i = 1;
 			for (String line : lines) {
 				data.put(line, i++);
 			}
-		} catch (URISyntaxException | IOException ex) {
-			logger.severe(String.format("Error with file: %s, path: %s.", fileName, path));
+		} catch (URISyntaxException | IOException | FileSystemNotFoundException ex) {
+			logger.severe(String.format("Error with file: %s, uri: %s, path: %s.", fileName, uri, path));
 			logger.severe(ex.getLocalizedMessage());
 		}
 	}
