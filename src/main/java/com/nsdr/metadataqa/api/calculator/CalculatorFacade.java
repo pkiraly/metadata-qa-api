@@ -210,7 +210,7 @@ public class CalculatorFacade implements Serializable {
 	}
 
 	public List<String> getExistingFields() {
-		return completenessCalculator.getEmptyFields();
+		return completenessCalculator.getExistingFields();
 	}
 
 	public List<String> getEmptyFields() {
