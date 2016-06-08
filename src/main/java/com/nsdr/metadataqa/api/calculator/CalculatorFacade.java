@@ -29,6 +29,7 @@ public class CalculatorFacade implements Serializable {
 	protected boolean runProblemCatalog = false;
 	protected boolean runLanguage = false;
 	protected boolean collectTfIdfTerms = false;
+	protected boolean verbose = false;
 	private boolean changed = false;
 
 	protected List<Calculator> calculators;
@@ -64,6 +65,7 @@ public class CalculatorFacade implements Serializable {
 
 		if (runCompleteness) {
 			completenessCalculator = new CompletenessCalculator(schema);
+			completenessCalculator.setVerbose(verbose);
 			calculators.add(completenessCalculator);
 		}
 
@@ -192,6 +194,17 @@ public class CalculatorFacade implements Serializable {
 	public void collectTfIdfTerms(boolean collectTfIdfTerms) {
 		if (this.collectTfIdfTerms != collectTfIdfTerms) {
 			this.collectTfIdfTerms = collectTfIdfTerms;
+			changed = true;
+		}
+	}
+
+	public boolean verbose() {
+		return verbose;
+	}
+
+	public void verbose(boolean verbose) {
+		if (this.verbose != verbose) {
+			this.verbose = verbose;
 			changed = true;
 		}
 	}
