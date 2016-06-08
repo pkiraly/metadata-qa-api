@@ -36,18 +36,18 @@ public class TfIdfCalculator implements Calculator, Serializable {
 	private static final HttpClient httpClient = new HttpClient();
 	private Map<String, List<TfIdf>> termsCollection;
 	private boolean doCollectTerms = false;
-	private Schema branches;
+	private Schema schema;
 	
 	public TfIdfCalculator() {}
 	
-	public TfIdfCalculator(Schema branches) {
-		this.branches = branches;
+	public TfIdfCalculator(Schema schema) {
+		this.schema = schema;
 	}
 
 	@Override
 	public void measure(JsonPathCache cache, Counters counters) {
 		String solrJsonResponse = getSolrResponse(counters.getRecordId());
-		TfIdfExtractor extractor = new TfIdfExtractor(branches);
+		TfIdfExtractor extractor = new TfIdfExtractor(schema);
 		counters.setTfIdfList(extractor.extract(solrJsonResponse, counters.getRecordId(), doCollectTerms));
 		termsCollection = extractor.getTermsCollection();
 	}

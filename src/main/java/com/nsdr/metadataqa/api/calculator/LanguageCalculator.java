@@ -30,7 +30,7 @@ public class LanguageCalculator implements Calculator, Serializable {
 	private Map<String, String> languageMap;
 
 	private boolean verbose = false;
-	private Schema branches;
+	private Schema schema;
 
 	public LanguageCalculator() {
 		// this.recordID = null;
@@ -41,7 +41,7 @@ public class LanguageCalculator implements Calculator, Serializable {
 	}
 
 	public LanguageCalculator(Schema branches) {
-		this.branches = branches;
+		this.schema = branches;
 	}
 
 	@Override
@@ -49,10 +49,11 @@ public class LanguageCalculator implements Calculator, Serializable {
 		this.counters = counters;
 
 		languageMap = new LinkedHashMap<>();
-		for (JsonBranch jsonBranch : branches.getPaths()) {
-			if (!branches.getNoLanguageFields().contains(jsonBranch.getLabel()))
+		for (JsonBranch jsonBranch : schema.getPaths()) {
+			if (!schema.getNoLanguageFields().contains(jsonBranch.getLabel()))
 				extractLanguageTags(jsonBranch, cache, languageMap);
 		}
+		counters.setLanguageMap(languageMap);
 	}
 
 	public String getResult() {

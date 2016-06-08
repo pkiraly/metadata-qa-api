@@ -28,7 +28,7 @@ public class CompletenessCalculator<T extends XmlFieldInstance> implements Calcu
 	private List<String> missingFields;
 	private List<String> emptyFields;
 	private List<String> existingFields;
-	private Schema branches;
+	private Schema schema;
 
 	private boolean verbose = false;
 
@@ -45,8 +45,8 @@ public class CompletenessCalculator<T extends XmlFieldInstance> implements Calcu
 		// this.recordID = recordID;
 	}
 
-	public CompletenessCalculator(Schema branches) {
-		this.branches = branches;
+	public CompletenessCalculator(Schema schema) {
+		this.schema = schema;
 	}
 
 	@Override
@@ -58,11 +58,11 @@ public class CompletenessCalculator<T extends XmlFieldInstance> implements Calcu
 			existingFields = new ArrayList<>();
 		}
 
-		for (JsonBranch jsonBranch : branches.getPaths()) {
+		for (JsonBranch jsonBranch : schema.getPaths()) {
 			evaluateJsonBranch(jsonBranch, cache, counters);
 		}
 
-		for (FieldGroup fieldGroup : branches.getFieldGroups()) {
+		for (FieldGroup fieldGroup : schema.getFieldGroups()) {
 			boolean existing = false;
 			for (String field : fieldGroup.getFields()) {
 				if (counters.getExistenceMap().get(field) == true) {

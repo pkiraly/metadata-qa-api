@@ -10,14 +10,15 @@ import com.nsdr.metadataqa.api.problemcatalog.EmptyStrings;
 import com.nsdr.metadataqa.api.problemcatalog.LongSubject;
 import com.nsdr.metadataqa.api.problemcatalog.ProblemCatalog;
 import com.nsdr.metadataqa.api.problemcatalog.TitleAndDescriptionAreSame;
+import com.nsdr.metadataqa.api.uniqueness.TfIdf;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 /**
  *
  * @author Péter Király <peter.kiraly at gwdg.de>
- * @param <T>
  */
 public class CalculatorFacade implements Serializable {
 
@@ -26,6 +27,8 @@ public class CalculatorFacade implements Serializable {
 	protected boolean runCompleteness = true;
 	protected boolean runTfIdf = false;
 	protected boolean runProblemCatalog = false;
+	protected boolean runLanguage = false;
+	protected boolean collectTfIdfTerms = false;
 	private boolean changed = false;
 
 	protected List<Calculator> calculators;
@@ -33,8 +36,7 @@ public class CalculatorFacade implements Serializable {
 	protected CompletenessCalculator completenessCalculator;
 	protected TfIdfCalculator tfidfCalculator;
 	protected LanguageCalculator languageCalculator;
-	
-	private XmlFieldInstance xmlFieldInstance = new XmlFieldInstance();
+	protected Counters counters;
 
 	public CalculatorFacade() {
 	}
@@ -58,14 +60,16 @@ public class CalculatorFacade implements Serializable {
 	public void configure() {
 		calculators = new ArrayList<>();
 		fieldExtractor = new FieldExtractor();
+		EdmSchema schema = new EdmSchema();
 
 		if (runCompleteness) {
-			completenessCalculator = new CompletenessCalculator(new EdmSchema());
+			completenessCalculator = new CompletenessCalculator(schema);
 			calculators.add(completenessCalculator);
 		}
 
 		if (runTfIdf) {
-			tfidfCalculator = new TfIdfCalculator(new EdmSchema());
+			tfidfCalculator = new TfIdfCalculator(schema);
+			tfidfCalculator.setDoCollectTerms(collectTfIdfTerms);
 			calculators.add(tfidfCalculator);
 		}
 
@@ -76,13 +80,19 @@ public class CalculatorFacade implements Serializable {
 			EmptyStrings emptyStrings = new EmptyStrings(problemCatalog);
 			calculators.add(problemCatalog);
 		}
+
+		if (runLanguage) {
+			languageCalculator = new LanguageCalculator(schema);
+			calculators.add(languageCalculator);
+		}
 	}
 
 	public void configureCounter(Counters counters) {
-		counters.doReturnFieldExistenceList(runFieldExistence);
-		counters.doReturnFieldInstanceList(runFieldCardinality);
-		counters.doReturnTfIdfList(runTfIdf);
-		counters.doReturnProblemList(runProblemCatalog);
+		counters.returnFieldExistenceList(runFieldExistence);
+		counters.returnFieldInstanceList(runFieldCardinality);
+		counters.returnTfIdfList(runTfIdf);
+		counters.returnProblemList(runProblemCatalog);
+		counters.returnLanguage(runLanguage);
 	}
 
 	public String measure(String jsonRecord) throws InvalidJsonException {
@@ -92,7 +102,7 @@ public class CalculatorFacade implements Serializable {
 	protected <T extends XmlFieldInstance> String measureWithGenerics(String jsonRecord) 
 			throws InvalidJsonException {
 		changed();
-		Counters counters = new Counters();
+		counters = new Counters();
 		configureCounter(counters);
 
 		JsonPathCache<T> cache = new JsonPathCache<>(jsonRecord);
@@ -141,6 +151,14 @@ public class CalculatorFacade implements Serializable {
 		}
 	}
 
+	public boolean runLanguage() {
+		return runLanguage;
+	}
+
+	public void runLanguage(boolean runLanguage) {
+		this.runLanguage = runLanguage;
+	}
+
 	public boolean runTfIdf() {
 		return runTfIdf;
 	}
@@ -167,6 +185,34 @@ public class CalculatorFacade implements Serializable {
 		return calculators;
 	}
 
+	public boolean collectTfIdfTerms() {
+		return collectTfIdfTerms;
+	}
 
+	public void collectTfIdfTerms(boolean collectTfIdfTerms) {
+		if (this.collectTfIdfTerms != collectTfIdfTerms) {
+			this.collectTfIdfTerms = collectTfIdfTerms;
+			changed = true;
+		}
+	}
 
+	public List<String> getExistingFields() {
+		return completenessCalculator.getEmptyFields();
+	}
+
+	public List<String> getEmptyFields() {
+		return completenessCalculator.getEmptyFields();
+	}
+
+	public List<String> getMissingFields() {
+		return completenessCalculator.getMissingFields();
+	}
+
+	public Map<String, List<TfIdf>> getTermsCollection() {
+		return tfidfCalculator.getTermsCollection();
+	}
+
+	public Counters getCounters() {
+		return counters;
+	}
 }

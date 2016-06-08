@@ -1,6 +1,5 @@
 package com.nsdr.metadataqa.api.counter;
 
-import com.nsdr.metadataqa.api.calculator.CalculatorFacade;
 import com.nsdr.metadataqa.api.json.JsonBranch;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -24,11 +23,13 @@ public class Counters {
 	private final Map<String, Integer> instanceList = new LinkedHashMap<>();
 	private Map<String, Double> tfIdfList;
 	private Map<String, Double> problemList;
+	private Map<String, String> languageMap = new LinkedHashMap<>();
 
 	private boolean returnFieldExistenceList = false;
 	private boolean returnFieldInstanceList = false;
 	private boolean returnTfIdf = false;
 	private boolean returnProblems = false;
+	private boolean returnLanguage = false;
 
 	public Counters() {
 		initialize();
@@ -245,6 +246,23 @@ public class Counters {
 		return StringUtils.join(items, ',');
 	}
 
+	public String getLanguageMap(boolean withLabel) {
+		List<String> items = new ArrayList<>();
+		if (withLabel == true) {
+			for (Map.Entry<String, Double> entry : problemList.entrySet()) {
+				String item = withLabel ? String.format("\"%s\":", entry.getKey()) : entry.getKey();
+				items.add(item);
+			}
+		} else {
+			items = (List)languageMap.values();
+		}
+		return StringUtils.join(items, ",");
+	}
+
+	public void setLanguageMap(Map<String, String> languageMap) {
+		this.languageMap = languageMap;
+	}
+
 	public String getRecordId() {
 		return recordId;
 	}
@@ -302,22 +320,29 @@ public class Counters {
 		if (returnProblems == true) {
 			result += ',' + getProblemList(withLabel, compress);
 		}
+		if (returnLanguage == true) {
+			result += ',' + getLanguageMap(withLabel);
+		}
 		return result;
 	}
 
-	public void doReturnFieldExistenceList(boolean returnFieldExistenceList) {
+	public void returnFieldExistenceList(boolean returnFieldExistenceList) {
 		this.returnFieldExistenceList = returnFieldExistenceList;
 	}
 
-	public void doReturnFieldInstanceList(boolean returnFieldInstanceList) {
+	public void returnFieldInstanceList(boolean returnFieldInstanceList) {
 		this.returnFieldInstanceList = returnFieldInstanceList;
 	}
 
-	public void doReturnTfIdfList(boolean returnTfIdf) {
+	public void returnTfIdfList(boolean returnTfIdf) {
 		this.returnTfIdf = returnTfIdf;
 	}
 
-	public void doReturnProblemList(boolean returnProblems) {
+	public void returnProblemList(boolean returnProblems) {
 		this.returnProblems = returnProblems;
+	}
+
+	public void returnLanguage(boolean returnLanguage) {
+		this.returnLanguage = returnLanguage;
 	}
 }
