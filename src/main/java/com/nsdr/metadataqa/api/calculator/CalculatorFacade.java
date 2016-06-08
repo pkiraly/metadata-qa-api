@@ -23,7 +23,7 @@ import java.util.logging.Logger;
  */
 public class CalculatorFacade implements Serializable {
 
-	private static final Logger LOGGER = Logger.getLogger(CalculatorFacade.class.getCanonicalName());
+	// private static final Logger LOGGER = Logger.getLogger(CalculatorFacade.class.getCanonicalName());
 
 	protected boolean runFieldExistence = true;
 	protected boolean runFieldCardinality = true;
@@ -206,12 +206,10 @@ public class CalculatorFacade implements Serializable {
 	}
 
 	public void verbose(boolean verbose) {
-		LOGGER.info("verbose is " + verbose);
 		if (this.verbose != verbose) {
 			this.verbose = verbose;
 			changed = true;
 		}
-		LOGGER.info("this.verbose is " + this.verbose);
 	}
 
 	public List<String> getExistingFields() {
