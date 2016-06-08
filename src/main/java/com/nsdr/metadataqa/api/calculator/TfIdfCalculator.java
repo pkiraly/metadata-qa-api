@@ -37,9 +37,9 @@ public class TfIdfCalculator implements Calculator, Serializable {
 	private Map<String, List<TfIdf>> termsCollection;
 	private boolean doCollectTerms = false;
 	private Schema schema;
-	
+
 	public TfIdfCalculator() {}
-	
+
 	public TfIdfCalculator(Schema schema) {
 		this.schema = schema;
 	}

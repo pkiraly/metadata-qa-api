@@ -15,12 +15,15 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.logging.Logger;
 
 /**
  *
  * @author Péter Király <peter.kiraly at gwdg.de>
  */
 public class CalculatorFacade implements Serializable {
+
+	private static final Logger LOGGER = Logger.getLogger(CalculatorFacade.class.getCanonicalName());
 
 	protected boolean runFieldExistence = true;
 	protected boolean runFieldCardinality = true;
@@ -203,10 +206,12 @@ public class CalculatorFacade implements Serializable {
 	}
 
 	public void verbose(boolean verbose) {
+		LOGGER.info("verbose is " + verbose);
 		if (this.verbose != verbose) {
 			this.verbose = verbose;
 			changed = true;
 		}
+		LOGGER.info("this.verbose is " + this.verbose);
 	}
 
 	public List<String> getExistingFields() {
