@@ -24,24 +24,28 @@ import java.util.logging.Logger;
  *
  * @author Péter Király <peter.kiraly at gwdg.de>
  */
-public class AbstractManager implements Serializable {
+public class AbbreviationManager implements Serializable {
 
-	private static final Logger logger = Logger.getLogger(AbstractManager.class.getCanonicalName());
+	private static final Logger logger = Logger.getLogger(AbbreviationManager.class.getCanonicalName());
 	protected Map<String, Integer> data;
 	private static FileSystem fs;
 
-	public AbstractManager() {
+	public AbbreviationManager() {
 		data = new LinkedHashMap<>();
 	}
 
 	protected void initialize(String fileName) {
+		initialize(fileName, false);
+	}
+
+	protected void initialize(String fileName, boolean parse) {
 		Path path = null;
 		try {
 			path = getPath(fileName);
 			List<String> lines = Files.readAllLines(path, Charset.defaultCharset());
 			int i = 1;
 			for (String line : lines) {
-				processLine(line, i);
+				processLine(line, i, parse);
 			}
 		} catch (URISyntaxException | IOException | FileSystemNotFoundException ex) {
 			logger.severe(String.format("Error with file: %s, uri: %s, path: %s.", fileName, path));
@@ -49,8 +53,8 @@ public class AbstractManager implements Serializable {
 		}
 	}
 
-	private void processLine(String line, int i) throws NumberFormatException {
-		if (line.contains(";")) {
+	public void processLine(String line, int i, boolean parse) throws NumberFormatException {
+		if (parse && line.contains(";")) {
 			String[] parts = line.split(";", 2);
 			data.put(parts[1], Integer.parseInt(parts[0]));
 		} else {
@@ -90,6 +94,10 @@ public class AbstractManager implements Serializable {
 			path = Paths.get(uri);
 		}
 		return path;
+	}
+
+	public Map<String, Integer> getData() {
+		return data;
 	}
 
 }

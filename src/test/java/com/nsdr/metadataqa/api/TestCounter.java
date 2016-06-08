@@ -1,7 +1,5 @@
 package com.nsdr.metadataqa.api;
 
-import com.nsdr.metadataqa.api.abbreviation.DatasetManager;
-import com.nsdr.metadataqa.api.abbreviation.DataProviderManager;
 import com.nsdr.metadataqa.api.counter.Counters;
 import com.nsdr.metadataqa.api.calculator.CompletenessCalculator;
 import com.nsdr.metadataqa.api.model.JsonPathCache;
@@ -181,8 +179,6 @@ public class TestCounter {
 	@Test
 	public void testExistenceList() throws URISyntaxException, IOException {
 		completenessCalculator = new CompletenessCalculator(new EdmSchema());
-		// completenessCalculator.setDataProviderManager(new DataProviderManager());
-		// completenessCalculator.setDatasetManager(new DatasetManager());
 		completenessCalculator.setVerbose(true);
 		JsonPathCache cache = new JsonPathCache(readFirstLine("general/test.json"));
 		completenessCalculator.measure(cache, counters);

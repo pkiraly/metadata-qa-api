@@ -1,18 +1,13 @@
 package com.nsdr.metadataqa.api.calculator;
 
-import com.nsdr.metadataqa.api.schema.EdmSchema;
 import com.nsdr.metadataqa.api.json.JsonBranch;
-import com.nsdr.metadataqa.api.abbreviation.DatasetManager;
-import com.nsdr.metadataqa.api.abbreviation.DataProviderManager;
 import com.nsdr.metadataqa.api.counter.Counters;
 import com.nsdr.metadataqa.api.counter.BasicCounter;
 import com.nsdr.metadataqa.api.interfaces.Calculator;
 import com.nsdr.metadataqa.api.model.EdmFieldInstance;
 import com.nsdr.metadataqa.api.model.JsonPathCache;
 import com.jayway.jsonpath.InvalidJsonException;
-import com.nsdr.metadataqa.api.model.XmlFieldInstance;
 import java.io.Serializable;
-import java.util.Arrays;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
