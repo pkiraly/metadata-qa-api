@@ -35,28 +35,26 @@ public class AbstractManager implements Serializable {
 	}
 
 	protected void initialize(String fileName) {
-		URI uri = null;
 		Path path = null;
 		try {
-			uri = getClass().getClassLoader().getResource(fileName).toURI();
-			Map<String, String> env = new HashMap<>();
-			if (uri.toString().contains("!")) {
-				String[] parts = uri.toString().split("!");
-				if (fs == null) {
-					fs = FileSystems.newFileSystem(URI.create(parts[0]), env);
-				}
-				path = fs.getPath(parts[1]);
-			} else {
-				path = Paths.get(uri);
-			}
+			path = getPath(fileName);
 			List<String> lines = Files.readAllLines(path, Charset.defaultCharset());
 			int i = 1;
 			for (String line : lines) {
-				data.put(line, i++);
+				processLine(line, i);
 			}
 		} catch (URISyntaxException | IOException | FileSystemNotFoundException ex) {
-			logger.severe(String.format("Error with file: %s, uri: %s, path: %s.", fileName, uri, path));
+			logger.severe(String.format("Error with file: %s, uri: %s, path: %s.", fileName, path));
 			logger.severe(ex.getLocalizedMessage());
+		}
+	}
+
+	private void processLine(String line, int i) throws NumberFormatException {
+		if (line.contains(";")) {
+			String[] parts = line.split(";", 2);
+			data.put(parts[1], Integer.parseInt(parts[0]));
+		} else {
+			data.put(line, i++);
 		}
 	}
 
@@ -77,4 +75,21 @@ public class AbstractManager implements Serializable {
 			}
 		}
 	}
+
+	private Path getPath(String fileName) throws IOException, URISyntaxException {
+		Path path;
+		URI uri = getClass().getClassLoader().getResource(fileName).toURI();
+		Map<String, String> env = new HashMap<>();
+		if (uri.toString().contains("!")) {
+			String[] parts = uri.toString().split("!");
+			if (fs == null) {
+				fs = FileSystems.newFileSystem(URI.create(parts[0]), env);
+			}
+			path = fs.getPath(parts[1]);
+		} else {
+			path = Paths.get(uri);
+		}
+		return path;
+	}
+
 }
