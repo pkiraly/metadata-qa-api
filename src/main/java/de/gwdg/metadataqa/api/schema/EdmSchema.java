@@ -10,7 +10,8 @@ import java.util.List;
 import java.util.Map;
 
 /**
- *
+ * The Europeana Data Model (EDM) representation of the metadata schema interface.
+ * This class represents what fields will be analyzed in different measurements.
  * @author Péter Király <peter.kiraly at gwdg.de>
  */
 public class EdmSchema implements Schema, Serializable {
@@ -18,7 +19,7 @@ public class EdmSchema implements Schema, Serializable {
 	private final static List<JsonBranch> paths = new ArrayList<>();
 	private final static List<FieldGroup> fieldGroups = new ArrayList<>();
 	private final static List<String> noLanguageFields = new ArrayList<>();
-	private static final Map<String, String> termFields = new LinkedHashMap<>();
+	private final static Map<String, String> solrFields = new LinkedHashMap<>();
 
 	static {
 		paths.add(new JsonBranch("edm:ProvidedCHO/@about",
@@ -162,9 +163,9 @@ public class EdmSchema implements Schema, Serializable {
 			"Aggregation/edm:isShownBy", "Aggregation/edm:object",
 			"Aggregation/edm:hasView"));
 
-		termFields.put("dc:title", "dc_title_txt");
-		termFields.put("dcterms:alternative", "dcterms_alternative_txt");
-		termFields.put("dc:description", "dc_description_txt");
+		solrFields.put("dc:title", "dc_title_txt");
+		solrFields.put("dcterms:alternative", "dcterms_alternative_txt");
+		solrFields.put("dc:description", "dc_description_txt");
 
 	}
 
@@ -185,6 +186,6 @@ public class EdmSchema implements Schema, Serializable {
 
 	@Override
 	public Map<String, String> getSolrFields() {
-		return termFields;
+		return solrFields;
 	}
 }

@@ -21,6 +21,30 @@ import java.util.Map;
 import java.util.logging.Logger;
 
 /**
+ * <p>The AbbreviationManager takes care about abbreviations: parse source file,
+ * lookup and save. Abbreviations are used in output, where you want a short
+ * (numeric) entry instead of a long text. So for example if the source record
+ * contain the value "Bavarian State Library", and we map number 5 to it
+ * the project will output 5 instead of the longer string.</p>
+ *
+ * <p>It can read two types of files. For plain files the abbreviatable entry
+ * will be the full line, and the abbreviated value will be the line number.
+ * For comma separated files the first field will be the abbreviated value,
+ * and the rest of the line will be the key to abbreviate.</p>
+ *
+ * Example for plain file
+ * <pre>
+ * National Library of France
+ * Österreichische Nationalbibliothek - Austrian National Library
+ * National Library of the Netherlands
+ * </pre>
+ *
+ * Example for comma separated file:
+ * <pre>
+ * 1;National Library of France
+ * 2;Österreichische Nationalbibliothek - Austrian National Library
+ * 3;National Library of the Netherlands
+ * </pre>
  *
  * @author Péter Király <peter.kiraly at gwdg.de>
  */
@@ -38,6 +62,11 @@ public class AbbreviationManager implements Serializable {
 		initialize(fileName, false);
 	}
 
+	/**
+	* Initialize abbreviations. It reads a file and fulfill the abbreviation map.
+	* @param fileName The name of input file
+	* @param parse Whether parse the file to extract the abbreviation or use line number as the abbreviated value
+	*/
 	protected void initialize(String fileName, boolean parse) {
 		Path path = null;
 		try {
@@ -62,6 +91,11 @@ public class AbbreviationManager implements Serializable {
 		}
 	}
 
+	/**
+	 * Looking for the abbreviated value of a text
+	 * @param entry A key to abbreviate
+	 * @return The abbreviated value
+	 */
 	public Integer lookup(String entry) {
 		if (!data.containsKey(entry)) {
 			int oldsize = data.size();
@@ -72,7 +106,14 @@ public class AbbreviationManager implements Serializable {
 		return data.get(entry);
 	}
 
-	public void save(String fileName) throws FileNotFoundException, UnsupportedEncodingException {
+	/**
+	 * Save the abbreviations into a file
+	 * @param fileName The file name
+	 * @throws FileNotFoundException
+	 * @throws UnsupportedEncodingException 
+	 */
+	public void save(String fileName)
+			throws FileNotFoundException, UnsupportedEncodingException {
 		try (PrintWriter writer = new PrintWriter(fileName, "UTF-8")) {
 			for (Map.Entry<String, Integer> entry : data.entrySet()) {
 				writer.println(String.format("%d;%s", entry.getValue(), entry.getKey()));
@@ -80,7 +121,15 @@ public class AbbreviationManager implements Serializable {
 		}
 	}
 
-	private Path getPath(String fileName) throws IOException, URISyntaxException {
+	/**
+	 * A get a java.nio.file.Path object from a file name.
+	 * @param fileName The file name
+	 * @return The Path object
+	 * @throws IOException
+	 * @throws URISyntaxException 
+	 */
+	private Path getPath(String fileName)
+			throws IOException, URISyntaxException {
 		Path path;
 		URI uri = getClass().getClassLoader().getResource(fileName).toURI();
 		Map<String, String> env = new HashMap<>();

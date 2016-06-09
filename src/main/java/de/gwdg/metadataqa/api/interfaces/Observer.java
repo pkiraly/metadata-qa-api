@@ -4,12 +4,22 @@ import de.gwdg.metadataqa.api.model.JsonPathCache;
 import java.util.Map;
 
 /**
- * Implementation of the Observer design pattern (https://en.wikipedia.org/wiki/Observer_pattern)
+ * Implementation of the Observer design pattern (<a href="https://en.wikipedia.org/wiki/Observer_pattern">https://en.wikipedia.org/wiki/Observer_pattern</a>)
  * See comments of the Observable interface
+ * @see Observable
  * @author Péter Király <peter.kiraly at gwdg.de>
  */
 public interface Observer {
 
+	/**
+	 * A push method which is called by the subject, and which transport information
+	 * to the Observer objects.
+	 * 
+	 * @param cache
+	 *   The JSON cache object
+	 * @param results 
+	 *   The result map
+	 */
 	void update(JsonPathCache cache, Map<String, Double> results);
 
 }
