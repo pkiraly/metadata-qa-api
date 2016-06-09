@@ -1,11 +1,15 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 			xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
 	<modelVersion>4.0.0</modelVersion>
-	<groupId>com.nsdr.metadataqa</groupId>
+	<groupId>de.gwdg.metadataqa</groupId>
 	<artifactId>metadata-qa-api</artifactId>
 	<packaging>jar</packaging>
 	<version>1.0-SNAPSHOT</version>
 	<name>Metadata Quality Assurance Framework API</name>
+	<description>
+		A metadata quality assurance framework. It checks some metrics of 
+		metadata records, such as completeness, uniqueness, problem catalog.
+	</description>
 	<developers>
 		<developer>
 			<name>Péter Király</name>
@@ -18,6 +22,19 @@
 		</developer>
 	</developers>
 	<url>http://pkiraly.github.io</url>
+
+	<licenses>
+		<license>
+			<name>GNU General Public License, Version 3.0</name>
+			<url>http://www.gnu.org/licenses/gpl-3.0.txt</url>
+		</license>
+	</licenses>
+
+	<scm>
+		<connection>scm:git:git@github.com:pkiraly/metadata-qa-api.git</connection>
+		<developerConnection>scm:git:git@github.com:pkiraly/metadata-qa-api.git</developerConnection>
+		<url>http://github.com/pkiraly/metadata-qa-api</url>
+	</scm>
 
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
@@ -52,12 +69,12 @@
 			<artifactId>commons-httpclient</artifactId>
 			<version>3.1</version>
 		</dependency>
-<!--
-		<dependency>
-			<groupId>org.apache.httpcomponents</groupId>
-			<artifactId>httpclient</artifactId>
-			<version>4.5.2</version>
-		</dependency>
--->
+		<!--
+				<dependency>
+					<groupId>org.apache.httpcomponents</groupId>
+					<artifactId>httpclient</artifactId>
+					<version>4.5.2</version>
+				</dependency>
+		-->
 	</dependencies>
 </project>
