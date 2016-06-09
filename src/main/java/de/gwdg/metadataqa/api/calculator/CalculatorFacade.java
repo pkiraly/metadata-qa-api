@@ -228,7 +228,7 @@ public class CalculatorFacade implements Serializable {
 		return tfidfCalculator.getTermsCollection();
 	}
 
-	public Counters getCounters() {
-		return counters;
+	public Map<String, Double> getResults() {
+		return counters.getResults();
 	}
 }

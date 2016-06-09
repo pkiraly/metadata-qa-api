@@ -51,7 +51,7 @@ public class Counters {
 		if (returnTfIdf == true) {
 			result.putAll(tfIdfList);
 		}
-		
+
 		if (returnProblems == true)
 			result.putAll(problemList);
 
