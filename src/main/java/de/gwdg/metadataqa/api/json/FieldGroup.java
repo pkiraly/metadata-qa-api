@@ -42,7 +42,8 @@ public class FieldGroup {
 
 	/**
 	 * Get the list of field names
-	 * @return 
+	 * @return
+	 *   List of field names
 	 */
 	public List<String> getFields() {
 		return fields;
@@ -50,7 +51,8 @@ public class FieldGroup {
 
 	/**
 	 * Get the category
-	 * @return 
+	 * @return
+	 *   The category
 	 */
 	public JsonBranch.Category getCategory() {
 		return category;

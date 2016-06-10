@@ -124,7 +124,7 @@ public class TestCounter {
 		completenessCalculator = new CompletenessCalculator(new EdmSchema());
 		// completenessCalculator.setDataProviderManager(new DataProviderManager());
 		// completenessCalculator.setDatasetManager(new DatasetManager());
-		completenessCalculator.setVerbose(true);
+		completenessCalculator.collectFields(true);
 
 		JsonPathCache cache = new JsonPathCache(readFirstLine("general/test.json"));
 		completenessCalculator.measure(cache, counters);
@@ -179,7 +179,7 @@ public class TestCounter {
 	@Test
 	public void testExistenceList() throws URISyntaxException, IOException {
 		completenessCalculator = new CompletenessCalculator(new EdmSchema());
-		completenessCalculator.setVerbose(true);
+		completenessCalculator.collectFields(true);
 		JsonPathCache cache = new JsonPathCache(readFirstLine("general/test.json"));
 		completenessCalculator.measure(cache, counters);
 		List<Integer> expected = Arrays.asList(new Integer[]{1,1,0,0,0,0,0,1,1,0,0,0,0,1,0,0,0,0,0,0,0,1,0,0,1,0,0,1,1,1,1,1,1,1,0});

@@ -65,7 +65,7 @@ public class CalculatorFacade implements Serializable {
 	 * Flag whether or not run missing/empty/existing field collection in completeness
 	 * (default: false)
 	 */
-	protected boolean verbose = false;
+	protected boolean completenessCollectFields = false;
 	/**
 	 * Flag to detect status changes
 	 * (default: false)
@@ -108,9 +108,13 @@ public class CalculatorFacade implements Serializable {
 	 * @param runFieldExistence
 	 *   Flag whether or not run the field existence measurement
 	 * @param runFieldCardinality
+	 *   Flag whether or not run the field cardinality measurement
 	 * @param runCompleteness
+	 *   Flag whether or not run the completeness measurement
 	 * @param runTfIdf
-	 * @param runProblemCatalog 
+	 *   Flag whether or not run the uniqueness measurement
+	 * @param runProblemCatalog
+	 *   Flag whether or not run the problem catalog
 	 */
 	public CalculatorFacade(boolean runFieldExistence, boolean runFieldCardinality,
 			boolean runCompleteness, boolean runTfIdf, boolean runProblemCatalog) {
@@ -138,7 +142,7 @@ public class CalculatorFacade implements Serializable {
 
 		if (runCompleteness) {
 			completenessCalculator = new CompletenessCalculator(schema);
-			completenessCalculator.setVerbose(verbose);
+			completenessCalculator.collectFields(completenessCollectFields);
 			calculators.add(completenessCalculator);
 		}
 
@@ -167,7 +171,7 @@ public class CalculatorFacade implements Serializable {
 	 * @param counters
 	 *   The Counters object
 	 */
-	protected void configureCounter(Counters counters) {
+	public void configureCounter(Counters counters) {
 		counters.returnFieldExistenceList(runFieldExistence);
 		counters.returnFieldInstanceList(runFieldCardinality);
 		counters.returnTfIdfList(runTfIdf);
@@ -187,6 +191,21 @@ public class CalculatorFacade implements Serializable {
 		return this.<XmlFieldInstance>measureWithGenerics(jsonRecord);
 	}
 
+	/**
+	 * The generic version of measure.
+	 * The class to pass should define the individual field's representations, so
+	 * it is bound to the schema the record in. The class should be the extension
+	 * of XmlFieldInstance
+	 * 
+	 * @param <T>
+	 *   A class defining the internal representation of a fiel. It should be
+	 *   an extension of XmlFieldInstance
+	 * @param jsonRecord
+	 *   The JSON record
+	 * @return
+	 *   The result of measurements as a CSV string
+	 * @throws InvalidJsonException 
+	 */
 	protected <T extends XmlFieldInstance> String measureWithGenerics(String jsonRecord) 
 			throws InvalidJsonException {
 		changed();
@@ -225,7 +244,8 @@ public class CalculatorFacade implements Serializable {
 
 	/**
 	 * Returns whether or not to run cardinality measurement
-	 * @return 
+	 * @return
+	 *   Flag to run cardinality measurement
 	 */
 	public boolean runFieldCardinality() {
 		return runFieldCardinality;
@@ -243,10 +263,20 @@ public class CalculatorFacade implements Serializable {
 		}
 	}
 
+	/**
+	 * Returns the flag whether or not run the completeness measurement
+	 * @return
+	 *   Flag whether or not run the completeness measurement
+	 */
 	public boolean runCompleteness() {
 		return runCompleteness;
 	}
 
+	/**
+	 * Sets the flag whether or not run the completeness measurement
+	 * @param runCompleteness
+	 *    flag whether or not run the completeness measurement
+	 */
 	public void runCompleteness(boolean runCompleteness) {
 		if (this.runCompleteness != runCompleteness) {
 			this.runCompleteness = runCompleteness;
@@ -292,10 +322,20 @@ public class CalculatorFacade implements Serializable {
 		}
 	}
 
+	/**
+	 * Gets flag whether to run the problem catalog measurement
+	 * @return
+	 *   problem catalog measurement flag
+	 */
 	public boolean runProblemCatalog() {
 		return runProblemCatalog;
 	}
 
+	/**
+	 * Configure to run the problem catalog measurement
+	 * @param runProblemCatalog
+	 *   problem catalog measurement flag
+	 */
 	public void runProblemCatalog(boolean runProblemCatalog) {
 		if (this.runProblemCatalog != runProblemCatalog) {
 			this.runProblemCatalog = runProblemCatalog;
@@ -303,14 +343,31 @@ public class CalculatorFacade implements Serializable {
 		}
 	}
 
+	/**
+	 * Return the list of all registered calculators
+	 * @return
+	 *   The calculators
+	 */
 	public List<Calculator> getCalculators() {
 		return calculators;
 	}
 
+	/**
+	 * Returns the flag whether the measurement should collect each individual 
+	 * terms with their Term Ferquency and Invers Document Frequency scores
+	 * @return
+	 *   The TF-IDF collector flag
+	 */
 	public boolean collectTfIdfTerms() {
 		return collectTfIdfTerms;
 	}
 
+	/**
+	 * Sets the flag whether the measurement should collect each individual 
+	 * terms with their Term Ferquency and Invers Document Frequency scores
+	 * @param collectTfIdfTerms
+	 *   The TF-IDF collector flag
+	 */
 	public void collectTfIdfTerms(boolean collectTfIdfTerms) {
 		if (this.collectTfIdfTerms != collectTfIdfTerms) {
 			this.collectTfIdfTerms = collectTfIdfTerms;
@@ -318,33 +375,73 @@ public class CalculatorFacade implements Serializable {
 		}
 	}
 
-	public boolean verbose() {
-		return verbose;
+	/**
+	 * Get the completenessCollectFields flag
+	 * @return
+	 *   completenessCollectFields flag
+	 */
+	public boolean completenessCollectFields() {
+		return completenessCollectFields;
 	}
 
-	public void verbose(boolean verbose) {
-		if (this.verbose != verbose) {
-			this.verbose = verbose;
+	/**
+	 * The completeness calculation will collect empty, existent and missing fields
+	 * @param completenessCollectFields
+	 *   The completenessCollectFields flag
+	 */
+	public void completenessCollectFields(boolean completenessCollectFields) {
+		if (this.completenessCollectFields != completenessCollectFields) {
+			this.completenessCollectFields = completenessCollectFields;
 			changed = true;
 		}
 	}
 
+	/**
+	 * Returns the list of existing fields
+	 * @return
+	 *   The list of existing fields
+	 */
 	public List<String> getExistingFields() {
 		return completenessCalculator.getExistingFields();
 	}
 
+	/**
+	 * Returns the list of empty fields
+	 * @return
+	 *   The list of empty fields
+	 */
 	public List<String> getEmptyFields() {
 		return completenessCalculator.getEmptyFields();
 	}
 
+	/**
+	 * Returns the list of missing fields
+	 * @return
+	 *    The list of missing fields
+	 */
 	public List<String> getMissingFields() {
 		return completenessCalculator.getMissingFields();
 	}
 
+	/**
+	 * Returns the TF-IDF term map. The keys are the field names, the values are
+	 * lists of TfIdf objects
+	 * @return
+	 *   TF-IDF term list
+	 * @see
+	 *   TfIdfCalculator#getTermsCollection()
+	 */
 	public Map<String, List<TfIdf>> getTermsCollection() {
 		return tfidfCalculator.getTermsCollection();
 	}
 
+	/**
+	 * Returns the result map
+	 * @return
+	 *   The result map
+	 * @see
+	 *   Counters#getResults() 
+	 */
 	public Map<String, Double> getResults() {
 		return counters.getResults();
 	}

@@ -6,15 +6,10 @@ import com.jayway.jsonpath.Filter;
 import com.jayway.jsonpath.JsonPath;
 import java.io.IOException;
 import java.net.URISyntaxException;
-import java.nio.charset.Charset;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
-import org.apache.commons.lang3.StringUtils;
 import org.junit.Before;
 import org.junit.Test;
 import static org.junit.Assert.*;
@@ -37,22 +32,10 @@ public class TestJsonPaths {
 	public void setUp() throws URISyntaxException, IOException {
 	}
 
-	public String readFirstLine(String fileName) throws URISyntaxException, IOException {
-		Path path = Paths.get(getClass().getClassLoader().getResource(fileName).toURI());
-		List<String> lines = Files.readAllLines(path, Charset.defaultCharset());
-		return lines.get(0);
-	}
-
-	public String readContent(String fileName) throws URISyntaxException, IOException {
-		Path path = Paths.get(getClass().getClassLoader().getResource(fileName).toURI());
-		List<String> lines = Files.readAllLines(path, Charset.defaultCharset());
-		return StringUtils.join(lines, "");
-	}
-
 	@Test
 	public void testJsonPathManual() throws URISyntaxException, IOException {
 		document = Configuration.defaultConfiguration()
-				  .jsonProvider().parse(readContent("general/book.json"));
+				  .jsonProvider().parse(TestUtils.readContent("general/book.json"));
 
 		List<String> authors = JsonPath.read(document, "$.store.book[*].author");
 		assertEquals(
@@ -64,7 +47,7 @@ public class TestJsonPaths {
 
 		List<Map<String, Object>> expensiveBooks = JsonPath
 				  .using(Configuration.defaultConfiguration())
-				  .parse(readContent("general/book.json"))
+				  .parse(TestUtils.readContent("general/book.json"))
 				  .read("$.store.book[?(@.price > 10)]", List.class);
 		assertEquals(2, expensiveBooks.size());
 
@@ -93,7 +76,7 @@ public class TestJsonPaths {
 	@Test
 	public void testOr() throws URISyntaxException, IOException {
 		document = Configuration.defaultConfiguration()
-				  .jsonProvider().parse(readContent("general/test.json"));
+				  .jsonProvider().parse(TestUtils.readContent("general/test.json"));
 		String providerProxy = "$.['ore:Proxy'][?(@['edm:europeanaProxy'][0] == 'false')][?]";
 
 		String idPath = "$.identifier";

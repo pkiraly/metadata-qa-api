@@ -30,7 +30,7 @@ public class CompletenessCalculator<T extends XmlFieldInstance> implements Calcu
 	private List<String> existingFields;
 	private Schema schema;
 
-	private boolean verbose = false;
+	private boolean collectFields = false;
 
 	private static final List<FieldGroup> FIELD_GROUPS = new ArrayList<>();
 
@@ -52,7 +52,7 @@ public class CompletenessCalculator<T extends XmlFieldInstance> implements Calcu
 	@Override
 	public void measure(JsonPathCache cache, Counters counters) throws InvalidJsonException {
 		// Object document = JSON_PROVIDER.parse(jsonString);
-		if (verbose) {
+		if (collectFields) {
 			missingFields = new ArrayList<>();
 			emptyFields = new ArrayList<>();
 			existingFields = new ArrayList<>();
@@ -81,20 +81,20 @@ public class CompletenessCalculator<T extends XmlFieldInstance> implements Calcu
 			counters.increaseInstance(jsonBranch.getCategories());
 			counters.addExistence(jsonBranch.getLabel(), true);
 			counters.addInstance(jsonBranch.getLabel(), values.size());
-			if (verbose) {
+			if (collectFields) {
 				existingFields.add(jsonBranch.getLabel());
 			}
 		} else {
 			counters.addExistence(jsonBranch.getLabel(), false);
 			counters.addInstance(jsonBranch.getLabel(), 0);
-			if (verbose) {
+			if (collectFields) {
 				missingFields.add(jsonBranch.getLabel());
 			}
 		}
 	}
 
-	public void setVerbose(boolean verbose) {
-		this.verbose = verbose;
+	public void collectFields(boolean collectFields) {
+		this.collectFields = collectFields;
 	}
 
 	public List<String> getMissingFields() {
