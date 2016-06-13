@@ -1,4 +1,4 @@
 language: java
 jdk:
   - oraclejdk8
-install: mvn install -Dgpg.skip -Dcobertura.skip
+install: mvn install -Dgpg.skip -Dcobertura.skip -Dmaven.javadoc.skip=true
