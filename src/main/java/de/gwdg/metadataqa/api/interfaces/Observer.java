@@ -1,7 +1,7 @@
 package de.gwdg.metadataqa.api.interfaces;
 
+import de.gwdg.metadataqa.api.counter.FieldCounter;
 import de.gwdg.metadataqa.api.model.JsonPathCache;
-import java.util.Map;
 
 /**
  * Implementation of the Observer design pattern (<a href="https://en.wikipedia.org/wiki/Observer_pattern">https://en.wikipedia.org/wiki/Observer_pattern</a>)
@@ -20,6 +20,7 @@ public interface Observer {
 	 * @param results 
 	 *   The result map
 	 */
-	void update(JsonPathCache cache, Map<String, Double> results);
+	void update(JsonPathCache cache, FieldCounter<Double> results);
+	String getHeader();
 
 }

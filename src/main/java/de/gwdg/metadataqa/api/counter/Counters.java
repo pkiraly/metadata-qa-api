@@ -1,10 +1,9 @@
 package de.gwdg.metadataqa.api.counter;
 
 import de.gwdg.metadataqa.api.json.JsonBranch;
+import de.gwdg.metadataqa.api.util.Converter;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.LinkedHashMap;
-import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import org.apache.commons.lang3.StringUtils;
@@ -18,12 +17,11 @@ public class Counters {
 	private static final String TOTAL = "TOTAL";
 	private String recordId;
 	private Map<String, Object> fields = new LinkedHashMap<>();
-	private Map<String, BasicCounter> basicCounters;
-	private final Map<String, Boolean> existenceList = new LinkedHashMap<>();
-	private final Map<String, Integer> instanceList = new LinkedHashMap<>();
 	private Map<String, Double> tfIdfList;
 	private Map<String, Double> problemList;
 	private Map<String, String> languageMap = new LinkedHashMap<>();
+	private Map<String, String> results = new LinkedHashMap<>();
+	private Map<String, Double> resultsDouble = new LinkedHashMap<>();
 
 	private boolean returnFieldExistenceList = false;
 	private boolean returnFieldInstanceList = false;
@@ -32,17 +30,27 @@ public class Counters {
 	private boolean returnLanguage = false;
 
 	public Counters() {
-		initialize();
 	}
 
-	public void calculateResults() {
-		for (BasicCounter counter : basicCounters.values()) {
-			counter.calculate();
-		}
+	public void addResult(Map<String, String> result) {
+		results.putAll(result);
 	}
 
+	public void addResultDouble(Map<String, Double> result) {
+		resultsDouble.putAll(result);
+	}
+
+	public Map<String, String> getResults() {
+		return results;
+	}
+
+	public Map<String, Double> getResultsDouble() {
+		return resultsDouble;
+	}
+
+	/*
 	public Map<String, Double> getResults() {
-		calculateResults();
+		// calculateResults();
 		Map<String, Double> result = new HashMap<>();
 		for (Map.Entry<String, BasicCounter> entry : basicCounters.entrySet()) {
 			result.put(entry.getKey(), entry.getValue().getResult());
@@ -57,6 +65,7 @@ public class Counters {
 
 		return result;
 	}
+	*/
 
 	public List<String> getResultsAsList() {
 		return getResultsAsList(true);
@@ -67,7 +76,7 @@ public class Counters {
 	}
 
 	public List<String> getResultsAsList(boolean withLabel, boolean compressed) {
-		Map<String, Double> results = getResults();
+		Map<String, Double> results = getResultsDouble();
 		List<String> items = new ArrayList<>();
 		addResultItem(withLabel, items, TOTAL, results.get(TOTAL), compressed);
 		for (JsonBranch.Category category : JsonBranch.Category.values()) {
@@ -79,7 +88,7 @@ public class Counters {
 	private void addResultItem(boolean withLabel, List<String> items, String key, Double value, boolean compressed) {
 		String valueAsString = String.format("%f", value);
 		if (compressed) {
-			valueAsString = compressNumber(valueAsString);
+			valueAsString = Converter.compressNumber(valueAsString);
 		}
 
 		if (withLabel) {
@@ -87,16 +96,6 @@ public class Counters {
 		} else {
 			items.add(valueAsString);
 		}
-	}
-
-	/**
-	 * Removes the unnecessary 0-s from the end of a number
-	 * For example 0.7000 becomes 0.7, 0.00000 becomes 0.0
-	 * @param value A string representation of a number
-	 * @return The "compressed" representation without zeros at the end
-	 */
-	public static String compressNumber(String value) {
-		return value.replaceAll("([0-9])0+$", "$1").replaceAll("\\.0+$", ".0");
 	}
 
 	public String getResultsAsTSV(boolean withLabel) {
@@ -111,103 +110,14 @@ public class Counters {
 		return StringUtils.join(getResultsAsList(withLabel, compressed), ",");
 	}
 
+	/*
 	public void printResults() {
-		calculateResults();
+		// calculateResults();
 		for (Map.Entry<String, BasicCounter> entry : basicCounters.entrySet()) {
 			System.err.println(entry.getKey() + ": " + entry.getValue().getResult());
 		}
 	}
-
-	public void increaseInstance(List<JsonBranch.Category> categories) {
-		basicCounters.get(TOTAL).increaseInstance();
-		for (JsonBranch.Category category : categories) {
-			basicCounters.get(category.name()).increaseInstance();
-		}
-	}
-
-	public void increaseInstance(JsonBranch.Category category, boolean increase) {
-		basicCounters.get(category.name()).increaseTotal();
-		if (increase) {
-			basicCounters.get(category.name()).increaseInstance();
-		}
-	}
-
-	public void increaseTotal(List<JsonBranch.Category> categories) {
-		basicCounters.get(TOTAL).increaseTotal();
-		for (JsonBranch.Category category : categories) {
-			basicCounters.get(category.name()).increaseTotal();
-		}
-	}
-
-	private void initialize() {
-		basicCounters = new HashMap<>();
-		basicCounters.put(TOTAL, new BasicCounter());
-		for (JsonBranch.Category category : JsonBranch.Category.values()) {
-			basicCounters.put(category.name(), new BasicCounter());
-		}
-	}
-
-	public BasicCounter getStatComponent(JsonBranch.Category category) {
-		return basicCounters.get(category.name());
-	}
-
-	public void addExistence(String fieldName, Boolean existence) {
-		existenceList.put(fieldName, existence);
-	}
-
-	public Map<String, Boolean> getExistenceMap() {
-		return existenceList;
-	}
-
-	public String getExistenceList(boolean withLabel) {
-		List<String> items = new ArrayList<>();
-		for (Map.Entry<String, Boolean> entry : existenceList.entrySet()) {
-			String item = "";
-			if (withLabel) {
-				item += String.format("\"%s\":", entry.getKey());
-			}
-			item += (entry.getValue() == true) ? "1" : "0";
-			items.add(item);
-		}
-		return StringUtils.join(items, ',');
-	}
-
-	public List<Integer> getExistenceList() {
-		List<Integer> values = new LinkedList<>();
-		for (boolean val : existenceList.values()) {
-			values.add((val) ? 1 : 0);
-		}
-		return values;
-	}
-
-	public void addInstance(String fieldName, Integer count) {
-		instanceList.put(fieldName, count);
-	}
-
-	public Map<String, Integer> getInstanceMap() {
-		return instanceList;
-	}
-
-	public String getInstanceList(boolean withLabel) {
-		List<String> items = new ArrayList<>();
-		for (Map.Entry<String, Integer> entry : instanceList.entrySet()) {
-			String item = "";
-			if (withLabel) {
-				item += String.format("\"%s\":", entry.getKey());
-			}
-			item += entry.getValue();
-			items.add(item);
-		}
-		return StringUtils.join(items, ',');
-	}
-
-	public List<Integer> getInstanceList() {
-		List<Integer> values = new LinkedList<>();
-		for (Integer val : instanceList.values()) {
-			values.add(val);
-		}
-		return values;
-	}
+	*/
 
 	public void setTfIdfList(Map<String, Double> tdIdf) {
 		this.tfIdfList = tdIdf;
@@ -239,7 +149,7 @@ public class Counters {
 			}
 			String nr = String.format("%.8f", entry.getValue());
 			if (compress)
-				nr = compressNumber(nr);
+				nr = Converter.compressNumber(nr);
 			item += nr;
 			items.add(item);
 		}
@@ -249,8 +159,8 @@ public class Counters {
 	public String getLanguageMap(boolean withLabel) {
 		List<String> items = new ArrayList<>();
 		if (withLabel == true) {
-			for (Map.Entry<String, Double> entry : problemList.entrySet()) {
-				String item = withLabel ? String.format("\"%s\":", entry.getKey()) : entry.getKey();
+			for (Map.Entry<String, String> entry : languageMap.entrySet()) {
+				String item = withLabel ? String.format("\"%s\":\"%s\"", entry.getKey(), entry.getValue()) : entry.getValue();
 				items.add(item);
 			}
 		} else {
@@ -308,12 +218,16 @@ public class Counters {
 			result += String.format("%s,", recordId);
 		}
 		result += getResultsAsCSV(withLabel, compress);
+		/*
 		if (returnFieldExistenceList == true) {
 			result += ',' + getExistenceList(withLabel);
 		}
+		*/
+		/*
 		if (returnFieldInstanceList == true) {
 			result += ',' + getInstanceList(withLabel);
 		}
+		*/
 		if (returnTfIdf == true) {
 			result += ',' + getTfIdfList(withLabel);
 		}

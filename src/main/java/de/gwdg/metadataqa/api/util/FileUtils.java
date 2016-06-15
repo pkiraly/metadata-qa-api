@@ -1,4 +1,4 @@
-package de.gwdg.metadataqa.api;
+package de.gwdg.metadataqa.api.util;
 
 import com.jayway.jsonpath.Configuration;
 import java.io.IOException;
@@ -14,11 +14,11 @@ import org.apache.commons.lang3.StringUtils;
  *
  * @author Péter Király <peter.kiraly at gwdg.de>
  */
-public class TestUtils {
+public class FileUtils {
 
 	public static List<String> readLines(String fileName)
 			throws URISyntaxException, IOException {
-		Path path = Paths.get(TestUtils.class.getClassLoader().getResource(fileName).toURI());
+		Path path = Paths.get(FileUtils.class.getClassLoader().getResource(fileName).toURI());
 		return Files.readAllLines(path, Charset.defaultCharset());
 	}
 

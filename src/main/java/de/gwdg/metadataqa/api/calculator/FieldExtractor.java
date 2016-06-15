@@ -1,13 +1,14 @@
 package de.gwdg.metadataqa.api.calculator;
 
-
-import de.gwdg.metadataqa.api.counter.Counters;
+import com.jayway.jsonpath.InvalidJsonException;
+import de.gwdg.metadataqa.api.counter.FieldCounter;
 import de.gwdg.metadataqa.api.interfaces.Calculator;
 import de.gwdg.metadataqa.api.model.JsonPathCache;
 import de.gwdg.metadataqa.api.model.XmlFieldInstance;
-import com.jayway.jsonpath.InvalidJsonException;
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 /**
  *
@@ -15,7 +16,9 @@ import java.util.List;
  */
 public class FieldExtractor implements Calculator, Serializable {
 
+	public String FIELD_NAME = "recordId";
 	private String idPath;
+	protected FieldCounter<String> resultMap;
 
 	public FieldExtractor() {
 	}
@@ -25,12 +28,12 @@ public class FieldExtractor implements Calculator, Serializable {
 	}
 
 	@Override
-	public void measure(JsonPathCache cache, Counters counters)
+	public void measure(JsonPathCache cache)
 			throws InvalidJsonException {
-		counters.setRecordId(
-			((List<XmlFieldInstance>)cache.get(getIdPath()))
-				.get(0).getValue());
-		cache.setRecordId(counters.getRecordId());
+		resultMap = new FieldCounter<>();
+		String recordId = ((List<XmlFieldInstance>)cache.get(getIdPath())).get(0).getValue();
+		cache.setRecordId(recordId);
+		resultMap.put(FIELD_NAME, recordId);
 	}
 
 	public String getIdPath() {
@@ -40,4 +43,23 @@ public class FieldExtractor implements Calculator, Serializable {
 	public void setIdPath(String idPath) {
 		this.idPath = idPath;
 	}
+
+	@Override
+	public Map<String, ? extends Object> getResultMap() {
+		return resultMap.getMap();
+	}
+
+	@Override
+	public String getCsv(boolean withLabel, boolean compressed) {
+		System.err.println("getCsv");
+		return resultMap.getList(withLabel, compressed);
+	}
+
+	@Override
+	public List<String> getHeader() {
+		List<String> headers = new ArrayList<>();
+		headers.add(FIELD_NAME);
+		return headers;
+	}
+
 }

@@ -3,13 +3,14 @@ package de.gwdg.metadataqa.api.uniqueness;
 import com.jayway.jsonpath.Configuration;
 import com.jayway.jsonpath.JsonPath;
 import com.jayway.jsonpath.spi.json.JsonProvider;
-import java.math.BigDecimal;
+import de.gwdg.metadataqa.api.counter.FieldCounter;
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import de.gwdg.metadataqa.api.schema.Schema;
+import de.gwdg.metadataqa.api.util.Converter;
 
 /**
  * Extracts TF-IDF information from Apache Solr
@@ -37,7 +38,7 @@ public class TfIdfExtractor {
 	 * @return
 	 *    Sums and average of TF-IDF value
 	 */
-	public Map<String, Double> extract(String jsonString, String recordId) {
+	public FieldCounter<Double> extract(String jsonString, String recordId) {
 		return extract(jsonString, recordId, false);
 	}
 
@@ -53,8 +54,8 @@ public class TfIdfExtractor {
 	 * @return
 	 *    Sums and average of TF-IDF value
 	 */
-	public Map<String, Double> extract(String jsonString, String recordId, boolean doCollectTerms) {
-		Map<String, Double> results = new LinkedHashMap<>();
+	public FieldCounter<Double> extract(String jsonString, String recordId, boolean doCollectTerms) {
+		FieldCounter<Double> results = new FieldCounter<>();
 		termsCollection = new LinkedHashMap<>();
 		Object document = jsonProvider.parse(jsonString);
 		String path = String.format("$.termVectors.['%s']", recordId);
@@ -69,10 +70,10 @@ public class TfIdfExtractor {
 				Map terms = (LinkedHashMap) value.get(solrField);
 				for (String term : (Set<String>) terms.keySet()) {
 					Map termInfo = (LinkedHashMap) terms.get(term);
-					double tfIdf = getDouble(termInfo.get("tf-idf"));
+					double tfIdf = Converter.asDouble(termInfo.get("tf-idf"));
 					if (doCollectTerms) {
-						int tf = getInt(termInfo.get("tf"));
-						int df = getInt(termInfo.get("df"));
+						int tf = Converter.asInteger(termInfo.get("tf"));
+						int df = Converter.asInteger(termInfo.get("df"));
 						termsCollection.get(field).add(new TfIdf(term, tf, df, tfIdf));
 					}
 					sum += tfIdf;
@@ -96,49 +97,4 @@ public class TfIdfExtractor {
 		return termsCollection;
 	}
 
-	/**
-	 * Transforms different objects (BigDecimal, Integer) to Double
-	 * @param value
-	 *   The object to transform
-	 * @return
-	 *   The double value
-	 */
-	public Double getDouble(Object value) {
-		double doubleValue;
-		switch (value.getClass().getCanonicalName()) {
-			case "java.math.BigDecimal":
-				doubleValue = ((BigDecimal) value).doubleValue();
-				break;
-			case "java.lang.Integer":
-				doubleValue = ((Integer) value).doubleValue();
-				break;
-			default:
-				doubleValue = (Double) value;
-				break;
-		}
-		return doubleValue;
-	}
-
-	/**
-	 * Transforms different objects (BigDecimal, Integer) to Integer
-	 * @param value
-	 *   The object to transform
-	 * @return
-	 *   The double value
-	 */
-	public Integer getInt(Object value) {
-		int intValue;
-		switch (value.getClass().getCanonicalName()) {
-			case "java.math.BigDecimal":
-				intValue = ((BigDecimal) value).intValue();
-				break;
-			case "java.lang.Integer":
-				intValue = (Integer) value;
-				break;
-			default:
-				intValue = (Integer) value;
-				break;
-		}
-		return intValue;
-	}
 }

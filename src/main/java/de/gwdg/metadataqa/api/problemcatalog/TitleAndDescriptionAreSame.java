@@ -1,10 +1,10 @@
 package de.gwdg.metadataqa.api.problemcatalog;
 
+import de.gwdg.metadataqa.api.counter.FieldCounter;
 import de.gwdg.metadataqa.api.model.EdmFieldInstance;
 import de.gwdg.metadataqa.api.model.JsonPathCache;
 import java.io.Serializable;
 import java.util.List;
-import java.util.Map;
 import java.util.logging.Logger;
 
 /**
@@ -26,7 +26,7 @@ public class TitleAndDescriptionAreSame extends ProblemDetector implements Seria
 	}
 
 	@Override
-	public void update(JsonPathCache cache, Map<String, Double> results) {
+	public void update(JsonPathCache cache, FieldCounter<Double> results) {
 		double value = 0;
 		List<EdmFieldInstance> titles = cache.get(title);
 		if (titles != null && !titles.isEmpty()) {
@@ -45,5 +45,10 @@ public class TitleAndDescriptionAreSame extends ProblemDetector implements Seria
 			}
 		}
 		results.put(NAME, value);
+	}
+
+	@Override
+	public String getHeader() {
+		return NAME;
 	}
 }

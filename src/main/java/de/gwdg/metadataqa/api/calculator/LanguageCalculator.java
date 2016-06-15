@@ -1,20 +1,19 @@
 package de.gwdg.metadataqa.api.calculator;
 
-import de.gwdg.metadataqa.api.json.JsonBranch;
-import de.gwdg.metadataqa.api.counter.Counters;
+import com.jayway.jsonpath.InvalidJsonException;
 import de.gwdg.metadataqa.api.counter.BasicCounter;
+import de.gwdg.metadataqa.api.counter.FieldCounter;
 import de.gwdg.metadataqa.api.interfaces.Calculator;
+import de.gwdg.metadataqa.api.json.JsonBranch;
 import de.gwdg.metadataqa.api.model.EdmFieldInstance;
 import de.gwdg.metadataqa.api.model.JsonPathCache;
-import com.jayway.jsonpath.InvalidJsonException;
+import de.gwdg.metadataqa.api.schema.Schema;
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.logging.Logger;
-import org.apache.commons.lang3.StringUtils;
-import de.gwdg.metadataqa.api.schema.Schema;
 
 /**
  *
@@ -26,48 +25,40 @@ public class LanguageCalculator implements Calculator, Serializable {
 
 	private String inputFileName;
 
-	private Counters counters;
-	private Map<String, String> languageMap;
+	private FieldCounter<String> languageMap;
 
-	private boolean verbose = false;
 	private Schema schema;
 
 	public LanguageCalculator() {
 		// this.recordID = null;
 	}
 
-	public LanguageCalculator(String recordID) {
-		// this.recordID = recordID;
-	}
-
-	public LanguageCalculator(Schema branches) {
-		this.schema = branches;
+	public LanguageCalculator(Schema schema) {
+		this.schema = schema;
 	}
 
 	@Override
-	public void measure(JsonPathCache cache, Counters counters) throws InvalidJsonException {
-		this.counters = counters;
+	public void measure(JsonPathCache cache)
+			throws InvalidJsonException {
 
-		languageMap = new LinkedHashMap<>();
+		languageMap = new FieldCounter<>();
 		for (JsonBranch jsonBranch : schema.getPaths()) {
 			if (!schema.getNoLanguageFields().contains(jsonBranch.getLabel()))
 				extractLanguageTags(jsonBranch, cache, languageMap);
 		}
-		counters.setLanguageMap(languageMap);
 	}
 
-	public String getResult() {
-		String result = String.format("%s,%s,%s,%s",
-			counters.getField("datasetCode"),
-			counters.getField("dataProviderCode"),
-			counters.getRecordId(),
-			StringUtils.join(languageMap.values(), ",")
-		);
-		return result;
+	@Override
+	public List<String> getHeader() {
+		List<String> headers = new ArrayList<>();
+		for (JsonBranch jsonBranch : schema.getPaths())
+			if (!schema.getNoLanguageFields().contains(jsonBranch.getLabel()))
+				headers.add("lang:" + jsonBranch.getLabel());
+		return headers;
 	}
 
 	private void extractLanguageTags(JsonBranch jsonBranch, JsonPathCache cache,
-			Map<String, String> languageMap) {
+			FieldCounter<String> languageMap) {
 		List<EdmFieldInstance> values = cache.get(jsonBranch.getJsonPath());
 		Map<String, BasicCounter> languages = new HashMap<>();
 		if (values != null && !values.isEmpty()) {
@@ -106,7 +97,18 @@ public class LanguageCalculator implements Calculator, Serializable {
 		return result;
 	}
 
-	public void setVerbose(boolean verbose) {
-		this.verbose = verbose;
+	public Map<String, String> getLanguageMap() {
+		return languageMap.getMap();
 	}
+
+	@Override
+	public Map<String, ? extends Object> getResultMap() {
+		return languageMap.getMap();
+	}
+
+	@Override
+	public String getCsv(boolean withLabel, boolean compressed) {
+		return languageMap.getList(withLabel, compressed);
+	}
+
 }

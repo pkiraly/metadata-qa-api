@@ -1,0 +1,76 @@
+edm:ProvidedCHO
+    @about                http://data.europeana.eu/item/92062/BibliographicResource_1000126015451
+
+edm:WebResource
+    @about                http://www.bildarchivaustria.at/TELRequest.aspx?p_ImageID=3480072
+    edm:rights            http://creativecommons.org/publicdomain/mark/1.0/ @resource
+
+    @about                http://www.bildarchivaustria.at/Preview/3480072.jpg
+    edm:rights            http://creativecommons.org/publicdomain/mark/1.0/ @resource
+
+    @about                http://www.bildarchivaustria.at/Thumbnail/3480072.jpg
+    edm:rights            http://creativecommons.org/publicdomain/mark/1.0/ @resource
+
+skos:Concept
+    @about                http://dbpedia.org/resource/Portrait
+    skos:prefLabel        Porträt @de
+                          \u8096\u50cf @zh
+                          Ritratto @it
+                          Portret @pl
+                          Retrato @pt
+                          Portrait @fr
+                          Porträtt @sv
+                          Portrait @en
+                          \u041f\u043e\u0440\u0442\u0440\u0435\u0442 @ru
+                          Retrato @es
+                          Portret @nl
+                          \u8096\u50cf @ja
+
+ore:Aggregation
+    @about                http://data.europeana.eu/aggregation/provider/92062/BibliographicResource_1000126015451
+    edm:aggregatedCHO     http://data.europeana.eu/item/92062/BibliographicResource_1000126015451 @resource
+    edm:dataProvider      Österreichische Nationalbibliothek - Austrian National Library
+    edm:isShownAt         http://www.bildarchivaustria.at/TELRequest.aspx?p_ImageID=3480072 @resource
+    edm:isShownBy         http://www.bildarchivaustria.at/Preview/3480072.jpg @resource
+    edm:object            http://www.bildarchivaustria.at/Thumbnail/3480072.jpg @resource
+    edm:provider          The European Library @en
+    edm:rights            http://creativecommons.org/publicdomain/mark/1.0/ @resource
+
+ore:Proxy
+    @about                http://data.europeana.eu/proxy/provider/92062/BibliographicResource_1000126015451
+    dc:identifier         http://www.bildarchivaustria.at/Preview/3480072.jpg
+    dc:rights             ÖNB
+    dc:subject            Persönlichkeiten @de
+                          Porträt @de
+                          Weitere @de
+                          Weitere @de
+                          Portrait @en
+    dc:title              Pyrker-Oberwart, Johann Ladislaus @de
+    dc:type               Druckgrafik
+    dcterms:hasFormat     image/jpeg
+    dcterms:isPartOf      http://data.theeuropeanlibrary.org/Collection/a0480 @resource
+    edm:europeanaProxy    false
+    ore:proxyFor          http://data.europeana.eu/item/92062/BibliographicResource_1000126015451 @resource
+    ore:proxyIn           http://data.europeana.eu/aggregation/provider/92062/BibliographicResource_1000126015451 @resource
+    edm:type              IMAGE
+
+    @about                http://data.europeana.eu/proxy/europeana/92062/BibliographicResource_1000126015451
+    dc:subject            http://dbpedia.org/resource/Portrait @resource
+    edm:europeanaProxy    true
+    ore:proxyFor          http://data.europeana.eu/item/92062/BibliographicResource_1000126015451 @resource
+    ore:proxyIn           http://data.europeana.eu/aggregation/europeana/92062/BibliographicResource_1000126015451 @resource
+    edm:type              IMAGE
+
+edm:EuropeanaAggregation
+    @about                http://data.europeana.eu/aggregation/europeana/92062/BibliographicResource_1000126015451
+    edm:aggregatedCHO     http://data.europeana.eu/item/92062/BibliographicResource_1000126015451 @resource
+    edm:collectionName    92062_Ag_EU_TEL_a0480_Austria
+    edm:country           Austria
+    edm:landingPage       http://europeana.eu/portal/record/92062/BibliographicResource_1000126015451.html @resource
+    edm:language          de
+    edm:rights            http://creativecommons.org/publicdomain/mark/1.0/ @resource
+
+qIdentifier               http://data.europeana.eu/item/92062/BibliographicResource_1000126015451
+qIdentifier               92062/BibliographicResource_1000126015451
+sets                      92062_Ag_EU_TEL_a0480_Austria
+

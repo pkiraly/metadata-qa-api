@@ -1,11 +1,11 @@
 package de.gwdg.metadataqa.api.problemcatalog;
 
+import de.gwdg.metadataqa.api.counter.FieldCounter;
 import de.gwdg.metadataqa.api.model.EdmFieldInstance;
 import de.gwdg.metadataqa.api.model.JsonPathCache;
 import java.io.Serializable;
 import java.util.Arrays;
 import java.util.List;
-import java.util.Map;
 import java.util.logging.Logger;
 import org.apache.commons.lang3.StringUtils;
 
@@ -30,7 +30,7 @@ public class EmptyStrings extends ProblemDetector implements Serializable {
 	}
 
 	@Override
-	public void update(JsonPathCache cache, Map<String, Double> results) {
+	public void update(JsonPathCache cache, FieldCounter<Double> results) {
 		double value = 0;
 		for (String path : paths) {
 			List<EdmFieldInstance> subjects = cache.get(path);
@@ -46,4 +46,10 @@ public class EmptyStrings extends ProblemDetector implements Serializable {
 		}
 		results.put(NAME, value);
 	}
+
+	@Override
+	public String getHeader() {
+		return NAME;
+	}
+
 }

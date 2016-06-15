@@ -2,12 +2,11 @@ package de.gwdg.metadataqa.api.problemcatalog;
 
 import de.gwdg.metadataqa.api.interfaces.Observer;
 import de.gwdg.metadataqa.api.interfaces.Observable;
-import de.gwdg.metadataqa.api.counter.Counters;
+import de.gwdg.metadataqa.api.counter.FieldCounter;
 import de.gwdg.metadataqa.api.interfaces.Calculator;
 import de.gwdg.metadataqa.api.model.JsonPathCache;
 import java.io.Serializable;
 import java.util.ArrayList;
-import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.logging.Logger;
@@ -24,7 +23,7 @@ public class ProblemCatalog implements Calculator, Serializable, Observable {
 	private String jsonString;
 	private Object jsonDocument;
 	private JsonPathCache cache;
-	private Map<String, Double> results;
+	private FieldCounter<Double> fieldCounter;
 
 	public String getJsonString() {
 		return jsonString;
@@ -49,16 +48,34 @@ public class ProblemCatalog implements Calculator, Serializable, Observable {
 	@Override
 	public void notifyObservers() {
 		for (Observer observer : problems) {
-			observer.update(cache, results);
+			observer.update(cache, fieldCounter);
 		}
 	}
 
 	@Override
-	public void measure(JsonPathCache cache, Counters counters) {
+	public void measure(JsonPathCache cache) {
 		this.cache = cache;
-		this.results = new LinkedHashMap<>();
+		this.fieldCounter = new FieldCounter<>();
 		notifyObservers();
-		counters.setProblemList(results);
+	}
+
+	@Override
+	public Map<String, ? extends Object> getResultMap() {
+		return fieldCounter.getMap();
+	}
+
+	@Override
+	public String getCsv(boolean withLabels, boolean compressed) {
+		return fieldCounter.getList(withLabels, compressed);
+	}
+
+	@Override
+	public List<String> getHeader() {
+		List<String> headers = new ArrayList<>();
+		for (Observer observer : problems) {
+			headers.add(observer.getHeader());
+		}
+		return headers;
 	}
 
 }

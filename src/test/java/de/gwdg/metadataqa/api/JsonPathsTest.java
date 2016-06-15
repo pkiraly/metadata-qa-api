@@ -1,5 +1,6 @@
 package de.gwdg.metadataqa.api;
 
+import de.gwdg.metadataqa.api.util.FileUtils;
 import com.jayway.jsonpath.Configuration;
 import com.jayway.jsonpath.Criteria;
 import com.jayway.jsonpath.Filter;
@@ -13,19 +14,21 @@ import java.util.Map;
 import org.junit.Before;
 import org.junit.Test;
 import static org.junit.Assert.*;
+import net.minidev.json.JSONArray;
 import static com.jayway.jsonpath.Criteria.where;
 import static com.jayway.jsonpath.Filter.filter;
-import net.minidev.json.JSONArray;
+import static com.jayway.jsonpath.Criteria.where;
+import static com.jayway.jsonpath.Filter.filter;
 
 /**
  *
  * @author Péter Király <peter.kiraly at gwdg.de>
  */
-public class TestJsonPaths {
+public class JsonPathsTest {
 
 	Object document;
 
-	public TestJsonPaths() {
+	public JsonPathsTest() {
 	}
 
 	@Before
@@ -35,7 +38,7 @@ public class TestJsonPaths {
 	@Test
 	public void testJsonPathManual() throws URISyntaxException, IOException {
 		document = Configuration.defaultConfiguration()
-				  .jsonProvider().parse(TestUtils.readContent("general/book.json"));
+				  .jsonProvider().parse(FileUtils.readContent("general/book.json"));
 
 		List<String> authors = JsonPath.read(document, "$.store.book[*].author");
 		assertEquals(
@@ -47,7 +50,7 @@ public class TestJsonPaths {
 
 		List<Map<String, Object>> expensiveBooks = JsonPath
 				  .using(Configuration.defaultConfiguration())
-				  .parse(TestUtils.readContent("general/book.json"))
+				  .parse(FileUtils.readContent("general/book.json"))
 				  .read("$.store.book[?(@.price > 10)]", List.class);
 		assertEquals(2, expensiveBooks.size());
 
@@ -76,7 +79,7 @@ public class TestJsonPaths {
 	@Test
 	public void testOr() throws URISyntaxException, IOException {
 		document = Configuration.defaultConfiguration()
-				  .jsonProvider().parse(TestUtils.readContent("general/test.json"));
+				  .jsonProvider().parse(FileUtils.readContent("general/test.json"));
 		String providerProxy = "$.['ore:Proxy'][?(@['edm:europeanaProxy'][0] == 'false')][?]";
 
 		String idPath = "$.identifier";

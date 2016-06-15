@@ -1,14 +1,16 @@
 package de.gwdg.metadataqa.api.calculator;
 
-import de.gwdg.metadataqa.api.counter.Counters;
+import de.gwdg.metadataqa.api.counter.FieldCounter;
 import de.gwdg.metadataqa.api.interfaces.Calculator;
 import de.gwdg.metadataqa.api.model.JsonPathCache;
+import de.gwdg.metadataqa.api.schema.Schema;
 import de.gwdg.metadataqa.api.uniqueness.TfIdf;
 import de.gwdg.metadataqa.api.uniqueness.TfIdfExtractor;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.Serializable;
 import java.nio.charset.Charset;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.logging.Logger;
@@ -19,7 +21,6 @@ import org.apache.commons.httpclient.HttpStatus;
 import org.apache.commons.httpclient.methods.GetMethod;
 import org.apache.commons.httpclient.params.HttpMethodParams;
 import org.apache.commons.io.IOUtils;
-import de.gwdg.metadataqa.api.schema.Schema;
 
 /**
  *
@@ -36,19 +37,22 @@ public class TfIdfCalculator implements Calculator, Serializable {
 	private static final HttpClient httpClient = new HttpClient();
 	private Map<String, List<TfIdf>> termsCollection;
 	private boolean doCollectTerms = false;
+	private FieldCounter<Double> resultMap;
 	private Schema schema;
 
-	public TfIdfCalculator() {}
+	public TfIdfCalculator() {
+	}
 
 	public TfIdfCalculator(Schema schema) {
 		this.schema = schema;
 	}
 
 	@Override
-	public void measure(JsonPathCache cache, Counters counters) {
-		String solrJsonResponse = getSolrResponse(counters.getRecordId());
+	public void measure(JsonPathCache cache) {
+		String solrJsonResponse = getSolrResponse(cache.getRecordId());
 		TfIdfExtractor extractor = new TfIdfExtractor(schema);
-		counters.setTfIdfList(extractor.extract(solrJsonResponse, counters.getRecordId(), doCollectTerms));
+		resultMap = extractor.extract(solrJsonResponse, cache.getRecordId(), doCollectTerms);
+		// counters.setTfIdfList(resultMap);
 		termsCollection = extractor.getTermsCollection();
 	}
 
@@ -88,5 +92,25 @@ public class TfIdfCalculator implements Calculator, Serializable {
 
 	public void setDoCollectTerms(boolean doCollectTerms) {
 		this.doCollectTerms = doCollectTerms;
+	}
+
+	@Override
+	public Map<String, ? extends Object> getResultMap() {
+		return resultMap.getMap();
+	}
+
+	@Override
+	public String getCsv(boolean withLabel, boolean compressed) {
+		return resultMap.getList(withLabel, compressed);
+	}
+
+	@Override
+	public List<String> getHeader() {
+		List<String> headers = new ArrayList<>();
+		for (String field : schema.getSolrFields().keySet()) {
+			headers.add(field + ":sum");
+			headers.add(field + ":avg");
+		}
+		return headers;
 	}
 }

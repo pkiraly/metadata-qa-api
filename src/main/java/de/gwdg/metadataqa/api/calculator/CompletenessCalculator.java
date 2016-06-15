@@ -1,17 +1,21 @@
 package de.gwdg.metadataqa.api.calculator;
 
-import de.gwdg.metadataqa.api.json.JsonBranch;
-import de.gwdg.metadataqa.api.json.FieldGroup;
-import de.gwdg.metadataqa.api.counter.Counters;
-import de.gwdg.metadataqa.api.interfaces.Calculator;
-import de.gwdg.metadataqa.api.model.JsonPathCache;
 import com.jayway.jsonpath.InvalidJsonException;
+import de.gwdg.metadataqa.api.counter.CompletenessCounter;
+import de.gwdg.metadataqa.api.counter.Counters;
+import de.gwdg.metadataqa.api.counter.FieldCounter;
+import de.gwdg.metadataqa.api.interfaces.Calculator;
+import de.gwdg.metadataqa.api.json.FieldGroup;
+import de.gwdg.metadataqa.api.json.JsonBranch;
+import de.gwdg.metadataqa.api.model.JsonPathCache;
 import de.gwdg.metadataqa.api.model.XmlFieldInstance;
+import de.gwdg.metadataqa.api.schema.Schema;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.logging.Logger;
-import de.gwdg.metadataqa.api.schema.Schema;
+import org.apache.commons.lang3.StringUtils;
 
 /**
  *
@@ -24,6 +28,10 @@ public class CompletenessCalculator<T extends XmlFieldInstance> implements Calcu
 
 	private String inputFileName;
 
+	private CompletenessCounter completenessCounter;
+	private FieldCounter<Boolean> existenceCounter;
+	private FieldCounter<Integer> cardinalityCounter;
+
 	// private Counters counters;
 	private List<String> missingFields;
 	private List<String> emptyFields;
@@ -31,18 +39,13 @@ public class CompletenessCalculator<T extends XmlFieldInstance> implements Calcu
 	private Schema schema;
 
 	private boolean collectFields = false;
-
-	private static final List<FieldGroup> FIELD_GROUPS = new ArrayList<>();
-
-	static {
-	}
+	private boolean completeness = true;
+	private boolean existence = true;
+	private boolean cardinality = true;
+	
 
 	public CompletenessCalculator() {
 		// this.recordID = null;
-	}
-
-	public CompletenessCalculator(String recordID) {
-		// this.recordID = recordID;
 	}
 
 	public CompletenessCalculator(Schema schema) {
@@ -50,8 +53,11 @@ public class CompletenessCalculator<T extends XmlFieldInstance> implements Calcu
 	}
 
 	@Override
-	public void measure(JsonPathCache cache, Counters counters) throws InvalidJsonException {
-		// Object document = JSON_PROVIDER.parse(jsonString);
+	public void measure(JsonPathCache cache)
+			throws InvalidJsonException {
+		completenessCounter = new CompletenessCounter();
+		existenceCounter = new FieldCounter<>();
+		cardinalityCounter = new FieldCounter<>();
 		if (collectFields) {
 			missingFields = new ArrayList<>();
 			emptyFields = new ArrayList<>();
@@ -59,37 +65,43 @@ public class CompletenessCalculator<T extends XmlFieldInstance> implements Calcu
 		}
 
 		for (JsonBranch jsonBranch : schema.getPaths()) {
-			evaluateJsonBranch(jsonBranch, cache, counters);
+			evaluateJsonBranch(jsonBranch, cache, completenessCounter);
 		}
 
 		for (FieldGroup fieldGroup : schema.getFieldGroups()) {
 			boolean existing = false;
 			for (String field : fieldGroup.getFields()) {
-				if (counters.getExistenceMap().get(field) == true) {
+				if (existenceCounter.get(field) == true) {
 					existing = true;
 					break;
 				}
 			}
-			counters.increaseInstance(fieldGroup.getCategory(), existing);
+			completenessCounter.increaseInstance(fieldGroup.getCategory(), existing);
 		}
 	}
 
-	public void evaluateJsonBranch(JsonBranch jsonBranch, JsonPathCache cache, Counters counters) {
+	public void evaluateJsonBranch(JsonBranch jsonBranch, JsonPathCache cache,
+			CompletenessCounter completenessCounter) {
 		List<T> values = cache.get(jsonBranch.getJsonPath());
-		counters.increaseTotal(jsonBranch.getCategories());
+		if (completeness)
+			completenessCounter.increaseTotal(jsonBranch.getCategories());
+
 		if (values != null && !values.isEmpty()) {
-			counters.increaseInstance(jsonBranch.getCategories());
-			counters.addExistence(jsonBranch.getLabel(), true);
-			counters.addInstance(jsonBranch.getLabel(), values.size());
-			if (collectFields) {
+			if (completeness)
+				completenessCounter.increaseInstance(jsonBranch.getCategories());
+			if (existence)
+				existenceCounter.put(jsonBranch.getLabel(), true);
+			if (cardinality)
+				cardinalityCounter.put(jsonBranch.getLabel(), values.size());
+			if (collectFields)
 				existingFields.add(jsonBranch.getLabel());
-			}
 		} else {
-			counters.addExistence(jsonBranch.getLabel(), false);
-			counters.addInstance(jsonBranch.getLabel(), 0);
-			if (collectFields) {
+			if (existence)
+				existenceCounter.put(jsonBranch.getLabel(), false);
+			if (cardinality)
+				cardinalityCounter.put(jsonBranch.getLabel(), 0);
+			if (collectFields)
 				missingFields.add(jsonBranch.getLabel());
-			}
 		}
 	}
 
@@ -117,4 +129,83 @@ public class CompletenessCalculator<T extends XmlFieldInstance> implements Calcu
 		return inputFileName;
 	}
 
+	@Override
+	public Map<String, ? extends Object> getResultMap() {
+		return null; //resultMap;
+	}
+
+	@Override
+	public String getCsv(boolean withLabel, boolean compressed) {
+		List<String> csvs = new ArrayList<>();
+		if (completeness)
+			csvs.add(completenessCounter.getFieldCounter().getList(withLabel, compressed));
+		if (existence)
+			csvs.add(existenceCounter.getList(withLabel, compressed));
+		if (cardinality)
+			csvs.add(cardinalityCounter.getList(withLabel, compressed));
+		return StringUtils.join(csvs, ",");
+	}
+
+	@Override
+	public List<String> getHeader() {
+		List<String> headers = new ArrayList<>();
+
+		if (completeness)
+			for (String name : CompletenessCounter.getHeaders())
+				headers.add("completeness:" + name);
+
+		if (existence)
+			for (JsonBranch jsonBranch : schema.getPaths())
+				headers.add("existence:" + jsonBranch.getLabel());
+
+		if (cardinality)
+			for (JsonBranch jsonBranch : schema.getPaths())
+				headers.add("cardinality:" + jsonBranch.getLabel());
+
+		return headers;
+	}
+
+	public Map<String, Boolean> getExistenceMap() {
+		return existenceCounter.getMap();
+	}
+
+	public Map<String, Integer> getInstanceMap() {
+		return cardinalityCounter.getMap();
+	}
+
+	public CompletenessCounter getCompletenessCounter() {
+		return completenessCounter;
+	}
+
+	public FieldCounter<Boolean> getExistenceCounter() {
+		return existenceCounter;
+	}
+
+	public FieldCounter<Integer> getInstanceCounter() {
+		return cardinalityCounter;
+	}
+
+	public boolean isCompleteness() {
+		return completeness;
+	}
+
+	public void setCompleteness(boolean completeness) {
+		this.completeness = completeness;
+	}
+
+	public boolean isExistence() {
+		return existence;
+	}
+
+	public void setExistence(boolean existence) {
+		this.existence = existence;
+	}
+
+	public boolean isCardinality() {
+		return cardinality;
+	}
+
+	public void setCardinality(boolean cardinality) {
+		this.cardinality = cardinality;
+	}
 }

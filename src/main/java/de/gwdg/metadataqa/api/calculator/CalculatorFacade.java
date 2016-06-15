@@ -92,10 +92,6 @@ public class CalculatorFacade implements Serializable {
 	 * The language detector
 	 */
 	protected LanguageCalculator languageCalculator;
-	/**
-	 * The counters
-	 */
-	protected Counters counters;
 
 	/**
 	 * Create calculator facade with the default configuration
@@ -167,19 +163,6 @@ public class CalculatorFacade implements Serializable {
 	}
 
 	/**
-	 * Configure the counters object
-	 * @param counters
-	 *   The Counters object
-	 */
-	public void configureCounter(Counters counters) {
-		counters.returnFieldExistenceList(runFieldExistence);
-		counters.returnFieldInstanceList(runFieldCardinality);
-		counters.returnTfIdfList(runTfIdf);
-		counters.returnProblemList(runProblemCatalog);
-		counters.returnLanguage(runLanguage);
-	}
-
-	/**
 	 * Run the measurements with each Calculator then returns the result as CSV
 	 * @param jsonRecord
 	 *   The JSON record string
@@ -209,16 +192,22 @@ public class CalculatorFacade implements Serializable {
 	protected <T extends XmlFieldInstance> String measureWithGenerics(String jsonRecord) 
 			throws InvalidJsonException {
 		changed();
-		counters = new Counters();
-		configureCounter(counters);
 
 		JsonPathCache<T> cache = new JsonPathCache<>(jsonRecord);
 
+		String csv = "";
 		for (Calculator calculator : getCalculators()) {
-			calculator.measure(cache, counters);
+			System.err.println("calculator: " + calculator.getClass().getCanonicalName());
+			calculator.measure(cache);
+			if (csv.length() > 0)
+				csv += ",";
+			csv += calculator.getCsv(false, true);
+			if (calculator.getClass().getCanonicalName().endsWith("EdmFieldExtractor")) {
+				System.err.println("csv: " + calculator.getCsv(false, true));
+			}
 		}
 
-		return counters.getFullResults(false, true);
+		return csv; //counters.getFullResults(false, true);
 	}
 
 	/**
@@ -442,7 +431,7 @@ public class CalculatorFacade implements Serializable {
 	 * @see
 	 *   Counters#getResults() 
 	 */
-	public Map<String, Double> getResults() {
-		return counters.getResults();
-	}
+	// public Map<String, Double> getResults() {
+	// 	return counters.getResultsDouble();
+	// }
 }

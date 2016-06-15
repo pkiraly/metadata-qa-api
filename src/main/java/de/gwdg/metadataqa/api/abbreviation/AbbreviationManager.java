@@ -7,6 +7,7 @@ import java.io.Serializable;
 import java.io.UnsupportedEncodingException;
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.net.URL;
 import java.nio.charset.Charset;
 import java.nio.file.FileSystem;
 import java.nio.file.FileSystemNotFoundException;
@@ -77,7 +78,7 @@ public class AbbreviationManager implements Serializable {
 				processLine(line, i, parse);
 			}
 		} catch (URISyntaxException | IOException | FileSystemNotFoundException ex) {
-			logger.severe(String.format("Error with file: %s, uri: %s, path: %s.", fileName, path));
+			logger.severe(String.format("Error with file: %s, path: %s.", fileName, path));
 			logger.severe(ex.getLocalizedMessage());
 		}
 	}
@@ -131,7 +132,11 @@ public class AbbreviationManager implements Serializable {
 	private Path getPath(String fileName)
 			throws IOException, URISyntaxException {
 		Path path;
-		URI uri = getClass().getClassLoader().getResource(fileName).toURI();
+		URL url = getClass().getClassLoader().getResource(fileName);
+		if (url == null) {
+			throw new IOException(String.format("File %s is not existing", fileName));
+		}
+		URI uri = url.toURI();
 		Map<String, String> env = new HashMap<>();
 		if (uri.toString().contains("!")) {
 			String[] parts = uri.toString().split("!");

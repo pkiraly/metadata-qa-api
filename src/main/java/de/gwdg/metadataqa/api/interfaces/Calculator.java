@@ -1,7 +1,8 @@
 package de.gwdg.metadataqa.api.interfaces;
 
-import de.gwdg.metadataqa.api.counter.Counters;
 import de.gwdg.metadataqa.api.model.JsonPathCache;
+import java.util.List;
+import java.util.Map;
 
 /**
  * Calculator does the actual measurements.
@@ -10,12 +11,13 @@ import de.gwdg.metadataqa.api.model.JsonPathCache;
 public interface Calculator {
 
 	/**
-	 * Measure something from the JSON input, and saves the result into the Counters
+	 * Measure something from the JSON input
 	 * object
 	 * @param cache
 	 *   The JSON cache object
-	 * @param counters
-	 *   The object which stores the result of the measurements
 	 */
-	void measure(JsonPathCache cache, Counters counters);
+	void measure(JsonPathCache cache);
+	Map<String, ? extends Object> getResultMap();
+	String getCsv(boolean withLabels, boolean compressed);
+	List<String> getHeader();
 }

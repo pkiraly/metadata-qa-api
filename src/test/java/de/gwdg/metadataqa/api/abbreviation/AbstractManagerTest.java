@@ -40,6 +40,7 @@ public class AbstractManagerTest {
 		assertEquals(1, manager.getData().keySet().size());
 		assertTrue(manager.getData().containsKey("Preiser Records; Austria"));
 		assertEquals(264, (int)manager.getData().get("Preiser Records; Austria"));
+		assertEquals(264, (int)manager.lookup("Preiser Records; Austria"));
 	}
 
 	@Test
@@ -49,5 +50,40 @@ public class AbstractManagerTest {
 		assertEquals(1, manager.getData().keySet().size());
 		assertTrue(manager.getData().containsKey("264;Preiser Records; Austria"));
 		assertEquals(1, (int)manager.getData().get("264;Preiser Records; Austria"));
+		assertEquals(1, (int)manager.lookup("264;Preiser Records; Austria"));
+	}
+
+	@Test
+	public void testInitialize() {
+		AbbreviationManager manager = new AbbreviationManager();
+		manager.initialize("abbreviations/data-providers.txt");
+		assertEquals(3940, manager.getData().keySet().size());
+
+		manager.initialize("abbreviations/data-providers.txt", false);
+		assertEquals(3940, manager.getData().keySet().size());
+	}
+
+	@Test
+	public void testInitializeWithNonExistingFile() {
+		AbbreviationManager manager = new AbbreviationManager();
+		manager.initialize("abbreviations/non-existing.txt");
+		assertEquals(0, manager.getData().keySet().size());
+	}
+
+	@Test
+	public void testLookupNonExistent() {
+		AbbreviationManager manager = new AbbreviationManager();
+		manager.processLine("264;Preiser Records; Austria", 1, true);
+		assertEquals(1, manager.getData().keySet().size());
+		assertEquals(2, (int)manager.lookup("Non existent key"));
+	}
+
+	@Test
+	public void testProcessLineWithoutColon() {
+		AbbreviationManager manager = new AbbreviationManager();
+		manager.processLine("Preiser Records - Austria", 1, true);
+		assertEquals(1, manager.getData().keySet().size());
+		assertEquals(1, (int)manager.lookup("Preiser Records - Austria"));
+		assertEquals(2, (int)manager.lookup("Non existent key"));
 	}
 }
