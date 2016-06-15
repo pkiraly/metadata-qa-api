@@ -51,7 +51,6 @@ public class FieldExtractor implements Calculator, Serializable {
 
 	@Override
 	public String getCsv(boolean withLabel, boolean compressed) {
-		System.err.println("getCsv");
 		return resultMap.getList(withLabel, compressed);
 	}
 

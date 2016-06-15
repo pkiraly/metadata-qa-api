@@ -16,6 +16,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.logging.Logger;
+import org.apache.commons.lang3.StringUtils;
 
 /**
  * The central entry point of the application. It provides a facade to the
@@ -195,19 +196,13 @@ public class CalculatorFacade implements Serializable {
 
 		JsonPathCache<T> cache = new JsonPathCache<>(jsonRecord);
 
-		String csv = "";
+		List<String> csvs = new ArrayList<>();
 		for (Calculator calculator : getCalculators()) {
-			System.err.println("calculator: " + calculator.getClass().getCanonicalName());
 			calculator.measure(cache);
-			if (csv.length() > 0)
-				csv += ",";
-			csv += calculator.getCsv(false, true);
-			if (calculator.getClass().getCanonicalName().endsWith("EdmFieldExtractor")) {
-				System.err.println("csv: " + calculator.getCsv(false, true));
-			}
+			csvs.add(calculator.getCsv(false, true));
 		}
 
-		return csv; //counters.getFullResults(false, true);
+		return StringUtils.join(csvs, ",");
 	}
 
 	/**
