@@ -7,6 +7,7 @@ import de.gwdg.metadataqa.api.model.JsonPathCache;
 import de.gwdg.metadataqa.api.model.XmlFieldInstance;
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -15,6 +16,8 @@ import java.util.Map;
  * @author Péter Király <peter.kiraly at gwdg.de>
  */
 public class FieldExtractor implements Calculator, Serializable {
+
+	private static final String CALCULATOR_NAME = "fields";
 
 	public String FIELD_NAME = "recordId";
 	private String idPath;
@@ -25,6 +28,11 @@ public class FieldExtractor implements Calculator, Serializable {
 
 	public FieldExtractor(String idPath) {
 		this.idPath = idPath;
+	}
+
+	@Override
+	public String getCalculatorName() {
+		return CALCULATOR_NAME;
 	}
 
 	@Override
@@ -47,6 +55,13 @@ public class FieldExtractor implements Calculator, Serializable {
 	@Override
 	public Map<String, ? extends Object> getResultMap() {
 		return resultMap.getMap();
+	}
+
+	@Override
+	public Map<String, Map<String, ? extends Object>> getLabelledResultMap() {
+		Map<String, Map<String, ? extends Object>> labelledResultMap = new LinkedHashMap<>();
+		labelledResultMap.put(getCalculatorName(), resultMap.getMap());
+		return labelledResultMap;
 	}
 
 	@Override

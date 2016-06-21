@@ -17,7 +17,14 @@ public interface Calculator {
 	 *   The JSON cache object
 	 */
 	void measure(JsonPathCache cache);
+
 	Map<String, ? extends Object> getResultMap();
+
+	Map<String, Map<String, ? extends Object>> getLabelledResultMap();
+
 	String getCsv(boolean withLabels, boolean compressed);
+
 	List<String> getHeader();
+
+	String getCalculatorName();
 }

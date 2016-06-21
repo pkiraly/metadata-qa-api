@@ -11,6 +11,7 @@ import java.io.IOException;
 import java.io.Serializable;
 import java.nio.charset.Charset;
 import java.util.ArrayList;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.logging.Logger;
@@ -30,6 +31,8 @@ public class TfIdfCalculator implements Calculator, Serializable {
 
 	private static final Logger logger = Logger.getLogger(TfIdfCalculator.class.getCanonicalName());
 
+	private String CALCULATOR_NAME = "uniquness";
+
 	private static final String SOLR_SEARCH_PATH = "http://localhost:8983/solr/europeana/tvrh/?q=id:\"%s\""
 			  + "&version=2.2&indent=on&qt=tvrh&tv=true&tv.all=true&f.includes.tv.tf=true"
 			  + "&tv.fl=dc_title_txt,dc_description_txt,dcterms_alternative_txt"
@@ -45,6 +48,11 @@ public class TfIdfCalculator implements Calculator, Serializable {
 
 	public TfIdfCalculator(Schema schema) {
 		this.schema = schema;
+	}
+
+	@Override
+	public String getCalculatorName() {
+		return CALCULATOR_NAME;
 	}
 
 	@Override
@@ -97,6 +105,13 @@ public class TfIdfCalculator implements Calculator, Serializable {
 	@Override
 	public Map<String, ? extends Object> getResultMap() {
 		return resultMap.getMap();
+	}
+
+	@Override
+	public Map<String, Map<String, ? extends Object>> getLabelledResultMap() {
+		Map<String, Map<String, ? extends Object>> labelledResultMap = new LinkedHashMap<>();
+		labelledResultMap.put(getCalculatorName(), resultMap.getMap());
+		return labelledResultMap;
 	}
 
 	@Override

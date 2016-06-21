@@ -7,6 +7,7 @@ import de.gwdg.metadataqa.api.interfaces.Calculator;
 import de.gwdg.metadataqa.api.model.JsonPathCache;
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.logging.Logger;
@@ -19,11 +20,18 @@ public class ProblemCatalog implements Calculator, Serializable, Observable {
 
 	private static final Logger logger = Logger.getLogger(ProblemCatalog.class.getCanonicalName());
 
+	private String CALCULATOR_NAME = "problemCatalog";
+
 	private final List<Observer> problems = new ArrayList<>();
 	private String jsonString;
 	private Object jsonDocument;
 	private JsonPathCache cache;
 	private FieldCounter<Double> fieldCounter;
+
+	@Override
+	public String getCalculatorName() {
+		return CALCULATOR_NAME;
+	}
 
 	public String getJsonString() {
 		return jsonString;
@@ -62,6 +70,13 @@ public class ProblemCatalog implements Calculator, Serializable, Observable {
 	@Override
 	public Map<String, ? extends Object> getResultMap() {
 		return fieldCounter.getMap();
+	}
+
+	@Override
+	public Map<String, Map<String, ? extends Object>> getLabelledResultMap() {
+		Map<String, Map<String, ? extends Object>> labelledResultMap = new LinkedHashMap<>();
+		labelledResultMap.put(getCalculatorName(), fieldCounter.getMap());
+		return labelledResultMap;
 	}
 
 	@Override

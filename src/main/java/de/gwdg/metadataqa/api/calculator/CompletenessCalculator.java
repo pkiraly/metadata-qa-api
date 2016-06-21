@@ -2,7 +2,6 @@ package de.gwdg.metadataqa.api.calculator;
 
 import com.jayway.jsonpath.InvalidJsonException;
 import de.gwdg.metadataqa.api.counter.CompletenessCounter;
-import de.gwdg.metadataqa.api.counter.Counters;
 import de.gwdg.metadataqa.api.counter.FieldCounter;
 import de.gwdg.metadataqa.api.interfaces.Calculator;
 import de.gwdg.metadataqa.api.json.FieldGroup;
@@ -12,8 +11,10 @@ import de.gwdg.metadataqa.api.model.XmlFieldInstance;
 import de.gwdg.metadataqa.api.schema.Schema;
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Map.Entry;
 import java.util.logging.Logger;
 import org.apache.commons.lang3.StringUtils;
 
@@ -26,6 +27,7 @@ public class CompletenessCalculator<T extends XmlFieldInstance> implements Calcu
 
 	private static final Logger LOGGER = Logger.getLogger(CompletenessCalculator.class.getCanonicalName());
 
+	private static final String CALCULATOR_NAME = "completeness";
 	private String inputFileName;
 
 	private CompletenessCounter completenessCounter;
@@ -50,6 +52,11 @@ public class CompletenessCalculator<T extends XmlFieldInstance> implements Calcu
 
 	public CompletenessCalculator(Schema schema) {
 		this.schema = schema;
+	}
+
+	@Override
+	public String getCalculatorName() {
+		return CALCULATOR_NAME;
 	}
 
 	@Override
@@ -131,7 +138,32 @@ public class CompletenessCalculator<T extends XmlFieldInstance> implements Calcu
 
 	@Override
 	public Map<String, ? extends Object> getResultMap() {
-		return null; //resultMap;
+		Map<String, Object> resultMap = new LinkedHashMap<>();
+
+		if (completeness)
+			resultMap.putAll(completenessCounter.getFieldCounter().getMap());
+
+		if (existence)
+			for (Entry e : existenceCounter.getMap().entrySet())
+				resultMap.put("existence:" + e.getKey(), e.getValue());
+
+		if (cardinality)
+			for (Entry e : cardinalityCounter.getMap().entrySet())
+				resultMap.put("cardinality:" + e.getKey(), e.getValue());
+
+		return resultMap;
+	}
+
+	@Override
+	public Map<String, Map<String, ? extends Object>> getLabelledResultMap() {
+		Map<String, Map<String, ? extends Object>> resultMap = new LinkedHashMap<>();
+		if (completeness)
+			resultMap.put("completeness", completenessCounter.getFieldCounter().getMap());
+		if (existence)
+			resultMap.put("existence", existenceCounter.getMap());
+		if (cardinality)
+			resultMap.put("cardinality", cardinalityCounter.getMap());
+		return resultMap;
 	}
 
 	@Override

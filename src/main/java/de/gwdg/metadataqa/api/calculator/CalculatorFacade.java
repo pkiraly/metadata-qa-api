@@ -13,6 +13,7 @@ import de.gwdg.metadataqa.api.problemcatalog.TitleAndDescriptionAreSame;
 import de.gwdg.metadataqa.api.uniqueness.TfIdf;
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.logging.Logger;
@@ -426,7 +427,19 @@ public class CalculatorFacade implements Serializable {
 	 * @see
 	 *   Counters#getResults() 
 	 */
-	// public Map<String, Double> getResults() {
-	// 	return counters.getResultsDouble();
-	// }
+	public Map<String, Object> getResults() {
+		Map<String, Object> results = new LinkedHashMap<>();
+		for (Calculator calculator : calculators) {
+			results.putAll(calculator.getResultMap());
+		}
+		return results;
+	}
+
+	public Map<String, Map<String, ? extends Object>> getLabelledResults() {
+		Map<String, Map<String, ? extends Object>> results = new LinkedHashMap<>();
+		for (Calculator calculator : calculators) {
+			results.putAll(calculator.getLabelledResultMap());
+		}
+		return results;
+	}
 }

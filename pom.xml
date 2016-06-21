@@ -4,7 +4,7 @@
 	<groupId>de.gwdg.metadataqa</groupId>
 	<artifactId>metadata-qa-api</artifactId>
 	<packaging>jar</packaging>
-	<version>0.2</version>
+	<version>0.3-SNAPSHOT</version>
 	<name>Metadata Quality Assurance Framework API</name>
 	<description>
 		A metadata quality assurance framework. It checks some metrics of 
@@ -166,11 +166,6 @@
 						<goals>
 							<goal>clean</goal>
 						</goals>
-						<!--
-						<configuration>
-							<skip>${skipCobertura}</skip>
-						</configuration>
-						-->
 					</execution>
 				</executions>
 			</plugin>
@@ -186,6 +181,7 @@
 				<configuration>
 					<formats>
 						<format>html</format>
+						<format>xml</format>
 					</formats>
 					<skip></skip>
 				</configuration>

@@ -11,6 +11,7 @@ import de.gwdg.metadataqa.api.schema.Schema;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.logging.Logger;
@@ -23,9 +24,10 @@ public class LanguageCalculator implements Calculator, Serializable {
 
 	private static final Logger LOGGER = Logger.getLogger(LanguageCalculator.class.getCanonicalName());
 
+	private String CALCULATOR_NAME = "languages";
 	private String inputFileName;
-
 	private FieldCounter<String> languageMap;
+	private Map<String, Map<String, Integer>> rawLanguageMap;
 
 	private Schema schema;
 
@@ -38,13 +40,19 @@ public class LanguageCalculator implements Calculator, Serializable {
 	}
 
 	@Override
+	public String getCalculatorName() {
+		return CALCULATOR_NAME;
+	}
+
+	@Override
 	public void measure(JsonPathCache cache)
 			throws InvalidJsonException {
 
 		languageMap = new FieldCounter<>();
+		rawLanguageMap = new LinkedHashMap<>();
 		for (JsonBranch jsonBranch : schema.getPaths()) {
 			if (!schema.getNoLanguageFields().contains(jsonBranch.getLabel()))
-				extractLanguageTags(jsonBranch, cache, languageMap);
+				extractLanguageTags(jsonBranch, cache, languageMap, rawLanguageMap);
 		}
 	}
 
@@ -58,7 +66,8 @@ public class LanguageCalculator implements Calculator, Serializable {
 	}
 
 	private void extractLanguageTags(JsonBranch jsonBranch, JsonPathCache cache,
-			FieldCounter<String> languageMap) {
+			FieldCounter<String> languageMap,
+			Map<String, Map<String, Integer>> rawLanguageMap) {
 		List<EdmFieldInstance> values = cache.get(jsonBranch.getJsonPath());
 		Map<String, BasicCounter> languages = new HashMap<>();
 		if (values != null && !values.isEmpty()) {
@@ -76,6 +85,7 @@ public class LanguageCalculator implements Calculator, Serializable {
 		} else {
 			increase(languages, "_1");
 		}
+		rawLanguageMap.put(jsonBranch.getLabel(), transformLanguages(languages));
 		languageMap.put(jsonBranch.getLabel(), extractLanguages(languages));
 	}
 
@@ -97,8 +107,23 @@ public class LanguageCalculator implements Calculator, Serializable {
 		return result;
 	}
 
+	private Map<String, Integer> transformLanguages(Map<String, BasicCounter> languages) {
+		Map<String, Integer> result = new LinkedHashMap<>();
+		for (String lang : languages.keySet()) {
+			result.put(lang, ((Double)languages.get(lang).getTotal()).intValue());
+		}
+		return result;
+	}
+
 	public Map<String, String> getLanguageMap() {
 		return languageMap.getMap();
+	}
+
+	@Override
+	public Map<String, Map<String, ? extends Object>> getLabelledResultMap() {
+		Map<String, Map<String, ? extends Object>> labelledResultMap = new LinkedHashMap<>();
+		labelledResultMap.put(getCalculatorName(), rawLanguageMap);
+		return labelledResultMap;
 	}
 
 	@Override
