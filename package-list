@@ -1,0 +1,10 @@
+de.gwdg.metadataqa.api.abbreviation
+de.gwdg.metadataqa.api.calculator
+de.gwdg.metadataqa.api.counter
+de.gwdg.metadataqa.api.interfaces
+de.gwdg.metadataqa.api.json
+de.gwdg.metadataqa.api.model
+de.gwdg.metadataqa.api.problemcatalog
+de.gwdg.metadataqa.api.schema
+de.gwdg.metadataqa.api.uniqueness
+de.gwdg.metadataqa.api.util
