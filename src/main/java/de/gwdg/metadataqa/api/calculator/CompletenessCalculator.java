@@ -240,4 +240,5 @@ public class CompletenessCalculator<T extends XmlFieldInstance> implements Calcu
 	public void setCardinality(boolean cardinality) {
 		this.cardinality = cardinality;
 	}
+
 }

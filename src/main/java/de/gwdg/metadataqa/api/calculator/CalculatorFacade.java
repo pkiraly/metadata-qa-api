@@ -357,6 +357,9 @@ public class CalculatorFacade implements Serializable {
 		if (this.collectTfIdfTerms != collectTfIdfTerms) {
 			this.collectTfIdfTerms = collectTfIdfTerms;
 			changed = true;
+			if (tfidfCalculator != null) {
+				tfidfCalculator.setDoCollectTerms(collectTfIdfTerms);
+			}
 		}
 	}
 
@@ -442,4 +445,10 @@ public class CalculatorFacade implements Serializable {
 		}
 		return results;
 	}
+
+	public void configureSolr(String solrHost, String solrPort, String solrPath) {
+		if (this.tfidfCalculator != null)
+			this.tfidfCalculator.setSolr(solrHost, solrPort, solrPath);
+	}
+
 }

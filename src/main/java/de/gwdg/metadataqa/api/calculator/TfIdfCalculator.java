@@ -22,6 +22,7 @@ import org.apache.commons.httpclient.HttpStatus;
 import org.apache.commons.httpclient.methods.GetMethod;
 import org.apache.commons.httpclient.params.HttpMethodParams;
 import org.apache.commons.io.IOUtils;
+import org.apache.commons.lang3.StringUtils;
 
 /**
  *
@@ -31,12 +32,29 @@ public class TfIdfCalculator implements Calculator, Serializable {
 
 	private static final Logger logger = Logger.getLogger(TfIdfCalculator.class.getCanonicalName());
 
-	private String CALCULATOR_NAME = "uniquness";
+	private String CALCULATOR_NAME = "uniqueness";
+	private final static String SOLR_HOST = "localhost";
+	private final static String SOLR_PORT = "8983";
+	private final static String SOLR_PATH = "solr/europeana";
 
-	private static final String SOLR_SEARCH_PATH = "http://localhost:8983/solr/europeana/tvrh/?q=id:\"%s\""
-			  + "&version=2.2&indent=on&qt=tvrh&tv=true&tv.all=true&f.includes.tv.tf=true"
+	private String solrHost;
+	private String solrPort;
+	private String solrPath;
+	private String solrSearchPath;
+
+	private static final String SOLR_SEARCH_PARAMS = "tvrh/"
+			  + "?q=id:\"%s\""
+			  + "&version=2.2"
+			  + "&indent=on"
+			  + "&qt=tvrh"
+			  + "&tv=true"
+			  + "&tv.all=true"
+			  + "&f.includes.tv.tf=true"
 			  + "&tv.fl=dc_title_txt,dc_description_txt,dcterms_alternative_txt"
-			  + "&wt=json&json.nl=map&rows=1000&fl=id";
+			  + "&wt=json"
+			  + "&json.nl=map"
+			  + "&rows=1000"
+			  + "&fl=id";
 	private static final HttpClient httpClient = new HttpClient();
 	private Map<String, List<TfIdf>> termsCollection;
 	private boolean doCollectTerms = false;
@@ -67,7 +85,8 @@ public class TfIdfCalculator implements Calculator, Serializable {
 	private String getSolrResponse(String recordId) {
 		String jsonString = null;
 
-		String url = String.format(SOLR_SEARCH_PATH, recordId).replace("\"", "%22");
+		String url = String.format(getSolrSearchPath(), recordId).replace("\"", "%22");
+		logger.info("url: " + url);
 		HttpMethod method = new GetMethod(url);
 		HttpMethodParams params = new HttpMethodParams();
 		params.setIntParameter(HttpMethodParams.BUFFER_WARN_TRIGGER_LIMIT, 1024 * 1024);
@@ -83,6 +102,7 @@ public class TfIdfCalculator implements Calculator, Serializable {
 			byte[] responseBody = baos.toByteArray();
 
 			jsonString = new String(responseBody, Charset.forName("UTF-8"));
+			logger.info("jsonString: " + jsonString);
 		} catch (HttpException e) {
 			logger.severe("Fatal protocol violation: " + e.getMessage());
 		} catch (IOException e) {
@@ -127,5 +147,46 @@ public class TfIdfCalculator implements Calculator, Serializable {
 			headers.add(field + ":avg");
 		}
 		return headers;
+	}
+
+	public String getSolrHost() {
+		return solrHost;
+	}
+
+	public void setSolrHost(String solrHost) {
+		this.solrHost = solrHost;
+	}
+
+	public String getSolrPort() {
+		return solrPort;
+	}
+
+	public void setSolrPort(String solrPort) {
+		this.solrPort = solrPort;
+	}
+
+	public String getSolrPath() {
+		return solrPath;
+	}
+
+	public void setSolrPath(String solrPath) {
+		this.solrPath = solrPath;
+	}
+
+	public void setSolr(String solrHost, String solrPort, String solrPath) {
+		this.solrHost = solrHost;
+		this.solrPort = solrPort;
+		this.solrPath = solrPath;
+	}
+
+	public String getSolrSearchPath() {
+		if (solrSearchPath == null) {
+			this.solrSearchPath = String.format("http://%s:%s/%s/%s",
+				(StringUtils.isBlank(solrHost) ? SOLR_HOST : solrHost),
+				(StringUtils.isBlank(solrPort) ? SOLR_PORT : solrPort),
+				(StringUtils.isBlank(solrPath) ? SOLR_PATH : solrPath),
+				SOLR_SEARCH_PARAMS);
+		}
+		return this.solrSearchPath;
 	}
 }
