@@ -47,6 +47,11 @@ public class JsonPathCache<T extends XmlFieldInstance> {
 		return cache.get(jsonPath);
 	}
 
+	/**
+	 * Gets the record identifier
+	 * @return 
+	 *   The record identifier
+	 */
 	public String getRecordId() {
 		return recordId;
 	}

@@ -75,18 +75,19 @@ public class TfIdfCalculator implements Calculator, Serializable {
 
 	@Override
 	public void measure(JsonPathCache cache) {
-		String solrJsonResponse = getSolrResponse(cache.getRecordId());
+		String recordId = cache.getRecordId();
+		if (recordId.startsWith("/"))
+			recordId = recordId.substring(1);
+
+		String solrJsonResponse = getSolrResponse(recordId);
 		TfIdfExtractor extractor = new TfIdfExtractor(schema);
-		resultMap = extractor.extract(solrJsonResponse, cache.getRecordId(), doCollectTerms);
+		resultMap = extractor.extract(solrJsonResponse, recordId, doCollectTerms);
 		// counters.setTfIdfList(resultMap);
 		termsCollection = extractor.getTermsCollection();
 	}
 
 	private String getSolrResponse(String recordId) {
 		String jsonString = null;
-
-		if (recordId.startsWith("/"))
-			recordId = recordId.substring(1);
 
 		String url = String.format(getSolrSearchPath(), recordId).replace("\"", "%22");
 		logger.info("url: " + url);
