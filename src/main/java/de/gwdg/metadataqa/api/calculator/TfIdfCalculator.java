@@ -85,6 +85,9 @@ public class TfIdfCalculator implements Calculator, Serializable {
 	private String getSolrResponse(String recordId) {
 		String jsonString = null;
 
+		if (recordId.startsWith("/"))
+			recordId = recordId.substring(1);
+
 		String url = String.format(getSolrSearchPath(), recordId).replace("\"", "%22");
 		logger.info("url: " + url);
 		HttpMethod method = new GetMethod(url);
