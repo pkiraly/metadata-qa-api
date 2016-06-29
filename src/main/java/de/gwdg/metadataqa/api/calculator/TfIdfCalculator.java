@@ -90,7 +90,6 @@ public class TfIdfCalculator implements Calculator, Serializable {
 		String jsonString = null;
 
 		String url = String.format(getSolrSearchPath(), recordId).replace("\"", "%22");
-		logger.info("url: " + url);
 		HttpMethod method = new GetMethod(url);
 		HttpMethodParams params = new HttpMethodParams();
 		params.setIntParameter(HttpMethodParams.BUFFER_WARN_TRIGGER_LIMIT, 1024 * 1024);
@@ -106,7 +105,6 @@ public class TfIdfCalculator implements Calculator, Serializable {
 			byte[] responseBody = baos.toByteArray();
 
 			jsonString = new String(responseBody, Charset.forName("UTF-8"));
-			logger.info("jsonString: " + jsonString);
 		} catch (HttpException e) {
 			logger.severe("Fatal protocol violation: " + e.getMessage());
 		} catch (IOException e) {
