@@ -1,6 +1,6 @@
 package de.gwdg.metadataqa.api.calculator;
 
-import de.gwdg.metadataqa.api.schema.EdmSchema;
+import de.gwdg.metadataqa.api.schema.EdmOaiPmhXmlSchema;
 import java.util.Arrays;
 import java.util.List;
 import org.junit.After;
@@ -37,7 +37,7 @@ public class TfIdfCalculatorTest {
 
 	@Test
 	public void testGetHeaders() {
-		TfIdfCalculator calculator = new TfIdfCalculator(new EdmSchema());
+		TfIdfCalculator calculator = new TfIdfCalculator(new EdmOaiPmhXmlSchema());
 		List<String> expected = Arrays.asList("dc:title:sum", "dc:title:avg", "dcterms:alternative:sum", "dcterms:alternative:avg", "dc:description:sum", "dc:description:avg");
 		assertEquals(6, calculator.getHeader().size());
 		assertEquals(expected, calculator.getHeader());

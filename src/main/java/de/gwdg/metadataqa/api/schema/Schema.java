@@ -47,4 +47,6 @@ public interface Schema {
 	 */
 	Map<String, String> getSolrFields();
 
+	Map<String, String> getExtractableFields();
+
 }

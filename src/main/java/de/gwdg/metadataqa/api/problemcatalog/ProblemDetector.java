@@ -1,6 +1,7 @@
 package de.gwdg.metadataqa.api.problemcatalog;
 
 import de.gwdg.metadataqa.api.interfaces.Observer;
+import de.gwdg.metadataqa.api.schema.ProblemCatalogSchema;
 
 /**
  *
@@ -9,4 +10,5 @@ import de.gwdg.metadataqa.api.interfaces.Observer;
 public abstract class ProblemDetector implements Observer {
 
 	protected ProblemCatalog problemCatalog;
+	protected ProblemCatalogSchema schema;
 }

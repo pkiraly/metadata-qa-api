@@ -18,18 +18,18 @@ public class LongSubject extends ProblemDetector implements Serializable {
 	private static final Logger logger = Logger.getLogger(LongSubject.class.getCanonicalName());
 
 	private final String NAME = "LongSubject";
-	private final String PATH = "$.['ore:Proxy'][?(@['edm:europeanaProxy'][0] == 'false')]['dc:subject']";
 	private final int MAX_LENGTH = 50;
 
 	public LongSubject(ProblemCatalog problemCatalog) {
 		this.problemCatalog = problemCatalog;
 		this.problemCatalog.addObserver(this);
+		this.schema = problemCatalog.getSchema();
 	}
 
 	@Override
 	public void update(JsonPathCache cache, FieldCounter<Double> results) {
 		double value = 0;
-		List<EdmFieldInstance> subjects = cache.get(PATH);
+		List<EdmFieldInstance> subjects = cache.get(schema.getSubjectPath());
 		if (subjects != null && !subjects.isEmpty()) {
 			if (subjects.size() > 0) {
 				for (EdmFieldInstance subject : subjects) {

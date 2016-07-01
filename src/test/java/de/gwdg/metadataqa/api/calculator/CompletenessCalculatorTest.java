@@ -5,7 +5,7 @@ import de.gwdg.metadataqa.api.counter.FieldCounter;
 import de.gwdg.metadataqa.api.json.FieldGroup;
 import de.gwdg.metadataqa.api.json.JsonBranch;
 import de.gwdg.metadataqa.api.model.JsonPathCache;
-import de.gwdg.metadataqa.api.schema.EdmSchema;
+import de.gwdg.metadataqa.api.schema.EdmOaiPmhXmlSchema;
 import de.gwdg.metadataqa.api.schema.Schema;
 import de.gwdg.metadataqa.api.util.FileUtils;
 import java.io.IOException;
@@ -46,7 +46,7 @@ public class CompletenessCalculatorTest {
 
 	@Before
 	public void setUp() throws URISyntaxException, IOException {
-		calculator = new CompletenessCalculator(new EdmSchema());
+		calculator = new CompletenessCalculator(new EdmOaiPmhXmlSchema());
 		cache = new JsonPathCache(FileUtils.readFirstLine("general/test.json"));
 	}
 
@@ -108,7 +108,7 @@ public class CompletenessCalculatorTest {
 	}
 
 	private void printCheck(JsonBranch.Category category, CompletenessCalculator calculator) {
-		EdmSchema schema = new EdmSchema();
+		EdmOaiPmhXmlSchema schema = new EdmOaiPmhXmlSchema();
 
 		FieldCounter<Double> fieldCounter = calculator.getCompletenessCounter().getFieldCounter();
 		FieldCounter<Boolean> existenceCounter = calculator.getExistenceCounter();
@@ -195,7 +195,7 @@ public class CompletenessCalculatorTest {
 
 	@Test
 	public void testGetHeaders() {
-		calculator = new CompletenessCalculator(new EdmSchema());
+		calculator = new CompletenessCalculator(new EdmOaiPmhXmlSchema());
 		List<String> headers = calculator.getHeader();
 		List<String> expected = Arrays.asList("completeness:TOTAL", "completeness:MANDATORY", "completeness:DESCRIPTIVENESS", "completeness:SEARCHABILITY", "completeness:CONTEXTUALIZATION", "completeness:IDENTIFICATION", "completeness:BROWSING", "completeness:VIEWING", "completeness:REUSABILITY", "completeness:MULTILINGUALITY", "existence:edm:ProvidedCHO/@about", "existence:Proxy/dc:title", "existence:Proxy/dcterms:alternative", "existence:Proxy/dc:description", "existence:Proxy/dc:creator", "existence:Proxy/dc:publisher", "existence:Proxy/dc:contributor", "existence:Proxy/dc:type", "existence:Proxy/dc:identifier", "existence:Proxy/dc:language", "existence:Proxy/dc:coverage", "existence:Proxy/dcterms:temporal", "existence:Proxy/dcterms:spatial", "existence:Proxy/dc:subject", "existence:Proxy/dc:date", "existence:Proxy/dcterms:created", "existence:Proxy/dcterms:issued", "existence:Proxy/dcterms:extent", "existence:Proxy/dcterms:medium", "existence:Proxy/dcterms:provenance", "existence:Proxy/dcterms:hasPart", "existence:Proxy/dcterms:isPartOf", "existence:Proxy/dc:format", "existence:Proxy/dc:source", "existence:Proxy/dc:rights", "existence:Proxy/dc:relation", "existence:Proxy/edm:isNextInSequence", "existence:Proxy/edm:type", "existence:Aggregation/edm:rights", "existence:Aggregation/edm:provider", "existence:Aggregation/edm:dataProvider", "existence:Aggregation/edm:isShownAt", "existence:Aggregation/edm:isShownBy", "existence:Aggregation/edm:object", "existence:Aggregation/edm:hasView", "cardinality:edm:ProvidedCHO/@about", "cardinality:Proxy/dc:title", "cardinality:Proxy/dcterms:alternative", "cardinality:Proxy/dc:description", "cardinality:Proxy/dc:creator", "cardinality:Proxy/dc:publisher", "cardinality:Proxy/dc:contributor", "cardinality:Proxy/dc:type", "cardinality:Proxy/dc:identifier", "cardinality:Proxy/dc:language", "cardinality:Proxy/dc:coverage", "cardinality:Proxy/dcterms:temporal", "cardinality:Proxy/dcterms:spatial", "cardinality:Proxy/dc:subject", "cardinality:Proxy/dc:date", "cardinality:Proxy/dcterms:created", "cardinality:Proxy/dcterms:issued", "cardinality:Proxy/dcterms:extent", "cardinality:Proxy/dcterms:medium", "cardinality:Proxy/dcterms:provenance", "cardinality:Proxy/dcterms:hasPart", "cardinality:Proxy/dcterms:isPartOf", "cardinality:Proxy/dc:format", "cardinality:Proxy/dc:source", "cardinality:Proxy/dc:rights", "cardinality:Proxy/dc:relation", "cardinality:Proxy/edm:isNextInSequence", "cardinality:Proxy/edm:type", "cardinality:Aggregation/edm:rights", "cardinality:Aggregation/edm:provider", "cardinality:Aggregation/edm:dataProvider", "cardinality:Aggregation/edm:isShownAt", "cardinality:Aggregation/edm:isShownBy", "cardinality:Aggregation/edm:object", "cardinality:Aggregation/edm:hasView");
 		assertEquals(expected, headers);

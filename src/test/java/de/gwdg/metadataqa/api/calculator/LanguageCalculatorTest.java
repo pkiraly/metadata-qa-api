@@ -2,7 +2,7 @@ package de.gwdg.metadataqa.api.calculator;
 
 import de.gwdg.metadataqa.api.counter.Counters;
 import de.gwdg.metadataqa.api.model.JsonPathCache;
-import de.gwdg.metadataqa.api.schema.EdmSchema;
+import de.gwdg.metadataqa.api.schema.EdmOaiPmhXmlSchema;
 import de.gwdg.metadataqa.api.util.FileUtils;
 import java.io.IOException;
 import java.net.URISyntaxException;
@@ -43,13 +43,13 @@ public class LanguageCalculatorTest {
 
 	@Test
 	public void testConstructor() {
-		LanguageCalculator calculator = new LanguageCalculator(new EdmSchema());
+		LanguageCalculator calculator = new LanguageCalculator(new EdmOaiPmhXmlSchema());
 		assertNotNull(calculator);
 	}
 
 	@Test
 	public void testMeasure() throws URISyntaxException, IOException {
-		LanguageCalculator calculator = new LanguageCalculator(new EdmSchema());
+		LanguageCalculator calculator = new LanguageCalculator(new EdmOaiPmhXmlSchema());
 		JsonPathCache cache = new JsonPathCache(FileUtils.readFirstLine("general/test.json"));
 		calculator.measure(cache);
 		assertNotNull(calculator.getCsv(false, true));
@@ -58,7 +58,7 @@ public class LanguageCalculatorTest {
 
 	@Test
 	public void testCountersGetLanguageMap() throws URISyntaxException, IOException {
-		LanguageCalculator calculator = new LanguageCalculator(new EdmSchema());
+		LanguageCalculator calculator = new LanguageCalculator(new EdmOaiPmhXmlSchema());
 		JsonPathCache cache = new JsonPathCache(FileUtils.readFirstLine("general/test.json"));
 		calculator.measure(cache);
 		String languages = calculator.getCsv(true, true);
@@ -68,7 +68,7 @@ public class LanguageCalculatorTest {
 
 	@Test
 	public void testGetLanguageMap() throws URISyntaxException, IOException {
-		LanguageCalculator calculator = new LanguageCalculator(new EdmSchema());
+		LanguageCalculator calculator = new LanguageCalculator(new EdmOaiPmhXmlSchema());
 		JsonPathCache cache = new JsonPathCache(FileUtils.readFirstLine("general/test.json"));
 		calculator.measure(cache);
 
@@ -107,7 +107,7 @@ public class LanguageCalculatorTest {
 
 	@Test
 	public void testGetHeaders() {
-		LanguageCalculator calculator = new LanguageCalculator(new EdmSchema());
+		LanguageCalculator calculator = new LanguageCalculator(new EdmOaiPmhXmlSchema());
 		List<String> expected = Arrays.asList("lang:Proxy/dc:title", "lang:Proxy/dcterms:alternative", "lang:Proxy/dc:description", "lang:Proxy/dc:creator", "lang:Proxy/dc:publisher", "lang:Proxy/dc:contributor", "lang:Proxy/dc:type", "lang:Proxy/dc:identifier", "lang:Proxy/dc:language", "lang:Proxy/dc:coverage", "lang:Proxy/dcterms:temporal", "lang:Proxy/dcterms:spatial", "lang:Proxy/dc:subject", "lang:Proxy/dc:date", "lang:Proxy/dcterms:created", "lang:Proxy/dcterms:issued", "lang:Proxy/dcterms:extent", "lang:Proxy/dcterms:medium", "lang:Proxy/dcterms:provenance", "lang:Proxy/dcterms:hasPart", "lang:Proxy/dcterms:isPartOf", "lang:Proxy/dc:format", "lang:Proxy/dc:source", "lang:Proxy/dc:rights", "lang:Proxy/dc:relation", "lang:Aggregation/edm:rights", "lang:Aggregation/edm:provider", "lang:Aggregation/edm:dataProvider");
 		assertEquals(28, calculator.getHeader().size());
 		assertEquals(expected, calculator.getHeader());

@@ -2,14 +2,12 @@ package de.gwdg.metadataqa.api.problemcatalog;
 
 import de.gwdg.metadataqa.api.counter.FieldCounter;
 import de.gwdg.metadataqa.api.model.JsonPathCache;
+import de.gwdg.metadataqa.api.schema.EdmOaiPmhXmlSchema;
+import de.gwdg.metadataqa.api.schema.EdmSchema;
+import de.gwdg.metadataqa.api.schema.Schema;
 import de.gwdg.metadataqa.api.util.FileUtils;
 import java.io.IOException;
 import java.net.URISyntaxException;
-import java.nio.charset.Charset;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
-import java.util.List;
 import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.Before;
@@ -46,14 +44,15 @@ public class LongSubjectTest {
 	public void test() throws IOException, URISyntaxException {
 		JsonPathCache cache = new JsonPathCache(FileUtils.readFirstLine("problem-catalog/long-subject.json"));
 
-		ProblemCatalog problemCatalog = new ProblemCatalog();
+		EdmSchema schema = new EdmOaiPmhXmlSchema();
+		ProblemCatalog catalog = new ProblemCatalog(schema);
 		ProblemDetector detector = null;
 		try {
-			detector = new LongSubject(problemCatalog);
+			detector = new LongSubject(catalog);
 			FieldCounter<Double> results = new FieldCounter<>();
 
 			detector.update(cache, results);
-			assertEquals((Double) 1.0, (Double) results.get("LongSubject"));
+			assertEquals((Double) 1.0, results.get("LongSubject"));
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -61,7 +60,8 @@ public class LongSubjectTest {
 
 	@Test
 	public void testGetHeaders() {
-		ProblemCatalog catalog = new ProblemCatalog();
+		EdmSchema schema = new EdmOaiPmhXmlSchema();
+		ProblemCatalog catalog = new ProblemCatalog(schema);
 		LongSubject detector = new LongSubject(catalog);
 
 		assertNotNull(detector.getHeader());

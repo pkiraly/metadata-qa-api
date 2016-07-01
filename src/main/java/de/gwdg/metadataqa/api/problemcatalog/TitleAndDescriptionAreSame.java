@@ -16,21 +16,20 @@ public class TitleAndDescriptionAreSame extends ProblemDetector implements Seria
 	private static final Logger logger = Logger.getLogger(TitleAndDescriptionAreSame.class.getCanonicalName());
 
 	private final String NAME = "TitleAndDescriptionAreSame";
-	private final String title = "$.['ore:Proxy'][?(@['edm:europeanaProxy'][0] == 'false')]['dc:title']";
-	private final String description = "$.['ore:Proxy'][?(@['edm:europeanaProxy'][0] == 'false')]['dc:description']";
 
 	@SuppressWarnings("LeakingThisInConstructor")
 	public TitleAndDescriptionAreSame(ProblemCatalog problemCatalog) {
 		this.problemCatalog = problemCatalog;
 		this.problemCatalog.addObserver(this);
+		this.schema = problemCatalog.getSchema();
 	}
 
 	@Override
 	public void update(JsonPathCache cache, FieldCounter<Double> results) {
 		double value = 0;
-		List<EdmFieldInstance> titles = cache.get(title);
+		List<EdmFieldInstance> titles = cache.get(schema.getTitlePath());
 		if (titles != null && !titles.isEmpty()) {
-			List<EdmFieldInstance> descriptions = cache.get(description);
+			List<EdmFieldInstance> descriptions = cache.get(schema.getDescriptionPath());
 			if (descriptions != null && !descriptions.isEmpty()) {
 				if (titles.size() > 0) {
 					if (descriptions.size() > 0) {

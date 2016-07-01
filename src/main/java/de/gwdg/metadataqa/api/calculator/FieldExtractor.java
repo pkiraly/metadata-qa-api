@@ -5,6 +5,7 @@ import de.gwdg.metadataqa.api.counter.FieldCounter;
 import de.gwdg.metadataqa.api.interfaces.Calculator;
 import de.gwdg.metadataqa.api.model.JsonPathCache;
 import de.gwdg.metadataqa.api.model.XmlFieldInstance;
+import de.gwdg.metadataqa.api.schema.Schema;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
@@ -22,8 +23,13 @@ public class FieldExtractor implements Calculator, Serializable {
 	public String FIELD_NAME = "recordId";
 	private String idPath;
 	protected FieldCounter<String> resultMap;
+	protected Schema schema;
 
 	public FieldExtractor() {
+	}
+
+	public FieldExtractor(Schema schema) {
+		this.schema = schema;
 	}
 
 	public FieldExtractor(String idPath) {

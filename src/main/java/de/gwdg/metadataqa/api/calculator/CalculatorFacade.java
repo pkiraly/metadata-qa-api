@@ -3,13 +3,15 @@ package de.gwdg.metadataqa.api.calculator;
 import com.jayway.jsonpath.InvalidJsonException;
 import de.gwdg.metadataqa.api.counter.Counters;
 import de.gwdg.metadataqa.api.interfaces.Calculator;
-import de.gwdg.metadataqa.api.schema.EdmSchema;
+import de.gwdg.metadataqa.api.schema.EdmOaiPmhXmlSchema;
 import de.gwdg.metadataqa.api.model.JsonPathCache;
 import de.gwdg.metadataqa.api.model.XmlFieldInstance;
 import de.gwdg.metadataqa.api.problemcatalog.EmptyStrings;
 import de.gwdg.metadataqa.api.problemcatalog.LongSubject;
 import de.gwdg.metadataqa.api.problemcatalog.ProblemCatalog;
 import de.gwdg.metadataqa.api.problemcatalog.TitleAndDescriptionAreSame;
+import de.gwdg.metadataqa.api.schema.EdmSchema;
+import de.gwdg.metadataqa.api.schema.Schema;
 import de.gwdg.metadataqa.api.uniqueness.TfIdf;
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -26,7 +28,7 @@ import org.apache.commons.lang3.StringUtils;
  */
 public class CalculatorFacade implements Serializable {
 
-	// private static final Logger LOGGER = Logger.getLogger(CalculatorFacade.class.getCanonicalName());
+	private static final Logger logger = Logger.getLogger(CalculatorFacade.class.getCanonicalName());
 
 	/**
 	 * Flag whether or not run the field existence measurement
@@ -136,7 +138,7 @@ public class CalculatorFacade implements Serializable {
 	public void configure() {
 		calculators = new ArrayList<>();
 		fieldExtractor = new FieldExtractor();
-		EdmSchema schema = new EdmSchema();
+		EdmSchema schema = new EdmOaiPmhXmlSchema();
 
 		if (runCompleteness) {
 			completenessCalculator = new CompletenessCalculator(schema);
@@ -151,7 +153,7 @@ public class CalculatorFacade implements Serializable {
 		}
 
 		if (runProblemCatalog) {
-			ProblemCatalog problemCatalog = new ProblemCatalog();
+			ProblemCatalog problemCatalog = new ProblemCatalog(schema);
 			LongSubject longSubject = new LongSubject(problemCatalog);
 			TitleAndDescriptionAreSame titleAndDescriptionAreSame = new TitleAndDescriptionAreSame(problemCatalog);
 			EmptyStrings emptyStrings = new EmptyStrings(problemCatalog);

@@ -5,6 +5,8 @@ import de.gwdg.metadataqa.api.interfaces.Observable;
 import de.gwdg.metadataqa.api.counter.FieldCounter;
 import de.gwdg.metadataqa.api.interfaces.Calculator;
 import de.gwdg.metadataqa.api.model.JsonPathCache;
+import de.gwdg.metadataqa.api.schema.ProblemCatalogSchema;
+import de.gwdg.metadataqa.api.schema.Schema;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
@@ -27,6 +29,11 @@ public class ProblemCatalog implements Calculator, Serializable, Observable {
 	private Object jsonDocument;
 	private JsonPathCache cache;
 	private FieldCounter<Double> fieldCounter;
+	private ProblemCatalogSchema schema;
+
+	public ProblemCatalog(ProblemCatalogSchema schema) {
+		this.schema = schema;
+	}
 
 	@Override
 	public String getCalculatorName() {
@@ -91,6 +98,10 @@ public class ProblemCatalog implements Calculator, Serializable, Observable {
 			headers.add(observer.getHeader());
 		}
 		return headers;
+	}
+
+	public ProblemCatalogSchema getSchema() {
+		return schema;
 	}
 
 }
