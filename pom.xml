@@ -4,7 +4,7 @@
 	<groupId>de.gwdg.metadataqa</groupId>
 	<artifactId>metadata-qa-api</artifactId>
 	<packaging>jar</packaging>
-	<version>0.3-SNAPSHOT</version>
+	<version>0.3</version>
 	<name>Metadata Quality Assurance Framework API</name>
 	<description>
 		A metadata quality assurance framework. It checks some metrics of 
