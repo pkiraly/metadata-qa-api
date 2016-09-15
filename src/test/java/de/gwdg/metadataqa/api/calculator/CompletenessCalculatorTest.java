@@ -62,7 +62,7 @@ public class CompletenessCalculatorTest {
 		FieldCounter<Boolean> existenceCounter = calculator.getExistenceCounter();
 		FieldCounter<Integer> cardinalityCounter = calculator.getInstanceCounter();
 		// calculator.getExistenceMap();
-		assertEquals((Double) 0.4, fieldCounter.get("TOTAL"));
+		assertEquals((Double) 0.30434782608695654, fieldCounter.get("TOTAL"));
 		// printCheck(JsonBranch.Category.VIEWING, calculator);
 		assertEquals((Double) 0.75, fieldCounter.get("VIEWING"));
 		// printCheck(JsonBranch.Category.CONTEXTUALIZATION, calculator);
@@ -82,7 +82,7 @@ public class CompletenessCalculatorTest {
 		// printCheck(JsonBranch.Category.REUSABILITY, calculator);
 		assertEquals((Double) 0.36363636363636365, fieldCounter.get("REUSABILITY"));
 
-		String expected = "0.4,1.0,0.181818,0.388889,0.272727,0.5,0.357143,0.75,0.363636,0.4,1,1,0,0,0,0,0,1,1,0,0,0,0,1,0,0,0,0,0,0,0,1,0,0,1,0,0,1,1,1,1,1,1,1,0,1,1,0,0,0,0,0,1,1,0,0,0,0,5,0,0,0,0,0,0,0,1,0,0,1,0,0,1,1,1,1,1,1,1,0";
+		String expected = "0.304348,1.0,0.181818,0.388889,0.272727,0.5,0.357143,0.75,0.363636,0.4,1,1,0,0,0,0,0,1,1,0,0,0,0,1,0,0,0,0,0,0,0,1,0,0,1,0,0,1,1,1,1,1,1,1,0,0,0,0,0,0,0,0,0,0,0,0,1,1,0,0,0,0,0,1,1,0,0,0,0,5,0,0,0,0,0,0,0,1,0,0,1,0,0,1,1,1,1,1,1,1,0,0,0,0,0,0,0,0,0,0,0,0";
 
 		assertEquals(expected, calculator.getCsv(false, true));
 	}
@@ -137,7 +137,7 @@ public class CompletenessCalculatorTest {
 
 		calculator.measure(cache);
 		Map<String, Boolean> existenceMap = calculator.getExistenceMap();
-		assertEquals(35, existenceMap.size());
+		assertEquals(46, existenceMap.size());
 
 		int existingFieldCounter = 0;
 		for (boolean existing : existenceMap.values()) {
@@ -182,14 +182,26 @@ public class CompletenessCalculatorTest {
 		assertTrue(existenceMap.get("Aggregation/edm:isShownBy"));
 		assertTrue(existenceMap.get("Aggregation/edm:object"));
 		assertFalse(existenceMap.get("Aggregation/edm:hasView"));
+		assertFalse(existenceMap.get("Place/wgs84:lat"));
+		assertFalse(existenceMap.get("Place/wgs84:long"));
+		assertFalse(existenceMap.get("Place/wgs84:alt"));
+		assertFalse(existenceMap.get("Place/dcterms:isPartOf"));
+		assertFalse(existenceMap.get("Place/wgs84_pos:lat_long"));
+		assertFalse(existenceMap.get("Place/dcterms:hasPart"));
+		assertFalse(existenceMap.get("Place/owl:sameAs"));
+		assertFalse(existenceMap.get("Place/skos:prefLabel"));
+		assertFalse(existenceMap.get("Place/skos:altLabel"));
+		assertFalse(existenceMap.get("Place/skos:note"));
+		assertFalse(existenceMap.get("Place/rdf:about"));
+
 	}
 
 	@Test
 	public void testExistenceList() throws URISyntaxException, IOException {
 		calculator.collectFields(true);
 		calculator.measure(cache);
-		List<Integer> expected = Arrays.asList(new Integer[]{1,1,0,0,0,0,0,1,1,0,0,0,0,1,0,0,0,0,0,0,0,1,0,0,1,0,0,1,1,1,1,1,1,1,0});
-		assertEquals(35, calculator.getExistenceCounter().size());
+		List<Integer> expected = Arrays.asList(new Integer[]{1,1,0,0,0,0,0,1,1,0,0,0,0,1,0,0,0,0,0,0,0,1,0,0,1,0,0,1,1,1,1,1,1,1,0,0,0,0,0,0,0,0,0,0,0,0});
+		assertEquals(46, calculator.getExistenceCounter().size());
 		assertEquals(expected, calculator.getExistenceCounter().getList());
 	}
 
@@ -197,7 +209,7 @@ public class CompletenessCalculatorTest {
 	public void testGetHeaders() {
 		calculator = new CompletenessCalculator(new EdmOaiPmhXmlSchema());
 		List<String> headers = calculator.getHeader();
-		List<String> expected = Arrays.asList("completeness:TOTAL", "completeness:MANDATORY", "completeness:DESCRIPTIVENESS", "completeness:SEARCHABILITY", "completeness:CONTEXTUALIZATION", "completeness:IDENTIFICATION", "completeness:BROWSING", "completeness:VIEWING", "completeness:REUSABILITY", "completeness:MULTILINGUALITY", "existence:edm:ProvidedCHO/@about", "existence:Proxy/dc:title", "existence:Proxy/dcterms:alternative", "existence:Proxy/dc:description", "existence:Proxy/dc:creator", "existence:Proxy/dc:publisher", "existence:Proxy/dc:contributor", "existence:Proxy/dc:type", "existence:Proxy/dc:identifier", "existence:Proxy/dc:language", "existence:Proxy/dc:coverage", "existence:Proxy/dcterms:temporal", "existence:Proxy/dcterms:spatial", "existence:Proxy/dc:subject", "existence:Proxy/dc:date", "existence:Proxy/dcterms:created", "existence:Proxy/dcterms:issued", "existence:Proxy/dcterms:extent", "existence:Proxy/dcterms:medium", "existence:Proxy/dcterms:provenance", "existence:Proxy/dcterms:hasPart", "existence:Proxy/dcterms:isPartOf", "existence:Proxy/dc:format", "existence:Proxy/dc:source", "existence:Proxy/dc:rights", "existence:Proxy/dc:relation", "existence:Proxy/edm:isNextInSequence", "existence:Proxy/edm:type", "existence:Aggregation/edm:rights", "existence:Aggregation/edm:provider", "existence:Aggregation/edm:dataProvider", "existence:Aggregation/edm:isShownAt", "existence:Aggregation/edm:isShownBy", "existence:Aggregation/edm:object", "existence:Aggregation/edm:hasView", "cardinality:edm:ProvidedCHO/@about", "cardinality:Proxy/dc:title", "cardinality:Proxy/dcterms:alternative", "cardinality:Proxy/dc:description", "cardinality:Proxy/dc:creator", "cardinality:Proxy/dc:publisher", "cardinality:Proxy/dc:contributor", "cardinality:Proxy/dc:type", "cardinality:Proxy/dc:identifier", "cardinality:Proxy/dc:language", "cardinality:Proxy/dc:coverage", "cardinality:Proxy/dcterms:temporal", "cardinality:Proxy/dcterms:spatial", "cardinality:Proxy/dc:subject", "cardinality:Proxy/dc:date", "cardinality:Proxy/dcterms:created", "cardinality:Proxy/dcterms:issued", "cardinality:Proxy/dcterms:extent", "cardinality:Proxy/dcterms:medium", "cardinality:Proxy/dcterms:provenance", "cardinality:Proxy/dcterms:hasPart", "cardinality:Proxy/dcterms:isPartOf", "cardinality:Proxy/dc:format", "cardinality:Proxy/dc:source", "cardinality:Proxy/dc:rights", "cardinality:Proxy/dc:relation", "cardinality:Proxy/edm:isNextInSequence", "cardinality:Proxy/edm:type", "cardinality:Aggregation/edm:rights", "cardinality:Aggregation/edm:provider", "cardinality:Aggregation/edm:dataProvider", "cardinality:Aggregation/edm:isShownAt", "cardinality:Aggregation/edm:isShownBy", "cardinality:Aggregation/edm:object", "cardinality:Aggregation/edm:hasView");
+		List<String> expected = Arrays.asList("completeness:TOTAL", "completeness:MANDATORY", "completeness:DESCRIPTIVENESS", "completeness:SEARCHABILITY", "completeness:CONTEXTUALIZATION", "completeness:IDENTIFICATION", "completeness:BROWSING", "completeness:VIEWING", "completeness:REUSABILITY", "completeness:MULTILINGUALITY", "existence:edm:ProvidedCHO/@about", "existence:Proxy/dc:title", "existence:Proxy/dcterms:alternative", "existence:Proxy/dc:description", "existence:Proxy/dc:creator", "existence:Proxy/dc:publisher", "existence:Proxy/dc:contributor", "existence:Proxy/dc:type", "existence:Proxy/dc:identifier", "existence:Proxy/dc:language", "existence:Proxy/dc:coverage", "existence:Proxy/dcterms:temporal", "existence:Proxy/dcterms:spatial", "existence:Proxy/dc:subject", "existence:Proxy/dc:date", "existence:Proxy/dcterms:created", "existence:Proxy/dcterms:issued", "existence:Proxy/dcterms:extent", "existence:Proxy/dcterms:medium", "existence:Proxy/dcterms:provenance", "existence:Proxy/dcterms:hasPart", "existence:Proxy/dcterms:isPartOf", "existence:Proxy/dc:format", "existence:Proxy/dc:source", "existence:Proxy/dc:rights", "existence:Proxy/dc:relation", "existence:Proxy/edm:isNextInSequence", "existence:Proxy/edm:type", "existence:Aggregation/edm:rights", "existence:Aggregation/edm:provider", "existence:Aggregation/edm:dataProvider", "existence:Aggregation/edm:isShownAt", "existence:Aggregation/edm:isShownBy", "existence:Aggregation/edm:object", "existence:Aggregation/edm:hasView", "existence:Place/wgs84:lat", "existence:Place/wgs84:long", "existence:Place/wgs84:alt", "existence:Place/dcterms:isPartOf", "existence:Place/wgs84_pos:lat_long", "existence:Place/dcterms:hasPart", "existence:Place/owl:sameAs", "existence:Place/skos:prefLabel", "existence:Place/skos:altLabel", "existence:Place/skos:note", "existence:Place/rdf:about", "cardinality:edm:ProvidedCHO/@about", "cardinality:Proxy/dc:title", "cardinality:Proxy/dcterms:alternative", "cardinality:Proxy/dc:description", "cardinality:Proxy/dc:creator", "cardinality:Proxy/dc:publisher", "cardinality:Proxy/dc:contributor", "cardinality:Proxy/dc:type", "cardinality:Proxy/dc:identifier", "cardinality:Proxy/dc:language", "cardinality:Proxy/dc:coverage", "cardinality:Proxy/dcterms:temporal", "cardinality:Proxy/dcterms:spatial", "cardinality:Proxy/dc:subject", "cardinality:Proxy/dc:date", "cardinality:Proxy/dcterms:created", "cardinality:Proxy/dcterms:issued", "cardinality:Proxy/dcterms:extent", "cardinality:Proxy/dcterms:medium", "cardinality:Proxy/dcterms:provenance", "cardinality:Proxy/dcterms:hasPart", "cardinality:Proxy/dcterms:isPartOf", "cardinality:Proxy/dc:format", "cardinality:Proxy/dc:source", "cardinality:Proxy/dc:rights", "cardinality:Proxy/dc:relation", "cardinality:Proxy/edm:isNextInSequence", "cardinality:Proxy/edm:type", "cardinality:Aggregation/edm:rights", "cardinality:Aggregation/edm:provider", "cardinality:Aggregation/edm:dataProvider", "cardinality:Aggregation/edm:isShownAt", "cardinality:Aggregation/edm:isShownBy", "cardinality:Aggregation/edm:object", "cardinality:Aggregation/edm:hasView", "cardinality:Place/wgs84:lat", "cardinality:Place/wgs84:long", "cardinality:Place/wgs84:alt", "cardinality:Place/dcterms:isPartOf", "cardinality:Place/wgs84_pos:lat_long", "cardinality:Place/dcterms:hasPart", "cardinality:Place/owl:sameAs", "cardinality:Place/skos:prefLabel", "cardinality:Place/skos:altLabel", "cardinality:Place/skos:note", "cardinality:Place/rdf:about");
 		assertEquals(expected, headers);
 	}
 
@@ -206,19 +218,19 @@ public class CompletenessCalculatorTest {
 		calculator.measure(cache);
 		calculator.setExistence(false);
 		calculator.setCardinality(false);
-		assertEquals("\"TOTAL\":0.400000,\"MANDATORY\":1.000000,\"DESCRIPTIVENESS\":0.181818,\"SEARCHABILITY\":0.388889,\"CONTEXTUALIZATION\":0.272727,\"IDENTIFICATION\":0.500000,\"BROWSING\":0.357143,\"VIEWING\":0.750000,\"REUSABILITY\":0.363636,\"MULTILINGUALITY\":0.400000",
+		assertEquals("\"TOTAL\":0.304348,\"MANDATORY\":1.000000,\"DESCRIPTIVENESS\":0.181818,\"SEARCHABILITY\":0.388889,\"CONTEXTUALIZATION\":0.272727,\"IDENTIFICATION\":0.500000,\"BROWSING\":0.357143,\"VIEWING\":0.750000,\"REUSABILITY\":0.363636,\"MULTILINGUALITY\":0.400000",
 			calculator.getCsv(true, false));
-		assertEquals("0.400000,1.000000,0.181818,0.388889,0.272727,0.500000,0.357143,0.750000,0.363636,0.400000",
+		assertEquals("0.304348,1.000000,0.181818,0.388889,0.272727,0.500000,0.357143,0.750000,0.363636,0.400000",
 			calculator.getCsv(false, false));
-		assertEquals("0.4,1.0,0.181818,0.388889,0.272727,0.5,0.357143,0.75,0.363636,0.4",
+		assertEquals("0.304348,1.0,0.181818,0.388889,0.272727,0.5,0.357143,0.75,0.363636,0.4",
 			calculator.getCsv(false, true));
 
 		calculator.setExistence(true);
-		assertEquals("\"TOTAL\":0.400000,\"MANDATORY\":1.000000,\"DESCRIPTIVENESS\":0.181818,\"SEARCHABILITY\":0.388889,\"CONTEXTUALIZATION\":0.272727,\"IDENTIFICATION\":0.500000,\"BROWSING\":0.357143,\"VIEWING\":0.750000,\"REUSABILITY\":0.363636,\"MULTILINGUALITY\":0.400000,\"edm:ProvidedCHO/@about\":1,\"Proxy/dc:title\":1,\"Proxy/dcterms:alternative\":0,\"Proxy/dc:description\":0,\"Proxy/dc:creator\":0,\"Proxy/dc:publisher\":0,\"Proxy/dc:contributor\":0,\"Proxy/dc:type\":1,\"Proxy/dc:identifier\":1,\"Proxy/dc:language\":0,\"Proxy/dc:coverage\":0,\"Proxy/dcterms:temporal\":0,\"Proxy/dcterms:spatial\":0,\"Proxy/dc:subject\":1,\"Proxy/dc:date\":0,\"Proxy/dcterms:created\":0,\"Proxy/dcterms:issued\":0,\"Proxy/dcterms:extent\":0,\"Proxy/dcterms:medium\":0,\"Proxy/dcterms:provenance\":0,\"Proxy/dcterms:hasPart\":0,\"Proxy/dcterms:isPartOf\":1,\"Proxy/dc:format\":0,\"Proxy/dc:source\":0,\"Proxy/dc:rights\":1,\"Proxy/dc:relation\":0,\"Proxy/edm:isNextInSequence\":0,\"Proxy/edm:type\":1,\"Aggregation/edm:rights\":1,\"Aggregation/edm:provider\":1,\"Aggregation/edm:dataProvider\":1,\"Aggregation/edm:isShownAt\":1,\"Aggregation/edm:isShownBy\":1,\"Aggregation/edm:object\":1,\"Aggregation/edm:hasView\":0",
+		assertEquals("\"TOTAL\":0.304348,\"MANDATORY\":1.000000,\"DESCRIPTIVENESS\":0.181818,\"SEARCHABILITY\":0.388889,\"CONTEXTUALIZATION\":0.272727,\"IDENTIFICATION\":0.500000,\"BROWSING\":0.357143,\"VIEWING\":0.750000,\"REUSABILITY\":0.363636,\"MULTILINGUALITY\":0.400000,\"edm:ProvidedCHO/@about\":1,\"Proxy/dc:title\":1,\"Proxy/dcterms:alternative\":0,\"Proxy/dc:description\":0,\"Proxy/dc:creator\":0,\"Proxy/dc:publisher\":0,\"Proxy/dc:contributor\":0,\"Proxy/dc:type\":1,\"Proxy/dc:identifier\":1,\"Proxy/dc:language\":0,\"Proxy/dc:coverage\":0,\"Proxy/dcterms:temporal\":0,\"Proxy/dcterms:spatial\":0,\"Proxy/dc:subject\":1,\"Proxy/dc:date\":0,\"Proxy/dcterms:created\":0,\"Proxy/dcterms:issued\":0,\"Proxy/dcterms:extent\":0,\"Proxy/dcterms:medium\":0,\"Proxy/dcterms:provenance\":0,\"Proxy/dcterms:hasPart\":0,\"Proxy/dcterms:isPartOf\":1,\"Proxy/dc:format\":0,\"Proxy/dc:source\":0,\"Proxy/dc:rights\":1,\"Proxy/dc:relation\":0,\"Proxy/edm:isNextInSequence\":0,\"Proxy/edm:type\":1,\"Aggregation/edm:rights\":1,\"Aggregation/edm:provider\":1,\"Aggregation/edm:dataProvider\":1,\"Aggregation/edm:isShownAt\":1,\"Aggregation/edm:isShownBy\":1,\"Aggregation/edm:object\":1,\"Aggregation/edm:hasView\":0,\"Place/wgs84:lat\":0,\"Place/wgs84:long\":0,\"Place/wgs84:alt\":0,\"Place/dcterms:isPartOf\":0,\"Place/wgs84_pos:lat_long\":0,\"Place/dcterms:hasPart\":0,\"Place/owl:sameAs\":0,\"Place/skos:prefLabel\":0,\"Place/skos:altLabel\":0,\"Place/skos:note\":0,\"Place/rdf:about\":0",
 			calculator.getCsv(true, false));
-		assertEquals("0.400000,1.000000,0.181818,0.388889,0.272727,0.500000,0.357143,0.750000,0.363636,0.400000,1,1,0,0,0,0,0,1,1,0,0,0,0,1,0,0,0,0,0,0,0,1,0,0,1,0,0,1,1,1,1,1,1,1,0",
+		assertEquals("0.304348,1.000000,0.181818,0.388889,0.272727,0.500000,0.357143,0.750000,0.363636,0.400000,1,1,0,0,0,0,0,1,1,0,0,0,0,1,0,0,0,0,0,0,0,1,0,0,1,0,0,1,1,1,1,1,1,1,0,0,0,0,0,0,0,0,0,0,0,0",
 			calculator.getCsv(false, false));
-		assertEquals("0.4,1.0,0.181818,0.388889,0.272727,0.5,0.357143,0.75,0.363636,0.4,1,1,0,0,0,0,0,1,1,0,0,0,0,1,0,0,0,0,0,0,0,1,0,0,1,0,0,1,1,1,1,1,1,1,0",
+		assertEquals("0.304348,1.0,0.181818,0.388889,0.272727,0.5,0.357143,0.75,0.363636,0.4,1,1,0,0,0,0,0,1,1,0,0,0,0,1,0,0,0,0,0,0,0,1,0,0,1,0,0,1,1,1,1,1,1,1,0,0,0,0,0,0,0,0,0,0,0,0",
 			calculator.getCsv(false, true));
 	}
 
@@ -239,12 +251,40 @@ public class CompletenessCalculatorTest {
 	@Test
 	public void testFullResults() {
 		calculator.measure(cache);
-		assertEquals("\"TOTAL\":0.400000,\"MANDATORY\":1.000000,\"DESCRIPTIVENESS\":0.181818,\"SEARCHABILITY\":0.388889,\"CONTEXTUALIZATION\":0.272727,\"IDENTIFICATION\":0.500000,\"BROWSING\":0.357143,\"VIEWING\":0.750000,\"REUSABILITY\":0.363636,\"MULTILINGUALITY\":0.400000,\"edm:ProvidedCHO/@about\":1,\"Proxy/dc:title\":1,\"Proxy/dcterms:alternative\":0,\"Proxy/dc:description\":0,\"Proxy/dc:creator\":0,\"Proxy/dc:publisher\":0,\"Proxy/dc:contributor\":0,\"Proxy/dc:type\":1,\"Proxy/dc:identifier\":1,\"Proxy/dc:language\":0,\"Proxy/dc:coverage\":0,\"Proxy/dcterms:temporal\":0,\"Proxy/dcterms:spatial\":0,\"Proxy/dc:subject\":1,\"Proxy/dc:date\":0,\"Proxy/dcterms:created\":0,\"Proxy/dcterms:issued\":0,\"Proxy/dcterms:extent\":0,\"Proxy/dcterms:medium\":0,\"Proxy/dcterms:provenance\":0,\"Proxy/dcterms:hasPart\":0,\"Proxy/dcterms:isPartOf\":1,\"Proxy/dc:format\":0,\"Proxy/dc:source\":0,\"Proxy/dc:rights\":1,\"Proxy/dc:relation\":0,\"Proxy/edm:isNextInSequence\":0,\"Proxy/edm:type\":1,\"Aggregation/edm:rights\":1,\"Aggregation/edm:provider\":1,\"Aggregation/edm:dataProvider\":1,\"Aggregation/edm:isShownAt\":1,\"Aggregation/edm:isShownBy\":1,\"Aggregation/edm:object\":1,\"Aggregation/edm:hasView\":0,\"edm:ProvidedCHO/@about\":1,\"Proxy/dc:title\":1,\"Proxy/dcterms:alternative\":0,\"Proxy/dc:description\":0,\"Proxy/dc:creator\":0,\"Proxy/dc:publisher\":0,\"Proxy/dc:contributor\":0,\"Proxy/dc:type\":1,\"Proxy/dc:identifier\":1,\"Proxy/dc:language\":0,\"Proxy/dc:coverage\":0,\"Proxy/dcterms:temporal\":0,\"Proxy/dcterms:spatial\":0,\"Proxy/dc:subject\":5,\"Proxy/dc:date\":0,\"Proxy/dcterms:created\":0,\"Proxy/dcterms:issued\":0,\"Proxy/dcterms:extent\":0,\"Proxy/dcterms:medium\":0,\"Proxy/dcterms:provenance\":0,\"Proxy/dcterms:hasPart\":0,\"Proxy/dcterms:isPartOf\":1,\"Proxy/dc:format\":0,\"Proxy/dc:source\":0,\"Proxy/dc:rights\":1,\"Proxy/dc:relation\":0,\"Proxy/edm:isNextInSequence\":0,\"Proxy/edm:type\":1,\"Aggregation/edm:rights\":1,\"Aggregation/edm:provider\":1,\"Aggregation/edm:dataProvider\":1,\"Aggregation/edm:isShownAt\":1,\"Aggregation/edm:isShownBy\":1,\"Aggregation/edm:object\":1,\"Aggregation/edm:hasView\":0",
+		System.err.println("testFullResults");
+		assertEquals("\"TOTAL\":0.304348,\"MANDATORY\":1.000000,\"DESCRIPTIVENESS\":0.181818,\"SEARCHABILITY\":0.388889,\"CONTEXTUALIZATION\":0.272727,\"IDENTIFICATION\":0.500000,\"BROWSING\":0.357143,\"VIEWING\":0.750000,\"REUSABILITY\":0.363636,\"MULTILINGUALITY\":0.400000,\"edm:ProvidedCHO/@about\":1,\"Proxy/dc:title\":1,\"Proxy/dcterms:alternative\":0,\"Proxy/dc:description\":0,\"Proxy/dc:creator\":0,\"Proxy/dc:publisher\":0,\"Proxy/dc:contributor\":0,\"Proxy/dc:type\":1,\"Proxy/dc:identifier\":1,\"Proxy/dc:language\":0,\"Proxy/dc:coverage\":0,\"Proxy/dcterms:temporal\":0,\"Proxy/dcterms:spatial\":0,\"Proxy/dc:subject\":1,\"Proxy/dc:date\":0,\"Proxy/dcterms:created\":0,\"Proxy/dcterms:issued\":0,\"Proxy/dcterms:extent\":0,\"Proxy/dcterms:medium\":0,\"Proxy/dcterms:provenance\":0,\"Proxy/dcterms:hasPart\":0,\"Proxy/dcterms:isPartOf\":1,\"Proxy/dc:format\":0,\"Proxy/dc:source\":0,\"Proxy/dc:rights\":1,\"Proxy/dc:relation\":0,\"Proxy/edm:isNextInSequence\":0,\"Proxy/edm:type\":1,\"Aggregation/edm:rights\":1,\"Aggregation/edm:provider\":1,\"Aggregation/edm:dataProvider\":1,\"Aggregation/edm:isShownAt\":1,\"Aggregation/edm:isShownBy\":1,\"Aggregation/edm:object\":1,\"Aggregation/edm:hasView\":0,\"Place/wgs84:lat\":0,\"Place/wgs84:long\":0,\"Place/wgs84:alt\":0,\"Place/dcterms:isPartOf\":0,\"Place/wgs84_pos:lat_long\":0,\"Place/dcterms:hasPart\":0,\"Place/owl:sameAs\":0,\"Place/skos:prefLabel\":0,\"Place/skos:altLabel\":0,\"Place/skos:note\":0,\"Place/rdf:about\":0,\"edm:ProvidedCHO/@about\":1,\"Proxy/dc:title\":1,\"Proxy/dcterms:alternative\":0,\"Proxy/dc:description\":0,\"Proxy/dc:creator\":0,\"Proxy/dc:publisher\":0,\"Proxy/dc:contributor\":0,\"Proxy/dc:type\":1,\"Proxy/dc:identifier\":1,\"Proxy/dc:language\":0,\"Proxy/dc:coverage\":0,\"Proxy/dcterms:temporal\":0,\"Proxy/dcterms:spatial\":0,\"Proxy/dc:subject\":5,\"Proxy/dc:date\":0,\"Proxy/dcterms:created\":0,\"Proxy/dcterms:issued\":0,\"Proxy/dcterms:extent\":0,\"Proxy/dcterms:medium\":0,\"Proxy/dcterms:provenance\":0,\"Proxy/dcterms:hasPart\":0,\"Proxy/dcterms:isPartOf\":1,\"Proxy/dc:format\":0,\"Proxy/dc:source\":0,\"Proxy/dc:rights\":1,\"Proxy/dc:relation\":0,\"Proxy/edm:isNextInSequence\":0,\"Proxy/edm:type\":1,\"Aggregation/edm:rights\":1,\"Aggregation/edm:provider\":1,\"Aggregation/edm:dataProvider\":1,\"Aggregation/edm:isShownAt\":1,\"Aggregation/edm:isShownBy\":1,\"Aggregation/edm:object\":1,\"Aggregation/edm:hasView\":0,\"Place/wgs84:lat\":0,\"Place/wgs84:long\":0,\"Place/wgs84:alt\":0,\"Place/dcterms:isPartOf\":0,\"Place/wgs84_pos:lat_long\":0,\"Place/dcterms:hasPart\":0,\"Place/owl:sameAs\":0,\"Place/skos:prefLabel\":0,\"Place/skos:altLabel\":0,\"Place/skos:note\":0,\"Place/rdf:about\":0",
 			calculator.getCsv(true, false));
-		assertEquals("0.400000,1.000000,0.181818,0.388889,0.272727,0.500000,0.357143,0.750000,0.363636,0.400000,1,1,0,0,0,0,0,1,1,0,0,0,0,1,0,0,0,0,0,0,0,1,0,0,1,0,0,1,1,1,1,1,1,1,0,1,1,0,0,0,0,0,1,1,0,0,0,0,5,0,0,0,0,0,0,0,1,0,0,1,0,0,1,1,1,1,1,1,1,0",
+
+		assertEquals("0.304348,1.000000,0.181818,0.388889,0.272727,0.500000,0.357143,0.750000,0.363636,0.400000,1,1,0,0,0,0,0,1,1,0,0,0,0,1,0,0,0,0,0,0,0,1,0,0,1,0,0,1,1,1,1,1,1,1,0,0,0,0,0,0,0,0,0,0,0,0,1,1,0,0,0,0,0,1,1,0,0,0,0,5,0,0,0,0,0,0,0,1,0,0,1,0,0,1,1,1,1,1,1,1,0,0,0,0,0,0,0,0,0,0,0,0",
 			calculator.getCsv(false, false));
-		assertEquals("0.4,1.0,0.181818,0.388889,0.272727,0.5,0.357143,0.75,0.363636,0.4,1,1,0,0,0,0,0,1,1,0,0,0,0,1,0,0,0,0,0,0,0,1,0,0,1,0,0,1,1,1,1,1,1,1,0,1,1,0,0,0,0,0,1,1,0,0,0,0,5,0,0,0,0,0,0,0,1,0,0,1,0,0,1,1,1,1,1,1,1,0",
+		assertEquals("0.304348,1.0,0.181818,0.388889,0.272727,0.5,0.357143,0.75,0.363636,0.4,1,1,0,0,0,0,0,1,1,0,0,0,0,1,0,0,0,0,0,0,0,1,0,0,1,0,0,1,1,1,1,1,1,1,0,0,0,0,0,0,0,0,0,0,0,0,1,1,0,0,0,0,0,1,1,0,0,0,0,5,0,0,0,0,0,0,0,1,0,0,1,0,0,1,1,1,1,1,1,1,0,0,0,0,0,0,0,0,0,0,0,0",
 		calculator.getCsv(false, true));
+	}
+
+	@Test
+	public void testPlaces() throws URISyntaxException, IOException {
+
+		cache = new JsonPathCache(FileUtils.readFirstLine("general/test-place.json"));
+		calculator.measure(cache);
+
+		assertEquals("\"TOTAL\":0.565217,\"MANDATORY\":1.000000,\"DESCRIPTIVENESS\":0.636364,\"SEARCHABILITY\":0.722222,\"CONTEXTUALIZATION\":0.727273,\"IDENTIFICATION\":0.700000,\"BROWSING\":0.571429,\"VIEWING\":0.250000,\"REUSABILITY\":0.363636,\"MULTILINGUALITY\":0.800000,\"edm:ProvidedCHO/@about\":1,\"Proxy/dc:title\":1,\"Proxy/dcterms:alternative\":0,\"Proxy/dc:description\":1,\"Proxy/dc:creator\":1,\"Proxy/dc:publisher\":0,\"Proxy/dc:contributor\":1,\"Proxy/dc:type\":1,\"Proxy/dc:identifier\":1,\"Proxy/dc:language\":1,\"Proxy/dc:coverage\":1,\"Proxy/dcterms:temporal\":1,\"Proxy/dcterms:spatial\":1,\"Proxy/dc:subject\":1,\"Proxy/dc:date\":0,\"Proxy/dcterms:created\":0,\"Proxy/dcterms:issued\":1,\"Proxy/dcterms:extent\":1,\"Proxy/dcterms:medium\":0,\"Proxy/dcterms:provenance\":0,\"Proxy/dcterms:hasPart\":1,\"Proxy/dcterms:isPartOf\":0,\"Proxy/dc:format\":1,\"Proxy/dc:source\":0,\"Proxy/dc:rights\":0,\"Proxy/dc:relation\":0,\"Proxy/edm:isNextInSequence\":0,\"Proxy/edm:type\":1,\"Aggregation/edm:rights\":1,\"Aggregation/edm:provider\":1,\"Aggregation/edm:dataProvider\":1,\"Aggregation/edm:isShownAt\":1,\"Aggregation/edm:isShownBy\":0,\"Aggregation/edm:object\":0,\"Aggregation/edm:hasView\":0,\"Place/wgs84:lat\":1,\"Place/wgs84:long\":1,\"Place/wgs84:alt\":0,\"Place/dcterms:isPartOf\":1,\"Place/wgs84_pos:lat_long\":0,\"Place/dcterms:hasPart\":0,\"Place/owl:sameAs\":0,\"Place/skos:prefLabel\":1,\"Place/skos:altLabel\":0,\"Place/skos:note\":0,\"Place/rdf:about\":1,\"edm:ProvidedCHO/@about\":1,\"Proxy/dc:title\":1,\"Proxy/dcterms:alternative\":0,\"Proxy/dc:description\":11,\"Proxy/dc:creator\":1,\"Proxy/dc:publisher\":0,\"Proxy/dc:contributor\":1,\"Proxy/dc:type\":3,\"Proxy/dc:identifier\":10,\"Proxy/dc:language\":1,\"Proxy/dc:coverage\":2,\"Proxy/dcterms:temporal\":2,\"Proxy/dcterms:spatial\":2,\"Proxy/dc:subject\":3,\"Proxy/dc:date\":0,\"Proxy/dcterms:created\":0,\"Proxy/dcterms:issued\":1,\"Proxy/dcterms:extent\":1,\"Proxy/dcterms:medium\":0,\"Proxy/dcterms:provenance\":0,\"Proxy/dcterms:hasPart\":1,\"Proxy/dcterms:isPartOf\":0,\"Proxy/dc:format\":1,\"Proxy/dc:source\":0,\"Proxy/dc:rights\":0,\"Proxy/dc:relation\":0,\"Proxy/edm:isNextInSequence\":0,\"Proxy/edm:type\":1,\"Aggregation/edm:rights\":1,\"Aggregation/edm:provider\":1,\"Aggregation/edm:dataProvider\":1,\"Aggregation/edm:isShownAt\":1,\"Aggregation/edm:isShownBy\":0,\"Aggregation/edm:object\":0,\"Aggregation/edm:hasView\":0,\"Place/wgs84:lat\":2,\"Place/wgs84:long\":2,\"Place/wgs84:alt\":0,\"Place/dcterms:isPartOf\":2,\"Place/wgs84_pos:lat_long\":0,\"Place/dcterms:hasPart\":0,\"Place/owl:sameAs\":0,\"Place/skos:prefLabel\":128,\"Place/skos:altLabel\":0,\"Place/skos:note\":0,\"Place/rdf:about\":3",
+			calculator.getCsv(true, false));
+
+		/*
+		TODO: write test agains this:
+		values: $.['edm:Place'][*]['wgs84:lat'], 2
+values: $.['edm:Place'][*]['wgs84:long'], 2
+values: $.['edm:Place'][*]['wgs84:alt'], 0
+values: $.['edm:Place'][*]['dcterms:isPartOf'], 2
+values: $.['edm:Place'][*]['wgs84_pos:lat_long'], 0
+values: $.['edm:Place'][*]['dcterms:hasPart'], 0
+values: $.['edm:Place'][*]['owl:sameAs'], 0
+values: $.['edm:Place'][*]['skos:prefLabel'], 128
+values: $.['edm:Place'][*]['skos:altLabel'], 0
+values: $.['edm:Place'][*]['skos:note'], 0
+values: $.['edm:Place'][*]['@about'], 3
+
+		*/
 	}
 
 }

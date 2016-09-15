@@ -151,6 +151,18 @@ public class EdmOaiPmhXmlSchema extends EdmSchema implements Serializable {
 			"$.['ore:Aggregation'][0]['edm:hasView']",
 			JsonBranch.Category.BROWSING, JsonBranch.Category.VIEWING));
 
+		paths.add(new JsonBranch("Place/wgs84:lat", "$.['edm:Place'][*]['wgs84:lat']"));
+		paths.add(new JsonBranch("Place/wgs84:long", "$.['edm:Place'][*]['wgs84:long']"));
+		paths.add(new JsonBranch("Place/wgs84:alt", "$.['edm:Place'][*]['wgs84:alt']"));
+		paths.add(new JsonBranch("Place/dcterms:isPartOf", "$.['edm:Place'][*]['dcterms:isPartOf']"));
+		paths.add(new JsonBranch("Place/wgs84_pos:lat_long", "$.['edm:Place'][*]['wgs84_pos:lat_long']"));
+		paths.add(new JsonBranch("Place/dcterms:hasPart", "$.['edm:Place'][*]['dcterms:hasPart']"));
+		paths.add(new JsonBranch("Place/owl:sameAs", "$.['edm:Place'][*]['owl:sameAs']"));
+		paths.add(new JsonBranch("Place/skos:prefLabel", "$.['edm:Place'][*]['skos:prefLabel']"));
+		paths.add(new JsonBranch("Place/skos:altLabel", "$.['edm:Place'][*]['skos:altLabel']"));
+		paths.add(new JsonBranch("Place/skos:note", "$.['edm:Place'][*]['skos:note']"));
+		paths.add(new JsonBranch("Place/rdf:about", "$.['edm:Place'][*]['@about']"));
+
 		fieldGroups.add(
 			new FieldGroup(
 				JsonBranch.Category.MANDATORY,

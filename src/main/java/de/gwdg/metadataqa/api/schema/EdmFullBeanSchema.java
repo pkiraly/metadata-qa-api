@@ -163,7 +163,7 @@ public class EdmFullBeanSchema extends EdmSchema implements Serializable {
 		paths.add(new JsonBranch("Place/skos:note", "$.['places'][*]['note']"));
 		paths.add(new JsonBranch("Place/rdf:about", "$.['places'][*]['about']"));
 
-	 fieldGroups.add(
+		fieldGroups.add(
 			new FieldGroup(
 				JsonBranch.Category.MANDATORY,
 				"Proxy/dc:title", "Proxy/dc:description"));
