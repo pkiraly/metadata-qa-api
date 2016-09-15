@@ -151,18 +151,6 @@ public class EdmFullBeanSchema extends EdmSchema implements Serializable {
 			"$.['aggregations'][0]['hasView']",
 			JsonBranch.Category.BROWSING, JsonBranch.Category.VIEWING));
 
-		paths.add(new JsonBranch("Place/wgs84:lat", "$.['places'][*]['latitude']"));
-		paths.add(new JsonBranch("Place/wgs84:long", "$.['places'][*]['longitude']"));
-		paths.add(new JsonBranch("Place/wgs84:alt", "$.['places'][*]['altitude']"));
-		paths.add(new JsonBranch("Place/dcterms:isPartOf", "$.['places'][*]['isPartOf']"));
-		paths.add(new JsonBranch("Place/wgs84_pos:lat_long", "$.['places'][*]['position']"));
-		paths.add(new JsonBranch("Place/dcterms:hasPart", "$.['places'][*]['dctermsHasPart']"));
-		paths.add(new JsonBranch("Place/owl:sameAs", "$.['places'][*]['owlSameAs']"));
-		paths.add(new JsonBranch("Place/skos:prefLabel", "$.['places'][*]['prefLabel']"));
-		paths.add(new JsonBranch("Place/skos:altLabel", "$.['places'][*]['altLabel']"));
-		paths.add(new JsonBranch("Place/skos:note", "$.['places'][*]['note']"));
-		paths.add(new JsonBranch("Place/rdf:about", "$.['places'][*]['about']"));
-
 		fieldGroups.add(
 			new FieldGroup(
 				JsonBranch.Category.MANDATORY,
