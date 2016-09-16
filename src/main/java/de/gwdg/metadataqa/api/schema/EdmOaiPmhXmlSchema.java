@@ -185,6 +185,17 @@ public class EdmOaiPmhXmlSchema extends EdmSchema implements Serializable {
 		paths.add(new JsonBranch("Agent/skos:altLabel", "$.['edm:Agent'][*]['skos:altLabel']"));
 		paths.add(new JsonBranch("Agent/skos:note", "$.['edm:Agent'][*]['skos:note']"));
 
+		paths.add(new JsonBranch("Timespan/rdf:about", "$.['edm:Timespan'][*]['@about']"));
+		paths.add(new JsonBranch("Timespan/edm:begin", "$.['edm:Timespan'][*]['edm:begin']"));
+		paths.add(new JsonBranch("Timespan/edm:end", "$.['edm:Timespan'][*]['edm:end']"));
+		paths.add(new JsonBranch("Timespan/dcterms:isPartOf", "$.['edm:Timespan'][*]['dcterms:isPartOf']"));
+		paths.add(new JsonBranch("Timespan/dcterms:hasPart", "$.['edm:Timespan'][*]['dcterms:hasPart']"));
+		paths.add(new JsonBranch("Timespan/edm:isNextInSequence", "$.['edm:Timespan'][*]['edm:isNextInSequence']"));
+		paths.add(new JsonBranch("Timespan/owl:sameAs", "$.['edm:Timespan'][*]['owl:sameAs']"));
+		paths.add(new JsonBranch("Timespan/skos:prefLabel", "$.['edm:Timespan'][*]['skos:prefLabel']"));
+		paths.add(new JsonBranch("Timespan/skos:altLabel", "$.['edm:Timespan'][*]['skos:altLabel']"));
+		paths.add(new JsonBranch("Timespan/skos:note", "$.['edm:Timespan'][*]['skos:note']"));
+
 		fieldGroups.add(
 			new FieldGroup(
 				JsonBranch.Category.MANDATORY,
@@ -206,7 +217,8 @@ public class EdmOaiPmhXmlSchema extends EdmSchema implements Serializable {
 			"Aggregation/edm:hasView",
 			"Place/rdf:about", "Place/wgs84:lat", "Place/wgs84:long", "Place/wgs84:alt",
 			"Place/wgs84_pos:lat_long", "Place/owl:sameAs",
-			"Agent/rdf:about"
+			"Agent/rdf:about",
+			"Timespan/rdf:about"
 		));
 
 		solrFields.put("dc:title", "dc_title_txt");

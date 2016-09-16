@@ -185,6 +185,16 @@ public class EdmFullBeanSchema extends EdmSchema implements Serializable {
 		paths.add(new JsonBranch("Agent/skos:altLabel", "$.['agents'][*]['altLabel']"));
 		paths.add(new JsonBranch("Agent/skos:note", "$.['agents'][*]['note']"));
 
+		paths.add(new JsonBranch("Timespan/rdf:about", "$.['edm:Timespan'][*]['about']"));
+		paths.add(new JsonBranch("Timespan/edm:begin", "$.['edm:Timespan'][*]['begin']"));
+		paths.add(new JsonBranch("Timespan/edm:end", "$.['edm:Timespan'][*]['end']"));
+		paths.add(new JsonBranch("Timespan/dcterms:isPartOf", "$.['edm:Timespan'][*]['isPartOf']"));
+		paths.add(new JsonBranch("Timespan/dcterms:hasPart", "$.['edm:Timespan'][*]['hasPart']"));
+		paths.add(new JsonBranch("Timespan/owl:sameAs", "$.['edm:Timespan'][*]['owlSameAs']"));
+		paths.add(new JsonBranch("Timespan/skos:prefLabel", "$.['edm:Timespan'][*]['prefLabel']"));
+		paths.add(new JsonBranch("Timespan/skos:altLabel", "$.['edm:Timespan'][*]['altLabel']"));
+		paths.add(new JsonBranch("Timespan/skos:note", "$.['edm:Timespan'][*]['note']"));
+
 		fieldGroups.add(
 			new FieldGroup(
 				JsonBranch.Category.MANDATORY,
@@ -206,7 +216,8 @@ public class EdmFullBeanSchema extends EdmSchema implements Serializable {
 			"Aggregation/edm:hasView",
 			"Place/rdf:about", "Place/wgs84:lat", "Place/wgs84:long", "Place/wgs84:alt",
 			"Place/wgs84_pos:lat_long", "Place/owl:sameAs",
-			"Agent/rdf:about"
+			"Agent/rdf:about",
+			"Timespan/rdf:about"
 		));
 
 		solrFields.put("dc:title", "dc_title_txt");
