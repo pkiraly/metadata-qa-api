@@ -163,6 +163,28 @@ public class EdmOaiPmhXmlSchema extends EdmSchema implements Serializable {
 		paths.add(new JsonBranch("Place/skos:note", "$.['edm:Place'][*]['skos:note']"));
 		paths.add(new JsonBranch("Place/rdf:about", "$.['edm:Place'][*]['@about']"));
 
+		paths.add(new JsonBranch("Agent/rdf:about", "$.['edm:Agent'][*]['@about']"));
+		paths.add(new JsonBranch("Agent/edm:begin", "$.['edm:Agent'][*]['edm:begin']"));
+		paths.add(new JsonBranch("Agent/edm:end", "$.['edm:Agent'][*]['edm:end']"));
+		paths.add(new JsonBranch("Agent/edm:hasMet", "$.['edm:Agent'][*]['edm:hasMet']"));
+		paths.add(new JsonBranch("Agent/edm:isRelatedTo", "$.['edm:Agent'][*]['edm:isRelatedTo']"));
+		paths.add(new JsonBranch("Agent/owl:sameAs", "$.['edm:Agent'][*]['owl:sameAs']"));
+		paths.add(new JsonBranch("Agent/foaf:name", "$.['edm:Agent'][*]['foaf:name']"));
+		paths.add(new JsonBranch("Agent/dc:date", "$.['edm:Agent'][*]['dc:date']"));
+		paths.add(new JsonBranch("Agent/dc:identifier", "$.['edm:Agent'][*]['dc:identifier']"));
+		paths.add(new JsonBranch("Agent/rdaGr2:dateOfBirth", "$.['edm:Agent'][*]['rdaGr2:dateOfBirth']"));
+		paths.add(new JsonBranch("Agent/rdaGr2:placeOfBirth", "$.['edm:Agent'][*]['rdaGr2:placeOfBirth']"));
+		paths.add(new JsonBranch("Agent/rdaGr2:dateOfDeath", "$.['edm:Agent'][*]['rdaGr2:dateOfDeath']"));
+		paths.add(new JsonBranch("Agent/rdaGr2:placeOfDeath", "$.['edm:Agent'][*]['rdaGr2:placeOfDeath']"));
+		paths.add(new JsonBranch("Agent/rdaGr2:dateOfEstablishment", "$.['edm:Agent'][*]['rdaGr2:dateOfEstablishment']"));
+		paths.add(new JsonBranch("Agent/rdaGr2:dateOfTermination", "$.['edm:Agent'][*]['rdaGr2:dateOfTermination']"));
+		paths.add(new JsonBranch("Agent/rdaGr2:gender", "$.['edm:Agent'][*]['rdaGr2:gender']"));
+		paths.add(new JsonBranch("Agent/rdaGr2:professionOrOccupation", "$.['edm:Agent'][*]['rdaGr2:professionOrOccupation']"));
+		paths.add(new JsonBranch("Agent/rdaGr2:biographicalInformation", "$.['edm:Agent'][*]['rdaGr2:biographicalInformation']"));
+		paths.add(new JsonBranch("Agent/skos:prefLabel", "$.['edm:Agent'][*]['skos:prefLabel']"));
+		paths.add(new JsonBranch("Agent/skos:altLabel", "$.['edm:Agent'][*]['skos:altLabel']"));
+		paths.add(new JsonBranch("Agent/skos:note", "$.['edm:Agent'][*]['skos:note']"));
+
 		fieldGroups.add(
 			new FieldGroup(
 				JsonBranch.Category.MANDATORY,
@@ -183,7 +205,9 @@ public class EdmOaiPmhXmlSchema extends EdmSchema implements Serializable {
 			"Aggregation/edm:isShownBy", "Aggregation/edm:object",
 			"Aggregation/edm:hasView",
 			"Place/rdf:about", "Place/wgs84:lat", "Place/wgs84:long", "Place/wgs84:alt",
-			"Place/wgs84_pos:lat_long", "Place/owl:sameAs"));
+			"Place/wgs84_pos:lat_long", "Place/owl:sameAs",
+			"Agent/rdf:about"
+		));
 
 		solrFields.put("dc:title", "dc_title_txt");
 		solrFields.put("dcterms:alternative", "dcterms_alternative_txt");
