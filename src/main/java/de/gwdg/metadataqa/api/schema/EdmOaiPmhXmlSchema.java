@@ -127,6 +127,62 @@ public class EdmOaiPmhXmlSchema extends EdmSchema implements Serializable {
 			"$.['ore:Proxy'][?(@['edm:europeanaProxy'][0] == 'false')]['edm:rights']",
 			JsonBranch.Category.MANDATORY, JsonBranch.Category.REUSABILITY));
 		*/
+		paths.add(new JsonBranch("Proxy/edm:europeanaProxy", 
+			"$.['ore:Proxy'][?(@['edm:europeanaProxy'][0] == 'false')]['edm:europeanaProxy']"));
+		paths.add(new JsonBranch("Proxy/edm:year",
+			"$.['ore:Proxy'][?(@['edm:europeanaProxy'][0] == 'false')]['edm:year']"));
+		paths.add(new JsonBranch("Proxy/edm:userTag",
+			"$.['ore:Proxy'][?(@['edm:europeanaProxy'][0] == 'false')]['edm:userTag']"));
+		paths.add(new JsonBranch("Proxy/ore:ProxyIn",
+			"$.['ore:Proxy'][?(@['edm:europeanaProxy'][0] == 'false')]['ore:ProxyIn']"));
+		paths.add(new JsonBranch("Proxy/ore:ProxyFor",
+			"$.['ore:Proxy'][?(@['edm:europeanaProxy'][0] == 'false')]['ore:ProxyFor']"));
+		paths.add(new JsonBranch("Proxy/dc:conformsTo",
+			"$.['ore:Proxy'][?(@['edm:europeanaProxy'][0] == 'false')]['dc:conformsTo']"));
+		paths.add(new JsonBranch("Proxy/dcterms:hasFormat",
+			"$.['ore:Proxy'][?(@['edm:europeanaProxy'][0] == 'false')]['dcterms:hasFormat']"));
+		paths.add(new JsonBranch("Proxy/dcterms:hasVersion",
+			"$.['ore:Proxy'][?(@['edm:europeanaProxy'][0] == 'false')]['dcterms:hasVersion']"));
+		paths.add(new JsonBranch("Proxy/dcterms:isFormatOf",
+			"$.['ore:Proxy'][?(@['edm:europeanaProxy'][0] == 'false')]['dcterms:isFormatOf']"));
+		paths.add(new JsonBranch("Proxy/dcterms:isReferencedBy",
+			"$.['ore:Proxy'][?(@['edm:europeanaProxy'][0] == 'false')]['dcterms:isReferencedBy']"));
+		paths.add(new JsonBranch("Proxy/dcterms:isReplacedBy",
+			"$.['ore:Proxy'][?(@['edm:europeanaProxy'][0] == 'false')]['dcterms:isReplacedBy']"));
+		paths.add(new JsonBranch("Proxy/dcterms:isRequiredBy",
+			"$.['ore:Proxy'][?(@['edm:europeanaProxy'][0] == 'false')]['dcterms:isRequiredBy']"));
+		paths.add(new JsonBranch("Proxy/dcterms:isVersionOf",
+			"$.['ore:Proxy'][?(@['edm:europeanaProxy'][0] == 'false')]['dcterms:isVersionOf']"));
+		paths.add(new JsonBranch("Proxy/dcterms:references",
+			"$.['ore:Proxy'][?(@['edm:europeanaProxy'][0] == 'false')]['dcterms:references']"));
+		paths.add(new JsonBranch("Proxy/dcterms:replaces",
+			"$.['ore:Proxy'][?(@['edm:europeanaProxy'][0] == 'false')]['dcterms:replaces']"));
+		paths.add(new JsonBranch("Proxy/dcterms:requires",
+			"$.['ore:Proxy'][?(@['edm:europeanaProxy'][0] == 'false')]['dcterms:requires']"));
+		paths.add(new JsonBranch("Proxy/dcterms:tableOfContents",
+			"$.['ore:Proxy'][?(@['edm:europeanaProxy'][0] == 'false')]['dcterms:tableOfContents']"));
+		paths.add(new JsonBranch("Proxy/edm:currentLocation",
+			"$.['ore:Proxy'][?(@['edm:europeanaProxy'][0] == 'false')]['edm:currentLocation']"));
+		paths.add(new JsonBranch("Proxy/edm:hasMet",
+			"$.['ore:Proxy'][?(@['edm:europeanaProxy'][0] == 'false')]['edm:hasMet']"));
+		paths.add(new JsonBranch("Proxy/edm:hasType",
+			"$.['ore:Proxy'][?(@['edm:europeanaProxy'][0] == 'false')]['edm:hasType']"));
+		paths.add(new JsonBranch("Proxy/edm:incorporates",
+			"$.['ore:Proxy'][?(@['edm:europeanaProxy'][0] == 'false')]['edm:incorporates']"));
+		paths.add(new JsonBranch("Proxy/edm:isDerivativeOf",
+			"$.['ore:Proxy'][?(@['edm:europeanaProxy'][0] == 'false')]['edm:isDerivativeOf']"));
+		paths.add(new JsonBranch("Proxy/edm:isRelatedTo",
+			"$.['ore:Proxy'][?(@['edm:europeanaProxy'][0] == 'false')]['edm:isRelatedTo']"));
+		paths.add(new JsonBranch("Proxy/edm:isRepresentationOf",
+			"$.['ore:Proxy'][?(@['edm:europeanaProxy'][0] == 'false')]['edm:isRepresentationOf']"));
+		paths.add(new JsonBranch("Proxy/edm:isSimilarTo",
+			"$.['ore:Proxy'][?(@['edm:europeanaProxy'][0] == 'false')]['edm:isSimilarTo']"));
+		paths.add(new JsonBranch("Proxy/edm:isSuccessorOf",
+			"$.['ore:Proxy'][?(@['edm:europeanaProxy'][0] == 'false')]['edm:isSuccessorOf']"));
+		paths.add(new JsonBranch("Proxy/edm:realizes",
+			"$.['ore:Proxy'][?(@['edm:europeanaProxy'][0] == 'false')]['edm:realizes']"));
+		paths.add(new JsonBranch("Proxy/edm:wasPresentAt",
+			"$.['ore:Proxy'][?(@['edm:europeanaProxy'][0] == 'false')]['edm:wasPresentAt']"));
 
 		paths.add(new JsonBranch("Aggregation/edm:rights", "$.['ore:Aggregation'][0]['edm:rights']",
 			JsonBranch.Category.MANDATORY, JsonBranch.Category.REUSABILITY));
