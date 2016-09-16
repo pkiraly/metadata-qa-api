@@ -195,6 +195,21 @@ public class EdmFullBeanSchema extends EdmSchema implements Serializable {
 		paths.add(new JsonBranch("Timespan/skos:altLabel", "$.['edm:Timespan'][*]['altLabel']"));
 		paths.add(new JsonBranch("Timespan/skos:note", "$.['edm:Timespan'][*]['note']"));
 
+		paths.add(new JsonBranch("Concept/rdf:about", "$.['skos:Concept'][*]['@about']"));
+		paths.add(new JsonBranch("Concept/skos:broader", "$.['skos:Concept'][*]['broader']"));
+		paths.add(new JsonBranch("Concept/skos:narrower", "$.['skos:Concept'][*]['narrower']"));
+		paths.add(new JsonBranch("Concept/skos:related", "$.['skos:Concept'][*]['related']"));
+		paths.add(new JsonBranch("Concept/skos:broadMatch", "$.['skos:Concept'][*]['broadMatch']"));
+		paths.add(new JsonBranch("Concept/skos:narrowMatch", "$.['skos:Concept'][*]['narrowMatch']"));
+		paths.add(new JsonBranch("Concept/skos:relatedMatch", "$.['skos:Concept'][*]['relatedMatch']"));
+		paths.add(new JsonBranch("Concept/skos:exactMatch", "$.['skos:Concept'][*]['exactMatch']"));
+		paths.add(new JsonBranch("Concept/skos:closeMatch", "$.['skos:Concept'][*]['closeMatch']"));
+		paths.add(new JsonBranch("Concept/skos:notation", "$.['skos:Concept'][*]['notation']"));
+		paths.add(new JsonBranch("Concept/skos:inScheme", "$.['skos:Concept'][*]['inScheme']"));
+		paths.add(new JsonBranch("Concept/skos:prefLabel", "$.['skos:Concept'][*]['prefLabel']"));
+		paths.add(new JsonBranch("Concept/skos:altLabel", "$.['skos:Concept'][*]['altLabel']"));
+		paths.add(new JsonBranch("Concept/skos:note", "$.['skos:note'][*]['note']"));
+
 		fieldGroups.add(
 			new FieldGroup(
 				JsonBranch.Category.MANDATORY,
@@ -217,7 +232,8 @@ public class EdmFullBeanSchema extends EdmSchema implements Serializable {
 			"Place/rdf:about", "Place/wgs84:lat", "Place/wgs84:long", "Place/wgs84:alt",
 			"Place/wgs84_pos:lat_long", "Place/owl:sameAs",
 			"Agent/rdf:about",
-			"Timespan/rdf:about"
+			"Timespan/rdf:about",
+			"Concept/rdf:about"
 		));
 
 		solrFields.put("dc:title", "dc_title_txt");

@@ -196,6 +196,21 @@ public class EdmOaiPmhXmlSchema extends EdmSchema implements Serializable {
 		paths.add(new JsonBranch("Timespan/skos:altLabel", "$.['edm:Timespan'][*]['skos:altLabel']"));
 		paths.add(new JsonBranch("Timespan/skos:note", "$.['edm:Timespan'][*]['skos:note']"));
 
+		paths.add(new JsonBranch("Concept/rdf:about", "$.['skos:Concept'][*]['@about']"));
+		paths.add(new JsonBranch("Concept/skos:broader", "$.['skos:Concept'][*]['skos:broader']"));
+		paths.add(new JsonBranch("Concept/skos:narrower", "$.['skos:Concept'][*]['skos:narrower']"));
+		paths.add(new JsonBranch("Concept/skos:related", "$.['skos:Concept'][*]['skos:related']"));
+		paths.add(new JsonBranch("Concept/skos:broadMatch", "$.['skos:Concept'][*]['skos:broadMatch']"));
+		paths.add(new JsonBranch("Concept/skos:narrowMatch", "$.['skos:Concept'][*]['skos:narrowMatch']"));
+		paths.add(new JsonBranch("Concept/skos:relatedMatch", "$.['skos:Concept'][*]['skos:relatedMatch']"));
+		paths.add(new JsonBranch("Concept/skos:exactMatch", "$.['skos:Concept'][*]['skos:exactMatch']"));
+		paths.add(new JsonBranch("Concept/skos:closeMatch", "$.['skos:Concept'][*]['skos:closeMatch']"));
+		paths.add(new JsonBranch("Concept/skos:notation", "$.['skos:Concept'][*]['skos:notation']"));
+		paths.add(new JsonBranch("Concept/skos:inScheme", "$.['skos:Concept'][*]['skos:inScheme']"));
+		paths.add(new JsonBranch("Concept/skos:prefLabel", "$.['skos:Concept'][*]['skos:prefLabel']"));
+		paths.add(new JsonBranch("Concept/skos:altLabel", "$.['skos:Concept'][*]['skos:altLabel']"));
+		paths.add(new JsonBranch("Concept/skos:note", "$.['skos:note'][*]['skos:note']"));
+
 		fieldGroups.add(
 			new FieldGroup(
 				JsonBranch.Category.MANDATORY,
@@ -218,7 +233,8 @@ public class EdmOaiPmhXmlSchema extends EdmSchema implements Serializable {
 			"Place/rdf:about", "Place/wgs84:lat", "Place/wgs84:long", "Place/wgs84:alt",
 			"Place/wgs84_pos:lat_long", "Place/owl:sameAs",
 			"Agent/rdf:about",
-			"Timespan/rdf:about"
+			"Timespan/rdf:about",
+			"Concept/rdf:about"
 		));
 
 		solrFields.put("dc:title", "dc_title_txt");
