@@ -127,6 +127,64 @@ public class EdmFullBeanSchema extends EdmSchema implements Serializable {
 			"$.['proxies'][?(@['europeanaProxy'] == false)]['edm:rights']",
 			JsonBranch.Category.MANDATORY, JsonBranch.Category.REUSABILITY));
 		*/
+
+		paths.add(new JsonBranch("Proxy/edm:europeanaProxy", 
+			"$.['ore:Proxy'][?(@['edm:europeanaProxy'][0] == 'false')]['europeanaProxy']"));
+		paths.add(new JsonBranch("Proxy/edm:year",
+			"$.['ore:Proxy'][?(@['edm:europeanaProxy'][0] == 'false')]['year']"));
+		paths.add(new JsonBranch("Proxy/edm:userTag",
+			"$.['ore:Proxy'][?(@['edm:europeanaProxy'][0] == 'false')]['userTags']"));
+		paths.add(new JsonBranch("Proxy/ore:ProxyIn",
+			"$.['ore:Proxy'][?(@['edm:europeanaProxy'][0] == 'false')]['proxyIn']"));
+		paths.add(new JsonBranch("Proxy/ore:ProxyFor",
+			"$.['ore:Proxy'][?(@['edm:europeanaProxy'][0] == 'false')]['proxyFor']"));
+		paths.add(new JsonBranch("Proxy/dc:conformsTo",
+			"$.['ore:Proxy'][?(@['edm:europeanaProxy'][0] == 'false')]['dctermsConformsTo']"));
+		paths.add(new JsonBranch("Proxy/dcterms:hasFormat",
+			"$.['ore:Proxy'][?(@['edm:europeanaProxy'][0] == 'false')]['dctermsHasFormat']"));
+		paths.add(new JsonBranch("Proxy/dcterms:hasVersion",
+			"$.['ore:Proxy'][?(@['edm:europeanaProxy'][0] == 'false')]['dctermsHasVersion']"));
+		paths.add(new JsonBranch("Proxy/dcterms:isFormatOf",
+			"$.['ore:Proxy'][?(@['edm:europeanaProxy'][0] == 'false')]['dctermsIsFormatOf']"));
+		paths.add(new JsonBranch("Proxy/dcterms:isReferencedBy",
+			"$.['ore:Proxy'][?(@['edm:europeanaProxy'][0] == 'false')]['dctermsIsReferencedBy']"));
+		paths.add(new JsonBranch("Proxy/dcterms:isReplacedBy",
+			"$.['ore:Proxy'][?(@['edm:europeanaProxy'][0] == 'false')]['dctermsIsReplacedBy']"));
+		paths.add(new JsonBranch("Proxy/dcterms:isRequiredBy",
+			"$.['ore:Proxy'][?(@['edm:europeanaProxy'][0] == 'false')]['dctermsIsRequiredBy']"));
+		paths.add(new JsonBranch("Proxy/dcterms:isVersionOf",
+			"$.['ore:Proxy'][?(@['edm:europeanaProxy'][0] == 'false')]['dctermsIsVersionOf']"));
+		paths.add(new JsonBranch("Proxy/dcterms:references",
+			"$.['ore:Proxy'][?(@['edm:europeanaProxy'][0] == 'false')]['dctermsReferences']"));
+		paths.add(new JsonBranch("Proxy/dcterms:replaces",
+			"$.['ore:Proxy'][?(@['edm:europeanaProxy'][0] == 'false')]['dctermsReplaces']"));
+		paths.add(new JsonBranch("Proxy/dcterms:requires",
+			"$.['ore:Proxy'][?(@['edm:europeanaProxy'][0] == 'false')]['dctermsRequires']"));
+		paths.add(new JsonBranch("Proxy/dcterms:tableOfContents",
+			"$.['ore:Proxy'][?(@['edm:europeanaProxy'][0] == 'false')]['dctermsTOC']"));
+		paths.add(new JsonBranch("Proxy/edm:currentLocation",
+			"$.['ore:Proxy'][?(@['edm:europeanaProxy'][0] == 'false')]['edmCurrentLocation']"));
+		paths.add(new JsonBranch("Proxy/edm:hasMet",
+			"$.['ore:Proxy'][?(@['edm:europeanaProxy'][0] == 'false')]['edmHasMet']"));
+		paths.add(new JsonBranch("Proxy/edm:hasType",
+			"$.['ore:Proxy'][?(@['edm:europeanaProxy'][0] == 'false')]['edmhasType']"));
+		paths.add(new JsonBranch("Proxy/edm:incorporates",
+			"$.['ore:Proxy'][?(@['edm:europeanaProxy'][0] == 'false')]['edmIncorporates']"));
+		paths.add(new JsonBranch("Proxy/edm:isDerivativeOf",
+			"$.['ore:Proxy'][?(@['edm:europeanaProxy'][0] == 'false')]['edmIsDerivativeOf']"));
+		paths.add(new JsonBranch("Proxy/edm:isRelatedTo",
+			"$.['ore:Proxy'][?(@['edm:europeanaProxy'][0] == 'false')]['edmIsRelatedTo']"));
+		paths.add(new JsonBranch("Proxy/edm:isRepresentationOf",
+			"$.['ore:Proxy'][?(@['edm:europeanaProxy'][0] == 'false')]['edmIsRepresentationOf']"));
+		paths.add(new JsonBranch("Proxy/edm:isSimilarTo",
+			"$.['ore:Proxy'][?(@['edm:europeanaProxy'][0] == 'false')]['edmIsSimilarTo']"));
+		paths.add(new JsonBranch("Proxy/edm:isSuccessorOf",
+			"$.['ore:Proxy'][?(@['edm:europeanaProxy'][0] == 'false')]['edmIsSuccessorOf']"));
+		paths.add(new JsonBranch("Proxy/edm:realizes",
+			"$.['ore:Proxy'][?(@['edm:europeanaProxy'][0] == 'false')]['edmRealizes']"));
+		paths.add(new JsonBranch("Proxy/edm:wasPresentAt",
+			"$.['ore:Proxy'][?(@['edm:europeanaProxy'][0] == 'false')]['edmWasPresentAt']"));
+
 		paths.add(new JsonBranch("Aggregation/edm:rights",
 			"$.['aggregations'][0]['edmRights']",
 			JsonBranch.Category.MANDATORY, JsonBranch.Category.REUSABILITY));
@@ -150,6 +208,12 @@ public class EdmFullBeanSchema extends EdmSchema implements Serializable {
 		paths.add(new JsonBranch("Aggregation/edm:hasView",
 			"$.['aggregations'][0]['hasView']",
 			JsonBranch.Category.BROWSING, JsonBranch.Category.VIEWING));
+
+		paths.add(new JsonBranch("Aggregation/dc:rights", "$.['ore:Aggregation'][0]['dcRights']"));
+		paths.add(new JsonBranch("Aggregation/edm:ugc", "$.['ore:Aggregation'][0]['edmUgc']"));
+		paths.add(new JsonBranch("Aggregation/edm:aggregatedCHO", "$.['ore:Aggregation'][0]['aggregatedCHO']"));
+		paths.add(new JsonBranch("Aggregation/edm:intermediateProvider", "$.['ore:Aggregation'][0]['edmIntermediateProvider']"));
+		paths.add(new JsonBranch("Aggregation/rdf:about", "$.['ore:Aggregation'][0]['about']"));
 
 		paths.add(new JsonBranch("Place/wgs84:lat", "$.['places'][*]['latitude']"));
 		paths.add(new JsonBranch("Place/wgs84:long", "$.['places'][*]['longitude']"));
@@ -225,10 +289,10 @@ public class EdmFullBeanSchema extends EdmSchema implements Serializable {
 				"Aggregation/edm:isShownAt", "Aggregation/edm:isShownBy"));
 
 		noLanguageFields.addAll(Arrays.asList(
-			"edm:ProvidedCHO/@about", "Proxy/edm:isNextInSequence",
-			"Proxy/edm:type", "Aggregation/edm:isShownAt",
-			"Aggregation/edm:isShownBy", "Aggregation/edm:object",
-			"Aggregation/edm:hasView",
+			"edm:ProvidedCHO/@about",
+			"Proxy/edm:isNextInSequence", "Proxy/edm:type",
+			"Aggregation/edm:isShownAt", "Aggregation/edm:isShownBy", "Aggregation/edm:object",
+			"Aggregation/edm:hasView", "Aggregation/rdf:about",
 			"Place/rdf:about", "Place/wgs84:lat", "Place/wgs84:long", "Place/wgs84:alt",
 			"Place/wgs84_pos:lat_long", "Place/owl:sameAs",
 			"Agent/rdf:about",
