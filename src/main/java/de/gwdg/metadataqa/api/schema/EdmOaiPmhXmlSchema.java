@@ -127,29 +127,29 @@ public class EdmOaiPmhXmlSchema extends EdmSchema implements Serializable {
 			"$.['ore:Proxy'][?(@['edm:europeanaProxy'][0] == 'false')]['edm:rights']",
 			JsonBranch.Category.MANDATORY, JsonBranch.Category.REUSABILITY));
 		*/
-		paths.add(new JsonBranch("Aggregation/edm:rights",
-			"$.['ore:Aggregation'][0]['edm:rights']",
+
+		paths.add(new JsonBranch("Aggregation/edm:rights", "$.['ore:Aggregation'][0]['edm:rights']",
 			JsonBranch.Category.MANDATORY, JsonBranch.Category.REUSABILITY));
-		paths.add(new JsonBranch("Aggregation/edm:provider",
-			"$.['ore:Aggregation'][0]['edm:provider']",
+		paths.add(new JsonBranch("Aggregation/edm:provider", "$.['ore:Aggregation'][0]['edm:provider']",
 			JsonBranch.Category.MANDATORY, JsonBranch.Category.SEARCHABILITY, JsonBranch.Category.IDENTIFICATION));
-		paths.add(new JsonBranch("Aggregation/edm:dataProvider",
-			"$.['ore:Aggregation'][0]['edm:dataProvider']",
+		paths.add(new JsonBranch("Aggregation/edm:dataProvider", "$.['ore:Aggregation'][0]['edm:dataProvider']",
 			JsonBranch.Category.MANDATORY, JsonBranch.Category.SEARCHABILITY,
 			JsonBranch.Category.IDENTIFICATION));
-		paths.add(new JsonBranch("Aggregation/edm:isShownAt",
-			"$.['ore:Aggregation'][0]['edm:isShownAt']",
+		paths.add(new JsonBranch("Aggregation/edm:isShownAt", "$.['ore:Aggregation'][0]['edm:isShownAt']",
 			JsonBranch.Category.BROWSING, JsonBranch.Category.VIEWING));
-		paths.add(new JsonBranch("Aggregation/edm:isShownBy",
-			"$.['ore:Aggregation'][0]['edm:isShownBy']",
+		paths.add(new JsonBranch("Aggregation/edm:isShownBy", "$.['ore:Aggregation'][0]['edm:isShownBy']",
 			JsonBranch.Category.BROWSING, JsonBranch.Category.VIEWING,
 			JsonBranch.Category.REUSABILITY));
-		paths.add(new JsonBranch("Aggregation/edm:object",
-			"$.['ore:Aggregation'][0]['edm:object']",
+		paths.add(new JsonBranch("Aggregation/edm:object", "$.['ore:Aggregation'][0]['edm:object']",
 			JsonBranch.Category.VIEWING, JsonBranch.Category.REUSABILITY));
-		paths.add(new JsonBranch("Aggregation/edm:hasView",
-			"$.['ore:Aggregation'][0]['edm:hasView']",
+		paths.add(new JsonBranch("Aggregation/edm:hasView", "$.['ore:Aggregation'][0]['edm:hasView']",
 			JsonBranch.Category.BROWSING, JsonBranch.Category.VIEWING));
+
+		paths.add(new JsonBranch("Aggregation/dc:rights", "$.['ore:Aggregation'][0]['dc:rights']"));
+		paths.add(new JsonBranch("Aggregation/edm:ugc", "$.['ore:Aggregation'][0]['edm:ugc']"));
+		paths.add(new JsonBranch("Aggregation/edm:aggregatedCHO", "$.['ore:Aggregation'][0]['edm:aggregatedCHO']"));
+		paths.add(new JsonBranch("Aggregation/edm:intermediateProvider", "$.['ore:Aggregation'][0]['edm:intermediateProvider']"));
+		paths.add(new JsonBranch("Aggregation/rdf:about", "$.['ore:Aggregation'][0]['rdf:about']"));
 
 		paths.add(new JsonBranch("Place/wgs84:lat", "$.['edm:Place'][*]['wgs84:lat']"));
 		paths.add(new JsonBranch("Place/wgs84:long", "$.['edm:Place'][*]['wgs84:long']"));
@@ -229,7 +229,7 @@ public class EdmOaiPmhXmlSchema extends EdmSchema implements Serializable {
 			"edm:ProvidedCHO/@about", "Proxy/edm:isNextInSequence",
 			"Proxy/edm:type", "Aggregation/edm:isShownAt",
 			"Aggregation/edm:isShownBy", "Aggregation/edm:object",
-			"Aggregation/edm:hasView",
+			"Aggregation/edm:hasView", "Aggregation/rdf:about",
 			"Place/rdf:about", "Place/wgs84:lat", "Place/wgs84:long", "Place/wgs84:alt",
 			"Place/wgs84_pos:lat_long", "Place/owl:sameAs",
 			"Agent/rdf:about",
