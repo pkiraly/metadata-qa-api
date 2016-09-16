@@ -14,7 +14,7 @@ import java.util.Map;
  * This class represents what fields will be analyzed in different measurements.
  * @author Péter Király <peter.kiraly at gwdg.de>
  */
-public class EdmOaiPmhXmlSchema extends EdmSchema implements Serializable {
+public class EdmFullBeanLimitedSchema extends EdmSchema implements Serializable {
 
 	private final static List<JsonBranch> paths = new ArrayList<>();
 	private final static List<FieldGroup> fieldGroups = new ArrayList<>();
@@ -23,145 +23,133 @@ public class EdmOaiPmhXmlSchema extends EdmSchema implements Serializable {
 	private final static Map<String, String> extractableFields = new LinkedHashMap<>();
 	private final static List<String> emptyStrings = new ArrayList<>();
 	private final static String longSubjectPath =
-		"$.['ore:Proxy'][?(@['edm:europeanaProxy'][0] == 'false')]['dc:subject']";
+		"$.['proxies'][?(@['europeanaProxy'] == false)]['dcSubject']";
 	private final static String titlePath =
-		"$.['ore:Proxy'][?(@['edm:europeanaProxy'][0] == 'false')]['dc:title']";
+		"$.['proxies'][?(@['europeanaProxy'] == false)]['dcTitle']";
 	private final static String descriptionPath =
-		"$.['ore:Proxy'][?(@['edm:europeanaProxy'][0] == 'false')]['dc:description']";
+		"$.['proxies'][?(@['europeanaProxy'] == false)]['dcDescription']";
 
 	static {
 		paths.add(new JsonBranch("edm:ProvidedCHO/@about",
-			"$.['edm:ProvidedCHO'][0]['@about']",
+			"$.['providedCHOs'][0]['about']",
 			JsonBranch.Category.MANDATORY));
 		paths.add(new JsonBranch("Proxy/dc:title",
-			"$.['ore:Proxy'][?(@['edm:europeanaProxy'][0] == 'false')]['dc:title']",
+			"$.['proxies'][?(@['europeanaProxy'] == false)]['dcTitle']",
 			JsonBranch.Category.DESCRIPTIVENESS, JsonBranch.Category.SEARCHABILITY,
 			JsonBranch.Category.IDENTIFICATION, JsonBranch.Category.MULTILINGUALITY));
 		paths.add(new JsonBranch("Proxy/dcterms:alternative",
-			"$.['ore:Proxy'][?(@['edm:europeanaProxy'][0] == 'false')]['dcterms:alternative']",
+			"$.['proxies'][?(@['europeanaProxy'] == false)]['dctermsAlternative']",
 			JsonBranch.Category.DESCRIPTIVENESS, JsonBranch.Category.SEARCHABILITY, JsonBranch.Category.IDENTIFICATION,
 			JsonBranch.Category.MULTILINGUALITY));
 		paths.add(new JsonBranch("Proxy/dc:description",
-			"$.['ore:Proxy'][?(@['edm:europeanaProxy'][0] == 'false')]['dc:description']",
+			"$.['proxies'][?(@['europeanaProxy'] == false)]['dcDescription']",
 			JsonBranch.Category.DESCRIPTIVENESS, JsonBranch.Category.SEARCHABILITY,
 			JsonBranch.Category.CONTEXTUALIZATION, JsonBranch.Category.IDENTIFICATION, JsonBranch.Category.MULTILINGUALITY));
 		paths.add(new JsonBranch("Proxy/dc:creator",
-			"$.['ore:Proxy'][?(@['edm:europeanaProxy'][0] == 'false')]['dc:creator']",
+			"$.['proxies'][?(@['europeanaProxy'] == false)]['dcCreator']",
 			JsonBranch.Category.DESCRIPTIVENESS, JsonBranch.Category.SEARCHABILITY, JsonBranch.Category.CONTEXTUALIZATION,
 			JsonBranch.Category.BROWSING));
 		paths.add(new JsonBranch("Proxy/dc:publisher",
-			"$.['ore:Proxy'][?(@['edm:europeanaProxy'][0] == 'false')]['dc:publisher']",
+			"$.['proxies'][?(@['europeanaProxy'] == false)]['dcPublisher']",
 			JsonBranch.Category.SEARCHABILITY, JsonBranch.Category.REUSABILITY));
 		paths.add(new JsonBranch("Proxy/dc:contributor",
-			"$.['ore:Proxy'][?(@['edm:europeanaProxy'][0] == 'false')]['dc:contributor']",
+			"$.['proxies'][?(@['europeanaProxy'] == false)]['dcContributor']",
 			JsonBranch.Category.SEARCHABILITY));
 		paths.add(new JsonBranch("Proxy/dc:type",
-			"$.['ore:Proxy'][?(@['edm:europeanaProxy'][0] == 'false')]['dc:type']",
+			"$.['proxies'][?(@['europeanaProxy'] == false)]['dcType']",
 			JsonBranch.Category.SEARCHABILITY, JsonBranch.Category.CONTEXTUALIZATION,
 			JsonBranch.Category.IDENTIFICATION, JsonBranch.Category.BROWSING));
 		paths.add(new JsonBranch("Proxy/dc:identifier",
-			"$.['ore:Proxy'][?(@['edm:europeanaProxy'][0] == 'false')]['dc:identifier']",
+			"$.['proxies'][?(@['europeanaProxy'] == false)]['dcIdentifier']",
 			JsonBranch.Category.IDENTIFICATION));
 		paths.add(new JsonBranch("Proxy/dc:language",
-			"$.['ore:Proxy'][?(@['edm:europeanaProxy'][0] == 'false')]['dc:language']",
+			"$.['proxies'][?(@['europeanaProxy'] == false)]['dcLanguage']",
 			JsonBranch.Category.DESCRIPTIVENESS, JsonBranch.Category.MULTILINGUALITY));
 		paths.add(new JsonBranch("Proxy/dc:coverage",
-			"$.['ore:Proxy'][?(@['edm:europeanaProxy'][0] == 'false')]['dc:coverage']",
+			"$.['proxies'][?(@['europeanaProxy'] == false)]['dcCoverage']",
 			JsonBranch.Category.SEARCHABILITY, JsonBranch.Category.CONTEXTUALIZATION,
 			JsonBranch.Category.BROWSING));
 		paths.add(new JsonBranch("Proxy/dcterms:temporal",
-			"$.['ore:Proxy'][?(@['edm:europeanaProxy'][0] == 'false')]['dcterms:temporal']",
+			"$.['proxies'][?(@['europeanaProxy'] == false)]['dctermsTemporal']",
 			JsonBranch.Category.SEARCHABILITY, JsonBranch.Category.CONTEXTUALIZATION, JsonBranch.Category.BROWSING));
 		paths.add(new JsonBranch("Proxy/dcterms:spatial",
-			"$.['ore:Proxy'][?(@['edm:europeanaProxy'][0] == 'false')]['dcterms:spatial']",
+			"$.['proxies'][?(@['europeanaProxy'] == false)]['dctermsSpatial']",
 			JsonBranch.Category.SEARCHABILITY, JsonBranch.Category.CONTEXTUALIZATION,
 			JsonBranch.Category.BROWSING));
 		paths.add(new JsonBranch("Proxy/dc:subject",
-			"$.['ore:Proxy'][?(@['edm:europeanaProxy'][0] == 'false')]['dc:subject']",
+			"$.['proxies'][?(@['europeanaProxy'] == false)]['dcSubject']",
 			JsonBranch.Category.DESCRIPTIVENESS, JsonBranch.Category.SEARCHABILITY,
 			JsonBranch.Category.CONTEXTUALIZATION, JsonBranch.Category.MULTILINGUALITY));
 		paths.add(new JsonBranch("Proxy/dc:date",
-			"$.['ore:Proxy'][?(@['edm:europeanaProxy'][0] == 'false')]['dc:date']",
+			"$.['proxies'][?(@['europeanaProxy'] == false)]['dcDate']",
 			JsonBranch.Category.IDENTIFICATION, JsonBranch.Category.BROWSING, JsonBranch.Category.REUSABILITY));
 		paths.add(new JsonBranch("Proxy/dcterms:created",
-			"$.['ore:Proxy'][?(@['edm:europeanaProxy'][0] == 'false')]['dcterms:created']",
+			"$.['proxies'][?(@['europeanaProxy'] == false)]['dctermsCreated']",
 			JsonBranch.Category.IDENTIFICATION, JsonBranch.Category.REUSABILITY));
 		paths.add(new JsonBranch("Proxy/dcterms:issued",
-			"$.['ore:Proxy'][?(@['edm:europeanaProxy'][0] == 'false')]['dcterms:issued']",
+			"$.['proxies'][?(@['europeanaProxy'] == false)]['dctermsIssued']",
 			JsonBranch.Category.IDENTIFICATION, JsonBranch.Category.REUSABILITY));
 		paths.add(new JsonBranch("Proxy/dcterms:extent",
-			"$.['ore:Proxy'][?(@['edm:europeanaProxy'][0] == 'false')]['dcterms:extent']",
+			"$.['proxies'][?(@['europeanaProxy'] == false)]['dctermsExtent']",
 			JsonBranch.Category.DESCRIPTIVENESS, JsonBranch.Category.REUSABILITY));
 		paths.add(new JsonBranch("Proxy/dcterms:medium",
-			"$.['ore:Proxy'][?(@['edm:europeanaProxy'][0] == 'false')]['dcterms:medium']",
+			"$.['proxies'][?(@['europeanaProxy'] == false)]['dctermsMedium']",
 			JsonBranch.Category.DESCRIPTIVENESS, JsonBranch.Category.REUSABILITY));
 		paths.add(new JsonBranch("Proxy/dcterms:provenance",
-			"$.['ore:Proxy'][?(@['edm:europeanaProxy'][0] == 'false')]['dcterms:provenance']",
+			"$.['proxies'][?(@['europeanaProxy'] == false)]['dctermsProvenance']",
 			JsonBranch.Category.DESCRIPTIVENESS));
 		paths.add(new JsonBranch("Proxy/dcterms:hasPart",
-			"$.['ore:Proxy'][?(@['edm:europeanaProxy'][0] == 'false')]['dcterms:hasPart']",
+			"$.['proxies'][?(@['europeanaProxy'] == false)]['dctermsHasPart']",
 			JsonBranch.Category.SEARCHABILITY, JsonBranch.Category.CONTEXTUALIZATION, JsonBranch.Category.BROWSING));
 		paths.add(new JsonBranch("Proxy/dcterms:isPartOf",
-			"$.['ore:Proxy'][?(@['edm:europeanaProxy'][0] == 'false')]['dcterms:isPartOf']",
+			"$.['proxies'][?(@['europeanaProxy'] == false)]['dctermsIsPartOf']",
 			JsonBranch.Category.SEARCHABILITY, JsonBranch.Category.CONTEXTUALIZATION, JsonBranch.Category.BROWSING));
 		paths.add(new JsonBranch("Proxy/dc:format",
-			"$.['ore:Proxy'][?(@['edm:europeanaProxy'][0] == 'false')]['dc:format']",
+			"$.['proxies'][?(@['europeanaProxy'] == false)]['dcFormat']",
 			JsonBranch.Category.DESCRIPTIVENESS, JsonBranch.Category.REUSABILITY));
 		paths.add(new JsonBranch("Proxy/dc:source",
-			"$.['ore:Proxy'][?(@['edm:europeanaProxy'][0] == 'false')]['dc:source']",
+			"$.['proxies'][?(@['europeanaProxy'] == false)]['dcSource']",
 			JsonBranch.Category.DESCRIPTIVENESS));
 		paths.add(new JsonBranch("Proxy/dc:rights",
-			"$.['ore:Proxy'][?(@['edm:europeanaProxy'][0] == 'false')]['dc:rights']",
+			"$.['proxies'][?(@['europeanaProxy'] == false)]['dcRights']",
 			JsonBranch.Category.REUSABILITY));
 		paths.add(new JsonBranch("Proxy/dc:relation",
-			"$.['ore:Proxy'][?(@['edm:europeanaProxy'][0] == 'false')]['dc:relation']",
+			"$.['proxies'][?(@['europeanaProxy'] == false)]['dcRelation']",
 			JsonBranch.Category.SEARCHABILITY, JsonBranch.Category.CONTEXTUALIZATION, JsonBranch.Category.BROWSING));
 		paths.add(new JsonBranch("Proxy/edm:isNextInSequence",
-			"$.['ore:Proxy'][?(@['edm:europeanaProxy'][0] == 'false')]['edm:isNextInSequence']",
+			"$.['proxies'][?(@['europeanaProxy'] == false)]['edmIsNextInSequence']",
 			JsonBranch.Category.SEARCHABILITY, JsonBranch.Category.CONTEXTUALIZATION, JsonBranch.Category.BROWSING));
 		paths.add(new JsonBranch("Proxy/edm:type",
-			"$.['ore:Proxy'][?(@['edm:europeanaProxy'][0] == 'false')]['edm:type']",
+			"$.['proxies'][?(@['europeanaProxy'] == false)]['edmType']",
 			JsonBranch.Category.SEARCHABILITY, JsonBranch.Category.BROWSING));
 		/*
 		paths.add(new JsonBranch("Proxy/edm:rights",
-			"$.['ore:Proxy'][?(@['edm:europeanaProxy'][0] == 'false')]['edm:rights']",
+			"$.['proxies'][?(@['europeanaProxy'] == false)]['edm:rights']",
 			JsonBranch.Category.MANDATORY, JsonBranch.Category.REUSABILITY));
 		*/
 		paths.add(new JsonBranch("Aggregation/edm:rights",
-			"$.['ore:Aggregation'][0]['edm:rights']",
+			"$.['aggregations'][0]['edmRights']",
 			JsonBranch.Category.MANDATORY, JsonBranch.Category.REUSABILITY));
 		paths.add(new JsonBranch("Aggregation/edm:provider",
-			"$.['ore:Aggregation'][0]['edm:provider']",
+			"$.['aggregations'][0]['edmProvider']",
 			JsonBranch.Category.MANDATORY, JsonBranch.Category.SEARCHABILITY, JsonBranch.Category.IDENTIFICATION));
 		paths.add(new JsonBranch("Aggregation/edm:dataProvider",
-			"$.['ore:Aggregation'][0]['edm:dataProvider']",
+			"$.['aggregations'][0]['edmDataProvider']",
 			JsonBranch.Category.MANDATORY, JsonBranch.Category.SEARCHABILITY,
 			JsonBranch.Category.IDENTIFICATION));
 		paths.add(new JsonBranch("Aggregation/edm:isShownAt",
-			"$.['ore:Aggregation'][0]['edm:isShownAt']",
+			"$.['aggregations'][0]['edmIsShownAt']",
 			JsonBranch.Category.BROWSING, JsonBranch.Category.VIEWING));
 		paths.add(new JsonBranch("Aggregation/edm:isShownBy",
-			"$.['ore:Aggregation'][0]['edm:isShownBy']",
+			"$.['aggregations'][0]['edmIsShownBy']",
 			JsonBranch.Category.BROWSING, JsonBranch.Category.VIEWING,
 			JsonBranch.Category.REUSABILITY));
 		paths.add(new JsonBranch("Aggregation/edm:object",
-			"$.['ore:Aggregation'][0]['edm:object']",
+			"$.['aggregations'][0]['edmObject']",
 			JsonBranch.Category.VIEWING, JsonBranch.Category.REUSABILITY));
 		paths.add(new JsonBranch("Aggregation/edm:hasView",
-			"$.['ore:Aggregation'][0]['edm:hasView']",
+			"$.['aggregations'][0]['hasView']",
 			JsonBranch.Category.BROWSING, JsonBranch.Category.VIEWING));
-
-		paths.add(new JsonBranch("Place/wgs84:lat", "$.['edm:Place'][*]['wgs84:lat']"));
-		paths.add(new JsonBranch("Place/wgs84:long", "$.['edm:Place'][*]['wgs84:long']"));
-		paths.add(new JsonBranch("Place/wgs84:alt", "$.['edm:Place'][*]['wgs84:alt']"));
-		paths.add(new JsonBranch("Place/dcterms:isPartOf", "$.['edm:Place'][*]['dcterms:isPartOf']"));
-		paths.add(new JsonBranch("Place/wgs84_pos:lat_long", "$.['edm:Place'][*]['wgs84_pos:lat_long']"));
-		paths.add(new JsonBranch("Place/dcterms:hasPart", "$.['edm:Place'][*]['dcterms:hasPart']"));
-		paths.add(new JsonBranch("Place/owl:sameAs", "$.['edm:Place'][*]['owl:sameAs']"));
-		paths.add(new JsonBranch("Place/skos:prefLabel", "$.['edm:Place'][*]['skos:prefLabel']"));
-		paths.add(new JsonBranch("Place/skos:altLabel", "$.['edm:Place'][*]['skos:altLabel']"));
-		paths.add(new JsonBranch("Place/skos:note", "$.['edm:Place'][*]['skos:note']"));
-		paths.add(new JsonBranch("Place/rdf:about", "$.['edm:Place'][*]['@about']"));
 
 		fieldGroups.add(
 			new FieldGroup(
@@ -181,9 +169,7 @@ public class EdmOaiPmhXmlSchema extends EdmSchema implements Serializable {
 			"edm:ProvidedCHO/@about", "Proxy/edm:isNextInSequence",
 			"Proxy/edm:type", "Aggregation/edm:isShownAt",
 			"Aggregation/edm:isShownBy", "Aggregation/edm:object",
-			"Aggregation/edm:hasView",
-			"Place/rdf:about", "Place/wgs84:lat", "Place/wgs84:long", "Place/wgs84:alt",
-			"Place/wgs84_pos:lat_long", "Place/owl:sameAs"));
+			"Aggregation/edm:hasView"));
 
 		solrFields.put("dc:title", "dc_title_txt");
 		solrFields.put("dcterms:alternative", "dcterms_alternative_txt");
@@ -191,12 +177,11 @@ public class EdmOaiPmhXmlSchema extends EdmSchema implements Serializable {
 
 		extractableFields.put("recordId", "$.identifier");
 		extractableFields.put("dataset", "$.sets[0]");
-		extractableFields.put("dataProvider", "$.['ore:Aggregation'][0]['edm:dataProvider'][0]");
+		extractableFields.put("dataProvider", "$.['aggregations'][0]['edmDataProvider'][0]");
 
-		emptyStrings.add("$.['ore:Proxy'][?(@['edm:europeanaProxy'][0] == 'false')]['dc:title']");
-		emptyStrings.add("$.['ore:Proxy'][?(@['edm:europeanaProxy'][0] == 'false')]['dc:description']");
-		emptyStrings.add("$.['ore:Proxy'][?(@['edm:europeanaProxy'][0] == 'false')]['dc:subject']");
-
+		emptyStrings.add("$.['proxies'][?(@['europeanaProxy'] == false)]['dcTitle']");
+		emptyStrings.add("$.['proxies'][?(@['europeanaProxy'] == false)]['dcDescription']");
+		emptyStrings.add("$.['proxies'][?(@['europeanaProxy'] == false)]['dcSubject']");
 	}
 
 	@Override

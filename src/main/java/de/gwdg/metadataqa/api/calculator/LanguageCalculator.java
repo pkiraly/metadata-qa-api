@@ -133,7 +133,7 @@ public class LanguageCalculator implements Calculator, Serializable {
 
 	@Override
 	public String getCsv(boolean withLabel, boolean compressed) {
-		return languageMap.getList(withLabel, compressed);
+		return languageMap.getList(withLabel, false);
 	}
 
 }

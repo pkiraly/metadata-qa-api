@@ -14,7 +14,7 @@ import java.util.Map;
  * This class represents what fields will be analyzed in different measurements.
  * @author Péter Király <peter.kiraly at gwdg.de>
  */
-public class EdmOaiPmhXmlSchema extends EdmSchema implements Serializable {
+public class EdmOaiPmhXmlLimitedSchema extends EdmSchema implements Serializable {
 
 	private final static List<JsonBranch> paths = new ArrayList<>();
 	private final static List<FieldGroup> fieldGroups = new ArrayList<>();
@@ -151,18 +151,6 @@ public class EdmOaiPmhXmlSchema extends EdmSchema implements Serializable {
 			"$.['ore:Aggregation'][0]['edm:hasView']",
 			JsonBranch.Category.BROWSING, JsonBranch.Category.VIEWING));
 
-		paths.add(new JsonBranch("Place/wgs84:lat", "$.['edm:Place'][*]['wgs84:lat']"));
-		paths.add(new JsonBranch("Place/wgs84:long", "$.['edm:Place'][*]['wgs84:long']"));
-		paths.add(new JsonBranch("Place/wgs84:alt", "$.['edm:Place'][*]['wgs84:alt']"));
-		paths.add(new JsonBranch("Place/dcterms:isPartOf", "$.['edm:Place'][*]['dcterms:isPartOf']"));
-		paths.add(new JsonBranch("Place/wgs84_pos:lat_long", "$.['edm:Place'][*]['wgs84_pos:lat_long']"));
-		paths.add(new JsonBranch("Place/dcterms:hasPart", "$.['edm:Place'][*]['dcterms:hasPart']"));
-		paths.add(new JsonBranch("Place/owl:sameAs", "$.['edm:Place'][*]['owl:sameAs']"));
-		paths.add(new JsonBranch("Place/skos:prefLabel", "$.['edm:Place'][*]['skos:prefLabel']"));
-		paths.add(new JsonBranch("Place/skos:altLabel", "$.['edm:Place'][*]['skos:altLabel']"));
-		paths.add(new JsonBranch("Place/skos:note", "$.['edm:Place'][*]['skos:note']"));
-		paths.add(new JsonBranch("Place/rdf:about", "$.['edm:Place'][*]['@about']"));
-
 		fieldGroups.add(
 			new FieldGroup(
 				JsonBranch.Category.MANDATORY,
@@ -181,9 +169,7 @@ public class EdmOaiPmhXmlSchema extends EdmSchema implements Serializable {
 			"edm:ProvidedCHO/@about", "Proxy/edm:isNextInSequence",
 			"Proxy/edm:type", "Aggregation/edm:isShownAt",
 			"Aggregation/edm:isShownBy", "Aggregation/edm:object",
-			"Aggregation/edm:hasView",
-			"Place/rdf:about", "Place/wgs84:lat", "Place/wgs84:long", "Place/wgs84:alt",
-			"Place/wgs84_pos:lat_long", "Place/owl:sameAs"));
+			"Aggregation/edm:hasView"));
 
 		solrFields.put("dc:title", "dc_title_txt");
 		solrFields.put("dcterms:alternative", "dcterms_alternative_txt");
