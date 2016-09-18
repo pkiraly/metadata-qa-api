@@ -56,12 +56,12 @@ public class CalculatorFacadeTest {
 	@Test
 	public void emptyConstructor() {
 		CalculatorFacade calculator = new CalculatorFacade();
-		assertTrue(calculator.runFieldExistence());
-		assertTrue(calculator.runFieldCardinality());
-		assertTrue(calculator.runCompleteness());
-		assertFalse(calculator.runTfIdf());
-		assertFalse(calculator.runProblemCatalog());
-		assertFalse(calculator.runLanguage());
+		assertTrue(calculator.isFieldExistenceMeasurementEnabled());
+		assertTrue(calculator.isFieldCardinalityMeasurementEnabled());
+		assertTrue(calculator.isCompletenessMeasurementEnabled());
+		assertFalse(calculator.isTfIdfMeasurementEnabled());
+		assertFalse(calculator.isProblemCatalogMeasurementEnabled());
+		assertFalse(calculator.isLanguageMeasurementEnabled());
 		assertFalse(calculator.collectTfIdfTerms());
 		assertFalse(calculator.completenessCollectFields());
 	}
@@ -70,12 +70,12 @@ public class CalculatorFacadeTest {
 	public void testChanged() {
 		CalculatorFacade calculator = new CalculatorFacade();
 
-		assertFalse(calculator.runTfIdf());
+		assertFalse(calculator.isTfIdfMeasurementEnabled());
 		calculator.configure();
 		List<Calculator> calculators = calculator.getCalculators();
 		assertEquals(1, calculators.size());
 
-		calculator.runTfIdf(true);
+		calculator.enableTfIdfMeasurement(true);
 		calculator.changed();
 		calculators = calculator.getCalculators();
 		assertEquals(2, calculators.size());

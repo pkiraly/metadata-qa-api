@@ -11,7 +11,6 @@ import de.gwdg.metadataqa.api.problemcatalog.LongSubject;
 import de.gwdg.metadataqa.api.problemcatalog.ProblemCatalog;
 import de.gwdg.metadataqa.api.problemcatalog.TitleAndDescriptionAreSame;
 import de.gwdg.metadataqa.api.schema.EdmSchema;
-import de.gwdg.metadataqa.api.schema.Schema;
 import de.gwdg.metadataqa.api.uniqueness.TfIdf;
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -34,32 +33,32 @@ public class CalculatorFacade implements Serializable {
 	 * Flag whether or not run the field existence measurement
 	 * (default: true)
 	 */
-	protected boolean runFieldExistence = true;
+	protected boolean fieldExistenceMeasurementEnabled = true;
 	/**
 	 * Flag whether or not run the field cardinality measurement
 	 * (default: true)
 	 */
-	protected boolean runFieldCardinality = true;
+	protected boolean fieldCardinalityMeasurementEnabled = true;
 	/**
 	 * Flag whether or not run the completeness measurement
 	 * (default: true)
 	 */
-	protected boolean runCompleteness = true;
+	protected boolean completenessMeasurementEnabled = true;
 	/**
 	 * Flag whether or not run the uniqueness measurement
 	 * (default: false)
 	 */
-	protected boolean runTfIdf = false;
+	protected boolean tfIdfMeasurementEnabled = false;
 	/**
 	 * Flag whether or not run the problem catalog
 	 * (default: false)
 	 */
-	protected boolean runProblemCatalog = false;
+	protected boolean problemCatalogMeasurementEnabled = false;
 	/**
 	 * Flag whether or not run the language detector
 	 * (default: false)
 	 */
-	protected boolean runLanguage = false;
+	protected boolean languageMeasurementEnabled = false;
 	/**
 	 * Flag whether or not collect TF-IDF terms in uniqueness measurement
 	 * (default: false)
@@ -118,11 +117,11 @@ public class CalculatorFacade implements Serializable {
 	 */
 	public CalculatorFacade(boolean runFieldExistence, boolean runFieldCardinality,
 			boolean runCompleteness, boolean runTfIdf, boolean runProblemCatalog) {
-		this.runFieldExistence = runFieldExistence;
-		this.runFieldCardinality = runFieldCardinality;
-		this.runCompleteness = runCompleteness;
-		this.runTfIdf = runTfIdf;
-		this.runProblemCatalog = runProblemCatalog;
+		this.fieldExistenceMeasurementEnabled = runFieldExistence;
+		this.fieldCardinalityMeasurementEnabled = runFieldCardinality;
+		this.completenessMeasurementEnabled = runCompleteness;
+		this.tfIdfMeasurementEnabled = runTfIdf;
+		this.problemCatalogMeasurementEnabled = runProblemCatalog;
 	}
 
 	protected void changed() {
@@ -140,19 +139,19 @@ public class CalculatorFacade implements Serializable {
 		fieldExtractor = new FieldExtractor();
 		EdmSchema schema = new EdmOaiPmhXmlSchema();
 
-		if (runCompleteness) {
+		if (completenessMeasurementEnabled) {
 			completenessCalculator = new CompletenessCalculator(schema);
 			completenessCalculator.collectFields(completenessCollectFields);
 			calculators.add(completenessCalculator);
 		}
 
-		if (runTfIdf) {
+		if (tfIdfMeasurementEnabled) {
 			tfidfCalculator = new TfIdfCalculator(schema);
 			tfidfCalculator.setDoCollectTerms(collectTfIdfTerms);
 			calculators.add(tfidfCalculator);
 		}
 
-		if (runProblemCatalog) {
+		if (problemCatalogMeasurementEnabled) {
 			ProblemCatalog problemCatalog = new ProblemCatalog(schema);
 			LongSubject longSubject = new LongSubject(problemCatalog);
 			TitleAndDescriptionAreSame titleAndDescriptionAreSame = new TitleAndDescriptionAreSame(problemCatalog);
@@ -160,7 +159,7 @@ public class CalculatorFacade implements Serializable {
 			calculators.add(problemCatalog);
 		}
 
-		if (runLanguage) {
+		if (languageMeasurementEnabled) {
 			languageCalculator = new LanguageCalculator(schema);
 			calculators.add(languageCalculator);
 		}
@@ -213,8 +212,8 @@ public class CalculatorFacade implements Serializable {
 	 * @return 
 	 *   field existence measurement flag
 	 */
-	public boolean runFieldExistence() {
-		return runFieldExistence;
+	public boolean isFieldExistenceMeasurementEnabled() {
+		return fieldExistenceMeasurementEnabled;
 	}
 
 	/**
@@ -222,9 +221,9 @@ public class CalculatorFacade implements Serializable {
 	 * @param runFieldExistence
 	 *    field existence measurement flag
 	 */
-	public void runFieldExistence(boolean runFieldExistence) {
-		if (this.runFieldExistence != runFieldExistence) {
-			this.runFieldExistence = runFieldExistence;
+	public void enableFieldExistenceMeasurement(boolean runFieldExistence) {
+		if (this.fieldExistenceMeasurementEnabled != runFieldExistence) {
+			this.fieldExistenceMeasurementEnabled = runFieldExistence;
 			changed = true;
 		}
 	}
@@ -234,8 +233,8 @@ public class CalculatorFacade implements Serializable {
 	 * @return
 	 *   Flag to run cardinality measurement
 	 */
-	public boolean runFieldCardinality() {
-		return runFieldCardinality;
+	public boolean isFieldCardinalityMeasurementEnabled() {
+		return fieldCardinalityMeasurementEnabled;
 	}
 
 	/**
@@ -243,9 +242,9 @@ public class CalculatorFacade implements Serializable {
 	 * @param runFieldCardinality
 	 *    cardinality measurement flag
 	 */
-	public void runFieldCardinality(boolean runFieldCardinality) {
-		if (this.runFieldCardinality != runFieldCardinality) {
-			this.runFieldCardinality = runFieldCardinality;
+	public void enableFieldCardinalityMeasurement(boolean runFieldCardinality) {
+		if (this.fieldCardinalityMeasurementEnabled != runFieldCardinality) {
+			this.fieldCardinalityMeasurementEnabled = runFieldCardinality;
 			changed = true;
 		}
 	}
@@ -255,8 +254,8 @@ public class CalculatorFacade implements Serializable {
 	 * @return
 	 *   Flag whether or not run the completeness measurement
 	 */
-	public boolean runCompleteness() {
-		return runCompleteness;
+	public boolean isCompletenessMeasurementEnabled() {
+		return completenessMeasurementEnabled;
 	}
 
 	/**
@@ -264,9 +263,9 @@ public class CalculatorFacade implements Serializable {
 	 * @param runCompleteness
 	 *    flag whether or not run the completeness measurement
 	 */
-	public void runCompleteness(boolean runCompleteness) {
-		if (this.runCompleteness != runCompleteness) {
-			this.runCompleteness = runCompleteness;
+	public void enableCompletenessMeasurement(boolean runCompleteness) {
+		if (this.completenessMeasurementEnabled != runCompleteness) {
+			this.completenessMeasurementEnabled = runCompleteness;
 			changed = true;
 		}
 	}
@@ -276,16 +275,16 @@ public class CalculatorFacade implements Serializable {
 	 * @return
 	 *   language detector flag
 	 */
-	public boolean runLanguage() {
-		return runLanguage;
+	public boolean isLanguageMeasurementEnabled() {
+		return languageMeasurementEnabled;
 	}
 
 	/**
 	 * Configure whether or not run the language detector
 	 * @param runLanguage 
 	 */
-	public void runLanguage(boolean runLanguage) {
-		this.runLanguage = runLanguage;
+	public void enableLanguageMeasurement(boolean runLanguage) {
+		this.languageMeasurementEnabled = runLanguage;
 	}
 
 	/**
@@ -293,8 +292,8 @@ public class CalculatorFacade implements Serializable {
 	 * @return
 	 *   uniqueness measurement flag
 	 */
-	public boolean runTfIdf() {
-		return runTfIdf;
+	public boolean isTfIdfMeasurementEnabled() {
+		return tfIdfMeasurementEnabled;
 	}
 
 	/**
@@ -302,9 +301,9 @@ public class CalculatorFacade implements Serializable {
 	 * @param runTfIdf
 	 *   uniqueness measurement flag
 	 */
-	public void runTfIdf(boolean runTfIdf) {
-		if (this.runTfIdf != runTfIdf) {
-			this.runTfIdf = runTfIdf;
+	public void enableTfIdfMeasurement(boolean runTfIdf) {
+		if (this.tfIdfMeasurementEnabled != runTfIdf) {
+			this.tfIdfMeasurementEnabled = runTfIdf;
 			changed = true;
 		}
 	}
@@ -314,8 +313,8 @@ public class CalculatorFacade implements Serializable {
 	 * @return
 	 *   problem catalog measurement flag
 	 */
-	public boolean runProblemCatalog() {
-		return runProblemCatalog;
+	public boolean isProblemCatalogMeasurementEnabled() {
+		return problemCatalogMeasurementEnabled;
 	}
 
 	/**
@@ -323,9 +322,9 @@ public class CalculatorFacade implements Serializable {
 	 * @param runProblemCatalog
 	 *   problem catalog measurement flag
 	 */
-	public void runProblemCatalog(boolean runProblemCatalog) {
-		if (this.runProblemCatalog != runProblemCatalog) {
-			this.runProblemCatalog = runProblemCatalog;
+	public void enableProblemCatalogMeasurement(boolean runProblemCatalog) {
+		if (this.problemCatalogMeasurementEnabled != runProblemCatalog) {
+			this.problemCatalogMeasurementEnabled = runProblemCatalog;
 			changed = true;
 		}
 	}
