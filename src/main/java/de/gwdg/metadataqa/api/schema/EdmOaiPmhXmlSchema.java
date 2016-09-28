@@ -133,10 +133,10 @@ public class EdmOaiPmhXmlSchema extends EdmSchema implements Serializable {
 			"$.['ore:Proxy'][?(@['edm:europeanaProxy'][0] == 'false')]['edm:year']"));
 		paths.add(new JsonBranch("Proxy/edm:userTag",
 			"$.['ore:Proxy'][?(@['edm:europeanaProxy'][0] == 'false')]['edm:userTag']"));
-		paths.add(new JsonBranch("Proxy/ore:ProxyIn",
-			"$.['ore:Proxy'][?(@['edm:europeanaProxy'][0] == 'false')]['ore:ProxyIn']"));
-		paths.add(new JsonBranch("Proxy/ore:ProxyFor",
-			"$.['ore:Proxy'][?(@['edm:europeanaProxy'][0] == 'false')]['ore:ProxyFor']"));
+		paths.add(new JsonBranch("Proxy/ore:proxyIn",
+			"$.['ore:Proxy'][?(@['edm:europeanaProxy'][0] == 'false')]['ore:proxyIn']"));
+		paths.add(new JsonBranch("Proxy/ore:proxyFor",
+			"$.['ore:Proxy'][?(@['edm:europeanaProxy'][0] == 'false')]['ore:proxyFor']"));
 		paths.add(new JsonBranch("Proxy/dc:conformsTo",
 			"$.['ore:Proxy'][?(@['edm:europeanaProxy'][0] == 'false')]['dc:conformsTo']"));
 		paths.add(new JsonBranch("Proxy/dcterms:hasFormat",
@@ -205,7 +205,7 @@ public class EdmOaiPmhXmlSchema extends EdmSchema implements Serializable {
 		paths.add(new JsonBranch("Aggregation/edm:ugc", "$.['ore:Aggregation'][0]['edm:ugc']"));
 		paths.add(new JsonBranch("Aggregation/edm:aggregatedCHO", "$.['ore:Aggregation'][0]['edm:aggregatedCHO']"));
 		paths.add(new JsonBranch("Aggregation/edm:intermediateProvider", "$.['ore:Aggregation'][0]['edm:intermediateProvider']"));
-		paths.add(new JsonBranch("Aggregation/rdf:about", "$.['ore:Aggregation'][0]['rdf:about']"));
+		paths.add(new JsonBranch("Aggregation/rdf:about", "$.['ore:Aggregation'][0]['@about']"));
 
 		paths.add(new JsonBranch("Place/wgs84:lat", "$.['edm:Place'][*]['wgs84:lat']"));
 		paths.add(new JsonBranch("Place/wgs84:long", "$.['edm:Place'][*]['wgs84:long']"));
@@ -241,16 +241,16 @@ public class EdmOaiPmhXmlSchema extends EdmSchema implements Serializable {
 		paths.add(new JsonBranch("Agent/skos:altLabel", "$.['edm:Agent'][*]['skos:altLabel']"));
 		paths.add(new JsonBranch("Agent/skos:note", "$.['edm:Agent'][*]['skos:note']"));
 
-		paths.add(new JsonBranch("Timespan/rdf:about", "$.['edm:Timespan'][*]['@about']"));
-		paths.add(new JsonBranch("Timespan/edm:begin", "$.['edm:Timespan'][*]['edm:begin']"));
-		paths.add(new JsonBranch("Timespan/edm:end", "$.['edm:Timespan'][*]['edm:end']"));
-		paths.add(new JsonBranch("Timespan/dcterms:isPartOf", "$.['edm:Timespan'][*]['dcterms:isPartOf']"));
-		paths.add(new JsonBranch("Timespan/dcterms:hasPart", "$.['edm:Timespan'][*]['dcterms:hasPart']"));
-		paths.add(new JsonBranch("Timespan/edm:isNextInSequence", "$.['edm:Timespan'][*]['edm:isNextInSequence']"));
-		paths.add(new JsonBranch("Timespan/owl:sameAs", "$.['edm:Timespan'][*]['owl:sameAs']"));
-		paths.add(new JsonBranch("Timespan/skos:prefLabel", "$.['edm:Timespan'][*]['skos:prefLabel']"));
-		paths.add(new JsonBranch("Timespan/skos:altLabel", "$.['edm:Timespan'][*]['skos:altLabel']"));
-		paths.add(new JsonBranch("Timespan/skos:note", "$.['edm:Timespan'][*]['skos:note']"));
+		paths.add(new JsonBranch("Timespan/rdf:about", "$.['edm:TimeSpan'][*]['@about']"));
+		paths.add(new JsonBranch("Timespan/edm:begin", "$.['edm:TimeSpan'][*]['edm:begin']"));
+		paths.add(new JsonBranch("Timespan/edm:end", "$.['edm:TimeSpan'][*]['edm:end']"));
+		paths.add(new JsonBranch("Timespan/dcterms:isPartOf", "$.['edm:TimeSpan'][*]['dcterms:isPartOf']"));
+		paths.add(new JsonBranch("Timespan/dcterms:hasPart", "$.['edm:TimeSpan'][*]['dcterms:hasPart']"));
+		paths.add(new JsonBranch("Timespan/edm:isNextInSequence", "$.['edm:TimeSpan'][*]['edm:isNextInSequence']"));
+		paths.add(new JsonBranch("Timespan/owl:sameAs", "$.['edm:TimeSpan'][*]['owl:sameAs']"));
+		paths.add(new JsonBranch("Timespan/skos:prefLabel", "$.['edm:TimeSpan'][*]['skos:prefLabel']"));
+		paths.add(new JsonBranch("Timespan/skos:altLabel", "$.['edm:TimeSpan'][*]['skos:altLabel']"));
+		paths.add(new JsonBranch("Timespan/skos:note", "$.['edm:TimeSpan'][*]['skos:note']"));
 
 		paths.add(new JsonBranch("Concept/rdf:about", "$.['skos:Concept'][*]['@about']"));
 		paths.add(new JsonBranch("Concept/skos:broader", "$.['skos:Concept'][*]['skos:broader']"));
@@ -265,7 +265,7 @@ public class EdmOaiPmhXmlSchema extends EdmSchema implements Serializable {
 		paths.add(new JsonBranch("Concept/skos:inScheme", "$.['skos:Concept'][*]['skos:inScheme']"));
 		paths.add(new JsonBranch("Concept/skos:prefLabel", "$.['skos:Concept'][*]['skos:prefLabel']"));
 		paths.add(new JsonBranch("Concept/skos:altLabel", "$.['skos:Concept'][*]['skos:altLabel']"));
-		paths.add(new JsonBranch("Concept/skos:note", "$.['skos:note'][*]['skos:note']"));
+		paths.add(new JsonBranch("Concept/skos:note", "$.['skos:Concept'][*]['skos:note']"));
 
 		fieldGroups.add(
 			new FieldGroup(

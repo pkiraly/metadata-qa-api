@@ -129,61 +129,61 @@ public class EdmFullBeanSchema extends EdmSchema implements Serializable {
 		*/
 
 		paths.add(new JsonBranch("Proxy/edm:europeanaProxy", 
-			"$.['ore:Proxy'][?(@['edm:europeanaProxy'][0] == 'false')]['europeanaProxy']"));
+			"$.['proxies'][?(@['europeanaProxy'] == false)]['europeanaProxy']"));
 		paths.add(new JsonBranch("Proxy/edm:year",
-			"$.['ore:Proxy'][?(@['edm:europeanaProxy'][0] == 'false')]['year']"));
+			"$.['proxies'][?(@['europeanaProxy'] == false)]['year']"));
 		paths.add(new JsonBranch("Proxy/edm:userTag",
-			"$.['ore:Proxy'][?(@['edm:europeanaProxy'][0] == 'false')]['userTags']"));
-		paths.add(new JsonBranch("Proxy/ore:ProxyIn",
-			"$.['ore:Proxy'][?(@['edm:europeanaProxy'][0] == 'false')]['proxyIn']"));
-		paths.add(new JsonBranch("Proxy/ore:ProxyFor",
-			"$.['ore:Proxy'][?(@['edm:europeanaProxy'][0] == 'false')]['proxyFor']"));
+			"$.['proxies'][?(@['europeanaProxy'] == false)]['userTags']"));
+		paths.add(new JsonBranch("Proxy/ore:proxyIn",
+			"$.['proxies'][?(@['europeanaProxy'] == false)]['proxyIn']"));
+		paths.add(new JsonBranch("Proxy/ore:proxyFor",
+			"$.['proxies'][?(@['europeanaProxy'] == false)]['proxyFor']"));
 		paths.add(new JsonBranch("Proxy/dc:conformsTo",
-			"$.['ore:Proxy'][?(@['edm:europeanaProxy'][0] == 'false')]['dctermsConformsTo']"));
+			"$.['proxies'][?(@['europeanaProxy'] == false)]['dctermsConformsTo']"));
 		paths.add(new JsonBranch("Proxy/dcterms:hasFormat",
-			"$.['ore:Proxy'][?(@['edm:europeanaProxy'][0] == 'false')]['dctermsHasFormat']"));
+			"$.['proxies'][?(@['europeanaProxy'] == false)]['dctermsHasFormat']"));
 		paths.add(new JsonBranch("Proxy/dcterms:hasVersion",
-			"$.['ore:Proxy'][?(@['edm:europeanaProxy'][0] == 'false')]['dctermsHasVersion']"));
+			"$.['proxies'][?(@['europeanaProxy'] == false)]['dctermsHasVersion']"));
 		paths.add(new JsonBranch("Proxy/dcterms:isFormatOf",
-			"$.['ore:Proxy'][?(@['edm:europeanaProxy'][0] == 'false')]['dctermsIsFormatOf']"));
+			"$.['proxies'][?(@['europeanaProxy'] == false)]['dctermsIsFormatOf']"));
 		paths.add(new JsonBranch("Proxy/dcterms:isReferencedBy",
-			"$.['ore:Proxy'][?(@['edm:europeanaProxy'][0] == 'false')]['dctermsIsReferencedBy']"));
+			"$.['proxies'][?(@['europeanaProxy'] == false)]['dctermsIsReferencedBy']"));
 		paths.add(new JsonBranch("Proxy/dcterms:isReplacedBy",
-			"$.['ore:Proxy'][?(@['edm:europeanaProxy'][0] == 'false')]['dctermsIsReplacedBy']"));
+			"$.['proxies'][?(@['europeanaProxy'] == false)]['dctermsIsReplacedBy']"));
 		paths.add(new JsonBranch("Proxy/dcterms:isRequiredBy",
-			"$.['ore:Proxy'][?(@['edm:europeanaProxy'][0] == 'false')]['dctermsIsRequiredBy']"));
+			"$.['proxies'][?(@['europeanaProxy'] == false)]['dctermsIsRequiredBy']"));
 		paths.add(new JsonBranch("Proxy/dcterms:isVersionOf",
-			"$.['ore:Proxy'][?(@['edm:europeanaProxy'][0] == 'false')]['dctermsIsVersionOf']"));
+			"$.['proxies'][?(@['europeanaProxy'] == false)]['dctermsIsVersionOf']"));
 		paths.add(new JsonBranch("Proxy/dcterms:references",
-			"$.['ore:Proxy'][?(@['edm:europeanaProxy'][0] == 'false')]['dctermsReferences']"));
+			"$.['proxies'][?(@['europeanaProxy'] == false)]['dctermsReferences']"));
 		paths.add(new JsonBranch("Proxy/dcterms:replaces",
-			"$.['ore:Proxy'][?(@['edm:europeanaProxy'][0] == 'false')]['dctermsReplaces']"));
+			"$.['proxies'][?(@['europeanaProxy'] == false)]['dctermsReplaces']"));
 		paths.add(new JsonBranch("Proxy/dcterms:requires",
-			"$.['ore:Proxy'][?(@['edm:europeanaProxy'][0] == 'false')]['dctermsRequires']"));
+			"$.['proxies'][?(@['europeanaProxy'] == false)]['dctermsRequires']"));
 		paths.add(new JsonBranch("Proxy/dcterms:tableOfContents",
-			"$.['ore:Proxy'][?(@['edm:europeanaProxy'][0] == 'false')]['dctermsTOC']"));
+			"$.['proxies'][?(@['europeanaProxy'] == false)]['dctermsTOC']"));
 		paths.add(new JsonBranch("Proxy/edm:currentLocation",
-			"$.['ore:Proxy'][?(@['edm:europeanaProxy'][0] == 'false')]['edmCurrentLocation']"));
+			"$.['proxies'][?(@['europeanaProxy'] == false)]['edmCurrentLocation']"));
 		paths.add(new JsonBranch("Proxy/edm:hasMet",
-			"$.['ore:Proxy'][?(@['edm:europeanaProxy'][0] == 'false')]['edmHasMet']"));
+			"$.['proxies'][?(@['europeanaProxy'] == false)]['edmHasMet']"));
 		paths.add(new JsonBranch("Proxy/edm:hasType",
-			"$.['ore:Proxy'][?(@['edm:europeanaProxy'][0] == 'false')]['edmhasType']"));
+			"$.['proxies'][?(@['europeanaProxy'] == false)]['edmhasType']"));
 		paths.add(new JsonBranch("Proxy/edm:incorporates",
-			"$.['ore:Proxy'][?(@['edm:europeanaProxy'][0] == 'false')]['edmIncorporates']"));
+			"$.['proxies'][?(@['europeanaProxy'] == false)]['edmIncorporates']"));
 		paths.add(new JsonBranch("Proxy/edm:isDerivativeOf",
-			"$.['ore:Proxy'][?(@['edm:europeanaProxy'][0] == 'false')]['edmIsDerivativeOf']"));
+			"$.['proxies'][?(@['europeanaProxy'] == false)]['edmIsDerivativeOf']"));
 		paths.add(new JsonBranch("Proxy/edm:isRelatedTo",
-			"$.['ore:Proxy'][?(@['edm:europeanaProxy'][0] == 'false')]['edmIsRelatedTo']"));
+			"$.['proxies'][?(@['europeanaProxy'] == false)]['edmIsRelatedTo']"));
 		paths.add(new JsonBranch("Proxy/edm:isRepresentationOf",
-			"$.['ore:Proxy'][?(@['edm:europeanaProxy'][0] == 'false')]['edmIsRepresentationOf']"));
+			"$.['proxies'][?(@['europeanaProxy'] == false)]['edmIsRepresentationOf']"));
 		paths.add(new JsonBranch("Proxy/edm:isSimilarTo",
-			"$.['ore:Proxy'][?(@['edm:europeanaProxy'][0] == 'false')]['edmIsSimilarTo']"));
+			"$.['proxies'][?(@['europeanaProxy'] == false)]['edmIsSimilarTo']"));
 		paths.add(new JsonBranch("Proxy/edm:isSuccessorOf",
-			"$.['ore:Proxy'][?(@['edm:europeanaProxy'][0] == 'false')]['edmIsSuccessorOf']"));
+			"$.['proxies'][?(@['europeanaProxy'] == false)]['edmIsSuccessorOf']"));
 		paths.add(new JsonBranch("Proxy/edm:realizes",
-			"$.['ore:Proxy'][?(@['edm:europeanaProxy'][0] == 'false')]['edmRealizes']"));
+			"$.['proxies'][?(@['europeanaProxy'] == false)]['edmRealizes']"));
 		paths.add(new JsonBranch("Proxy/edm:wasPresentAt",
-			"$.['ore:Proxy'][?(@['edm:europeanaProxy'][0] == 'false')]['edmWasPresentAt']"));
+			"$.['proxies'][?(@['europeanaProxy'] == false)]['edmWasPresentAt']"));
 
 		paths.add(new JsonBranch("Aggregation/edm:rights",
 			"$.['aggregations'][0]['edmRights']",
@@ -209,11 +209,11 @@ public class EdmFullBeanSchema extends EdmSchema implements Serializable {
 			"$.['aggregations'][0]['hasView']",
 			JsonBranch.Category.BROWSING, JsonBranch.Category.VIEWING));
 
-		paths.add(new JsonBranch("Aggregation/dc:rights", "$.['ore:Aggregation'][0]['dcRights']"));
-		paths.add(new JsonBranch("Aggregation/edm:ugc", "$.['ore:Aggregation'][0]['edmUgc']"));
-		paths.add(new JsonBranch("Aggregation/edm:aggregatedCHO", "$.['ore:Aggregation'][0]['aggregatedCHO']"));
-		paths.add(new JsonBranch("Aggregation/edm:intermediateProvider", "$.['ore:Aggregation'][0]['edmIntermediateProvider']"));
-		paths.add(new JsonBranch("Aggregation/rdf:about", "$.['ore:Aggregation'][0]['about']"));
+		paths.add(new JsonBranch("Aggregation/dc:rights", "$.['aggregations'][0]['dcRights']"));
+		paths.add(new JsonBranch("Aggregation/edm:ugc", "$.['aggregations'][0]['edmUgc']"));
+		paths.add(new JsonBranch("Aggregation/edm:aggregatedCHO", "$.['aggregations'][0]['aggregatedCHO']"));
+		paths.add(new JsonBranch("Aggregation/edm:intermediateProvider", "$.['aggregations'][0]['edmIntermediateProvider']"));
+		paths.add(new JsonBranch("Aggregation/rdf:about", "$.['aggregations'][0]['about']"));
 
 		paths.add(new JsonBranch("Place/wgs84:lat", "$.['places'][*]['latitude']"));
 		paths.add(new JsonBranch("Place/wgs84:long", "$.['places'][*]['longitude']"));
@@ -249,30 +249,31 @@ public class EdmFullBeanSchema extends EdmSchema implements Serializable {
 		paths.add(new JsonBranch("Agent/skos:altLabel", "$.['agents'][*]['altLabel']"));
 		paths.add(new JsonBranch("Agent/skos:note", "$.['agents'][*]['note']"));
 
-		paths.add(new JsonBranch("Timespan/rdf:about", "$.['edm:Timespan'][*]['about']"));
-		paths.add(new JsonBranch("Timespan/edm:begin", "$.['edm:Timespan'][*]['begin']"));
-		paths.add(new JsonBranch("Timespan/edm:end", "$.['edm:Timespan'][*]['end']"));
-		paths.add(new JsonBranch("Timespan/dcterms:isPartOf", "$.['edm:Timespan'][*]['isPartOf']"));
-		paths.add(new JsonBranch("Timespan/dcterms:hasPart", "$.['edm:Timespan'][*]['hasPart']"));
-		paths.add(new JsonBranch("Timespan/owl:sameAs", "$.['edm:Timespan'][*]['owlSameAs']"));
-		paths.add(new JsonBranch("Timespan/skos:prefLabel", "$.['edm:Timespan'][*]['prefLabel']"));
-		paths.add(new JsonBranch("Timespan/skos:altLabel", "$.['edm:Timespan'][*]['altLabel']"));
-		paths.add(new JsonBranch("Timespan/skos:note", "$.['edm:Timespan'][*]['note']"));
+		paths.add(new JsonBranch("Timespan/rdf:about", "$.['timespans'][*]['about']"));
+		paths.add(new JsonBranch("Timespan/edm:begin", "$.['timespans'][*]['begin']"));
+		paths.add(new JsonBranch("Timespan/edm:end", "$.['timespans'][*]['end']"));
+		paths.add(new JsonBranch("Timespan/dcterms:isPartOf", "$.['timespans'][*]['isPartOf']"));
+		paths.add(new JsonBranch("Timespan/dcterms:hasPart", "$.['timespans'][*]['hasPart']"));
+		paths.add(new JsonBranch("Timespan/edm:isNextInSequence", "$.['timespans'][*]['edm:isNextInSequence']"));
+		paths.add(new JsonBranch("Timespan/owl:sameAs", "$.['timespans'][*]['owlSameAs']"));
+		paths.add(new JsonBranch("Timespan/skos:prefLabel", "$.['timespans'][*]['prefLabel']"));
+		paths.add(new JsonBranch("Timespan/skos:altLabel", "$.['timespans'][*]['altLabel']"));
+		paths.add(new JsonBranch("Timespan/skos:note", "$.['timespans'][*]['note']"));
 
-		paths.add(new JsonBranch("Concept/rdf:about", "$.['skos:Concept'][*]['@about']"));
-		paths.add(new JsonBranch("Concept/skos:broader", "$.['skos:Concept'][*]['broader']"));
-		paths.add(new JsonBranch("Concept/skos:narrower", "$.['skos:Concept'][*]['narrower']"));
-		paths.add(new JsonBranch("Concept/skos:related", "$.['skos:Concept'][*]['related']"));
-		paths.add(new JsonBranch("Concept/skos:broadMatch", "$.['skos:Concept'][*]['broadMatch']"));
-		paths.add(new JsonBranch("Concept/skos:narrowMatch", "$.['skos:Concept'][*]['narrowMatch']"));
-		paths.add(new JsonBranch("Concept/skos:relatedMatch", "$.['skos:Concept'][*]['relatedMatch']"));
-		paths.add(new JsonBranch("Concept/skos:exactMatch", "$.['skos:Concept'][*]['exactMatch']"));
-		paths.add(new JsonBranch("Concept/skos:closeMatch", "$.['skos:Concept'][*]['closeMatch']"));
-		paths.add(new JsonBranch("Concept/skos:notation", "$.['skos:Concept'][*]['notation']"));
-		paths.add(new JsonBranch("Concept/skos:inScheme", "$.['skos:Concept'][*]['inScheme']"));
-		paths.add(new JsonBranch("Concept/skos:prefLabel", "$.['skos:Concept'][*]['prefLabel']"));
-		paths.add(new JsonBranch("Concept/skos:altLabel", "$.['skos:Concept'][*]['altLabel']"));
-		paths.add(new JsonBranch("Concept/skos:note", "$.['skos:note'][*]['note']"));
+		paths.add(new JsonBranch("Concept/rdf:about", "$.['concepts'][*]['@about']"));
+		paths.add(new JsonBranch("Concept/skos:broader", "$.['concepts'][*]['broader']"));
+		paths.add(new JsonBranch("Concept/skos:narrower", "$.['concepts'][*]['narrower']"));
+		paths.add(new JsonBranch("Concept/skos:related", "$.['concepts'][*]['related']"));
+		paths.add(new JsonBranch("Concept/skos:broadMatch", "$.['concepts'][*]['broadMatch']"));
+		paths.add(new JsonBranch("Concept/skos:narrowMatch", "$.['concepts'][*]['narrowMatch']"));
+		paths.add(new JsonBranch("Concept/skos:relatedMatch", "$.['concepts'][*]['relatedMatch']"));
+		paths.add(new JsonBranch("Concept/skos:exactMatch", "$.['concepts'][*]['exactMatch']"));
+		paths.add(new JsonBranch("Concept/skos:closeMatch", "$.['concepts'][*]['closeMatch']"));
+		paths.add(new JsonBranch("Concept/skos:notation", "$.['concepts'][*]['notation']"));
+		paths.add(new JsonBranch("Concept/skos:inScheme", "$.['concepts'][*]['inScheme']"));
+		paths.add(new JsonBranch("Concept/skos:prefLabel", "$.['concepts'][*]['prefLabel']"));
+		paths.add(new JsonBranch("Concept/skos:altLabel", "$.['concepts'][*]['altLabel']"));
+		paths.add(new JsonBranch("Concept/skos:note", "$.['concepts'][*]['note']"));
 
 		fieldGroups.add(
 			new FieldGroup(

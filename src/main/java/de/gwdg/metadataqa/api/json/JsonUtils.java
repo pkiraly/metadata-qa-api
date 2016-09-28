@@ -66,10 +66,15 @@ public class JsonUtils {
 			if (outerArray.isEmpty()) {
 				return null;
 			}
+
 			for (int i = 0, l = outerArray.size(); i < l; i++) {
 				Object outerVal = outerArray.get(i);
 				if (outerVal.getClass() == String.class) {
 					extracted.add(new EdmFieldInstance((String) outerVal));
+				} else if (outerVal.getClass() == Boolean.class) {
+					extracted.add(new EdmFieldInstance(Boolean.toString((Boolean)outerVal)));
+				} else if (outerVal.getClass() == Double.class) {
+					extracted.add(new EdmFieldInstance(Double.toString((Double)outerVal)));
 				} else if (outerVal.getClass() == JSONArray.class) {
 					extracted.addAll(extractInnerArray(outerVal, recordId, jsonPath));
 				} else if (outerVal.getClass() == LinkedHashMap.class) {

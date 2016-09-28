@@ -76,6 +76,4 @@ public class EdmFieldInstance extends XmlFieldInstance {
 		}
 		return true;
 	}
-	
-	
 }
