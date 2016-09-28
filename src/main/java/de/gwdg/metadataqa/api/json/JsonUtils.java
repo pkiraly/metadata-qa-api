@@ -3,6 +3,7 @@ package de.gwdg.metadataqa.api.json;
 import de.gwdg.metadataqa.api.model.EdmFieldInstance;
 import com.jayway.jsonpath.JsonPath;
 import de.gwdg.metadataqa.api.model.XmlFieldInstance;
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
@@ -75,14 +76,16 @@ public class JsonUtils {
 					extracted.add(new EdmFieldInstance(Boolean.toString((Boolean)outerVal)));
 				} else if (outerVal.getClass() == Double.class) {
 					extracted.add(new EdmFieldInstance(Double.toString((Double)outerVal)));
+				} else if (outerVal.getClass() == BigDecimal.class) {
+					extracted.add(new EdmFieldInstance(((BigDecimal)outerVal).toString()));
 				} else if (outerVal.getClass() == JSONArray.class) {
 					extracted.addAll(extractInnerArray(outerVal, recordId, jsonPath));
 				} else if (outerVal.getClass() == LinkedHashMap.class) {
 					extracted.add(hashToFieldInstance(outerVal, recordId, jsonPath));
 				} else {
 					logger.severe(String.format(
-							  "Unhandled outerArray type: %s, [record ID: %s, path: %s]",
-							  getType(outerVal), recordId, jsonPath
+							  "Unhandled outerArray type: %s, %s [record ID: %s, path: %s]",
+							  getType(outerVal), outerVal, recordId, jsonPath
 					));
 				}
 			}

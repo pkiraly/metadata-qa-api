@@ -167,7 +167,7 @@ public class EdmFullBeanSchema extends EdmSchema implements Serializable {
 		paths.add(new JsonBranch("Proxy/edm:hasMet",
 			"$.['proxies'][?(@['europeanaProxy'] == false)]['edmHasMet']"));
 		paths.add(new JsonBranch("Proxy/edm:hasType",
-			"$.['proxies'][?(@['europeanaProxy'] == false)]['edmhasType']"));
+			"$.['proxies'][?(@['europeanaProxy'] == false)]['edmHasType']"));
 		paths.add(new JsonBranch("Proxy/edm:incorporates",
 			"$.['proxies'][?(@['europeanaProxy'] == false)]['edmIncorporates']"));
 		paths.add(new JsonBranch("Proxy/edm:isDerivativeOf",
@@ -260,7 +260,7 @@ public class EdmFullBeanSchema extends EdmSchema implements Serializable {
 		paths.add(new JsonBranch("Timespan/skos:altLabel", "$.['timespans'][*]['altLabel']"));
 		paths.add(new JsonBranch("Timespan/skos:note", "$.['timespans'][*]['note']"));
 
-		paths.add(new JsonBranch("Concept/rdf:about", "$.['concepts'][*]['@about']"));
+		paths.add(new JsonBranch("Concept/rdf:about", "$.['concepts'][*]['about']"));
 		paths.add(new JsonBranch("Concept/skos:broader", "$.['concepts'][*]['broader']"));
 		paths.add(new JsonBranch("Concept/skos:narrower", "$.['concepts'][*]['narrower']"));
 		paths.add(new JsonBranch("Concept/skos:related", "$.['concepts'][*]['related']"));
