@@ -13,6 +13,8 @@ import java.util.Map;
  */
 public interface Schema {
 
+	List<JsonBranch> getCollectionPaths();
+
 	/**
 	 * The list of fields to investigate in most of the measurements
 	 * @return

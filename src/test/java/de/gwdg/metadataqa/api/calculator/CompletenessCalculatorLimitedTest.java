@@ -6,7 +6,6 @@ import de.gwdg.metadataqa.api.json.FieldGroup;
 import de.gwdg.metadataqa.api.json.JsonBranch;
 import de.gwdg.metadataqa.api.model.JsonPathCache;
 import de.gwdg.metadataqa.api.schema.EdmOaiPmhXmlLimitedSchema;
-import de.gwdg.metadataqa.api.schema.EdmOaiPmhXmlSchema;
 import de.gwdg.metadataqa.api.schema.Schema;
 import de.gwdg.metadataqa.api.util.FileUtils;
 import java.io.IOException;
@@ -31,8 +30,8 @@ import org.junit.rules.ExpectedException;
  */
 public class CompletenessCalculatorLimitedTest {
 
-	JsonPathCache cache;
-	CompletenessCalculator calculator;
+	private JsonPathCache cache;
+	private CompletenessCalculator calculator;
 
 	public CompletenessCalculatorLimitedTest() {
 	}
@@ -53,15 +52,21 @@ public class CompletenessCalculatorLimitedTest {
 
 	@After
 	public void tearDown() {
+		calculator = null;
+		cache = null;
 	}
 
 	@Test
 	public void testCompleteness() throws URISyntaxException, IOException {
 
+		assertEquals("de.gwdg.metadataqa.api.schema.EdmOaiPmhXmlLimitedSchema",
+			calculator.getSchema().getClass().getName());
+		assertEquals(0, calculator.getSchema().getCollectionPaths().size());
+		assertEquals(35, calculator.getSchema().getPaths().size());
 		calculator.measure(cache);
 		FieldCounter<Double> fieldCounter = calculator.getCompletenessCounter().getFieldCounter();
 		FieldCounter<Boolean> existenceCounter = calculator.getExistenceCounter();
-		FieldCounter<Integer> cardinalityCounter = calculator.getInstanceCounter();
+		FieldCounter<Integer> cardinalityCounter = calculator.getCardinalityCounter();
 		// calculator.getExistenceMap();
 		assertEquals((Double) 0.4, fieldCounter.get("TOTAL"));
 		// printCheck(JsonBranch.Category.VIEWING, calculator);
@@ -82,6 +87,8 @@ public class CompletenessCalculatorLimitedTest {
 		assertEquals((Double) 0.3888888888888889, fieldCounter.get("SEARCHABILITY"));
 		// printCheck(JsonBranch.Category.REUSABILITY, calculator);
 		assertEquals((Double) 0.36363636363636365, fieldCounter.get("REUSABILITY"));
+		assertEquals(35, existenceCounter.size());
+		assertEquals(35, cardinalityCounter.size());
 
 		String expected = "0.4,1.0,0.181818,0.388889,0.272727,0.5,0.357143,0.75,0.363636,0.4,1,1,0,0,0,0,0,1,1,0,0,0,0,1,0,0,0,0,0,0,0,1,0,0,1,0,0,1,1,1,1,1,1,1,0,1,1,0,0,0,0,0,1,1,0,0,0,0,5,0,0,0,0,0,0,0,1,0,0,1,0,0,1,1,1,1,1,1,1,0";
 
@@ -113,7 +120,7 @@ public class CompletenessCalculatorLimitedTest {
 
 		FieldCounter<Double> fieldCounter = calculator.getCompletenessCounter().getFieldCounter();
 		FieldCounter<Boolean> existenceCounter = calculator.getExistenceCounter();
-		FieldCounter<Integer> cardinalityCounter = calculator.getInstanceCounter();
+		FieldCounter<Integer> cardinalityCounter = calculator.getCardinalityCounter();
 
 		List<String> fields = getFieldsByCategory(category, schema);
 		System.err.println(category + ": " + StringUtils.join(fields, ", "));

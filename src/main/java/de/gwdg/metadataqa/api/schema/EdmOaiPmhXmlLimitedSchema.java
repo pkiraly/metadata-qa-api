@@ -22,6 +22,8 @@ public class EdmOaiPmhXmlLimitedSchema extends EdmSchema implements Serializable
 	private final static Map<String, String> solrFields = new LinkedHashMap<>();
 	private final static Map<String, String> extractableFields = new LinkedHashMap<>();
 	private final static List<String> emptyStrings = new ArrayList<>();
+	private final static Map<String, JsonBranch> collectionPaths = new LinkedHashMap<>();
+
 	private final static String longSubjectPath =
 		"$.['ore:Proxy'][?(@['edm:europeanaProxy'][0] == 'false')]['dc:subject']";
 	private final static String titlePath =
@@ -229,4 +231,10 @@ public class EdmOaiPmhXmlLimitedSchema extends EdmSchema implements Serializable
 	public String getDescriptionPath() {
 		return descriptionPath;
 	}
+
+	@Override
+	public List<JsonBranch> getCollectionPaths() {
+		return new ArrayList();
+	}
+
 }

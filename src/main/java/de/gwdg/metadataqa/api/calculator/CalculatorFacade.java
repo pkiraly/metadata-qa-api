@@ -60,6 +60,11 @@ public class CalculatorFacade implements Serializable {
 	 */
 	protected boolean languageMeasurementEnabled = false;
 	/**
+	 * Flag whether or not run the language saturation measurement
+	 * (default: false)
+	 */
+	protected boolean languageSaturationMeasurementEnabled = false;
+	/**
 	 * Flag whether or not collect TF-IDF terms in uniqueness measurement
 	 * (default: false)
 	 */
@@ -95,6 +100,11 @@ public class CalculatorFacade implements Serializable {
 	 * The language detector
 	 */
 	protected LanguageCalculator languageCalculator;
+
+	/**
+	 * The language detector
+	 */
+	protected LanguageSaturationCalculator languageSaturationCalculator;
 
 	/**
 	 * Create calculator facade with the default configuration
@@ -162,6 +172,11 @@ public class CalculatorFacade implements Serializable {
 		if (languageMeasurementEnabled) {
 			languageCalculator = new LanguageCalculator(schema);
 			calculators.add(languageCalculator);
+		}
+
+		if (languageSaturationMeasurementEnabled) {
+			languageSaturationCalculator = new LanguageSaturationCalculator(schema);
+			calculators.add(languageSaturationCalculator);
 		}
 	}
 
@@ -285,6 +300,23 @@ public class CalculatorFacade implements Serializable {
 	 */
 	public void enableLanguageMeasurement(boolean runLanguage) {
 		this.languageMeasurementEnabled = runLanguage;
+	}
+
+	/**
+	 * Returns the flag whether or not run the language detector
+	 * @return
+	 *   language detector flag
+	 */
+	public boolean isLanguageSaturationMeasurementEnabled() {
+		return languageSaturationMeasurementEnabled;
+	}
+
+	/**
+	 * Configure whether or not run the language detector
+	 * @param runLanguageSaturation
+	 */
+	public void enableLanguageSaturationMeasurement(boolean runLanguageSaturation) {
+		this.languageSaturationMeasurementEnabled = runLanguageSaturation;
 	}
 
 	/**

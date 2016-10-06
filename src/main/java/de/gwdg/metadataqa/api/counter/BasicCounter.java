@@ -33,6 +33,10 @@ public class BasicCounter {
 		return total;
 	}
 
+	public int getTotalAsInt() {
+		return ((Double)total).intValue();
+	}
+
 	public double getInstance() {
 		return instance;
 	}

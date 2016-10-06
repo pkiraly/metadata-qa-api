@@ -228,4 +228,10 @@ public class EdmFullBeanLimitedSchema extends EdmSchema implements Serializable 
 	public String getDescriptionPath() {
 		return descriptionPath;
 	}
+
+	@Override
+	public List<JsonBranch> getCollectionPaths() {
+		return new ArrayList();
+	}
+
 }

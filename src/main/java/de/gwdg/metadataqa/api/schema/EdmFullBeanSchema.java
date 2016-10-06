@@ -22,6 +22,9 @@ public class EdmFullBeanSchema extends EdmSchema implements Serializable {
 	private final static Map<String, String> solrFields = new LinkedHashMap<>();
 	private final static Map<String, String> extractableFields = new LinkedHashMap<>();
 	private final static List<String> emptyStrings = new ArrayList<>();
+	// private final static Map<String, JsonBranch> paths = new LinkedHashMap<>();
+	private final static Map<String, JsonBranch> collectionPaths = new LinkedHashMap<>();
+
 	private final static String longSubjectPath =
 		"$.['proxies'][?(@['europeanaProxy'] == false)]['dcSubject']";
 	private final static String titlePath =
@@ -138,7 +141,7 @@ public class EdmFullBeanSchema extends EdmSchema implements Serializable {
 			"$.['proxies'][?(@['europeanaProxy'] == false)]['proxyIn']"));
 		paths.add(new JsonBranch("Proxy/ore:proxyFor",
 			"$.['proxies'][?(@['europeanaProxy'] == false)]['proxyFor']"));
-		paths.add(new JsonBranch("Proxy/dc:conformsTo",
+		paths.add(new JsonBranch("Proxy/dcterms:conformsTo",
 			"$.['proxies'][?(@['europeanaProxy'] == false)]['dctermsConformsTo']"));
 		paths.add(new JsonBranch("Proxy/dcterms:hasFormat",
 			"$.['proxies'][?(@['europeanaProxy'] == false)]['dctermsHasFormat']"));
@@ -357,5 +360,10 @@ public class EdmFullBeanSchema extends EdmSchema implements Serializable {
 	@Override
 	public String getDescriptionPath() {
 		return descriptionPath;
+	}
+
+	@Override
+	public List<JsonBranch> getCollectionPaths() {
+		return new ArrayList(collectionPaths.values());
 	}
 }

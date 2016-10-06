@@ -22,8 +22,9 @@ public class JsonPathCache<T extends XmlFieldInstance> {
 	private static final Logger logger = Logger.getLogger(JsonPathCache.class.getCanonicalName());
 
 	private final Object jsonDocument;
-	private final Map<String, List<T>> cache = new HashMap<>();
 	private String recordId;
+	private final Map<String, List<T>> cache = new HashMap<>();
+	private final Map<String, Object> fragmentCache = new HashMap<>();
 
 	public JsonPathCache(String jsonString) throws InvalidJsonException {
 		this.jsonDocument = Configuration.defaultConfiguration().jsonProvider().parse(jsonString);
@@ -33,13 +34,22 @@ public class JsonPathCache<T extends XmlFieldInstance> {
 		this.jsonDocument = jsonDocument;
 	}
 
-	private void set(String jsonPath) {
+	private void set(String address, String jsonPath, Object jsonFragment) {
 		List<T> instances = null;
+		Object value = read(jsonPath, jsonFragment);
+		if (value != null) {
+			instances = (List<T>) JsonUtils.extractFieldInstanceList(value, recordId, jsonPath);
+		}
+		cache.put(address, instances);
+	}
+
+	private Object read(String jsonPath, Object jsonFragment) {
+		Object value = null;
 		try {
-			Object value = JsonPath.read(jsonDocument, jsonPath);
-			if (value != null) {
-				instances = (List<T>) JsonUtils
-					.extractFieldInstanceList(value, recordId, jsonPath);
+			if (jsonFragment != null) {
+				value = JsonPath.read(jsonFragment, jsonPath);
+			} else {
+				value = JsonPath.read(jsonDocument, jsonPath);
 			}
 		} catch (PathNotFoundException e) {
 			// logger.severe("PathNotFound: " + jsonPath + " " + e.getLocalizedMessage() + extractRelevantPath(e));
@@ -48,14 +58,29 @@ public class JsonPathCache<T extends XmlFieldInstance> {
 				jsonPath, e.getLocalizedMessage(), ExceptionUtils.extractRelevantPath(e)
 			});
 		}
-		cache.put(jsonPath, instances);
+		return value;
+	}
+
+	public List<T> get(String address, String jsonPath, Object jsonFragment) {
+		if (!cache.containsKey(address)) {
+			set(address, jsonPath, jsonFragment);
+		}
+		return cache.get(address);
 	}
 
 	public List<T> get(String jsonPath) {
-		if (!cache.containsKey(jsonPath)) {
-			set(jsonPath);
+		return get(jsonPath, jsonPath, null);
+	}
+
+	public Object getFragment(String jsonPath) {
+		Object jsonFragment = null;
+		if (!fragmentCache.containsKey(jsonPath)) {
+			jsonFragment = read(jsonPath, null);
+			fragmentCache.put(jsonPath, jsonFragment);
+		} else {
+			jsonFragment = fragmentCache.get(jsonPath);
 		}
-		return cache.get(jsonPath);
+		return jsonFragment;
 	}
 
 	/**

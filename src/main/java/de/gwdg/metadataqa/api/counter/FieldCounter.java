@@ -20,6 +20,10 @@ public class FieldCounter<T> {
 		fieldMap = new LinkedHashMap<>();
 	}
 
+	public boolean has(String key) {
+		return fieldMap.containsKey(key);
+	}
+
 	public T get(String key) {
 		return fieldMap.get(key);
 	}

@@ -2,6 +2,10 @@ package de.gwdg.metadataqa.api.util;
 
 import java.math.BigDecimal;
 import java.security.InvalidParameterException;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+import net.minidev.json.JSONArray;
 
 /**
  *
@@ -82,5 +86,16 @@ public class Converter {
 	 */
 	public static String compressNumber(String value) {
 		return value.replaceAll("([0-9])0+$", "$1").replaceAll("\\.0+$", ".0");
+	}
+
+	public static List<Object> jsonObjectToList(Object jsonFragment) {
+		List<Object> list = new ArrayList<>();
+		if (jsonFragment instanceof JSONArray) {
+			Object[] objects = ((JSONArray) jsonFragment).toArray();
+			list.addAll(Arrays.asList(objects));
+		} else {
+			list.add(jsonFragment);
+		}
+		return list;
 	}
 }

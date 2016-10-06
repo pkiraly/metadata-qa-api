@@ -1,5 +1,6 @@
 package de.gwdg.metadataqa.api.json;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
@@ -27,6 +28,9 @@ public class JsonBranch {
 	private String jsonPath;
 	private List<Category> categories;
 	private String solrFieldName;
+	private JsonBranch parent = null;
+	private List<JsonBranch> children = new ArrayList<>();
+	private boolean collection = false;
 
 	public JsonBranch(String label, String jsonPath, String solrFieldName) {
 		this.label = label;
@@ -38,6 +42,13 @@ public class JsonBranch {
 		this.label = label;
 		this.jsonPath = jsonPath;
 		this.categories = Arrays.asList(categories);
+	}
+
+	public JsonBranch(String label, JsonBranch parent, String jsonPath, Category... categories) {
+		this.label = label;
+		this.jsonPath = jsonPath;
+		this.categories = Arrays.asList(categories);
+		setParent(parent);
 	}
 
 	public String getLabel() {
@@ -70,5 +81,35 @@ public class JsonBranch {
 
 	public void setSolrFieldName(String solrFieldName) {
 		this.solrFieldName = solrFieldName;
+	}
+
+	public JsonBranch getParent() {
+		return parent;
+	}
+
+	public void setParent(JsonBranch parent) {
+		this.parent = parent;
+		this.parent.addChild(this);
+	}
+
+	public void addChild(JsonBranch child) {
+		if (!this.children.contains(child))
+			this.children.add(child);
+	}
+
+	public List<JsonBranch> getChildren() {
+		return children;
+	}
+
+	public void setChildren(List<JsonBranch> children) {
+		this.children = children;
+	}
+
+	public boolean isCollection() {
+		return collection;
+	}
+
+	public void setCollection(boolean collection) {
+		this.collection = collection;
 	}
 }

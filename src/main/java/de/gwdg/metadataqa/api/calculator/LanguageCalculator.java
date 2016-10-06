@@ -8,12 +8,15 @@ import de.gwdg.metadataqa.api.json.JsonBranch;
 import de.gwdg.metadataqa.api.model.EdmFieldInstance;
 import de.gwdg.metadataqa.api.model.JsonPathCache;
 import de.gwdg.metadataqa.api.schema.Schema;
+import de.gwdg.metadataqa.api.util.Converter;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.SortedMap;
+import java.util.TreeMap;
 import java.util.logging.Logger;
 
 /**
@@ -27,7 +30,7 @@ public class LanguageCalculator implements Calculator, Serializable {
 	private String CALCULATOR_NAME = "languages";
 	private String inputFileName;
 	private FieldCounter<String> languageMap;
-	private Map<String, Map<String, Integer>> rawLanguageMap;
+	private Map<String, SortedMap<String, Integer>> rawLanguageMap;
 
 	private Schema schema;
 
@@ -45,18 +48,6 @@ public class LanguageCalculator implements Calculator, Serializable {
 	}
 
 	@Override
-	public void measure(JsonPathCache cache)
-			throws InvalidJsonException {
-
-		languageMap = new FieldCounter<>();
-		rawLanguageMap = new LinkedHashMap<>();
-		for (JsonBranch jsonBranch : schema.getPaths()) {
-			if (!schema.getNoLanguageFields().contains(jsonBranch.getLabel()))
-				extractLanguageTags(jsonBranch, cache, languageMap, rawLanguageMap);
-		}
-	}
-
-	@Override
 	public List<String> getHeader() {
 		List<String> headers = new ArrayList<>();
 		for (JsonBranch jsonBranch : schema.getPaths())
@@ -65,11 +56,55 @@ public class LanguageCalculator implements Calculator, Serializable {
 		return headers;
 	}
 
-	private void extractLanguageTags(JsonBranch jsonBranch, JsonPathCache cache,
+	@Override
+	public void measure(JsonPathCache cache)
+			throws InvalidJsonException {
+
+		languageMap = new FieldCounter<>();
+		rawLanguageMap = new LinkedHashMap<>();
+		if (schema.getCollectionPaths().isEmpty()) {
+			for (JsonBranch jsonBranch : schema.getPaths()) {
+				if (!schema.getNoLanguageFields().contains(jsonBranch.getLabel()))
+					extractLanguageTags(null, jsonBranch, jsonBranch.getJsonPath(), cache, languageMap, rawLanguageMap);
+			}
+		} else {
+			for (JsonBranch collection : schema.getCollectionPaths()) {
+				Object rawJsonFragment = cache.getFragment(collection.getJsonPath());
+				if (rawJsonFragment == null) {
+					for (JsonBranch child : collection.getChildren()) {
+						if (!schema.getNoLanguageFields().contains(child.getLabel())) {
+							Map<String, BasicCounter> languages = new TreeMap<>();
+							increase(languages, "_1");
+							updateMaps(child.getLabel(), transformLanguages(languages));
+						}
+					}
+				} else {
+					List<Object> jsonFragments = Converter.jsonObjectToList(rawJsonFragment);
+					for (int i = 0, len = jsonFragments.size(); i < len; i++) {
+						Object jsonFragment = jsonFragments.get(i);
+						for (JsonBranch child : collection.getChildren()) {
+							if (!schema.getNoLanguageFields().contains(child.getLabel())) {
+								String address = String.format("%s/%d/%s", 
+									collection.getJsonPath(), i, child.getJsonPath());
+								extractLanguageTags(jsonFragment, child, address, cache, languageMap, rawLanguageMap);
+							}
+						}
+					}
+				}
+			}
+		}
+	}
+
+	private void extractLanguageTags(
+			Object jsonFragment,
+			JsonBranch jsonBranch,
+			String address,
+			JsonPathCache cache,
 			FieldCounter<String> languageMap,
-			Map<String, Map<String, Integer>> rawLanguageMap) {
-		List<EdmFieldInstance> values = cache.get(jsonBranch.getJsonPath());
-		Map<String, BasicCounter> languages = new HashMap<>();
+			Map<String, SortedMap<String, Integer>> rawLanguageMap
+	) {
+		List<EdmFieldInstance> values = cache.get(address, jsonBranch.getJsonPath(), jsonFragment);
+		Map<String, BasicCounter> languages = new TreeMap<>();
 		if (values != null && !values.isEmpty()) {
 			for (EdmFieldInstance field : values) {
 				if (field.hasValue()) {
@@ -85,8 +120,24 @@ public class LanguageCalculator implements Calculator, Serializable {
 		} else {
 			increase(languages, "_1");
 		}
-		rawLanguageMap.put(jsonBranch.getLabel(), transformLanguages(languages));
-		languageMap.put(jsonBranch.getLabel(), extractLanguages(languages));
+		updateMaps(jsonBranch.getLabel(), transformLanguages(languages));
+	}
+
+	private void updateMaps(String label, SortedMap<String, Integer> instance) {
+		if (!rawLanguageMap.containsKey(label)) {
+			rawLanguageMap.put(label, instance);
+		} else {
+			Map<String, Integer> existing = rawLanguageMap.get(label);
+			for (String key : instance.keySet()) {
+				if (!existing.containsKey(key)) {
+					existing.put(key, instance.get(key));
+				} else {
+					if (key != "_1")
+						existing.put(key, existing.get(key) + instance.get(key));
+				}
+			}
+		}
+		languageMap.put(label, extractLanguagesFromRaw(rawLanguageMap.get(label)));
 	}
 
 	private void increase(Map<String, BasicCounter> languages, String key) {
@@ -95,6 +146,16 @@ public class LanguageCalculator implements Calculator, Serializable {
 		} else {
 			languages.get(key).increaseTotal();
 		}
+	}
+
+	private String extractLanguagesFromRaw(Map<String, Integer> languages) {
+		String result = "";
+		for (String lang : languages.keySet()) {
+			if (result.length() > 0)
+				result += ";";
+			result += lang + ":" + languages.get(lang);
+		}
+		return result;
 	}
 
 	private String extractLanguages(Map<String, BasicCounter> languages) {
@@ -107,8 +168,8 @@ public class LanguageCalculator implements Calculator, Serializable {
 		return result;
 	}
 
-	private Map<String, Integer> transformLanguages(Map<String, BasicCounter> languages) {
-		Map<String, Integer> result = new LinkedHashMap<>();
+	private SortedMap<String, Integer> transformLanguages(Map<String, BasicCounter> languages) {
+		SortedMap<String, Integer> result = new TreeMap<>();
 		for (String lang : languages.keySet()) {
 			result.put(lang, ((Double)languages.get(lang).getTotal()).intValue());
 		}

@@ -9,6 +9,7 @@ import de.gwdg.metadataqa.api.json.JsonBranch;
 import de.gwdg.metadataqa.api.model.JsonPathCache;
 import de.gwdg.metadataqa.api.model.XmlFieldInstance;
 import de.gwdg.metadataqa.api.schema.Schema;
+import de.gwdg.metadataqa.api.util.Converter;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
@@ -71,8 +72,28 @@ public class CompletenessCalculator<T extends XmlFieldInstance> implements Calcu
 			existingFields = new ArrayList<>();
 		}
 
-		for (JsonBranch jsonBranch : schema.getPaths()) {
-			evaluateJsonBranch(jsonBranch, cache, completenessCounter);
+		if (schema.getCollectionPaths().isEmpty()) {
+			for (JsonBranch jsonBranch : schema.getPaths()) {
+				evaluateJsonBranch(jsonBranch, cache, completenessCounter, jsonBranch.getLabel(), null);
+			}
+		} else {
+			for (JsonBranch collection : schema.getCollectionPaths()) {
+				Object rawJsonFragment = cache.getFragment(collection.getJsonPath());
+				if (rawJsonFragment == null) {
+					for (JsonBranch child : collection.getChildren()) {
+						handleValues(completenessCounter, child, null);
+					}
+				} else {
+					List<Object> jsonFragments = Converter.jsonObjectToList(rawJsonFragment);
+					for (int i = 0, len = jsonFragments.size(); i < len; i++) {
+						Object jsonFragment = jsonFragments.get(i);
+						for (JsonBranch child : collection.getChildren()) {
+							String address = String.format("%s/%d/%s", collection.getJsonPath(), i, child.getJsonPath());
+							evaluateJsonBranch(child, cache, completenessCounter, address, jsonFragment);
+						}
+					}
+				}
+			}
 		}
 
 		for (FieldGroup fieldGroup : schema.getFieldGroups()) {
@@ -87,27 +108,59 @@ public class CompletenessCalculator<T extends XmlFieldInstance> implements Calcu
 		}
 	}
 
-	public void evaluateJsonBranch(JsonBranch jsonBranch, JsonPathCache cache,
-			CompletenessCounter completenessCounter) {
-		List<T> values = cache.get(jsonBranch.getJsonPath());
+	public void evaluateJsonBranch(
+			JsonBranch jsonBranch,
+			JsonPathCache cache,
+			CompletenessCounter completenessCounter,
+			String address,
+			Object jsonFragment
+	) {
+		List<T> values = cache.get(address, jsonBranch.getJsonPath(), jsonFragment);
+		handleValues(completenessCounter, jsonBranch, values);
+	}
+
+	private void handleValues(CompletenessCounter completenessCounter, JsonBranch jsonBranch, List<T> values) {
 		if (completeness)
 			completenessCounter.increaseTotal(jsonBranch.getCategories());
 
 		if (values != null && !values.isEmpty()) {
-			if (completeness)
-				completenessCounter.increaseInstance(jsonBranch.getCategories());
-			if (existence)
-				existenceCounter.put(jsonBranch.getLabel(), true);
-			if (cardinality)
-				cardinalityCounter.put(jsonBranch.getLabel(), values.size());
-			if (collectFields)
-				existingFields.add(jsonBranch.getLabel());
+			handleNonNullValues(completenessCounter, jsonBranch, values);
 		} else {
-			if (existence)
-				existenceCounter.put(jsonBranch.getLabel(), false);
-			if (cardinality)
-				cardinalityCounter.put(jsonBranch.getLabel(), 0);
-			if (collectFields)
+			handleNullValues(jsonBranch);
+		}
+	}
+
+	private void handleNonNullValues(
+			CompletenessCounter completenessCounter,
+			JsonBranch jsonBranch,
+			List<T> values
+	) {
+		final String label = jsonBranch.getLabel();
+
+		if (completeness)
+			completenessCounter.increaseInstance(jsonBranch.getCategories());
+
+		if (existence)
+			existenceCounter.put(label, true);
+
+		if (cardinality)
+			if (!cardinalityCounter.has(label)) {
+				cardinalityCounter.put(label, values.size());
+			} else {
+				cardinalityCounter.put(label, values.size() + cardinalityCounter.get(label));
+			}
+
+		if (collectFields)
+			existingFields.add(label);
+	}
+
+	private void handleNullValues(JsonBranch jsonBranch) {
+		if (existence && !existenceCounter.has(jsonBranch.getLabel()))
+			existenceCounter.put(jsonBranch.getLabel(), false);
+		if (cardinality && !cardinalityCounter.has(jsonBranch.getLabel()))
+			cardinalityCounter.put(jsonBranch.getLabel(), 0);
+		if (collectFields) {
+			if (!missingFields.contains(jsonBranch.getLabel()))
 				missingFields.add(jsonBranch.getLabel());
 		}
 	}
@@ -171,10 +224,13 @@ public class CompletenessCalculator<T extends XmlFieldInstance> implements Calcu
 		List<String> csvs = new ArrayList<>();
 		if (completeness)
 			csvs.add(completenessCounter.getFieldCounter().getList(withLabel, compressed));
+
 		if (existence)
 			csvs.add(existenceCounter.getList(withLabel, compressed));
+
 		if (cardinality)
 			csvs.add(cardinalityCounter.getList(withLabel, compressed));
+
 		return StringUtils.join(csvs, ",");
 	}
 
@@ -188,11 +244,13 @@ public class CompletenessCalculator<T extends XmlFieldInstance> implements Calcu
 
 		if (existence)
 			for (JsonBranch jsonBranch : schema.getPaths())
-				headers.add("existence:" + jsonBranch.getLabel());
+				if (!jsonBranch.isCollection())
+					headers.add("existence:" + jsonBranch.getLabel());
 
 		if (cardinality)
 			for (JsonBranch jsonBranch : schema.getPaths())
-				headers.add("cardinality:" + jsonBranch.getLabel());
+				if (!jsonBranch.isCollection())
+					headers.add("cardinality:" + jsonBranch.getLabel());
 
 		return headers;
 	}
@@ -201,7 +259,7 @@ public class CompletenessCalculator<T extends XmlFieldInstance> implements Calcu
 		return existenceCounter.getMap();
 	}
 
-	public Map<String, Integer> getInstanceMap() {
+	public Map<String, Integer> getCardinalityMap() {
 		return cardinalityCounter.getMap();
 	}
 
@@ -213,7 +271,7 @@ public class CompletenessCalculator<T extends XmlFieldInstance> implements Calcu
 		return existenceCounter;
 	}
 
-	public FieldCounter<Integer> getInstanceCounter() {
+	public FieldCounter<Integer> getCardinalityCounter() {
 		return cardinalityCounter;
 	}
 
@@ -241,4 +299,7 @@ public class CompletenessCalculator<T extends XmlFieldInstance> implements Calcu
 		this.cardinality = cardinality;
 	}
 
+	public Schema getSchema() {
+		return schema;
+	}
 }
