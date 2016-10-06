@@ -484,4 +484,12 @@ public class CalculatorFacade implements Serializable {
 			this.tfidfCalculator.setSolr(solrHost, solrPort, solrPath);
 	}
 
+	public List<String> getHeader() {
+		List<String> header = new ArrayList<>();
+		for (Calculator calculator : getCalculators()) {
+			header.addAll(calculator.getHeader());
+		}
+
+		return header;
+	}
 }
