@@ -30,6 +30,7 @@ public class FieldExtractor implements Calculator, Serializable {
 
 	public FieldExtractor(Schema schema) {
 		this.schema = schema;
+		setIdPath(schema.getExtractableFields().get(FIELD_NAME));
 	}
 
 	public FieldExtractor(String idPath) {
@@ -48,6 +49,18 @@ public class FieldExtractor implements Calculator, Serializable {
 		String recordId = ((List<XmlFieldInstance>)cache.get(getIdPath())).get(0).getValue();
 		cache.setRecordId(recordId);
 		resultMap.put(FIELD_NAME, recordId);
+		if (schema != null) {
+			String path;
+			for (String fieldName : schema.getExtractableFields().keySet()) {
+				if (!fieldName.equals(FIELD_NAME)) {
+					path = schema.getExtractableFields().get(fieldName);
+					resultMap.put(
+						fieldName,
+						((List<XmlFieldInstance>)cache.get(path)).get(0).getValue()
+					);
+				}
+			}
+		}
 	}
 
 	public String getIdPath() {
@@ -72,7 +85,7 @@ public class FieldExtractor implements Calculator, Serializable {
 
 	@Override
 	public String getCsv(boolean withLabel, boolean compressed) {
-		return resultMap.getList(withLabel, compressed);
+		return resultMap.getList(withLabel, false); // the extracted fields should never be compressed!
 	}
 
 	@Override
