@@ -13,6 +13,7 @@ import de.gwdg.metadataqa.api.util.Converter;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.SortedMap;
@@ -218,7 +219,7 @@ public class LanguageSaturationCalculator implements Calculator, Serializable {
 		for (String key : rawLanguageMap.keySet()) {
 			Map<String, Object> entry = new LinkedHashMap<>();
 			List<Object> list = new ArrayList<>();
-			entry.put("raw", rawLanguageMap.get(key));
+			entry.put("raw", normalizeRawValue(rawLanguageMap.get(key)));
 			entry.put("score", rawScoreMap.get(key));
 			map.put(key, entry);
 		}
@@ -280,6 +281,21 @@ public class LanguageSaturationCalculator implements Calculator, Serializable {
 			languageMap.put(field, result);
 		}
 		return languageMap;
+	}
+
+	private Object normalizeRawValue(List<SortedMap<LanguageSaturation, Double>> values) {
+		List<SortedMap<LanguageSaturation, Double>> normalized = new LinkedList<>();
+		for (SortedMap<LanguageSaturation, Double> value : values) {
+			SortedMap<LanguageSaturation, Double> norm = new TreeMap<LanguageSaturation, Double>();
+			double saturation = value.firstKey().value();
+			double weight = value.get(value.firstKey());
+			if (value.firstKey() == LanguageSaturation.TRANSLATION) {
+				saturation += weight;
+			}
+			norm.put(value.firstKey(), saturation);
+			normalized.add(norm);
+		}
+		return normalized;
 	}
 
 }
