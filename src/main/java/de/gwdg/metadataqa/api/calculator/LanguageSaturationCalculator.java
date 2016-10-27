@@ -207,8 +207,21 @@ public class LanguageSaturationCalculator implements Calculator, Serializable {
 	public Map<String, Map<String, ? extends Object>> getLabelledResultMap() {
 		Map<String, Map<String, ? extends Object>> labelledResultMap = new LinkedHashMap<>();
 // 		labelledResultMap.put(getCalculatorName(), rawLanguageMap);
-		labelledResultMap.put(getCalculatorName(), saturationMap.getMap());
+//		labelledResultMap.put(getCalculatorName(), saturationMap.getMap());
+		labelledResultMap.put(getCalculatorName(), mergeMaps());
 		return labelledResultMap;
+	}
+
+	private Map<String, Map<String, Object>> mergeMaps() {
+		Map<String, Map<String, Object>> map = new LinkedHashMap<>();
+		for (String key : rawLanguageMap.keySet()) {
+			Map<String, Object> entry = new LinkedHashMap<>();
+			List<Object> list = new ArrayList<>();
+			entry.put("raw", rawLanguageMap.get(key));
+			entry.put("score", saturationMap.getMap().get(key));
+			map.put(key, entry);
+		}
+		return map;
 	}
 
 	@Override
