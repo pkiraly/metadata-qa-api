@@ -502,4 +502,16 @@ values: $.['edm:Place'][*]['@about'], 3
 		*/
 	}
 
+	@Test
+	public void testCompareExistenceAndCardinality() throws URISyntaxException, IOException {
+
+		calculator.measure(cache);
+		FieldCounter<Boolean> existenceCounter = calculator.getExistenceCounter();
+		FieldCounter<Integer> cardinalityCounter = calculator.getCardinalityCounter();
+		for (String field : existenceCounter.getMap().keySet()) {
+			assertEquals(existenceCounter.get(field), cardinalityCounter.get(field) > 0);
+			assertEquals(!existenceCounter.get(field), cardinalityCounter.get(field) == 0);
+		}
+	}
+
 }
