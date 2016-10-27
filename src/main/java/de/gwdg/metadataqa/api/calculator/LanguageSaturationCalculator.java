@@ -31,6 +31,7 @@ public class LanguageSaturationCalculator implements Calculator, Serializable {
 	private String CALCULATOR_NAME = "languageSaturation";
 	private String inputFileName;
 	private FieldCounter<Double> saturationMap;
+	private Map<String, Map<String, Double>> rawScoreMap = new LinkedHashMap<>();
 	private Map<String, List<SortedMap<LanguageSaturation, Double>>> rawLanguageMap;
 
 	private Schema schema;
@@ -218,7 +219,7 @@ public class LanguageSaturationCalculator implements Calculator, Serializable {
 			Map<String, Object> entry = new LinkedHashMap<>();
 			List<Object> list = new ArrayList<>();
 			entry.put("raw", rawLanguageMap.get(key));
-			entry.put("score", saturationMap.getMap().get(key));
+			entry.put("score", rawScoreMap.get(key));
 			map.put(key, entry);
 		}
 		return map;
@@ -255,6 +256,7 @@ public class LanguageSaturationCalculator implements Calculator, Serializable {
 	private FieldCounter<Double> calculateScore(Map<String, List<SortedMap<LanguageSaturation, Double>>> rawLanguageMap) {
 		FieldCounter<Double> languageMap = new FieldCounter<>();
 		for (String field : rawLanguageMap.keySet()) {
+			Map<String, Double> fieldMap = new LinkedHashMap<>();
 			List<SortedMap<LanguageSaturation, Double>> values = rawLanguageMap.get(field);
 			double sum = 0.0;
 			for (SortedMap<LanguageSaturation, Double> value : values) {
@@ -271,6 +273,10 @@ public class LanguageSaturationCalculator implements Calculator, Serializable {
 				// System.err.println(field + ": " + values);
 				// System.err.println("result: " + result + " vs " + (average / 4.0));
 			}
+			fieldMap.put("sum", sum);
+			fieldMap.put("average", average);
+			fieldMap.put("normalized", result);
+			rawScoreMap.put(field, fieldMap);
 			languageMap.put(field, result);
 		}
 		return languageMap;
