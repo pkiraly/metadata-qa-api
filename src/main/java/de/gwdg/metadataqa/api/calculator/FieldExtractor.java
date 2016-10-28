@@ -54,10 +54,9 @@ public class FieldExtractor implements Calculator, Serializable {
 			for (String fieldName : schema.getExtractableFields().keySet()) {
 				if (!fieldName.equals(FIELD_NAME)) {
 					path = schema.getExtractableFields().get(fieldName);
-					resultMap.put(
-						fieldName,
-						((List<XmlFieldInstance>)cache.get(path)).get(0).getValue()
-					);
+					List<XmlFieldInstance> values = (List<XmlFieldInstance>) cache.get(path);
+					String value = (values.isEmpty() || values.get(0) == null) ? null : values.get(0).getValue();
+					resultMap.put(fieldName, value);
 				}
 			}
 		}
