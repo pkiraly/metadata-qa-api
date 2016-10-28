@@ -11,6 +11,7 @@ import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.logging.Logger;
 
 /**
  *
@@ -19,6 +20,7 @@ import java.util.Map;
 public class FieldExtractor implements Calculator, Serializable {
 
 	private static final String CALCULATOR_NAME = "fields";
+	private static final Logger logger = Logger.getLogger(FieldExtractor.class.getCanonicalName());
 
 	public String FIELD_NAME = "recordId";
 	private String idPath;
@@ -57,6 +59,7 @@ public class FieldExtractor implements Calculator, Serializable {
 					List<XmlFieldInstance> values = (List<XmlFieldInstance>) cache.get(path);
 					String value = null;
 					if (values == null || values.isEmpty() || values.size() == 0 || values.get(0) == null || values.get(0).getValue() == null) {
+						logger.warning("Null value in field: " + fieldName + " (" + path + ")");
 						value = null;
 					} else {
 						value = values.get(0).getValue();
