@@ -192,13 +192,13 @@ public class LanguageSaturationCalculator implements Calculator, Serializable {
 	private double normalizeTranslationCount(double count) {
 		double normalized = 0;
 		if (2 <= count && count <= 3) {
-			normalized = 1.0;
+			normalized = 0.0;
 		} else if (4 <= count && count <= 9) {
-			normalized = 2.0;
+			normalized = 0.3;
 		} else {
-			normalized = 3.0;
+			normalized = 0.6;
 		}
-		return (normalized - 1) / 3.0;
+		return normalized;
 	}
 
 	public Map<String, Double> getSaturationMap() {

@@ -7,10 +7,10 @@ package de.gwdg.metadataqa.api.model;
 public enum LanguageSaturation {
 
 	NA          (0),
-	STRING      (1),
-	LANGUAGE    (2),
-	TRANSLATION (3),
-	LINK        (4);
+	STRING      (0),
+	LANGUAGE    (1),
+	TRANSLATION (2),
+	LINK        (3);
 
 	private final int value;
 
