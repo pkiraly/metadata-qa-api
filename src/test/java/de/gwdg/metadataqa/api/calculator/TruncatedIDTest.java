@@ -1,8 +1,8 @@
 package de.gwdg.metadataqa.api.calculator;
 
-import de.gwdg.metadataqa.api.counter.FieldCounter;
 import de.gwdg.metadataqa.api.model.JsonPathCache;
 import de.gwdg.metadataqa.api.schema.EdmOaiPmhXmlSchema;
+import de.gwdg.metadataqa.api.util.CompressionLevel;
 import de.gwdg.metadataqa.api.util.FileUtils;
 import java.io.IOException;
 import java.net.URISyntaxException;
@@ -47,7 +47,7 @@ public class TruncatedIDTest {
 	@Test
 	public void truncation() {
 		calculator.measure(cache);
-		String csv = calculator.getCsv(true, true);
+		String csv = calculator.getCsv(true, CompressionLevel.NORMAL);
 		assertEquals("\"recordId\":9200365/BibliographicResource_3000059507130,\"dataset\":9200365_Ag_EU_TEL_a0142_Gallica,\"dataProvider\":National Library of France", csv);
 		assertEquals(
 			"9200365/BibliographicResource_3000059507130",

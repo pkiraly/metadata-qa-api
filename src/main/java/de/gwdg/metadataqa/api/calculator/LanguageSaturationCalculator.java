@@ -9,6 +9,7 @@ import de.gwdg.metadataqa.api.model.EdmFieldInstance;
 import de.gwdg.metadataqa.api.model.JsonPathCache;
 import de.gwdg.metadataqa.api.model.LanguageSaturation;
 import de.gwdg.metadataqa.api.schema.Schema;
+import de.gwdg.metadataqa.api.util.CompressionLevel;
 import de.gwdg.metadataqa.api.util.Converter;
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -28,10 +29,27 @@ import java.util.logging.Logger;
  */
 public class LanguageSaturationCalculator implements Calculator, Serializable {
 
+	public static final String CALCULATOR_NAME = "languageSaturation";
+
 	private static final Logger LOGGER = Logger.getLogger(LanguageSaturationCalculator.class.getCanonicalName());
 	private static final String NA = "n.a.";
 
-	private String CALCULATOR_NAME = "languageSaturation";
+	public enum ResultTypes {
+		NORMAL        (0),
+		EXTENDED      (1);
+
+		private final int value;
+
+		ResultTypes(int value) {
+			this.value = value;
+		}
+
+		public int value() {
+			return value;
+		}
+	}
+
+	private ResultTypes resultType = ResultTypes.NORMAL;
 	private String inputFileName;
 	private FieldCounter<Double> saturationMap;
 	private Map<String, Map<String, Double>> rawScoreMap = new LinkedHashMap<>();
@@ -55,9 +73,21 @@ public class LanguageSaturationCalculator implements Calculator, Serializable {
 	@Override
 	public List<String> getHeader() {
 		List<String> headers = new ArrayList<>();
-		for (JsonBranch jsonBranch : schema.getPaths())
-			if (!schema.getNoLanguageFields().contains(jsonBranch.getLabel()))
-				headers.add("lang:" + jsonBranch.getLabel());
+		for (JsonBranch jsonBranch : schema.getPaths()) {
+			if (!schema.getNoLanguageFields().contains(jsonBranch.getLabel())) {
+				switch (resultType) {
+					case EXTENDED:
+						headers.add("lang:sum:" + jsonBranch.getLabel());
+						headers.add("lang:average:" + jsonBranch.getLabel());
+						headers.add("lang:normalized:" + jsonBranch.getLabel());
+						break;
+					case NORMAL:
+					default:
+						headers.add("lang:" + jsonBranch.getLabel());
+						break;
+				}
+			}
+		}
 		return headers;
 	}
 
@@ -242,8 +272,8 @@ public class LanguageSaturationCalculator implements Calculator, Serializable {
 	}
 
 	@Override
-	public String getCsv(boolean withLabel, boolean compressed) {
-		return saturationMap.getList(withLabel, compressed);
+	public String getCsv(boolean withLabel, CompressionLevel compressionLevel) {
+		return saturationMap.getList(withLabel, compressionLevel);
 	}
 
 	private SortedMap<LanguageSaturation, Double> keepOnlyTheBest(SortedMap<LanguageSaturation, Double> result) {
@@ -281,12 +311,19 @@ public class LanguageSaturationCalculator implements Calculator, Serializable {
 				sum += saturation;
 			}
 			double average = sum / (double)values.size();
-			double result = 1.0 - (1.0/(average + 1.0));
+			double normalized = 1.0 - (1.0/(average + 1.0));
 			fieldMap.put("sum", sum);
 			fieldMap.put("average", average);
-			fieldMap.put("normalized", result);
+			fieldMap.put("normalized", normalized);
 			rawScoreMap.put(field, fieldMap);
-			languageMap.put(field, result);
+
+			if (resultType.equals(ResultTypes.NORMAL)) {
+				languageMap.put(field, normalized);
+			} else {
+				languageMap.put(field + ":sum", sum);
+				languageMap.put(field + ":average", average);
+				languageMap.put(field + ":normalized", normalized);
+			}
 		}
 		return languageMap;
 	}
@@ -294,7 +331,7 @@ public class LanguageSaturationCalculator implements Calculator, Serializable {
 	private Object normalizeRawValue(List<SortedMap<LanguageSaturation, Double>> values) {
 		List<SortedMap<LanguageSaturation, Double>> normalized = new LinkedList<>();
 		for (SortedMap<LanguageSaturation, Double> value : values) {
-			SortedMap<LanguageSaturation, Double> norm = new TreeMap<LanguageSaturation, Double>();
+			SortedMap<LanguageSaturation, Double> norm = new TreeMap<>();
 			double saturation = value.firstKey().value();
 			double weight = value.get(value.firstKey());
 			if (value.firstKey() == LanguageSaturation.TRANSLATION) {
@@ -306,4 +343,11 @@ public class LanguageSaturationCalculator implements Calculator, Serializable {
 		return normalized;
 	}
 
+	public ResultTypes getResultType() {
+		return resultType;
+	}
+
+	public void setResultType(ResultTypes resultType) {
+		this.resultType = resultType;
+	}
 }

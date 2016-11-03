@@ -6,6 +6,7 @@ import de.gwdg.metadataqa.api.model.JsonPathCache;
 import de.gwdg.metadataqa.api.schema.Schema;
 import de.gwdg.metadataqa.api.uniqueness.TfIdf;
 import de.gwdg.metadataqa.api.uniqueness.TfIdfExtractor;
+import de.gwdg.metadataqa.api.util.CompressionLevel;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.Serializable;
@@ -30,9 +31,10 @@ import org.apache.commons.lang3.StringUtils;
  */
 public class TfIdfCalculator implements Calculator, Serializable {
 
+	public static final String CALCULATOR_NAME = "uniqueness";
+
 	private static final Logger logger = Logger.getLogger(TfIdfCalculator.class.getCanonicalName());
 
-	private String CALCULATOR_NAME = "uniqueness";
 	private final static String SOLR_HOST = "localhost";
 	private final static String SOLR_PORT = "8983";
 	private final static String SOLR_PATH = "solr/europeana";
@@ -137,8 +139,8 @@ public class TfIdfCalculator implements Calculator, Serializable {
 	}
 
 	@Override
-	public String getCsv(boolean withLabel, boolean compressed) {
-		return resultMap.getList(withLabel, compressed);
+	public String getCsv(boolean withLabel, CompressionLevel compressionLevel) {
+		return resultMap.getList(withLabel, compressionLevel);
 	}
 
 	@Override

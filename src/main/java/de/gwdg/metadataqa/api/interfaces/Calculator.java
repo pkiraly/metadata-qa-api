@@ -1,6 +1,7 @@
 package de.gwdg.metadataqa.api.interfaces;
 
 import de.gwdg.metadataqa.api.model.JsonPathCache;
+import de.gwdg.metadataqa.api.util.CompressionLevel;
 import java.util.List;
 import java.util.Map;
 
@@ -22,7 +23,7 @@ public interface Calculator {
 
 	Map<String, Map<String, ? extends Object>> getLabelledResultMap();
 
-	String getCsv(boolean withLabels, boolean compressed);
+	String getCsv(boolean withLabels, CompressionLevel compressionLevel);
 
 	List<String> getHeader();
 

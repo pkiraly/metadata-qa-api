@@ -1,5 +1,6 @@
 package de.gwdg.metadataqa.api.counter;
 
+import de.gwdg.metadataqa.api.util.CompressionLevel;
 import de.gwdg.metadataqa.api.util.Converter;
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
@@ -41,10 +42,10 @@ public class FieldCounter<T> {
 	}
 
 	public String getList(boolean withLabel) {
-		return getList(withLabel, false);
+		return getList(withLabel, CompressionLevel.ZERO);
 	}
 
-	public String getList(boolean withLabel, boolean compressed) {
+	public String getList(boolean withLabel, CompressionLevel compressionLevel) {
 		List<String> items = new ArrayList<>();
 		for (Map.Entry<String, T> entry : fieldMap.entrySet()) {
 			String item = "";
@@ -52,8 +53,8 @@ public class FieldCounter<T> {
 				item += String.format("\"%s\":", entry.getKey());
 			}
 			String value = Converter.asString(entry.getValue());
-			if (compressed == true)
-				value = Converter.compressNumber(value);
+			if (compressionLevel != CompressionLevel.ZERO)
+				value = Converter.compressNumber(value, compressionLevel);
 			item += value;
 			items.add(item);
 		}

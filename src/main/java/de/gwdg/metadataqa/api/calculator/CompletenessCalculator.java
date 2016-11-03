@@ -9,6 +9,7 @@ import de.gwdg.metadataqa.api.json.JsonBranch;
 import de.gwdg.metadataqa.api.model.JsonPathCache;
 import de.gwdg.metadataqa.api.model.XmlFieldInstance;
 import de.gwdg.metadataqa.api.schema.Schema;
+import de.gwdg.metadataqa.api.util.CompressionLevel;
 import de.gwdg.metadataqa.api.util.Converter;
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -26,9 +27,10 @@ import org.apache.commons.lang3.StringUtils;
  */
 public class CompletenessCalculator<T extends XmlFieldInstance> implements Calculator, Serializable {
 
+	public static final String CALCULATOR_NAME = "completeness";
+
 	private static final Logger LOGGER = Logger.getLogger(CompletenessCalculator.class.getCanonicalName());
 
-	private static final String CALCULATOR_NAME = "completeness";
 	private String inputFileName;
 
 	private CompletenessCounter completenessCounter;
@@ -220,16 +222,16 @@ public class CompletenessCalculator<T extends XmlFieldInstance> implements Calcu
 	}
 
 	@Override
-	public String getCsv(boolean withLabel, boolean compressed) {
+	public String getCsv(boolean withLabel, CompressionLevel compressionLevel) {
 		List<String> csvs = new ArrayList<>();
 		if (completeness)
-			csvs.add(completenessCounter.getFieldCounter().getList(withLabel, compressed));
+			csvs.add(completenessCounter.getFieldCounter().getList(withLabel, compressionLevel));
 
 		if (existence)
-			csvs.add(existenceCounter.getList(withLabel, compressed));
+			csvs.add(existenceCounter.getList(withLabel, compressionLevel));
 
 		if (cardinality)
-			csvs.add(cardinalityCounter.getList(withLabel, compressed));
+			csvs.add(cardinalityCounter.getList(withLabel, compressionLevel));
 
 		return StringUtils.join(csvs, ",");
 	}

@@ -82,10 +82,17 @@ public class Converter {
 	 * Removes the unnecessary 0-s from the end of a number
 	 * For example 0.7000 becomes 0.7, 0.00000 becomes 0.0
 	 * @param value A string representation of a number
+	 * @param compressionLevel The level of compression
 	 * @return The "compressed" representation without zeros at the end
 	 */
-	public static String compressNumber(String value) {
-		return value.replaceAll("([0-9])0+$", "$1").replaceAll("\\.0+$", ".0");
+	public static String compressNumber(String value, CompressionLevel compressionLevel) {
+		value = value.replaceAll("([0-9])0+$", "$1");
+		if (compressionLevel.equals(CompressionLevel.NORMAL)) {
+			value = value.replaceAll("\\.0+$", ".0");
+		} else if (compressionLevel.equals(CompressionLevel.WITHOUT_TRAILING_ZEROS)) {
+			value = value.replaceAll("\\.0+$", "");
+		}
+		return value;
 	}
 
 	public static List<Object> jsonObjectToList(Object jsonFragment) {

@@ -1,6 +1,7 @@
 package de.gwdg.metadataqa.api.counter;
 
 import de.gwdg.metadataqa.api.json.JsonBranch;
+import de.gwdg.metadataqa.api.util.CompressionLevel;
 import de.gwdg.metadataqa.api.util.Converter;
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
@@ -72,23 +73,23 @@ public class Counters {
 	}
 
 	public List<String> getResultsAsList(boolean withLabel) {
-		return getResultsAsList(withLabel, false);
+		return getResultsAsList(withLabel, CompressionLevel.ZERO);
 	}
 
-	public List<String> getResultsAsList(boolean withLabel, boolean compressed) {
+	public List<String> getResultsAsList(boolean withLabel, CompressionLevel compressionLevel) {
 		Map<String, Double> results = getResultsDouble();
 		List<String> items = new ArrayList<>();
-		addResultItem(withLabel, items, TOTAL, results.get(TOTAL), compressed);
+		addResultItem(withLabel, items, TOTAL, results.get(TOTAL), compressionLevel);
 		for (JsonBranch.Category category : JsonBranch.Category.values()) {
-			addResultItem(withLabel, items, category.name(), results.get(category.name()), compressed);
+			addResultItem(withLabel, items, category.name(), results.get(category.name()), compressionLevel);
 		}
 		return items;
 	}
 
-	private void addResultItem(boolean withLabel, List<String> items, String key, Double value, boolean compressed) {
+	private void addResultItem(boolean withLabel, List<String> items, String key, Double value, CompressionLevel compressionLevel) {
 		String valueAsString = String.format("%f", value);
-		if (compressed) {
-			valueAsString = Converter.compressNumber(valueAsString);
+		if (compressionLevel != CompressionLevel.ZERO) {
+			valueAsString = Converter.compressNumber(valueAsString, compressionLevel);
 		}
 
 		if (withLabel) {
@@ -103,11 +104,11 @@ public class Counters {
 	}
 
 	public String getResultsAsCSV(boolean withLabel) {
-		return getResultsAsCSV(withLabel, false);
+		return getResultsAsCSV(withLabel, CompressionLevel.ZERO);
 	}
 
-	public String getResultsAsCSV(boolean withLabel, boolean compressed) {
-		return StringUtils.join(getResultsAsList(withLabel, compressed), ",");
+	public String getResultsAsCSV(boolean withLabel, CompressionLevel compressionLevel) {
+		return StringUtils.join(getResultsAsList(withLabel, compressionLevel), ",");
 	}
 
 	/*
@@ -140,7 +141,7 @@ public class Counters {
 		this.problemList = problemList;
 	}
 
-	public String getProblemList(boolean withLabel, boolean compress) {
+	public String getProblemList(boolean withLabel, CompressionLevel compressionLevel) {
 		List<String> items = new ArrayList<>();
 		for (Map.Entry<String, Double> entry : problemList.entrySet()) {
 			String item = "";
@@ -148,8 +149,8 @@ public class Counters {
 				item += String.format("\"%s\":", entry.getKey());
 			}
 			String nr = String.format("%.8f", entry.getValue());
-			if (compress)
-				nr = Converter.compressNumber(nr);
+			if (compressionLevel != CompressionLevel.ZERO)
+				nr = Converter.compressNumber(nr, compressionLevel);
 			item += nr;
 			items.add(item);
 		}
@@ -194,7 +195,7 @@ public class Counters {
 	 * @return Comma separated scores
 	*/
 	public String getFullResults() {
-		return getFullResults(false, false);
+		return getFullResults(false, CompressionLevel.ZERO);
 	}
 
 	/**
@@ -204,10 +205,10 @@ public class Counters {
 	 * @return Comma separated scores
 	*/
 	public String getFullResults(boolean withLabel) {
-		return getFullResults(withLabel, false);
+		return getFullResults(withLabel, CompressionLevel.ZERO);
 	}
 
-	public String getFullResults(boolean withLabel, boolean compress) {
+	public String getFullResults(boolean withLabel, CompressionLevel compressionLevel) {
 		String result = "";
 		if (StringUtils.isNotBlank((String)fields.get("datasetCode"))
 			&& StringUtils.isNotBlank((String)fields.get("dataProviderCode"))) {
@@ -217,7 +218,7 @@ public class Counters {
 		if (StringUtils.isNotBlank(recordId)) {
 			result += String.format("%s,", recordId);
 		}
-		result += getResultsAsCSV(withLabel, compress);
+		result += getResultsAsCSV(withLabel, compressionLevel);
 		/*
 		if (returnFieldExistenceList == true) {
 			result += ',' + getExistenceList(withLabel);
@@ -232,7 +233,7 @@ public class Counters {
 			result += ',' + getTfIdfList(withLabel);
 		}
 		if (returnProblems == true) {
-			result += ',' + getProblemList(withLabel, compress);
+			result += ',' + getProblemList(withLabel, compressionLevel);
 		}
 		if (returnLanguage == true) {
 			result += ',' + getLanguageMap(withLabel);

@@ -2,16 +2,13 @@ package de.gwdg.metadataqa.api.calculator;
 
 import de.gwdg.metadataqa.api.model.JsonPathCache;
 import de.gwdg.metadataqa.api.schema.EdmOaiPmhXmlLimitedSchema;
+import de.gwdg.metadataqa.api.util.CompressionLevel;
 import de.gwdg.metadataqa.api.util.FileUtils;
 import java.io.IOException;
 import java.net.URISyntaxException;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
-import org.junit.After;
-import org.junit.AfterClass;
-import org.junit.Before;
-import org.junit.BeforeClass;
 import org.junit.Test;
 import static org.junit.Assert.*;
 
@@ -32,8 +29,8 @@ public class LanguageCalculatorWithLimitedEdmTest {
 		LanguageCalculator calculator = new LanguageCalculator(new EdmOaiPmhXmlLimitedSchema());
 		JsonPathCache cache = new JsonPathCache(FileUtils.readFirstLine("general/test.json"));
 		calculator.measure(cache);
-		assertNotNull(calculator.getCsv(false, true));
-		assertEquals("de:1,_1:1,_1:1,_1:1,_1:1,_1:1,_0:1,_0:1,_1:1,_1:1,_1:1,_1:1,de:4;en:1,_1:1,_1:1,_1:1,_1:1,_1:1,_1:1,_1:1,_2:1,_1:1,_1:1,_0:1,_1:1,_2:1,en:1,_0:1", calculator.getCsv(false, true));
+		assertNotNull(calculator.getCsv(false, CompressionLevel.NORMAL));
+		assertEquals("de:1,_1:1,_1:1,_1:1,_1:1,_1:1,_0:1,_0:1,_1:1,_1:1,_1:1,_1:1,de:4;en:1,_1:1,_1:1,_1:1,_1:1,_1:1,_1:1,_1:1,_2:1,_1:1,_1:1,_0:1,_1:1,_2:1,en:1,_0:1", calculator.getCsv(false, CompressionLevel.NORMAL));
 	}
 
 	@Test
@@ -41,7 +38,7 @@ public class LanguageCalculatorWithLimitedEdmTest {
 		LanguageCalculator calculator = new LanguageCalculator(new EdmOaiPmhXmlLimitedSchema());
 		JsonPathCache cache = new JsonPathCache(FileUtils.readFirstLine("general/test.json"));
 		calculator.measure(cache);
-		String languages = calculator.getCsv(true, true);
+		String languages = calculator.getCsv(true, CompressionLevel.NORMAL);
 		assertNotNull(languages);
 		assertEquals("\"Proxy/dc:title\":de:1,\"Proxy/dcterms:alternative\":_1:1,\"Proxy/dc:description\":_1:1,\"Proxy/dc:creator\":_1:1,\"Proxy/dc:publisher\":_1:1,\"Proxy/dc:contributor\":_1:1,\"Proxy/dc:type\":_0:1,\"Proxy/dc:identifier\":_0:1,\"Proxy/dc:language\":_1:1,\"Proxy/dc:coverage\":_1:1,\"Proxy/dcterms:temporal\":_1:1,\"Proxy/dcterms:spatial\":_1:1,\"Proxy/dc:subject\":de:4;en:1,\"Proxy/dc:date\":_1:1,\"Proxy/dcterms:created\":_1:1,\"Proxy/dcterms:issued\":_1:1,\"Proxy/dcterms:extent\":_1:1,\"Proxy/dcterms:medium\":_1:1,\"Proxy/dcterms:provenance\":_1:1,\"Proxy/dcterms:hasPart\":_1:1,\"Proxy/dcterms:isPartOf\":_2:1,\"Proxy/dc:format\":_1:1,\"Proxy/dc:source\":_1:1,\"Proxy/dc:rights\":_0:1,\"Proxy/dc:relation\":_1:1,\"Aggregation/edm:rights\":_2:1,\"Aggregation/edm:provider\":en:1,\"Aggregation/edm:dataProvider\":_0:1", languages);
 	}

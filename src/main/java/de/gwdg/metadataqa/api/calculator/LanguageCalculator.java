@@ -8,10 +8,10 @@ import de.gwdg.metadataqa.api.json.JsonBranch;
 import de.gwdg.metadataqa.api.model.EdmFieldInstance;
 import de.gwdg.metadataqa.api.model.JsonPathCache;
 import de.gwdg.metadataqa.api.schema.Schema;
+import de.gwdg.metadataqa.api.util.CompressionLevel;
 import de.gwdg.metadataqa.api.util.Converter;
 import java.io.Serializable;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
@@ -25,9 +25,10 @@ import java.util.logging.Logger;
  */
 public class LanguageCalculator implements Calculator, Serializable {
 
+	public static final String CALCULATOR_NAME = "languages";
+
 	private static final Logger LOGGER = Logger.getLogger(LanguageCalculator.class.getCanonicalName());
 
-	private String CALCULATOR_NAME = "languages";
 	private String inputFileName;
 	private FieldCounter<String> languageMap;
 	private Map<String, SortedMap<String, Integer>> rawLanguageMap;
@@ -193,8 +194,8 @@ public class LanguageCalculator implements Calculator, Serializable {
 	}
 
 	@Override
-	public String getCsv(boolean withLabel, boolean compressed) {
-		return languageMap.getList(withLabel, false);
+	public String getCsv(boolean withLabel, CompressionLevel compressionLevel) {
+		return languageMap.getList(withLabel, compressionLevel.ZERO);
 	}
 
 }

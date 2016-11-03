@@ -12,6 +12,7 @@ import de.gwdg.metadataqa.api.problemcatalog.ProblemCatalog;
 import de.gwdg.metadataqa.api.problemcatalog.TitleAndDescriptionAreSame;
 import de.gwdg.metadataqa.api.schema.EdmSchema;
 import de.gwdg.metadataqa.api.uniqueness.TfIdf;
+import de.gwdg.metadataqa.api.util.CompressionLevel;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
@@ -216,7 +217,7 @@ public class CalculatorFacade implements Serializable {
 		List<String> csvs = new ArrayList<>();
 		for (Calculator calculator : getCalculators()) {
 			calculator.measure(cache);
-			csvs.add(calculator.getCsv(false, true));
+			csvs.add(calculator.getCsv(false, CompressionLevel.NORMAL));
 		}
 
 		return StringUtils.join(csvs, ",");

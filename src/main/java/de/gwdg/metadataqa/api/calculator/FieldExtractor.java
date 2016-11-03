@@ -6,6 +6,7 @@ import de.gwdg.metadataqa.api.interfaces.Calculator;
 import de.gwdg.metadataqa.api.model.JsonPathCache;
 import de.gwdg.metadataqa.api.model.XmlFieldInstance;
 import de.gwdg.metadataqa.api.schema.Schema;
+import de.gwdg.metadataqa.api.util.CompressionLevel;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
@@ -19,7 +20,8 @@ import java.util.logging.Logger;
  */
 public class FieldExtractor implements Calculator, Serializable {
 
-	private static final String CALCULATOR_NAME = "fields";
+	public static final String CALCULATOR_NAME = "fieldExtractor";
+
 	private static final Logger logger = Logger.getLogger(FieldExtractor.class.getCanonicalName());
 
 	public String FIELD_NAME = "recordId";
@@ -91,8 +93,8 @@ public class FieldExtractor implements Calculator, Serializable {
 	}
 
 	@Override
-	public String getCsv(boolean withLabel, boolean compressed) {
-		return resultMap.getList(withLabel, false); // the extracted fields should never be compressed!
+	public String getCsv(boolean withLabel, CompressionLevel compressionLevel) {
+		return resultMap.getList(withLabel, CompressionLevel.ZERO); // the extracted fields should never be compressed!
 	}
 
 	@Override

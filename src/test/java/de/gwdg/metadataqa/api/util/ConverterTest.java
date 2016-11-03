@@ -34,7 +34,7 @@ public class ConverterTest {
 
 	@Test
 	public void testCompressNumber() {
-		assertEquals("0.5", Converter.compressNumber("0.50000"));
-		assertEquals("0.0", Converter.compressNumber("0.00000"));
+		assertEquals("0.5", Converter.compressNumber("0.50000", CompressionLevel.NORMAL));
+		assertEquals("0.0", Converter.compressNumber("0.00000", CompressionLevel.NORMAL));
 	}
 }
