@@ -76,6 +76,8 @@ public class CalculatorFacade implements Serializable {
 	 */
 	protected boolean completenessCollectFields = false;
 	protected boolean saturationExtendedResult = false;
+	protected CompressionLevel compressionLevel = CompressionLevel.NORMAL;
+
 	/**
 	 * Flag to detect status changes
 	 * (default: false)
@@ -220,7 +222,7 @@ public class CalculatorFacade implements Serializable {
 		List<String> csvs = new ArrayList<>();
 		for (Calculator calculator : getCalculators()) {
 			calculator.measure(cache);
-			csvs.add(calculator.getCsv(false, CompressionLevel.NORMAL));
+			csvs.add(calculator.getCsv(false, compressionLevel));
 		}
 
 		return StringUtils.join(csvs, ",");
@@ -503,5 +505,13 @@ public class CalculatorFacade implements Serializable {
 
 	public void setSaturationExtendedResult(boolean saturationExtendedResult) {
 		this.saturationExtendedResult = saturationExtendedResult;
+	}
+
+	public CompressionLevel getCompressionLevel() {
+		return compressionLevel;
+	}
+
+	public void setCompressionLevel(CompressionLevel compressionLevel) {
+		this.compressionLevel = compressionLevel;
 	}
 }
