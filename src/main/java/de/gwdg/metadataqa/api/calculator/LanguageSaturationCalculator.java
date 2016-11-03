@@ -21,6 +21,7 @@ import java.util.Map;
 import java.util.Set;
 import java.util.SortedMap;
 import java.util.TreeMap;
+import java.util.logging.Level;
 import java.util.logging.Logger;
 
 /**
@@ -95,6 +96,7 @@ public class LanguageSaturationCalculator implements Calculator, Serializable {
 	public void measure(JsonPathCache cache)
 			throws InvalidJsonException {
 
+		LOGGER.log(Level.INFO, "result type: {0}", resultType);
 		rawLanguageMap = new LinkedHashMap<>();
 		if (schema.getCollectionPaths().isEmpty()) {
 			measureFlatSchema(cache);
