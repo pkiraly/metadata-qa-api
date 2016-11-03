@@ -290,4 +290,14 @@ public class LanguageSaturationCalculatorTest {
 		assertEquals(107, calculator.getHeader().size());
 		assertEquals(expected, calculator.getHeader());
 	}
+	
+	
+	@Test
+	public void testIssue8MultipleSameLanguages() throws URISyntaxException, IOException {
+		LanguageSaturationCalculator calculator = new LanguageSaturationCalculator(new EdmOaiPmhXmlSchema());
+		JsonPathCache cache = new JsonPathCache(FileUtils.readFirstLine("issue-examples/issue8-multiple-same-languages.json"));
+		calculator.measure(cache);
+		Map<String, Double> languages = calculator.getSaturationMap();
+		assertEquals(new Double(0.5), languages.get("Proxy/dc:title"));
+	}
 }
