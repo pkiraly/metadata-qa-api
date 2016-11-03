@@ -64,7 +64,6 @@ public class LanguageSaturationCalculator implements Calculator, Serializable {
 
 	public LanguageSaturationCalculator(Schema schema) {
 		this.schema = schema;
-		LOGGER.log(Level.INFO, "new LanguageSaturationCalculator()");
 	}
 
 	@Override
@@ -74,7 +73,6 @@ public class LanguageSaturationCalculator implements Calculator, Serializable {
 
 	@Override
 	public List<String> getHeader() {
-		LOGGER.log(Level.INFO, "(header) result type: {0}", resultType);
 
 		List<String> headers = new ArrayList<>();
 		for (JsonBranch jsonBranch : schema.getPaths()) {
@@ -99,7 +97,6 @@ public class LanguageSaturationCalculator implements Calculator, Serializable {
 	public void measure(JsonPathCache cache)
 			throws InvalidJsonException {
 
-		LOGGER.log(Level.INFO, "(measure) result type: {0}", resultType);
 		rawLanguageMap = new LinkedHashMap<>();
 		if (schema.getCollectionPaths().isEmpty()) {
 			measureFlatSchema(cache);
