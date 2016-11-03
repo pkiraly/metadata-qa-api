@@ -75,6 +75,7 @@ public class CalculatorFacade implements Serializable {
 	 * (default: false)
 	 */
 	protected boolean completenessCollectFields = false;
+	protected boolean saturationExtendedResult = false;
 	/**
 	 * Flag to detect status changes
 	 * (default: false)
@@ -177,6 +178,8 @@ public class CalculatorFacade implements Serializable {
 
 		if (languageSaturationMeasurementEnabled) {
 			languageSaturationCalculator = new LanguageSaturationCalculator(schema);
+			if (saturationExtendedResult)
+				languageSaturationCalculator.setResultType(LanguageSaturationCalculator.ResultTypes.EXTENDED);
 			calculators.add(languageSaturationCalculator);
 		}
 	}
@@ -492,5 +495,13 @@ public class CalculatorFacade implements Serializable {
 		}
 
 		return header;
+	}
+
+	public boolean isSaturationExtendedResult() {
+		return saturationExtendedResult;
+	}
+
+	public void setSaturationExtendedResult(boolean saturationExtendedResult) {
+		this.saturationExtendedResult = saturationExtendedResult;
 	}
 }
