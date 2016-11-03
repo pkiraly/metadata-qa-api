@@ -193,7 +193,9 @@ public class LanguageSaturationCalculator implements Calculator, Serializable {
 			Double count = result.remove(LanguageSaturation.LANGUAGE);
 			result.put(LanguageSaturation.TRANSLATION, normalizeTranslationCount(languageCount));
 		}
-		keepOnlyTheBest(result);
+		if (languageCount > 1) {
+			result = keepOnlyTheBest(result);
+		}
 		return result;
 	}
 
@@ -244,12 +246,13 @@ public class LanguageSaturationCalculator implements Calculator, Serializable {
 		return saturationMap.getList(withLabel, compressed);
 	}
 
-	private void keepOnlyTheBest(SortedMap<LanguageSaturation, Double> result) {
+	private SortedMap<LanguageSaturation, Double> keepOnlyTheBest(SortedMap<LanguageSaturation, Double> result) {
 		if (result.size() > 1) {
 			LanguageSaturation best = LanguageSaturation.NA;
 			for (LanguageSaturation key : result.keySet())
 				if (key.value() > best.value())
 					best = key;
+
 			if (best != LanguageSaturation.NA) {
 				double modifier = 0.0;
 				if (best == LanguageSaturation.TRANSLATION && result.containsKey(LanguageSaturation.STRING)) {
@@ -260,6 +263,7 @@ public class LanguageSaturationCalculator implements Calculator, Serializable {
 				result = replacement;
 			}
 		}
+		return result;
 	}
 
 	private FieldCounter<Double> calculateScore(Map<String, List<SortedMap<LanguageSaturation, Double>>> rawLanguageMap) {
@@ -278,10 +282,6 @@ public class LanguageSaturationCalculator implements Calculator, Serializable {
 			}
 			double average = sum / (double)values.size();
 			double result = 1.0 - (1.0/(average + 1.0));
-			if (average > 0) {
-				// System.err.println(field + ": " + values);
-				// System.err.println("result: " + result + " vs " + (average / 4.0));
-			}
 			fieldMap.put("sum", sum);
 			fieldMap.put("average", average);
 			fieldMap.put("normalized", result);
