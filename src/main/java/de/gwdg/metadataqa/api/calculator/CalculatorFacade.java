@@ -108,7 +108,7 @@ public class CalculatorFacade implements Serializable {
 	/**
 	 * The language detector
 	 */
-	protected LanguageSaturationCalculator languageSaturationCalculator;
+	protected MultilingualitySaturationCalculator languageSaturationCalculator;
 
 	/**
 	 * Create calculator facade with the default configuration
@@ -179,9 +179,9 @@ public class CalculatorFacade implements Serializable {
 		}
 
 		if (languageSaturationMeasurementEnabled) {
-			languageSaturationCalculator = new LanguageSaturationCalculator(schema);
+			languageSaturationCalculator = new MultilingualitySaturationCalculator(schema);
 			if (saturationExtendedResult)
-				languageSaturationCalculator.setResultType(LanguageSaturationCalculator.ResultTypes.EXTENDED);
+				languageSaturationCalculator.setResultType(MultilingualitySaturationCalculator.ResultTypes.EXTENDED);
 			calculators.add(languageSaturationCalculator);
 		}
 	}

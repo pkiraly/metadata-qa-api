@@ -28,11 +28,11 @@ import java.util.logging.Logger;
  *
  * @author Péter Király <peter.kiraly at gwdg.de>
  */
-public class LanguageSaturationCalculator implements Calculator, Serializable {
+public class MultilingualitySaturationCalculator implements Calculator, Serializable {
 
-	public static final String CALCULATOR_NAME = "languageSaturation";
+	public static final String CALCULATOR_NAME = "multilingualitySaturation";
 
-	private static final Logger LOGGER = Logger.getLogger(LanguageSaturationCalculator.class.getCanonicalName());
+	private static final Logger LOGGER = Logger.getLogger(MultilingualitySaturationCalculator.class.getCanonicalName());
 	private static final String NA = "n.a.";
 
 	public enum ResultTypes {
@@ -58,11 +58,11 @@ public class LanguageSaturationCalculator implements Calculator, Serializable {
 
 	private Schema schema;
 
-	public LanguageSaturationCalculator() {
+	public MultilingualitySaturationCalculator() {
 		// this.recordID = null;
 	}
 
-	public LanguageSaturationCalculator(Schema schema) {
+	public MultilingualitySaturationCalculator(Schema schema) {
 		this.schema = schema;
 	}
 
@@ -90,6 +90,12 @@ public class LanguageSaturationCalculator implements Calculator, Serializable {
 				}
 			}
 		}
+		if (resultType.equals(ResultTypes.EXTENDED)) {
+			headers.add(CALCULATOR_NAME + ":sum");
+			headers.add(CALCULATOR_NAME + ":average");
+		}
+		headers.add(CALCULATOR_NAME + ":normalized");
+
 		return headers;
 	}
 
