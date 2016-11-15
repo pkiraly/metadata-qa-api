@@ -298,22 +298,35 @@ public class LanguageSaturationCalculator implements Calculator, Serializable {
 		return result;
 	}
 
-	private FieldCounter<Double> calculateScore(Map<String, List<SortedMap<LanguageSaturation, Double>>> rawLanguageMap) {
+	private FieldCounter<Double> calculateScore(Map<String, 
+			List<SortedMap<LanguageSaturation, Double>>> rawLanguageMap) {
+		double sum, average, normalized;
+		List<Double> sums = new ArrayList<>();
 		FieldCounter<Double> languageMap = new FieldCounter<>();
 		for (String field : rawLanguageMap.keySet()) {
 			Map<String, Double> fieldMap = new LinkedHashMap<>();
 			List<SortedMap<LanguageSaturation, Double>> values = rawLanguageMap.get(field);
-			double sum = 0.0;
+			sum = 0.0;
+			boolean isSet = false;
 			for (SortedMap<LanguageSaturation, Double> value : values) {
 				double saturation = value.firstKey().value();
+				if (saturation == -1.0)
+					continue;
 				double weight = value.get(value.firstKey());
 				if (value.firstKey() == LanguageSaturation.TRANSLATION) {
 					saturation += weight;
 				}
 				sum += saturation;
+				isSet = true;
 			}
-			double average = sum / (double)values.size();
-			double normalized = 1.0 - (1.0/(average + 1.0));
+			if (!isSet) {
+				sum = average = normalized = LanguageSaturation.NA.value();
+			} else {
+				average = sum / (double)values.size();
+				normalized = normalize(average);
+				sums.add(sum);
+			}
+
 			fieldMap.put("sum", sum);
 			fieldMap.put("average", average);
 			fieldMap.put("normalized", normalized);
@@ -327,7 +340,28 @@ public class LanguageSaturationCalculator implements Calculator, Serializable {
 				languageMap.put(field + ":normalized", normalized);
 			}
 		}
+		sum = summarize(sums);
+		average = sum / (double) sums.size();
+		normalized = normalize(average);
+		if (resultType.equals(ResultTypes.EXTENDED)) {
+			languageMap.put(CALCULATOR_NAME + ":sum", sum);
+			languageMap.put(CALCULATOR_NAME + ":average", average);
+		}
+		languageMap.put(CALCULATOR_NAME + ":normalized", normalized);
+
 		return languageMap;
+	}
+
+	private double summarize(List<Double> sums) {
+		double sum;
+		sum = 0.0;
+		for (Double item : sums)
+			sum += item;
+		return sum;
+	}
+
+	private static double normalize(double average) {
+		return 1.0 - (1.0/(average + 1.0));
 	}
 
 	private Object normalizeRawValue(List<SortedMap<LanguageSaturation, Double>> values) {

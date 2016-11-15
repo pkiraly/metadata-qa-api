@@ -237,4 +237,9 @@ public class EdmOaiPmhXmlLimitedSchema extends EdmSchema implements Serializable
 		return new ArrayList();
 	}
 
+	@Override
+	public List<JsonBranch> getRootChildrenPaths() {
+		throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+	}
+
 }

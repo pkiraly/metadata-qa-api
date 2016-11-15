@@ -15,6 +15,8 @@ public interface Schema {
 
 	List<JsonBranch> getCollectionPaths();
 
+	List<JsonBranch> getRootChildrenPaths();
+
 	/**
 	 * The list of fields to investigate in most of the measurements
 	 * @return

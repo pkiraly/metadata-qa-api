@@ -43,7 +43,7 @@ public class JsonPathCache<T extends XmlFieldInstance> {
 		cache.put(address, instances);
 	}
 
-	private Object read(String jsonPath, Object jsonFragment) {
+	public Object read(String jsonPath, Object jsonFragment) {
 		Object value = null;
 		try {
 			if (jsonFragment != null) {
@@ -61,15 +61,15 @@ public class JsonPathCache<T extends XmlFieldInstance> {
 		return value;
 	}
 
+	public List<T> get(String jsonPath) {
+		return get(jsonPath, jsonPath, null);
+	}
+
 	public List<T> get(String address, String jsonPath, Object jsonFragment) {
 		if (!cache.containsKey(address)) {
 			set(address, jsonPath, jsonFragment);
 		}
 		return cache.get(address);
-	}
-
-	public List<T> get(String jsonPath) {
-		return get(jsonPath, jsonPath, null);
 	}
 
 	public Object getFragment(String jsonPath) {
