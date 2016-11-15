@@ -61,10 +61,10 @@ public class CalculatorFacade implements Serializable {
 	 */
 	protected boolean languageMeasurementEnabled = false;
 	/**
-	 * Flag whether or not run the language saturation measurement
+	 * Flag whether or not run the multilingual saturation measurement
 	 * (default: false)
 	 */
-	protected boolean languageSaturationMeasurementEnabled = false;
+	protected boolean multilingualSaturationMeasurementEnabled = false;
 	/**
 	 * Flag whether or not collect TF-IDF terms in uniqueness measurement
 	 * (default: false)
@@ -108,7 +108,7 @@ public class CalculatorFacade implements Serializable {
 	/**
 	 * The language detector
 	 */
-	protected MultilingualitySaturationCalculator languageSaturationCalculator;
+	protected MultilingualitySaturationCalculator multilingualSaturationCalculator;
 
 	/**
 	 * Create calculator facade with the default configuration
@@ -178,11 +178,11 @@ public class CalculatorFacade implements Serializable {
 			calculators.add(languageCalculator);
 		}
 
-		if (languageSaturationMeasurementEnabled) {
-			languageSaturationCalculator = new MultilingualitySaturationCalculator(schema);
+		if (multilingualSaturationMeasurementEnabled) {
+			multilingualSaturationCalculator = new MultilingualitySaturationCalculator(schema);
 			if (saturationExtendedResult)
-				languageSaturationCalculator.setResultType(MultilingualitySaturationCalculator.ResultTypes.EXTENDED);
-			calculators.add(languageSaturationCalculator);
+				multilingualSaturationCalculator.setResultType(MultilingualitySaturationCalculator.ResultTypes.EXTENDED);
+			calculators.add(multilingualSaturationCalculator);
 		}
 	}
 
@@ -313,16 +313,16 @@ public class CalculatorFacade implements Serializable {
 	 * @return
 	 *   language detector flag
 	 */
-	public boolean isLanguageSaturationMeasurementEnabled() {
-		return languageSaturationMeasurementEnabled;
+	public boolean isMultilingualSaturationMeasurementEnabled() {
+		return multilingualSaturationMeasurementEnabled;
 	}
 
 	/**
 	 * Configure whether or not run the language detector
-	 * @param runLanguageSaturation
+	 * @param runMultilingualSaturation
 	 */
-	public void enableLanguageSaturationMeasurement(boolean runLanguageSaturation) {
-		this.languageSaturationMeasurementEnabled = runLanguageSaturation;
+	public void enableMultilingualSaturationMeasurement(boolean runMultilingualSaturation) {
+		this.multilingualSaturationMeasurementEnabled = runMultilingualSaturation;
 	}
 
 	/**
