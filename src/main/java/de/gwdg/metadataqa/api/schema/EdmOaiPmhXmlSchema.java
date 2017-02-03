@@ -183,13 +183,17 @@ public class EdmOaiPmhXmlSchema extends EdmSchema implements Serializable {
 		addPath(new JsonBranch("Place/skos:prefLabel", place, "$.['skos:prefLabel']"));
 		addPath(new JsonBranch("Place/skos:altLabel", place, "$.['skos:altLabel']"));
 		addPath(new JsonBranch("Place/skos:note", place, "$.['skos:note']"));
-		addPath(new JsonBranch("Place/rdf:about", place, "$.['@about']"));
+		JsonBranch placeIdentifier = new JsonBranch("Place/rdf:about", place, "$.['@about']");
+		addPath(placeIdentifier);
+		place.setIdentifier(placeIdentifier);
 
 		JsonBranch agent = new JsonBranch("Agent", "$.['edm:Agent']");
 		agent.setCollection(true);
 		addPath(agent);
 
-		addPath(new JsonBranch("Agent/rdf:about", agent, "$.['@about']"));
+		JsonBranch agentIdentifier = new JsonBranch("Agent/rdf:about", agent, "$.['@about']");
+		addPath(agentIdentifier);
+		agent.setIdentifier(agentIdentifier);
 		addPath(new JsonBranch("Agent/edm:begin", agent, "$.['edm:begin']"));
 		addPath(new JsonBranch("Agent/edm:end", agent, "$.['edm:end']"));
 		addPath(new JsonBranch("Agent/edm:hasMet", agent, "$.['edm:hasMet']"));
@@ -215,7 +219,9 @@ public class EdmOaiPmhXmlSchema extends EdmSchema implements Serializable {
 		timespan.setCollection(true);
 		addPath(timespan);
 
-		addPath(new JsonBranch("Timespan/rdf:about", timespan, "$.['@about']"));
+		JsonBranch timespanIdentifier = new JsonBranch("Timespan/rdf:about", timespan, "$.['@about']");
+		addPath(timespanIdentifier);
+		timespan.setIdentifier(agentIdentifier);
 		addPath(new JsonBranch("Timespan/edm:begin", timespan, "$.['edm:begin']"));
 		addPath(new JsonBranch("Timespan/edm:end", timespan, "$.['edm:end']"));
 		addPath(new JsonBranch("Timespan/dcterms:isPartOf", timespan, "$.['dcterms:isPartOf']"));
@@ -230,7 +236,9 @@ public class EdmOaiPmhXmlSchema extends EdmSchema implements Serializable {
 		concept.setCollection(true);
 		addPath(concept);
 
-		addPath(new JsonBranch("Concept/rdf:about", concept, "$.['@about']"));
+		JsonBranch conceptIdentifier = new JsonBranch("Concept/rdf:about", concept, "$.['@about']");
+		addPath(conceptIdentifier);
+		concept.setIdentifier(conceptIdentifier);
 		addPath(new JsonBranch("Concept/skos:broader", concept, "$.['skos:broader']"));
 		addPath(new JsonBranch("Concept/skos:narrower", concept, "$.['skos:narrower']"));
 		addPath(new JsonBranch("Concept/skos:related", concept, "$.['skos:related']"));
@@ -346,4 +354,5 @@ public class EdmOaiPmhXmlSchema extends EdmSchema implements Serializable {
 	public List<JsonBranch> getRootChildrenPaths() {
 		throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
 	}
+
 }

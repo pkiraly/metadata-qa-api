@@ -2,6 +2,7 @@ package de.gwdg.metadataqa.api.schema;
 
 import de.gwdg.metadataqa.api.json.FieldGroup;
 import de.gwdg.metadataqa.api.json.JsonBranch;
+import de.gwdg.metadataqa.api.model.JsonPathCache;
 import java.util.List;
 import java.util.Map;
 

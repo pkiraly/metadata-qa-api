@@ -47,7 +47,7 @@ public class CompletenessCalculator<T extends XmlFieldInstance> implements Calcu
 	private boolean completeness = true;
 	private boolean existence = true;
 	private boolean cardinality = true;
-	
+	private SkippedEntryChecker skippedEntryChecker = null;
 
 	public CompletenessCalculator() {
 		// this.recordID = null;
@@ -74,6 +74,10 @@ public class CompletenessCalculator<T extends XmlFieldInstance> implements Calcu
 			existingFields = new ArrayList<>();
 		}
 
+		List<String> skippableIds = skippedEntryChecker != null
+				  ? skippedEntryChecker.getSkippableCollectionIds(cache)
+				  : new ArrayList<>();
+
 		if (schema.getCollectionPaths().isEmpty()) {
 			for (JsonBranch jsonBranch : schema.getPaths()) {
 				evaluateJsonBranch(jsonBranch, cache, completenessCounter, jsonBranch.getLabel(), null);
@@ -87,11 +91,23 @@ public class CompletenessCalculator<T extends XmlFieldInstance> implements Calcu
 					}
 				} else {
 					List<Object> jsonFragments = Converter.jsonObjectToList(rawJsonFragment);
-					for (int i = 0, len = jsonFragments.size(); i < len; i++) {
-						Object jsonFragment = jsonFragments.get(i);
+					if (jsonFragments.isEmpty()) {
 						for (JsonBranch child : collection.getChildren()) {
-							String address = String.format("%s/%d/%s", collection.getJsonPath(), i, child.getJsonPath());
-							evaluateJsonBranch(child, cache, completenessCounter, address, jsonFragment);
+							handleValues(completenessCounter, child, null);
+						}
+					} else {
+						for (int i = 0, len = jsonFragments.size(); i < len; i++) {
+							Object jsonFragment = jsonFragments.get(i);
+							if (isCollectionSkippable(skippableIds, collection, i, cache, jsonFragment)) {
+								for (JsonBranch child : collection.getChildren()) {
+									handleValues(completenessCounter, child, null);
+								}
+							} else {
+								for (JsonBranch child : collection.getChildren()) {
+									String address = String.format("%s/%d/%s", collection.getJsonPath(), i, child.getJsonPath());
+									evaluateJsonBranch(child, cache, completenessCounter, address, jsonFragment);
+								}
+							}
 						}
 					}
 				}
@@ -110,6 +126,20 @@ public class CompletenessCalculator<T extends XmlFieldInstance> implements Calcu
 		}
 	}
 
+	private boolean isCollectionSkippable(List<String> skippableIds, JsonBranch collection, int i, JsonPathCache cache, Object jsonFragment) {
+		boolean skippable = false;
+		JsonBranch identifierPath = collection.getIdentifier();
+		if (!skippableIds.isEmpty() && identifierPath == null) {
+			String address = String.format("%s/%d/%s", collection.getJsonPath(), i, identifierPath.getJsonPath());
+			List<T> values = cache.get(address, identifierPath.getJsonPath(), jsonFragment);
+			String id = (skippedEntryChecker != null)
+					  ? skippedEntryChecker.extractId(values.get(0))
+					  : values.get(0).getValue();
+			skippable = skippableIds.contains(id);
+		}
+		return skippable;
+	}
+
 	public void evaluateJsonBranch(
 			JsonBranch jsonBranch,
 			JsonPathCache cache,
@@ -117,6 +147,7 @@ public class CompletenessCalculator<T extends XmlFieldInstance> implements Calcu
 			String address,
 			Object jsonFragment
 	) {
+		System.err.println(String.format("%s -- %s -- %s", address, jsonBranch.getJsonPath(), jsonBranch.getLabel()));
 		List<T> values = cache.get(address, jsonBranch.getJsonPath(), jsonFragment);
 		handleValues(completenessCounter, jsonBranch, values);
 	}
@@ -303,5 +334,13 @@ public class CompletenessCalculator<T extends XmlFieldInstance> implements Calcu
 
 	public Schema getSchema() {
 		return schema;
+	}
+
+	public SkippedEntryChecker getSkippedEntryChecker() {
+		return skippedEntryChecker;
+	}
+
+	public void setSkippedEntryChecker(SkippedEntryChecker skippedEntryChecker) {
+		this.skippedEntryChecker = skippedEntryChecker;
 	}
 }

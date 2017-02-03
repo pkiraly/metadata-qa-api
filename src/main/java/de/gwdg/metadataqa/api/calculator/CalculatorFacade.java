@@ -76,6 +76,7 @@ public class CalculatorFacade implements Serializable {
 	 */
 	protected boolean completenessCollectFields = false;
 	protected boolean saturationExtendedResult = false;
+	protected boolean checkSkippableCollections = false;
 	protected CompressionLevel compressionLevel = CompressionLevel.NORMAL;
 
 	/**
@@ -109,6 +110,8 @@ public class CalculatorFacade implements Serializable {
 	 * The language detector
 	 */
 	protected MultilingualitySaturationCalculator multilingualSaturationCalculator;
+
+	protected JsonPathCache<? extends XmlFieldInstance> cache;
 
 	/**
 	 * Create calculator facade with the default configuration
@@ -217,13 +220,16 @@ public class CalculatorFacade implements Serializable {
 			throws InvalidJsonException {
 		changed();
 
-		JsonPathCache<T> cache = new JsonPathCache<>(jsonRecord);
+		// JsonPathCache<T> cache = new JsonPathCache<>(jsonRecord);
+		cache = new JsonPathCache<>(jsonRecord);
 
 		List<String> csvs = new ArrayList<>();
 		for (Calculator calculator : getCalculators()) {
 			calculator.measure(cache);
 			csvs.add(calculator.getCsv(false, compressionLevel));
 		}
+		
+		System.err.println("245$a: " + cache.get("245$a"));
 
 		return StringUtils.join(csvs, ",");
 	}
@@ -513,5 +519,17 @@ public class CalculatorFacade implements Serializable {
 
 	public void setCompressionLevel(CompressionLevel compressionLevel) {
 		this.compressionLevel = compressionLevel;
+	}
+
+	public JsonPathCache<? extends XmlFieldInstance> getCache() {
+		return cache;
+	}
+
+	public boolean isCheckSkippableCollections() {
+		return checkSkippableCollections;
+	}
+
+	public void setCheckSkippableCollections(boolean checkSkippableCollections) {
+		this.checkSkippableCollections = checkSkippableCollections;
 	}
 }

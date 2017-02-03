@@ -20,6 +20,7 @@ public class FileUtils {
 
 	public static List<String> readLines(String fileName)
 			throws URISyntaxException, IOException {
+		// classLoader.
 		URL url = classLoader.getResource(fileName);
 		if (url == null)
 			throw new IOException(String.format("File %s in not available", fileName));

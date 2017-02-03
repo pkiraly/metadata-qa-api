@@ -6,6 +6,7 @@ import com.jayway.jsonpath.InvalidJsonException;
 import com.jayway.jsonpath.InvalidPathException;
 import com.jayway.jsonpath.JsonPath;
 import com.jayway.jsonpath.PathNotFoundException;
+import com.jayway.jsonpath.spi.json.JsonProvider;
 import de.gwdg.metadataqa.api.util.ExceptionUtils;
 import java.util.HashMap;
 import java.util.List;
@@ -25,9 +26,10 @@ public class JsonPathCache<T extends XmlFieldInstance> {
 	private String recordId;
 	private final Map<String, List<T>> cache = new HashMap<>();
 	private final Map<String, Object> fragmentCache = new HashMap<>();
+	private JsonProvider jsonProvider = Configuration.defaultConfiguration().jsonProvider();
 
 	public JsonPathCache(String jsonString) throws InvalidJsonException {
-		this.jsonDocument = Configuration.defaultConfiguration().jsonProvider().parse(jsonString);
+		this.jsonDocument = jsonProvider.parse(jsonString);
 	}
 
 	public JsonPathCache(Object jsonDocument) {
@@ -39,6 +41,9 @@ public class JsonPathCache<T extends XmlFieldInstance> {
 		Object value = read(jsonPath, jsonFragment);
 		if (value != null) {
 			instances = (List<T>) JsonUtils.extractFieldInstanceList(value, recordId, jsonPath);
+		}
+		if (address.contains("010")) {
+			System.err.println("put to cache: " + address);
 		}
 		cache.put(address, instances);
 	}
@@ -94,5 +99,13 @@ public class JsonPathCache<T extends XmlFieldInstance> {
 
 	public void setRecordId(String recordId) {
 		this.recordId = recordId;
+	}
+
+	public Map<String, List<T>> getCache() {
+		return cache;
+	}
+
+	public Map<String, Object> getFragmentCache() {
+		return fragmentCache;
 	}
 }

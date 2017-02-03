@@ -29,6 +29,7 @@ public class JsonBranch {
 	private List<Category> categories;
 	private String solrFieldName;
 	private JsonBranch parent = null;
+	private JsonBranch identifier = null;
 	private List<JsonBranch> children = new ArrayList<>();
 	private boolean collection = false;
 
@@ -111,5 +112,13 @@ public class JsonBranch {
 
 	public void setCollection(boolean collection) {
 		this.collection = collection;
+	}
+
+	public JsonBranch getIdentifier() {
+		return identifier;
+	}
+
+	public void setIdentifier(JsonBranch identifier) {
+		this.identifier = identifier;
 	}
 }

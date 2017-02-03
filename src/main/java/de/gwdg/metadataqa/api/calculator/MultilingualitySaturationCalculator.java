@@ -267,7 +267,7 @@ public class MultilingualitySaturationCalculator implements Calculator, Serializ
 		for (String key : rawLanguageMap.keySet()) {
 			Map<String, Object> entry = new LinkedHashMap<>();
 			List<Object> list = new ArrayList<>();
-			entry.put("raw", normalizeRawValue(rawLanguageMap.get(key)));
+			entry.put("instances", normalizeRawValue(rawLanguageMap.get(key)));
 			entry.put("score", rawScoreMap.get(key));
 			map.put(key, entry);
 		}

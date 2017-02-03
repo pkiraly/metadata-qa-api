@@ -4,8 +4,10 @@ import java.math.BigDecimal;
 import java.security.InvalidParameterException;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 import net.minidev.json.JSONArray;
+import org.apache.commons.lang3.StringUtils;
 
 /**
  *
@@ -64,7 +66,9 @@ public class Converter {
 
 	public static String asString(Object value) {
 		String text = "";
-		if (value instanceof Boolean) {
+		if (value == null) {
+			text = "null";
+		} else if (value instanceof Boolean) {
 			text = ((Boolean)value == true) ? "1" : "0";
 		} else if (value instanceof Integer) {
 			text = Integer.toString((Integer)value);
@@ -72,8 +76,10 @@ public class Converter {
 			text = String.format("%.6f", (Double)value);
 		} else if (value instanceof String) {
 			text = (String)value;
+		} else if (value instanceof List) {
+			text = StringUtils.join(value, ", ");
 		} else {
-			throw new InvalidParameterException("Object has an unhandled type: " + value.getClass().getCanonicalName());
+			throw new InvalidParameterException("Object has an unhandled type: " + value.getClass().getCanonicalName() + " " + value);
 		}
 		return text;
 	}

@@ -371,4 +371,5 @@ public class EdmFullBeanSchema extends EdmSchema implements Serializable {
 	public List<JsonBranch> getRootChildrenPaths() {
 		throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
 	}
+
 }
