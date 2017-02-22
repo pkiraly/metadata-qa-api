@@ -228,8 +228,6 @@ public class CalculatorFacade implements Serializable {
 			calculator.measure(cache);
 			csvs.add(calculator.getCsv(false, compressionLevel));
 		}
-		
-		System.err.println("245$a: " + cache.get("245$a"));
 
 		return StringUtils.join(csvs, ",");
 	}
