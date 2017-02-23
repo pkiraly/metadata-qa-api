@@ -80,7 +80,8 @@ public class CompletenessCalculator<T extends XmlFieldInstance> implements Calcu
 
 		if (schema.getCollectionPaths().isEmpty()) {
 			for (JsonBranch jsonBranch : schema.getPaths()) {
-				evaluateJsonBranch(jsonBranch, cache, completenessCounter, jsonBranch.getLabel(), null);
+				evaluateJsonBranch(jsonBranch, cache, completenessCounter,
+						  jsonBranch.getLabel(), null);
 			}
 		} else {
 			for (JsonBranch collection : schema.getCollectionPaths()) {

@@ -21,7 +21,7 @@ public class EnhancementIdExtractor implements Serializable {
 	);
 	private static final String PATH = "$.['ore:Proxy'][?(@['edm:europeanaProxy'][0] == 'true')]";
 
-	public List<String> extractIds(JsonPathCache cache) {
+	public static List<String> extractIds(JsonPathCache cache) {
 		List<String> enhancementIds = new ArrayList<>();
 		Object rawJsonFragment = cache.getFragment(PATH);
 		List<Object> jsonFragments = Converter.jsonObjectToList(rawJsonFragment);
