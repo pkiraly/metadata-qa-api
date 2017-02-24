@@ -208,7 +208,7 @@ public class CalculatorFacade implements Serializable {
 	 * of XmlFieldInstance
 	 * 
 	 * @param <T>
-	 *   A class defining the internal representation of a fiel. It should be
+	 *   A class defining the internal representation of a field. It should be
 	 *   an extension of XmlFieldInstance
 	 * @param jsonRecord
 	 *   The JSON record
@@ -223,13 +223,13 @@ public class CalculatorFacade implements Serializable {
 		// JsonPathCache<T> cache = new JsonPathCache<>(jsonRecord);
 		cache = new JsonPathCache<>(jsonRecord);
 
-		List<String> csvs = new ArrayList<>();
+		List<String> items = new ArrayList<>();
 		for (Calculator calculator : getCalculators()) {
 			calculator.measure(cache);
-			csvs.add(calculator.getCsv(false, compressionLevel));
+			items.add(calculator.getCsv(false, compressionLevel));
 		}
 
-		return StringUtils.join(csvs, ",");
+		return StringUtils.join(items, ",");
 	}
 
 	/**

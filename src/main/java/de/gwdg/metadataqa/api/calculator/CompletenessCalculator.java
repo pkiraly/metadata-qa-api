@@ -127,7 +127,13 @@ public class CompletenessCalculator<T extends XmlFieldInstance> implements Calcu
 		}
 	}
 
-	private boolean isCollectionSkippable(List<String> skippableIds, JsonBranch collection, int i, JsonPathCache cache, Object jsonFragment) {
+	private boolean isCollectionSkippable(
+			List<String> skippableIds,
+			JsonBranch collection,
+			int i,
+			JsonPathCache cache,
+			Object jsonFragment)
+	{
 		boolean skippable = false;
 		JsonBranch identifierPath = collection.getIdentifier();
 		if (!skippableIds.isEmpty() && identifierPath != null) {

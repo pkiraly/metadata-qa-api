@@ -121,4 +121,18 @@ public class JsonBranch {
 	public void setIdentifier(JsonBranch identifier) {
 		this.identifier = identifier;
 	}
+
+	@Override
+	public String toString() {
+		return "JsonBranch{"
+				  + "label=" + label
+				  + ", jsonPath=" + jsonPath
+				  + ", categories=" + categories
+				  + ", solrFieldName=" + solrFieldName
+				  + ", parent=" + (parent == null ? "null" : parent.getLabel())
+				  + ", identifier=" + (identifier == null ? "null" : identifier.getLabel())
+				  + ", nr of children=" + children.size()
+				  + ", collection=" + collection
+				  + '}';
+	}
 }

@@ -34,6 +34,8 @@ public class EdmOaiPmhXmlSchema extends EdmSchema implements Serializable {
 	static {
 		JsonBranch providedCHO = new JsonBranch("edm:ProvidedCHO", "$.['edm:ProvidedCHO'][0]");
 		providedCHO.setCollection(true);
+		JsonBranch providedCHOIdentifier = new JsonBranch("ProvidedCHO/rdf:about", providedCHO, "$.['@about']");
+		providedCHO.setIdentifier(providedCHOIdentifier);
 		addPath(providedCHO);
 
 		addPath(new JsonBranch("edm:ProvidedCHO/@about", providedCHO, "$.['@about']",
@@ -42,6 +44,8 @@ public class EdmOaiPmhXmlSchema extends EdmSchema implements Serializable {
 		JsonBranch proxy = new JsonBranch("Proxy",
 			"$.['ore:Proxy'][?(@['edm:europeanaProxy'][0] == 'false')]");
 		proxy.setCollection(true);
+		JsonBranch proxyIdentifier = new JsonBranch("Proxy/rdf:about", proxy, "$.['@about']");
+		proxy.setIdentifier(proxyIdentifier);
 		addPath(proxy);
 
 		addPath(new JsonBranch("Proxy/dc:title", proxy, "$.['dc:title']",
@@ -145,6 +149,9 @@ public class EdmOaiPmhXmlSchema extends EdmSchema implements Serializable {
 		JsonBranch aggregation = new JsonBranch("Aggregation", "$.['ore:Aggregation']");
 		aggregation.setCollection(true);
 		addPath(aggregation);
+		JsonBranch aggregationIdentifier = new JsonBranch("Aggregation/rdf:about", aggregation, "$.['@about']");
+		addPath(aggregationIdentifier);
+		aggregation.setIdentifier(aggregationIdentifier);
 
 		addPath(new JsonBranch("Aggregation/edm:rights", aggregation, "$.['edm:rights']",
 			JsonBranch.Category.MANDATORY, JsonBranch.Category.REUSABILITY));
@@ -167,11 +174,13 @@ public class EdmOaiPmhXmlSchema extends EdmSchema implements Serializable {
 		addPath(new JsonBranch("Aggregation/edm:ugc", aggregation, "$.['edm:ugc']"));
 		addPath(new JsonBranch("Aggregation/edm:aggregatedCHO", aggregation, "$.['edm:aggregatedCHO']"));
 		addPath(new JsonBranch("Aggregation/edm:intermediateProvider", aggregation, "$.['edm:intermediateProvider']"));
-		addPath(new JsonBranch("Aggregation/rdf:about", aggregation, "$.['@about']"));
 
 		JsonBranch place = new JsonBranch("Place", "$.['edm:Place']");
 		place.setCollection(true);
 		addPath(place);
+		JsonBranch placeIdentifier = new JsonBranch("Place/rdf:about", place, "$.['@about']");
+		addPath(placeIdentifier);
+		place.setIdentifier(placeIdentifier);
 
 		addPath(new JsonBranch("Place/wgs84:lat", place, "$.['wgs84:lat']"));
 		addPath(new JsonBranch("Place/wgs84:long", place, "$.['wgs84:long']"));
@@ -183,9 +192,6 @@ public class EdmOaiPmhXmlSchema extends EdmSchema implements Serializable {
 		addPath(new JsonBranch("Place/skos:prefLabel", place, "$.['skos:prefLabel']"));
 		addPath(new JsonBranch("Place/skos:altLabel", place, "$.['skos:altLabel']"));
 		addPath(new JsonBranch("Place/skos:note", place, "$.['skos:note']"));
-		JsonBranch placeIdentifier = new JsonBranch("Place/rdf:about", place, "$.['@about']");
-		addPath(placeIdentifier);
-		place.setIdentifier(placeIdentifier);
 
 		JsonBranch agent = new JsonBranch("Agent", "$.['edm:Agent']");
 		agent.setCollection(true);
@@ -221,7 +227,7 @@ public class EdmOaiPmhXmlSchema extends EdmSchema implements Serializable {
 
 		JsonBranch timespanIdentifier = new JsonBranch("Timespan/rdf:about", timespan, "$.['@about']");
 		addPath(timespanIdentifier);
-		timespan.setIdentifier(agentIdentifier);
+		timespan.setIdentifier(timespanIdentifier);
 		addPath(new JsonBranch("Timespan/edm:begin", timespan, "$.['edm:begin']"));
 		addPath(new JsonBranch("Timespan/edm:end", timespan, "$.['edm:end']"));
 		addPath(new JsonBranch("Timespan/dcterms:isPartOf", timespan, "$.['dcterms:isPartOf']"));

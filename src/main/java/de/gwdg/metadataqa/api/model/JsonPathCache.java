@@ -1,13 +1,13 @@
 package de.gwdg.metadataqa.api.model;
 
 import de.gwdg.metadataqa.api.json.JsonUtils;
+import de.gwdg.metadataqa.api.util.ExceptionUtils;
 import com.jayway.jsonpath.Configuration;
 import com.jayway.jsonpath.InvalidJsonException;
 import com.jayway.jsonpath.InvalidPathException;
 import com.jayway.jsonpath.JsonPath;
 import com.jayway.jsonpath.PathNotFoundException;
 import com.jayway.jsonpath.spi.json.JsonProvider;
-import de.gwdg.metadataqa.api.util.ExceptionUtils;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
