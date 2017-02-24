@@ -32,21 +32,21 @@ public class EdmOaiPmhXmlSchema extends EdmSchema implements Serializable {
 		"$.['ore:Proxy'][?(@['edm:europeanaProxy'][0] == 'false')]['dc:description']";
 
 	static {
-		JsonBranch providedCHO = new JsonBranch("edm:ProvidedCHO", "$.['edm:ProvidedCHO'][0]");
+		JsonBranch providedCHO = new JsonBranch("ProvidedCHO", "$.['edm:ProvidedCHO'][0]");
 		providedCHO.setCollection(true);
-		JsonBranch providedCHOIdentifier = new JsonBranch("ProvidedCHO/rdf:about", providedCHO, "$.['@about']");
-		providedCHO.setIdentifier(providedCHOIdentifier);
 		addPath(providedCHO);
-
-		addPath(new JsonBranch("edm:ProvidedCHO/@about", providedCHO, "$.['@about']",
-			JsonBranch.Category.MANDATORY));
+		JsonBranch providedCHOIdentifier = new JsonBranch("ProvidedCHO/rdf:about",
+			providedCHO, "$.['@about']", JsonBranch.Category.MANDATORY);
+		providedCHO.setIdentifier(providedCHOIdentifier);
+		addPath(providedCHOIdentifier);
 
 		JsonBranch proxy = new JsonBranch("Proxy",
 			"$.['ore:Proxy'][?(@['edm:europeanaProxy'][0] == 'false')]");
 		proxy.setCollection(true);
+		addPath(proxy);
 		JsonBranch proxyIdentifier = new JsonBranch("Proxy/rdf:about", proxy, "$.['@about']");
 		proxy.setIdentifier(proxyIdentifier);
-		addPath(proxy);
+		addPath(proxyIdentifier);
 
 		addPath(new JsonBranch("Proxy/dc:title", proxy, "$.['dc:title']",
 			JsonBranch.Category.DESCRIPTIVENESS, JsonBranch.Category.SEARCHABILITY,
@@ -274,8 +274,8 @@ public class EdmOaiPmhXmlSchema extends EdmSchema implements Serializable {
 				"Aggregation/edm:isShownAt", "Aggregation/edm:isShownBy"));
 
 		noLanguageFields.addAll(Arrays.asList(
-			"edm:ProvidedCHO", "edm:ProvidedCHO/@about",
-			"Proxy", "Proxy/edm:isNextInSequence", "Proxy/edm:type",
+			"ProvidedCHO", "ProvidedCHO/rdf:about",
+			"Proxy", "Proxy/rdf:about", "Proxy/edm:isNextInSequence", "Proxy/edm:type",
 			"Aggregation", "Aggregation/edm:isShownAt",
 			"Aggregation/edm:isShownBy", "Aggregation/edm:object",
 			"Aggregation/edm:hasView", "Aggregation/rdf:about",
