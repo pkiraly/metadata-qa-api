@@ -11,6 +11,7 @@ import de.gwdg.metadataqa.api.model.LanguageSaturation;
 import de.gwdg.metadataqa.api.schema.Schema;
 import de.gwdg.metadataqa.api.util.CompressionLevel;
 import de.gwdg.metadataqa.api.util.Converter;
+import de.gwdg.metadataqa.api.util.SkippedEntitySelector;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -57,6 +58,8 @@ public class MultilingualitySaturationCalculator implements Calculator, Serializ
 	private Map<String, List<SortedMap<LanguageSaturation, Double>>> rawLanguageMap;
 
 	private Schema schema;
+	private SkippedEntryChecker skippedEntryChecker = null;
+	private SkippedEntitySelector skippedEntitySelector = new SkippedEntitySelector();
 
 	public MultilingualitySaturationCalculator() {
 		// this.recordID = null;
@@ -120,14 +123,21 @@ public class MultilingualitySaturationCalculator implements Calculator, Serializ
 	}
 
 	private void measureHierarchicalSchema(JsonPathCache cache) {
+		List<String> skippableIds = getSkippableIds(cache);
 		for (JsonBranch collection : schema.getCollectionPaths()) {
 			Object rawJsonFragment = cache.getFragment(collection.getJsonPath());
 			if (rawJsonFragment == null) {
 				measureMissingCollection(collection);
 			} else {
-				measureExistingCollection(rawJsonFragment, collection, cache);
+				measureExistingCollection(rawJsonFragment, collection, cache, skippableIds);
 			}
 		}
+	}
+
+	private List<String> getSkippableIds(JsonPathCache cache) {
+		return skippedEntryChecker != null
+				  ? skippedEntryChecker.getSkippableCollectionIds(cache)
+				  : new ArrayList<>();
 	}
 
 	private void measureMissingCollection(JsonBranch collection) {
@@ -140,15 +150,27 @@ public class MultilingualitySaturationCalculator implements Calculator, Serializ
 		}
 	}
 
-	private void measureExistingCollection(Object rawJsonFragment, JsonBranch collection, JsonPathCache cache) {
+	private void measureExistingCollection(Object rawJsonFragment, 
+			  JsonBranch collection, JsonPathCache cache, List<String> skippableIds) {
 		List<Object> jsonFragments = Converter.jsonObjectToList(rawJsonFragment);
-		for (int i = 0, len = jsonFragments.size(); i < len; i++) {
-			Object jsonFragment = jsonFragments.get(i);
-			for (JsonBranch child : collection.getChildren()) {
-				if (!schema.getNoLanguageFields().contains(child.getLabel())) {
-					String address = String.format("%s/%d/%s",
-							  collection.getJsonPath(), i, child.getJsonPath());
-					extractLanguageTags(jsonFragment, child, address, cache, rawLanguageMap);
+		if (jsonFragments.isEmpty()) {
+			measureMissingCollection(collection);
+		} else {
+			for (int i = 0, len = jsonFragments.size(); i < len; i++) {
+				Object jsonFragment = jsonFragments.get(i);
+				if (skippedEntitySelector.isCollectionSkippable(skippableIds,
+						  collection, i, cache, jsonFragment)) {
+					LOGGER.info("skip " + collection.getLabel());
+					measureMissingCollection(collection);
+					// TODO???
+				} else {
+					for (JsonBranch child : collection.getChildren()) {
+						if (!schema.getNoLanguageFields().contains(child.getLabel())) {
+							String address = String.format("%s/%d/%s",
+								  collection.getJsonPath(), i, child.getJsonPath());
+							extractLanguageTags(jsonFragment, child, address, cache, rawLanguageMap);
+						}
+					}
 				}
 			}
 		}
@@ -392,4 +414,14 @@ public class MultilingualitySaturationCalculator implements Calculator, Serializ
 	public void setResultType(ResultTypes resultType) {
 		this.resultType = resultType;
 	}
+
+	public SkippedEntryChecker getSkippedEntryChecker() {
+		return skippedEntryChecker;
+	}
+
+	public void setSkippedEntryChecker(SkippedEntryChecker skippedEntryChecker) {
+		this.skippedEntryChecker = skippedEntryChecker;
+		skippedEntitySelector.setSkippedEntryChecker(skippedEntryChecker);
+	}
+
 }

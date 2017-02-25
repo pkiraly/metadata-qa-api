@@ -11,6 +11,7 @@ import de.gwdg.metadataqa.api.model.XmlFieldInstance;
 import de.gwdg.metadataqa.api.schema.Schema;
 import de.gwdg.metadataqa.api.util.CompressionLevel;
 import de.gwdg.metadataqa.api.util.Converter;
+import de.gwdg.metadataqa.api.util.SkippedEntitySelector;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
@@ -48,6 +49,7 @@ public class CompletenessCalculator<T extends XmlFieldInstance> implements Calcu
 	private boolean existence = true;
 	private boolean cardinality = true;
 	private SkippedEntryChecker skippedEntryChecker = null;
+	private SkippedEntitySelector skippedEntitySelector = new SkippedEntitySelector();
 
 	public CompletenessCalculator() {
 		// this.recordID = null;
@@ -99,7 +101,7 @@ public class CompletenessCalculator<T extends XmlFieldInstance> implements Calcu
 					} else {
 						for (int i = 0, len = jsonFragments.size(); i < len; i++) {
 							Object jsonFragment = jsonFragments.get(i);
-							if (isCollectionSkippable(skippableIds, collection, i, cache, jsonFragment)) {
+							if (skippedEntitySelector.isCollectionSkippable(skippableIds, collection, i, cache, jsonFragment)) {
 								for (JsonBranch child : collection.getChildren()) {
 									handleValues(completenessCounter, child, null);
 								}
@@ -127,6 +129,7 @@ public class CompletenessCalculator<T extends XmlFieldInstance> implements Calcu
 		}
 	}
 
+	/*
 	private boolean isCollectionSkippable(
 			List<String> skippableIds,
 			JsonBranch collection,
@@ -147,6 +150,7 @@ public class CompletenessCalculator<T extends XmlFieldInstance> implements Calcu
 		}
 		return skippable;
 	}
+	*/
 
 	public void evaluateJsonBranch(
 			JsonBranch jsonBranch,
@@ -351,5 +355,6 @@ public class CompletenessCalculator<T extends XmlFieldInstance> implements Calcu
 
 	public void setSkippedEntryChecker(SkippedEntryChecker skippedEntryChecker) {
 		this.skippedEntryChecker = skippedEntryChecker;
+		skippedEntitySelector.setSkippedEntryChecker(skippedEntryChecker);
 	}
 }
