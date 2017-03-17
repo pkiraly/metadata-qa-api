@@ -160,7 +160,7 @@ public class MultilingualitySaturationCalculator implements Calculator, Serializ
 				Object jsonFragment = jsonFragments.get(i);
 				if (skippedEntitySelector.isCollectionSkippable(skippableIds,
 						  collection, i, cache, jsonFragment)) {
-					// LOGGER.info("skip " + collection.getLabel());
+					// LOGGER.info(String.format("skip %s (%s)", collection.getLabel(), ((LinkedHashMap)jsonFragment).get("@about")));
 					measureMissingCollection(collection);
 					// TODO???
 				} else {
