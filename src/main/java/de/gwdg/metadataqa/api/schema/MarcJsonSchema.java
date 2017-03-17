@@ -412,4 +412,8 @@ public class MarcJsonSchema implements Schema, ProblemCatalogSchema {
 		throw new UnsupportedOperationException("Not supported yet.");
 	}
 
+	@Override
+	public JsonBranch getPathByLabel(String label) {
+		throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+	}
 }

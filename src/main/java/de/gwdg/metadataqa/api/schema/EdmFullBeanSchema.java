@@ -372,4 +372,8 @@ public class EdmFullBeanSchema extends EdmSchema implements Serializable {
 		throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
 	}
 
+	@Override
+	public JsonBranch getPathByLabel(String label) {
+		throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+	}
 }

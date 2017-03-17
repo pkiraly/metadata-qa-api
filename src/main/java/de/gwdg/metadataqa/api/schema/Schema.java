@@ -25,6 +25,8 @@ public interface Schema {
 	 */
 	List<JsonBranch> getPaths();
 
+	JsonBranch getPathByLabel(String label);
+
 	/**
 	 * Field groups used in completenes sub-dimensions.
 	 * Groupped values are optional elements in a sub-dimension.

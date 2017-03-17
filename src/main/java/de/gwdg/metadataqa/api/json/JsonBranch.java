@@ -68,6 +68,13 @@ public class JsonBranch {
 		this.jsonPath = jsonPath;
 	}
 
+	public String getAbsoluteJsonPath() {
+		if (getParent() != null) {
+			return getParent().getJsonPath() + getJsonPath().replace("$.", "[*]");
+		}
+		return getJsonPath();
+	}
+
 	public List<Category> getCategories() {
 		return categories;
 	}

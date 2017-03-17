@@ -16,7 +16,7 @@ import java.util.Map;
  */
 public class EnhancementIdExtractor implements Serializable {
 
-	private static final List<String> KNOWN_PROPERTIES = Arrays.asList(
+	private static final List<String> TECHNICAL_PROPERTIES = Arrays.asList(
 		"@about", "edm:europeanaProxy", "ore:proxyFor", "ore:proxyIn", "edm:type"
 	);
 	private static final String PATH = "$.['ore:Proxy'][?(@['edm:europeanaProxy'][0] == 'true')]";
@@ -26,14 +26,21 @@ public class EnhancementIdExtractor implements Serializable {
 		Object rawJsonFragment = cache.getFragment(PATH);
 		List<Object> jsonFragments = Converter.jsonObjectToList(rawJsonFragment);
 		Map<String, Object> jsonFragment = (Map)jsonFragments.get(0);
-		for (String key : jsonFragment.keySet()) {
-			if (!KNOWN_PROPERTIES.contains(key)) {
-				List<EdmFieldInstance> values = (List<EdmFieldInstance>) 
-					JsonUtils.extractFieldInstanceList(jsonFragment.get(key), null, null);
-				for (EdmFieldInstance value : values)
-					enhancementIds.add(value.getResource());
+		for (String fieldName : jsonFragment.keySet()) {
+			if (isEnrichmentField(fieldName)) {
+				List<EdmFieldInstance> fieldInstances = (List<EdmFieldInstance>)
+					JsonUtils.extractFieldInstanceList(jsonFragment.get(fieldName), null, null);
+				for (EdmFieldInstance fieldInstance : fieldInstances) {
+					if (fieldInstance.isUrl()) {
+						enhancementIds.add(fieldInstance.getUrl());
+					}
+				}
 			}
 		}
 		return enhancementIds;
+	}
+
+	private static boolean isEnrichmentField(String fieldName) {
+		return !TECHNICAL_PROPERTIES.contains(fieldName);
 	}
 }

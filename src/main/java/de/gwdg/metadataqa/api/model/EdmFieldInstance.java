@@ -39,6 +39,20 @@ public class EdmFieldInstance extends XmlFieldInstance {
 		return !hasValue() && !hasLanguage() && !hasResource();
 	}
 
+	public boolean isUrl() {
+		return (hasResource() || (hasValue() && (getValue().startsWith("http://") || getValue().startsWith("https://"))));
+	}
+
+	public String getUrl() {
+		if (hasResource())
+			return getResource();
+
+		if (isUrl())
+			return getValue();
+
+		return null;
+	}
+
 	@Override
 	public String toString() {
 		return "EdmFieldInstance{" + "value=" + getValue() + ", language=" + getLanguage() + ", resource=" + resource + '}';
