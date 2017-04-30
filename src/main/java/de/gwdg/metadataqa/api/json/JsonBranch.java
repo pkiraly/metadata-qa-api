@@ -75,6 +75,13 @@ public class JsonBranch {
 		return getJsonPath();
 	}
 
+	public String getAbsoluteJsonPath(int i) {
+		if (getParent() != null) {
+			return getParent().getJsonPath() + getJsonPath().replace("$.", "[" + i + "]");
+		}
+		return getJsonPath();
+	}
+
 	public List<Category> getCategories() {
 		return categories;
 	}
