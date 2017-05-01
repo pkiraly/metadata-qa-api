@@ -53,7 +53,8 @@ public class FieldCounter<T> {
 				item += String.format("\"%s\":", entry.getKey());
 			}
 			String value = Converter.asString(entry.getValue());
-			if (compressionLevel != CompressionLevel.ZERO)
+			if (!(entry.getValue() instanceof Integer)
+			    && compressionLevel != CompressionLevel.ZERO)
 				value = Converter.compressNumber(value, compressionLevel);
 			item += value;
 			items.add(item);
