@@ -1,5 +1,6 @@
 package de.gwdg.metadataqa.api.json;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -8,7 +9,7 @@ import java.util.List;
  *
  * @author Péter Király <peter.kiraly at gwdg.de>
  */
-public class JsonBranch implements Cloneable {
+public class JsonBranch implements Cloneable, Serializable {
 
 	public enum Category {
 
