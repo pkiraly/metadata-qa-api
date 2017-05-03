@@ -8,7 +8,7 @@ import java.util.List;
  *
  * @author Péter Király <peter.kiraly at gwdg.de>
  */
-public class JsonBranch {
+public class JsonBranch implements Cloneable {
 
 	public enum Category {
 
@@ -148,5 +148,10 @@ public class JsonBranch {
 				  + ", nr of children=" + children.size()
 				  + ", collection=" + collection
 				  + '}';
+	}
+
+	@Override
+	public Object clone() throws CloneNotSupportedException {
+		return super.clone();
 	}
 }

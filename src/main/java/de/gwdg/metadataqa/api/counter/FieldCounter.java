@@ -37,6 +37,10 @@ public class FieldCounter<T> {
 		return fieldMap.size();
 	}
 
+	public void putAll(FieldCounter<T> other) {
+		fieldMap.putAll(other.getMap());
+	}
+
 	public Map<String, T> getMap() {
 		return fieldMap;
 	}

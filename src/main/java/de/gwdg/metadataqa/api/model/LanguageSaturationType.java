@@ -4,7 +4,7 @@ package de.gwdg.metadataqa.api.model;
  *
  * @author Péter Király <peter.kiraly at gwdg.de>
  */
-public enum LanguageSaturation {
+public enum LanguageSaturationType {
 
 	NA          (-1.0),
 	STRING      (0.0),
@@ -14,8 +14,12 @@ public enum LanguageSaturation {
 
 	private final double value;
 
-	LanguageSaturation(double value) {
+	LanguageSaturationType(double value) {
 		this.value = value;
+	}
+
+	public boolean isTaggedLiteral() {
+		return (this.equals(LANGUAGE) || this.equals(TRANSLATION));
 	}
 
 	public double value() {

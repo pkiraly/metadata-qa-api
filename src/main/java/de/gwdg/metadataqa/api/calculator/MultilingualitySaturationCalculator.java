@@ -7,7 +7,7 @@ import de.gwdg.metadataqa.api.interfaces.Calculator;
 import de.gwdg.metadataqa.api.json.JsonBranch;
 import de.gwdg.metadataqa.api.model.EdmFieldInstance;
 import de.gwdg.metadataqa.api.model.JsonPathCache;
-import de.gwdg.metadataqa.api.model.LanguageSaturation;
+import de.gwdg.metadataqa.api.model.LanguageSaturationType;
 import de.gwdg.metadataqa.api.schema.Schema;
 import de.gwdg.metadataqa.api.util.CompressionLevel;
 import de.gwdg.metadataqa.api.util.Converter;
@@ -55,7 +55,7 @@ public class MultilingualitySaturationCalculator implements Calculator, Serializ
 	private String inputFileName;
 	private FieldCounter<Double> saturationMap;
 	private Map<String, Map<String, Double>> rawScoreMap = new LinkedHashMap<>();
-	private Map<String, List<SortedMap<LanguageSaturation, Double>>> rawLanguageMap;
+	private Map<String, List<SortedMap<LanguageSaturationType, Double>>> rawLanguageMap;
 
 	private Schema schema;
 	private SkippedEntryChecker skippedEntryChecker = null;
@@ -143,8 +143,8 @@ public class MultilingualitySaturationCalculator implements Calculator, Serializ
 	private void measureMissingCollection(JsonBranch collection) {
 		for (JsonBranch child : collection.getChildren()) {
 			if (!schema.getNoLanguageFields().contains(child.getLabel())) {
-				Map<LanguageSaturation, BasicCounter> languages = new TreeMap<>();
-				increase(languages, LanguageSaturation.NA);
+				Map<LanguageSaturationType, BasicCounter> languages = new TreeMap<>();
+				increase(languages, LanguageSaturationType.NA);
 				updateMaps(child.getLabel(), transformLanguages(languages, 0));
 			}
 		}
@@ -181,39 +181,39 @@ public class MultilingualitySaturationCalculator implements Calculator, Serializ
 			JsonBranch jsonBranch,
 			String address,
 			JsonPathCache cache,
-			Map<String, List<SortedMap<LanguageSaturation, Double>>> rawLanguageMap
+			Map<String, List<SortedMap<LanguageSaturationType, Double>>> rawLanguageMap
 	) {
 		List<EdmFieldInstance> values = cache.get(address, jsonBranch.getJsonPath(), jsonFragment);
-		Map<LanguageSaturation, BasicCounter> languages = new TreeMap<>();
+		Map<LanguageSaturationType, BasicCounter> languages = new TreeMap<>();
 		Set<String> individualLanguages = new HashSet<>();
 		if (values != null && !values.isEmpty()) {
 			for (EdmFieldInstance field : values) {
 				if (field.hasValue()) {
 					if (field.hasLanguage()) {
 						individualLanguages.add(field.getLanguage());
-						increase(languages, LanguageSaturation.LANGUAGE);
+						increase(languages, LanguageSaturationType.LANGUAGE);
 					} else {
-						increase(languages, LanguageSaturation.STRING);
+						increase(languages, LanguageSaturationType.STRING);
 					}
 				} else {
-					increase(languages, LanguageSaturation.LINK);
+					increase(languages, LanguageSaturationType.LINK);
 				}
 			}
 		} else {
-			increase(languages, LanguageSaturation.NA);
+			increase(languages, LanguageSaturationType.NA);
 		}
 
 		updateMaps(jsonBranch.getLabel(), transformLanguages(languages, individualLanguages.size()));
 	}
 
-	private void updateMaps(String label, SortedMap<LanguageSaturation, Double> instance) {
+	private void updateMaps(String label, SortedMap<LanguageSaturationType, Double> instance) {
 		if (!rawLanguageMap.containsKey(label)) {
 			rawLanguageMap.put(label, new ArrayList<>());
 		}
 		rawLanguageMap.get(label).add(instance);
 	}
 
-	private void increase(Map<LanguageSaturation, BasicCounter> languages, LanguageSaturation key) {
+	private void increase(Map<LanguageSaturationType, BasicCounter> languages, LanguageSaturationType key) {
 		if (!languages.containsKey(key)) {
 			languages.put(key, new BasicCounter(1));
 		} else {
@@ -241,17 +241,17 @@ public class MultilingualitySaturationCalculator implements Calculator, Serializ
 		return result;
 	}
 
-	private SortedMap<LanguageSaturation, Double> transformLanguages(
-			Map<LanguageSaturation, BasicCounter> languages, int languageCount) {
-		SortedMap<LanguageSaturation, Double> result = new TreeMap<>();
-		for (LanguageSaturation lang : languages.keySet()) {
+	private SortedMap<LanguageSaturationType, Double> transformLanguages(
+			Map<LanguageSaturationType, BasicCounter> languages, int languageCount) {
+		SortedMap<LanguageSaturationType, Double> result = new TreeMap<>();
+		for (LanguageSaturationType lang : languages.keySet()) {
 			result.put(lang, languages.get(lang).getTotal());
 		}
-		if (result.containsKey(LanguageSaturation.LANGUAGE)
-				&& result.get(LanguageSaturation.LANGUAGE) > 1
+		if (result.containsKey(LanguageSaturationType.LANGUAGE)
+				&& result.get(LanguageSaturationType.LANGUAGE) > 1
 				&& languageCount > 1) {
-			Double count = result.remove(LanguageSaturation.LANGUAGE);
-			result.put(LanguageSaturation.TRANSLATION, normalizeTranslationCount(languageCount));
+			Double count = result.remove(LanguageSaturationType.LANGUAGE);
+			result.put(LanguageSaturationType.TRANSLATION, normalizeTranslationCount(languageCount));
 		}
 		if (languageCount > 1) {
 			result = keepOnlyTheBest(result);
@@ -306,19 +306,19 @@ public class MultilingualitySaturationCalculator implements Calculator, Serializ
 		return saturationMap.getList(withLabel, compressionLevel);
 	}
 
-	private SortedMap<LanguageSaturation, Double> keepOnlyTheBest(SortedMap<LanguageSaturation, Double> result) {
+	private SortedMap<LanguageSaturationType, Double> keepOnlyTheBest(SortedMap<LanguageSaturationType, Double> result) {
 		if (result.size() > 1) {
-			LanguageSaturation best = LanguageSaturation.NA;
-			for (LanguageSaturation key : result.keySet())
+			LanguageSaturationType best = LanguageSaturationType.NA;
+			for (LanguageSaturationType key : result.keySet())
 				if (key.value() > best.value())
 					best = key;
 
-			if (best != LanguageSaturation.NA) {
+			if (best != LanguageSaturationType.NA) {
 				double modifier = 0.0;
-				if (best == LanguageSaturation.TRANSLATION && result.containsKey(LanguageSaturation.STRING)) {
+				if (best == LanguageSaturationType.TRANSLATION && result.containsKey(LanguageSaturationType.STRING)) {
 					modifier = -0.2;
 				}
-				SortedMap<LanguageSaturation, Double> replacement = new TreeMap<>();
+				SortedMap<LanguageSaturationType, Double> replacement = new TreeMap<>();
 				replacement.put(best, result.get(best) + modifier);
 				result = replacement;
 			}
@@ -327,28 +327,28 @@ public class MultilingualitySaturationCalculator implements Calculator, Serializ
 	}
 
 	private FieldCounter<Double> calculateScore(Map<String, 
-			List<SortedMap<LanguageSaturation, Double>>> rawLanguageMap) {
+			List<SortedMap<LanguageSaturationType, Double>>> rawLanguageMap) {
 		double sum, average, normalized;
 		List<Double> sums = new ArrayList<>();
 		FieldCounter<Double> languageMap = new FieldCounter<>();
 		for (String field : rawLanguageMap.keySet()) {
 			Map<String, Double> fieldMap = new LinkedHashMap<>();
-			List<SortedMap<LanguageSaturation, Double>> values = rawLanguageMap.get(field);
+			List<SortedMap<LanguageSaturationType, Double>> values = rawLanguageMap.get(field);
 			sum = 0.0;
 			boolean isSet = false;
-			for (SortedMap<LanguageSaturation, Double> value : values) {
+			for (SortedMap<LanguageSaturationType, Double> value : values) {
 				double saturation = value.firstKey().value();
 				if (saturation == -1.0)
 					continue;
 				double weight = value.get(value.firstKey());
-				if (value.firstKey() == LanguageSaturation.TRANSLATION) {
+				if (value.firstKey() == LanguageSaturationType.TRANSLATION) {
 					saturation += weight;
 				}
 				sum += saturation;
 				isSet = true;
 			}
 			if (!isSet) {
-				sum = average = normalized = LanguageSaturation.NA.value();
+				sum = average = normalized = LanguageSaturationType.NA.value();
 			} else {
 				average = sum / (double)values.size();
 				normalized = normalize(average);
@@ -392,13 +392,13 @@ public class MultilingualitySaturationCalculator implements Calculator, Serializ
 		return 1.0 - (1.0/(average + 1.0));
 	}
 
-	private Object normalizeRawValue(List<SortedMap<LanguageSaturation, Double>> values) {
-		List<SortedMap<LanguageSaturation, Double>> normalized = new LinkedList<>();
-		for (SortedMap<LanguageSaturation, Double> value : values) {
-			SortedMap<LanguageSaturation, Double> norm = new TreeMap<>();
+	private Object normalizeRawValue(List<SortedMap<LanguageSaturationType, Double>> values) {
+		List<SortedMap<LanguageSaturationType, Double>> normalized = new LinkedList<>();
+		for (SortedMap<LanguageSaturationType, Double> value : values) {
+			SortedMap<LanguageSaturationType, Double> norm = new TreeMap<>();
 			double saturation = value.firstKey().value();
 			double weight = value.get(value.firstKey());
-			if (value.firstKey() == LanguageSaturation.TRANSLATION) {
+			if (value.firstKey() == LanguageSaturationType.TRANSLATION) {
 				saturation += weight;
 			}
 			norm.put(value.firstKey(), saturation);

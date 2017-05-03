@@ -37,12 +37,14 @@ public class JsonUtils {
 							extracted.add((String) array2.get(j));
 						} else if (array2.get(j).getClass() == LinkedHashMap.class) {
 							Map<String, String> map = (LinkedHashMap<String, String>) array2.get(j);
-							if (map.containsKey("@resource")) {
+							if (map.containsKey("@about")) {
+								extracted.add(map.get("@about"));
+							} else if (map.containsKey("@resource")) {
 								extracted.add(map.get("@resource"));
 							} else if (map.containsKey("#value")) {
 								extracted.add(map.get("#value"));
 							} else {
-								logger.severe("Other type of map: " + map);
+								logger.severe("Other type of map*: " + map.keySet());
 							}
 						} else {
 							logger.severe("Unhandled array2 type: " + getType(array2.get(j)));
@@ -125,7 +127,9 @@ public class JsonUtils {
 		Map<String, String> map = (LinkedHashMap<String, String>) innerVal;
 		EdmFieldInstance instance = new EdmFieldInstance();
 		for (Map.Entry<String, String> entry : map.entrySet()) {
-			if (entry.getKey().equals("@resource")) {
+			if (entry.getKey().equals("@about")) {
+				instance.setResource(entry.getValue());
+			} else if (entry.getKey().equals("@resource")) {
 				instance.setResource(entry.getValue());
 			} else if (entry.getKey().equals("#value")) {
 				instance.setValue(map.get("#value"));

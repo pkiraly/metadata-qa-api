@@ -275,11 +275,15 @@ public class EdmOaiPmhXmlSchema extends EdmSchema implements Serializable {
 
 		noLanguageFields.addAll(Arrays.asList(
 			"ProvidedCHO", "ProvidedCHO/rdf:about",
-			"Proxy", "Proxy/rdf:about", "Proxy/edm:isNextInSequence", "Proxy/edm:type",
-			"Aggregation", "Aggregation/edm:isShownAt",
+			"Proxy",
+			"Proxy/rdf:about", "Proxy/edm:isNextInSequence", "Proxy/edm:type",
+			"Proxy/ore:proxyFor", "Proxy/ore:proxyIn", "Proxy/edm:europeanaProxy",
+			"Aggregation",
+			"Aggregation/edm:isShownAt",
 			"Aggregation/edm:isShownBy", "Aggregation/edm:object",
 			"Aggregation/edm:hasView", "Aggregation/rdf:about",
-			"Place", "Place/rdf:about", "Place/wgs84:lat", "Place/wgs84:long",
+			"Place",
+			"Place/rdf:about", "Place/wgs84:lat", "Place/wgs84:long",
 			"Place/wgs84:alt", "Place/wgs84_pos:lat_long", "Place/owl:sameAs",
 			"Agent", "Agent/rdf:about",
 			"Timespan", "Timespan/rdf:about",
