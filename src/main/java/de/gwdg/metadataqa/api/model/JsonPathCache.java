@@ -42,9 +42,6 @@ public class JsonPathCache<T extends XmlFieldInstance> {
 		if (value != null) {
 			instances = (List<T>) JsonUtils.extractFieldInstanceList(value, recordId, jsonPath);
 		}
-		if (address.contains("010")) {
-			System.err.println("put to cache: " + address);
-		}
 		cache.put(address, instances);
 	}
 
