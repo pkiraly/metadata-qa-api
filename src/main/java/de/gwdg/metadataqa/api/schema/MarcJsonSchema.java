@@ -33,90 +33,94 @@ public class MarcJsonSchema implements Schema, ProblemCatalogSchema {
 		addPath(new JsonBranch("007", "$.controlfield[?(@.tag == '007')].content"));
 		addPath(new JsonBranch("008", "$.controlfield[?(@.tag == '008')].content"));
 
-		registerDatafieldBranch("010", "a", "b", "z", "8");
+		registerDatafieldBranch("010", "a", "b", "z", "8", "z");
 		registerDatafieldBranch("013", "a", "c");
-		registerDatafieldBranch("015", "2", "a");
+		registerDatafieldBranch("015", "2", "a", "z");
 		registerDatafieldBranch("016", "2", "a");
-		// 17
-		// 18
+		registerDatafieldBranch("017", "a", "b");
+		registerDatafieldBranch("018", "a");
 		registerDatafieldBranch("019", "a"); // ??? not in the standard!!!
-		registerDatafieldBranch("020", "9", "a", "c", "z");
-		registerDatafieldBranch("022", "a", "c", "y");
-		registerDatafieldBranch("024", "2", "9", "a", "c", "z");
-		// 25
-		registerDatafieldBranch("026", "e");
+		registerDatafieldBranch("020", "6", "9", "a", "b", "c", "z");
+		registerDatafieldBranch("022", "a", "c", "y", "z");
+		registerDatafieldBranch("024", "2", "9", "a", "c", "d", "z");
+		registerDatafieldBranch("025", "a");
+		registerDatafieldBranch("026", "a", "e");
 		registerDatafieldBranch("027", "a");
-		registerDatafieldBranch("028", "a");
+		registerDatafieldBranch("028", "a", "b");
 		registerDatafieldBranch("029", "a", "b", "c"); // ??? not in the standard!
-		registerDatafieldBranch("030", "a");
+		registerDatafieldBranch("030", "a", "z");
 		// 31
-		registerDatafieldBranch("032", "a");
-		// 33
-		registerDatafieldBranch("034", "a", "b");
-		registerDatafieldBranch("035", "a", "z");
-		// 36
-		// 37
-		// 38
-		registerDatafieldBranch("040", "a", "b", "c", "d", "e", "h");
-		registerDatafieldBranch("041", "a", "b", "h");
-		// 42
-		registerDatafieldBranch("043", "a");
+		registerDatafieldBranch("032", "a", "b");
+		registerDatafieldBranch("033", "a", "b", "c");
+		registerDatafieldBranch("034", "a", "b", "c", "d", "e", "f", "g");
+		registerDatafieldBranch("035", "6", "a", "z");
+		registerDatafieldBranch("036", "a");
+		registerDatafieldBranch("037", "a", "b", "c", "f", "n");
+		registerDatafieldBranch("038", "a");
+		registerDatafieldBranch("040", "6", "a", "b", "c", "d", "e", "h", "t", "w");
+		registerDatafieldBranch("041", "2", "a", "b", "d", "e", "f", "g", "h", "j", "k", "m", "n");
+		registerDatafieldBranch("042", "a");
+		registerDatafieldBranch("043", "2", "a", "b", "c");
 		registerDatafieldBranch("044", "a", "h");
-		// 45
-		registerDatafieldBranch("046", "2", "j");
-		// 47
-		// 48
+		registerDatafieldBranch("045", "a", "b");
+		registerDatafieldBranch("046", "2", "a", "b", "d", "j", "k");
+		registerDatafieldBranch("047", "a");
+		registerDatafieldBranch("048", "a", "b");
 		registerDatafieldBranch("049", "a"); // ???
-		registerDatafieldBranch("050", "a", "b");
-		// 51
-		// 52
-		// 55
-		// 60
-		// 61
-		registerDatafieldBranch("066", "c");
-		// 70
+		registerDatafieldBranch("050", "3", "a", "b", "i");
+		registerDatafieldBranch("051", "a", "b", "c", "i");
+		registerDatafieldBranch("052", "a", "b");
+		registerDatafieldBranch("055", "2", "a", "b");
+		registerDatafieldBranch("060", "b");
+		registerDatafieldBranch("061", "a");
+		registerDatafieldBranch("066", "a", "c");
+		registerDatafieldBranch("070", "a", "b");
 		// 71
-		// 72
-		// 74
-		// 80
-		registerDatafieldBranch("082", "a", "n");
-		// 83
-		registerDatafieldBranch("084", "a", "a");
-		// 85
-		// 86
+		registerDatafieldBranch("072", "2", "a", "x");
+		registerDatafieldBranch("074", "a", "z");
+		registerDatafieldBranch("080", "2", "a", "b", "x");
+		registerDatafieldBranch("082", "2", "9", "a", "b", "m", "n", "q");
+		registerDatafieldBranch("083", "2", "a");
+		registerDatafieldBranch("084", "a", "b");
+		registerDatafieldBranch("085", "8", "a", "b", "s", "z");
+		registerDatafieldBranch("086", "2", "6", "a", "z");
 		registerDatafieldBranch("088", "a");
 		registerDatafieldBranch("090", "a", "b", "v");
 
-		registerDatafieldBranch("100", "0", "4", "6", "a", "b", "c", "d", "e", "h");
-		registerDatafieldBranch("110", "0", "4", "6", "9", "a", "b", "c", "e", "n");
-		registerDatafieldBranch("111", "0", "4", "9", "a", "c", "d", "e", "j", "n");
-		registerDatafieldBranch("130", "0", "7", "9", "a", "f", "g", "k", "m", "n", "o", "p", "r", "s", "t", "x");
+		registerDatafieldBranch("100", "0", "4", "6", "a", "b", "c", "d", "e", "f", "g", "h", "k", "l", "n", "p", "q", "t", "u");
+		registerDatafieldBranch("110", "0", "4", "6", "9", "a", "b", "c", "e", "f", "k", "l", "n", "p", "s", "t", "u");
+		registerDatafieldBranch("111", "0", "4", "6", "9", "a", "b", "c", "d", "e", "f", "g", "j", "k", "l", "n", "q", "p", "t");
+		registerDatafieldBranch("130", "0", "6", "7", "9", "a", "d", "f", "g", "h", "k", "l", "m", "n", "o", "p", "r", "s", "t", "x", "v");
+
+		registerDatafieldBranch("199", "9"); // ??
 
 		registerDatafieldBranch("210", "a");
-		// 222
-		registerDatafieldBranch("240", "0", "7", "9", "a", "f", "g", "k", "m", "n", "o", "p", "r", "s", "t", "x");
-		// 242
-		registerDatafieldBranch("243", "a");
-		registerDatafieldBranch("245", "6", "a", "b", "c", "h", "n", "p");
-		registerDatafieldBranch("246", "6", "a", "b", "d", "i");
-		registerDatafieldBranch("247", "a", "f");
+		registerDatafieldBranch("222", "a", "b");
+		registerDatafieldBranch("240", "0", "6", "7", "9", "a", "d", "f", "g", "h", "k", "l", "m", "n", "o", "p", "r", "s", "t", "x");
+		registerDatafieldBranch("241", "a"); // ??
+		registerDatafieldBranch("242", "a", "b", "c", "y");
+		registerDatafieldBranch("243", "a", "f", "k", "l");
+		registerDatafieldBranch("245", "6", "a", "b", "c", "d", "e", "f", "g", "h", "k", "n", "p", "s", "v");
+		registerDatafieldBranch("246", "5", "6", "a", "b", "d", "f", "h", "i", "n", "p");
+		registerDatafieldBranch("247", "a", "b", "f", "g", "p");
 		registerDatafieldBranch("249", "a", "b", "c", "v"); // ????
-		registerDatafieldBranch("250", "6", "9", "a");
-		// 254
+		registerDatafieldBranch("250", "6", "9", "a", "c");
+		registerDatafieldBranch("254", "a");
 		registerDatafieldBranch("255", "a", "b", "c", "e");
 		// 256
-		// 257
-		// 258
-		registerDatafieldBranch("260", "6", "a", "b", "c", "e", "f", "g");
+		registerDatafieldBranch("257", "a");
+		registerDatafieldBranch("258", "a");
+		registerDatafieldBranch("260", "3", "6", "a", "b", "c", "d", "e", "f", "g", "z");
 		// 263
-		registerDatafieldBranch("264", "a", "b", "c");
-		// 270
+		registerDatafieldBranch("264", "3", "a", "b", "c");
+		registerDatafieldBranch("265", "a"); // ????
+		registerDatafieldBranch("270", "a", "b", "c", "d", "e", "g", "h", "k", "l", "m", "n");
 		registerDatafieldBranch("290", "a", "b"); // ????
 
-		registerDatafieldBranch("300", "2", "a", "b", "c", "e", "x");
-		// 306
-		// 307
-		// 310
+		registerDatafieldBranch("300", "2", "3", "6", "a", "b", "c", "e", "f", "g", "x"); // " " <- ?????
+		registerDatafieldBranch("306", "a");
+		registerDatafieldBranch("307", "a");
+		registerDatafieldBranch("310", "a", "b");
 		// 321
 		registerDatafieldBranch("336", "2", "3", "8", "a", "b");
 		registerDatafieldBranch("337", "2", "3", "8", "a", "b");
@@ -124,21 +128,22 @@ public class MarcJsonSchema implements Schema, ProblemCatalogSchema {
 		registerDatafieldBranch("340", "a");
 		// 342
 		// 343
-		// 344
+		registerDatafieldBranch("344", "2", "a", "b", "g", "h");
 		// 345
-		// 346
-		// 347
+		registerDatafieldBranch("346", "2", "b");
+		registerDatafieldBranch("347", "2", "3", "a", "b", "c", "d");
 		// 348
-		// 351
+		registerDatafieldBranch("350", "a"); // ???
+		registerDatafieldBranch("351", "3", "a", "b");
 		// 352
 		// 355
 		// 357
-		registerDatafieldBranch("362", "a");
+		registerDatafieldBranch("362", "a", "z");
 		registerDatafieldBranch("363", "a", "b", "i", "j", "k", "u");
-		// 365
-		// 366
+		registerDatafieldBranch("365", "2", "a");
+		registerDatafieldBranch("366", "2", "a", "b", "c", "j", "k", "m");
 		// 370
-		// 377
+		registerDatafieldBranch("377", "2", "a");
 		registerDatafieldBranch("380", "0", "2", "a");
 		// 381
 		registerDatafieldBranch("382", "0", "2", "a", "d", "g", "n", "p", "s", "v");
@@ -148,116 +153,123 @@ public class MarcJsonSchema implements Schema, ProblemCatalogSchema {
 		// 386
 		// 388
 
-		registerDatafieldBranch("490", "2", "6", "a", "x", "v");
+		registerDatafieldBranch("400", "6", "a", "b", "c", "d", "e", "f", "l", "n", "p", "q", "t", "v", "x"); // ???
+		registerDatafieldBranch("410", "6", "a", "b", "c", "d", "f", "g", "k", "n", "p", "t", "u", "x", "v"); // ???
+		registerDatafieldBranch("411", "a", "c", "d", "e", "g", "n", "p", "q", "t", "v"); // ???
+		registerDatafieldBranch("440", "a", "n", "p", "v", "x"); // ???
+		registerDatafieldBranch("489", "a", "v"); // ???
+		registerDatafieldBranch("490", "2", "3", "6", "a", "l", "n", "p", "x", "v");
 
-		registerDatafieldBranch("500", "2", "6", "a", "g", "x");
-		registerDatafieldBranch("501", "a");
-		registerDatafieldBranch("502", "a", "b", "c", "d", "6");
-		// 504
-		registerDatafieldBranch("505", "a", "r", "t");
-		// 506
-		// 507
-		registerDatafieldBranch("508", "a");
-		// 510
+		registerDatafieldBranch("500", "2", "3", "5", "6", "a", "g", "x");
+		registerDatafieldBranch("501", "5", "6", "a");
+		registerDatafieldBranch("502", "6", "a", "b", "c", "d", "6");
+		registerDatafieldBranch("504", "6", "b");
+		registerDatafieldBranch("505", "a", "g", "r", "t", "u");
+		registerDatafieldBranch("506", "3", "5", "a", "c", "u");
+		registerDatafieldBranch("507", "a");
+		registerDatafieldBranch("508", "6", "a");
+		registerDatafieldBranch("510", "3", "6", "b", "x");
 		registerDatafieldBranch("511", "a");
-		// 513
-		// 514
+		registerDatafieldBranch("513", "a", "b");
+		registerDatafieldBranch("514", "a");
 		registerDatafieldBranch("515", "a");
-		// 516
+		registerDatafieldBranch("516", "a");
 		// 517
 		registerDatafieldBranch("518", "a");
-		registerDatafieldBranch("520", "a");
-		registerDatafieldBranch("521", "a");
-		// 522
-		// 524
-		// 525
-		// 526
-		registerDatafieldBranch("530", "a");
-		registerDatafieldBranch("533", "7", "a", "b", "c", "d", "e", "f", "n", "x");
-		registerDatafieldBranch("534", "c");
-		registerDatafieldBranch("535", "a", "g", "q");
-		// 536
-		registerDatafieldBranch("538", "a");
-		// 540
-		// 541
-		// 542
-		// 544
-		// 545
-		registerDatafieldBranch("546", "a");
+		registerDatafieldBranch("520", "2", "3", "6", "a", "b", "c", "u");
+		registerDatafieldBranch("521", "6", "a", "b");
+		registerDatafieldBranch("522", "a");
+		registerDatafieldBranch("524", "a");
+		registerDatafieldBranch("525", "6", "a");
+		registerDatafieldBranch("526", "a", "b", "c", "d", "z");
+		registerDatafieldBranch("530", "3", "6", "a", "b", "c", "d", "u");
+		registerDatafieldBranch("533", "3", "5", "6", "7", "a", "b", "c", "d", "e", "f", "m", "n", "x");
+		registerDatafieldBranch("534", "6", "c", "e", "f", "k", "l", "p", "t", "z");
+		registerDatafieldBranch("535", "3", "a", "b", "c", "g", "q");
+		registerDatafieldBranch("536", "6", "a", "b", "c", "d", "e", "f", "g", "h");
+		registerDatafieldBranch("538", "6", "a", "u");
+		registerDatafieldBranch("540", "3", "5", "a", "b", "c", "u");
+		registerDatafieldBranch("541", "3", "5", "a", "b", "c", "d", "e", "f", "h", "n", "o");
+		registerDatafieldBranch("542", "a", "c", "d", "f", "g");
+		registerDatafieldBranch("544", "3", "a", "b", "d", "e", "n");
+		registerDatafieldBranch("545", "a", "b");
+		registerDatafieldBranch("546", "3", "6", "a", "b");
 		// 547
-		// 550
-		// 552
-		registerDatafieldBranch("555", "a");
-		// 556
-		registerDatafieldBranch("561", "a");
-		registerDatafieldBranch("562", "a", "b");
-		registerDatafieldBranch("563", "a");
-		// 565
+		registerDatafieldBranch("550", "a");
+		registerDatafieldBranch("552", "a");
+		registerDatafieldBranch("555", "a", "c", "u");
+		registerDatafieldBranch("556", "a");
+		registerDatafieldBranch("561", "3", "5", "6", "a");
+		registerDatafieldBranch("562", "5", "a", "b", "c");
+		registerDatafieldBranch("563", "5", "a");
+		registerDatafieldBranch("565", "a");
 		// 567
-		// 580
-		registerDatafieldBranch("581", "8", "a");
-		registerDatafieldBranch("583", "a", "c", "h");
-		// 584
-		// 585
-		// 586
-		// 588
+		registerDatafieldBranch("580", "a");
+		registerDatafieldBranch("581", "3", "8", "a");
+		registerDatafieldBranch("583", "3", "5", "a", "b", "c", "d", "e", "f", "h", "i", "j", "l", "u", "x");
+		registerDatafieldBranch("584", "a");
+		registerDatafieldBranch("585", "3", "5", "6", "a");
+		registerDatafieldBranch("586", "a");
+		registerDatafieldBranch("588", "5", "a");
 		registerDatafieldBranch("589", "c", "d"); // ???
 		registerDatafieldBranch("590", "a");
 		registerDatafieldBranch("591", "2", "a", "x");
 		registerDatafieldBranch("593", "a");
 
-		registerDatafieldBranch("600", "0", "2", "6", "9", "a", "b", "c", "d", "f", "m", "n", "p", "r", "s", "t", "x", "v");
-		registerDatafieldBranch("610", "0", "2", "6", "9", "a", "b", "f", "g", "n", "t", "x", "v");
-		registerDatafieldBranch("611", "0", "2", "9", "a", "b", "c", "d", "n", "t");
-		registerDatafieldBranch("630", "0", "2", "9", "a", "f", "n", "p", "t", "x");
+		registerDatafieldBranch("600", "0", "1", "2", "4", "6", "9", "a", "b", "c", "d", "f", "h", "m", "n", "o", "p", "r", "s", "t", "x", "v");
+		registerDatafieldBranch("610", "0", "2", "3", "6", "9", "a", "b", "f", "g", "h", "n", "o", "t", "u", "x", "v");
+		registerDatafieldBranch("611", "0", "2", "3", "6", "9", "a", "b", "c", "d", "f", "g", "k", "l", "n", "p", "t");
+		registerDatafieldBranch("630", "0", "2", "3", "6", "9", "a", "f", "n", "o", "p", "t", "x");
 		// 647
-		registerDatafieldBranch("648", "2", "a", "x");
-		registerDatafieldBranch("650", "0", "2", "9", "a", "q", "x", "y", "z");
-		registerDatafieldBranch("651", "0", "2", "6", "9", "a", "x", "v", "z");
+		registerDatafieldBranch("648", "2", "a", "x", "v");
+		registerDatafieldBranch("650", "0", "2", "3", "6", "9", "a", "e", "k", "q", "x", "y", "z");
+		registerDatafieldBranch("651", "0", "2", "3", "4", "6", "9", "a", "e", "k", "n", "t", "x", "v", "z");
 		registerDatafieldBranch("653", "6", "a");
-		// 654
-		registerDatafieldBranch("655", "0", "2", "a", "g", "x", "y", "z");
-		// 656
-		// 657
+		registerDatafieldBranch("654", "2", "a", "b", "c");
+		registerDatafieldBranch("655", "0", "2", "3", "a", "b", "g", "x", "y", "z");
+		registerDatafieldBranch("656", "2", "a", "v", "x", "z");
+		registerDatafieldBranch("657", "2", "a", "y");
 		// 658
-		// 662
+		registerDatafieldBranch("662", "2", "a", "d");
 		registerDatafieldBranch("689", "0", "2", "5", "9", "A", "a", "b", "c", "D", "d", "f", "g", "m", "n", "p", "r", "s", "t", "x", "z"); // ????
 		// 69X
 
 		// 70X-75X: Added Entry Fields
-		registerDatafieldBranch("700", "0", "4", "6", "a", "b", "c", "d", "e", "f", "g", "k", "m", "n", "o", "p", "q", "r", "s", "t", "T", "U");
-		registerDatafieldBranch("710", "0", "4", "6", "9", "a", "b", "c", "d", "e", "f", "g", "k", "m", "n", "o", "p", "r", "s", "t");
-		registerDatafieldBranch("711", "0", "4", "9", "a", "c", "d", "e", "j", "n", "t");
-		// 720
-		registerDatafieldBranch("730", "0", "6", "a", "f", "g", "k", "m", "n", "o", "p", "r", "s", "t", "T", "U");
-		registerDatafieldBranch("740", "6", "a");
-		registerDatafieldBranch("751", "4", "a");
-		// 752
-		// 753
+		registerDatafieldBranch("700", "0", "3", "4", "5", "6", "a", "b", "c", "d", "e", "f", "g", "h", "i", "k", "l", "m", "n", "o", "p", "q", "r", "s", "t", "T", "u", "U", "x");
+		registerDatafieldBranch("710", "0", "3", "4", "5", "6", "9", "a", "b", "c", "d", "e", "f", "g", "h", "i", "k", "l", "m", "n", "o", "p", "r", "s", "t", "u", "x", "v");
+		registerDatafieldBranch("711", "0", "4", "6", "9", "a", "b", "c", "d", "e", "f", "g", "i", "j", "k", "l", "n", "p", "q", "s", "t");
+		registerDatafieldBranch("720", "4", "6", "a", "e");
+		registerDatafieldBranch("730", "0", "5", "6", "a", "d", "f", "g", "h", "i", "k", "l", "m", "n", "o", "p", "r", "s", "t", "T", "U", "x");
+		registerDatafieldBranch("740", "5", "6", "a", "h", "n", "p", "v");
+		registerDatafieldBranch("751", "4", "6", "a");
+		registerDatafieldBranch("752", "a", "b", "c", "d", "f");
+		registerDatafieldBranch("753", "a", "c");
 		// 754
 
 		// 76X-78X: Linking Entry Fields
-		// 760
+		registerDatafieldBranch("760", "a", "d", "g", "t", "x", "y", "w");
 		// 762
-		// 765
-		// 767
-		registerDatafieldBranch("770", "a", "d", "h", "i", "n", "o", "t", "w");
-		registerDatafieldBranch("772", "a", "i", "n", "t", "w");
-		registerDatafieldBranch("773", "a", "d", "g", "h", "i", "n", "o", "q", "t", "x", "w");
-		// 774
-		registerDatafieldBranch("775", "0", "a", "d", "h", "i", "n", "o", "t", "w");
-		registerDatafieldBranch("776", "0", "9", "a", "b", "c", "d", "h", "i", "k", "n", "o", "q", "s", "t", "x", "w", "z");
-		// 777
-		registerDatafieldBranch("780", "0", "a", "d", "i", "n", "t", "w");
-		registerDatafieldBranch("785", "0", "a", "d", "i", "n", "t", "w");
+		registerDatafieldBranch("765", "6", "a", "b", "c", "d", "h", "i", "k", "o", "t", "w", "x", "z");
+		registerDatafieldBranch("767", "a", "d", "i", "s", "t", "w", "z");
+		registerDatafieldBranch("770", "6", "a", "b", "c", "d", "h", "i", "k", "n", "o", "s", "t", "w", "x", "z");
+		registerDatafieldBranch("772", "7", "a", "b", "c", "g", "h", "i", "k", "n", "s", "t", "w", "x", "z");
+		registerDatafieldBranch("773", "3", "6", "7", "a", "b", "d", "g", "h", "i", "n", "o", "q", "s", "t", "x", "w");
+		registerDatafieldBranch("774", "a", "b", "c", "d", "g", "i", "s", "t", "w", "z");
+		registerDatafieldBranch("775", "0", "6", "a", "b", "c", "d", "e", "f", "g", "h", "i", "k", "n", "o", "s", "t", "u", "w", "z");
+		registerDatafieldBranch("776", "0", "4", "6", "9", "a", "b", "c", "d", "g", "h", "i", "k", "m", "n", "o", "q", "s", "t", "u", "x", "w", "z");
+		registerDatafieldBranch("777", "6", "7", "a", "c", "h", "t", "w");
+		registerDatafieldBranch("780", "0", "6", "a", "b", "c", "d", "g", "i", "k", "n", "s", "t", "x", "w", "z");
+		registerDatafieldBranch("785", "0", "6", "a", "b", "c", "d", "i", "n", "x", "t", "x", "w", "z");
 		// 786
-		registerDatafieldBranch("787", "0", "a", "d", "h", "i", "n", "o", "t", "w");
+		registerDatafieldBranch("787", "0", "6", "7", "a", "b", "d", "g", "h", "i", "n", "o", "r", "s", "t", "w");
 
 		// 80X-83X: Series Added Entry Fields
-		registerDatafieldBranch("800", "a", "b", "c", "d", "g", "p", "q", "t", "v", "w");
-		registerDatafieldBranch("810", "a", "b", "c", "g", "p", "q", "t", "v", "w");
-		registerDatafieldBranch("810", "a", "c", "d", "e", "g", "n", "p", "q", "t", "v", "w");
-		registerDatafieldBranch("830", "6", "a", "g", "p", "q", "v", "w");
+		registerDatafieldBranch("800", "2", "4", "6", "a", "b", "c", "d", "e", "f", "g", "k", "l", "p", "q", "s", "t", "v", "w");
+		registerDatafieldBranch("810", "4", "6", "a", "b", "c", "d", "f", "g", "k", "l", "p", "q", "r", "s", "t", "v", "w", "x");
+		registerDatafieldBranch("811", "6", "a", "b", "c", "d", "e", "f", "g", "k", "l", "n", "p", "q", "t", "v", "w");
+		registerDatafieldBranch("830", "3", "6", "a", "d", "f", "g", "h", "k", "l", "m", "o", "p", "q", "s", "t", "x", "v", "w");
+
+		registerDatafieldBranch("840", "a", "v"); // ??
 
 		// 841-88X: Holdings, Location, Alternate Graphics, etc. Fields
 		// 841
@@ -265,28 +277,28 @@ public class MarcJsonSchema implements Schema, ProblemCatalogSchema {
 		// 843
 		// 844
 		// 845
-		// 850
-		// 852
+		registerDatafieldBranch("850", "a");
+		registerDatafieldBranch("852", "2", "3", "a", "b", "c", "e", "h", "i", "j", "k", "m", "n", "p", "t", "u", "x", "w", "z");
 		// 853
 		// 854
 		// 855
-		registerDatafieldBranch("856", "2", "3", "a", "b", "d", "f", "h", "i", "l", "m", "n", "p", "q", "s", "t", "u", "x", "y", "v", "z");
+		registerDatafieldBranch("856", "2", "3", "a", "b", "c", "d", "f", "h", "i", "j", "k", "l", "m", "n", "p", "q", "r", "s", "t", "u", "x", "y", "v", "w", "z");
 		// 863
 		// 864
-		// 865
+		registerDatafieldBranch("865", "a");
 		registerDatafieldBranch("866", "a");
 		// 867
 		// 868
 		// 876
 		// 877
 		// 878
-		registerDatafieldBranch("880", "0", "6", "a", "b", "c", "d", "f", "g", "T", "U", "v", "x");
+		registerDatafieldBranch("880", "0", "1", "2", "3", "5", "6", "8", "a", "b", "c", "d", "f", "g", "i", "k", "l", "o", "q", "r", "s", "t", "T", "U", "x", "y", "v", "z");
 		// 882
 		// 883
 		// 884
 		// 885
-		// 886
-		// 887
+		registerDatafieldBranch("886", "2", "a", "b", "c", "d", "e", "f", "h", "k", "x", "z");
+		registerDatafieldBranch("887", "2", "a");
 		registerDatafieldBranch("889", "w"); // ???
 
 		registerDatafieldBranch("912", "a", "b");
@@ -295,6 +307,7 @@ public class MarcJsonSchema implements Schema, ProblemCatalogSchema {
 		registerDatafieldBranch("936", "0", "a", "b", "c", "d", "e", "f", "g", "h", "j", "k", "m", "q", "y");
 		registerDatafieldBranch("937", "a", "b", "c", "d", "e", "f");
 		registerDatafieldBranch("938", "a", "b", "n");
+		registerDatafieldBranch("987", "a", "b", "c", "d", "e", "f"); // ???
 		registerDatafieldBranch("994", "a", "b");
 
 		extractableFields.put("leader", "$.leader");
