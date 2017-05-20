@@ -11,6 +11,7 @@ import de.gwdg.metadataqa.api.problemcatalog.LongSubject;
 import de.gwdg.metadataqa.api.problemcatalog.ProblemCatalog;
 import de.gwdg.metadataqa.api.problemcatalog.TitleAndDescriptionAreSame;
 import de.gwdg.metadataqa.api.schema.EdmSchema;
+import de.gwdg.metadataqa.api.schema.Schema;
 import de.gwdg.metadataqa.api.uniqueness.TfIdf;
 import de.gwdg.metadataqa.api.util.CompressionLevel;
 import java.io.Serializable;
@@ -112,6 +113,8 @@ public class CalculatorFacade implements Serializable {
 	protected MultilingualitySaturationCalculator multilingualSaturationCalculator;
 
 	protected JsonPathCache<? extends XmlFieldInstance> cache;
+	
+	protected Schema schema;
 
 	/**
 	 * Create calculator facade with the default configuration
@@ -154,7 +157,7 @@ public class CalculatorFacade implements Serializable {
 	public void configure() {
 		calculators = new ArrayList<>();
 		fieldExtractor = new FieldExtractor();
-		EdmSchema schema = new EdmOaiPmhXmlSchema();
+		// EdmSchema schema = new EdmOaiPmhXmlSchema();
 
 		if (completenessMeasurementEnabled) {
 			completenessCalculator = new CompletenessCalculator(schema);
@@ -169,11 +172,13 @@ public class CalculatorFacade implements Serializable {
 		}
 
 		if (problemCatalogMeasurementEnabled) {
-			ProblemCatalog problemCatalog = new ProblemCatalog(schema);
-			LongSubject longSubject = new LongSubject(problemCatalog);
-			TitleAndDescriptionAreSame titleAndDescriptionAreSame = new TitleAndDescriptionAreSame(problemCatalog);
-			EmptyStrings emptyStrings = new EmptyStrings(problemCatalog);
-			calculators.add(problemCatalog);
+			if (schema instanceof EdmSchema) {
+				ProblemCatalog problemCatalog = new ProblemCatalog((EdmSchema)schema);
+				LongSubject longSubject = new LongSubject(problemCatalog);
+				TitleAndDescriptionAreSame titleAndDescriptionAreSame = new TitleAndDescriptionAreSame(problemCatalog);
+				EmptyStrings emptyStrings = new EmptyStrings(problemCatalog);
+				calculators.add(problemCatalog);
+			}
 		}
 
 		if (languageMeasurementEnabled) {
@@ -529,5 +534,13 @@ public class CalculatorFacade implements Serializable {
 
 	public void setCheckSkippableCollections(boolean checkSkippableCollections) {
 		this.checkSkippableCollections = checkSkippableCollections;
+	}
+
+	public Schema getSchema() {
+		return schema;
+	}
+
+	public void setSchema(Schema schema) {
+		this.schema = schema;
 	}
 }
