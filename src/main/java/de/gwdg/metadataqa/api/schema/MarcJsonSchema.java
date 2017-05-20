@@ -2,6 +2,7 @@ package de.gwdg.metadataqa.api.schema;
 
 import de.gwdg.metadataqa.api.json.FieldGroup;
 import de.gwdg.metadataqa.api.json.JsonBranch;
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
@@ -11,7 +12,7 @@ import java.util.Map;
  *
  * @author Péter Király <peter.kiraly at gwdg.de>
  */
-public class MarcJsonSchema implements Schema, ProblemCatalogSchema {
+public class MarcJsonSchema implements Schema, ProblemCatalogSchema, Serializable {
 
 	private final static Map<String, JsonBranch> paths = new LinkedHashMap<>();
 	private final static Map<String, JsonBranch> collectionPaths = new LinkedHashMap<>();
