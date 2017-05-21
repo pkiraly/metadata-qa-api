@@ -156,6 +156,7 @@ public class CalculatorFacade implements Serializable {
 	 * Run the configuration based on the previously set flags
 	 */
 	public void configure() {
+		logger.info("configure()");
 		calculators = new ArrayList<>();
 		// EdmSchema schema = new EdmOaiPmhXmlSchema();
 		
