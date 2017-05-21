@@ -72,6 +72,8 @@ public class CalculatorFacadeTest {
 	@Test
 	public void testChanged() {
 		CalculatorFacade calculator = new CalculatorFacade();
+		calculator.setSchema(new EdmOaiPmhXmlSchema());
+		calculator.enableFieldExtractor(false);
 
 		assertFalse(calculator.isTfIdfMeasurementEnabled());
 		calculator.configure();

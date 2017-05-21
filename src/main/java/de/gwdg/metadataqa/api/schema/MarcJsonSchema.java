@@ -311,6 +311,8 @@ public class MarcJsonSchema implements Schema, ProblemCatalogSchema, Serializabl
 		registerDatafieldBranch("987", "a", "b", "c", "d", "e", "f"); // ???
 		registerDatafieldBranch("994", "a", "b");
 
+		extractableFields.put("recordId", "$.controlfield[?(@.tag == '001')].content");
+		/*
 		extractableFields.put("leader", "$.leader");
 		extractableFields.put("recordId", "$.controlfield[?(@.tag == '001')].content");
 		extractableFields.put("007", "$.controlfield[?(@.tag == '007')].content");
@@ -332,6 +334,7 @@ public class MarcJsonSchema implements Schema, ProblemCatalogSchema, Serializabl
 		extractableFields.put("490$v", createDatafieldPath("490", "v"));
 		extractableFields.put("773$g", createDatafieldPath("773", "g"));
 		extractableFields.put("773$v", createDatafieldPath("773", "v"));
+		*/
 
 	}
 

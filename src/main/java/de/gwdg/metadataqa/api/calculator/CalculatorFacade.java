@@ -31,6 +31,7 @@ public class CalculatorFacade implements Serializable {
 
 	private static final Logger logger = Logger.getLogger(CalculatorFacade.class.getCanonicalName());
 
+	protected boolean fieldExtractorEnabled = false;
 	/**
 	 * Flag whether or not run the field existence measurement
 	 * (default: true)
@@ -156,8 +157,12 @@ public class CalculatorFacade implements Serializable {
 	 */
 	public void configure() {
 		calculators = new ArrayList<>();
-		fieldExtractor = new FieldExtractor();
 		// EdmSchema schema = new EdmOaiPmhXmlSchema();
+		
+		if (fieldExtractorEnabled) {
+			fieldExtractor = new FieldExtractor(schema);
+			calculators.add(fieldExtractor);
+		}
 
 		if (completenessMeasurementEnabled) {
 			completenessCalculator = new CompletenessCalculator(schema);
@@ -235,6 +240,14 @@ public class CalculatorFacade implements Serializable {
 		}
 
 		return StringUtils.join(items, ",");
+	}
+
+	public void enableFieldExtractor(boolean flag) {
+		this.fieldExtractorEnabled = flag;
+	}
+
+	public boolean isFieldExtractorEnabled() {
+		return fieldExtractorEnabled;
 	}
 
 	/**
