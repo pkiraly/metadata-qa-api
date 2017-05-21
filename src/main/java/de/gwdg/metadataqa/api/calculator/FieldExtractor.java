@@ -34,8 +34,6 @@ public class FieldExtractor implements Calculator, Serializable {
 
 	public FieldExtractor(Schema schema) {
 		this.schema = schema;
-		System.err.println("FIELD_NAME: " + FIELD_NAME);
-		System.err.println("ExtractableFields: " + schema.getExtractableFields());
 		setIdPath(schema.getExtractableFields().get(FIELD_NAME));
 	}
 
@@ -52,7 +50,6 @@ public class FieldExtractor implements Calculator, Serializable {
 	public void measure(JsonPathCache cache)
 			throws InvalidJsonException {
 		resultMap = new FieldCounter<>();
-		System.err.println("getIdPath(): " + getIdPath());
 		String recordId = ((List<XmlFieldInstance>)cache.get(getIdPath())).get(0).getValue();
 		cache.setRecordId(recordId);
 		resultMap.put(FIELD_NAME, recordId);
@@ -76,7 +73,6 @@ public class FieldExtractor implements Calculator, Serializable {
 	}
 
 	public String getIdPath() {
-		System.err.println("idPath: " + idPath);
 		return idPath;
 	}
 
