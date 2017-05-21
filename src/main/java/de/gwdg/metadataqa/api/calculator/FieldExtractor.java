@@ -56,7 +56,7 @@ public class FieldExtractor implements Calculator, Serializable {
 			resultMap.put(FIELD_NAME, "");
 			return;
 		}
-		String recordId = instances.get(0).getValue();
+		String recordId = instances.get(0).getValue().trim();
 		cache.setRecordId(recordId);
 		resultMap.put(FIELD_NAME, recordId);
 		if (schema != null) {
