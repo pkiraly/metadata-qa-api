@@ -24,11 +24,13 @@ public class JsonPathCache<T extends XmlFieldInstance> {
 
 	private final Object jsonDocument;
 	private String recordId;
+	private String jsonString;
 	private final Map<String, List<T>> cache = new HashMap<>();
 	private final Map<String, Object> fragmentCache = new HashMap<>();
 	private JsonProvider jsonProvider = Configuration.defaultConfiguration().jsonProvider();
 
 	public JsonPathCache(String jsonString) throws InvalidJsonException {
+		this.jsonString = jsonString;
 		this.jsonDocument = jsonProvider.parse(jsonString);
 	}
 
@@ -104,5 +106,9 @@ public class JsonPathCache<T extends XmlFieldInstance> {
 
 	public Map<String, Object> getFragmentCache() {
 		return fragmentCache;
+	}
+
+	public String getJsonString() {
+		return jsonString;
 	}
 }

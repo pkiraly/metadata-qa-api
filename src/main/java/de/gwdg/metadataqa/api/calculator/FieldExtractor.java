@@ -50,7 +50,13 @@ public class FieldExtractor implements Calculator, Serializable {
 	public void measure(JsonPathCache cache)
 			throws InvalidJsonException {
 		resultMap = new FieldCounter<>();
-		String recordId = ((List<XmlFieldInstance>)cache.get(getIdPath())).get(0).getValue();
+		List<XmlFieldInstance> instances = cache.get(getIdPath());
+		if (instances == null || instances.size() == 0) {
+			logger.severe("No record ID in " + cache.getJsonString());
+			resultMap.put(FIELD_NAME, "");
+			return;
+		}
+		String recordId = instances.get(0).getValue();
 		cache.setRecordId(recordId);
 		resultMap.put(FIELD_NAME, recordId);
 		if (schema != null) {
