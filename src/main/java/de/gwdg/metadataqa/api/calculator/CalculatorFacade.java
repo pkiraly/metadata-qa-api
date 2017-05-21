@@ -159,7 +159,7 @@ public class CalculatorFacade implements Serializable {
 		logger.info("configure()");
 		calculators = new ArrayList<>();
 		// EdmSchema schema = new EdmOaiPmhXmlSchema();
-		
+
 		if (fieldExtractorEnabled) {
 			fieldExtractor = new FieldExtractor(schema);
 			calculators.add(fieldExtractor);
@@ -168,6 +168,8 @@ public class CalculatorFacade implements Serializable {
 		if (completenessMeasurementEnabled) {
 			completenessCalculator = new CompletenessCalculator(schema);
 			completenessCalculator.collectFields(completenessCollectFields);
+			completenessCalculator.setExistence(fieldExistenceMeasurementEnabled);
+			completenessCalculator.setCardinality(fieldCardinalityMeasurementEnabled);
 			calculators.add(completenessCalculator);
 		}
 
