@@ -4,3 +4,6 @@ jdk:
   - oraclejdk8
 
 install: mvn clean install -Ptravis
+
+after_success:
+  - mvn clean cobertura:cobertura coveralls:report
