@@ -22,3 +22,6 @@ for (String jsonRecord : jsonRecords) {
 ```
 
 For the usage and implementation of the API see https://github.com/pkiraly/europeana-qa-api.
+
+[![Build Status](https://travis-ci.org/pkiraly/metadata-qa-api.svg?branch=master)](https://travis-ci.org/pkiraly/metadata-qa-api)
+[![Coverage Status](https://coveralls.io/repos/github/pkiraly/metadata-qa-api/badge.svg?branch=master)](https://coveralls.io/github/pkiraly/metadata-qa-api?branch=master)
