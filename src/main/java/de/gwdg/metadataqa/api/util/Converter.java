@@ -77,7 +77,7 @@ public class Converter {
 		} else if (value instanceof String) {
 			text = (String)value;
 		} else if (value instanceof List) {
-			text = StringUtils.join(value, ", ");
+			text = StringUtils.join(((List)value), ", ");
 		} else {
 			throw new InvalidParameterException("Object has an unhandled type: " + value.getClass().getCanonicalName() + " " + value);
 		}

@@ -1,0 +1,529 @@
+{
+  "leader":"02341cam a2200505   4500",
+  "controlfield":[
+    {
+      "tag":"001",
+      "content":"000003999"
+    },
+    {
+      "tag":"003",
+      "content":"DE-576"
+    },
+    {
+      "tag":"005",
+      "content":"20130328130004.0"
+    },
+    {
+      "tag":"007",
+      "content":"tu"
+    },
+    {
+      "tag":"008",
+      "content":"850101s1924    xx             00 0 ger c"
+    }
+  ],
+  "datafield":[
+    {
+      "tag":"016",
+      "ind1":" ",
+      "ind2":" ",
+      "subfield":[
+        {
+          "code":"a",
+          "content":"(OCoLC)20908784"
+        }
+      ]
+    },
+    {
+      "tag":"035",
+      "ind1":" ",
+      "ind2":" ",
+      "subfield":[
+        {
+          "code":"a",
+          "content":"(DE-599)BSZ000003999"
+        }
+      ]
+    },
+    {
+      "tag":"040",
+      "ind1":" ",
+      "ind2":" ",
+      "subfield":[
+        {
+          "code":"a",
+          "content":"DE-576"
+        },
+        {
+          "code":"b",
+          "content":"ger"
+        },
+        {
+          "code":"c",
+          "content":"DE-576"
+        },
+        {
+          "code":"e",
+          "content":"rakwb"
+        }
+      ]
+    },
+    {
+      "tag":"041",
+      "ind1":"0",
+      "ind2":" ",
+      "subfield":[
+        {
+          "code":"a",
+          "content":"ger"
+        }
+      ]
+    },
+    {
+      "tag":"041",
+      "ind1":"0",
+      "ind2":"7",
+      "subfield":[
+        {
+          "code":"a",
+          "content":"dt."
+        }
+      ]
+    },
+    {
+      "tag":"082",
+      "ind1":"0",
+      "ind2":" ",
+      "subfield":[
+        {
+          "code":"a",
+          "content":"335.5"
+        }
+      ]
+    },
+    {
+      "tag":"084",
+      "ind1":" ",
+      "ind2":" ",
+      "subfield":[
+        {
+          "code":"a",
+          "content":"QV 100"
+        },
+        {
+          "code":"2",
+          "content":"rvk"
+        }
+      ]
+    },
+    {
+      "tag":"084",
+      "ind1":" ",
+      "ind2":" ",
+      "subfield":[
+        {
+          "code":"a",
+          "content":"NK 6805"
+        },
+        {
+          "code":"2",
+          "content":"rvk"
+        }
+      ]
+    },
+    {
+      "tag":"084",
+      "ind1":" ",
+      "ind2":" ",
+      "subfield":[
+        {
+          "code":"a",
+          "content":"NW 8300"
+        },
+        {
+          "code":"2",
+          "content":"rvk"
+        }
+      ]
+    },
+    {
+      "tag":"084",
+      "ind1":" ",
+      "ind2":" ",
+      "subfield":[
+        {
+          "code":"a",
+          "content":"1"
+        },
+        {
+          "code":"2",
+          "content":"ssgn"
+        }
+      ]
+    },
+    {
+      "tag":"100",
+      "ind1":"1",
+      "ind2":" ",
+      "subfield":[
+        {
+          "code":"a",
+          "content":"Quarck, Max"
+        },
+        {
+          "code":"d",
+          "content":"1860 - 1930"
+        },
+        {
+          "code":"0",
+          "content":"(DE-588)119067072"
+        },
+        {
+          "code":"0",
+          "content":"(DE-576)162634978"
+        }
+      ]
+    },
+    {
+      "tag":"245",
+      "ind1":"1",
+      "ind2":"4",
+      "subfield":[
+        {
+          "code":"a",
+          "content":"Die Erste deutsche Arbeiterbewegung :"
+        },
+        {
+          "code":"b",
+          "content":"Geschichte der Arbeiterverbru\u0308derung 1848\/49; ein Beitrag zur Theorie und Praxis des Marxismus \/"
+        },
+        {
+          "code":"c",
+          "content":"von Max Quarck"
+        }
+      ]
+    },
+    {
+      "tag":"246",
+      "ind1":"3",
+      "ind2":"0",
+      "subfield":[
+        {
+          "code":"a",
+          "content":"1.  1848\/1849"
+        }
+      ]
+    },
+    {
+      "tag":"260",
+      "ind1":" ",
+      "ind2":" ",
+      "subfield":[
+        {
+          "code":"a",
+          "content":"Leipzig :"
+        },
+        {
+          "code":"b",
+          "content":"Hirschfeld,"
+        },
+        {
+          "code":"c",
+          "content":"1924"
+        }
+      ]
+    },
+    {
+      "tag":"300",
+      "ind1":" ",
+      "ind2":" ",
+      "subfield":[
+        {
+          "code":"a",
+          "content":"VI, 400 S. :"
+        },
+        {
+          "code":"b",
+          "content":"Ill."
+        }
+      ]
+    },
+    {
+      "tag":"500",
+      "ind1":" ",
+      "ind2":" ",
+      "subfield":[
+        {
+          "code":"a",
+          "content":"In Fraktur."
+        }
+      ]
+    },
+    {
+      "tag":"591",
+      "ind1":" ",
+      "ind2":" ",
+      "subfield":[
+        {
+          "code":"a",
+          "content":"5090 maschinell aus a\u0308hnlichen Titelaufnahmen erga\u0308nzt"
+        }
+      ]
+    },
+    {
+      "tag":"935",
+      "ind1":" ",
+      "ind2":" ",
+      "subfield":[
+        {
+          "code":"a",
+          "content":"mteo"
+        }
+      ]
+    },
+    {
+      "tag":"935",
+      "ind1":" ",
+      "ind2":" ",
+      "subfield":[
+        {
+          "code":"b",
+          "content":"druck"
+        }
+      ]
+    },
+    {
+      "tag":"936",
+      "ind1":"r",
+      "ind2":"v",
+      "subfield":[
+        {
+          "code":"a",
+          "content":"QV 100"
+        },
+        {
+          "code":"b",
+          "content":"Geschichte"
+        },
+        {
+          "code":"k",
+          "content":"Wirtschaftswissenschaften"
+        },
+        {
+          "code":"k",
+          "content":"Arbeitnehmerfragen (Labor Economics)"
+        },
+        {
+          "code":"k",
+          "content":"Geschichte"
+        }
+      ]
+    },
+    {
+      "tag":"936",
+      "ind1":"r",
+      "ind2":"v",
+      "subfield":[
+        {
+          "code":"a",
+          "content":"NK 6805"
+        },
+        {
+          "code":"b",
+          "content":"Fru\u0308he Vereinigungen, Vorla\u0308ufer"
+        },
+        {
+          "code":"k",
+          "content":"Geschichte"
+        },
+        {
+          "code":"k",
+          "content":"Weltgeschichte, Darstellungen Allgemeine Geschichte einzelner Staaten und Vo\u0308lker Teilgebiete der Geschichte, Sammelwerke"
+        },
+        {
+          "code":"k",
+          "content":"Teilgebiete der Geschichte"
+        },
+        {
+          "code":"k",
+          "content":"Geschichte der politischen und sozialen Ideen und Bewegungen und der politischen Parteien"
+        },
+        {
+          "code":"k",
+          "content":"Parteiengeschichte von Sozialismus und Kommunismus"
+        },
+        {
+          "code":"k",
+          "content":"Fru\u0308he Vereinigungen, Vorla\u0308ufer"
+        }
+      ]
+    },
+    {
+      "tag":"936",
+      "ind1":"r",
+      "ind2":"v",
+      "subfield":[
+        {
+          "code":"a",
+          "content":"NW 8300"
+        },
+        {
+          "code":"b",
+          "content":"Arbeiter (einschl. Streiks)"
+        },
+        {
+          "code":"k",
+          "content":"Geschichte"
+        },
+        {
+          "code":"k",
+          "content":"Wirtschafts- und Sozialgeschichte"
+        },
+        {
+          "code":"k",
+          "content":"Spezielle Sozialgeschichte"
+        },
+        {
+          "code":"k",
+          "content":"Einzelne Sta\u0308nde und Gesellschaftsgruppen"
+        },
+        {
+          "code":"k",
+          "content":"Arbeiter (einschl. Streiks)"
+        }
+      ]
+    },
+    {
+      "tag":"924",
+      "ind1":"1",
+      "ind2":" ",
+      "subfield":[
+        {
+          "code":"b",
+          "content":"DE-21"
+        }
+      ]
+    },
+    {
+      "tag":"924",
+      "ind1":"1",
+      "ind2":" ",
+      "subfield":[
+        {
+          "code":"b",
+          "content":"DE-21-31"
+        }
+      ]
+    },
+    {
+      "tag":"924",
+      "ind1":"1",
+      "ind2":" ",
+      "subfield":[
+        {
+          "code":"b",
+          "content":"DE-25"
+        }
+      ]
+    },
+    {
+      "tag":"924",
+      "ind1":"1",
+      "ind2":" ",
+      "subfield":[
+        {
+          "code":"b",
+          "content":"DE-291-313"
+        }
+      ]
+    },
+    {
+      "tag":"924",
+      "ind1":"1",
+      "ind2":" ",
+      "subfield":[
+        {
+          "code":"b",
+          "content":"DE-14"
+        }
+      ]
+    },
+    {
+      "tag":"924",
+      "ind1":"1",
+      "ind2":" ",
+      "subfield":[
+        {
+          "code":"b",
+          "content":"DE-352"
+        }
+      ]
+    },
+    {
+      "tag":"924",
+      "ind1":"1",
+      "ind2":" ",
+      "subfield":[
+        {
+          "code":"b",
+          "content":"DE-24"
+        }
+      ]
+    },
+    {
+      "tag":"924",
+      "ind1":"1",
+      "ind2":" ",
+      "subfield":[
+        {
+          "code":"b",
+          "content":"DE-24"
+        }
+      ]
+    },
+    {
+      "tag":"924",
+      "ind1":"1",
+      "ind2":" ",
+      "subfield":[
+        {
+          "code":"b",
+          "content":"DE-180"
+        }
+      ]
+    },
+    {
+      "tag":"924",
+      "ind1":"1",
+      "ind2":" ",
+      "subfield":[
+        {
+          "code":"b",
+          "content":"DE-15"
+        }
+      ]
+    },
+    {
+      "tag":"924",
+      "ind1":"1",
+      "ind2":" ",
+      "subfield":[
+        {
+          "code":"b",
+          "content":"DE-16-160"
+        }
+      ]
+    },
+    {
+      "tag":"924",
+      "ind1":"1",
+      "ind2":" ",
+      "subfield":[
+        {
+          "code":"b",
+          "content":"DE-90"
+        }
+      ]
+    }
+  ]
+}

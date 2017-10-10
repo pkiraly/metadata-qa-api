@@ -20,12 +20,14 @@ public class FileUtils {
 
 	public static List<String> readLines(String fileName)
 			throws URISyntaxException, IOException {
-		// classLoader.
+		return Files.readAllLines(getPath(fileName), Charset.defaultCharset());
+	}
+
+	public static Path getPath(String fileName) throws IOException, URISyntaxException {
 		URL url = classLoader.getResource(fileName);
 		if (url == null)
 			throw new IOException(String.format("File %s in not available", fileName));
-		Path path = Paths.get(url.toURI());
-		return Files.readAllLines(path, Charset.defaultCharset());
+		return Paths.get(url.toURI());
 	}
 
 	public static String readFirstLine(String fileName)

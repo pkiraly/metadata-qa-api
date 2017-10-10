@@ -67,7 +67,7 @@ public class FieldExtractor implements Calculator, Serializable {
 					List<XmlFieldInstance> values = (List<XmlFieldInstance>) cache.get(path);
 					String value = null;
 					if (values == null || values.isEmpty() || values.size() == 0 || values.get(0) == null || values.get(0).getValue() == null) {
-						logger.warning("Null value in field: " + fieldName + " (" + path + ")");
+						// logger.warning("Null value in field: " + fieldName + " (" + path + ")");
 						value = null;
 					} else {
 						value = values.get(0).getValue();

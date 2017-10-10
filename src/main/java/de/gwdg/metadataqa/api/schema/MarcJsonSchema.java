@@ -302,7 +302,8 @@ public class MarcJsonSchema implements Schema, ProblemCatalogSchema, Serializabl
 		registerDatafieldBranch("887", "2", "a");
 		registerDatafieldBranch("889", "w"); // ???
 
-		registerDatafieldBranch("912", "a", "b");
+		registerDatafieldBranch("911", "a", "b", "9"); // OCLC
+		registerDatafieldBranch("912", "a", "b", "9"); // OCLC
 		registerDatafieldBranch("924", "9", "a", "b", "c", "d", "e", "g", "h", "i", "j", "k", "l", "m", "n", "q", "r", "s", "v", "w", "x", "y", "z");
 		registerDatafieldBranch("935", "a", "b", "c", "d", "e", "m");
 		registerDatafieldBranch("936", "0", "a", "b", "c", "d", "e", "f", "g", "h", "j", "k", "m", "q", "y");
@@ -311,29 +312,44 @@ public class MarcJsonSchema implements Schema, ProblemCatalogSchema, Serializabl
 		registerDatafieldBranch("987", "a", "b", "c", "d", "e", "f"); // ???
 		registerDatafieldBranch("994", "a", "b");
 
-		extractableFields.put("recordId", "$.controlfield[?(@.tag == '001')].content");
-		/*
 		extractableFields.put("leader", "$.leader");
 		extractableFields.put("recordId", "$.controlfield[?(@.tag == '001')].content");
+		extractableFields.put("001",  paths.get("001").getJsonPath());
 		extractableFields.put("007", "$.controlfield[?(@.tag == '007')].content");
 		extractableFields.put("008", "$.controlfield[?(@.tag == '008')].content");
-		extractableFields.put("035$a", createDatafieldPath("035", "a"));
-		extractableFields.put("245$a", createDatafieldPath("245", "a"));
-		extractableFields.put("100$a", createDatafieldPath("100", "a"));
-		extractableFields.put("110$a", createDatafieldPath("110", "a"));
-		extractableFields.put("700$a", createDatafieldPath("700", "a"));
-		extractableFields.put("710$a", createDatafieldPath("710", "a"));
-		extractableFields.put("260$c", createDatafieldPath("260", "c"));
 		extractableFields.put("020$a", createDatafieldPath("020", "a"));
 		extractableFields.put("028$a", createDatafieldPath("028", "a"));
-		extractableFields.put("260$b", createDatafieldPath("260", "b"));
+		extractableFields.put("035$a", createDatafieldPath("035", "a"));
+		extractableFields.put("100$a", createDatafieldPath("100", "a"));
+		extractableFields.put("110$a", createDatafieldPath("110", "a"));
+		extractableFields.put("245$a", createDatafieldPath("245", "a"));
 		extractableFields.put("245$n", createDatafieldPath("245", "n"));
 		extractableFields.put("245$p", createDatafieldPath("245", "p"));
-		extractableFields.put("300$a", createDatafieldPath("300", "a"));
 		extractableFields.put("254$a", createDatafieldPath("254", "a"));
+		extractableFields.put("260$a", createDatafieldPath("260", "a"));
+		extractableFields.put("260$b", createDatafieldPath("260", "b"));
+		extractableFields.put("260$c", createDatafieldPath("260", "c"));
+		extractableFields.put("300$a", createDatafieldPath("300", "a"));
 		extractableFields.put("490$v", createDatafieldPath("490", "v"));
+		extractableFields.put("700$a", createDatafieldPath("700", "a"));
+		extractableFields.put("710$a", createDatafieldPath("710", "a"));
 		extractableFields.put("773$g", createDatafieldPath("773", "g"));
 		extractableFields.put("773$v", createDatafieldPath("773", "v"));
+
+		extractableFields.put("029$a", createDatafieldPath("029", "a"));
+		extractableFields.put("029$b", createDatafieldPath("029", "b"));
+		extractableFields.put("040$a", createDatafieldPath("040", "a"));
+		extractableFields.put("040$b", createDatafieldPath("040", "b"));
+		extractableFields.put("040$c", createDatafieldPath("040", "c"));
+		extractableFields.put("040$d", createDatafieldPath("040", "d"));
+		extractableFields.put("650$a", createDatafieldPath("650", "a"));
+		extractableFields.put("650$2", createDatafieldPath("650", "2"));
+
+		extractableFields.put("911$9", createDatafieldPath("911", "9"));
+		extractableFields.put("912$9", createDatafieldPath("911", "9"));
+
+
+		/*
 		*/
 
 	}
@@ -431,6 +447,6 @@ public class MarcJsonSchema implements Schema, ProblemCatalogSchema, Serializabl
 
 	@Override
 	public JsonBranch getPathByLabel(String label) {
-		throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+		return paths.get(label);
 	}
 }

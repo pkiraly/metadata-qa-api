@@ -8,6 +8,8 @@ import com.jayway.jsonpath.InvalidPathException;
 import com.jayway.jsonpath.JsonPath;
 import com.jayway.jsonpath.PathNotFoundException;
 import com.jayway.jsonpath.spi.json.JsonProvider;
+import net.minidev.json.JSONArray;
+
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -26,6 +28,7 @@ public class JsonPathCache<T extends XmlFieldInstance> {
 	private String recordId;
 	private String jsonString;
 	private final Map<String, List<T>> cache = new HashMap<>();
+	private final Map<String, Object> typedCache = new HashMap<>();
 	private final Map<String, Object> fragmentCache = new HashMap<>();
 	private JsonProvider jsonProvider = Configuration.defaultConfiguration().jsonProvider();
 
@@ -38,11 +41,19 @@ public class JsonPathCache<T extends XmlFieldInstance> {
 		this.jsonDocument = jsonDocument;
 	}
 
-	private void set(String address, String jsonPath, Object jsonFragment) {
+	private void set(String address, String jsonPath, Object jsonFragment, Class clazz) {
 		List<T> instances = null;
 		Object value = read(jsonPath, jsonFragment);
 		if (value != null) {
-			instances = (List<T>) JsonUtils.extractFieldInstanceList(value, recordId, jsonPath);
+			if (clazz == null) {
+				instances = (List<T>) JsonUtils.extractFieldInstanceList(value, recordId, jsonPath);
+			} else {
+				if (value instanceof JSONArray) {
+					typedCache.put(address, clazz.cast(((JSONArray)value).get(0)));
+				} else {
+					typedCache.put(address, value);
+				}
+			}
 		}
 		cache.put(address, instances);
 	}
@@ -66,12 +77,23 @@ public class JsonPathCache<T extends XmlFieldInstance> {
 	}
 
 	public List<T> get(String jsonPath) {
-		return get(jsonPath, jsonPath, null);
+		return get(jsonPath, jsonPath, null, null);
+	}
+
+	public <E> E get(String jsonPath, Class clazz) {
+		if (!typedCache.containsKey(jsonPath)) {
+			set(jsonPath, jsonPath, null, clazz);
+		}
+		return (E)typedCache.get(jsonPath);
 	}
 
 	public List<T> get(String address, String jsonPath, Object jsonFragment) {
+		return get(address, jsonPath, jsonFragment,null);
+	}
+
+	public List<T> get(String address, String jsonPath, Object jsonFragment, Class clazz) {
 		if (!cache.containsKey(address)) {
-			set(address, jsonPath, jsonFragment);
+			set(address, jsonPath, jsonFragment, clazz);
 		}
 		return cache.get(address);
 	}
@@ -85,6 +107,24 @@ public class JsonPathCache<T extends XmlFieldInstance> {
 			jsonFragment = fragmentCache.get(jsonPath);
 		}
 		return jsonFragment;
+	}
+
+	/**
+	 * Get a JSON fragment from cache
+	 * @param address - a unique address for cahce
+	 * @param jsonPath - a JSON path expression
+	 * @param jsonFragment - a JSON fragment in which the path should be searched for
+	 * @return
+	 */
+	public Object getFragment(String address, String jsonPath, Object jsonFragment) {
+		Object jsonFragment2 = null;
+		if (!fragmentCache.containsKey(address)) {
+			jsonFragment2 = read(jsonPath, jsonFragment);
+			fragmentCache.put(address, jsonFragment2);
+		} else {
+			jsonFragment2 = fragmentCache.get(address);
+		}
+		return jsonFragment2;
 	}
 
 	/**
