@@ -17,7 +17,7 @@ public class MarcJsonSchema implements Schema, ProblemCatalogSchema, Serializabl
 	private final static Map<String, JsonBranch> paths = new LinkedHashMap<>();
 	private final static Map<String, JsonBranch> collectionPaths = new LinkedHashMap<>();
 	private final static Map<String, JsonBranch> directChildren = new LinkedHashMap<>();
-	private final static Map<String, String> extractableFields = new LinkedHashMap<>();
+	private static Map<String, String> extractableFields = new LinkedHashMap<>();
 
 	public static final String DATAFIELD_PATTERN = "$.datafield[?(@.tag == '%s')].subfield[?(@.code == '%s')].content";
 	public static final String DATAFIELD_PARENT_PATTERN = "$.datafield[?(@.tag == '%s')]";
@@ -415,6 +415,11 @@ public class MarcJsonSchema implements Schema, ProblemCatalogSchema, Serializabl
 	@Override
 	public Map<String, String> getExtractableFields() {
 		return extractableFields;
+	}
+
+	@Override
+	public void setExtractableFields(Map<String, String> extractableFields) {
+		this.extractableFields = extractableFields;
 	}
 
 	private static void addPath(JsonBranch branch) {

@@ -55,4 +55,6 @@ public interface Schema {
 
 	Map<String, String> getExtractableFields();
 
+	void setExtractableFields(Map<String, String> extractableFields);
+
 }

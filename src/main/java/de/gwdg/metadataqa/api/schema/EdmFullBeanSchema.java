@@ -20,7 +20,7 @@ public class EdmFullBeanSchema extends EdmSchema implements Serializable {
 	private final static List<FieldGroup> fieldGroups = new ArrayList<>();
 	private final static List<String> noLanguageFields = new ArrayList<>();
 	private final static Map<String, String> solrFields = new LinkedHashMap<>();
-	private final static Map<String, String> extractableFields = new LinkedHashMap<>();
+	private static Map<String, String> extractableFields = new LinkedHashMap<>();
 	private final static List<String> emptyStrings = new ArrayList<>();
 	// private final static Map<String, JsonBranch> paths = new LinkedHashMap<>();
 	private final static Map<String, JsonBranch> collectionPaths = new LinkedHashMap<>();
@@ -340,6 +340,11 @@ public class EdmFullBeanSchema extends EdmSchema implements Serializable {
 	@Override
 	public Map<String, String> getExtractableFields() {
 		return extractableFields;
+	}
+
+	@Override
+	public void setExtractableFields(Map<String, String> extractableFields) {
+		this.extractableFields = extractableFields;
 	}
 
 	@Override
