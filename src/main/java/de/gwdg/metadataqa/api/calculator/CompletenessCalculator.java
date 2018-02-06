@@ -80,7 +80,7 @@ public class CompletenessCalculator<T extends XmlFieldInstance> implements Calcu
 				  ? skippedEntryChecker.getSkippableCollectionIds(cache)
 				  : new ArrayList<>();
 
-		if (schema.getCollectionPaths().isEmpty()) {
+		if (schema.getCollectionPaths() == null || schema.getCollectionPaths().isEmpty()) {
 			for (JsonBranch jsonBranch : schema.getPaths()) {
 				evaluateJsonBranch(jsonBranch, cache, completenessCounter,
 						  jsonBranch.getLabel(), null);
@@ -117,15 +117,17 @@ public class CompletenessCalculator<T extends XmlFieldInstance> implements Calcu
 			}
 		}
 
-		for (FieldGroup fieldGroup : schema.getFieldGroups()) {
-			boolean existing = false;
-			for (String field : fieldGroup.getFields()) {
-				if (existenceCounter.get(field) == true) {
-					existing = true;
-					break;
+		if (schema.getFieldGroups() != null) {
+			for (FieldGroup fieldGroup : schema.getFieldGroups()) {
+				boolean existing = false;
+				for (String field : fieldGroup.getFields()) {
+					if (existenceCounter.get(field) == true) {
+						existing = true;
+						break;
+					}
 				}
+				completenessCounter.increaseInstance(fieldGroup.getCategory(), existing);
 			}
-			completenessCounter.increaseInstance(fieldGroup.getCategory(), existing);
 		}
 	}
 

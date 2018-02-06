@@ -93,6 +93,8 @@ public class JsonUtils {
 			}
 		} else if (value.getClass() == LinkedHashMap.class) {
 			extracted.add(hashToFieldInstance(value, recordId, jsonPath));
+		} else if (value.getClass() == Integer.class) {
+			extracted.add(new EdmFieldInstance(Integer.toString((int)value)));
 		} else {
 			logger.severe(String.format(
 					  "Unhandled object type: %s, [record ID: %s, path: %s]",
