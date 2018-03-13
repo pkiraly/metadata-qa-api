@@ -85,7 +85,7 @@ public class LanguageCalculator implements Calculator, Serializable {
 						Object jsonFragment = jsonFragments.get(i);
 						for (JsonBranch child : collection.getChildren()) {
 							if (!schema.getNoLanguageFields().contains(child.getLabel())) {
-								String address = String.format("%s/%d/%s", 
+								String address = String.format("%s/%d/%s",
 									collection.getJsonPath(), i, child.getJsonPath());
 								extractLanguageTags(jsonFragment, child, address, cache, languageMap, rawLanguageMap);
 							}

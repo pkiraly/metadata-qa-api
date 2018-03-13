@@ -507,6 +507,14 @@ public class CalculatorFacade implements Serializable {
 		return results;
 	}
 
+	public String getCsv(boolean withLabels, CompressionLevel compressionLevel) {
+		List<String> results = new ArrayList<>();
+		for (Calculator calculator : calculators) {
+			results.add(calculator.getCsv(withLabels, compressionLevel));
+		}
+		return StringUtils.join(results, ",");
+	}
+
 	public void configureSolr(String solrHost, String solrPort, String solrPath) {
 		if (this.tfidfCalculator != null)
 			this.tfidfCalculator.setSolr(solrHost, solrPort, solrPath);
