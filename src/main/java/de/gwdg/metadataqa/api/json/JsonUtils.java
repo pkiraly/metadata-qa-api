@@ -72,6 +72,8 @@ public class JsonUtils {
 
 			for (int i = 0, l = outerArray.size(); i < l; i++) {
 				Object outerVal = outerArray.get(i);
+				if (outerVal == null)
+					continue;
 				if (outerVal.getClass() == String.class) {
 					extracted.add(new EdmFieldInstance((String) outerVal));
 				} else if (outerVal.getClass() == Boolean.class) {
