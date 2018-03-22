@@ -86,7 +86,7 @@ public class AbbreviationManager implements Serializable {
 	public void processLine(String line, int i, boolean parse) throws NumberFormatException {
 		if (parse && line.contains(";")) {
 			String[] parts = line.split(";", 2);
-			data.put(parts[1], Integer.parseInt(parts[0]));
+			data.put(parts[1].replace("\\n", "\n"), Integer.parseInt(parts[0]));
 		} else {
 			data.put(line, i++);
 		}
@@ -122,6 +122,17 @@ public class AbbreviationManager implements Serializable {
 		}
 	}
 
+	public String searchById(Integer id) {
+		if (data.containsValue(id)) {
+			for (String key : data.keySet()) {
+				if (data.get(key).equals(id))
+					return key;
+			}
+		}
+
+		return null;
+	}
+
 	/**
 	 * A get a java.nio.file.Path object from a file name.
 	 * @param fileName The file name
@@ -153,5 +164,4 @@ public class AbbreviationManager implements Serializable {
 	public Map<String, Integer> getData() {
 		return data;
 	}
-
 }
