@@ -97,6 +97,12 @@ public class JsonUtils {
 			extracted.add(hashToFieldInstance(value, recordId, jsonPath));
 		} else if (value.getClass() == Integer.class) {
 			extracted.add(new EdmFieldInstance(Integer.toString((int)value)));
+		} else if (value.getClass() == Double.class) {
+			extracted.add(new EdmFieldInstance(Double.toString((double)value)));
+		} else if (value.getClass() == Boolean.class) {
+			extracted.add(new EdmFieldInstance(Boolean.toString((boolean)value)));
+		} else if (value.getClass() == java.math.BigDecimal.class) {
+			extracted.add(new EdmFieldInstance(((BigDecimal)value).toString()));
 		} else {
 			logger.severe(String.format(
 					  "Unhandled object type: %s, [record ID: %s, path: %s]",
