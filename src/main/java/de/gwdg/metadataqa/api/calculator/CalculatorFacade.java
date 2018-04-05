@@ -235,7 +235,6 @@ public class CalculatorFacade implements Serializable {
 
 		List<String> items = new ArrayList<>();
 		for (Calculator calculator : getCalculators()) {
-			logger.info(calculator.getCalculatorName());
 			calculator.measure(cache);
 			items.add(calculator.getCsv(false, compressionLevel));
 		}
