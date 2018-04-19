@@ -6,6 +6,7 @@ import de.gwdg.metadataqa.api.schema.Schema;
 
 import java.io.Serializable;
 import java.util.*;
+import java.util.logging.Logger;
 
 /**
  * Extracts TF-IDF information from Apache Solr
@@ -13,6 +14,7 @@ import java.util.*;
  */
 public class UniquenessExtractor implements Serializable {
 
+	private static final Logger logger = Logger.getLogger(UniquenessExtractor.class.getCanonicalName());
 	private static final JsonProvider jsonProvider = Configuration.defaultConfiguration().jsonProvider();
 	private Schema schema;
 
@@ -40,6 +42,8 @@ public class UniquenessExtractor implements Serializable {
 			if (documentMap.containsKey("response")) {
 				Map response = (LinkedHashMap) documentMap.get("response");
 				numFound = (int) response.get("numFound");
+			} else {
+				logger.severe("No 'response' part in Solr response: " + jsonString);
 			}
 		} else {
 			System.err.println(">>" + document + "<<");
