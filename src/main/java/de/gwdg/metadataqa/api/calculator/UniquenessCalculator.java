@@ -152,6 +152,8 @@ public class UniquenessCalculator implements Calculator, Serializable {
 			method.releaseConnection();
 		}
 
+		logger.info(jsonString);
+
 		return jsonString;
 	}
 
