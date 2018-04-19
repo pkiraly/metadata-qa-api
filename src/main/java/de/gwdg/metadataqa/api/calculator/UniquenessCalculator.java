@@ -117,6 +117,9 @@ public class UniquenessCalculator implements Calculator, Serializable {
 	private String getSolrSearchResponse(String solrField, String value) {
 		String jsonString = null;
 
+		logger.info(getSolrSearchPattern());
+		logger.info(solrField);
+		logger.info(value);
 		String url = String.format(getSolrSearchPattern(), solrField, value);
 		logger.info(url);
 		// String url = String.format(getSolrSearchPattern(), solrField, value).replace("\"", "%22");
