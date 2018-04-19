@@ -1,6 +1,8 @@
 package de.gwdg.metadataqa.api.uniqueness;
 
-public class UniquenessField {
+import java.io.Serializable;
+
+public class UniquenessField implements Serializable {
 	String label;
 	String solrField;
 	String jsonPath;
