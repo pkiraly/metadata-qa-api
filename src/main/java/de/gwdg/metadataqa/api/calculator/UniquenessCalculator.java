@@ -88,7 +88,6 @@ public class UniquenessCalculator implements Calculator, Serializable {
 	@Override
 	public void measure(JsonPathCache cache) {
 		String recordId = cache.getRecordId();
-		logger.info(cache.getJsonString());
 		if (recordId.startsWith("/"))
 			recordId = recordId.substring(1);
 
