@@ -295,9 +295,9 @@ public class EdmFullBeanSchema extends EdmSchema implements Serializable {
 			"Concept", "Concept/rdf:about"
 		));
 
-		solrFields.put("dc:title", "dc_title_txt");
-		solrFields.put("dcterms:alternative", "dcterms_alternative_txt");
-		solrFields.put("dc:description", "dc_description_txt");
+		solrFields.put("Proxy/dc:title", "dc_title_txt");
+		solrFields.put("Proxy/dcterms:alternative", "dcterms_alternative_txt");
+		solrFields.put("Proxy/dc:description", "dc_description_txt");
 
 		extractableFields.put("recordId", "$.identifier");
 		extractableFields.put("dataset", "$.sets[0]");
