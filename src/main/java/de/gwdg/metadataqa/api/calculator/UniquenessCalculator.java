@@ -153,6 +153,8 @@ public class UniquenessCalculator implements Calculator, Serializable {
 			byte[] responseBody = baos.toByteArray();
 
 			jsonString = new String(responseBody, Charset.forName("UTF-8"));
+		} catch (IllegalStateException e) {
+			logger.severe("Illegal State Exception: " + e.getMessage());
 		} catch (HttpException e) {
 			logger.severe("Fatal protocol violation: " + e.getMessage());
 		} catch (IOException e) {
