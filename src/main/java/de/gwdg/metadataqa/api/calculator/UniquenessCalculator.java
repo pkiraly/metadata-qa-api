@@ -53,7 +53,7 @@ public class UniquenessCalculator implements Calculator, Serializable {
 	private static final String SOLR_SEARCH_ALL_PARAMS = "select/?q=%s:%s&rows=0";
 	private static final String SOLR_SEARCH_PARAMS = "select/?q=%s:%%22%s%%22&rows=0";
 
-	private static final HttpClient httpClient = new HttpClient();
+	private static HttpClient httpClient = new HttpClient();
 	private FieldCounter<Double> resultMap;
 	private Schema schema;
 
@@ -142,6 +142,8 @@ public class UniquenessCalculator implements Calculator, Serializable {
 		HttpMethodParams params = new HttpMethodParams();
 		params.setIntParameter(HttpMethodParams.BUFFER_WARN_TRIGGER_LIMIT, 1024 * 1024);
 		method.setParams(params);
+		if (httpClient == null)
+			httpClient = new HttpClient();
 		try {
 			int statusCode = httpClient.executeMethod(method);
 			if (statusCode != HttpStatus.SC_OK) {
