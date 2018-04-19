@@ -47,7 +47,7 @@ public class UniquenessCalculator implements Calculator, Serializable {
 	private Map<String, String> label2Path = new HashMap<>();
 	private List<UniquenessField> solrFields;
 
-	private static final String SOLR_SEARCH_PARAMS = "select/?q=%s:%22%s%22&rows=0";
+	private static final String SOLR_SEARCH_PARAMS = "select/?q=%s:%%22%s%%22&rows=0";
 
 	private static final HttpClient httpClient = new HttpClient();
 	private FieldCounter<Double> resultMap;
