@@ -37,8 +37,10 @@ public class UniquenessExtractor implements Serializable {
 		Object document = jsonProvider.parse(jsonString);
 		if (document instanceof LinkedHashMap) {
 			Map documentMap = (LinkedHashMap)document;
-			Map response = (LinkedHashMap)documentMap.get("response");
-			numFound = (int)response.get("numFound");
+			if (documentMap.containsKey("response")) {
+				Map response = (LinkedHashMap) documentMap.get("response");
+				numFound = (int) response.get("numFound");
+			}
 		} else {
 			System.err.println(">>" + document + "<<");
 			System.err.println(document.getClass());
