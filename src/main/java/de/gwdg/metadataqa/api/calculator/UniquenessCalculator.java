@@ -128,7 +128,7 @@ public class UniquenessCalculator implements Calculator, Serializable {
 			url = String.format(getSolrSearchAllPattern(), solrField, value);
 		} else {
 			try {
-				value = value.replace("\"", "\\\\\"");
+				value = value.replace("\"", "\\\"");
 				String encodedValue = URLEncoder.encode(value, "UTF-8");
 				url = String.format(getSolrSearchPattern(), solrField, encodedValue);
 			} catch (UnsupportedEncodingException e) {
