@@ -93,11 +93,13 @@ public class UniquenessCalculator implements Calculator, Serializable {
 		for (UniquenessField solrField : solrFields) {
 			List<XmlFieldInstance> values = cache.get(solrField.getJsonPath());
 			List<Integer> numbers = new ArrayList<>();
-			for (XmlFieldInstance fieldInstance : values) {
-				String value = fieldInstance.getValue();
-				if (StringUtils.isNotBlank(value)) {
-					String solrResponse = getSolrSearchResponse(solrField.getSolrField(), value);
-					numbers.add(extractor.extractNumFound(solrResponse, recordId));
+			if (values != null) {
+				for (XmlFieldInstance fieldInstance : values) {
+					String value = fieldInstance.getValue();
+					if (StringUtils.isNotBlank(value)) {
+						String solrResponse = getSolrSearchResponse(solrField.getSolrField(), value);
+						numbers.add(extractor.extractNumFound(solrResponse, recordId));
+					}
 				}
 			}
 			Double result = 0.0;
