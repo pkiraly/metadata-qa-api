@@ -3,6 +3,7 @@ package de.gwdg.metadataqa.api.uniqueness;
 import com.jayway.jsonpath.Configuration;
 import com.jayway.jsonpath.spi.json.JsonProvider;
 import de.gwdg.metadataqa.api.schema.Schema;
+import org.apache.commons.lang3.StringUtils;
 
 import java.io.Serializable;
 import java.util.*;
@@ -36,6 +37,9 @@ public class UniquenessExtractor implements Serializable {
 		 */
 	public Integer extractNumFound(String jsonString, String recordId) {
 		int numFound = 0;
+		if (StringUtils.isBlank(jsonString))
+			return numFound;
+
 		Object document = jsonProvider.parse(jsonString);
 		if (document instanceof LinkedHashMap) {
 			Map documentMap = (LinkedHashMap)document;
