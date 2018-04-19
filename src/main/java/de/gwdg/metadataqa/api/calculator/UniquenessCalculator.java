@@ -47,6 +47,7 @@ public class UniquenessCalculator implements Calculator, Serializable {
 	private Map<String, String> label2Path = new HashMap<>();
 	private List<UniquenessField> solrFields;
 
+	private static final String SOLR_SEARCH_ALL_PARAMS = "select/?q=%s:%s&rows=0";
 	private static final String SOLR_SEARCH_PARAMS = "select/?q=%s:%%22%s%%22&rows=0";
 
 	private static final HttpClient httpClient = new HttpClient();
@@ -117,10 +118,15 @@ public class UniquenessCalculator implements Calculator, Serializable {
 	private String getSolrSearchResponse(String solrField, String value) {
 		String jsonString = null;
 
-		logger.info(getSolrSearchPattern());
-		logger.info(solrField);
-		logger.info(value);
-		String url = String.format(getSolrSearchPattern(), solrField, value);
+		String url;
+		if (value.equals("*")) {
+			url = String.format(getSolrSearchAllPattern(), solrField, value);
+		} else {
+			logger.info(getSolrSearchPattern());
+			logger.info(solrField);
+			logger.info(value);
+			url = String.format(getSolrSearchPattern(), solrField, value);
+		}
 		logger.info(url);
 		// String url = String.format(getSolrSearchPattern(), solrField, value).replace("\"", "%22");
 		HttpMethod method = new GetMethod(url);
@@ -218,7 +224,18 @@ public class UniquenessCalculator implements Calculator, Serializable {
 
 	public String getSolrSearchPattern() {
 		if (solrSearchPattern == null) {
-			this.solrSearchPattern = String.format("%s/%s", getSolrBasePath(), SOLR_SEARCH_PARAMS);
+			this.solrSearchPattern = String.format(
+				"%s/%s", getSolrBasePath(), SOLR_SEARCH_PARAMS
+			);
+		}
+		return this.solrSearchPattern;
+	}
+
+	public String getSolrSearchAllPattern() {
+		if (solrSearchPattern == null) {
+			this.solrSearchPattern = String.format(
+				"%s/%s", getSolrBasePath(), SOLR_SEARCH_ALL_PARAMS
+			);
 		}
 		return this.solrSearchPattern;
 	}
