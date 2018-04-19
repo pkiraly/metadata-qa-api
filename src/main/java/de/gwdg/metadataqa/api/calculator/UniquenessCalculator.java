@@ -43,6 +43,7 @@ public class UniquenessCalculator implements Calculator, Serializable {
 	private String solrPath;
 	private String solrBasePath;
 	private String solrSearchPattern;
+	private String solrSearchAllPattern;
 	private UniquenessExtractor extractor;
 	private Map<String, String> label2Path = new HashMap<>();
 	private List<UniquenessField> solrFields;
@@ -238,11 +239,11 @@ public class UniquenessCalculator implements Calculator, Serializable {
 	}
 
 	public String getSolrSearchAllPattern() {
-		if (solrSearchPattern == null) {
-			this.solrSearchPattern = String.format(
+		if (solrSearchAllPattern == null) {
+			this.solrSearchAllPattern = String.format(
 				"%s/%s", getSolrBasePath(), SOLR_SEARCH_ALL_PARAMS
 			);
 		}
-		return this.solrSearchPattern;
+		return this.solrSearchAllPattern;
 	}
 }
