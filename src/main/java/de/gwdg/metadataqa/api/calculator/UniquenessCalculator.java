@@ -20,6 +20,8 @@ import org.apache.commons.lang3.StringUtils;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.Serializable;
+import java.io.UnsupportedEncodingException;
+import java.net.URLEncoder;
 import java.nio.charset.Charset;
 import java.util.*;
 import java.util.logging.Logger;
@@ -130,7 +132,13 @@ public class UniquenessCalculator implements Calculator, Serializable {
 			logger.info(getSolrSearchPattern());
 			logger.info(solrField);
 			logger.info(value);
-			url = String.format(getSolrSearchPattern(), solrField, value);
+			try {
+				String encodedValue = URLEncoder.encode(value, "UTF-8");
+				url = String.format(getSolrSearchPattern(), solrField, encodedValue);
+			} catch (UnsupportedEncodingException e) {
+				e.printStackTrace();
+				url = String.format(getSolrSearchPattern(), solrField, value);
+			}
 		}
 		logger.info(url);
 		// String url = String.format(getSolrSearchPattern(), solrField, value).replace("\"", "%22");
