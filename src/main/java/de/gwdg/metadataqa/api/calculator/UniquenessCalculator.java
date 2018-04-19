@@ -70,7 +70,7 @@ public class UniquenessCalculator implements Calculator, Serializable {
 			field.setSolrField(solrField);
 
 			String solrResponse = getSolrSearchResponse(solrField, "*");
-			int numFound = extractor.extractNumFound(label, "total");
+			int numFound = extractor.extractNumFound(solrResponse, "total");
 			field.setTotal(numFound);
 
 			solrFields.add(field);
