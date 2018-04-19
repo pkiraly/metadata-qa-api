@@ -1,11 +1,9 @@
 package de.gwdg.metadataqa.api.uniqueness;
 
 import com.jayway.jsonpath.Configuration;
-import com.jayway.jsonpath.JsonPath;
 import com.jayway.jsonpath.spi.json.JsonProvider;
 import de.gwdg.metadataqa.api.counter.FieldCounter;
 import de.gwdg.metadataqa.api.schema.Schema;
-import de.gwdg.metadataqa.api.util.Converter;
 
 import java.util.*;
 
@@ -35,10 +33,16 @@ public class UniquenessExtractor {
 		 *    Sums and average of TF-IDF value
 		 */
 	public Integer extractNumFound(String jsonString, String recordId) {
-		FieldCounter<Double> results = new FieldCounter<>();
-		Map document = (LinkedHashMap)jsonProvider.parse(jsonString);
-		Map response = (LinkedHashMap)document.get("response");
-		int numFound = (int)response.get("numFound");
+		int numFound = 0;
+		Object document = jsonProvider.parse(jsonString);
+		if (document instanceof LinkedHashMap) {
+			Map documentMap = (LinkedHashMap)document;
+			Map response = (LinkedHashMap)documentMap.get("response");
+			numFound = (int)response.get("numFound");
+		} else {
+			System.err.println(document);
+			System.err.println(document.getClass());
+		}
 
 		return numFound;
 	}
