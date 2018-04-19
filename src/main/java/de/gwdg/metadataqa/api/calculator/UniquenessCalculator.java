@@ -91,6 +91,7 @@ public class UniquenessCalculator implements Calculator, Serializable {
 
 		resultMap = new FieldCounter<>();
 		for (UniquenessField solrField : solrFields) {
+			logger.info(solrField.getJsonPath());
 			List<XmlFieldInstance> values = cache.get(solrField.getJsonPath());
 			List<Integer> numbers = new ArrayList<>();
 			if (values != null) {
