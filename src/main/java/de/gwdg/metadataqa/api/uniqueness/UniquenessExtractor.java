@@ -2,16 +2,16 @@ package de.gwdg.metadataqa.api.uniqueness;
 
 import com.jayway.jsonpath.Configuration;
 import com.jayway.jsonpath.spi.json.JsonProvider;
-import de.gwdg.metadataqa.api.counter.FieldCounter;
 import de.gwdg.metadataqa.api.schema.Schema;
 
+import java.io.Serializable;
 import java.util.*;
 
 /**
  * Extracts TF-IDF information from Apache Solr
  * @author Péter Király <peter.kiraly at gwdg.de>
  */
-public class UniquenessExtractor {
+public class UniquenessExtractor implements Serializable {
 
 	private static final JsonProvider jsonProvider = Configuration.defaultConfiguration().jsonProvider();
 	private Schema schema;
@@ -40,7 +40,7 @@ public class UniquenessExtractor {
 			Map response = (LinkedHashMap)documentMap.get("response");
 			numFound = (int)response.get("numFound");
 		} else {
-			System.err.println(document);
+			System.err.println(">>" + document + "<<");
 			System.err.println(document.getClass());
 		}
 
