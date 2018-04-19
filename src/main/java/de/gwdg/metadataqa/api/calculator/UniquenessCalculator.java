@@ -63,7 +63,7 @@ public class UniquenessCalculator implements Calculator, Serializable {
 		solrFields = new ArrayList<>();
 		for (String label : this.schema.getSolrFields().keySet()) {
 			UniquenessField field = new UniquenessField(label);
-			field.setJsonPath(schema.getPathByLabel(label).getAbsoluteJsonPath());
+			field.setJsonPath(schema.getPathByLabel(label).getAbsoluteJsonPath().replace("[*]", ""));
 			logger.info(field.getJsonPath());
 			String solrField = schema.getSolrFields().get(label);
 			if (solrField.endsWith("_txt"))
