@@ -67,7 +67,6 @@ public class UniquenessCalculator implements Calculator, Serializable {
 		for (String label : this.schema.getSolrFields().keySet()) {
 			UniquenessField field = new UniquenessField(label);
 			field.setJsonPath(schema.getPathByLabel(label).getAbsoluteJsonPath().replace("[*]", ""));
-			logger.info(field.getJsonPath());
 			String solrField = schema.getSolrFields().get(label);
 			if (solrField.endsWith("_txt"))
 				solrField = solrField.substring(0, solrField.length() - 4) + "_ss";
@@ -95,7 +94,7 @@ public class UniquenessCalculator implements Calculator, Serializable {
 
 		resultMap = new FieldCounter<>();
 		for (UniquenessField solrField : solrFields) {
-			logger.info(solrField.getJsonPath());
+			// logger.info(solrField.getJsonPath());
 			List<XmlFieldInstance> values = cache.get(solrField.getJsonPath());
 			List<Integer> numbers = new ArrayList<>();
 			if (values != null) {
@@ -129,9 +128,6 @@ public class UniquenessCalculator implements Calculator, Serializable {
 		if (value.equals("*")) {
 			url = String.format(getSolrSearchAllPattern(), solrField, value);
 		} else {
-			logger.info(getSolrSearchPattern());
-			logger.info(solrField);
-			logger.info(value);
 			try {
 				String encodedValue = URLEncoder.encode(value, "UTF-8");
 				url = String.format(getSolrSearchPattern(), solrField, encodedValue);
@@ -140,7 +136,7 @@ public class UniquenessCalculator implements Calculator, Serializable {
 				url = String.format(getSolrSearchPattern(), solrField, value);
 			}
 		}
-		logger.info(url);
+		// logger.info(url);
 		// String url = String.format(getSolrSearchPattern(), solrField, value).replace("\"", "%22");
 		HttpMethod method = new GetMethod(url);
 		HttpMethodParams params = new HttpMethodParams();

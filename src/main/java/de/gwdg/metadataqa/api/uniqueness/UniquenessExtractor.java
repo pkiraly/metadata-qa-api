@@ -34,8 +34,6 @@ public class UniquenessExtractor implements Serializable {
 		 */
 	public Integer extractNumFound(String jsonString, String recordId) {
 		int numFound = 0;
-		System.err.println("jsonString:");
-		System.err.println(jsonString);
 		Object document = jsonProvider.parse(jsonString);
 		if (document instanceof LinkedHashMap) {
 			Map documentMap = (LinkedHashMap)document;
