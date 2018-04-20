@@ -130,44 +130,6 @@ public class UniquenessCalculator implements Calculator, Serializable {
 		return jsonString;
 	}
 
-	private String getSolrSearchResponse(String solrField, String value) {
-		String jsonString = null;
-
-		String url = buildUrl(solrField, value);
-		// logger.info(url);
-		// String url = String.format(getSolrSearchPattern(), solrField, value).replace("\"", "%22");
-		HttpMethod method = new GetMethod(url);
-		HttpMethodParams params = new HttpMethodParams();
-		params.setIntParameter(HttpMethodParams.BUFFER_WARN_TRIGGER_LIMIT, TRIGGER_LIMIT);
-		method.setParams(params);
-		if (httpClient == null)
-			httpClient = new HttpClient();
-		try {
-			int statusCode = httpClient.executeMethod(method);
-			if (statusCode != HttpStatus.SC_OK) {
-				logger.severe("Method failed: " + method.getStatusLine());
-			}
-
-			ByteArrayOutputStream baos = new ByteArrayOutputStream();
-			if (method.getResponseBodyAsStream() != null) {
-				IOUtils.copy(method.getResponseBodyAsStream(), baos);
-				byte[] responseBody = baos.toByteArray();
-				jsonString = new String(responseBody, Charset.forName("UTF-8"));
-			}
-
-		} catch (IllegalStateException e) {
-			logger.severe("Illegal State Exception: " + e.getMessage());
-		} catch (HttpException e) {
-			logger.severe("Fatal protocol violation: " + e.getMessage());
-		} catch (IOException e) {
-			logger.severe("Fatal transport error: " + e.getMessage());
-		} finally {
-			method.releaseConnection();
-		}
-
-		return jsonString;
-	}
-
 	private String buildUrl(String solrField, String value) {
 		String url;
 		if (value.equals("*")) {
@@ -203,7 +165,11 @@ public class UniquenessCalculator implements Calculator, Serializable {
 						InputStream in = new BufferedInputStream(urlConnection.getInputStream());
 						record = readStream(in);
 					} else {
-						logger.severe(String.format("%s: %s returned %d", solrField, value, urlConnection.getResponseCode()));
+						logger.severe(String.format("%s: %s returned %d",
+							solrField,
+							(value.length() < 100 ? value : value.substring(100) + "..."),
+							urlConnection.getResponseCode()
+						));
 					}
 				} catch (IOException e) {
 					e.printStackTrace();
