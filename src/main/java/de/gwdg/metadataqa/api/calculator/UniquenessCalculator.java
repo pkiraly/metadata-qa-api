@@ -17,10 +17,10 @@ import org.apache.commons.httpclient.params.HttpMethodParams;
 import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang3.StringUtils;
 
-import java.io.ByteArrayOutputStream;
-import java.io.IOException;
-import java.io.Serializable;
-import java.io.UnsupportedEncodingException;
+import java.io.*;
+import java.net.HttpURLConnection;
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.net.URLEncoder;
 import java.nio.charset.Charset;
 import java.util.*;
@@ -39,6 +39,8 @@ public class UniquenessCalculator implements Calculator, Serializable {
 	private final static String SOLR_HOST = "localhost";
 	private final static String SOLR_PORT = "8983";
 	private final static String SOLR_PATH = "solr/europeana";
+	private final static Integer TRIGGER_LIMIT = 1024 * 1024;
+	private final String USER_AGENT = "Custom Java application";
 
 	private String solrHost;
 	private String solrPort;
@@ -100,7 +102,7 @@ public class UniquenessCalculator implements Calculator, Serializable {
 				for (XmlFieldInstance fieldInstance : values) {
 					String value = fieldInstance.getValue();
 					if (StringUtils.isNotBlank(value)) {
-						String solrResponse = getSolrSearchResponse(solrField.getSolrField(), value);
+						String solrResponse = getSolrSearchResponse2(solrField.getSolrField(), value);
 						numbers.add(extractor.extractNumFound(solrResponse, recordId));
 					}
 				}
@@ -120,9 +122,53 @@ public class UniquenessCalculator implements Calculator, Serializable {
 		}
 	}
 
+	private String getSolrSearchResponse2(String solrField, String value) {
+		String jsonString = null;
+
+		String url = buildUrl(solrField, value);
+		jsonString = connect(url);
+		return jsonString;
+	}
+
 	private String getSolrSearchResponse(String solrField, String value) {
 		String jsonString = null;
 
+		String url = buildUrl(solrField, value);
+		// logger.info(url);
+		// String url = String.format(getSolrSearchPattern(), solrField, value).replace("\"", "%22");
+		HttpMethod method = new GetMethod(url);
+		HttpMethodParams params = new HttpMethodParams();
+		params.setIntParameter(HttpMethodParams.BUFFER_WARN_TRIGGER_LIMIT, TRIGGER_LIMIT);
+		method.setParams(params);
+		if (httpClient == null)
+			httpClient = new HttpClient();
+		try {
+			int statusCode = httpClient.executeMethod(method);
+			if (statusCode != HttpStatus.SC_OK) {
+				logger.severe("Method failed: " + method.getStatusLine());
+			}
+
+			ByteArrayOutputStream baos = new ByteArrayOutputStream();
+			if (method.getResponseBodyAsStream() != null) {
+				IOUtils.copy(method.getResponseBodyAsStream(), baos);
+				byte[] responseBody = baos.toByteArray();
+				jsonString = new String(responseBody, Charset.forName("UTF-8"));
+			}
+
+		} catch (IllegalStateException e) {
+			logger.severe("Illegal State Exception: " + e.getMessage());
+		} catch (HttpException e) {
+			logger.severe("Fatal protocol violation: " + e.getMessage());
+		} catch (IOException e) {
+			logger.severe("Fatal transport error: " + e.getMessage());
+		} finally {
+			method.releaseConnection();
+		}
+
+		return jsonString;
+	}
+
+	private String buildUrl(String solrField, String value) {
 		String url;
 		if (value.equals("*")) {
 			url = String.format(getSolrSearchAllPattern(), solrField, value);
@@ -136,36 +182,52 @@ public class UniquenessCalculator implements Calculator, Serializable {
 				url = String.format(getSolrSearchPattern(), solrField, value);
 			}
 		}
-		// logger.info(url);
-		// String url = String.format(getSolrSearchPattern(), solrField, value).replace("\"", "%22");
-		HttpMethod method = new GetMethod(url);
-		HttpMethodParams params = new HttpMethodParams();
-		params.setIntParameter(HttpMethodParams.BUFFER_WARN_TRIGGER_LIMIT, 1024 * 1024);
-		method.setParams(params);
-		if (httpClient == null)
-			httpClient = new HttpClient();
+		return url;
+	}
+
+	private String connect(String url) {
+
+		URL fragmentPostUrl = null;
+		String record = null;
 		try {
-			int statusCode = httpClient.executeMethod(method);
-			if (statusCode != HttpStatus.SC_OK) {
-				logger.severe("Method failed: " + method.getStatusLine());
+			fragmentPostUrl = new URL(url);
+			HttpURLConnection urlConnection = null;
+			try {
+				urlConnection = (HttpURLConnection) fragmentPostUrl.openConnection();
+				urlConnection.setRequestMethod("GET");
+				urlConnection.setRequestProperty("User-Agent", USER_AGENT);
+				urlConnection.setRequestProperty("Accept-Language", "en-US,en;q=0.5");
+				urlConnection.setDoOutput(true);
+				try {
+					InputStream in = new BufferedInputStream(urlConnection.getInputStream());
+					record = readStream(in);
+				} catch (IOException e) {
+					e.printStackTrace();
+				}
+			} catch (IOException e) {
+				e.printStackTrace();
+			} finally {
+				if (urlConnection != null)
+					urlConnection.disconnect();
 			}
-
-			ByteArrayOutputStream baos = new ByteArrayOutputStream();
-			IOUtils.copy(method.getResponseBodyAsStream(), baos);
-			byte[] responseBody = baos.toByteArray();
-
-			jsonString = new String(responseBody, Charset.forName("UTF-8"));
-		} catch (IllegalStateException e) {
-			logger.severe("Illegal State Exception: " + e.getMessage());
-		} catch (HttpException e) {
-			logger.severe("Fatal protocol violation: " + e.getMessage());
-		} catch (IOException e) {
-			logger.severe("Fatal transport error: " + e.getMessage());
-		} finally {
-			method.releaseConnection();
+		} catch (MalformedURLException e) {
+			e.printStackTrace();
 		}
 
-		return jsonString;
+		// add request header
+		return record;
+	}
+
+	private String readStream(InputStream in) throws IOException {
+		BufferedReader rd = new BufferedReader(new InputStreamReader(in));
+
+		StringBuffer result = new StringBuffer();
+		String line = "";
+		while ((line = rd.readLine()) != null) {
+			result.append(line);
+		}
+
+		return result.toString();
 	}
 
 	@Override
