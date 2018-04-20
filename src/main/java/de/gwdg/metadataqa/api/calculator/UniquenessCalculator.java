@@ -126,7 +126,7 @@ public class UniquenessCalculator implements Calculator, Serializable {
 		String jsonString = null;
 
 		String url = buildUrl(solrField, value);
-		jsonString = connect(url);
+		jsonString = connect(url, solrField, value);
 		return jsonString;
 	}
 
@@ -185,7 +185,7 @@ public class UniquenessCalculator implements Calculator, Serializable {
 		return url;
 	}
 
-	private String connect(String url) {
+	private String connect(String url, String solrField, String value) {
 
 		URL fragmentPostUrl = null;
 		String record = null;
@@ -199,8 +199,12 @@ public class UniquenessCalculator implements Calculator, Serializable {
 				urlConnection.setRequestProperty("Accept-Language", "en-US,en;q=0.5");
 				urlConnection.setDoOutput(true);
 				try {
-					InputStream in = new BufferedInputStream(urlConnection.getInputStream());
-					record = readStream(in);
+					if (urlConnection.getResponseCode() == 200) {
+						InputStream in = new BufferedInputStream(urlConnection.getInputStream());
+						record = readStream(in);
+					} else {
+						logger.severe(String.format("%s: %s returned %d", solrField, value, urlConnection.getResponseCode()));
+					}
 				} catch (IOException e) {
 					e.printStackTrace();
 				}
