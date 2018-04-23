@@ -9,12 +9,6 @@ import de.gwdg.metadataqa.api.uniqueness.UniquenessExtractor;
 import de.gwdg.metadataqa.api.uniqueness.UniquenessField;
 import de.gwdg.metadataqa.api.util.CompressionLevel;
 import org.apache.commons.httpclient.HttpClient;
-import org.apache.commons.httpclient.HttpException;
-import org.apache.commons.httpclient.HttpMethod;
-import org.apache.commons.httpclient.HttpStatus;
-import org.apache.commons.httpclient.methods.GetMethod;
-import org.apache.commons.httpclient.params.HttpMethodParams;
-import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang3.StringUtils;
 
 import java.io.*;
@@ -22,7 +16,6 @@ import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLEncoder;
-import java.nio.charset.Charset;
 import java.util.*;
 import java.util.logging.Logger;
 
@@ -39,8 +32,8 @@ public class UniquenessCalculator implements Calculator, Serializable {
 	private final static String SOLR_HOST = "localhost";
 	private final static String SOLR_PORT = "8983";
 	private final static String SOLR_PATH = "solr/europeana";
-	private final static Integer TRIGGER_LIMIT = 1024 * 1024;
 	private final String USER_AGENT = "Custom Java application";
+	private final int VALUE_LIMIT = 100;
 
 	private String solrHost;
 	private String solrPort;
@@ -49,7 +42,6 @@ public class UniquenessCalculator implements Calculator, Serializable {
 	private String solrSearchPattern;
 	private String solrSearchAllPattern;
 	private UniquenessExtractor extractor;
-	private Map<String, String> label2Path = new HashMap<>();
 	private List<UniquenessField> solrFields;
 
 	private static final String SOLR_SEARCH_ALL_PARAMS = "select/?q=%s:%s&rows=0";
@@ -74,7 +66,7 @@ public class UniquenessCalculator implements Calculator, Serializable {
 				solrField = solrField.substring(0, solrField.length() - 4) + "_ss";
 			field.setSolrField(solrField);
 
-			String solrResponse = getSolrSearchResponse2(solrField, "*");
+			String solrResponse = getSolrSearchResponse(solrField, "*");
 			int numFound = extractor.extractNumFound(solrResponse, "total");
 			field.setTotal(numFound);
 
@@ -97,32 +89,23 @@ public class UniquenessCalculator implements Calculator, Serializable {
 		for (UniquenessField solrField : solrFields) {
 			// logger.info(solrField.getJsonPath());
 			List<XmlFieldInstance> values = cache.get(solrField.getJsonPath());
-			List<Integer> numbers = new ArrayList<>();
+			List<Double> numbers = new ArrayList<>();
 			if (values != null) {
 				for (XmlFieldInstance fieldInstance : values) {
 					String value = fieldInstance.getValue();
 					if (StringUtils.isNotBlank(value)) {
-						String solrResponse = getSolrSearchResponse2(solrField.getSolrField(), value);
-						numbers.add(extractor.extractNumFound(solrResponse, recordId));
+						String solrResponse = getSolrSearchResponse(solrField.getSolrField(), value);
+						int actual = extractor.extractNumFound(solrResponse, recordId);
+						double score = calculateScore(solrField.getTotal(), actual);
+						numbers.add(score);
 					}
 				}
 			}
-			Double result = 0.0;
-			if (!numbers.isEmpty()) {
-				if (numbers.size() == 1) {
-					result = (double)numbers.get(0);
-				} else {
-					double total = 0;
-					for (int number : numbers)
-						total += number;
-					result = total / numbers.size();
-				}
-			}
-			resultMap.put(solrField.getSolrField(), result);
+			resultMap.put(solrField.getSolrField(), getAverage(numbers));
 		}
 	}
 
-	private String getSolrSearchResponse2(String solrField, String value) {
+	private String getSolrSearchResponse(String solrField, String value) {
 		String jsonString = null;
 
 		String url = buildUrl(solrField, value);
@@ -167,7 +150,7 @@ public class UniquenessCalculator implements Calculator, Serializable {
 					} else {
 						logger.severe(String.format("%s: %s returned %d",
 							solrField,
-							(value.length() < 100 ? value : value.substring(100) + "..."),
+							(value.length() < VALUE_LIMIT ? value : value.substring(0, VALUE_LIMIT) + "..."),
 							urlConnection.getResponseCode()
 						));
 					}
@@ -284,4 +267,24 @@ public class UniquenessCalculator implements Calculator, Serializable {
 		}
 		return this.solrSearchAllPattern;
 	}
+
+	public double calculateScore(double total, double actual) {
+		return Math.log(1 + (total - actual + 0.5) / (actual + 0.5));
+	}
+
+	private Double getAverage(List<Double> numbers) {
+		Double result = 0.0;
+		if (!numbers.isEmpty()) {
+			if (numbers.size() == 1) {
+				result = numbers.get(0);
+			} else {
+				double total = 0;
+				for (double number : numbers)
+					total += number;
+				result = total / numbers.size();
+			}
+		}
+		return result;
+	}
+
 }
