@@ -148,10 +148,11 @@ public class UniquenessCalculator implements Calculator, Serializable {
 						InputStream in = new BufferedInputStream(urlConnection.getInputStream());
 						record = readStream(in);
 					} else {
-						logger.severe(String.format("%s: %s returned %d",
+						logger.severe(String.format("%s: %s returned code %d. Solr responde: %s",
 							solrField,
 							(value.length() < VALUE_LIMIT ? value : value.substring(0, VALUE_LIMIT) + "..."),
-							urlConnection.getResponseCode()
+							urlConnection.getResponseCode(),
+							readStream(new BufferedInputStream(urlConnection.getInputStream()))
 						));
 					}
 				} catch (IOException e) {
