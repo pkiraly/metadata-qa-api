@@ -7,6 +7,7 @@ public class UniquenessField implements Serializable {
 	String solrField;
 	String jsonPath;
 	int total;
+	double scoreForUniqueValue;
 
 	public UniquenessField(String label) {
 		this.label = label;
@@ -34,5 +35,13 @@ public class UniquenessField implements Serializable {
 
 	public void setTotal(int total) {
 		this.total = total;
+	}
+
+	public void setScoreForUniqueValue(double scoreForUniqueValue) {
+		this.scoreForUniqueValue = scoreForUniqueValue;
+	}
+
+	public double getScoreForUniqueValue() {
+		return scoreForUniqueValue;
 	}
 }
