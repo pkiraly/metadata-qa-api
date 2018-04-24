@@ -98,7 +98,7 @@ public class UniquenessCalculator implements Calculator, Serializable {
 					if (StringUtils.isNotBlank(value)) {
 						String solrResponse = getSolrSearchResponse(solrField.getSolrField(), value);
 						int count = extractor.extractNumFound(solrResponse, recordId);
-						double score = calculateScore(solrField.getTotal(), count) / solrField.getScoreForUniqueValue();
+						double score = Math.pow((calculateScore(solrField.getTotal(), count) / solrField.getScoreForUniqueValue()), 3.0);
 						logger.info(String.format("%d/%d -> %f", count, solrField.getTotal(), score));
 
 						counts.add((double)count);
