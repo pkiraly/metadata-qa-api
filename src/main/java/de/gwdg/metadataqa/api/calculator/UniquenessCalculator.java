@@ -33,7 +33,7 @@ public class UniquenessCalculator implements Calculator, Serializable {
 	private final static String SOLR_PORT = "8983";
 	private final static String SOLR_PATH = "solr/europeana";
 	private final String USER_AGENT = "Custom Java application";
-	private final int VALUE_LIMIT = 100;
+	private final int VALUE_LIMIT = 50;
 
 	private String solrHost;
 	private String solrPort;
@@ -90,18 +90,21 @@ public class UniquenessCalculator implements Calculator, Serializable {
 			// logger.info(solrField.getJsonPath());
 			List<XmlFieldInstance> values = cache.get(solrField.getJsonPath());
 			List<Double> numbers = new ArrayList<>();
+			List<Double> counts = new ArrayList<>();
 			if (values != null) {
 				for (XmlFieldInstance fieldInstance : values) {
 					String value = fieldInstance.getValue();
 					if (StringUtils.isNotBlank(value)) {
 						String solrResponse = getSolrSearchResponse(solrField.getSolrField(), value);
-						int actual = extractor.extractNumFound(solrResponse, recordId);
-						double score = calculateScore(solrField.getTotal(), actual);
+						int count = extractor.extractNumFound(solrResponse, recordId);
+						double score = calculateScore(solrField.getTotal(), count);
+						counts.add((double)count);
 						numbers.add(score);
 					}
 				}
 			}
-			resultMap.put(solrField.getSolrField(), getAverage(numbers));
+			resultMap.put(solrField.getSolrField() + "/count", getAverage(counts));
+			resultMap.put(solrField.getSolrField() + "/score", getAverage(numbers));
 		}
 	}
 
@@ -206,7 +209,8 @@ public class UniquenessCalculator implements Calculator, Serializable {
 	public List<String> getHeader() {
 		List<String> headers = new ArrayList<>();
 		for (UniquenessField field : solrFields) {
-			headers.add(field.getSolrField());
+			headers.add(field.getSolrField() + "/count");
+			headers.add(field.getSolrField() + "/score");
 		}
 		return headers;
 	}
@@ -271,7 +275,9 @@ public class UniquenessCalculator implements Calculator, Serializable {
 	}
 
 	public double calculateScore(double total, double actual) {
-		return Math.log(1 + (total - actual + 0.5) / (actual + 0.5));
+		double score = Math.log(1 + (total - actual + 0.5) / (actual + 0.5));
+		logger.info(String.format("%f/%f -> %s", actual, total, score));
+		return score;
 	}
 
 	private Double getAverage(List<Double> numbers) {
