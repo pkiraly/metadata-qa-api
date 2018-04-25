@@ -111,6 +111,14 @@ public class UniquenessCalculator implements Calculator, Serializable {
 		}
 	}
 
+	private String getTotals() {
+		List<Integer> totals = new ArrayList<>();
+		for (UniquenessField field : solrFields) {
+			totals.add(field.getTotal());
+		}
+		return StringUtils.join(totals, ",");
+	}
+
 	private String getSolrSearchResponse(String solrField, String value) {
 		String jsonString = null;
 
