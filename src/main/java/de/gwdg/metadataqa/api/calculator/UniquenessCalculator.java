@@ -111,7 +111,7 @@ public class UniquenessCalculator implements Calculator, Serializable {
 		}
 	}
 
-	private String getTotals() {
+	public String getTotals() {
 		List<Integer> totals = new ArrayList<>();
 		for (UniquenessField field : solrFields) {
 			totals.add(field.getTotal());
