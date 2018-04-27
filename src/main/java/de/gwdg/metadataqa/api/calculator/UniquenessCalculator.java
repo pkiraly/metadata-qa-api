@@ -88,7 +88,7 @@ public class UniquenessCalculator implements Calculator, Serializable {
 
 		resultMap = new FieldCounter<>();
 		for (UniquenessField solrField : solrFields) {
-			// logger.info(solrField.getJsonPath());
+			// logger.info(uniquenessField.getJsonPath());
 			UniquenessFieldCalculator fieldCalculator = new UniquenessFieldCalculator(cache, recordId, solrField);
 			fieldCalculator.calculate();
 			resultMap.put(solrField.getSolrField() + "/count", fieldCalculator.getAverageCount());
@@ -278,7 +278,7 @@ public class UniquenessCalculator implements Calculator, Serializable {
 	private class UniquenessFieldCalculator {
 		private JsonPathCache cache;
 		private String recordId;
-		private UniquenessField solrField;
+		private UniquenessField uniquenessField;
 		List<Double> counts = new ArrayList<>();
 		List<Double> scores = new ArrayList<>();
 		double averageCount;
@@ -287,19 +287,21 @@ public class UniquenessCalculator implements Calculator, Serializable {
 		public UniquenessFieldCalculator(JsonPathCache cache, String recordId, UniquenessField solrField) {
 			this.cache = cache;
 			this.recordId = recordId;
-			this.solrField = solrField;
+			this.uniquenessField = solrField;
 		}
 
 		public void calculate() {
-			List<XmlFieldInstance> values = cache.get(solrField.getJsonPath());
+			List<XmlFieldInstance> values = cache.get(uniquenessField.getJsonPath());
 			if (values != null) {
 				for (XmlFieldInstance fieldInstance : values) {
 					String value = fieldInstance.getValue();
 					if (StringUtils.isNotBlank(value)) {
-						String solrResponse = getSolrSearchResponse(solrField.getSolrField(), value);
+						String solrResponse = getSolrSearchResponse(uniquenessField.getSolrField(), value);
 						int count = extractor.extractNumFound(solrResponse, recordId);
-						double score = Math.pow((calculateScore(solrField.getTotal(), count) / solrField.getScoreForUniqueValue()), 3.0);
-						// logger.info(String.format("%d/%d -> %f", count, solrField.getTotal(), score));
+						if (count == 0)
+							logger.severe(solrResponse);
+						double score = Math.pow((calculateScore(uniquenessField.getTotal(), count) / uniquenessField.getScoreForUniqueValue()), 3.0);
+						// logger.info(String.format("%d/%d -> %f", count, uniquenessField.getTotal(), score));
 
 						counts.add((double)count);
 						scores.add(score);
