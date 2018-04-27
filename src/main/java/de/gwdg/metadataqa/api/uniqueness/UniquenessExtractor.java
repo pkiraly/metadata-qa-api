@@ -2,7 +2,6 @@ package de.gwdg.metadataqa.api.uniqueness;
 
 import com.jayway.jsonpath.Configuration;
 import com.jayway.jsonpath.spi.json.JsonProvider;
-import de.gwdg.metadataqa.api.schema.Schema;
 import org.apache.commons.lang3.StringUtils;
 
 import java.io.Serializable;
@@ -17,13 +16,9 @@ public class UniquenessExtractor implements Serializable {
 
 	private static final Logger logger = Logger.getLogger(UniquenessExtractor.class.getCanonicalName());
 	private static final JsonProvider jsonProvider = Configuration.defaultConfiguration().jsonProvider();
-	private Schema schema;
 
-	public UniquenessExtractor(Schema schema) {
-		this.schema = schema;
+	public UniquenessExtractor() {
 	}
-
-	private Map<String, List<TfIdf>> termsCollection;
 
 		/**
 		 * Extracts sums and average of TF-IDF value for the schema's Solr field array
@@ -56,15 +51,4 @@ public class UniquenessExtractor implements Serializable {
 
 		return numFound;
 	}
-
-	/**
-	 * Returns the term collection. The term collection is a map. The keys are the
-	 * field names, the values are the list of TfIdf objects.
-	 * @return 
-	 *    The term collection
-	 */
-	public Map<String, List<TfIdf>> getTermsCollection() {
-		return termsCollection;
-	}
-
 }
