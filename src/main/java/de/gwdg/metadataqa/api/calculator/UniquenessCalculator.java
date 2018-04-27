@@ -106,8 +106,8 @@ public class UniquenessCalculator implements Calculator, Serializable {
 					}
 				}
 			}
-			resultMap.put(solrField.getSolrField() + "/count", getAverage(counts));
-			resultMap.put(solrField.getSolrField() + "/score", getAverage(numbers));
+			resultMap.put(solrField.getSolrField() + "/count", getAverage(counts, recordId));
+			resultMap.put(solrField.getSolrField() + "/score", getAverage(numbers, recordId));
 		}
 	}
 
@@ -290,7 +290,7 @@ public class UniquenessCalculator implements Calculator, Serializable {
 		return score;
 	}
 
-	private Double getAverage(List<Double> numbers) {
+	private Double getAverage(List<Double> numbers, String recordId) {
 		Double result = 0.0;
 		if (!numbers.isEmpty()) {
 			if (numbers.size() == 1) {
@@ -302,6 +302,8 @@ public class UniquenessCalculator implements Calculator, Serializable {
 				result = total / numbers.size();
 			}
 		}
+		if (result < 1.0)
+			logger.severe(String.format("EXTREME AVERAGE at %s: %f <- average of %s", recordId, result, StringUtils.join(numbers, ", ")));
 		return result;
 	}
 
