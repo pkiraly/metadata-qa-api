@@ -303,6 +303,8 @@ public class UniquenessCalculator implements Calculator, Serializable {
 			}
 			if (result < 0.0 || result > 1.0)
 				logger.severe(String.format("EXTREME AVERAGE at %s: %f <- average of %s", recordId, result, StringUtils.join(numbers, ", ")));
+		} else {
+			result = -1.0;
 		}
 		return result;
 	}
