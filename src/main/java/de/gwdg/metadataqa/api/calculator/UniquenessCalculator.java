@@ -89,25 +89,10 @@ public class UniquenessCalculator implements Calculator, Serializable {
 		resultMap = new FieldCounter<>();
 		for (UniquenessField solrField : solrFields) {
 			// logger.info(solrField.getJsonPath());
-			List<XmlFieldInstance> values = cache.get(solrField.getJsonPath());
-			List<Double> numbers = new ArrayList<>();
-			List<Double> counts = new ArrayList<>();
-			if (values != null) {
-				for (XmlFieldInstance fieldInstance : values) {
-					String value = fieldInstance.getValue();
-					if (StringUtils.isNotBlank(value)) {
-						String solrResponse = getSolrSearchResponse(solrField.getSolrField(), value);
-						int count = extractor.extractNumFound(solrResponse, recordId);
-						double score = Math.pow((calculateScore(solrField.getTotal(), count) / solrField.getScoreForUniqueValue()), 3.0);
-						// logger.info(String.format("%d/%d -> %f", count, solrField.getTotal(), score));
-
-						counts.add((double)count);
-						numbers.add(score);
-					}
-				}
-			}
-			resultMap.put(solrField.getSolrField() + "/count", getAverage(counts, recordId, "count"));
-			resultMap.put(solrField.getSolrField() + "/score", getAverage(numbers, recordId, "score"));
+			UniquenessFieldCalculator fieldCalculator = new UniquenessFieldCalculator(cache, recordId, solrField);
+			fieldCalculator.calculate();
+			resultMap.put(solrField.getSolrField() + "/count", fieldCalculator.getAverageCount());
+			resultMap.put(solrField.getSolrField() + "/score", fieldCalculator.getAverageScore());
 		}
 	}
 
@@ -290,21 +275,70 @@ public class UniquenessCalculator implements Calculator, Serializable {
 		return score;
 	}
 
-	private Double getAverage(List<Double> numbers, String recordId, String type) {
-		Double result = 0.0;
-		if (!numbers.isEmpty()) {
-			if (numbers.size() == 1) {
-				result = numbers.get(0);
-			} else {
-				double total = 0;
-				for (double number : numbers)
-					total += number;
-				result = total / numbers.size();
-			}
-			if (type.equals("score") && (result < 0.0 || result > 1.0))
-				logger.severe(String.format("EXTREME AVERAGE at %s: %f <- average of %s", recordId, result, StringUtils.join(numbers, ", ")));
-		}
-		return result;
-	}
+	private class UniquenessFieldCalculator {
+		private JsonPathCache cache;
+		private String recordId;
+		private UniquenessField solrField;
+		List<Double> counts = new ArrayList<>();
+		List<Double> scores = new ArrayList<>();
+		double averageCount;
+		double averageScore;
 
+		public UniquenessFieldCalculator(JsonPathCache cache, String recordId, UniquenessField solrField) {
+			this.cache = cache;
+			this.recordId = recordId;
+			this.solrField = solrField;
+		}
+
+		public void calculate() {
+			List<XmlFieldInstance> values = cache.get(solrField.getJsonPath());
+			if (values != null) {
+				for (XmlFieldInstance fieldInstance : values) {
+					String value = fieldInstance.getValue();
+					if (StringUtils.isNotBlank(value)) {
+						String solrResponse = getSolrSearchResponse(solrField.getSolrField(), value);
+						int count = extractor.extractNumFound(solrResponse, recordId);
+						double score = Math.pow((calculateScore(solrField.getTotal(), count) / solrField.getScoreForUniqueValue()), 3.0);
+						// logger.info(String.format("%d/%d -> %f", count, solrField.getTotal(), score));
+
+						counts.add((double)count);
+						scores.add(score);
+					}
+				}
+			}
+			averageCount = getAverage(counts, recordId, "count");
+			averageScore = getAverage(scores, recordId, "score");
+		}
+
+		private Double getAverage(List<Double> numbers, String recordId, String type) {
+			Double result = 0.0;
+			if (!numbers.isEmpty()) {
+				if (numbers.size() == 1) {
+					result = numbers.get(0);
+				} else {
+					double total = 0;
+					for (double number : numbers)
+						total += number;
+					result = total / numbers.size();
+				}
+				if (type.equals("score") && (result < 0.0 || result > 1.0)) {
+					List<String> pairs = new ArrayList<>();
+					for (int i = 0; i < numbers.size(); i++) {
+						pairs.add(String.format("%d -> %f", counts.get(i), numbers.get(i)));
+					}
+					logger.severe(String.format("EXTREME AVERAGE at %s: %f <- average of %s",
+						recordId, result, StringUtils.join(pairs, ", ")));
+				}
+			}
+			return result;
+		}
+
+		public double getAverageCount() {
+			return averageCount;
+		}
+
+		public double getAverageScore() {
+			return averageScore;
+		}
+	}
 }
