@@ -42,30 +42,28 @@ public class UniquenessExtractorTest {
 	}
 
 	public String readContent(String fileName) throws URISyntaxException, IOException {
-		// Path path = Paths.get(getClass().getClassLoader().getResource(fileName).toURI());
-		// List<String> lines = Files.readAllLines(path, Charset.defaultCharset());
 		return StringUtils.join(FileUtils.readLines(fileName), "");
 	}
 
 	@Test
-	public void hello() throws URISyntaxException, IOException {
+	public void testExtraction() throws URISyntaxException, IOException {
 		JsonProvider jsonProvider = Configuration.defaultConfiguration().jsonProvider();
 		String recordId = "2022320/3F61C612ED9C42CCB85E533B4736795E8BDC7E77";
 		String jsonString = readContent("general/uniqueness-response.json");
 		assertEquals("{", jsonString.substring(0,1));
 
-		UniquenessExtractor extractor = new UniquenessExtractor(new EdmOaiPmhXmlSchema());
+		UniquenessExtractor extractor = new UniquenessExtractor();
 		int numFound = extractor.extractNumFound(jsonString, recordId);
 		assertEquals(199, numFound);
 	}
 
 	@Test
-	public void hello2() throws URISyntaxException, IOException {
+	public void testJsonPath() throws URISyntaxException, IOException {
 		JsonPathCache cache = new JsonPathCache(FileUtils.readFirstLine("general/edm-fullbean.json"));
-		// String path = "$.['proxies'][?(@['europeanaProxy'] == false)][*]['dcTitle']";
 		String path = "$.['proxies'][?(@['europeanaProxy'] == false)]['dcTitle']";
 		List<XmlFieldInstance> values = (List<XmlFieldInstance>) cache.get(path);
-		System.err.println(values);
+		assertEquals(1, values.size());
+		assertEquals("Окръжно N 752 : 27 февруарий 1914 год., гр. Варна", values.get(0).getValue());
 	}
 
 }
