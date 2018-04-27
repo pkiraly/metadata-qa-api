@@ -302,7 +302,7 @@ public class UniquenessCalculator implements Calculator, Serializable {
 				result = total / numbers.size();
 			}
 		}
-		if (result < 1.0)
+		if (result < 0.0 || result > 1.0)
 			logger.severe(String.format("EXTREME AVERAGE at %s: %f <- average of %s", recordId, result, StringUtils.join(numbers, ", ")));
 		return result;
 	}
