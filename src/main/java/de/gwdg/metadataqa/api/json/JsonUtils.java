@@ -99,6 +99,8 @@ public class JsonUtils {
 			extracted.add(new EdmFieldInstance(Integer.toString((int)value)));
 		} else if (value.getClass() == Double.class) {
 			extracted.add(new EdmFieldInstance(Double.toString((double)value)));
+		} else if (value.getClass() == Float.class) {
+			extracted.add(new EdmFieldInstance(Float.toString((float)value)));
 		} else if (value.getClass() == Boolean.class) {
 			extracted.add(new EdmFieldInstance(Boolean.toString((boolean)value)));
 		} else if (value.getClass() == java.math.BigDecimal.class) {
