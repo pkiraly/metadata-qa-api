@@ -101,6 +101,15 @@
 			<version>0.6</version>
 		</dependency>
 		<!--
+			http://commons.apache.org/proper/commons-text/
+			https://mvnrepository.com/artifact/org.apache.commons/commons-text
+		 -->
+		<dependency>
+			<groupId>org.apache.commons</groupId>
+			<artifactId>commons-text</artifactId>
+			<version>1.4</version>
+		</dependency>
+		<!--
 				<dependency>
 					<groupId>org.apache.httpcomponents</groupId>
 					<artifactId>httpclient</artifactId>

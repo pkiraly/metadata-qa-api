@@ -3,6 +3,10 @@ package de.gwdg.metadataqa.api.json;
 import de.gwdg.metadataqa.api.model.EdmFieldInstance;
 import com.jayway.jsonpath.JsonPath;
 import de.gwdg.metadataqa.api.model.XmlFieldInstance;
+
+import java.lang.reflect.Field;
+import java.lang.reflect.ParameterizedType;
+import java.lang.reflect.Type;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
@@ -135,22 +139,43 @@ public class JsonUtils {
 		return extracted;
 	}
 
-	public static EdmFieldInstance hashToFieldInstance(Object innerVal, String recordId, String jsonPath) {
-		Map<String, String> map = (LinkedHashMap<String, String>) innerVal;
+	public static EdmFieldInstance hashToFieldInstance(Object innerVal, String recordId, String jsonPath)  {
+		Map<String, Object> map = (LinkedHashMap<String, Object>) innerVal;
 		EdmFieldInstance instance = new EdmFieldInstance();
-		for (Map.Entry<String, String> entry : map.entrySet()) {
+		for (Map.Entry<String, Object> entry : map.entrySet()) {
+			Object value = entry.getValue();
 			if (entry.getKey().equals("@about")) {
-				instance.setResource(entry.getValue());
+				instance.setResource((String)value);
 			} else if (entry.getKey().equals("@resource")) {
-				instance.setResource(entry.getValue());
+				instance.setResource((String)value);
 			} else if (entry.getKey().equals("#value")) {
-				instance.setValue(map.get("#value"));
+				instance.setValue((String)value);
+			} else if (entry.getKey().equals("def")) {
+				if (value instanceof JSONArray) {
+					JSONArray values = (JSONArray)value;
+					if (values.size() > 1) {
+						logger.severe(String.format(
+							"Multiple values in a 'def' value: %s, [record ID: %s, path: %s]",
+							values, recordId, jsonPath
+						));
+					} else {
+						instance.setValue(values.get(0).toString());
+					}
+				} else if (value instanceof String) {
+					instance.setValue(value.toString());
+				} else {
+					logger.severe(String.format(
+						"Unhandled type in a 'def' value: %s, [record ID: %s, path: %s]",
+						value, recordId, jsonPath
+					));
+				}
+				// instance.setValue(map.get("def"));
 			} else if (entry.getKey().equals("@lang")) {
-				instance.setLanguage(map.get("@lang"));
+				instance.setLanguage((String)value);
 			} else {
 				logger.severe(String.format(
-						  "Other type of map: %s, [record ID: %s, path: %s]",
-						  map, recordId, jsonPath
+						  "Other type (%s) of map: %s, [record ID: %s, path: %s]",
+					entry.getKey(), map, recordId, jsonPath
 				));
 			}
 		}
