@@ -54,7 +54,7 @@ public class AbbreviationManager implements Serializable {
 	private static final Logger logger = Logger.getLogger(AbbreviationManager.class.getCanonicalName());
 	protected Map<String, Integer> data;
 	private static FileSystem fs;
-	private Path path;
+	private String fileName;
 
 	public AbbreviationManager() {
 		data = new LinkedHashMap<>();
@@ -70,6 +70,8 @@ public class AbbreviationManager implements Serializable {
 	* @param parse Whether parse the file to extract the abbreviation or use line number as the abbreviated value
 	*/
 	protected void initialize(String fileName, boolean parse) {
+		this.fileName = fileName;
+		Path path;
 		try {
 			path = getPath(fileName);
 			List<String> lines = Files.readAllLines(path, Charset.defaultCharset());
@@ -103,8 +105,8 @@ public class AbbreviationManager implements Serializable {
 			data.put(entry, data.size() + 1);
 			String msg = String.format("new entry: %s (size: %d -> %d)",
 					  entry, oldsize, data.size());
-			if (path != null) {
-				msg += " " + path.toFile().getName();
+			if (fileName != null) {
+				msg += " " + fileName;
 			}
 			logger.info(msg);
 		}
