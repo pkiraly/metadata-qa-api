@@ -71,7 +71,7 @@ public class AbbreviationManager implements Serializable {
 	*/
 	protected void initialize(String fileName, boolean parse) {
 		this.fileName = fileName;
-		Path path;
+		Path path = null;
 		try {
 			path = getPath(fileName);
 			List<String> lines = Files.readAllLines(path, Charset.defaultCharset());
