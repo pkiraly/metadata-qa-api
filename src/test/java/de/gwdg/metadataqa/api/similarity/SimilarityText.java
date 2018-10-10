@@ -1,16 +1,44 @@
 package de.gwdg.metadataqa.api.similarity;
 
+import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.text.similarity.*;
 import org.junit.Test;
 
 import java.util.*;
+
+import static org.junit.Assert.assertEquals;
 
 /**
  * http://commons.apache.org/proper/commons-text/javadocs/api-release/org/apache/commons/text/similarity/package-summary.html
  */
 public class SimilarityText {
 
-	// @Test
+	@Test
+	public void clustering() {
+		List<String> patterns = Arrays.asList("0001", "0011", "0000", "1001");
+		double treshold = 0.70;
+		Clustering clustering = new Clustering(patterns, treshold);
+		List<List<String>> clusters = clustering.getClusters();
+
+		assertEquals(Arrays.asList("0011", "0001", "1001"), clusters.get(0));
+		assertEquals(Arrays.asList("0000"), clusters.get(1));
+	}
+
+	@Test
+	public void clustering2() {
+		List<String> patterns = Arrays.asList(
+			"Sosztakovics", "Rubens", "Shostakovic", "1001"
+		);
+		double treshold = 0.70;
+		Clustering clustering = new Clustering(patterns, treshold);
+		List<List<String>> clusters = clustering.getClusters();
+
+		assertEquals(Arrays.asList("Shostakovic", "Sosztakovics"), clusters.get(0));
+		assertEquals(Arrays.asList("Rubens"), clusters.get(1));
+		assertEquals(Arrays.asList("1001"), clusters.get(2));
+	}
+
+	@Test
 	public void JaroWinkler() {
 		JaroWinklerDistance jaroWinkler = new JaroWinklerDistance();
 		JaccardDistance jaccard = new JaccardDistance();
@@ -32,7 +60,7 @@ public class SimilarityText {
 				at.setDistance(bt, distance);
 				bt.setDistance(at, distance);
 				System.err.println(String.format(
-					"%s vs %s: Jaro-Winkler: %f, Jaccard: %f, levenshtein: %d, levenshtei2: %s",
+					"%s vs %s: Jaro-Winkler: %f, Jaccard: %f, levenshtein: %d, levenshtein2: %s",
 					a, b,
 					jaroWinkler.apply(a, b),
 					jaccard.apply(a, b),
@@ -40,27 +68,6 @@ public class SimilarityText {
 					LevenshteinDetailed.apply(a, b).getDistance()
 				));
 			}
-		}
-
-		while (clusters.size() > 1) {
-			System.err.println("###");
-			double max = 0;
-			Cluster[] maxKey = null;
-			for (int i = 0; i < clusters.size(); i++) {
-				Cluster a = clusters.get(i);
-				for (int j = i+1; j < clusters.size(); j++) {
-					Cluster b = clusters.get(j);
-					// System.err.println("get distance: " + a + " vs " + b);
-					double dist = a.getDistance(b);
-					if (dist > max) {
-						max = dist;
-						maxKey = new Cluster[]{a, b};
-					}
-				}
-			}
-			maxKey[0].merge(maxKey[1]);
-			clusters.remove(maxKey[1]);
-			System.err.println("size: " + clusters.size());
 		}
 	}
 }

@@ -1,0 +1,82 @@
+package de.gwdg.metadataqa.api.similarity;
+
+import org.apache.commons.text.similarity.JaroWinklerDistance;
+
+import java.util.*;
+
+public class Clustering {
+
+	private JaroWinklerDistance jaroWinkler = new JaroWinklerDistance();
+	private Map<String, Cluster> clusterIndex = new HashMap<>();
+
+	public Clustering(List<String> patterns, double treshold) {
+		initializeClusters(patterns);
+		makeClusters(treshold);
+	}
+
+	public Map<String, Cluster> getClusterIndex() {
+		return clusterIndex;
+	}
+
+	public List<List<String>> getClusters() {
+		List<List<String>> clusters = new ArrayList<>();
+		for (Cluster cluster : clusterIndex.values())
+			clusters.add(cluster.getTermList());
+		return clusters;
+	}
+
+	private void initializeClusters(List<String> patterns) {
+		for (int i = 0; i < patterns.size(); i++) {
+			String pattern = patterns.get(i);
+			Term term = getOrCreateTerm(pattern);
+			for (int j = i + 1; j < patterns.size(); j++) {
+				String otherPattern = patterns.get(j);
+				Term otherTerm = getOrCreateTerm(otherPattern);
+				double distance = jaroWinkler.apply(pattern, otherPattern);
+				term.setDistance(otherTerm, distance);
+				otherTerm.setDistance(term, distance);
+			}
+		}
+	}
+
+	private void makeClusters(double treshold) {
+		List<Cluster> clusts = new ArrayList<>(clusterIndex.values());
+		for (int i = 0; i < clusts.size(); i++) {
+			Cluster a = clusts.get(i);
+			if (a.isActive()) {
+				for (int j = i + 1; j < clusts.size(); j++) {
+					Cluster b = clusts.get(j);
+					if (b.isActive() && a.isSimilarTo(b, treshold)) {
+						a.merge(b);
+						b.setActive(false);
+					}
+				}
+			}
+		}
+		removePassiveClusters();
+	}
+
+	private void removePassiveClusters() {
+		List<String> removableIds = new ArrayList<>();
+		for (Map.Entry<String, Cluster> cluster : clusterIndex.entrySet()) {
+			if (!cluster.getValue().isActive())
+				removableIds.add(cluster.getKey());
+		}
+		if (!removableIds.isEmpty()) {
+			for (String id : removableIds) {
+				clusterIndex.remove(id);
+			}
+		}
+	}
+
+	private Term getOrCreateTerm(String pattern) {
+		Term term = null;
+		if (clusterIndex.containsKey(pattern)) {
+			term = clusterIndex.get(pattern).getTerms().get(0);
+		} else {
+			term = new Term(pattern);
+			clusterIndex.put(pattern, new Cluster(term));
+		}
+		return term;
+	}
+}

@@ -1,6 +1,10 @@
 package de.gwdg.metadataqa.api.similarity;
 
+import org.apache.commons.lang3.StringUtils;
+
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 public class Term {
@@ -20,26 +24,22 @@ public class Term {
 	}
 
 	public double getDistance(Term other) {
-		System.err.println(formatDistances());
-		System.err.println("other: " + other);
-		System.err.println("has it?: " + distances.containsKey(other.value));
 		return distances.get(other.value);
 	}
 
 	public String formatDistances() {
-		String text = "";
+		List<String> formattedDistances = new ArrayList<>();
 		for (String t : distances.keySet()) {
-			if (text != "")
-				text += ", ";
-			text += String.format("%s=%f", t, distances.get(t));
+			formattedDistances.add(String.format("%s=%f", t, distances.get(t)));
 		}
-		return text;
+		return "{" + StringUtils.join(formattedDistances, ", ") + "}";
 	}
 
 	@Override
 	public String toString() {
 		return "Term{" +
-			"value='" + value + '\'' +
+			"term='" + value + '\'' +
+			", distances=" + formatDistances() +
 			'}';
 	}
 }
