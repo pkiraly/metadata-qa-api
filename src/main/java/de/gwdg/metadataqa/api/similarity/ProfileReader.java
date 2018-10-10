@@ -1,11 +1,8 @@
 package de.gwdg.metadataqa.api.similarity;
 
-import de.gwdg.metadataqa.api.util.FileUtils;
 import org.apache.commons.lang3.StringUtils;
-import org.jetbrains.annotations.NotNull;
 
 import java.io.IOException;
-import java.net.URISyntaxException;
 import java.nio.charset.Charset;
 import java.nio.file.Files;
 import java.nio.file.Paths;
@@ -17,6 +14,7 @@ public class ProfileReader {
 	private List<String> canonicalFieldList;
 	private List<String> profiles;
 	Map<String, Row> rowIndex;
+	private int i = 0;
 
 	private static final List<String> mandatoryFields = Arrays.asList(
 		"dc:title", "dc:description", "dc:type", "dc:coverage",
@@ -85,7 +83,10 @@ public class ProfileReader {
 		return sortedClusters;
 	}
 
-	@NotNull
+	public int getNext() {
+		return i++;
+	}
+
 	private List<Row> sortTerms(Map<String, Row> sortableTerms) {
 		return sortableTerms.
 					entrySet().
@@ -100,6 +101,14 @@ public class ProfileReader {
 						Collectors.
 							toList()
 					);
+	}
+
+	public int count(List<Row> rows) {
+		int sum = 0;
+		for (Row row : rows) {
+			sum += row.getCount();
+		}
+		return sum;
 	}
 
 	private List<String> createPatternList() {
@@ -126,6 +135,7 @@ public class ProfileReader {
 	}
 
 	public class Row {
+		private List<String> record;
 		private String fields;
 		private List<String> fieldList;
 		private String binary;
@@ -135,6 +145,7 @@ public class ProfileReader {
 		private Double percent;
 
 		public Row(List<String> rec) {
+			record = rec;
 			fields = rec.get(0);
 			length = Integer.parseInt(rec.get(1));
 			count = Integer.parseInt(rec.get(2));
@@ -143,6 +154,10 @@ public class ProfileReader {
 
 			fieldList = Arrays.asList(fields.split(";"));
 			binary = fieldListToBinary(fieldList);
+		}
+
+		public String asCsv() {
+			return StringUtils.join(record, ",");
 		}
 
 		public String getFields() {
@@ -184,16 +199,19 @@ public class ProfileReader {
 		Map<List<ProfileReader.Row>, Double> sortedClusters = profileReader
 			.buildCluster();
 
+		int idx = 0;
 		sortedClusters.
 			entrySet().
 			stream().
 			forEach((cluster) -> {
+				int i = profileReader.getNext();
+				int sum = profileReader.count(cluster.getKey());
+				System.err.printf("#%d=%d\n", i, sum);
 				cluster.
 					getKey().
-					forEach((term) -> {System.err.printf(
-						"%s (%d - %.2f%%)\n",
-						term.getBinary(), term.getCount(), term.getPercent());});
-				System.err.printf("=%.2f%%\n", cluster.getValue());
+					forEach((row) -> {
+						System.err.printf("%d,%s\n", i, row.asCsv());
+					});
 			});
 	}
 }

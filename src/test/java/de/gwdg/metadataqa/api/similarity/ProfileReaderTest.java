@@ -32,12 +32,15 @@ public class ProfileReaderTest {
 			.buildCluster();
 
 		sortedClusters.entrySet().stream().forEach((cluster) -> {
-				cluster.
+			int i = profileReader.getNext();
+			int sum = profileReader.count(cluster.getKey());
+			System.err.printf("#%d=%d\n", i, sum);
+			cluster.
 					getKey().
-					forEach((term) -> {System.err.printf(
-						"%s (%d - %.2f%%)\n",
-						term.getBinary(), term.getCount(), term.getPercent());});
-				System.err.printf("=%.2f%%\n", cluster.getValue());
+					forEach((row) -> {
+						System.err.printf("%d,%s\n", i, row.asCsv());
+					});
+				// System.err.printf("=%.2f%%\n", cluster.getValue());
 			});
 	}
 }
