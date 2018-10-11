@@ -205,12 +205,12 @@ public class ProfileReader {
 			stream().
 			forEach((cluster) -> {
 				int i = profileReader.getNext();
-				int sum = profileReader.count(cluster.getKey());
-				System.err.printf("#%d=%d\n", i, sum);
+				// int sum = profileReader.count(cluster.getKey());
+				// System.out.printf("#%d=%d\n", i, sum);
 				cluster.
 					getKey().
 					forEach((row) -> {
-						System.err.printf("%d,%s\n", i, row.asCsv());
+						System.out.printf("%d,%s\n", i, row.asCsv());
 					});
 			});
 	}
