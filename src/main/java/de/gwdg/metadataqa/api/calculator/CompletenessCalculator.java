@@ -82,20 +82,28 @@ public class CompletenessCalculator<T extends XmlFieldInstance> implements Calcu
 
 		if (schema.getCollectionPaths() == null || schema.getCollectionPaths().isEmpty()) {
 			for (JsonBranch jsonBranch : schema.getPaths()) {
+				if (!jsonBranch.isActive())
+					continue;
 				evaluateJsonBranch(jsonBranch, cache, completenessCounter,
 						  jsonBranch.getLabel(), null);
 			}
 		} else {
 			for (JsonBranch collection : schema.getCollectionPaths()) {
+				if (!collection.isActive())
+					continue;
 				Object rawJsonFragment = cache.getFragment(collection.getJsonPath());
 				if (rawJsonFragment == null) {
 					for (JsonBranch child : collection.getChildren()) {
+						if (!child.isActive())
+							continue;
 						handleValues(completenessCounter, child, null);
 					}
 				} else {
 					List<Object> jsonFragments = Converter.jsonObjectToList(rawJsonFragment);
 					if (jsonFragments.isEmpty()) {
 						for (JsonBranch child : collection.getChildren()) {
+							if (!child.isActive())
+								continue;
 							handleValues(completenessCounter, child, null);
 						}
 					} else {
@@ -103,10 +111,14 @@ public class CompletenessCalculator<T extends XmlFieldInstance> implements Calcu
 							Object jsonFragment = jsonFragments.get(i);
 							if (skippedEntitySelector.isCollectionSkippable(skippableIds, collection, i, cache, jsonFragment)) {
 								for (JsonBranch child : collection.getChildren()) {
+									if (!child.isActive())
+										continue;
 									handleValues(completenessCounter, child, null);
 								}
 							} else {
 								for (JsonBranch child : collection.getChildren()) {
+									if (!child.isActive())
+										continue;
 									String address = String.format("%s/%d/%s", collection.getJsonPath(), i, child.getJsonPath());
 									evaluateJsonBranch(child, cache, completenessCounter, address, jsonFragment);
 								}
@@ -292,12 +304,12 @@ public class CompletenessCalculator<T extends XmlFieldInstance> implements Calcu
 
 		if (existence)
 			for (JsonBranch jsonBranch : schema.getPaths())
-				if (!jsonBranch.isCollection())
+				if (!jsonBranch.isCollection() && jsonBranch.isActive())
 					headers.add("existence:" + jsonBranch.getLabel());
 
 		if (cardinality)
 			for (JsonBranch jsonBranch : schema.getPaths())
-				if (!jsonBranch.isCollection())
+				if (!jsonBranch.isCollection() && jsonBranch.isActive())
 					headers.add("cardinality:" + jsonBranch.getLabel());
 
 		return headers;

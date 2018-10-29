@@ -20,7 +20,7 @@ public class EdmFullBeanSchema extends EdmSchema implements Serializable {
 	private final static List<FieldGroup> fieldGroups = new ArrayList<>();
 	private final static List<String> noLanguageFields = new ArrayList<>();
 	private final static Map<String, String> solrFields = new LinkedHashMap<>();
-	private static Map<String, String> extractableFields = new LinkedHashMap<>();
+	private Map<String, String> extractableFields = new LinkedHashMap<>();
 	private final static List<String> emptyStrings = new ArrayList<>();
 	private final static Map<String, JsonBranch> paths = new LinkedHashMap<>();
 	private final static Map<String, JsonBranch> collectionPaths = new LinkedHashMap<>();
@@ -264,6 +264,15 @@ public class EdmFullBeanSchema extends EdmSchema implements Serializable {
 		addPath(new JsonBranch("Concept/skos:altLabel", concept, "$.['altLabel']"));
 		addPath(new JsonBranch("Concept/skos:note", concept, "$.['note']"));
 
+		JsonBranch europeanaAggregation = new JsonBranch("EuropeanaAggregation", "$.['europeanaAggregation']")
+			.setActive(false);
+		europeanaAggregation.setCollection(true);
+		addPath(europeanaAggregation);
+		addPath(new JsonBranch("EuropeanaAggregation/edm:country", europeanaAggregation, "$.['edmCountry']")
+			.setActive(false));
+		addPath(new JsonBranch("EuropeanaAggregation/edm:language", europeanaAggregation, "$.['edmLanguage']")
+			.setActive(false));
+
 		fieldGroups.add(
 			new FieldGroup(
 				JsonBranch.Category.MANDATORY,
@@ -299,13 +308,18 @@ public class EdmFullBeanSchema extends EdmSchema implements Serializable {
 		solrFields.put("Proxy/dcterms:alternative", "dcterms_alternative_txt");
 		solrFields.put("Proxy/dc:description", "dc_description_txt");
 
-		extractableFields.put("recordId", "$.identifier");
-		extractableFields.put("dataset", "$.sets[0]");
-		extractableFields.put("dataProvider", "$.['aggregations'][0]['edmDataProvider'][0]");
+		// extractableFields.put("country", "$.['europeanaAggregation'][0]['edmCountry'][0]");
+		// extractableFields.put("language", "$.['europeanaAggregation'][0]['edmLanguage'][0]");
 
 		emptyStrings.add("$.['proxies'][?(@['europeanaProxy'] == false)]['dcTitle']");
 		emptyStrings.add("$.['proxies'][?(@['europeanaProxy'] == false)]['dcDescription']");
 		emptyStrings.add("$.['proxies'][?(@['europeanaProxy'] == false)]['dcSubject']");
+	}
+
+	public EdmFullBeanSchema() {
+		extractableFields.put("recordId", "$.identifier");
+		extractableFields.put("dataset", "$.sets[0]");
+		extractableFields.put("dataProvider", "$.['aggregations'][0]['edmDataProvider'][0]");
 	}
 
 	@Override
@@ -331,6 +345,11 @@ public class EdmFullBeanSchema extends EdmSchema implements Serializable {
 	@Override
 	public void setExtractableFields(Map<String, String> extractableFields) {
 		this.extractableFields = extractableFields;
+	}
+
+	@Override
+	public void addExtractableField(String key, String jsonPath) {
+		extractableFields.put(key, jsonPath);
 	}
 
 	@Override

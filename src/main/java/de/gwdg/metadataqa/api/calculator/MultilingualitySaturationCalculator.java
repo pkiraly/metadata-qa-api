@@ -79,7 +79,7 @@ public class MultilingualitySaturationCalculator implements Calculator, Serializ
 
 		List<String> headers = new ArrayList<>();
 		for (JsonBranch jsonBranch : schema.getPaths()) {
-			if (!schema.getNoLanguageFields().contains(jsonBranch.getLabel())) {
+			if (jsonBranch.isActive() && !schema.getNoLanguageFields().contains(jsonBranch.getLabel())) {
 				switch (resultType) {
 					case EXTENDED:
 						headers.add("lang:sum:" + jsonBranch.getLabel());
@@ -117,7 +117,7 @@ public class MultilingualitySaturationCalculator implements Calculator, Serializ
 
 	private void measureFlatSchema(JsonPathCache cache) {
 		for (JsonBranch jsonBranch : schema.getPaths()) {
-			if (!schema.getNoLanguageFields().contains(jsonBranch.getLabel()))
+			if (jsonBranch.isActive() && !schema.getNoLanguageFields().contains(jsonBranch.getLabel()))
 				extractLanguageTags(null, jsonBranch, jsonBranch.getJsonPath(), cache, rawLanguageMap);
 		}
 	}
@@ -125,6 +125,8 @@ public class MultilingualitySaturationCalculator implements Calculator, Serializ
 	private void measureHierarchicalSchema(JsonPathCache cache) {
 		List<String> skippableIds = getSkippableIds(cache);
 		for (JsonBranch collection : schema.getCollectionPaths()) {
+			if (!collection.isActive())
+				continue;
 			Object rawJsonFragment = cache.getFragment(collection.getJsonPath());
 			if (rawJsonFragment == null) {
 				measureMissingCollection(collection);
@@ -142,7 +144,7 @@ public class MultilingualitySaturationCalculator implements Calculator, Serializ
 
 	private void measureMissingCollection(JsonBranch collection) {
 		for (JsonBranch child : collection.getChildren()) {
-			if (!schema.getNoLanguageFields().contains(child.getLabel())) {
+			if (child.isActive() && !schema.getNoLanguageFields().contains(child.getLabel())) {
 				Map<LanguageSaturationType, BasicCounter> languages = new TreeMap<>();
 				increase(languages, LanguageSaturationType.NA);
 				updateMaps(child.getLabel(), transformLanguages(languages, 0));
@@ -158,16 +160,20 @@ public class MultilingualitySaturationCalculator implements Calculator, Serializ
 		} else {
 			for (int i = 0, len = jsonFragments.size(); i < len; i++) {
 				Object jsonFragment = jsonFragments.get(i);
-				if (skippedEntitySelector.isCollectionSkippable(skippableIds,
-						  collection, i, cache, jsonFragment)) {
+				boolean skip = skippedEntitySelector.isCollectionSkippable(
+					skippableIds, collection, i, cache, jsonFragment
+				);
+				if (skip) {
 					// LOGGER.info(String.format("skip %s (%s)", collection.getLabel(), ((LinkedHashMap)jsonFragment).get("@about")));
 					measureMissingCollection(collection);
 					// TODO???
 				} else {
 					for (JsonBranch child : collection.getChildren()) {
-						if (!schema.getNoLanguageFields().contains(child.getLabel())) {
-							String address = String.format("%s/%d/%s",
-								  collection.getJsonPath(), i, child.getJsonPath());
+						if (child.isActive() && !schema.getNoLanguageFields().contains(child.getLabel())) {
+							String address = String.format(
+								"%s/%d/%s",
+								collection.getJsonPath(), i, child.getJsonPath()
+							);
 							extractLanguageTags(jsonFragment, child, address, cache, rawLanguageMap);
 						}
 					}

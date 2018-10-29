@@ -33,6 +33,7 @@ public class JsonBranch implements Cloneable, Serializable {
 	private JsonBranch identifier = null;
 	private List<JsonBranch> children = new ArrayList<>();
 	private boolean collection = false;
+	private boolean isActive = true;
 
 	public JsonBranch(String label, String jsonPath, String solrFieldName) {
 		this.label = label;
@@ -135,6 +136,15 @@ public class JsonBranch implements Cloneable, Serializable {
 
 	public void setIdentifier(JsonBranch identifier) {
 		this.identifier = identifier;
+	}
+
+	public boolean isActive() {
+		return isActive;
+	}
+
+	public JsonBranch setActive(boolean active) {
+		isActive = active;
+		return this;
 	}
 
 	@Override

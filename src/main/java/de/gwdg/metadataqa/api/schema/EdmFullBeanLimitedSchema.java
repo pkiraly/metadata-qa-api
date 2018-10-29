@@ -215,6 +215,11 @@ public class EdmFullBeanLimitedSchema extends EdmSchema implements Serializable 
 	}
 
 	@Override
+	public void addExtractableField(String key, String jsonPath) {
+		extractableFields.put(key, jsonPath);
+	}
+
+	@Override
 	public List<String> getEmptyStringPaths() {
 		return emptyStrings;
 	}

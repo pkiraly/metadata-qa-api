@@ -422,6 +422,11 @@ public class MarcJsonSchema implements Schema, ProblemCatalogSchema, Serializabl
 		this.extractableFields = extractableFields;
 	}
 
+	@Override
+	public void addExtractableField(String key, String jsonPath) {
+		extractableFields.put(key, jsonPath);
+	}
+
 	private static void addPath(JsonBranch branch) {
 		paths.put(branch.getLabel(), branch);
 		if (branch.getParent() == null)

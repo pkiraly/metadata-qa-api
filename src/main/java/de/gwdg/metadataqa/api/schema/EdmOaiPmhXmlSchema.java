@@ -19,7 +19,7 @@ public class EdmOaiPmhXmlSchema extends EdmSchema implements Serializable {
 	private final static List<FieldGroup> fieldGroups = new ArrayList<>();
 	private final static List<String> noLanguageFields = new ArrayList<>();
 	private final static Map<String, String> solrFields = new LinkedHashMap<>();
-	private static Map<String, String> extractableFields = new LinkedHashMap<>();
+	private Map<String, String> extractableFields = new LinkedHashMap<>();
 	private final static List<String> emptyStrings = new ArrayList<>();
 	private final static Map<String, JsonBranch> paths = new LinkedHashMap<>();
 	private final static Map<String, JsonBranch> collectionPaths = new LinkedHashMap<>();
@@ -259,6 +259,18 @@ public class EdmOaiPmhXmlSchema extends EdmSchema implements Serializable {
 		addPath(new JsonBranch("Concept/skos:altLabel", concept, "$.['skos:altLabel']"));
 		addPath(new JsonBranch("Concept/skos:note", concept, "$.['skos:note']"));
 
+		JsonBranch europeanaAggregation = new JsonBranch("EuropeanaAggregation", "$.['edm:EuropeanaAggregation']")
+			.setActive(false);
+		europeanaAggregation.setCollection(true);
+		addPath(europeanaAggregation);
+		addPath(new JsonBranch("EuropeanaAggregation/edm:country", europeanaAggregation, "$.['edm:country']")
+			.setActive(false));
+		addPath(new JsonBranch("EuropeanaAggregation/edm:language", europeanaAggregation, "$.['edm:language']")
+			.setActive(false));
+
+		// extractableFields.put("country", "$.['edm:EuropeanaAggregation'][0]['edm:country'][0]");
+		// extractableFields.put("language", "$.['edm:EuropeanaAggregation'][0]['edm:language'][0]");
+
 		fieldGroups.add(
 			new FieldGroup(
 				JsonBranch.Category.MANDATORY,
@@ -294,13 +306,17 @@ public class EdmOaiPmhXmlSchema extends EdmSchema implements Serializable {
 		solrFields.put("dcterms:alternative", "dcterms_alternative_txt");
 		solrFields.put("dc:description", "dc_description_txt");
 
-		extractableFields.put("recordId", "$.identifier");
-		extractableFields.put("dataset", "$.sets[0]");
-		extractableFields.put("dataProvider", "$.['ore:Aggregation'][0]['edm:dataProvider'][0]");
-
 		emptyStrings.add("$.['ore:Proxy'][?(@['edm:europeanaProxy'][0] == 'false')]['dc:title']");
 		emptyStrings.add("$.['ore:Proxy'][?(@['edm:europeanaProxy'][0] == 'false')]['dc:description']");
 		emptyStrings.add("$.['ore:Proxy'][?(@['edm:europeanaProxy'][0] == 'false')]['dc:subject']");
+	}
+
+	public EdmOaiPmhXmlSchema() {
+		extractableFields.put("recordId", "$.identifier");
+		extractableFields.put("dataset", "$.sets[0]");
+		extractableFields.put("dataProvider", "$.['ore:Aggregation'][0]['edm:dataProvider'][0]");
+		// extractableFields.put("country", "$.['edm:EuropeanaAggregation'][0]['edm:country'][0]");
+		// extractableFields.put("language", "$.['edm:EuropeanaAggregation'][0]['edm:language'][0]");
 	}
 
 	@Override
@@ -326,6 +342,11 @@ public class EdmOaiPmhXmlSchema extends EdmSchema implements Serializable {
 	@Override
 	public void setExtractableFields(Map<String, String> extractableFields) {
 		this.extractableFields = extractableFields;
+	}
+
+	@Override
+	public void addExtractableField(String key, String jsonPath) {
+		extractableFields.put(key, jsonPath);
 	}
 
 	@Override

@@ -42,7 +42,10 @@ public class UniquenessFieldCalculator {
 					if (count == 0)
 						count = 1;
 					// logger.severe(solrResponse);
-					double score = Math.pow((calculateScore(uniquenessField.getTotal(), count) / uniquenessField.getScoreForUniqueValue()), 3.0);
+					double score = Math.pow(
+						(calculateScore(uniquenessField.getTotal(), count) / uniquenessField.getScoreForUniqueValue()),
+						3.0
+					);
 					// logger.info(String.format("%d/%d -> %f", count, uniquenessField.getTotal(), score));
 
 					counts.add((double)count);

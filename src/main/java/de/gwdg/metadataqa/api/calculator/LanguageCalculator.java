@@ -52,7 +52,7 @@ public class LanguageCalculator implements Calculator, Serializable {
 	public List<String> getHeader() {
 		List<String> headers = new ArrayList<>();
 		for (JsonBranch jsonBranch : schema.getPaths())
-			if (!schema.getNoLanguageFields().contains(jsonBranch.getLabel()))
+			if (jsonBranch.isActive() && !schema.getNoLanguageFields().contains(jsonBranch.getLabel()))
 				headers.add("lang:" + jsonBranch.getLabel());
 		return headers;
 	}
@@ -65,7 +65,7 @@ public class LanguageCalculator implements Calculator, Serializable {
 		rawLanguageMap = new LinkedHashMap<>();
 		if (schema.getCollectionPaths().isEmpty()) {
 			for (JsonBranch jsonBranch : schema.getPaths()) {
-				if (!schema.getNoLanguageFields().contains(jsonBranch.getLabel()))
+				if (jsonBranch.isActive() && !schema.getNoLanguageFields().contains(jsonBranch.getLabel()))
 					extractLanguageTags(null, jsonBranch, jsonBranch.getJsonPath(), cache, languageMap, rawLanguageMap);
 			}
 		} else {
@@ -73,7 +73,7 @@ public class LanguageCalculator implements Calculator, Serializable {
 				Object rawJsonFragment = cache.getFragment(collection.getJsonPath());
 				if (rawJsonFragment == null) {
 					for (JsonBranch child : collection.getChildren()) {
-						if (!schema.getNoLanguageFields().contains(child.getLabel())) {
+						if (child.isActive() && !schema.getNoLanguageFields().contains(child.getLabel())) {
 							Map<String, BasicCounter> languages = new TreeMap<>();
 							increase(languages, "_1");
 							updateMaps(child.getLabel(), transformLanguages(languages));
@@ -84,7 +84,7 @@ public class LanguageCalculator implements Calculator, Serializable {
 					for (int i = 0, len = jsonFragments.size(); i < len; i++) {
 						Object jsonFragment = jsonFragments.get(i);
 						for (JsonBranch child : collection.getChildren()) {
-							if (!schema.getNoLanguageFields().contains(child.getLabel())) {
+							if (child.isActive() && !schema.getNoLanguageFields().contains(child.getLabel())) {
 								String address = String.format("%s/%d/%s",
 									collection.getJsonPath(), i, child.getJsonPath());
 								extractLanguageTags(jsonFragment, child, address, cache, languageMap, rawLanguageMap);

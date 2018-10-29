@@ -55,7 +55,9 @@ public class UniquenessCalculator implements Calculator, Serializable {
 			String solrResponse = solrClient.getSolrSearchResponse(solrField, "*");
 			int numFound = extractor.extractNumFound(solrResponse, "total");
 			field.setTotal(numFound);
-			field.setScoreForUniqueValue(UniquenessFieldCalculator.calculateScore(numFound, 1.0));
+			field.setScoreForUniqueValue(
+				UniquenessFieldCalculator.calculateScore(numFound, 1.0)
+			);
 
 			solrFields.add(field);
 		}

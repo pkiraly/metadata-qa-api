@@ -57,4 +57,6 @@ public interface Schema {
 
 	void setExtractableFields(Map<String, String> extractableFields);
 
+	void addExtractableField(String key, String jsonPath);
+
 }
