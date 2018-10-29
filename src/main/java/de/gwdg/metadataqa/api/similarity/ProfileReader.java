@@ -13,7 +13,7 @@ public class ProfileReader {
 
 	private List<String> canonicalFieldList;
 	private List<String> profiles;
-	Map<String, Row> rowIndex;
+	private Map<String, Row> rowIndex;
 	private int i = 0;
 
 	private static final List<String> mandatoryFields = Arrays.asList(
@@ -37,6 +37,7 @@ public class ProfileReader {
 	public ProfileReader(List<String> canonicalFieldList, List<String> profiles) {
 		this.canonicalFieldList = canonicalFieldList;
 		this.profiles = profiles;
+		rowIndex = new HashMap<>();
 	}
 
 	public Map<List<Row>, Double> buildCluster() {
@@ -44,7 +45,6 @@ public class ProfileReader {
 	}
 
 	public Map<List<Row>, Double> buildCluster(double treshold) {
-		rowIndex = new HashMap<>();
 		List<String> patterns = createPatternList();
 
 		Clustering clustering = new Clustering(patterns, treshold);
@@ -111,7 +111,7 @@ public class ProfileReader {
 		return sum;
 	}
 
-	private List<String> createPatternList() {
+	public List<String> createPatternList() {
 		List<String> patterns = new ArrayList<>();
 		for (String line : profiles) {
 			Row row = new Row(Arrays.asList(line.split(",")));
@@ -186,32 +186,44 @@ public class ProfileReader {
 	}
 
 	public static void main(String[] args) throws IOException {
+		String fieldListFile = args[0];
+		String profileFile = args[1];
+
+		boolean produceList = (args.length > 2 && args[2].equals("list"));
+
 		List<String> fieldLines = Files.readAllLines(
-			Paths.get(args[0]), Charset.defaultCharset()
+			Paths.get(fieldListFile), Charset.defaultCharset()
 		);
 
 		List<String> canonicalFieldList = Arrays.asList(fieldLines.get(0).split(";"));
+
 		List<String> profiles = Files.readAllLines(
-			Paths.get(args[1]), Charset.defaultCharset()
+			Paths.get(profileFile), Charset.defaultCharset()
 		);
 
 		ProfileReader profileReader = new ProfileReader(canonicalFieldList, profiles);
-		Map<List<ProfileReader.Row>, Double> sortedClusters = profileReader
-			.buildCluster();
+		if (produceList) {
+			List<String> patterns = profileReader.createPatternList();
+			for (String pattern : patterns) {
+				System.out.println(pattern);
+			}
+		} else {
+			Map<List<ProfileReader.Row>, Double> sortedClusters = profileReader.buildCluster();
 
-		int idx = 0;
-		sortedClusters.
-			entrySet().
-			stream().
-			forEach((cluster) -> {
-				int i = profileReader.getNext();
-				// int sum = profileReader.count(cluster.getKey());
-				// System.out.printf("#%d=%d\n", i, sum);
-				cluster.
-					getKey().
-					forEach((row) -> {
-						System.out.printf("%d,%s\n", i, row.asCsv());
-					});
-			});
+			int idx = 0;
+			sortedClusters.
+				entrySet().
+				stream().
+				forEach((cluster) -> {
+					int i = profileReader.getNext();
+					// int sum = profileReader.count(cluster.getKey());
+					// System.out.printf("#%d=%d\n", i, sum);
+					cluster.
+						getKey().
+						forEach((row) -> {
+							System.out.printf("%d,%s\n", i, row.asCsv());
+						});
+				});
+		}
 	}
 }

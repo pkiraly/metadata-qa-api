@@ -47,7 +47,7 @@ public class Cluster {
 						(term.getDistance(otherTerm) > treshold))
 				);
 				*/
-				if (term.getDistance(otherTerm) > treshold)
+				if (term.hasDistance(otherTerm) && term.getDistance(otherTerm) > treshold)
 					isSimilar = true;
 				else {
 					isSimilar = false;

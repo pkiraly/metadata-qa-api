@@ -27,6 +27,10 @@ public class Term {
 		return distances.get(other.value);
 	}
 
+	public boolean hasDistance(Term other) {
+		return distances.containsKey(other.value);
+	}
+
 	public String formatDistances() {
 		List<String> formattedDistances = new ArrayList<>();
 		for (String t : distances.keySet()) {

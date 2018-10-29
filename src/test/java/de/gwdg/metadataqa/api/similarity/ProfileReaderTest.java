@@ -28,8 +28,7 @@ public class ProfileReaderTest {
 	@Test
 	public void testExtraction() {
 		ProfileReader profileReader = new ProfileReader(canonicalFieldList, profiles);
-		Map<List<ProfileReader.Row>, Double> sortedClusters = profileReader
-			.buildCluster();
+		Map<List<ProfileReader.Row>, Double> sortedClusters = profileReader.buildCluster();
 
 		sortedClusters.entrySet().stream().forEach((cluster) -> {
 			int i = profileReader.getNext();

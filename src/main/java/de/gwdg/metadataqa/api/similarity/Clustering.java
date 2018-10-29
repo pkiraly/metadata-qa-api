@@ -8,10 +8,12 @@ public class Clustering {
 
 	private JaroWinklerDistance jaroWinkler = new JaroWinklerDistance();
 	private Map<String, Cluster> clusterIndex = new HashMap<>();
+	private double treshold;
 
 	public Clustering(List<String> patterns, double treshold) {
+		this.treshold = treshold;
 		initializeClusters(patterns);
-		makeClusters(treshold);
+		makeClusters();
 	}
 
 	public Map<String, Cluster> getClusterIndex() {
@@ -33,13 +35,15 @@ public class Clustering {
 				String otherPattern = patterns.get(j);
 				Term otherTerm = getOrCreateTerm(otherPattern);
 				double distance = jaroWinkler.apply(pattern, otherPattern);
-				term.setDistance(otherTerm, distance);
-				otherTerm.setDistance(term, distance);
+				if (distance >= treshold) {
+					term.setDistance(otherTerm, distance);
+					otherTerm.setDistance(term, distance);
+				}
 			}
 		}
 	}
 
-	private void makeClusters(double treshold) {
+	private void makeClusters() {
 		List<Cluster> clusts = new ArrayList<>(clusterIndex.values());
 		for (int i = 0; i < clusts.size(); i++) {
 			Cluster a = clusts.get(i);
