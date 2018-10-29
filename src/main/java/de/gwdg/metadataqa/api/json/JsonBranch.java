@@ -79,7 +79,11 @@ public class JsonBranch implements Cloneable, Serializable {
 
 	public String getAbsoluteJsonPath(int i) {
 		if (getParent() != null) {
-			return getParent().getJsonPath() + getJsonPath().replace("$.", "[" + i + "]");
+			String parentPath = getParent().getJsonPath();
+			String currentPath = (i == -1)
+				? getJsonPath().replace("$.", "")
+				: getJsonPath().replace("$.", "[" + i + "]");
+			return parentPath + currentPath;
 		}
 		return getJsonPath();
 	}
