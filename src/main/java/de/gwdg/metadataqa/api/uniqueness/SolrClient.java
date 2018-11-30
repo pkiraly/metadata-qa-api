@@ -128,7 +128,7 @@ public class SolrClient {
 				(StringUtils.isBlank(solrPath) ? SOLR_PATH : solrPath)
 			);
 		}
-		return this.solrBasePath ;
+		return this.solrBasePath;
 	}
 
 	public String getSolrSearchPattern() {

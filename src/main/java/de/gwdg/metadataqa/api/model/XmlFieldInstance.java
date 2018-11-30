@@ -55,7 +55,10 @@ public class XmlFieldInstance implements Serializable {
 
 	@Override
 	public String toString() {
-		return "EdmFieldInstance{" + "value=" + value + ", language=" + language+ '}';
+		return "EdmFieldInstance{"
+			+ "value=" + value
+			+ ", language=" + language
+			+ '}';
 	}
 
 	@Override

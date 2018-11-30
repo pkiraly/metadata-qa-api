@@ -76,7 +76,7 @@ public class ProfileReader {
 		Map<List<Row>, Double> sortedClusters = sortableClusters.
 			entrySet().
 			stream().
-			sorted((e1,e2)->e2.getValue().compareTo(e1.getValue())).
+			sorted((e1, e2) -> e2.getValue().compareTo(e1.getValue())).
 			collect(Collectors.
 				toMap(
 					Map.Entry::getKey,

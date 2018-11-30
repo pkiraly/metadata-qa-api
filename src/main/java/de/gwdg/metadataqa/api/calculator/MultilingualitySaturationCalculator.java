@@ -404,7 +404,7 @@ public class MultilingualitySaturationCalculator implements Calculator, Serializ
 	}
 
 	private static double normalize(double average) {
-		return 1.0 - (1.0/(average + 1.0));
+		return 1.0 - (1.0 / (average + 1.0));
 	}
 
 	private Object normalizeRawValue(List<SortedMap<LanguageSaturationType, Double>> values) {
