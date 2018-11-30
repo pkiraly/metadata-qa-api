@@ -28,8 +28,7 @@ public class SkippedEntitySelector<T extends XmlFieldInstance> implements Serial
 			JsonBranch collection,
 			int i,
 			JsonPathCache cache,
-			Object jsonFragment)
-	{
+			Object jsonFragment) {
 		boolean skippable = false;
 		JsonBranch identifierPath = collection.getIdentifier();
 		if (!skippableIds.isEmpty() && identifierPath != null) {

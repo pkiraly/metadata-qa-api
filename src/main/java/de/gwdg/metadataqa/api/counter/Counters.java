@@ -149,8 +149,9 @@ public class Counters {
 				item += String.format("\"%s\":", entry.getKey());
 			}
 			String nr = String.format("%.8f", entry.getValue());
-			if (compressionLevel != CompressionLevel.ZERO)
+			if (compressionLevel != CompressionLevel.ZERO) {
 				nr = Converter.compressNumber(nr, compressionLevel);
+			}
 			item += nr;
 			items.add(item);
 		}
@@ -161,7 +162,9 @@ public class Counters {
 		List<String> items = new ArrayList<>();
 		if (withLabel == true) {
 			for (Map.Entry<String, String> entry : languageMap.entrySet()) {
-				String item = withLabel ? String.format("\"%s\":\"%s\"", entry.getKey(), entry.getValue()) : entry.getValue();
+				String item = withLabel
+					? String.format("\"%s\":\"%s\"", entry.getKey(), entry.getValue())
+					: entry.getValue();
 				items.add(item);
 			}
 		} else {

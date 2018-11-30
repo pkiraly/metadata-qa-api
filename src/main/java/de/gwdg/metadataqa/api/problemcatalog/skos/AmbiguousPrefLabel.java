@@ -75,9 +75,11 @@ public class AmbiguousPrefLabel extends ProblemDetector implements Serializable 
 	private int countAmbiguousPrefLabels(Map<String, Integer> labelCounter) {
 		int value = 0;
 
-		for (Map.Entry<String,Integer> entry : labelCounter.entrySet())
-			if (entry.getValue() > 1)
+		for (Map.Entry<String,Integer> entry : labelCounter.entrySet()) {
+			if (entry.getValue() > 1) {
 				value++;
+			}
+		}
 
 		return value;
 	}

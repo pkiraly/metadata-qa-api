@@ -376,8 +376,9 @@ public class EdmOaiPmhXmlSchema extends EdmSchema implements Serializable {
 
 	private static void addPath(JsonBranch branch) {
 		paths.put(branch.getLabel(), branch);
-		if (branch.isCollection())
+		if (branch.isCollection()) {
 			collectionPaths.put(branch.getLabel(), branch);
+		}
 	}
 
 	@Override

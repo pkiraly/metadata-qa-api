@@ -114,8 +114,9 @@ public class JsonBranch implements Cloneable, Serializable {
 	}
 
 	public void addChild(JsonBranch child) {
-		if (!this.children.contains(child))
+		if (!this.children.contains(child)) {
 			this.children.add(child);
+		}
 	}
 
 	public List<JsonBranch> getChildren() {

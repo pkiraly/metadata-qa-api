@@ -82,28 +82,32 @@ public class CompletenessCalculator<T extends XmlFieldInstance> implements Calcu
 
 		if (schema.getCollectionPaths() == null || schema.getCollectionPaths().isEmpty()) {
 			for (JsonBranch jsonBranch : schema.getPaths()) {
-				if (!jsonBranch.isActive())
+				if (!jsonBranch.isActive()) {
 					continue;
+				}
 				evaluateJsonBranch(jsonBranch, cache, completenessCounter,
 						  jsonBranch.getLabel(), null);
 			}
 		} else {
 			for (JsonBranch collection : schema.getCollectionPaths()) {
-				if (!collection.isActive())
+				if (!collection.isActive()) {
 					continue;
+				}
 				Object rawJsonFragment = cache.getFragment(collection.getJsonPath());
 				if (rawJsonFragment == null) {
 					for (JsonBranch child : collection.getChildren()) {
-						if (!child.isActive())
+						if (!child.isActive()) {
 							continue;
+						}
 						handleValues(completenessCounter, child, null);
 					}
 				} else {
 					List<Object> jsonFragments = Converter.jsonObjectToList(rawJsonFragment);
 					if (jsonFragments.isEmpty()) {
 						for (JsonBranch child : collection.getChildren()) {
-							if (!child.isActive())
+							if (!child.isActive()) {
 								continue;
+							}
 							handleValues(completenessCounter, child, null);
 						}
 					} else {
@@ -111,14 +115,16 @@ public class CompletenessCalculator<T extends XmlFieldInstance> implements Calcu
 							Object jsonFragment = jsonFragments.get(i);
 							if (skippedEntitySelector.isCollectionSkippable(skippableIds, collection, i, cache, jsonFragment)) {
 								for (JsonBranch child : collection.getChildren()) {
-									if (!child.isActive())
+									if (!child.isActive()) {
 										continue;
+									}
 									handleValues(completenessCounter, child, null);
 								}
 							} else {
 								for (JsonBranch child : collection.getChildren()) {
-									if (!child.isActive())
+									if (!child.isActive()) {
 										continue;
+									}
 									String address = String.format("%s/%d/%s", collection.getJsonPath(), i, child.getJsonPath());
 									evaluateJsonBranch(child, cache, completenessCounter, address, jsonFragment);
 								}
@@ -180,8 +186,9 @@ public class CompletenessCalculator<T extends XmlFieldInstance> implements Calcu
 	}
 
 	private void handleValues(CompletenessCounter completenessCounter, JsonBranch jsonBranch, List<T> values) {
-		if (completeness)
+		if (completeness) {
 			completenessCounter.increaseTotal(jsonBranch.getCategories());
+		}
 
 		if (values != null && !values.isEmpty()) {
 			handleNonNullValues(completenessCounter, jsonBranch, values);
@@ -193,35 +200,41 @@ public class CompletenessCalculator<T extends XmlFieldInstance> implements Calcu
 	private void handleNonNullValues(
 			CompletenessCounter completenessCounter,
 			JsonBranch jsonBranch,
-			List<T> values
-	) {
+			List<T> values) {
 		final String label = jsonBranch.getLabel();
 
-		if (completeness)
+		if (completeness) {
 			completenessCounter.increaseInstance(jsonBranch.getCategories());
+		}
 
-		if (existence)
+		if (existence) {
 			existenceCounter.put(label, true);
+		}
 
-		if (cardinality)
+		if (cardinality) {
 			if (!cardinalityCounter.has(label)) {
 				cardinalityCounter.put(label, values.size());
 			} else {
 				cardinalityCounter.put(label, values.size() + cardinalityCounter.get(label));
 			}
+		}
 
-		if (collectFields)
+		if (collectFields) {
 			existingFields.add(label);
+		}
 	}
 
 	private void handleNullValues(JsonBranch jsonBranch) {
-		if (existence && !existenceCounter.has(jsonBranch.getLabel()))
+		if (existence && !existenceCounter.has(jsonBranch.getLabel())) {
 			existenceCounter.put(jsonBranch.getLabel(), false);
-		if (cardinality && !cardinalityCounter.has(jsonBranch.getLabel()))
+		}
+		if (cardinality && !cardinalityCounter.has(jsonBranch.getLabel())) {
 			cardinalityCounter.put(jsonBranch.getLabel(), 0);
+		}
 		if (collectFields) {
-			if (!missingFields.contains(jsonBranch.getLabel()))
+			if (!missingFields.contains(jsonBranch.getLabel())) {
 				missingFields.add(jsonBranch.getLabel());
+			}
 		}
 	}
 
@@ -253,16 +266,21 @@ public class CompletenessCalculator<T extends XmlFieldInstance> implements Calcu
 	public Map<String, ? extends Object> getResultMap() {
 		Map<String, Object> resultMap = new LinkedHashMap<>();
 
-		if (completeness)
+		if (completeness) {
 			resultMap.putAll(completenessCounter.getFieldCounter().getMap());
+		}
 
-		if (existence)
-			for (Entry e : existenceCounter.getMap().entrySet())
+		if (existence) {
+			for (Entry e : existenceCounter.getMap().entrySet()) {
 				resultMap.put("existence:" + e.getKey(), e.getValue());
+			}
+		}
 
-		if (cardinality)
-			for (Entry e : cardinalityCounter.getMap().entrySet())
+		if (cardinality) {
+			for (Entry e : cardinalityCounter.getMap().entrySet()) {
 				resultMap.put("cardinality:" + e.getKey(), e.getValue());
+			}
+		}
 
 		return resultMap;
 	}
@@ -270,26 +288,32 @@ public class CompletenessCalculator<T extends XmlFieldInstance> implements Calcu
 	@Override
 	public Map<String, Map<String, ? extends Object>> getLabelledResultMap() {
 		Map<String, Map<String, ? extends Object>> resultMap = new LinkedHashMap<>();
-		if (completeness)
+		if (completeness) {
 			resultMap.put("completeness", completenessCounter.getFieldCounter().getMap());
-		if (existence)
+		}
+		if (existence) {
 			resultMap.put("existence", existenceCounter.getMap());
-		if (cardinality)
+		}
+		if (cardinality) {
 			resultMap.put("cardinality", cardinalityCounter.getMap());
+		}
 		return resultMap;
 	}
 
 	@Override
 	public String getCsv(boolean withLabel, CompressionLevel compressionLevel) {
 		List<String> csvs = new ArrayList<>();
-		if (completeness)
+		if (completeness) {
 			csvs.add(completenessCounter.getFieldCounter().getList(withLabel, compressionLevel));
+		}
 
-		if (existence)
+		if (existence) {
 			csvs.add(existenceCounter.getList(withLabel, compressionLevel));
+		}
 
-		if (cardinality)
+		if (cardinality) {
 			csvs.add(cardinalityCounter.getList(withLabel, compressionLevel));
+		}
 
 		return StringUtils.join(csvs, ",");
 	}
@@ -298,19 +322,27 @@ public class CompletenessCalculator<T extends XmlFieldInstance> implements Calcu
 	public List<String> getHeader() {
 		List<String> headers = new ArrayList<>();
 
-		if (completeness)
-			for (String name : CompletenessCounter.getHeaders())
+		if (completeness) {
+			for (String name : CompletenessCounter.getHeaders()) {
 				headers.add("completeness:" + name);
+			}
+		}
 
-		if (existence)
-			for (JsonBranch jsonBranch : schema.getPaths())
-				if (!jsonBranch.isCollection() && jsonBranch.isActive())
+		if (existence) {
+			for (JsonBranch jsonBranch : schema.getPaths()) {
+				if (!jsonBranch.isCollection() && jsonBranch.isActive()) {
 					headers.add("existence:" + jsonBranch.getLabel());
+				}
+			}
+		}
 
-		if (cardinality)
-			for (JsonBranch jsonBranch : schema.getPaths())
-				if (!jsonBranch.isCollection() && jsonBranch.isActive())
+		if (cardinality) {
+			for (JsonBranch jsonBranch : schema.getPaths()) {
+				if (!jsonBranch.isCollection() && jsonBranch.isActive()) {
 					headers.add("cardinality:" + jsonBranch.getLabel());
+				}
+			}
+		}
 
 		return headers;
 	}

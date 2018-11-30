@@ -51,9 +51,12 @@ public class LanguageCalculator implements Calculator, Serializable {
 	@Override
 	public List<String> getHeader() {
 		List<String> headers = new ArrayList<>();
-		for (JsonBranch jsonBranch : schema.getPaths())
-			if (jsonBranch.isActive() && !schema.getNoLanguageFields().contains(jsonBranch.getLabel()))
+		for (JsonBranch jsonBranch : schema.getPaths()) {
+			if (jsonBranch.isActive()
+				&& !schema.getNoLanguageFields().contains(jsonBranch.getLabel())) {
 				headers.add("lang:" + jsonBranch.getLabel());
+			}
+		}
 		return headers;
 	}
 
@@ -65,8 +68,10 @@ public class LanguageCalculator implements Calculator, Serializable {
 		rawLanguageMap = new LinkedHashMap<>();
 		if (schema.getCollectionPaths().isEmpty()) {
 			for (JsonBranch jsonBranch : schema.getPaths()) {
-				if (jsonBranch.isActive() && !schema.getNoLanguageFields().contains(jsonBranch.getLabel()))
+				if (jsonBranch.isActive()
+					&& !schema.getNoLanguageFields().contains(jsonBranch.getLabel())) {
 					extractLanguageTags(null, jsonBranch, jsonBranch.getJsonPath(), cache, languageMap, rawLanguageMap);
+				}
 			}
 		} else {
 			for (JsonBranch collection : schema.getCollectionPaths()) {
@@ -102,8 +107,7 @@ public class LanguageCalculator implements Calculator, Serializable {
 			String address,
 			JsonPathCache cache,
 			FieldCounter<String> languageMap,
-			Map<String, SortedMap<String, Integer>> rawLanguageMap
-	) {
+			Map<String, SortedMap<String, Integer>> rawLanguageMap) {
 		List<EdmFieldInstance> values = cache.get(address, jsonBranch.getJsonPath(), jsonFragment);
 		Map<String, BasicCounter> languages = new TreeMap<>();
 		if (values != null && !values.isEmpty()) {
@@ -133,8 +137,9 @@ public class LanguageCalculator implements Calculator, Serializable {
 				if (!existing.containsKey(key)) {
 					existing.put(key, instance.get(key));
 				} else {
-					if (key != "_1")
+					if (key != "_1") {
 						existing.put(key, existing.get(key) + instance.get(key));
+					}
 				}
 			}
 		}
@@ -152,8 +157,9 @@ public class LanguageCalculator implements Calculator, Serializable {
 	private String extractLanguagesFromRaw(Map<String, Integer> languages) {
 		String result = "";
 		for (String lang : languages.keySet()) {
-			if (result.length() > 0)
+			if (result.length() > 0) {
 				result += ";";
+			}
 			result += lang + ":" + languages.get(lang);
 		}
 		return result;
@@ -162,8 +168,9 @@ public class LanguageCalculator implements Calculator, Serializable {
 	private String extractLanguages(Map<String, BasicCounter> languages) {
 		String result = "";
 		for (String lang : languages.keySet()) {
-			if (result.length() > 0)
+			if (result.length() > 0) {
 				result += ";";
+			}
 			result += lang + ":" + ((Double)languages.get(lang).getTotal()).intValue();
 		}
 		return result;

@@ -25,8 +25,9 @@ public class Clustering {
 
 	public List<List<String>> getClusters() {
 		List<List<String>> clusters = new ArrayList<>();
-		for (Cluster cluster : clusterIndex.values())
+		for (Cluster cluster : clusterIndex.values()) {
 			clusters.add(cluster.getTermList());
+		}
 		return clusters;
 	}
 
@@ -66,8 +67,9 @@ public class Clustering {
 	private void removePassiveClusters() {
 		List<String> removableIds = new ArrayList<>();
 		for (Map.Entry<String, Cluster> cluster : clusterIndex.entrySet()) {
-			if (!cluster.getValue().isActive())
+			if (!cluster.getValue().isActive()) {
 				removableIds.add(cluster.getKey());
+			}
 		}
 		if (!removableIds.isEmpty()) {
 			for (String id : removableIds) {

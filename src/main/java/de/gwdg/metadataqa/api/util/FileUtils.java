@@ -25,8 +25,9 @@ public class FileUtils {
 
 	public static Path getPath(String fileName) throws IOException, URISyntaxException {
 		URL url = classLoader.getResource(fileName);
-		if (url == null)
+		if (url == null) {
 			throw new IOException(String.format("File %s in not available", fileName));
+		}
 		return Paths.get(url.toURI());
 	}
 

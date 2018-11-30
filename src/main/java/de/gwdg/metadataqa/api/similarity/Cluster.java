@@ -29,8 +29,9 @@ public class Cluster {
 	}
 
 	public Cluster merge(Cluster other) {
-		for (Term term : other.getTerms())
+		for (Term term : other.getTerms()) {
 			addTerm(term);
+		}
 
 		return this;
 	}
@@ -39,25 +40,18 @@ public class Cluster {
 		boolean isSimilar = false;
 		for (Term term : terms) {
 			for (Term otherTerm : other.getTerms()) {
-				/*
-				System.err.println(
-					String.format(
-						"%s - %s: %f (%s)", term.value, otherTerm.value,
-						term.getDistance(otherTerm),
-						(term.getDistance(otherTerm) > treshold))
-				);
-				*/
-				if (term.hasDistance(otherTerm) && term.getDistance(otherTerm) > treshold)
+				if (term.hasDistance(otherTerm)
+				    && term.getDistance(otherTerm) > treshold) {
 					isSimilar = true;
-				else {
+				} else {
 					isSimilar = false;
 					break;
 				}
 			}
-			if (!isSimilar)
+			if (!isSimilar) {
 				break;
+			}
 		}
-		// System.err.println("->" + isSimilar);
 
 		return isSimilar;
 	}
@@ -72,10 +66,10 @@ public class Cluster {
 
 	@Override
 	public String toString() {
-		return "Cluster{" +
-			"terms=" + terms +
-			", active=" + isActive +
-			'}';
+		return "Cluster{"
+			+ "terms=" + terms
+			+ ", active=" + isActive
+			+ "}";
 	}
 
 }

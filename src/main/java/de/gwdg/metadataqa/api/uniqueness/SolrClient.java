@@ -96,8 +96,9 @@ public class SolrClient {
 			} catch (IOException e) {
 				e.printStackTrace();
 			} finally {
-				if (urlConnection != null)
+				if (urlConnection != null) {
 					urlConnection.disconnect();
+				}
 			}
 		} catch (MalformedURLException e) {
 			e.printStackTrace();

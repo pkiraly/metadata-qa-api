@@ -78,8 +78,9 @@ public class TfIdfCalculator implements Calculator, Serializable {
 	@Override
 	public void measure(JsonPathCache cache) {
 		String recordId = cache.getRecordId();
-		if (recordId.startsWith("/"))
+		if (recordId.startsWith("/")) {
 			recordId = recordId.substring(1);
+		}
 
 		String solrJsonResponse = getSolrResponse(recordId);
 		TfIdfExtractor extractor = new TfIdfExtractor(schema);

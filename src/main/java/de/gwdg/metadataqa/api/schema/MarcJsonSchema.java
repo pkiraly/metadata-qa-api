@@ -429,10 +429,12 @@ public class MarcJsonSchema implements Schema, ProblemCatalogSchema, Serializabl
 
 	private static void addPath(JsonBranch branch) {
 		paths.put(branch.getLabel(), branch);
-		if (branch.getParent() == null)
+		if (branch.getParent() == null) {
 			directChildren.put(branch.getLabel(), branch);
-		if (branch.isCollection())
+		}
+		if (branch.isCollection()) {
 			collectionPaths.put(branch.getLabel(), branch);
+		}
 	}
 
 	@Override

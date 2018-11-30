@@ -156,7 +156,6 @@ public class CalculatorFacade implements Serializable {
 	public void configure() {
 		logger.info("configure()");
 		calculators = new ArrayList<>();
-		// EdmSchema schema = new EdmOaiPmhXmlSchema();
 
 		if (fieldExtractorEnabled) {
 			fieldExtractor = new FieldExtractor(schema);
@@ -194,8 +193,10 @@ public class CalculatorFacade implements Serializable {
 
 		if (multilingualSaturationMeasurementEnabled) {
 			multilingualSaturationCalculator = new MultilingualitySaturationCalculator(schema);
-			if (saturationExtendedResult)
-				multilingualSaturationCalculator.setResultType(MultilingualitySaturationCalculator.ResultTypes.EXTENDED);
+			if (saturationExtendedResult) {
+				multilingualSaturationCalculator
+					.setResultType(MultilingualitySaturationCalculator.ResultTypes.EXTENDED);
+			}
 			calculators.add(multilingualSaturationCalculator);
 		}
 	}
@@ -517,8 +518,9 @@ public class CalculatorFacade implements Serializable {
 	}
 
 	public void configureSolr(String solrHost, String solrPort, String solrPath) {
-		if (this.tfidfCalculator != null)
+		if (this.tfidfCalculator != null) {
 			this.tfidfCalculator.setSolr(solrHost, solrPort, solrPath);
+		}
 	}
 
 	public List<String> getHeader() {

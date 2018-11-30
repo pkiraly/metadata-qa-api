@@ -61,8 +61,9 @@ public class TfIdfExtractor {
 		String path = String.format("$.termVectors.['%s']", recordId);
 		Map value = (LinkedHashMap) JsonPath.read(document, path);
 		for (String field : schema.getSolrFields().keySet()) {
-			if (doCollectTerms)
+			if (doCollectTerms) {
 				termsCollection.put(field, new ArrayList<>());
+			}
 			String solrField = schema.getSolrFields().get(field);
 			double sum = 0;
 			double count = 0;

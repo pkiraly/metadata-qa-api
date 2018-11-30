@@ -130,10 +130,11 @@ public class ProfileReader {
 		List<String> binary = new ArrayList<>();
 		for (String field : canonicalFieldList) {
 			String bit = actual.contains(field) ? "1" : "0";
-			if (mandatoryFields.contains(field))
+			if (mandatoryFields.contains(field)) {
 				bit = bit + bit + bit;
-			else if (functionalFields.contains(field))
+			} else if (functionalFields.contains(field)) {
 				bit = bit + bit;
+			}
 			binary.add(bit);
 		}
 		return StringUtils.join(binary, "");

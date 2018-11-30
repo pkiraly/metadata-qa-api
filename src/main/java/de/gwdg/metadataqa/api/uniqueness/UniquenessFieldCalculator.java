@@ -39,14 +39,13 @@ public class UniquenessFieldCalculator {
 				if (StringUtils.isNotBlank(value)) {
 					String solrResponse = solrClient.getSolrSearchResponse(uniquenessField.getSolrField(), value);
 					int count = extractor.extractNumFound(solrResponse, recordId);
-					if (count == 0)
+					if (count == 0) {
 						count = 1;
-					// logger.severe(solrResponse);
+					}
 					double score = Math.pow(
 						(calculateScore(uniquenessField.getTotal(), count) / uniquenessField.getScoreForUniqueValue()),
 						3.0
 					);
-					// logger.info(String.format("%d/%d -> %f", count, uniquenessField.getTotal(), score));
 
 					counts.add((double)count);
 					scores.add(score);
@@ -68,8 +67,9 @@ public class UniquenessFieldCalculator {
 				result = numbers.get(0);
 			} else {
 				double total = 0;
-				for (double number : numbers)
+				for (double number : numbers) {
 					total += number;
+				}
 				result = total / numbers.size();
 			}
 			if (type.equals("score") && (result < 0.0 || result > 1.0)) {

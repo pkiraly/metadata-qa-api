@@ -44,11 +44,13 @@ public class EdmFieldInstance extends XmlFieldInstance {
 	}
 
 	public String getUrl() {
-		if (hasResource())
+		if (hasResource()) {
 			return getResource();
+		}
 
-		if (isUrl())
+		if (isUrl()) {
 			return getValue();
+		}
 
 		return null;
 	}

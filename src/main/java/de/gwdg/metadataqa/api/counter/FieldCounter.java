@@ -58,8 +58,9 @@ public class FieldCounter<T> {
 			}
 			String value = Converter.asString(entry.getValue());
 			if (!(entry.getValue() instanceof Integer)
-			    && compressionLevel != CompressionLevel.ZERO)
+			    && compressionLevel != CompressionLevel.ZERO) {
 				value = Converter.compressNumber(value, compressionLevel);
+			}
 			item += value;
 			items.add(item);
 		}

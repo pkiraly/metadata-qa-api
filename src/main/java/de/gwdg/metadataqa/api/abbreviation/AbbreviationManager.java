@@ -131,8 +131,9 @@ public class AbbreviationManager implements Serializable {
 	public String searchById(Integer id) {
 		if (data.containsValue(id)) {
 			for (String key : data.keySet()) {
-				if (data.get(key).equals(id))
+				if (data.get(key).equals(id)) {
 					return key;
+				}
 			}
 		}
 

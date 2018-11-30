@@ -116,16 +116,19 @@ public class MultilingualitySaturationCalculator implements Calculator, Serializ
 
 	private void measureFlatSchema(JsonPathCache cache) {
 		for (JsonBranch jsonBranch : schema.getPaths()) {
-			if (jsonBranch.isActive() && !schema.getNoLanguageFields().contains(jsonBranch.getLabel()))
+			if (jsonBranch.isActive()
+				&& !schema.getNoLanguageFields().contains(jsonBranch.getLabel())) {
 				extractLanguageTags(null, jsonBranch, jsonBranch.getJsonPath(), cache, rawLanguageMap);
+			}
 		}
 	}
 
 	private void measureHierarchicalSchema(JsonPathCache cache) {
 		List<String> skippableIds = getSkippableIds(cache);
 		for (JsonBranch collection : schema.getCollectionPaths()) {
-			if (!collection.isActive())
+			if (!collection.isActive()) {
 				continue;
+			}
 			Object rawJsonFragment = cache.getFragment(collection.getJsonPath());
 			if (rawJsonFragment == null) {
 				measureMissingCollection(collection);
@@ -168,7 +171,8 @@ public class MultilingualitySaturationCalculator implements Calculator, Serializ
 					// TODO???
 				} else {
 					for (JsonBranch child : collection.getChildren()) {
-						if (child.isActive() && !schema.getNoLanguageFields().contains(child.getLabel())) {
+						if (child.isActive()
+							&& !schema.getNoLanguageFields().contains(child.getLabel())) {
 							String address = String.format(
 								"%s/%d/%s",
 								collection.getJsonPath(), i, child.getJsonPath()
@@ -186,8 +190,7 @@ public class MultilingualitySaturationCalculator implements Calculator, Serializ
 			JsonBranch jsonBranch,
 			String address,
 			JsonPathCache cache,
-			Map<String, List<SortedMap<LanguageSaturationType, Double>>> rawLanguageMap
-	) {
+			Map<String, List<SortedMap<LanguageSaturationType, Double>>> rawLanguageMap) {
 		List<EdmFieldInstance> values = cache.get(address, jsonBranch.getJsonPath(), jsonFragment);
 		Map<LanguageSaturationType, BasicCounter> languages = new TreeMap<>();
 		Set<String> individualLanguages = new HashSet<>();
@@ -229,8 +232,9 @@ public class MultilingualitySaturationCalculator implements Calculator, Serializ
 	private String extractLanguagesFromRaw(Map<String, Integer> languages) {
 		String result = "";
 		for (String lang : languages.keySet()) {
-			if (result.length() > 0)
+			if (result.length() > 0) {
 				result += ";";
+			}
 			result += lang + ":" + languages.get(lang);
 		}
 		return result;
@@ -239,8 +243,9 @@ public class MultilingualitySaturationCalculator implements Calculator, Serializ
 	private String extractLanguages(Map<String, BasicCounter> languages) {
 		String result = "";
 		for (String lang : languages.keySet()) {
-			if (result.length() > 0)
+			if (result.length() > 0) {
 				result += ";";
+			}
 			result += lang + ":" + languages.get(lang).getTotalAsInt();
 		}
 		return result;
@@ -314,13 +319,16 @@ public class MultilingualitySaturationCalculator implements Calculator, Serializ
 	private SortedMap<LanguageSaturationType, Double> keepOnlyTheBest(SortedMap<LanguageSaturationType, Double> result) {
 		if (result.size() > 1) {
 			LanguageSaturationType best = LanguageSaturationType.NA;
-			for (LanguageSaturationType key : result.keySet())
-				if (key.value() > best.value())
+			for (LanguageSaturationType key : result.keySet()) {
+				if (key.value() > best.value()) {
 					best = key;
+				}
+			}
 
 			if (best != LanguageSaturationType.NA) {
 				double modifier = 0.0;
-				if (best == LanguageSaturationType.TRANSLATION && result.containsKey(LanguageSaturationType.STRING)) {
+				if (best == LanguageSaturationType.TRANSLATION
+				    && result.containsKey(LanguageSaturationType.STRING)) {
 					modifier = -0.2;
 				}
 				SortedMap<LanguageSaturationType, Double> replacement = new TreeMap<>();
@@ -343,8 +351,9 @@ public class MultilingualitySaturationCalculator implements Calculator, Serializ
 			boolean isSet = false;
 			for (SortedMap<LanguageSaturationType, Double> value : values) {
 				double saturation = value.firstKey().value();
-				if (saturation == -1.0)
+				if (saturation == -1.0) {
 					continue;
+				}
 				double weight = value.get(value.firstKey());
 				if (value.firstKey() == LanguageSaturationType.TRANSLATION) {
 					saturation += weight;
@@ -388,8 +397,9 @@ public class MultilingualitySaturationCalculator implements Calculator, Serializ
 	private double summarize(List<Double> sums) {
 		double sum;
 		sum = 0.0;
-		for (Double item : sums)
+		for (Double item : sums) {
 			sum += item;
+		}
 		return sum;
 	}
 
