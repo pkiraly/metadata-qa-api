@@ -18,7 +18,7 @@ public class CompletenessCounter {
 	public CompletenessCounter() {
 		initialize();
 	}
-	
+
 	public BasicCounter get(String key) {
 		return basicCounters.get(key);
 	}

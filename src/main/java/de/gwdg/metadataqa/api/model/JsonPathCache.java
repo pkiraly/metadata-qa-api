@@ -30,11 +30,11 @@ public class JsonPathCache<T extends XmlFieldInstance> {
 	private final Map<String, List<T>> cache = new HashMap<>();
 	private final Map<String, Object> typedCache = new HashMap<>();
 	private final Map<String, Object> fragmentCache = new HashMap<>();
-	private JsonProvider jsonProvider = Configuration.defaultConfiguration().jsonProvider();
+	private static final JsonProvider JSON_PROVIDER = Configuration.defaultConfiguration().jsonProvider();
 
 	public JsonPathCache(String jsonString) throws InvalidJsonException {
 		this.jsonString = jsonString;
-		this.jsonDocument = jsonProvider.parse(jsonString);
+		this.jsonDocument = JSON_PROVIDER.parse(jsonString);
 	}
 
 	public JsonPathCache(Object jsonDocument) {
@@ -110,11 +110,14 @@ public class JsonPathCache<T extends XmlFieldInstance> {
 	}
 
 	/**
-	 * Get a JSON fragment from cache
+	 * Get a JSON fragment from cache.
+	 *
 	 * @param address - a unique address for cahce
 	 * @param jsonPath - a JSON path expression
 	 * @param jsonFragment - a JSON fragment in which the path should be searched for
+	 *
 	 * @return
+	 *   The JSON fragment
 	 */
 	public Object getFragment(String address, String jsonPath, Object jsonFragment) {
 		Object jsonFragment2 = null;
@@ -128,8 +131,9 @@ public class JsonPathCache<T extends XmlFieldInstance> {
 	}
 
 	/**
-	 * Gets the record identifier
-	 * @return 
+	 * Gets the record identifier.
+	 *
+	 * @return
 	 *   The record identifier
 	 */
 	public String getRecordId() {

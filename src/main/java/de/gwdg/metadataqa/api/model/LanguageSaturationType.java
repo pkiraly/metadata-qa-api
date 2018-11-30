@@ -6,11 +6,11 @@ package de.gwdg.metadataqa.api.model;
  */
 public enum LanguageSaturationType {
 
-	NA          (-1.0),
-	STRING      (0.0),
-	LANGUAGE    (1.0),
-	TRANSLATION (2.0),
-	LINK        (3.0);
+	NA(-1.0),
+	STRING(0.0),
+	LANGUAGE(1.0),
+	TRANSLATION(2.0),
+	LINK(3.0);
 
 	private final double value;
 

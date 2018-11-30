@@ -369,7 +369,6 @@ public class MarcJsonSchema implements Schema, ProblemCatalogSchema, Serializabl
 		return new JsonBranch(tag + "$" + code, createDatafieldPath(tag, code));
 	}
 
-	
 	public static String createDatafieldPath(String tag, String code) {
 		return String.format(DATAFIELD_PATTERN, tag, code);
 	}

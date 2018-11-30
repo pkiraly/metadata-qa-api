@@ -9,6 +9,6 @@ import java.util.List;
  * @author Péter Király <peter.kiraly at gwdg.de>
  */
 public interface SkippedEntryChecker {
-	public List<String> getSkippableCollectionIds(JsonPathCache jsonPathCache);
-	public <T extends XmlFieldInstance> String extractId(T value);
+	List<String> getSkippableCollectionIds(JsonPathCache jsonPathCache);
+	<T extends XmlFieldInstance> String extractId(T value);
 }

@@ -15,6 +15,7 @@ public interface Observable {
 
 	/**
 	 * Add an observer object to the subject.
+	 *
 	 * @param observer
 	 *   An observer object
 	 */
@@ -22,7 +23,8 @@ public interface Observable {
 
 	/**
 	 * Removes an observer object from the list of registered observers.
-	 * @param observer 
+	 *
+	 * @param observer
 	 *   An observer object
 	 */
 	void deleteObserver(Observer observer);

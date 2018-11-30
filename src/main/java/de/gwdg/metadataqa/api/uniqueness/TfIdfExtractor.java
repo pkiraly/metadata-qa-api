@@ -29,8 +29,8 @@ public class TfIdfExtractor {
 
 	/**
 	 * Extracts sums and average of TF-IDF value for the schema's Solr field array
-	 * without collecting the terms
-	 * 
+	 * without collecting the terms.
+	 *
 	 * @param jsonString
 	 *    The JSON string
 	 * @param recordId
@@ -43,8 +43,8 @@ public class TfIdfExtractor {
 	}
 
 	/**
-	 * Extracts sums and average of TF-IDF value for the schema's Solr field array
-	 * 
+	 * Extracts sums and average of TF-IDF value for the schema's Solr field array.
+	 *
 	 * @param jsonString
 	 *    The JSON string
 	 * @param recordId
@@ -91,7 +91,8 @@ public class TfIdfExtractor {
 	/**
 	 * Returns the term collection. The term collection is a map. The keys are the
 	 * field names, the values are the list of TfIdf objects.
-	 * @return 
+	 *
+	 * @return
 	 *    The term collection
 	 */
 	public Map<String, List<TfIdf>> getTermsCollection() {

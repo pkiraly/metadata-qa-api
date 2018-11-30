@@ -32,47 +32,47 @@ public class CalculatorFacade implements Serializable {
 	protected boolean fieldExtractorEnabled = false;
 	/**
 	 * Flag whether or not run the field existence measurement
-	 * (default: true)
+	 * (default: true).
 	 */
 	protected boolean fieldExistenceMeasurementEnabled = true;
 	/**
 	 * Flag whether or not run the field cardinality measurement
-	 * (default: true)
+	 * (default: true).
 	 */
 	protected boolean fieldCardinalityMeasurementEnabled = true;
 	/**
 	 * Flag whether or not run the completeness measurement
-	 * (default: true)
+	 * (default: true).
 	 */
 	protected boolean completenessMeasurementEnabled = true;
 	/**
 	 * Flag whether or not run the uniqueness measurement
-	 * (default: false)
+	 * (default: false).
 	 */
 	protected boolean tfIdfMeasurementEnabled = false;
 	/**
 	 * Flag whether or not run the problem catalog
-	 * (default: false)
+	 * (default: false).
 	 */
 	protected boolean problemCatalogMeasurementEnabled = false;
 	/**
 	 * Flag whether or not run the language detector
-	 * (default: false)
+	 * (default: false).
 	 */
 	protected boolean languageMeasurementEnabled = false;
 	/**
 	 * Flag whether or not run the multilingual saturation measurement
-	 * (default: false)
+	 * (default: false).
 	 */
 	protected boolean multilingualSaturationMeasurementEnabled = false;
 	/**
 	 * Flag whether or not collect TF-IDF terms in uniqueness measurement
-	 * (default: false)
+	 * (default: false).
 	 */
 	protected boolean collectTfIdfTerms = false;
 	/**
 	 * Flag whether or not run missing/empty/existing field collection in completeness
-	 * (default: false)
+	 * (default: false).
 	 */
 	protected boolean completenessCollectFields = false;
 	protected boolean saturationExtendedResult = false;
@@ -112,7 +112,7 @@ public class CalculatorFacade implements Serializable {
 	protected MultilingualitySaturationCalculator multilingualSaturationCalculator;
 
 	protected JsonPathCache<? extends XmlFieldInstance> cache;
-	
+
 	protected Schema schema;
 
 	/**
@@ -207,7 +207,7 @@ public class CalculatorFacade implements Serializable {
 	 *   The JSON record string
 	 * @return
 	 *   The result of measurements as a CSV string
-	 * @throws InvalidJsonException 
+	 * @throws InvalidJsonException
 	 */
 	public String measure(String jsonRecord) throws InvalidJsonException {
 		return this.<XmlFieldInstance>measureWithGenerics(jsonRecord);
@@ -215,10 +215,11 @@ public class CalculatorFacade implements Serializable {
 
 	/**
 	 * The generic version of measure.
+	 *
 	 * The class to pass should define the individual field's representations, so
 	 * it is bound to the schema the record in. The class should be the extension
-	 * of XmlFieldInstance
-	 * 
+	 * of XmlFieldInstance.
+	 *
 	 * @param <T>
 	 *   A class defining the internal representation of a field. It should be
 	 *   an extension of XmlFieldInstance
@@ -226,9 +227,9 @@ public class CalculatorFacade implements Serializable {
 	 *   The JSON record
 	 * @return
 	 *   The result of measurements as a CSV string
-	 * @throws InvalidJsonException 
+	 * @throws InvalidJsonException
 	 */
-	protected <T extends XmlFieldInstance> String measureWithGenerics(String jsonRecord) 
+	protected <T extends XmlFieldInstance> String measureWithGenerics(String jsonRecord)
 			throws InvalidJsonException {
 		changed();
 
@@ -253,8 +254,8 @@ public class CalculatorFacade implements Serializable {
 	}
 
 	/**
-	 * Returns whether or not to run the field existence measurement
-	 * @return 
+	 * Returns whether or not to run the field existence measurement.
+	 * @return
 	 *   field existence measurement flag
 	 */
 	public boolean isFieldExistenceMeasurementEnabled() {
@@ -262,7 +263,7 @@ public class CalculatorFacade implements Serializable {
 	}
 
 	/**
-	 * Sets whether or not to run the field existence measurement
+	 * Sets whether or not to run the field existence measurement.
 	 * @param runFieldExistence
 	 *    field existence measurement flag
 	 */
@@ -274,7 +275,7 @@ public class CalculatorFacade implements Serializable {
 	}
 
 	/**
-	 * Returns whether or not to run cardinality measurement
+	 * Returns whether or not to run cardinality measurement.
 	 * @return
 	 *   Flag to run cardinality measurement
 	 */
@@ -316,7 +317,8 @@ public class CalculatorFacade implements Serializable {
 	}
 
 	/**
-	 * Returns the flag whether or not run the language detector
+	 * Returns the flag whether or not run the language detector.
+	 *
 	 * @return
 	 *   language detector flag
 	 */
@@ -325,15 +327,17 @@ public class CalculatorFacade implements Serializable {
 	}
 
 	/**
-	 * Configure whether or not run the language detector
-	 * @param runLanguage 
+	 * Configure whether or not run the language detector.
+	 *
+	 * @param runLanguage
 	 */
 	public void enableLanguageMeasurement(boolean runLanguage) {
 		this.languageMeasurementEnabled = runLanguage;
 	}
 
 	/**
-	 * Returns the flag whether or not run the language detector
+	 * Returns the flag whether or not run the language detector.
+	 *
 	 * @return
 	 *   language detector flag
 	 */
@@ -342,7 +346,8 @@ public class CalculatorFacade implements Serializable {
 	}
 
 	/**
-	 * Configure whether or not run the language detector
+	 * Configure whether or not run the language detector.
+	 *
 	 * @param runMultilingualSaturation
 	 */
 	public void enableMultilingualSaturationMeasurement(boolean runMultilingualSaturation) {
@@ -350,7 +355,8 @@ public class CalculatorFacade implements Serializable {
 	}
 
 	/**
-	 * Returns whether or not run the uniqueness measurement
+	 * Returns whether or not run the uniqueness measurement.
+	 *
 	 * @return
 	 *   uniqueness measurement flag
 	 */
@@ -392,7 +398,8 @@ public class CalculatorFacade implements Serializable {
 	}
 
 	/**
-	 * Return the list of all registered calculators
+	 * Return the list of all registered calculators.
+	 *
 	 * @return
 	 *   The calculators
 	 */
@@ -401,8 +408,9 @@ public class CalculatorFacade implements Serializable {
 	}
 
 	/**
-	 * Returns the flag whether the measurement should collect each individual 
-	 * terms with their Term Ferquency and Invers Document Frequency scores
+	 * Returns the flag whether the measurement should collect each individual
+	 * terms with their Term Ferquency and Invers Document Frequency scores.
+	 *
 	 * @return
 	 *   The TF-IDF collector flag
 	 */
@@ -411,8 +419,9 @@ public class CalculatorFacade implements Serializable {
 	}
 
 	/**
-	 * Sets the flag whether the measurement should collect each individual 
-	 * terms with their Term Ferquency and Invers Document Frequency scores
+	 * Sets the flag whether the measurement should collect each individual
+	 * terms with their Term Ferquency and Invers Document Frequency scores.
+	 *
 	 * @param collectTfIdfTerms
 	 *   The TF-IDF collector flag
 	 */
@@ -427,7 +436,8 @@ public class CalculatorFacade implements Serializable {
 	}
 
 	/**
-	 * Get the completenessCollectFields flag
+	 * Get the completenessCollectFields flag.
+	 *
 	 * @return
 	 *   completenessCollectFields flag
 	 */
@@ -436,7 +446,8 @@ public class CalculatorFacade implements Serializable {
 	}
 
 	/**
-	 * The completeness calculation will collect empty, existent and missing fields
+	 * The completeness calculation will collect empty, existent and missing fields.
+	 *
 	 * @param completenessCollectFields
 	 *   The completenessCollectFields flag
 	 */
@@ -448,7 +459,8 @@ public class CalculatorFacade implements Serializable {
 	}
 
 	/**
-	 * Returns the list of existing fields
+	 * Returns the list of existing fields.
+	 *
 	 * @return
 	 *   The list of existing fields
 	 */
@@ -457,7 +469,8 @@ public class CalculatorFacade implements Serializable {
 	}
 
 	/**
-	 * Returns the list of empty fields
+	 * Returns the list of empty fields.
+	 *
 	 * @return
 	 *   The list of empty fields
 	 */
@@ -466,7 +479,8 @@ public class CalculatorFacade implements Serializable {
 	}
 
 	/**
-	 * Returns the list of missing fields
+	 * Returns the list of missing fields.
+	 *
 	 * @return
 	 *    The list of missing fields
 	 */
@@ -476,7 +490,8 @@ public class CalculatorFacade implements Serializable {
 
 	/**
 	 * Returns the TF-IDF term map. The keys are the field names, the values are
-	 * lists of TfIdf objects
+	 * lists of TfIdf objects.
+	 *
 	 * @return
 	 *   TF-IDF term list
 	 * @see
@@ -487,11 +502,12 @@ public class CalculatorFacade implements Serializable {
 	}
 
 	/**
-	 * Returns the result map
+	 * Returns the result map.
+	 *
 	 * @return
 	 *   The result map
 	 * @see
-	 *   Counters#getResults() 
+	 *   Counters#getResults()
 	 */
 	public Map<String, Object> getResults() {
 		Map<String, Object> results = new LinkedHashMap<>();

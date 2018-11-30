@@ -14,10 +14,10 @@ public interface Observer {
 	/**
 	 * A push method which is called by the subject, and which transport information
 	 * to the Observer objects.
-	 * 
+	 *
 	 * @param cache
 	 *   The JSON cache object
-	 * @param results 
+	 * @param results
 	 *   The result map
 	 */
 	void update(JsonPathCache cache, FieldCounter<Double> results);

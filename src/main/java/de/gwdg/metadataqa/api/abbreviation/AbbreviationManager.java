@@ -114,10 +114,12 @@ public class AbbreviationManager implements Serializable {
 	}
 
 	/**
-	 * Save the abbreviations into a file
-	 * @param fileName The file name
+	 * Save the abbreviations into a file.
+	 *
+	 * @param fileName The file name.
+	 *
 	 * @throws FileNotFoundException
-	 * @throws UnsupportedEncodingException 
+	 * @throws UnsupportedEncodingException
 	 */
 	public void save(String fileName)
 			throws FileNotFoundException, UnsupportedEncodingException {
@@ -145,7 +147,7 @@ public class AbbreviationManager implements Serializable {
 	 * @param fileName The file name
 	 * @return The Path object
 	 * @throws IOException
-	 * @throws URISyntaxException 
+	 * @throws URISyntaxException
 	 */
 	private Path getPath(String fileName)
 			throws IOException, URISyntaxException {

@@ -23,11 +23,12 @@ class QALanguageDetector {
 	private LanguageDetector languageDetector;
 	private TextObjectFactory textObjectFactory;
 
-	public QALanguageDetector() throws IOException {
+	QALanguageDetector() throws IOException {
 		languageProfiles = new LanguageProfileReader().readAllBuiltIn();
 
 		//build language detector:
-		languageDetector = LanguageDetectorBuilder.create(NgramExtractors.standard())
+		languageDetector = LanguageDetectorBuilder
+			.create(NgramExtractors.standard())
 			.withProfiles(languageProfiles)
 			.build();
 

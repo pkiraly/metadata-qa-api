@@ -25,8 +25,8 @@ public class AmbiguousPrefLabel extends ProblemDetector implements Serializable 
 
 	private static final String NAME = "AmbiguousPrefLabel";
 	private static final List<String> LABELS = Arrays.asList(
-		"Agent/skos:prefLabel", 
-		"Concept/skos:prefLabel", 
+		"Agent/skos:prefLabel",
+		"Concept/skos:prefLabel",
 		"Place/skos:prefLabel",
 		"Timespan/skos:prefLabel"
 	);

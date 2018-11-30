@@ -2,13 +2,13 @@ package de.gwdg.metadataqa.api.uniqueness;
 
 /**
  * A value object holding information about TF-IDF elements.
- * 
+ *
  * @author Péter Király <peter.kiraly at gwdg.de>
  */
 public class TfIdf {
 
 	/**
-	 * The indexed term
+	 * The indexed term.
 	 */
 	private String term;
 
@@ -28,7 +28,8 @@ public class TfIdf {
 	private double tfIdf;
 
 	/**
-	 * Creates the TF-IDF object
+	 * Creates the TF-IDF object.
+	 *
 	 * @param term
 	 *    The indexed term
 	 * @param tf
@@ -46,7 +47,8 @@ public class TfIdf {
 	}
 
 	/**
-	 * Returns the indexed term
+	 * Returns the indexed term.
+	 *
 	 * @return
 	 *    The indexed term
 	 */
@@ -55,16 +57,18 @@ public class TfIdf {
 	}
 
 	/**
-	 * Set the indexed term
-	 * @param term
+	 * Set the indexed term.
+	 *
+	 * @param value
 	 *    The indexed term
 	 */
-	public void setTerm(String term) {
-		this.term = term;
+	public void setTerm(String value) {
+		this.term = value;
 	}
 
 	/**
 	 * Returns term frequency (the number of times the term occurs in the field).
+	 *
 	 * @return
 	 *   Term frequency (the number of times the term occurs in the field).
 	 */
@@ -74,15 +78,17 @@ public class TfIdf {
 
 	/**
 	 * Sets term frequency (the number of times the term occurs in the field).
-	 * @param tf
+	 *
+	 * @param value
 	 *    Term frequency (the number of times the term occurs in the field).
 	 */
-	public void setTf(int tf) {
-		this.tf = tf;
+	public void setTf(int value) {
+		this.tf = value;
 	}
 
 	/**
 	 * Returns the document frequency (the number of documents the term occurs in).
+	 *
 	 * @return
 	 *    Document frequency (the number of documents the term occurs in).
 	 */
@@ -92,15 +98,17 @@ public class TfIdf {
 
 	/**
 	 * Sets document frequency (the number of documents the term occurs in).
-	 * @param df
+	 *
+	 * @param value
 	 *    Document frequency (the number of documents the term occurs in).
 	 */
-	public void setDf(int df) {
-		this.df = df;
+	public void setDf(int value) {
+		this.df = value;
 	}
 
 	/**
 	 * Returns the TF-IDF number read from Apache Solr.
+	 *
 	 * @return
 	 *    The TF-IDF number read from Apache Solr.
 	 */
@@ -110,15 +118,17 @@ public class TfIdf {
 
 	/**
 	 * Sets the TF-IDF number read from Apache Solr.
-	 * @param tfIdf
+	 *
+	 * @param value
 	 *    The TF-IDF number read from Apache Solr.
 	 */
-	public void setTfIdf(double tfIdf) {
-		this.tfIdf = tfIdf;
+	public void setTfIdf(double value) {
+		this.tfIdf = value;
 	}
 
 	/**
-	 * Returns a string representation of the object
+	 * Returns a string representation of the object.
+	 *
 	 * @return
 	 *   The string representation
 	 */

@@ -32,12 +32,13 @@ public class MultilingualitySaturationCalculator implements Calculator, Serializ
 
 	public static final String CALCULATOR_NAME = "multilingualitySaturation";
 
-	private static final Logger LOGGER = Logger.getLogger(MultilingualitySaturationCalculator.class.getCanonicalName());
+	private static final Logger LOGGER = Logger.getLogger(
+		MultilingualitySaturationCalculator.class.getCanonicalName());
 	private static final String NA = "n.a.";
 
 	public enum ResultTypes {
-		NORMAL        (0),
-		EXTENDED      (1);
+		NORMAL(0),
+		EXTENDED(1);
 
 		private final int value;
 
@@ -154,7 +155,7 @@ public class MultilingualitySaturationCalculator implements Calculator, Serializ
 		}
 	}
 
-	private void measureExistingCollection(Object rawJsonFragment, 
+	private void measureExistingCollection(Object rawJsonFragment,
 			  JsonBranch collection, JsonPathCache cache, List<String> skippableIds) {
 		List<Object> jsonFragments = Converter.jsonObjectToList(rawJsonFragment);
 		if (jsonFragments.isEmpty()) {
@@ -339,7 +340,7 @@ public class MultilingualitySaturationCalculator implements Calculator, Serializ
 		return result;
 	}
 
-	private FieldCounter<Double> calculateScore(Map<String, 
+	private FieldCounter<Double> calculateScore(Map<String,
 			List<SortedMap<LanguageSaturationType, Double>>> rawLanguageMap) {
 		double sum, average, normalized;
 		List<Double> sums = new ArrayList<>();
@@ -362,7 +363,9 @@ public class MultilingualitySaturationCalculator implements Calculator, Serializ
 				isSet = true;
 			}
 			if (!isSet) {
-				sum = average = normalized = LanguageSaturationType.NA.value();
+				average = LanguageSaturationType.NA.value();
+				normalized = LanguageSaturationType.NA.value();
+				sum = LanguageSaturationType.NA.value();
 			} else {
 				average = sum / (double) values.size();
 				normalized = normalize(average);

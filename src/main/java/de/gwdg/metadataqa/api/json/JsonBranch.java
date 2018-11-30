@@ -13,14 +13,19 @@ public class JsonBranch implements Cloneable, Serializable {
 
 	public enum Category {
 
-		MANDATORY("mandatory"), DESCRIPTIVENESS("descriptiveness"),
-		SEARCHABILITY("searchability"), CONTEXTUALIZATION("contextualization"),
-		IDENTIFICATION("identification"), BROWSING("browsing"), VIEWING("viewing"),
-		REUSABILITY("re-usability"), MULTILINGUALITY("multilinguality");
+		MANDATORY("mandatory"),
+		DESCRIPTIVENESS("descriptiveness"),
+		SEARCHABILITY("searchability"),
+		CONTEXTUALIZATION("contextualization"),
+		IDENTIFICATION("identification"),
+		BROWSING("browsing"),
+		VIEWING("viewing"),
+		REUSABILITY("re-usability"),
+		MULTILINGUALITY("multilinguality");
 
 		private final String name;
 
-		private Category(String name) {
+		Category(String name) {
 			this.name = name;
 		}
 	};

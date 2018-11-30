@@ -177,10 +177,7 @@ public class CompletenessCalculator<T extends XmlFieldInstance> implements Calcu
 			JsonPathCache cache,
 			CompletenessCounter completenessCounter,
 			String address,
-			Object jsonFragment
-	) {
-		// System.err.println(String.format("%s -- %s -- %s", 
-		// address, jsonBranch.getJsonPath(), jsonBranch.getLabel()));
+			Object jsonFragment) {
 		List<T> values = cache.get(address, jsonBranch.getJsonPath(), jsonFragment);
 		handleValues(completenessCounter, jsonBranch, values);
 	}

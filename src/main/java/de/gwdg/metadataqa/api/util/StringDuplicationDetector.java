@@ -25,8 +25,8 @@ public class StringDuplicationDetector {
 			if (input.substring(0, half).equals(input.substring(half))) {
 				return true;
 			}
-			if (input.substring(half, half + 1).equals(" ") 
-					  && input.substring(half - 1, half).matches("[;,]")) {
+			if (input.substring(half, half + 1).equals(" ")
+			    && input.substring(half - 1, half).matches("[;,]")) {
 				return input.substring(0, half - 1).equals(input.substring(half + 1));
 			}
 		} else {
@@ -41,5 +41,4 @@ public class StringDuplicationDetector {
 		}
 		return false;
 	}
-	
 }
