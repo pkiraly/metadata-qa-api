@@ -25,8 +25,17 @@ public class JsonBranchTest {
 		europeanaProxy.setJsonPath(
 			providerProxy.getJsonPath().replace("false", "true"));
 
+		assertEquals("$.['proxies'][?(@['europeanaProxy'] == false)]", providerProxy.getJsonPath());
+		assertEquals(56, providerProxy.getChildren().size());
+		assertEquals(providerProxy.hashCode(), providerProxy.getChildren().get(0).getParent().hashCode());
+		assertEquals("$.['proxies'][?(@['europeanaProxy'] == false)]",
+			providerProxy.getChildren().get(0).getParent().getJsonPath());
+		assertEquals("$.['proxies'][?(@['europeanaProxy'] == false)][*]['about']",
+			providerProxy.getChildren().get(0).getAbsoluteJsonPath());
+
 		assertEquals("$.['proxies'][?(@['europeanaProxy'] == true)]", europeanaProxy.getJsonPath());
 		assertEquals(56, europeanaProxy.getChildren().size());
+		assertEquals(europeanaProxy.hashCode(), europeanaProxy.getChildren().get(0).getParent().hashCode());
 		assertEquals("$.['proxies'][?(@['europeanaProxy'] == true)]",
 			europeanaProxy.getChildren().get(0).getParent().getJsonPath());
 		assertEquals("$.['proxies'][?(@['europeanaProxy'] == true)][*]['about']",

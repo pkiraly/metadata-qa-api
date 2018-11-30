@@ -168,11 +168,15 @@ public class JsonBranch implements Cloneable, Serializable {
 	@Override
 	public Object clone() throws CloneNotSupportedException {
 		JsonBranch cloned = (JsonBranch) super.clone();
-		if (parent != null) {
-			cloned.parent = (JsonBranch) parent.clone();
-		}
-		for (JsonBranch child : cloned.children) {
-			child.parent = cloned;
+
+		if (children != null && children.size() > 0) {
+			List<JsonBranch> clonedChildren = new ArrayList<JsonBranch>();
+			for (JsonBranch child : children) {
+				JsonBranch clonedChild = (JsonBranch) child.clone();
+				clonedChild.parent = cloned;
+				clonedChildren.add(clonedChild);
+			}
+			cloned.children = clonedChildren;
 		}
 
 		return cloned;
