@@ -49,7 +49,7 @@ public class JsonPathCache<T extends XmlFieldInstance> {
 				instances = (List<T>) JsonUtils.extractFieldInstanceList(value, recordId, jsonPath);
 			} else {
 				if (value instanceof JSONArray) {
-					typedCache.put(address, clazz.cast(((JSONArray)value).get(0)));
+					typedCache.put(address, clazz.cast(((JSONArray) value).get(0)));
 				} else {
 					typedCache.put(address, value);
 				}
@@ -84,11 +84,11 @@ public class JsonPathCache<T extends XmlFieldInstance> {
 		if (!typedCache.containsKey(jsonPath)) {
 			set(jsonPath, jsonPath, null, clazz);
 		}
-		return (E)typedCache.get(jsonPath);
+		return (E) typedCache.get(jsonPath);
 	}
 
 	public List<T> get(String address, String jsonPath, Object jsonFragment) {
-		return get(address, jsonPath, jsonFragment,null);
+		return get(address, jsonPath, jsonFragment, null);
 	}
 
 	public List<T> get(String address, String jsonPath, Object jsonFragment, Class clazz) {

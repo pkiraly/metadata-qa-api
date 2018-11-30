@@ -41,7 +41,7 @@ public class AmbiguousPrefLabel extends ProblemDetector implements Serializable 
 	public void update(JsonPathCache cache, FieldCounter<Double> results) {
 		int value = 0;
 		for (String label : LABELS) {
-			JsonBranch branch = ((Schema)schema).getPathByLabel(label);
+			JsonBranch branch = ((Schema) schema).getPathByLabel(label);
 			String parentPath = branch.getParent().getJsonPath();
 			Object rawEntityFragment = cache.getFragment(parentPath);
 			if (rawEntityFragment != null) {
@@ -51,7 +51,7 @@ public class AmbiguousPrefLabel extends ProblemDetector implements Serializable 
 				}
 			}
 		}
-		results.put(NAME, (double)value);
+		results.put(NAME, (double) value);
 	}
 
 	private int countPerEntity(int entityCounter, JsonBranch branch, JsonPathCache cache) {
@@ -64,8 +64,9 @@ public class AmbiguousPrefLabel extends ProblemDetector implements Serializable 
 		Map<String, Integer> labelCounter = new HashMap<>();
 		for (EdmFieldInstance subject : subjects) {
 			if (subject.getLanguage() != null) {
-				int count = labelCounter.containsKey(subject.getLanguage()) ?
-						  labelCounter.get(subject.getLanguage()) : 0;
+				int count = labelCounter.containsKey(subject.getLanguage())
+				          ? labelCounter.get(subject.getLanguage())
+				          : 0;
 				labelCounter.put(subject.getLanguage(), ++count);
 			}
 		}
@@ -75,7 +76,7 @@ public class AmbiguousPrefLabel extends ProblemDetector implements Serializable 
 	private int countAmbiguousPrefLabels(Map<String, Integer> labelCounter) {
 		int value = 0;
 
-		for (Map.Entry<String,Integer> entry : labelCounter.entrySet()) {
+		for (Map.Entry<String, Integer> entry : labelCounter.entrySet()) {
 			if (entry.getValue() > 1) {
 				value++;
 			}

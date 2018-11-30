@@ -22,7 +22,7 @@ public class UniquenessExtractor implements Serializable {
 	}
 
 		/**
-		 * Extracts sums and average of TF-IDF value for the schema's Solr field array
+		 * Extracts sums and average of TF-IDF value for the schema's Solr field array.
 		 *
 		 * @param jsonString
 		 *    The JSON string
@@ -39,7 +39,7 @@ public class UniquenessExtractor implements Serializable {
 
 		Object document = JSON_PROVIDER.parse(jsonString);
 		if (document instanceof LinkedHashMap) {
-			Map documentMap = (LinkedHashMap)document;
+			Map documentMap = (LinkedHashMap) document;
 			if (documentMap.containsKey("response")) {
 				Map response = (LinkedHashMap) documentMap.get("response");
 				numFound = (int) response.get("numFound");

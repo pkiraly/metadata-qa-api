@@ -364,7 +364,7 @@ public class MultilingualitySaturationCalculator implements Calculator, Serializ
 			if (!isSet) {
 				sum = average = normalized = LanguageSaturationType.NA.value();
 			} else {
-				average = sum / (double)values.size();
+				average = sum / (double) values.size();
 				normalized = normalize(average);
 				sums.add(sum);
 			}

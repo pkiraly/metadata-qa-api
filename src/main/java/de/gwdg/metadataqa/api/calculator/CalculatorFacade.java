@@ -178,7 +178,7 @@ public class CalculatorFacade implements Serializable {
 
 		if (problemCatalogMeasurementEnabled) {
 			if (schema instanceof EdmSchema) {
-				ProblemCatalog problemCatalog = new ProblemCatalog((EdmSchema)schema);
+				ProblemCatalog problemCatalog = new ProblemCatalog((EdmSchema) schema);
 				LongSubject longSubject = new LongSubject(problemCatalog);
 				TitleAndDescriptionAreSame titleAndDescriptionAreSame = new TitleAndDescriptionAreSame(problemCatalog);
 				EmptyStrings emptyStrings = new EmptyStrings(problemCatalog);

@@ -101,7 +101,7 @@ public class ProfileReader {
 							e1.getValue().getPercent()
 						)
 					).
-					map(e -> (Row)e.getValue()).
+					map(e -> (Row) e.getValue()).
 					collect(
 						Collectors.
 							toList()

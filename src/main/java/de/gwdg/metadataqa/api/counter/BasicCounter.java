@@ -34,7 +34,7 @@ public class BasicCounter {
 	}
 
 	public int getTotalAsInt() {
-		return ((Double)total).intValue();
+		return ((Double) total).intValue();
 	}
 
 	public double getInstance() {
@@ -48,6 +48,10 @@ public class BasicCounter {
 	@Override
 	public String toString() {
 		calculate();
-		return "BasicCounter{" + "total=" + total + ", instance=" + instance + ", result=" + result + '}';
+		return "BasicCounter{"
+			+ "total=" + total
+			+ ", instance=" + instance
+			+ ", result=" + result
+			+ '}';
 	}
 }

@@ -171,7 +171,7 @@ public class LanguageCalculator implements Calculator, Serializable {
 			if (result.length() > 0) {
 				result += ";";
 			}
-			result += lang + ":" + ((Double)languages.get(lang).getTotal()).intValue();
+			result += lang + ":" + ((Double) languages.get(lang).getTotal()).intValue();
 		}
 		return result;
 	}
@@ -179,7 +179,7 @@ public class LanguageCalculator implements Calculator, Serializable {
 	private SortedMap<String, Integer> transformLanguages(Map<String, BasicCounter> languages) {
 		SortedMap<String, Integer> result = new TreeMap<>();
 		for (String lang : languages.keySet()) {
-			result.put(lang, ((Double)languages.get(lang).getTotal()).intValue());
+			result.put(lang, ((Double) languages.get(lang).getTotal()).intValue());
 		}
 		return result;
 	}

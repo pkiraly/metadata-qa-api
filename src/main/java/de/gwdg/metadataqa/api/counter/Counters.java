@@ -168,7 +168,7 @@ public class Counters {
 				items.add(item);
 			}
 		} else {
-			items = (List)languageMap.values();
+			items = (List) languageMap.values();
 		}
 		return StringUtils.join(items, ",");
 	}
@@ -213,8 +213,8 @@ public class Counters {
 
 	public String getFullResults(boolean withLabel, CompressionLevel compressionLevel) {
 		String result = "";
-		if (StringUtils.isNotBlank((String)fields.get("datasetCode"))
-			&& StringUtils.isNotBlank((String)fields.get("dataProviderCode"))) {
+		if (StringUtils.isNotBlank((String) fields.get("datasetCode"))
+		    && StringUtils.isNotBlank((String) fields.get("dataProviderCode"))) {
 			result += String.format("%s,%s,",
 				fields.get("datasetCode"), fields.get("dataProviderCode"));
 		}

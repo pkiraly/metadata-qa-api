@@ -51,17 +51,17 @@ public class EdmOaiPmhXmlSchema extends EdmSchema implements Serializable {
 		addPath(new JsonBranch("Proxy/dc:title", proxy, "$.['dc:title']",
 			JsonBranch.Category.DESCRIPTIVENESS, JsonBranch.Category.SEARCHABILITY,
 			JsonBranch.Category.IDENTIFICATION, JsonBranch.Category.MULTILINGUALITY));
-		addPath(new JsonBranch("Proxy/dcterms:alternative",proxy, "$.['dcterms:alternative']",
+		addPath(new JsonBranch("Proxy/dcterms:alternative", proxy, "$.['dcterms:alternative']",
 			JsonBranch.Category.DESCRIPTIVENESS, JsonBranch.Category.SEARCHABILITY,
 			JsonBranch.Category.IDENTIFICATION, JsonBranch.Category.MULTILINGUALITY));
 		addPath(new JsonBranch("Proxy/dc:description", proxy, "$.['dc:description']",
 			JsonBranch.Category.DESCRIPTIVENESS, JsonBranch.Category.SEARCHABILITY,
 			JsonBranch.Category.CONTEXTUALIZATION, JsonBranch.Category.IDENTIFICATION,
 			JsonBranch.Category.MULTILINGUALITY));
-		addPath(new JsonBranch("Proxy/dc:creator",proxy, "$.['dc:creator']",
+		addPath(new JsonBranch("Proxy/dc:creator", proxy, "$.['dc:creator']",
 			JsonBranch.Category.DESCRIPTIVENESS, JsonBranch.Category.SEARCHABILITY,
 			JsonBranch.Category.CONTEXTUALIZATION, JsonBranch.Category.BROWSING));
-		addPath(new JsonBranch("Proxy/dc:publisher",proxy, "$.['dc:publisher']",
+		addPath(new JsonBranch("Proxy/dc:publisher", proxy, "$.['dc:publisher']",
 			JsonBranch.Category.SEARCHABILITY, JsonBranch.Category.REUSABILITY));
 		addPath(new JsonBranch("Proxy/dc:contributor", proxy, "$.['dc:contributor']",
 			JsonBranch.Category.SEARCHABILITY));

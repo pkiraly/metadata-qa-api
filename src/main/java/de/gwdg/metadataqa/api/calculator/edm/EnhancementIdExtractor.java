@@ -25,7 +25,7 @@ public class EnhancementIdExtractor implements Serializable {
 		List<String> enhancementIds = new ArrayList<>();
 		Object rawJsonFragment = cache.getFragment(PATH);
 		List<Object> jsonFragments = Converter.jsonObjectToList(rawJsonFragment);
-		Map<String, Object> jsonFragment = (Map)jsonFragments.get(0);
+		Map<String, Object> jsonFragment = (Map) jsonFragments.get(0);
 		for (String fieldName : jsonFragment.keySet()) {
 			if (isEnrichmentField(fieldName)) {
 				List<EdmFieldInstance> fieldInstances = (List<EdmFieldInstance>)

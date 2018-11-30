@@ -47,7 +47,7 @@ public class UniquenessFieldCalculator {
 						3.0
 					);
 
-					counts.add((double)count);
+					counts.add((double) count);
 					scores.add(score);
 				}
 			}

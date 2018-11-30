@@ -68,15 +68,15 @@ public class Converter {
 		if (value == null) {
 			text = "null";
 		} else if (value instanceof Boolean) {
-			text = ((Boolean)value == true) ? "1" : "0";
+			text = ((Boolean) value == true) ? "1" : "0";
 		} else if (value instanceof Integer) {
-			text = Integer.toString((Integer)value);
+			text = Integer.toString((Integer) value);
 		} else if (value instanceof Double) {
-			text = String.format("%.6f", (Double)value);
+			text = String.format("%.6f", (Double) value);
 		} else if (value instanceof String) {
-			text = (String)value;
+			text = (String) value;
 		} else if (value instanceof List) {
-			text = StringUtils.join(((List)value), ", ");
+			text = StringUtils.join(((List) value), ", ");
 		} else {
 			throw new InvalidParameterException("Object has an unhandled type: " + value.getClass().getCanonicalName() + " " + value);
 		}
