@@ -22,7 +22,7 @@ import java.util.logging.Logger;
  */
 public class JsonPathCache<T extends XmlFieldInstance> {
 
-	private static final Logger logger = Logger.getLogger(JsonPathCache.class.getCanonicalName());
+	private static final Logger LOGGER = Logger.getLogger(JsonPathCache.class.getCanonicalName());
 
 	private final Object jsonDocument;
 	private String recordId;
@@ -67,9 +67,9 @@ public class JsonPathCache<T extends XmlFieldInstance> {
 				value = JsonPath.read(jsonDocument, jsonPath);
 			}
 		} catch (PathNotFoundException e) {
-			// logger.severe("PathNotFound: " + jsonPath + " " + e.getLocalizedMessage() + extractRelevantPath(e));
+			// LOGGER.severe("PathNotFound: " + jsonPath + " " + e.getLocalizedMessage() + extractRelevantPath(e));
 		} catch (InvalidPathException e) {
-			logger.log(Level.SEVERE, "Invalid Path: {0} {1}\n{2}", new Object[]{
+			LOGGER.log(Level.SEVERE, "Invalid Path: {0} {1}\n{2}", new Object[]{
 				jsonPath, e.getLocalizedMessage(), ExceptionUtils.extractRelevantPath(e)
 			});
 		}

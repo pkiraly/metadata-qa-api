@@ -16,14 +16,14 @@ import java.util.logging.Logger;
 
 public class SolrClient {
 
-	private static final Logger logger = Logger.getLogger(SolrClient.class.getCanonicalName());
+	private static final Logger LOGGER = Logger.getLogger(SolrClient.class.getCanonicalName());
 
-	private final String USER_AGENT = "Custom Java application";
-	private final int VALUE_LIMIT = 50;
+	private static final String USER_AGENT = "Custom Java application";
+	private static final int VALUE_LIMIT = 50;
 
-	private final static String SOLR_HOST = "localhost";
-	private final static String SOLR_PORT = "8983";
-	private final static String SOLR_PATH = "solr/europeana";
+	private static final String SOLR_HOST = "localhost";
+	private static final String SOLR_PORT = "8983";
+	private static final String SOLR_PATH = "solr/europeana";
 
 	private static final String SOLR_SEARCH_ALL_PARAMS = "select/?q=%s:%s&rows=0";
 	private static final String SOLR_SEARCH_PARAMS = "select/?q=%s:%%22%s%%22&rows=0";
@@ -83,7 +83,7 @@ public class SolrClient {
 						record = readStream(in);
 					} else {
 						int lenght = urlConnection.getContentLength();
-						logger.severe(String.format("%s: %s returned code %d. Solr responde: %s",
+						LOGGER.severe(String.format("%s: %s returned code %d. Solr responde: %s",
 							solrField,
 							(value.length() < VALUE_LIMIT ? value : value.substring(0, VALUE_LIMIT) + "..."),
 							urlConnection.getResponseCode(),

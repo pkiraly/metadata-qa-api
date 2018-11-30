@@ -10,7 +10,7 @@ import java.util.logging.Logger;
 
 public class UniquenessFieldCalculator {
 
-	private static final Logger logger = Logger.getLogger(UniquenessFieldCalculator.class.getCanonicalName());
+	private static final Logger LOGGER = Logger.getLogger(UniquenessFieldCalculator.class.getCanonicalName());
 
 	private JsonPathCache cache;
 	private String recordId;
@@ -77,7 +77,7 @@ public class UniquenessFieldCalculator {
 				for (int i = 0; i < numbers.size(); i++) {
 					pairs.add(String.format("%f -> %f", counts.get(i), numbers.get(i)));
 				}
-				logger.severe(String.format("EXTREME AVERAGE at %s: %f <- average of %s",
+				LOGGER.severe(String.format("EXTREME AVERAGE at %s: %f <- average of %s",
 					recordId, result, StringUtils.join(pairs, ", ")));
 			}
 		}

@@ -20,11 +20,11 @@ import java.util.logging.Logger;
  */
 public class FieldExtractor implements Calculator, Serializable {
 
+	private static final Logger LOGGER = Logger.getLogger(FieldExtractor.class.getCanonicalName());
+
 	public static final String CALCULATOR_NAME = "fieldExtractor";
+	public static final String FIELD_NAME = "recordId";
 
-	private static final Logger logger = Logger.getLogger(FieldExtractor.class.getCanonicalName());
-
-	public String FIELD_NAME = "recordId";
 	private String idPath;
 	protected FieldCounter<String> resultMap;
 	protected Schema schema;
@@ -52,7 +52,7 @@ public class FieldExtractor implements Calculator, Serializable {
 		resultMap = new FieldCounter<>();
 		List<XmlFieldInstance> instances = cache.get(getIdPath());
 		if (instances == null || instances.size() == 0) {
-			logger.severe("No record ID in " + cache.getJsonString());
+			LOGGER.severe("No record ID in " + cache.getJsonString());
 			resultMap.put(FIELD_NAME, "");
 			return;
 		}

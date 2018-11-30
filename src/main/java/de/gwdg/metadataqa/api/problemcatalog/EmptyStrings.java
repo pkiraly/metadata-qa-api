@@ -14,9 +14,9 @@ import org.apache.commons.lang3.StringUtils;
  */
 public class EmptyStrings extends ProblemDetector implements Serializable {
 
-	private static final Logger logger = Logger.getLogger(EmptyStrings.class.getCanonicalName());
+	private static final Logger LOGGER = Logger.getLogger(EmptyStrings.class.getCanonicalName());
 
-	private final String NAME = "EmptyStrings";
+	private static final String NAME = "EmptyStrings";
 
 	public EmptyStrings(ProblemCatalog problemCatalog) {
 		this.problemCatalog = problemCatalog;

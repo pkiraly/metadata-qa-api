@@ -18,7 +18,7 @@ import net.minidev.json.JSONArray;
  */
 public class JsonUtils {
 
-	private static final Logger logger = Logger.getLogger(JsonUtils.class.getCanonicalName());
+	private static final Logger LOGGER = Logger.getLogger(JsonUtils.class.getCanonicalName());
 
 	public static Object extractField(Object document, String jsonPath) {
 		return JsonPath.read(document, jsonPath);
@@ -45,18 +45,18 @@ public class JsonUtils {
 							} else if (map.containsKey("#value")) {
 								extracted.add(map.get("#value"));
 							} else {
-								logger.severe("Other type of map*: " + map.keySet());
+								LOGGER.severe("Other type of map*: " + map.keySet());
 							}
 						} else {
-							logger.severe("Unhandled array2 type: " + getType(array2.get(j)));
+							LOGGER.severe("Unhandled array2 type: " + getType(array2.get(j)));
 						}
 					}
 				} else {
-					logger.severe("Unhandled array1 type: " + getType(array1.get(i)));
+					LOGGER.severe("Unhandled array1 type: " + getType(array1.get(i)));
 				}
 			}
 		} else {
-			logger.severe("Unhandled object type: " + getType(value));
+			LOGGER.severe("Unhandled object type: " + getType(value));
 		}
 		return extracted;
 	}
@@ -90,7 +90,7 @@ public class JsonUtils {
 				} else if (outerVal.getClass() == LinkedHashMap.class) {
 					extracted.add(hashToFieldInstance(outerVal, recordId, jsonPath));
 				} else {
-					logger.severe(String.format(
+					LOGGER.severe(String.format(
 							  "Unhandled outerArray type: %s, %s [record ID: %s, path: %s]",
 							  getType(outerVal), outerVal, recordId, jsonPath
 					));
@@ -109,7 +109,7 @@ public class JsonUtils {
 		} else if (value.getClass() == java.math.BigDecimal.class) {
 			extracted.add(new EdmFieldInstance(((BigDecimal)value).toString()));
 		} else {
-			logger.severe(String.format(
+			LOGGER.severe(String.format(
 					  "Unhandled object type: %s, [record ID: %s, path: %s]",
 					  getType(value), recordId, jsonPath
 			));
@@ -129,7 +129,7 @@ public class JsonUtils {
 			} else if (innerVal.getClass() == JSONArray.class) {
 				extracted.addAll(extractInnerArray(innerVal, recordId, jsonPath));
 			} else {
-				logger.severe(String.format(
+				LOGGER.severe(String.format(
 						  "Unhandled inner array type: %s, [record ID: %s, path: %s]",
 						  getType(array.get(j)), recordId, jsonPath
 				));
@@ -153,7 +153,7 @@ public class JsonUtils {
 				if (value instanceof JSONArray) {
 					JSONArray values = (JSONArray)value;
 					if (values.size() > 1) {
-						logger.severe(String.format(
+						LOGGER.severe(String.format(
 							"Multiple values in a 'def' value: %s, [record ID: %s, path: %s]",
 							values, recordId, jsonPath
 						));
@@ -163,7 +163,7 @@ public class JsonUtils {
 				} else if (value instanceof String) {
 					instance.setValue(value.toString());
 				} else {
-					logger.severe(String.format(
+					LOGGER.severe(String.format(
 						"Unhandled type in a 'def' value: %s, [record ID: %s, path: %s]",
 						value, recordId, jsonPath
 					));
@@ -172,7 +172,7 @@ public class JsonUtils {
 			} else if (entry.getKey().equals("@lang")) {
 				instance.setLanguage((String)value);
 			} else {
-				logger.severe(String.format(
+				LOGGER.severe(String.format(
 						  "Other type (%s) of map: %s, [record ID: %s, path: %s]",
 					entry.getKey(), map, recordId, jsonPath
 				));
@@ -192,7 +192,7 @@ public class JsonUtils {
 				break;
 			}
 		} else {
-			logger.severe("Unhandled object type: " + getType(value));
+			LOGGER.severe("Unhandled object type: " + getType(value));
 		}
 		return extracted;
 	}

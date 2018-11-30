@@ -27,7 +27,7 @@ import org.apache.commons.lang3.StringUtils;
  */
 public class CalculatorFacade implements Serializable {
 
-	private static final Logger logger = Logger.getLogger(CalculatorFacade.class.getCanonicalName());
+	private static final Logger LOGGER = Logger.getLogger(CalculatorFacade.class.getCanonicalName());
 
 	protected boolean fieldExtractorEnabled = false;
 	/**
@@ -154,7 +154,7 @@ public class CalculatorFacade implements Serializable {
 	 * Run the configuration based on the previously set flags
 	 */
 	public void configure() {
-		logger.info("configure()");
+		LOGGER.info("configure()");
 		calculators = new ArrayList<>();
 
 		if (fieldExtractorEnabled) {

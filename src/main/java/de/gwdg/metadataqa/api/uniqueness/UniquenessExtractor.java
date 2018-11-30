@@ -15,8 +15,8 @@ import java.util.logging.Logger;
  */
 public class UniquenessExtractor implements Serializable {
 
-	private static final Logger logger = Logger.getLogger(UniquenessExtractor.class.getCanonicalName());
-	private static final JsonProvider jsonProvider = Configuration.defaultConfiguration().jsonProvider();
+	private static final Logger LOGGER = Logger.getLogger(UniquenessExtractor.class.getCanonicalName());
+	private static final JsonProvider JSON_PROVIDER = Configuration.defaultConfiguration().jsonProvider();
 
 	public UniquenessExtractor() {
 	}
@@ -37,14 +37,14 @@ public class UniquenessExtractor implements Serializable {
 			return numFound;
 		}
 
-		Object document = jsonProvider.parse(jsonString);
+		Object document = JSON_PROVIDER.parse(jsonString);
 		if (document instanceof LinkedHashMap) {
 			Map documentMap = (LinkedHashMap)document;
 			if (documentMap.containsKey("response")) {
 				Map response = (LinkedHashMap) documentMap.get("response");
 				numFound = (int) response.get("numFound");
 			} else {
-				logger.severe("No 'response' part in Solr response: " + jsonString);
+				LOGGER.severe("No 'response' part in Solr response: " + jsonString);
 			}
 		} else {
 			System.err.println(">>" + document + "<<");

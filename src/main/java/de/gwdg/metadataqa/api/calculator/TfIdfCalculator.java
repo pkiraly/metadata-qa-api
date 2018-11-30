@@ -33,16 +33,11 @@ public class TfIdfCalculator implements Calculator, Serializable {
 
 	public static final String CALCULATOR_NAME = "uniqueness";
 
-	private static final Logger logger = Logger.getLogger(TfIdfCalculator.class.getCanonicalName());
+	private static final Logger LOGGER = Logger.getLogger(TfIdfCalculator.class.getCanonicalName());
 
-	private final static String SOLR_HOST = "localhost";
-	private final static String SOLR_PORT = "8983";
-	private final static String SOLR_PATH = "solr/europeana";
-
-	private String solrHost;
-	private String solrPort;
-	private String solrPath;
-	private String solrSearchPath;
+	private static final String SOLR_HOST = "localhost";
+	private static final String SOLR_PORT = "8983";
+	private static final String SOLR_PATH = "solr/europeana";
 
 	private static final String SOLR_SEARCH_PARAMS = "tvrh/"
 			  + "?q=id:\"%s\""
@@ -57,7 +52,13 @@ public class TfIdfCalculator implements Calculator, Serializable {
 			  + "&json.nl=map"
 			  + "&rows=1000"
 			  + "&fl=id";
-	private static final HttpClient httpClient = new HttpClient();
+	private static final HttpClient HTTP_CLIENT = new HttpClient();
+
+	private String solrHost;
+	private String solrPort;
+	private String solrPath;
+	private String solrSearchPath;
+
 	private Map<String, List<TfIdf>> termsCollection;
 	private boolean doCollectTerms = false;
 	private FieldCounter<Double> resultMap;
@@ -98,9 +99,9 @@ public class TfIdfCalculator implements Calculator, Serializable {
 		params.setIntParameter(HttpMethodParams.BUFFER_WARN_TRIGGER_LIMIT, 1024 * 1024);
 		method.setParams(params);
 		try {
-			int statusCode = httpClient.executeMethod(method);
+			int statusCode = HTTP_CLIENT.executeMethod(method);
 			if (statusCode != HttpStatus.SC_OK) {
-				logger.severe("Method failed: " + method.getStatusLine());
+				LOGGER.severe("Method failed: " + method.getStatusLine());
 			}
 
 			ByteArrayOutputStream baos = new ByteArrayOutputStream();
@@ -109,9 +110,9 @@ public class TfIdfCalculator implements Calculator, Serializable {
 
 			jsonString = new String(responseBody, Charset.forName("UTF-8"));
 		} catch (HttpException e) {
-			logger.severe("Fatal protocol violation: " + e.getMessage());
+			LOGGER.severe("Fatal protocol violation: " + e.getMessage());
 		} catch (IOException e) {
-			logger.severe("Fatal transport error: " + e.getMessage());
+			LOGGER.severe("Fatal transport error: " + e.getMessage());
 		} finally {
 			method.releaseConnection();
 		}

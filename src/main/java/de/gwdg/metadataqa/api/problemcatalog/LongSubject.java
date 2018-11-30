@@ -15,10 +15,10 @@ import org.apache.commons.lang3.StringUtils;
  */
 public class LongSubject extends ProblemDetector implements Serializable {
 
-	private static final Logger logger = Logger.getLogger(LongSubject.class.getCanonicalName());
+	private static final Logger LOGGER = Logger.getLogger(LongSubject.class.getCanonicalName());
 
-	private final String NAME = "LongSubject";
-	private final int MAX_LENGTH = 50;
+	private static final String NAME = "LongSubject";
+	private static final int MAX_LENGTH = 50;
 
 	public LongSubject(ProblemCatalog problemCatalog) {
 		this.problemCatalog = problemCatalog;

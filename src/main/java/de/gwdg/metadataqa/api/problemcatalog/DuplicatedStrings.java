@@ -14,7 +14,7 @@ import org.apache.commons.lang3.StringUtils;
  */
 public class DuplicatedStrings extends ProblemDetector implements Serializable {
 
-	private final String NAME = "DuplicatedStrings";
+	private static final String NAME = "DuplicatedStrings";
 
 	public DuplicatedStrings(ProblemCatalog problemCatalog) {
 		this.problemCatalog = problemCatalog;

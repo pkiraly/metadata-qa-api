@@ -21,10 +21,10 @@ import java.util.logging.Logger;
  */
 public class AmbiguousPrefLabel extends ProblemDetector implements Serializable {
 
-	private static final Logger logger = Logger.getLogger(AmbiguousPrefLabel.class.getCanonicalName());
+	private static final Logger LOGGER = Logger.getLogger(AmbiguousPrefLabel.class.getCanonicalName());
 
-	private final String NAME = "AmbiguousPrefLabel";
-	private static final List<String> labels = Arrays.asList(
+	private static final String NAME = "AmbiguousPrefLabel";
+	private static final List<String> LABELS = Arrays.asList(
 		"Agent/skos:prefLabel", 
 		"Concept/skos:prefLabel", 
 		"Place/skos:prefLabel",
@@ -40,7 +40,7 @@ public class AmbiguousPrefLabel extends ProblemDetector implements Serializable 
 	@Override
 	public void update(JsonPathCache cache, FieldCounter<Double> results) {
 		int value = 0;
-		for (String label : labels) {
+		for (String label : LABELS) {
 			JsonBranch branch = ((Schema)schema).getPathByLabel(label);
 			String parentPath = branch.getParent().getJsonPath();
 			Object rawEntityFragment = cache.getFragment(parentPath);

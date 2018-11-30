@@ -14,9 +14,9 @@ import java.util.Map;
  */
 public class MarcJsonSchema implements Schema, ProblemCatalogSchema, Serializable {
 
-	private final static Map<String, JsonBranch> paths = new LinkedHashMap<>();
-	private final static Map<String, JsonBranch> collectionPaths = new LinkedHashMap<>();
-	private final static Map<String, JsonBranch> directChildren = new LinkedHashMap<>();
+	private static final Map<String, JsonBranch> PATHS = new LinkedHashMap<>();
+	private static final Map<String, JsonBranch> COLLECTION_PATHS = new LinkedHashMap<>();
+	private static final Map<String, JsonBranch> DIRECT_CHILDREN = new LinkedHashMap<>();
 	private static Map<String, String> extractableFields = new LinkedHashMap<>();
 
 	public static final String DATAFIELD_PATTERN = "$.datafield[?(@.tag == '%s')].subfield[?(@.code == '%s')].content";
@@ -314,7 +314,7 @@ public class MarcJsonSchema implements Schema, ProblemCatalogSchema, Serializabl
 
 		extractableFields.put("leader", "$.leader");
 		extractableFields.put("recordId", "$.controlfield[?(@.tag == '001')].content");
-		extractableFields.put("001",  paths.get("001").getJsonPath());
+		extractableFields.put("001",  PATHS.get("001").getJsonPath());
 		extractableFields.put("007", "$.controlfield[?(@.tag == '007')].content");
 		extractableFields.put("008", "$.controlfield[?(@.tag == '008')].content");
 		extractableFields.put("020$a", createDatafieldPath("020", "a"));
@@ -384,17 +384,17 @@ public class MarcJsonSchema implements Schema, ProblemCatalogSchema, Serializabl
 
 	@Override
 	public List<JsonBranch> getCollectionPaths() {
-		return new ArrayList(collectionPaths.values());
+		return new ArrayList(COLLECTION_PATHS.values());
 	}
 
 	@Override
 	public List<JsonBranch> getRootChildrenPaths() {
-		return new ArrayList(directChildren.values());
+		return new ArrayList(DIRECT_CHILDREN.values());
 	}
 
 	@Override
 	public List<JsonBranch> getPaths() {
-		return new ArrayList(paths.values());
+		return new ArrayList(PATHS.values());
 	}
 
 	@Override
@@ -428,12 +428,12 @@ public class MarcJsonSchema implements Schema, ProblemCatalogSchema, Serializabl
 	}
 
 	private static void addPath(JsonBranch branch) {
-		paths.put(branch.getLabel(), branch);
+		PATHS.put(branch.getLabel(), branch);
 		if (branch.getParent() == null) {
-			directChildren.put(branch.getLabel(), branch);
+			DIRECT_CHILDREN.put(branch.getLabel(), branch);
 		}
 		if (branch.isCollection()) {
-			collectionPaths.put(branch.getLabel(), branch);
+			COLLECTION_PATHS.put(branch.getLabel(), branch);
 		}
 	}
 
@@ -459,6 +459,6 @@ public class MarcJsonSchema implements Schema, ProblemCatalogSchema, Serializabl
 
 	@Override
 	public JsonBranch getPathByLabel(String label) {
-		return paths.get(label);
+		return PATHS.get(label);
 	}
 }

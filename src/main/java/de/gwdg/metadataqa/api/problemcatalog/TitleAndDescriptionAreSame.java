@@ -13,9 +13,9 @@ import java.util.logging.Logger;
  */
 public class TitleAndDescriptionAreSame extends ProblemDetector implements Serializable {
 
-	private static final Logger logger = Logger.getLogger(TitleAndDescriptionAreSame.class.getCanonicalName());
+	private static final Logger LOGGER = Logger.getLogger(TitleAndDescriptionAreSame.class.getCanonicalName());
 
-	private final String NAME = "TitleAndDescriptionAreSame";
+	private static final String NAME = "TitleAndDescriptionAreSame";
 
 	@SuppressWarnings("LeakingThisInConstructor")
 	public TitleAndDescriptionAreSame(ProblemCatalog problemCatalog) {

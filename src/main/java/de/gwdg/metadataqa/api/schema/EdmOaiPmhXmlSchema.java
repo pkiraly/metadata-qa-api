@@ -16,19 +16,19 @@ import java.util.Map;
  */
 public class EdmOaiPmhXmlSchema extends EdmSchema implements Serializable {
 
-	private final static List<FieldGroup> fieldGroups = new ArrayList<>();
-	private final static List<String> noLanguageFields = new ArrayList<>();
-	private final static Map<String, String> solrFields = new LinkedHashMap<>();
+	private static final List<FieldGroup> FIELD_GROUPS = new ArrayList<>();
+	private static final List<String> NO_LANGUAGE_FIELDS = new ArrayList<>();
+	private static final Map<String, String> SOLR_FIELDS = new LinkedHashMap<>();
 	private Map<String, String> extractableFields = new LinkedHashMap<>();
-	private final static List<String> emptyStrings = new ArrayList<>();
-	private final static Map<String, JsonBranch> paths = new LinkedHashMap<>();
-	private final static Map<String, JsonBranch> collectionPaths = new LinkedHashMap<>();
+	private static final List<String> EMPTY_STRINGS = new ArrayList<>();
+	private static final Map<String, JsonBranch> PATHS = new LinkedHashMap<>();
+	private static final Map<String, JsonBranch> COLLECTION_PATHS = new LinkedHashMap<>();
 
-	private final static String longSubjectPath =
+	private static final String LONG_SUBJECT_PATH =
 		"$.['ore:Proxy'][?(@['edm:europeanaProxy'][0] == 'false')]['dc:subject']";
-	private final static String titlePath =
+	private static final String TITLE_PATH =
 		"$.['ore:Proxy'][?(@['edm:europeanaProxy'][0] == 'false')]['dc:title']";
-	private final static String descriptionPath =
+	private static final String DESCRIPTION_PATH =
 		"$.['ore:Proxy'][?(@['edm:europeanaProxy'][0] == 'false')]['dc:description']";
 
 	static {
@@ -271,21 +271,21 @@ public class EdmOaiPmhXmlSchema extends EdmSchema implements Serializable {
 		// extractableFields.put("country", "$.['edm:EuropeanaAggregation'][0]['edm:country'][0]");
 		// extractableFields.put("language", "$.['edm:EuropeanaAggregation'][0]['edm:language'][0]");
 
-		fieldGroups.add(
+		FIELD_GROUPS.add(
 			new FieldGroup(
 				JsonBranch.Category.MANDATORY,
 				"Proxy/dc:title", "Proxy/dc:description"));
-		fieldGroups.add(
+		FIELD_GROUPS.add(
 			new FieldGroup(
 				JsonBranch.Category.MANDATORY,
 				"Proxy/dc:type", "Proxy/dc:subject", "Proxy/dc:coverage",
 				"Proxy/dcterms:temporal", "Proxy/dcterms:spatial"));
-		fieldGroups.add(
+		FIELD_GROUPS.add(
 			new FieldGroup(
 				JsonBranch.Category.MANDATORY,
 				"Aggregation/edm:isShownAt", "Aggregation/edm:isShownBy"));
 
-		noLanguageFields.addAll(Arrays.asList(
+		NO_LANGUAGE_FIELDS.addAll(Arrays.asList(
 			"ProvidedCHO", "ProvidedCHO/rdf:about",
 			"Proxy",
 			"Proxy/rdf:about", "Proxy/edm:isNextInSequence", "Proxy/edm:type",
@@ -302,13 +302,13 @@ public class EdmOaiPmhXmlSchema extends EdmSchema implements Serializable {
 			"Concept", "Concept/rdf:about"
 		));
 
-		solrFields.put("dc:title", "dc_title_txt");
-		solrFields.put("dcterms:alternative", "dcterms_alternative_txt");
-		solrFields.put("dc:description", "dc_description_txt");
+		SOLR_FIELDS.put("dc:title", "dc_title_txt");
+		SOLR_FIELDS.put("dcterms:alternative", "dcterms_alternative_txt");
+		SOLR_FIELDS.put("dc:description", "dc_description_txt");
 
-		emptyStrings.add("$.['ore:Proxy'][?(@['edm:europeanaProxy'][0] == 'false')]['dc:title']");
-		emptyStrings.add("$.['ore:Proxy'][?(@['edm:europeanaProxy'][0] == 'false')]['dc:description']");
-		emptyStrings.add("$.['ore:Proxy'][?(@['edm:europeanaProxy'][0] == 'false')]['dc:subject']");
+		EMPTY_STRINGS.add("$.['ore:Proxy'][?(@['edm:europeanaProxy'][0] == 'false')]['dc:title']");
+		EMPTY_STRINGS.add("$.['ore:Proxy'][?(@['edm:europeanaProxy'][0] == 'false')]['dc:description']");
+		EMPTY_STRINGS.add("$.['ore:Proxy'][?(@['edm:europeanaProxy'][0] == 'false')]['dc:subject']");
 	}
 
 	public EdmOaiPmhXmlSchema() {
@@ -321,17 +321,17 @@ public class EdmOaiPmhXmlSchema extends EdmSchema implements Serializable {
 
 	@Override
 	public List<FieldGroup> getFieldGroups() {
-		return fieldGroups;
+		return FIELD_GROUPS;
 	}
 
 	@Override
 	public List<String> getNoLanguageFields() {
-		return noLanguageFields;
+		return NO_LANGUAGE_FIELDS;
 	}
 
 	@Override
 	public Map<String, String> getSolrFields() {
-		return solrFields;
+		return SOLR_FIELDS;
 	}
 
 	@Override
@@ -351,39 +351,39 @@ public class EdmOaiPmhXmlSchema extends EdmSchema implements Serializable {
 
 	@Override
 	public List<String> getEmptyStringPaths() {
-		return emptyStrings;
+		return EMPTY_STRINGS;
 	}
 
 	@Override
 	public String getSubjectPath() {
-		return longSubjectPath;
+		return LONG_SUBJECT_PATH;
 	}
 
 	@Override
 	public String getTitlePath() {
-		return titlePath;
+		return TITLE_PATH;
 	}
 
 	@Override
 	public String getDescriptionPath() {
-		return descriptionPath;
+		return DESCRIPTION_PATH;
 	}
 
 	@Override
 	public List<JsonBranch> getCollectionPaths() {
-		return new ArrayList(collectionPaths.values());
+		return new ArrayList(COLLECTION_PATHS.values());
 	}
 
 	private static void addPath(JsonBranch branch) {
-		paths.put(branch.getLabel(), branch);
+		PATHS.put(branch.getLabel(), branch);
 		if (branch.isCollection()) {
-			collectionPaths.put(branch.getLabel(), branch);
+			COLLECTION_PATHS.put(branch.getLabel(), branch);
 		}
 	}
 
 	@Override
 	public List<JsonBranch> getPaths() {
-		return new ArrayList(paths.values());
+		return new ArrayList(PATHS.values());
 	}
 
 	@Override
@@ -393,6 +393,6 @@ public class EdmOaiPmhXmlSchema extends EdmSchema implements Serializable {
 
 	@Override
 	public JsonBranch getPathByLabel(String label) {
-		return paths.get(label);
+		return PATHS.get(label);
 	}
 }

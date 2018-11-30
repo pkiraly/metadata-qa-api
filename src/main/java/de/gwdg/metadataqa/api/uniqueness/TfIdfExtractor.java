@@ -18,7 +18,7 @@ import de.gwdg.metadataqa.api.util.Converter;
  */
 public class TfIdfExtractor {
 
-	private static final JsonProvider jsonProvider = Configuration.defaultConfiguration().jsonProvider();
+	private static final JsonProvider JSON_PROVIDER = Configuration.defaultConfiguration().jsonProvider();
 	private final Schema schema;
 
 	public TfIdfExtractor(Schema schema) {
@@ -57,7 +57,7 @@ public class TfIdfExtractor {
 	public FieldCounter<Double> extract(String jsonString, String recordId, boolean doCollectTerms) {
 		FieldCounter<Double> results = new FieldCounter<>();
 		termsCollection = new LinkedHashMap<>();
-		Object document = jsonProvider.parse(jsonString);
+		Object document = JSON_PROVIDER.parse(jsonString);
 		String path = String.format("$.termVectors.['%s']", recordId);
 		Map value = (LinkedHashMap) JsonPath.read(document, path);
 		for (String field : schema.getSolrFields().keySet()) {

@@ -20,9 +20,9 @@ import java.util.logging.Logger;
  */
 public class ProblemCatalog implements Calculator, Serializable, Observable {
 
-	private static final Logger logger = Logger.getLogger(ProblemCatalog.class.getCanonicalName());
+	private static final Logger LOGGER = Logger.getLogger(ProblemCatalog.class.getCanonicalName());
 
-	private String CALCULATOR_NAME = "problemCatalog";
+	private static final String CALCULATOR_NAME = "problemCatalog";
 
 	private final List<Observer> problems = new ArrayList<>();
 	private String jsonString;

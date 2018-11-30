@@ -51,7 +51,7 @@ import java.util.logging.Logger;
  */
 public class AbbreviationManager implements Serializable {
 
-	private static final Logger logger = Logger.getLogger(AbbreviationManager.class.getCanonicalName());
+	private static final Logger LOGGER = Logger.getLogger(AbbreviationManager.class.getCanonicalName());
 	protected Map<String, Integer> data;
 	private static FileSystem fs;
 	private String fileName;
@@ -80,8 +80,8 @@ public class AbbreviationManager implements Serializable {
 				processLine(line, i, parse);
 			}
 		} catch (URISyntaxException | IOException | FileSystemNotFoundException ex) {
-			logger.severe(String.format("Error with file: %s, path: %s.", fileName, path));
-			logger.severe(ex.getLocalizedMessage());
+			LOGGER.severe(String.format("Error with file: %s, path: %s.", fileName, path));
+			LOGGER.severe(ex.getLocalizedMessage());
 		}
 	}
 
@@ -108,7 +108,7 @@ public class AbbreviationManager implements Serializable {
 			if (fileName != null) {
 				msg += " " + fileName;
 			}
-			logger.info(msg);
+			LOGGER.info(msg);
 		}
 		return data.get(entry);
 	}

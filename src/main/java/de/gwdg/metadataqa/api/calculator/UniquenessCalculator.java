@@ -27,11 +27,11 @@ public class UniquenessCalculator implements Calculator, Serializable {
 
 	public static final String CALCULATOR_NAME = "uniqueness";
 
-	private static final Logger logger = Logger.getLogger(UniquenessCalculator.class.getCanonicalName());
+	private static final Logger LOGGER = Logger.getLogger(UniquenessCalculator.class.getCanonicalName());
 
 	private UniquenessExtractor extractor;
 	private List<UniquenessField> solrFields;
-	SolrClient solrClient;
+	private SolrClient solrClient;
 
 	private static HttpClient httpClient = new HttpClient();
 	private FieldCounter<Double> resultMap;

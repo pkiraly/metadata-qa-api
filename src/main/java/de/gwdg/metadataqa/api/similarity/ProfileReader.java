@@ -21,7 +21,7 @@ public class ProfileReader {
 	private Map<String, Row> rowIndex;
 	private int i = 0;
 
-	private static final List<String> mandatoryFields = Arrays.asList(
+	private static final List<String> MANDATORY_FIELDS = Arrays.asList(
 		"dc:title", "dc:description", "dc:type", "dc:coverage",
 		"dcterms:spatial", "dc:subject", "edm:rights",
 		"Aggregation/edm:rights",
@@ -29,7 +29,7 @@ public class ProfileReader {
 		"Aggregation/edm:isShownAt", "Aggregation/edm:isShownBy"
 	);
 
-	private static final List<String> functionalFields = Arrays.asList(
+	private static final List<String> FUNCTIONAL_FIELDS = Arrays.asList(
 		"dc:contributor", "dc:creator", "dc:date", "dc:format",
 		"dc:identifier", "dc:language", "dc:publisher", "dc:relation",
 		"dc:rights", "dc:source", "dcterms:alternative", "dcterms:created",
@@ -130,9 +130,9 @@ public class ProfileReader {
 		List<String> binary = new ArrayList<>();
 		for (String field : canonicalFieldList) {
 			String bit = actual.contains(field) ? "1" : "0";
-			if (mandatoryFields.contains(field)) {
+			if (MANDATORY_FIELDS.contains(field)) {
 				bit = bit + bit + bit;
-			} else if (functionalFields.contains(field)) {
+			} else if (FUNCTIONAL_FIELDS.contains(field)) {
 				bit = bit + bit;
 			}
 			binary.add(bit);
