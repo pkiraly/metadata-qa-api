@@ -5,7 +5,8 @@ import com.jayway.jsonpath.spi.json.JsonProvider;
 import org.apache.commons.lang3.StringUtils;
 
 import java.io.Serializable;
-import java.util.*;
+import java.util.LinkedHashMap;
+import java.util.Map;
 import java.util.logging.Logger;
 
 /**

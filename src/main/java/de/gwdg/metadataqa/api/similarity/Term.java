@@ -41,9 +41,9 @@ public class Term {
 
 	@Override
 	public String toString() {
-		return "Term{" +
-			"term='" + value + '\'' +
-			", distances=" + formatDistances() +
-			'}';
+		return "Term{"
+			+ "term='" + value + '\''
+			+ ", distances=" + formatDistances()
+			+ '}';
 	}
 }

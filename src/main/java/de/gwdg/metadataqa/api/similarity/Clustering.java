@@ -2,7 +2,10 @@ package de.gwdg.metadataqa.api.similarity;
 
 import org.apache.commons.text.similarity.JaroWinklerDistance;
 
-import java.util.*;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.ArrayList;
 
 public class Clustering {
 

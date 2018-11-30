@@ -4,9 +4,6 @@ import de.gwdg.metadataqa.api.model.EdmFieldInstance;
 import com.jayway.jsonpath.JsonPath;
 import de.gwdg.metadataqa.api.model.XmlFieldInstance;
 
-import java.lang.reflect.Field;
-import java.lang.reflect.ParameterizedType;
-import java.lang.reflect.Type;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.LinkedHashMap;

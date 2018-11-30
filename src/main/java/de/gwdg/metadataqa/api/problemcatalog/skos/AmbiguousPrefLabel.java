@@ -8,16 +8,12 @@ import de.gwdg.metadataqa.api.problemcatalog.ProblemCatalog;
 import de.gwdg.metadataqa.api.problemcatalog.ProblemDetector;
 import de.gwdg.metadataqa.api.schema.Schema;
 import de.gwdg.metadataqa.api.util.Converter;
-import de.gwdg.metadataqa.api.util.StringDuplicationDetector;
 import java.io.Serializable;
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.logging.Logger;
-import javax.print.attribute.HashAttributeSet;
-import org.apache.commons.lang3.StringUtils;
 
 /**
  *

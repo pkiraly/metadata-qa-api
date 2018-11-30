@@ -12,8 +12,11 @@ import de.gwdg.metadataqa.api.util.CompressionLevel;
 import org.apache.commons.httpclient.HttpClient;
 import org.apache.commons.lang3.StringUtils;
 
-import java.io.*;
-import java.util.*;
+import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
+import java.util.LinkedHashMap;
 import java.util.logging.Logger;
 
 /**
