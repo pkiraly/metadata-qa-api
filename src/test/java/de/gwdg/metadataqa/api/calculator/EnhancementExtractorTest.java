@@ -43,8 +43,8 @@ public class EnhancementExtractorTest {
 
 	@Test
 	public void hello() {
-		EnhancementIdExtractor extractor = new EnhancementIdExtractor();
-		List<String> enhancementIds = extractor.extractIds(cache);
+		// EnhancementIdExtractor extractor = new EnhancementIdExtractor();
+		List<String> enhancementIds = EnhancementIdExtractor.extractIds(cache);
 		assertTrue(!enhancementIds.isEmpty());
 		assertEquals(1, enhancementIds.size());
 		assertEquals("http://dbpedia.org/resource/Portrait", enhancementIds.get(0));

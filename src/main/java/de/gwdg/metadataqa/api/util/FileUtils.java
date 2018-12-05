@@ -15,8 +15,12 @@ import org.apache.commons.lang3.StringUtils;
  *
  * @author Péter Király <peter.kiraly at gwdg.de>
  */
-public class FileUtils {
+public final class FileUtils {
+
 	private static ClassLoader classLoader = FileUtils.class.getClassLoader();
+
+	private FileUtils() {
+	}
 
 	public static List<String> readLines(String fileName)
 			throws URISyntaxException, IOException {

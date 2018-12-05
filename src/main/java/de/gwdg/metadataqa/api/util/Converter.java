@@ -12,7 +12,10 @@ import org.apache.commons.lang3.StringUtils;
  *
  * @author Péter Király <peter.kiraly at gwdg.de>
  */
-public class Converter {
+public final class Converter {
+
+	private Converter() {
+	}
 
 	/**
 	 * Transforms different objects (BigDecimal, Integer) to Double

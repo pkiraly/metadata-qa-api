@@ -10,7 +10,10 @@ import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.Before;
 import org.junit.BeforeClass;
+import org.junit.Rule;
 import org.junit.Test;
+import org.junit.rules.ExpectedException;
+
 import static org.junit.Assert.*;
 
 /**
@@ -81,12 +84,26 @@ public class CalculatorFacadeTest {
 		assertEquals(1, calculators.size());
 
 		calculator.enableTfIdfMeasurement(true);
+		calculator.configureSolr("localhost", "8983", "solr/europeana");
 		calculator.changed();
 		calculators = calculator.getCalculators();
 		assertEquals(2, calculators.size());
 
 		calculator.changed();
 		calculators = calculator.getCalculators();
+		assertEquals(2, calculators.size());
+	}
+
+
+	@Test(expected = IllegalArgumentException.class)
+	public void testTfIdfWithWrongConfiguration() {
+		CalculatorFacade calculator = new CalculatorFacade();
+		calculator.setSchema(new EdmOaiPmhXmlSchema());
+		calculator.enableTfIdfMeasurement(true);
+		calculator.changed();
+
+		List<Calculator> calculators = calculator.getCalculators();
+
 		assertEquals(2, calculators.size());
 	}
 }

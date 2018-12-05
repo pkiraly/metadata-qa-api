@@ -16,9 +16,12 @@ import net.minidev.json.JSONArray;
  *
  * @author Péter Király <peter.kiraly at gwdg.de>
  */
-public class JsonUtils {
+public final class JsonUtils {
 
 	private static final Logger LOGGER = Logger.getLogger(JsonUtils.class.getCanonicalName());
+
+	private JsonUtils() {
+	}
 
 	public static Object extractField(Object document, String jsonPath) {
 		return JsonPath.read(document, jsonPath);

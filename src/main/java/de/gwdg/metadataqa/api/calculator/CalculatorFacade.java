@@ -10,6 +10,7 @@ import de.gwdg.metadataqa.api.problemcatalog.ProblemCatalog;
 import de.gwdg.metadataqa.api.problemcatalog.TitleAndDescriptionAreSame;
 import de.gwdg.metadataqa.api.schema.EdmSchema;
 import de.gwdg.metadataqa.api.schema.Schema;
+import de.gwdg.metadataqa.api.uniqueness.SolrConfiguration;
 import de.gwdg.metadataqa.api.uniqueness.TfIdf;
 import de.gwdg.metadataqa.api.util.CompressionLevel;
 import java.io.Serializable;
@@ -78,6 +79,8 @@ public class CalculatorFacade implements Serializable {
 	protected boolean saturationExtendedResult = false;
 	protected boolean checkSkippableCollections = false;
 	protected CompressionLevel compressionLevel = CompressionLevel.NORMAL;
+
+	private SolrConfiguration solrConfiguration = null;
 
 	/**
 	 * Flag to detect status changes
@@ -172,7 +175,12 @@ public class CalculatorFacade implements Serializable {
 
 		if (tfIdfMeasurementEnabled) {
 			tfidfCalculator = new TfIdfCalculator(schema);
-			tfidfCalculator.setDoCollectTerms(collectTfIdfTerms);
+			if (solrConfiguration != null) {
+				tfidfCalculator.setSolrConfiguration(solrConfiguration);
+			} else {
+				throw new IllegalArgumentException("If TF-IDF measurement is enabled, Solr configuration should not be null.");
+			}
+			tfidfCalculator.enableTermCollection(collectTfIdfTerms);
 			calculators.add(tfidfCalculator);
 		}
 
@@ -430,7 +438,7 @@ public class CalculatorFacade implements Serializable {
 			this.collectTfIdfTerms = collectTfIdfTerms;
 			changed = true;
 			if (tfidfCalculator != null) {
-				tfidfCalculator.setDoCollectTerms(collectTfIdfTerms);
+				tfidfCalculator.enableTermCollection(collectTfIdfTerms);
 			}
 		}
 	}
@@ -534,8 +542,9 @@ public class CalculatorFacade implements Serializable {
 	}
 
 	public void configureSolr(String solrHost, String solrPort, String solrPath) {
+		solrConfiguration = new SolrConfiguration(solrHost, solrPort, solrPath);
 		if (this.tfidfCalculator != null) {
-			this.tfidfCalculator.setSolr(solrHost, solrPort, solrPath);
+			this.tfidfCalculator.setSolrConfiguration(solrConfiguration);
 		}
 	}
 
@@ -583,4 +592,6 @@ public class CalculatorFacade implements Serializable {
 	public void setSchema(Schema schema) {
 		this.schema = schema;
 	}
+
+
 }

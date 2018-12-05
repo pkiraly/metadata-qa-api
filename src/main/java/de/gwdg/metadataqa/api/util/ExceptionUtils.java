@@ -8,7 +8,10 @@ import org.apache.commons.lang3.StringUtils;
  *
  * @author Péter Király <peter.kiraly at gwdg.de>
  */
-public class ExceptionUtils {
+public final class ExceptionUtils {
+
+	private ExceptionUtils() {
+	}
 
 	public static String extractRelevantPath(Exception e) {
 		List<String> relevantPaths = new ArrayList<>();

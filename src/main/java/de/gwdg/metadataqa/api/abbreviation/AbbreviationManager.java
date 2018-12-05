@@ -60,27 +60,27 @@ public class AbbreviationManager implements Serializable {
 		data = new LinkedHashMap<>();
 	}
 
-	protected void initialize(String fileName) {
-		initialize(fileName, false);
+	protected void initialize(String pFileName) {
+		initialize(pFileName, false);
 	}
 
 	/**
 	* Initialize abbreviations. It reads a file and fulfill the abbreviation map.
-	* @param fileName The name of input file
+	* @param pFileName The name of input file
 	* @param parse Whether parse the file to extract the abbreviation or use line number as the abbreviated value
 	*/
-	protected void initialize(String fileName, boolean parse) {
-		this.fileName = fileName;
+	protected void initialize(String pFileName, boolean parse) {
+		this.fileName = pFileName;
 		Path path = null;
 		try {
-			path = getPath(fileName);
+			path = getPath(pFileName);
 			List<String> lines = Files.readAllLines(path, Charset.defaultCharset());
 			int i = 1;
 			for (String line : lines) {
 				processLine(line, i, parse);
 			}
 		} catch (URISyntaxException | IOException | FileSystemNotFoundException ex) {
-			LOGGER.severe(String.format("Error with file: %s, path: %s.", fileName, path));
+			LOGGER.severe(String.format("Error with file: %s, path: %s.", pFileName, path));
 			LOGGER.severe(ex.getLocalizedMessage());
 		}
 	}

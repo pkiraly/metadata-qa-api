@@ -4,6 +4,7 @@ import de.gwdg.metadataqa.api.counter.FieldCounter;
 import de.gwdg.metadataqa.api.interfaces.Calculator;
 import de.gwdg.metadataqa.api.model.JsonPathCache;
 import de.gwdg.metadataqa.api.schema.Schema;
+import de.gwdg.metadataqa.api.uniqueness.SolrConfiguration;
 import de.gwdg.metadataqa.api.uniqueness.TfIdf;
 import de.gwdg.metadataqa.api.uniqueness.TfIdfExtractor;
 import de.gwdg.metadataqa.api.util.CompressionLevel;
@@ -54,13 +55,11 @@ public class TfIdfCalculator implements Calculator, Serializable {
 			  + "&fl=id";
 	private static final HttpClient HTTP_CLIENT = new HttpClient();
 
-	private String solrHost;
-	private String solrPort;
-	private String solrPath;
+	private SolrConfiguration solrConfiguration;
 	private String solrSearchPath;
 
 	private Map<String, List<TfIdf>> termsCollection;
-	private boolean doCollectTerms = false;
+	private boolean termCollectionEnabled = false;
 	private FieldCounter<Double> resultMap;
 	private Schema schema;
 
@@ -85,7 +84,7 @@ public class TfIdfCalculator implements Calculator, Serializable {
 
 		String solrJsonResponse = getSolrResponse(recordId);
 		TfIdfExtractor extractor = new TfIdfExtractor(schema);
-		resultMap = extractor.extract(solrJsonResponse, recordId, doCollectTerms);
+		resultMap = extractor.extract(solrJsonResponse, recordId, termCollectionEnabled);
 		// counters.setTfIdfList(resultMap);
 		termsCollection = extractor.getTermsCollection();
 	}
@@ -124,8 +123,12 @@ public class TfIdfCalculator implements Calculator, Serializable {
 		return termsCollection;
 	}
 
-	public void setDoCollectTerms(boolean doCollectTerms) {
-		this.doCollectTerms = doCollectTerms;
+	public void enableTermCollection(boolean enableTermCollection) {
+		this.termCollectionEnabled = enableTermCollection;
+	}
+
+	public boolean isTermCollectionEnabled() {
+		return termCollectionEnabled;
 	}
 
 	@Override
@@ -155,43 +158,19 @@ public class TfIdfCalculator implements Calculator, Serializable {
 		return headers;
 	}
 
-	public String getSolrHost() {
-		return solrHost;
-	}
-
-	public void setSolrHost(String solrHost) {
-		this.solrHost = solrHost;
-	}
-
-	public String getSolrPort() {
-		return solrPort;
-	}
-
-	public void setSolrPort(String solrPort) {
-		this.solrPort = solrPort;
-	}
-
-	public String getSolrPath() {
-		return solrPath;
-	}
-
-	public void setSolrPath(String solrPath) {
-		this.solrPath = solrPath;
-	}
-
-	public void setSolr(String solrHost, String solrPort, String solrPath) {
-		this.solrHost = solrHost;
-		this.solrPort = solrPort;
-		this.solrPath = solrPath;
+	public void setSolrConfiguration(final SolrConfiguration pSolrConfiguration) {
+		this.solrConfiguration = pSolrConfiguration;
 	}
 
 	public String getSolrSearchPath() {
 		if (solrSearchPath == null) {
-			this.solrSearchPath = String.format("http://%s:%s/%s/%s",
-				(StringUtils.isBlank(solrHost) ? SOLR_HOST : solrHost),
-				(StringUtils.isBlank(solrPort) ? SOLR_PORT : solrPort),
-				(StringUtils.isBlank(solrPath) ? SOLR_PATH : solrPath),
-				SOLR_SEARCH_PARAMS);
+			this.solrSearchPath = String.format(
+				"http://%s:%s/%s/%s",
+				solrConfiguration.getSolrHost(),
+				solrConfiguration.getSolrPort(),
+				solrConfiguration.getSolrPath(),
+				SOLR_SEARCH_PARAMS
+			);
 		}
 		return this.solrSearchPath;
 	}
