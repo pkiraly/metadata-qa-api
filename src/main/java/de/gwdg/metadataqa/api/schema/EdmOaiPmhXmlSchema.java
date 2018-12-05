@@ -302,9 +302,9 @@ public class EdmOaiPmhXmlSchema extends EdmSchema implements Serializable {
 			"Concept", "Concept/rdf:about"
 		));
 
-		SOLR_FIELDS.put("dc:title", "dc_title_txt");
-		SOLR_FIELDS.put("dcterms:alternative", "dcterms_alternative_txt");
-		SOLR_FIELDS.put("dc:description", "dc_description_txt");
+		SOLR_FIELDS.put("Proxy/dc:title", "dc_title_txt");
+		SOLR_FIELDS.put("Proxy/dcterms:alternative", "dcterms_alternative_txt");
+		SOLR_FIELDS.put("Proxy/dc:description", "dc_description_txt");
 
 		EMPTY_STRINGS.add("$.['ore:Proxy'][?(@['edm:europeanaProxy'][0] == 'false')]['dc:title']");
 		EMPTY_STRINGS.add("$.['ore:Proxy'][?(@['edm:europeanaProxy'][0] == 'false')]['dc:description']");

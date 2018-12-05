@@ -37,10 +37,12 @@ public class UniquenessCalculator implements Calculator, Serializable {
 	private FieldCounter<Double> resultMap;
 
 	public UniquenessCalculator() {
-		SolrClient solrClient = new SolrClient();
+		// TODO make it configurable
+		solrClient = new SolrClient();
 	}
 
 	public UniquenessCalculator(Schema schema) {
+		this();
 		extractor = new UniquenessExtractor();
 		initialize(schema);
 	}

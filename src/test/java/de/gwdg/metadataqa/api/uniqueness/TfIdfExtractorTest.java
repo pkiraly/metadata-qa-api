@@ -58,11 +58,11 @@ public class TfIdfExtractorTest {
 		TfIdfExtractor extractor = new TfIdfExtractor(new EdmOaiPmhXmlSchema());
 		FieldCounter<Double> results = extractor.extract(jsonString, recordId);
 		assertEquals(6, results.size());
-		assertEquals(new Double(0.0017653998874690505), results.get("dc:title:avg"));
-		assertEquals(new Double(0.008826999437345252), results.get("dc:title:sum"));
-		assertEquals(new Double(0), results.get("dcterms:alternative:avg"));
-		assertEquals(new Double(0), results.get("dcterms:alternative:sum"));
-		assertEquals(new Double(0), results.get("dc:description:avg"));
-		assertEquals(new Double(0), results.get("dc:description:sum"));
+		assertEquals(new Double(0.0017653998874690505), results.get("Proxy/dc:title:avg"));
+		assertEquals(new Double(0.008826999437345252), results.get("Proxy/dc:title:sum"));
+		assertEquals(new Double(0), results.get("Proxy/dcterms:alternative:avg"));
+		assertEquals(new Double(0), results.get("Proxy/dcterms:alternative:sum"));
+		assertEquals(new Double(0), results.get("Proxy/dc:description:avg"));
+		assertEquals(new Double(0), results.get("Proxy/dc:description:sum"));
 	}
 }
