@@ -57,16 +57,6 @@ public class TfIdf {
 	}
 
 	/**
-	 * Set the indexed term.
-	 *
-	 * @param value
-	 *    The indexed term
-	 */
-	public void setTerm(String value) {
-		this.term = value;
-	}
-
-	/**
 	 * Returns term frequency (the number of times the term occurs in the field).
 	 *
 	 * @return
@@ -74,16 +64,6 @@ public class TfIdf {
 	 */
 	public int getTf() {
 		return tf;
-	}
-
-	/**
-	 * Sets term frequency (the number of times the term occurs in the field).
-	 *
-	 * @param value
-	 *    Term frequency (the number of times the term occurs in the field).
-	 */
-	public void setTf(int value) {
-		this.tf = value;
 	}
 
 	/**
@@ -97,16 +77,6 @@ public class TfIdf {
 	}
 
 	/**
-	 * Sets document frequency (the number of documents the term occurs in).
-	 *
-	 * @param value
-	 *    Document frequency (the number of documents the term occurs in).
-	 */
-	public void setDf(int value) {
-		this.df = value;
-	}
-
-	/**
 	 * Returns the TF-IDF number read from Apache Solr.
 	 *
 	 * @return
@@ -114,16 +84,6 @@ public class TfIdf {
 	 */
 	public double getTfIdf() {
 		return tfIdf;
-	}
-
-	/**
-	 * Sets the TF-IDF number read from Apache Solr.
-	 *
-	 * @param value
-	 *    The TF-IDF number read from Apache Solr.
-	 */
-	public void setTfIdf(double value) {
-		this.tfIdf = value;
 	}
 
 	/**
