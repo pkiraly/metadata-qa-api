@@ -209,8 +209,10 @@
         <version>2.7</version>
         <!-- this settings needed for coveralls service -->
         <configuration>
-          <format>xml</format>
-          <format>html</format>
+          <formats>
+            <format>xml</format>
+            <format>html</format>
+          </formats>
           <maxmem>256m</maxmem>
           <!-- aggregated reports for multi-module projects -->
           <aggregate>true</aggregate>
