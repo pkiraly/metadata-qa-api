@@ -9,6 +9,6 @@ import de.gwdg.metadataqa.api.schema.ProblemCatalogSchema;
  */
 public abstract class ProblemDetector implements Observer {
 
-	protected ProblemCatalog problemCatalog;
-	protected ProblemCatalogSchema schema;
+  protected ProblemCatalog problemCatalog;
+  protected ProblemCatalogSchema schema;
 }

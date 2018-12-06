@@ -13,28 +13,28 @@ import static org.junit.Assert.*;
  */
 public class ConverterTest {
 
-	public ConverterTest() {
-	}
+  public ConverterTest() {
+  }
 
-	@BeforeClass
-	public static void setUpClass() {
-	}
+  @BeforeClass
+  public static void setUpClass() {
+  }
 
-	@AfterClass
-	public static void tearDownClass() {
-	}
+  @AfterClass
+  public static void tearDownClass() {
+  }
 
-	@Before
-	public void setUp() {
-	}
+  @Before
+  public void setUp() {
+  }
 
-	@After
-	public void tearDown() {
-	}
+  @After
+  public void tearDown() {
+  }
 
-	@Test
-	public void testCompressNumber() {
-		assertEquals("0.5", Converter.compressNumber("0.50000", CompressionLevel.NORMAL));
-		assertEquals("0.0", Converter.compressNumber("0.00000", CompressionLevel.NORMAL));
-	}
+  @Test
+  public void testCompressNumber() {
+    assertEquals("0.5", Converter.compressNumber("0.50000", CompressionLevel.NORMAL));
+    assertEquals("0.0", Converter.compressNumber("0.00000", CompressionLevel.NORMAL));
+  }
 }

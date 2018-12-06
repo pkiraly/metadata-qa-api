@@ -19,27 +19,27 @@ import java.util.List;
  */
 class QALanguageDetector {
 
-	private List<LanguageProfile> languageProfiles;
-	private LanguageDetector languageDetector;
-	private TextObjectFactory textObjectFactory;
+  private List<LanguageProfile> languageProfiles;
+  private LanguageDetector languageDetector;
+  private TextObjectFactory textObjectFactory;
 
-	QALanguageDetector() throws IOException {
-		languageProfiles = new LanguageProfileReader().readAllBuiltIn();
+  QALanguageDetector() throws IOException {
+    languageProfiles = new LanguageProfileReader().readAllBuiltIn();
 
-		//build language detector:
-		languageDetector = LanguageDetectorBuilder
-			.create(NgramExtractors.standard())
-			.withProfiles(languageProfiles)
-			.build();
+    //build language detector:
+    languageDetector = LanguageDetectorBuilder
+      .create(NgramExtractors.standard())
+      .withProfiles(languageProfiles)
+      .build();
 
-		//create a text object factory
-		textObjectFactory = CommonTextObjectFactories.forDetectingOnLargeText();
-	}
+    //create a text object factory
+    textObjectFactory = CommonTextObjectFactories.forDetectingOnLargeText();
+  }
 
-	public Optional<LdLocale> detect(String text) {
-		//query:
-		TextObject textObject = textObjectFactory.forText(text);
-		Optional<LdLocale> lang = languageDetector.detect(textObject);
-		return lang;
-	}
+  public Optional<LdLocale> detect(String text) {
+    //query:
+    TextObject textObject = textObjectFactory.forText(text);
+    Optional<LdLocale> lang = languageDetector.detect(textObject);
+    return lang;
+  }
 }

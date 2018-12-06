@@ -20,46 +20,46 @@ import static org.junit.Assert.*;
  */
 public class DuplicatedStringsTest {
 
-	private String problemFileName = "problem-catalog/duplicated-string.json";
-	private DuplicatedStrings detector;
-	private JsonPathCache cache;
+  private String problemFileName = "problem-catalog/duplicated-string.json";
+  private DuplicatedStrings detector;
+  private JsonPathCache cache;
 
-	public DuplicatedStringsTest() {
-	}
+  public DuplicatedStringsTest() {
+  }
 
-	@BeforeClass
-	public static void setUpClass() {
-	}
+  @BeforeClass
+  public static void setUpClass() {
+  }
 
-	@AfterClass
-	public static void tearDownClass() {
-	}
+  @AfterClass
+  public static void tearDownClass() {
+  }
 
-	@Before
-	public void setUp() throws URISyntaxException, IOException {
-		EdmSchema schema = new EdmOaiPmhXmlSchema();
-		ProblemCatalog catalog = new ProblemCatalog(schema);
-		detector = new DuplicatedStrings(catalog);
+  @Before
+  public void setUp() throws URISyntaxException, IOException {
+    EdmSchema schema = new EdmOaiPmhXmlSchema();
+    ProblemCatalog catalog = new ProblemCatalog(schema);
+    detector = new DuplicatedStrings(catalog);
 
-		cache = new JsonPathCache(FileUtils.readFirstLine(problemFileName));
-	}
+    cache = new JsonPathCache(FileUtils.readFirstLine(problemFileName));
+  }
 
-	@After
-	public void tearDown() {
-	}
+  @After
+  public void tearDown() {
+  }
 
-	// <edm:provider>Europeana Food and DrinkEuropeana Food and Drink</edm:provider>
-	// <dc:date>1890 ; 1890</dc:date>
-	@Test
-	public void test() throws IOException, URISyntaxException {
+  // <edm:provider>Europeana Food and DrinkEuropeana Food and Drink</edm:provider>
+  // <dc:date>1890 ; 1890</dc:date>
+  @Test
+  public void test() throws IOException, URISyntaxException {
 
-		try {
-			FieldCounter<Double> results = new FieldCounter<>();
+    try {
+      FieldCounter<Double> results = new FieldCounter<>();
 
-			detector.update(cache, results);
-			assertEquals((Double) 8.0, results.get(detector.getHeader()));
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-	}
+      detector.update(cache, results);
+      assertEquals((Double) 8.0, results.get(detector.getHeader()));
+    } catch (Exception e) {
+      e.printStackTrace();
+    }
+  }
 }

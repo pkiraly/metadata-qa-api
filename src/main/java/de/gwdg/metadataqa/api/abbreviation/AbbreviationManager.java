@@ -51,126 +51,129 @@ import java.util.logging.Logger;
  */
 public class AbbreviationManager implements Serializable {
 
-	private static final Logger LOGGER = Logger.getLogger(AbbreviationManager.class.getCanonicalName());
-	protected Map<String, Integer> data;
-	private static FileSystem fs;
-	private String fileName;
+  private static final Logger LOGGER = Logger.getLogger(AbbreviationManager.class.getCanonicalName());
+  protected Map<String, Integer> data;
+  private static FileSystem fs;
+  private String fileName;
 
-	public AbbreviationManager() {
-		data = new LinkedHashMap<>();
-	}
+  public AbbreviationManager() {
+    data = new LinkedHashMap<>();
+  }
 
-	protected void initialize(String pFileName) {
-		initialize(pFileName, false);
-	}
+  protected void initialize(String pFileName) {
+    initialize(pFileName, false);
+  }
 
-	/**
-	* Initialize abbreviations. It reads a file and fulfill the abbreviation map.
-	* @param pFileName The name of input file
-	* @param parse Whether parse the file to extract the abbreviation or use line number as the abbreviated value
-	*/
-	protected void initialize(String pFileName, boolean parse) {
-		this.fileName = pFileName;
-		Path path = null;
-		try {
-			path = getPath(pFileName);
-			List<String> lines = Files.readAllLines(path, Charset.defaultCharset());
-			int i = 1;
-			for (String line : lines) {
-				processLine(line, i, parse);
-			}
-		} catch (URISyntaxException | IOException | FileSystemNotFoundException ex) {
-			LOGGER.severe(String.format("Error with file: %s, path: %s.", pFileName, path));
-			LOGGER.severe(ex.getLocalizedMessage());
-		}
-	}
+  /**
+  * Initialize abbreviations. It reads a file and fulfill the abbreviation map.
+  * @param pFileName The name of input file
+  * @param parse Whether parse the file to extract the abbreviation or use line number as the abbreviated value
+  */
+  protected void initialize(String pFileName, boolean parse) {
+    this.fileName = pFileName;
+    Path path = null;
+    try {
+      path = getPath(pFileName);
+      List<String> lines = Files.readAllLines(path, Charset.defaultCharset());
+      int i = 1;
+      for (String line : lines) {
+        processLine(line, i, parse);
+      }
+    } catch (URISyntaxException | IOException | FileSystemNotFoundException ex) {
+      LOGGER.severe(String.format("Error with file: %s, path: %s.", pFileName, path));
+      LOGGER.severe(ex.getLocalizedMessage());
+    }
+  }
 
-	public void processLine(String line, int i, boolean parse) throws NumberFormatException {
-		if (parse && line.contains(";")) {
-			String[] parts = line.split(";", 2);
-			data.put(parts[1].replace("\\n", "\n"), Integer.parseInt(parts[0]));
-		} else {
-			data.put(line, i++);
-		}
-	}
+  public void processLine(String line, int i, boolean parse) throws NumberFormatException {
+    if (parse && line.contains(";")) {
+      String[] parts = line.split(";", 2);
+      data.put(parts[1].replace("\\n", "\n"), Integer.parseInt(parts[0]));
+    } else {
+      data.put(line, i++);
+    }
+  }
 
-	/**
-	 * Looking for the abbreviated value of a text
-	 * @param entry A key to abbreviate
-	 * @return The abbreviated value
-	 */
-	public Integer lookup(String entry) {
-		if (!data.containsKey(entry)) {
-			int oldsize = data.size();
-			data.put(entry, data.size() + 1);
-			String msg = String.format("new entry: %s (size: %d -> %d)",
-					  entry, oldsize, data.size());
-			if (fileName != null) {
-				msg += " " + fileName;
-			}
-			LOGGER.info(msg);
-		}
-		return data.get(entry);
-	}
+  /**
+   * Looking for the abbreviated value of a text.
+   *
+   * @param entry A key to abbreviate
+   * @return The abbreviated value
+   */
+  public Integer lookup(String entry) {
+    if (!data.containsKey(entry)) {
+      int oldsize = data.size();
+      data.put(entry, data.size() + 1);
+      String msg = String.format(
+        "new entry: %s (size: %d -> %d)",
+        entry, oldsize, data.size()
+      );
+      if (fileName != null) {
+        msg += " " + fileName;
+      }
+      LOGGER.info(msg);
+    }
+    return data.get(entry);
+  }
 
-	/**
-	 * Save the abbreviations into a file.
-	 *
-	 * @param fileName The file name.
-	 *
-	 * @throws FileNotFoundException
-	 * @throws UnsupportedEncodingException
-	 */
-	public void save(String fileName)
-			throws FileNotFoundException, UnsupportedEncodingException {
-		try (PrintWriter writer = new PrintWriter(fileName, "UTF-8")) {
-			for (Map.Entry<String, Integer> entry : data.entrySet()) {
-				writer.println(String.format("%d;%s", entry.getValue(), entry.getKey()));
-			}
-		}
-	}
+  /**
+   * Save the abbreviations into a file.
+   *
+   * @param fileName The file name.
+   *
+   * @throws FileNotFoundException
+   * @throws UnsupportedEncodingException
+   */
+  public void save(String fileName)
+      throws FileNotFoundException, UnsupportedEncodingException {
+    try (PrintWriter writer = new PrintWriter(fileName, "UTF-8")) {
+      for (Map.Entry<String, Integer> entry : data.entrySet()) {
+        writer.println(String.format("%d;%s", entry.getValue(), entry.getKey()));
+      }
+    }
+  }
 
-	public String searchById(Integer id) {
-		if (data.containsValue(id)) {
-			for (String key : data.keySet()) {
-				if (data.get(key).equals(id)) {
-					return key;
-				}
-			}
-		}
+  public String searchById(Integer id) {
+    if (data.containsValue(id)) {
+      for (String key : data.keySet()) {
+        if (data.get(key).equals(id)) {
+          return key;
+        }
+      }
+    }
 
-		return null;
-	}
+    return null;
+  }
 
-	/**
-	 * A get a java.nio.file.Path object from a file name.
-	 * @param fileName The file name
-	 * @return The Path object
-	 * @throws IOException
-	 * @throws URISyntaxException
-	 */
-	private Path getPath(String fileName)
-			throws IOException, URISyntaxException {
-		Path path;
-		URL url = getClass().getClassLoader().getResource(fileName);
-		if (url == null) {
-			throw new IOException(String.format("File %s is not existing", fileName));
-		}
-		URI uri = url.toURI();
-		Map<String, String> env = new HashMap<>();
-		if (uri.toString().contains("!")) {
-			String[] parts = uri.toString().split("!");
-			if (fs == null) {
-				fs = FileSystems.newFileSystem(URI.create(parts[0]), env);
-			}
-			path = fs.getPath(parts[1]);
-		} else {
-			path = Paths.get(uri);
-		}
-		return path;
-	}
+  /**
+   * A get a java.nio.file.Path object from a file name.
+   * @param fileName The file name
+   * @return The Path object
+   * @throws IOException
+   * @throws URISyntaxException
+   */
+  private Path getPath(String fileName)
+      throws IOException, URISyntaxException {
+    Path path;
+    URL url = getClass().getClassLoader().getResource(fileName);
+    if (url == null) {
+      throw new IOException(String.format("File %s is not existing", fileName));
+    }
+    URI uri = url.toURI();
+    Map<String, String> env = new HashMap<>();
+    if (uri.toString().contains("!")) {
+      String[] parts = uri.toString().split("!");
+      if (fs == null) {
+        fs = FileSystems.newFileSystem(URI.create(parts[0]), env);
+      }
+      path = fs.getPath(parts[1]);
+    } else {
+      path = Paths.get(uri);
+    }
+    return path;
+  }
 
-	public Map<String, Integer> getData() {
-		return data;
-	}
+  public Map<String, Integer> getData() {
+    return data;
+  }
 }

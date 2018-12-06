@@ -21,39 +21,39 @@ import static org.junit.Assert.*;
  */
 public class AmbiguousPrefLabelTest {
 
-	private String problemFileName = "problem-catalog/same-title-and-description.json";
-	private AmbiguousPrefLabel detector;
-	private JsonPathCache cache;
+  private String problemFileName = "problem-catalog/same-title-and-description.json";
+  private AmbiguousPrefLabel detector;
+  private JsonPathCache cache;
 
-	public AmbiguousPrefLabelTest() {
-	}
+  public AmbiguousPrefLabelTest() {
+  }
 
-	@BeforeClass
-	public static void setUpClass() {
-	}
+  @BeforeClass
+  public static void setUpClass() {
+  }
 
-	@AfterClass
-	public static void tearDownClass() {
-	}
+  @AfterClass
+  public static void tearDownClass() {
+  }
 
-	@Before
-	public void setUp() throws URISyntaxException, IOException {
-		EdmSchema schema = new EdmOaiPmhXmlSchema();
-		ProblemCatalog catalog = new ProblemCatalog(schema);
-		detector = new AmbiguousPrefLabel(catalog);
+  @Before
+  public void setUp() throws URISyntaxException, IOException {
+    EdmSchema schema = new EdmOaiPmhXmlSchema();
+    ProblemCatalog catalog = new ProblemCatalog(schema);
+    detector = new AmbiguousPrefLabel(catalog);
 
-		cache = new JsonPathCache(FileUtils.readFirstLine(problemFileName));
-	}
+    cache = new JsonPathCache(FileUtils.readFirstLine(problemFileName));
+  }
 
-	@After
-	public void tearDown() {
-	}
+  @After
+  public void tearDown() {
+  }
 
-	@Test
-	public void testAmbiguousPrefLabels() {
-		FieldCounter<Double> results = new FieldCounter<>();
+  @Test
+  public void testAmbiguousPrefLabels() {
+    FieldCounter<Double> results = new FieldCounter<>();
 
-		detector.update(cache, results);
-		assertEquals((Double) 21.0, results.get(detector.getHeader()));
-	}
+    detector.update(cache, results);
+    assertEquals((Double) 21.0, results.get(detector.getHeader()));
+  }
 }

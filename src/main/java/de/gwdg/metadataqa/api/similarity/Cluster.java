@@ -1,75 +1,86 @@
 package de.gwdg.metadataqa.api.similarity;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 
-public class Cluster {
-	private List<Term> terms = new ArrayList<>();
-	private boolean isActive = true;
+/**
+ * Cluster object.
+ *
+ * @author Péter Király <peter.kiraly at gwdg.de>
+ */
+public class Cluster implements Iterable<Term> {
+  private List<Term> terms = new ArrayList<>();
+  private boolean isActive = true;
 
-	public Cluster(Term term) {
-		terms.add(term);
-	}
+  public Cluster(Term term) {
+    terms.add(term);
+  }
 
-	public Cluster addTerm(Term term) {
-		terms.add(term);
-		return this;
-	}
+  @Override
+  public Iterator<Term> iterator() {
+    return terms.iterator();
+  }
 
-	public boolean isActive() {
-		return isActive;
-	}
+  public Cluster addTerm(Term term) {
+    terms.add(term);
+    return this;
+  }
 
-	public void setActive(boolean active) {
-		isActive = active;
-	}
+  public boolean isActive() {
+    return isActive;
+  }
 
-	public List<Term> getTerms() {
-		return terms;
-	}
+  public void setActive(boolean active) {
+    isActive = active;
+  }
 
-	public Cluster merge(Cluster other) {
-		for (Term term : other.getTerms()) {
-			addTerm(term);
-		}
+  public List<Term> getTerms() {
+    return terms;
+  }
 
-		return this;
-	}
+  public Cluster merge(Cluster other) {
+    for (Term term : other.getTerms()) {
+      addTerm(term);
+    }
 
-	public boolean isSimilarTo(Cluster other, double treshold) {
-		boolean isSimilar = false;
-		for (Term term : terms) {
-			for (Term otherTerm : other.getTerms()) {
-				if (term.hasDistance(otherTerm)
-				    && term.getDistance(otherTerm) > treshold) {
-					isSimilar = true;
-				} else {
-					isSimilar = false;
-					break;
-				}
-			}
-			if (!isSimilar) {
-				break;
-			}
-		}
+    return this;
+  }
 
-		return isSimilar;
-	}
+  public boolean isSimilarTo(Cluster other, double treshold) {
+    boolean isSimilar = false;
+    for (Term term : terms) {
+      for (Term otherTerm : other.getTerms()) {
+        if (term.hasDistance(otherTerm)
+            && term.getDistance(otherTerm) > treshold) {
+          isSimilar = true;
+        } else {
+          isSimilar = false;
+          break;
+        }
+      }
+      if (!isSimilar) {
+        break;
+      }
+    }
 
-	public List<String> getTermList() {
-		List<String> termList = new ArrayList<>();
-		for (Term term : terms) {
-			termList.add(term.value);
-		}
-		return termList;
-	}
+    return isSimilar;
+  }
 
-	@Override
-	public String toString() {
-		return "Cluster{"
-			+ "terms=" + terms
-			+ ", active=" + isActive
-			+ "}";
-	}
+  public List<String> getTermList() {
+    List<String> termList = new ArrayList<>();
+    for (Term term : terms) {
+      termList.add(term.value);
+    }
+    return termList;
+  }
+
+  @Override
+  public String toString() {
+    return "Cluster{"
+      + "terms=" + terms
+      + ", active=" + isActive
+      + "}";
+  }
 
 }

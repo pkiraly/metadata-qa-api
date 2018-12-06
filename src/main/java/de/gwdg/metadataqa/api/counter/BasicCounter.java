@@ -6,52 +6,52 @@ package de.gwdg.metadataqa.api.counter;
  */
 public class BasicCounter {
 
-	private double total = 0.0;
-	private double instance = 0.0;
-	private double result = 0.0;
+  private double total = 0.0;
+  private double instance = 0.0;
+  private double result = 0.0;
 
-	public BasicCounter() {
-	}
+  public BasicCounter() {
+  }
 
-	public BasicCounter(double total) {
-		this.total = total;
-	}
+  public BasicCounter(double total) {
+    this.total = total;
+  }
 
-	public void increaseTotal() {
-		total++;
-	}
+  public void increaseTotal() {
+    total++;
+  }
 
-	public void increaseInstance() {
-		instance++;
-	}
+  public void increaseInstance() {
+    instance++;
+  }
 
-	public void calculate() {
-		result = (instance / total);
-	}
+  public void calculate() {
+    result = (instance / total);
+  }
 
-	public double getTotal() {
-		return total;
-	}
+  public double getTotal() {
+    return total;
+  }
 
-	public int getTotalAsInt() {
-		return ((Double) total).intValue();
-	}
+  public int getTotalAsInt() {
+    return ((Double) total).intValue();
+  }
 
-	public double getInstance() {
-		return instance;
-	}
+  public double getInstance() {
+    return instance;
+  }
 
-	public double getResult() {
-		return result;
-	}
+  public double getResult() {
+    return result;
+  }
 
-	@Override
-	public String toString() {
-		calculate();
-		return "BasicCounter{"
-			+ "total=" + total
-			+ ", instance=" + instance
-			+ ", result=" + result
-			+ '}';
-	}
+  @Override
+  public String toString() {
+    calculate();
+    return "BasicCounter{"
+      + "total=" + total
+      + ", instance=" + instance
+      + ", result=" + result
+      + '}';
+  }
 }

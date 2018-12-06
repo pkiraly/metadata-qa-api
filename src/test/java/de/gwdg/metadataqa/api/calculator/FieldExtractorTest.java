@@ -19,40 +19,40 @@ import static org.junit.Assert.*;
  */
 public class FieldExtractorTest {
 
-	FieldExtractor calculator;
-	JsonPathCache cache;
+  FieldExtractor calculator;
+  JsonPathCache cache;
 
-	public FieldExtractorTest() {
-	}
+  public FieldExtractorTest() {
+  }
 
-	@BeforeClass
-	public static void setUpClass() {
-	}
+  @BeforeClass
+  public static void setUpClass() {
+  }
 
-	@AfterClass
-	public static void tearDownClass() {
-	}
+  @AfterClass
+  public static void tearDownClass() {
+  }
 
-	@Before
-	public void setUp() throws URISyntaxException, IOException {
-		calculator = new FieldExtractor("$.identifier");
-		cache = new JsonPathCache(FileUtils.readFirstLine("general/test.json"));
-	}
+  @Before
+  public void setUp() throws URISyntaxException, IOException {
+    calculator = new FieldExtractor("$.identifier");
+    cache = new JsonPathCache(FileUtils.readFirstLine("general/test.json"));
+  }
 
-	@After
-	public void tearDown() {
-	}
+  @After
+  public void tearDown() {
+  }
 
-	@Test
-	public void testId() throws URISyntaxException, IOException {
-		calculator.measure(cache);
-		assertEquals("92062/BibliographicResource_1000126015451", calculator.getResultMap().get(calculator.FIELD_NAME));
-	}
+  @Test
+  public void testId() throws URISyntaxException, IOException {
+    calculator.measure(cache);
+    assertEquals("92062/BibliographicResource_1000126015451", calculator.getResultMap().get(calculator.FIELD_NAME));
+  }
 
-	@Test
-	public void testGetHeaders() {
-		List<String> expected = Arrays.asList("recordId");
-		assertEquals(1, calculator.getHeader().size());
-		assertEquals(expected, calculator.getHeader());
-	}
+  @Test
+  public void testGetHeaders() {
+    List<String> expected = Arrays.asList("recordId");
+    assertEquals(1, calculator.getHeader().size());
+    assertEquals(expected, calculator.getHeader());
+  }
 }

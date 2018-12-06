@@ -16,32 +16,32 @@ import static org.junit.Assert.*;
  */
 public class EmptyStringsTest {
 
-	public EmptyStringsTest() {
-	}
+  public EmptyStringsTest() {
+  }
 
-	@BeforeClass
-	public static void setUpClass() {
-	}
+  @BeforeClass
+  public static void setUpClass() {
+  }
 
-	@AfterClass
-	public static void tearDownClass() {
-	}
+  @AfterClass
+  public static void tearDownClass() {
+  }
 
-	@Before
-	public void setUp() {
-	}
+  @Before
+  public void setUp() {
+  }
 
-	@After
-	public void tearDown() {
-	}
+  @After
+  public void tearDown() {
+  }
 
-	@Test
-	public void testGetHeaders() {
-		EdmSchema schema = new EdmOaiPmhXmlSchema();
-		ProblemCatalog catalog = new ProblemCatalog(schema);
-		EmptyStrings detector = new EmptyStrings(catalog);
+  @Test
+  public void testGetHeaders() {
+    EdmSchema schema = new EdmOaiPmhXmlSchema();
+    ProblemCatalog catalog = new ProblemCatalog(schema);
+    EmptyStrings detector = new EmptyStrings(catalog);
 
-		assertNotNull(detector.getHeader());
-		assertEquals("EmptyStrings", detector.getHeader());
-	}
+    assertNotNull(detector.getHeader());
+    assertEquals("EmptyStrings", detector.getHeader());
+  }
 }

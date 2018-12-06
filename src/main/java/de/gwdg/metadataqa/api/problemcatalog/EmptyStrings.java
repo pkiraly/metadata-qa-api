@@ -14,37 +14,37 @@ import org.apache.commons.lang3.StringUtils;
  */
 public class EmptyStrings extends ProblemDetector implements Serializable {
 
-	private static final Logger LOGGER = Logger.getLogger(EmptyStrings.class.getCanonicalName());
+  private static final Logger LOGGER = Logger.getLogger(EmptyStrings.class.getCanonicalName());
 
-	private static final String NAME = "EmptyStrings";
+  private static final String NAME = "EmptyStrings";
 
-	public EmptyStrings(ProblemCatalog problemCatalog) {
-		this.problemCatalog = problemCatalog;
-		this.problemCatalog.addObserver(this);
-		this.schema = problemCatalog.getSchema();
-	}
+  public EmptyStrings(ProblemCatalog problemCatalog) {
+    this.problemCatalog = problemCatalog;
+    this.problemCatalog.addObserver(this);
+    this.schema = problemCatalog.getSchema();
+  }
 
-	@Override
-	public void update(JsonPathCache cache, FieldCounter<Double> results) {
-		double value = 0;
-		for (String path : schema.getEmptyStringPaths()) {
-			List<EdmFieldInstance> subjects = cache.get(path);
-			if (subjects != null && !subjects.isEmpty()) {
-				if (subjects.size() > 0) {
-					for (EdmFieldInstance subject : subjects) {
-						if (StringUtils.isBlank(subject.getValue())) {
-							value += 1;
-						}
-					}
-				}
-			}
-		}
-		results.put(NAME, value);
-	}
+  @Override
+  public void update(JsonPathCache cache, FieldCounter<Double> results) {
+    double value = 0;
+    for (String path : schema.getEmptyStringPaths()) {
+      List<EdmFieldInstance> subjects = cache.get(path);
+      if (subjects != null && !subjects.isEmpty()) {
+        if (subjects.size() > 0) {
+          for (EdmFieldInstance subject : subjects) {
+            if (StringUtils.isBlank(subject.getValue())) {
+              value += 1;
+            }
+          }
+        }
+      }
+    }
+    results.put(NAME, value);
+  }
 
-	@Override
-	public String getHeader() {
-		return NAME;
-	}
+  @Override
+  public String getHeader() {
+    return NAME;
+  }
 
 }

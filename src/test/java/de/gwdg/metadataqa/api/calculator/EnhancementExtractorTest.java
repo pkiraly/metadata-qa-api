@@ -19,34 +19,34 @@ import static org.junit.Assert.*;
  */
 public class EnhancementExtractorTest {
 
-	JsonPathCache cache;
+  JsonPathCache cache;
 
-	public EnhancementExtractorTest() {
-	}
+  public EnhancementExtractorTest() {
+  }
 
-	@BeforeClass
-	public static void setUpClass() {
-	}
+  @BeforeClass
+  public static void setUpClass() {
+  }
 
-	@AfterClass
-	public static void tearDownClass() {
-	}
+  @AfterClass
+  public static void tearDownClass() {
+  }
 
-	@Before
-	public void setUp() throws URISyntaxException, IOException {
-		cache = new JsonPathCache(FileUtils.readFirstLine("general/test.json"));
-	}
+  @Before
+  public void setUp() throws URISyntaxException, IOException {
+    cache = new JsonPathCache(FileUtils.readFirstLine("general/test.json"));
+  }
 
-	@After
-	public void tearDown() {
-	}
+  @After
+  public void tearDown() {
+  }
 
-	@Test
-	public void hello() {
-		// EnhancementIdExtractor extractor = new EnhancementIdExtractor();
-		List<String> enhancementIds = EnhancementIdExtractor.extractIds(cache);
-		assertTrue(!enhancementIds.isEmpty());
-		assertEquals(1, enhancementIds.size());
-		assertEquals("http://dbpedia.org/resource/Portrait", enhancementIds.get(0));
-	}
+  @Test
+  public void hello() {
+    // EnhancementIdExtractor extractor = new EnhancementIdExtractor();
+    List<String> enhancementIds = EnhancementIdExtractor.extractIds(cache);
+    assertTrue(!enhancementIds.isEmpty());
+    assertEquals(1, enhancementIds.size());
+    assertEquals("http://dbpedia.org/resource/Portrait", enhancementIds.get(0));
+  }
 }

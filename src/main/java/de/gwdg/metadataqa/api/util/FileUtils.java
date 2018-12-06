@@ -17,38 +17,38 @@ import org.apache.commons.lang3.StringUtils;
  */
 public final class FileUtils {
 
-	private static ClassLoader classLoader = FileUtils.class.getClassLoader();
+  private static ClassLoader classLoader = FileUtils.class.getClassLoader();
 
-	private FileUtils() {
-	}
+  private FileUtils() {
+  }
 
-	public static List<String> readLines(String fileName)
-			throws URISyntaxException, IOException {
-		return Files.readAllLines(getPath(fileName), Charset.defaultCharset());
-	}
+  public static List<String> readLines(String fileName)
+      throws URISyntaxException, IOException {
+    return Files.readAllLines(getPath(fileName), Charset.defaultCharset());
+  }
 
-	public static Path getPath(String fileName) throws IOException, URISyntaxException {
-		URL url = classLoader.getResource(fileName);
-		if (url == null) {
-			throw new IOException(String.format("File %s in not available", fileName));
-		}
-		return Paths.get(url.toURI());
-	}
+  public static Path getPath(String fileName) throws IOException, URISyntaxException {
+    URL url = classLoader.getResource(fileName);
+    if (url == null) {
+      throw new IOException(String.format("File %s in not available", fileName));
+    }
+    return Paths.get(url.toURI());
+  }
 
-	public static String readFirstLine(String fileName)
-			throws URISyntaxException, IOException {
-		List<String> lines = readLines(fileName);
-		return lines.get(0);
-	}
+  public static String readFirstLine(String fileName)
+      throws URISyntaxException, IOException {
+    List<String> lines = readLines(fileName);
+    return lines.get(0);
+  }
 
-	public static String readContent(String fileName)
-			throws URISyntaxException, IOException {
-		return StringUtils.join(readLines(fileName), "");
-	}
+  public static String readContent(String fileName)
+      throws URISyntaxException, IOException {
+    return StringUtils.join(readLines(fileName), "");
+  }
 
-	public static Object buildDoc(String fileName) throws URISyntaxException, IOException {
-		String jsonString = readFirstLine(fileName);
-		Object jsonDoc = Configuration.defaultConfiguration().jsonProvider().parse(jsonString);
-		return jsonDoc;
-	}
+  public static Object buildDoc(String fileName) throws URISyntaxException, IOException {
+    String jsonString = readFirstLine(fileName);
+    Object jsonDoc = Configuration.defaultConfiguration().jsonProvider().parse(jsonString);
+    return jsonDoc;
+  }
 }

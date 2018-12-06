@@ -21,47 +21,47 @@ import static org.junit.Assert.*;
  */
 public class SameTitleAndDescriptionTest {
 
-	public SameTitleAndDescriptionTest() {
-	}
+  public SameTitleAndDescriptionTest() {
+  }
 
-	@BeforeClass
-	public static void setUpClass() {
-	}
+  @BeforeClass
+  public static void setUpClass() {
+  }
 
-	@AfterClass
-	public static void tearDownClass() {
-	}
+  @AfterClass
+  public static void tearDownClass() {
+  }
 
-	@Before
-	public void setUp() {
-	}
+  @Before
+  public void setUp() {
+  }
 
-	@After
-	public void tearDown() {
-	}
+  @After
+  public void tearDown() {
+  }
 
-	@Test
-	public void hello() throws IOException, URISyntaxException {
-		String jsonString = FileUtils.readFirstLine("problem-catalog/same-title-and-description.json");
-		JsonPathCache cache = new JsonPathCache(jsonString);
+  @Test
+  public void hello() throws IOException, URISyntaxException {
+    String jsonString = FileUtils.readFirstLine("problem-catalog/same-title-and-description.json");
+    JsonPathCache cache = new JsonPathCache(jsonString);
 
-		EdmSchema schema = new EdmOaiPmhXmlSchema();
-		ProblemCatalog catalog = new ProblemCatalog(schema);
-		ProblemDetector detector = new TitleAndDescriptionAreSame(catalog);
-		FieldCounter<Double> results = new FieldCounter<>();
+    EdmSchema schema = new EdmOaiPmhXmlSchema();
+    ProblemCatalog catalog = new ProblemCatalog(schema);
+    ProblemDetector detector = new TitleAndDescriptionAreSame(catalog);
+    FieldCounter<Double> results = new FieldCounter<>();
 
-		detector.update(cache, results);
-		assertEquals((Double)1.0, (Double)results.get("TitleAndDescriptionAreSame"));
-	}
+    detector.update(cache, results);
+    assertEquals((Double)1.0, (Double)results.get("TitleAndDescriptionAreSame"));
+  }
 
-	@Test
-	public void testGetHeaders() {
-		EdmSchema schema = new EdmOaiPmhXmlSchema();
-		ProblemCatalog catalog = new ProblemCatalog(schema);
-		TitleAndDescriptionAreSame detector = new TitleAndDescriptionAreSame(catalog);
+  @Test
+  public void testGetHeaders() {
+    EdmSchema schema = new EdmOaiPmhXmlSchema();
+    ProblemCatalog catalog = new ProblemCatalog(schema);
+    TitleAndDescriptionAreSame detector = new TitleAndDescriptionAreSame(catalog);
 
-		assertNotNull(detector.getHeader());
-		assertEquals("TitleAndDescriptionAreSame", detector.getHeader());
-	}
+    assertNotNull(detector.getHeader());
+    assertEquals("TitleAndDescriptionAreSame", detector.getHeader());
+  }
 
 }

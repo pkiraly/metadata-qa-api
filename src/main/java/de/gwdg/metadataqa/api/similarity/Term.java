@@ -7,43 +7,51 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+/**
+ * Term object.
+ *
+ * It has a value, and a distance map which contains terms as key and a
+ * numeric distance between the value and the current term.
+ *
+ * @author Péter Király <peter.kiraly at gwdg.de>
+ */
 public class Term {
-	String value;
-	Map<String, Double> distances = new HashMap<>();
+  String value;
+  Map<String, Double> distances = new HashMap<>();
 
-	public Term(String value) {
-		this.value = value;
-	}
+  public Term(String value) {
+    this.value = value;
+  }
 
-	public void setDistance(Term other, double distance) {
-		distances.put(other.value, distance);
-	}
+  public void setDistance(Term other, double distance) {
+    distances.put(other.value, distance);
+  }
 
-	public String getValue() {
-		return value;
-	}
+  public String getValue() {
+    return value;
+  }
 
-	public double getDistance(Term other) {
-		return distances.get(other.value);
-	}
+  public double getDistance(Term other) {
+    return distances.get(other.value);
+  }
 
-	public boolean hasDistance(Term other) {
-		return distances.containsKey(other.value);
-	}
+  public boolean hasDistance(Term other) {
+    return distances.containsKey(other.value);
+  }
 
-	public String formatDistances() {
-		List<String> formattedDistances = new ArrayList<>();
-		for (String t : distances.keySet()) {
-			formattedDistances.add(String.format("%s=%f", t, distances.get(t)));
-		}
-		return "{" + StringUtils.join(formattedDistances, ", ") + "}";
-	}
+  public String formatDistances() {
+    List<String> formattedDistances = new ArrayList<>();
+    for (String t : distances.keySet()) {
+      formattedDistances.add(String.format("%s=%f", t, distances.get(t)));
+    }
+    return "{" + StringUtils.join(formattedDistances, ", ") + "}";
+  }
 
-	@Override
-	public String toString() {
-		return "Term{"
-			+ "term='" + value + '\''
-			+ ", distances=" + formatDistances()
-			+ '}';
-	}
+  @Override
+  public String toString() {
+    return "Term{"
+      + "term='" + value + '\''
+      + ", distances=" + formatDistances()
+      + '}';
+  }
 }

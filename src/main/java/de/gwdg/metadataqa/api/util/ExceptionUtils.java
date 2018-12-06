@@ -10,17 +10,17 @@ import org.apache.commons.lang3.StringUtils;
  */
 public final class ExceptionUtils {
 
-	private ExceptionUtils() {
-	}
+  private ExceptionUtils() {
+  }
 
-	public static String extractRelevantPath(Exception e) {
-		List<String> relevantPaths = new ArrayList<>();
-		for (StackTraceElement element : e.getStackTrace()) {
-			if (element.getClassName().startsWith("de.gwdg")) {
-				relevantPaths.add(element.toString());
-			}
-		}
-		return StringUtils.join(relevantPaths, "\n");
-	}
+  public static String extractRelevantPath(Exception e) {
+    List<String> relevantPaths = new ArrayList<>();
+    for (StackTraceElement element : e.getStackTrace()) {
+      if (element.getClassName().startsWith("de.gwdg")) {
+        relevantPaths.add(element.toString());
+      }
+    }
+    return StringUtils.join(relevantPaths, "\n");
+  }
 
 }

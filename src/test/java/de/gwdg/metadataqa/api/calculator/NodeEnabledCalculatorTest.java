@@ -22,51 +22,51 @@ import static org.junit.Assert.*;
  */
 public class NodeEnabledCalculatorTest {
 
-	Schema schema = new EdmOaiPmhXmlSchema();
+  Schema schema = new EdmOaiPmhXmlSchema();
 
-	public NodeEnabledCalculatorTest() {
-	}
+  public NodeEnabledCalculatorTest() {
+  }
 
-	@BeforeClass
-	public static void setUpClass() {
-	}
+  @BeforeClass
+  public static void setUpClass() {
+  }
 
-	@Before
-	public void setUp() {
-	}
+  @Before
+  public void setUp() {
+  }
 
-	@Test
-	public void hello() throws URISyntaxException, IOException {
-		String jsonString = FileUtils.readFirstLine("general/test.json");
+  @Test
+  public void hello() throws URISyntaxException, IOException {
+    String jsonString = FileUtils.readFirstLine("general/test.json");
 
-		Object jsonDocument = Configuration.defaultConfiguration().jsonProvider().parse(jsonString);
-		for (JsonBranch collectionBranch : schema.getCollectionPaths()) {
-			Object rawCollection = null;
-			try {
-				rawCollection = JsonPath.read(jsonDocument, collectionBranch.getJsonPath());
-			} catch (PathNotFoundException e) {}
-			if (rawCollection != null) {
-				if (rawCollection instanceof JSONArray) {
-					JSONArray collection = (JSONArray)rawCollection;
-					collection.forEach(
-						node -> {
-							processNode(node, collectionBranch.getChildren());
-						}
-					);
-				} else {
-					processNode(rawCollection, collectionBranch.getChildren());
-				}
-			}
-		}
-	}
+    Object jsonDocument = Configuration.defaultConfiguration().jsonProvider().parse(jsonString);
+    for (JsonBranch collectionBranch : schema.getCollectionPaths()) {
+      Object rawCollection = null;
+      try {
+        rawCollection = JsonPath.read(jsonDocument, collectionBranch.getJsonPath());
+      } catch (PathNotFoundException e) {}
+      if (rawCollection != null) {
+        if (rawCollection instanceof JSONArray) {
+          JSONArray collection = (JSONArray)rawCollection;
+          collection.forEach(
+            node -> {
+              processNode(node, collectionBranch.getChildren());
+            }
+          );
+        } else {
+          processNode(rawCollection, collectionBranch.getChildren());
+        }
+      }
+    }
+  }
 
-	private void processNode(Object node, List<JsonBranch> fields) {
-		for (JsonBranch fieldBranch : fields) {
-			try {
-				Object val = JsonPath.read(node, fieldBranch.getJsonPath());
-				if (val != null) {
-				}
-			} catch (PathNotFoundException e) {}
-		}
-	}
+  private void processNode(Object node, List<JsonBranch> fields) {
+    for (JsonBranch fieldBranch : fields) {
+      try {
+        Object val = JsonPath.read(node, fieldBranch.getJsonPath());
+        if (val != null) {
+        }
+      } catch (PathNotFoundException e) {}
+    }
+  }
 }

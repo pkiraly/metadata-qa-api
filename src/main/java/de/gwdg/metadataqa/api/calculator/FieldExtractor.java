@@ -20,94 +20,94 @@ import java.util.logging.Logger;
  */
 public class FieldExtractor implements Calculator, Serializable {
 
-	private static final Logger LOGGER = Logger.getLogger(FieldExtractor.class.getCanonicalName());
+  private static final Logger LOGGER = Logger.getLogger(FieldExtractor.class.getCanonicalName());
 
-	public static final String CALCULATOR_NAME = "fieldExtractor";
-	public static final String FIELD_NAME = "recordId";
+  public static final String CALCULATOR_NAME = "fieldExtractor";
+  public static final String FIELD_NAME = "recordId";
 
-	private String idPath;
-	protected FieldCounter<String> resultMap;
-	protected Schema schema;
+  private String idPath;
+  protected FieldCounter<String> resultMap;
+  protected Schema schema;
 
-	public FieldExtractor() {
-	}
+  public FieldExtractor() {
+  }
 
-	public FieldExtractor(Schema schema) {
-		this.schema = schema;
-		setIdPath(schema.getExtractableFields().get(FIELD_NAME));
-	}
+  public FieldExtractor(Schema schema) {
+    this.schema = schema;
+    setIdPath(schema.getExtractableFields().get(FIELD_NAME));
+  }
 
-	public FieldExtractor(String idPath) {
-		this.idPath = idPath;
-	}
+  public FieldExtractor(String idPath) {
+    this.idPath = idPath;
+  }
 
-	@Override
-	public String getCalculatorName() {
-		return CALCULATOR_NAME;
-	}
+  @Override
+  public String getCalculatorName() {
+    return CALCULATOR_NAME;
+  }
 
-	@Override
-	public void measure(JsonPathCache cache)
-			throws InvalidJsonException {
-		resultMap = new FieldCounter<>();
-		List<XmlFieldInstance> instances = cache.get(getIdPath());
-		if (instances == null || instances.size() == 0) {
-			LOGGER.severe("No record ID in " + cache.getJsonString());
-			resultMap.put(FIELD_NAME, "");
-			return;
-		}
-		String recordId = instances.get(0).getValue().trim();
-		cache.setRecordId(recordId);
-		resultMap.put(FIELD_NAME, recordId);
-		if (schema != null) {
-			String path;
-			for (String fieldName : schema.getExtractableFields().keySet()) {
-				if (!fieldName.equals(FIELD_NAME)) {
-					path = schema.getExtractableFields().get(fieldName);
-					List<XmlFieldInstance> values = (List<XmlFieldInstance>) cache.get(path);
-					String value = null;
-					if (values == null || values.isEmpty() || values.size() == 0 || values.get(0) == null || values.get(0).getValue() == null) {
-						// logger.warning("Null value in field: " + fieldName + " (" + path + ")");
-						value = null;
-					} else {
-						value = values.get(0).getValue();
-					}
-					resultMap.put(fieldName, value);
-				}
-			}
-		}
-	}
+  @Override
+  public void measure(JsonPathCache cache)
+      throws InvalidJsonException {
+    resultMap = new FieldCounter<>();
+    List<XmlFieldInstance> instances = cache.get(getIdPath());
+    if (instances == null || instances.size() == 0) {
+      LOGGER.severe("No record ID in " + cache.getJsonString());
+      resultMap.put(FIELD_NAME, "");
+      return;
+    }
+    String recordId = instances.get(0).getValue().trim();
+    cache.setRecordId(recordId);
+    resultMap.put(FIELD_NAME, recordId);
+    if (schema != null) {
+      String path;
+      for (String fieldName : schema.getExtractableFields().keySet()) {
+        if (!fieldName.equals(FIELD_NAME)) {
+          path = schema.getExtractableFields().get(fieldName);
+          List<XmlFieldInstance> values = (List<XmlFieldInstance>) cache.get(path);
+          String value = null;
+          if (values == null || values.isEmpty() || values.size() == 0 || values.get(0) == null || values.get(0).getValue() == null) {
+            // logger.warning("Null value in field: " + fieldName + " (" + path + ")");
+            value = null;
+          } else {
+            value = values.get(0).getValue();
+          }
+          resultMap.put(fieldName, value);
+        }
+      }
+    }
+  }
 
-	public String getIdPath() {
-		return idPath;
-	}
+  public String getIdPath() {
+    return idPath;
+  }
 
-	public void setIdPath(String idPath) {
-		this.idPath = idPath;
-	}
+  public void setIdPath(String idPath) {
+    this.idPath = idPath;
+  }
 
-	@Override
-	public Map<String, ? extends Object> getResultMap() {
-		return resultMap.getMap();
-	}
+  @Override
+  public Map<String, ? extends Object> getResultMap() {
+    return resultMap.getMap();
+  }
 
-	@Override
-	public Map<String, Map<String, ? extends Object>> getLabelledResultMap() {
-		Map<String, Map<String, ? extends Object>> labelledResultMap = new LinkedHashMap<>();
-		labelledResultMap.put(getCalculatorName(), resultMap.getMap());
-		return labelledResultMap;
-	}
+  @Override
+  public Map<String, Map<String, ? extends Object>> getLabelledResultMap() {
+    Map<String, Map<String, ? extends Object>> labelledResultMap = new LinkedHashMap<>();
+    labelledResultMap.put(getCalculatorName(), resultMap.getMap());
+    return labelledResultMap;
+  }
 
-	@Override
-	public String getCsv(boolean withLabel, CompressionLevel compressionLevel) {
-		return resultMap.getList(withLabel, CompressionLevel.ZERO); // the extracted fields should never be compressed!
-	}
+  @Override
+  public String getCsv(boolean withLabel, CompressionLevel compressionLevel) {
+    return resultMap.getList(withLabel, CompressionLevel.ZERO); // the extracted fields should never be compressed!
+  }
 
-	@Override
-	public List<String> getHeader() {
-		List<String> headers = new ArrayList<>();
-		headers.add(FIELD_NAME);
-		return headers;
-	}
+  @Override
+  public List<String> getHeader() {
+    List<String> headers = new ArrayList<>();
+    headers.add(FIELD_NAME);
+    return headers;
+  }
 
 }

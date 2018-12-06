@@ -19,40 +19,40 @@ import static org.junit.Assert.*;
  */
 public class MarcCompletenessCalculatorTest {
 
-	JsonPathCache cache;
-	CompletenessCalculator calculator;
+  JsonPathCache cache;
+  CompletenessCalculator calculator;
 
-	public MarcCompletenessCalculatorTest() {
-	}
+  public MarcCompletenessCalculatorTest() {
+  }
 
-	@BeforeClass
-	public static void setUpClass() {
-	}
+  @BeforeClass
+  public static void setUpClass() {
+  }
 
-	@AfterClass
-	public static void tearDownClass() {
-	}
+  @AfterClass
+  public static void tearDownClass() {
+  }
 
-	@Before
-	public void setUp() throws URISyntaxException, IOException {
-		calculator = new CompletenessCalculator(new MarcJsonSchema());
-		cache = new JsonPathCache(FileUtils.readFirstLine("general/marc.json"));
-	}
+  @Before
+  public void setUp() throws URISyntaxException, IOException {
+    calculator = new CompletenessCalculator(new MarcJsonSchema());
+    cache = new JsonPathCache(FileUtils.readFirstLine("general/marc.json"));
+  }
 
-	@After
-	public void tearDown() {
-	}
+  @After
+  public void tearDown() {
+  }
 
-	@Test
-	public void testCompleteness() throws URISyntaxException, IOException {
+  @Test
+  public void testCompleteness() throws URISyntaxException, IOException {
 
-		calculator.measure(cache);
-		FieldCounter<Double> fieldCounter = calculator.getCompletenessCounter().getFieldCounter();
-		FieldCounter<Boolean> existenceCounter = calculator.getExistenceCounter();
-		FieldCounter<Integer> cardinalityCounter = calculator.getCardinalityCounter();
+    calculator.measure(cache);
+    FieldCounter<Double> fieldCounter = calculator.getCompletenessCounter().getFieldCounter();
+    FieldCounter<Boolean> existenceCounter = calculator.getExistenceCounter();
+    FieldCounter<Integer> cardinalityCounter = calculator.getCardinalityCounter();
 
-		System.err.println(fieldCounter.getList(true));
-		System.err.println(existenceCounter.getList(true));
-		System.err.println(cardinalityCounter.getList(true));
-	}
+    System.err.println(fieldCounter.getList(true));
+    System.err.println(existenceCounter.getList(true));
+    System.err.println(cardinalityCounter.getList(true));
+  }
 }

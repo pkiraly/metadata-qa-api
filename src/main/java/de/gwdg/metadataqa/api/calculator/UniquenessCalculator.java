@@ -25,103 +25,103 @@ import java.util.logging.Logger;
  */
 public class UniquenessCalculator implements Calculator, Serializable {
 
-	public static final String CALCULATOR_NAME = "uniqueness";
+  public static final String CALCULATOR_NAME = "uniqueness";
 
-	private static final Logger LOGGER = Logger.getLogger(UniquenessCalculator.class.getCanonicalName());
+  private static final Logger LOGGER = Logger.getLogger(UniquenessCalculator.class.getCanonicalName());
 
-	private UniquenessExtractor extractor;
-	private List<UniquenessField> solrFields;
-	private SolrClient solrClient;
+  private UniquenessExtractor extractor;
+  private List<UniquenessField> solrFields;
+  private SolrClient solrClient;
 
-	private static HttpClient httpClient = new HttpClient();
-	private FieldCounter<Double> resultMap;
+  private static HttpClient httpClient = new HttpClient();
+  private FieldCounter<Double> resultMap;
 
-	public UniquenessCalculator() {
-		// TODO make it configurable
-		solrClient = new SolrClient();
-	}
+  public UniquenessCalculator() {
+    // TODO make it configurable
+    solrClient = new SolrClient();
+  }
 
-	public UniquenessCalculator(Schema schema) {
-		this();
-		extractor = new UniquenessExtractor();
-		initialize(schema);
-	}
+  public UniquenessCalculator(Schema schema) {
+    this();
+    extractor = new UniquenessExtractor();
+    initialize(schema);
+  }
 
-	private void initialize(Schema schema) {
-		solrFields = new ArrayList<>();
-		for (String label : schema.getSolrFields().keySet()) {
-			UniquenessField field = new UniquenessField(label);
-			field.setJsonPath(schema.getPathByLabel(label).getAbsoluteJsonPath().replace("[*]", ""));
-			String solrField = schema.getSolrFields().get(label);
-			if (solrField.endsWith("_txt")) {
-				solrField = solrField.substring(0, solrField.length() - 4) + "_ss";
-			}
-			field.setSolrField(solrField);
+  private void initialize(Schema schema) {
+    solrFields = new ArrayList<>();
+    for (String label : schema.getSolrFields().keySet()) {
+      UniquenessField field = new UniquenessField(label);
+      field.setJsonPath(schema.getPathByLabel(label).getAbsoluteJsonPath().replace("[*]", ""));
+      String solrField = schema.getSolrFields().get(label);
+      if (solrField.endsWith("_txt")) {
+        solrField = solrField.substring(0, solrField.length() - 4) + "_ss";
+      }
+      field.setSolrField(solrField);
 
-			String solrResponse = solrClient.getSolrSearchResponse(solrField, "*");
-			int numFound = extractor.extractNumFound(solrResponse, "total");
-			field.setTotal(numFound);
-			field.setScoreForUniqueValue(
-				UniquenessFieldCalculator.calculateScore(numFound, 1.0)
-			);
+      String solrResponse = solrClient.getSolrSearchResponse(solrField, "*");
+      int numFound = extractor.extractNumFound(solrResponse, "total");
+      field.setTotal(numFound);
+      field.setScoreForUniqueValue(
+        UniquenessFieldCalculator.calculateScore(numFound, 1.0)
+      );
 
-			solrFields.add(field);
-		}
-	}
+      solrFields.add(field);
+    }
+  }
 
-	@Override
-	public String getCalculatorName() {
-		return CALCULATOR_NAME;
-	}
+  @Override
+  public String getCalculatorName() {
+    return CALCULATOR_NAME;
+  }
 
-	@Override
-	public void measure(JsonPathCache cache) {
-		String recordId = cache.getRecordId();
-		if (recordId.startsWith("/")) {
-			recordId = recordId.substring(1);
-		}
+  @Override
+  public void measure(JsonPathCache cache) {
+    String recordId = cache.getRecordId();
+    if (recordId.startsWith("/")) {
+      recordId = recordId.substring(1);
+    }
 
-		resultMap = new FieldCounter<>();
-		for (UniquenessField solrField : solrFields) {
-			UniquenessFieldCalculator fieldCalculator = new UniquenessFieldCalculator(cache, recordId, solrClient, solrField);
-			fieldCalculator.calculate();
-			resultMap.put(solrField.getSolrField() + "/count", fieldCalculator.getAverageCount());
-			resultMap.put(solrField.getSolrField() + "/score", fieldCalculator.getAverageScore());
-		}
-	}
+    resultMap = new FieldCounter<>();
+    for (UniquenessField solrField : solrFields) {
+      UniquenessFieldCalculator fieldCalculator = new UniquenessFieldCalculator(cache, recordId, solrClient, solrField);
+      fieldCalculator.calculate();
+      resultMap.put(solrField.getSolrField() + "/count", fieldCalculator.getAverageCount());
+      resultMap.put(solrField.getSolrField() + "/score", fieldCalculator.getAverageScore());
+    }
+  }
 
-	public String getTotals() {
-		List<Integer> totals = new ArrayList<>();
-		for (UniquenessField field : solrFields) {
-			totals.add(field.getTotal());
-		}
-		return StringUtils.join(totals, ",");
-	}
+  public String getTotals() {
+    List<Integer> totals = new ArrayList<>();
+    for (UniquenessField field : solrFields) {
+      totals.add(field.getTotal());
+    }
+    return StringUtils.join(totals, ",");
+  }
 
-	@Override
-	public Map<String, ? extends Object> getResultMap() {
-		return resultMap.getMap();
-	}
+  @Override
+  public Map<String, ? extends Object> getResultMap() {
+    return resultMap.getMap();
+  }
 
-	@Override
-	public Map<String, Map<String, ? extends Object>> getLabelledResultMap() {
-		Map<String, Map<String, ? extends Object>> labelledResultMap = new LinkedHashMap<>();
-		labelledResultMap.put(getCalculatorName(), resultMap.getMap());
-		return labelledResultMap;
-	}
+  @Override
+  public Map<String, Map<String, ? extends Object>> getLabelledResultMap() {
+    Map<String, Map<String, ? extends Object>> labelledResultMap = new LinkedHashMap<>();
+    labelledResultMap.put(getCalculatorName(), resultMap.getMap());
+    return labelledResultMap;
+  }
 
-	@Override
-	public String getCsv(boolean withLabel, CompressionLevel compressionLevel) {
-		return resultMap.getList(withLabel, compressionLevel);
-	}
+  @Override
+  public String getCsv(boolean withLabel, CompressionLevel compressionLevel) {
+    return resultMap.getList(withLabel, compressionLevel);
+  }
 
-	@Override
-	public List<String> getHeader() {
-		List<String> headers = new ArrayList<>();
-		for (UniquenessField field : solrFields) {
-			headers.add(field.getSolrField() + "/count");
-			headers.add(field.getSolrField() + "/score");
-		}
-		return headers;
-	}
+  @Override
+  public List<String> getHeader() {
+    List<String> headers = new ArrayList<>();
+    for (UniquenessField field : solrFields) {
+      headers.add(field.getSolrField() + "/count");
+      headers.add(field.getSolrField() + "/score");
+    }
+    return headers;
+  }
 }
