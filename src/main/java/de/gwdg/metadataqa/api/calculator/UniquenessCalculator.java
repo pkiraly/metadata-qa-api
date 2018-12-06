@@ -28,6 +28,8 @@ public class UniquenessCalculator implements Calculator, Serializable {
   public static final String CALCULATOR_NAME = "uniqueness";
 
   private static final Logger LOGGER = Logger.getLogger(UniquenessCalculator.class.getCanonicalName());
+  public static final String SUFFIX = "_txt";
+  public static final int SUFFIX_LENGTH = SUFFIX.length();
 
   private UniquenessExtractor extractor;
   private List<UniquenessField> solrFields;
@@ -53,8 +55,8 @@ public class UniquenessCalculator implements Calculator, Serializable {
       UniquenessField field = new UniquenessField(label);
       field.setJsonPath(schema.getPathByLabel(label).getAbsoluteJsonPath().replace("[*]", ""));
       String solrField = schema.getSolrFields().get(label);
-      if (solrField.endsWith("_txt")) {
-        solrField = solrField.substring(0, solrField.length() - 4) + "_ss";
+      if (solrField.endsWith(SUFFIX)) {
+        solrField = solrField.substring(0, solrField.length() - SUFFIX_LENGTH) + "_ss";
       }
       field.setSolrField(solrField);
 

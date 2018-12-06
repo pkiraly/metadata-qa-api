@@ -35,6 +35,14 @@ public class MultilingualitySaturationCalculator implements Calculator, Serializ
   private static final Logger LOGGER = Logger.getLogger(
     MultilingualitySaturationCalculator.class.getCanonicalName());
   private static final String NA = "n.a.";
+  public static final double NORMALIZED_LOW = 0.0;
+  public static final double NORMALIZED_MIDDLE = 0.3;
+  public static final double NORMALIZED_HIGH = 0.6;
+  public static final int MIDDLE_FROM = 4;
+  public static final int MIDDLE_TO = 9;
+  public static final int LOW_FROM = 2;
+  public static final int LOW_TO = 3;
+  public static final double TRANSLATION_MODIFIER = -0.2;
 
   /**
    * The result type of multilinguality.
@@ -277,15 +285,23 @@ public class MultilingualitySaturationCalculator implements Calculator, Serializ
   }
 
   private double normalizeTranslationCount(double count) {
-    double normalized = 0;
-    if (2 <= count && count <= 3) {
-      normalized = 0.0;
-    } else if (4 <= count && count <= 9) {
-      normalized = 0.3;
+    double normalized = 0.0;
+    if (isLow(count)) {
+      normalized = NORMALIZED_LOW;
+    } else if (isMiddle(count)) {
+      normalized = NORMALIZED_MIDDLE;
     } else {
-      normalized = 0.6;
+      normalized = NORMALIZED_HIGH;
     }
     return normalized;
+  }
+
+  private boolean isMiddle(double count) {
+    return MIDDLE_FROM <= count && count <= MIDDLE_TO;
+  }
+
+  private boolean isLow(double count) {
+    return LOW_FROM <= count && count <= LOW_TO;
   }
 
   public Map<String, Double> getSaturationMap() {
@@ -336,7 +352,7 @@ public class MultilingualitySaturationCalculator implements Calculator, Serializ
         double modifier = 0.0;
         if (best == LanguageSaturationType.TRANSLATION
             && result.containsKey(LanguageSaturationType.STRING)) {
-          modifier = -0.2;
+          modifier = TRANSLATION_MODIFIER;
         }
         SortedMap<LanguageSaturationType, Double> replacement = new TreeMap<>();
         replacement.put(best, result.get(best) + modifier);

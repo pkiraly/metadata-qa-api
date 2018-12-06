@@ -32,12 +32,9 @@ import org.apache.commons.io.IOUtils;
 public class TfIdfCalculator implements Calculator, Serializable {
 
   public static final String CALCULATOR_NAME = "uniqueness";
+  private static final int MEGABYTE = 1024 * 1024;
 
   private static final Logger LOGGER = Logger.getLogger(TfIdfCalculator.class.getCanonicalName());
-
-  private static final String SOLR_HOST = "localhost";
-  private static final String SOLR_PORT = "8983";
-  private static final String SOLR_PATH = "solr/europeana";
 
   private static final String SOLR_SEARCH_PARAMS = "tvrh/"
         + "?q=id:\"%s\""
@@ -94,7 +91,7 @@ public class TfIdfCalculator implements Calculator, Serializable {
     String url = String.format(getSolrSearchPath(), recordId).replace("\"", "%22");
     HttpMethod method = new GetMethod(url);
     HttpMethodParams params = new HttpMethodParams();
-    params.setIntParameter(HttpMethodParams.BUFFER_WARN_TRIGGER_LIMIT, 1024 * 1024);
+    params.setIntParameter(HttpMethodParams.BUFFER_WARN_TRIGGER_LIMIT, MEGABYTE);
     method.setParams(params);
     try {
       int statusCode = HTTP_CLIENT.executeMethod(method);

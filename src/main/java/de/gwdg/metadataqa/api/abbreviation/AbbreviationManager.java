@@ -52,7 +52,7 @@ import java.util.logging.Logger;
 public class AbbreviationManager implements Serializable {
 
   private static final Logger LOGGER = Logger.getLogger(AbbreviationManager.class.getCanonicalName());
-  protected Map<String, Integer> data;
+  private Map<String, Integer> data;
   private static FileSystem fs;
   private String fileName;
 

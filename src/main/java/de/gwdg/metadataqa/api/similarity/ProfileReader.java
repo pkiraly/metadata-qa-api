@@ -21,6 +21,7 @@ import java.util.stream.Collectors;
  */
 public class ProfileReader {
 
+  public static final double DEFAULT_TRESHOLD = 0.97;
   private List<String> canonicalFieldList;
   private List<String> profiles;
   private Map<String, Row> rowIndex;
@@ -51,7 +52,7 @@ public class ProfileReader {
   }
 
   public Map<List<Row>, Double> buildCluster() {
-    return buildCluster(0.97);
+    return buildCluster(DEFAULT_TRESHOLD);
   }
 
   public Map<List<Row>, Double> buildCluster(double treshold) {

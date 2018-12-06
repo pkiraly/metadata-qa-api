@@ -83,7 +83,7 @@ public class SolrClient {
         urlConnection.setRequestProperty("Accept-Language", "en-US,en;q=0.5");
         urlConnection.setDoOutput(true);
         try {
-          if (urlConnection.getResponseCode() == 200) {
+          if (urlConnection.getResponseCode() == HttpURLConnection.HTTP_OK) {
             InputStream in = new BufferedInputStream(urlConnection.getInputStream());
             record = readStream(in);
           } else {
