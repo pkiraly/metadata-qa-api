@@ -4,6 +4,7 @@ import java.math.BigDecimal;
 import java.security.InvalidParameterException;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.LinkedHashMap;
 import java.util.List;
 import net.minidev.json.JSONArray;
 import org.apache.commons.lang3.StringUtils;
@@ -107,11 +108,19 @@ public final class Converter {
 
   public static List<Object> jsonObjectToList(Object jsonFragment) {
     List<Object> list = new ArrayList<>();
-    if (jsonFragment instanceof JSONArray) {
-      Object[] objects = ((JSONArray) jsonFragment).toArray();
-      list.addAll(Arrays.asList(objects));
-    } else {
-      list.add(jsonFragment);
+    if (jsonFragment != null) {
+      if (jsonFragment instanceof JSONArray) {
+        List<Object> objects = Arrays.asList(((JSONArray) jsonFragment).toArray());
+        if (!objects.isEmpty()) {
+          list.addAll(objects);
+        }
+      } else if (jsonFragment instanceof LinkedHashMap) {
+        if (!((LinkedHashMap) jsonFragment).isEmpty()) {
+          list.add(jsonFragment);
+        }
+      } else {
+        list.add(jsonFragment);
+      }
     }
     return list;
   }
