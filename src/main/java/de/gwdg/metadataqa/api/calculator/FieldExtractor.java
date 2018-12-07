@@ -34,6 +34,12 @@ public class FieldExtractor implements Calculator, Serializable {
 
   public FieldExtractor(Schema schema) {
     this.schema = schema;
+    if (schema.getExtractableFields() == null
+       || schema.getExtractableFields().isEmpty()
+       || !schema.getExtractableFields().containsKey(FIELD_NAME)) {
+      throw new IllegalArgumentException(String.format(
+          "Schema should contain '%s' among the extractable fields", FIELD_NAME));
+    }
     setIdPath(schema.getExtractableFields().get(FIELD_NAME));
   }
 
