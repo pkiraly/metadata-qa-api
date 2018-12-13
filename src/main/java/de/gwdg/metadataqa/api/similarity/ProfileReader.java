@@ -22,64 +22,46 @@ import java.util.stream.Collectors;
 public class ProfileReader {
 
   public static final double DEFAULT_TRESHOLD = 0.97;
-  private List<String> canonicalFieldList;
   private List<String> profiles;
-  private Map<String, Row> rowIndex;
+  private Map<String, RecordPattern> rowIndex;
   private int i = 0;
-
-  private static final List<String> MANDATORY_FIELDS = Arrays.asList(
-    "dc:title", "dc:description", "dc:type", "dc:coverage",
-    "dcterms:spatial", "dc:subject", "edm:rights",
-    "Aggregation/edm:rights",
-    "Aggregation/edm:provider", "Aggregation/edm:dataProvider",
-    "Aggregation/edm:isShownAt", "Aggregation/edm:isShownBy"
-  );
-
-  private static final List<String> FUNCTIONAL_FIELDS = Arrays.asList(
-    "dc:contributor", "dc:creator", "dc:date", "dc:format",
-    "dc:identifier", "dc:language", "dc:publisher", "dc:relation",
-    "dc:rights", "dc:source", "dcterms:alternative", "dcterms:created",
-    "dcterms:extent", "dcterms:hasPart", "dcterms:isPartOf",
-    "dcterms:issued", "dcterms:medium", "dcterms:provenance",
-    "dcterms:temporal", "edm:isNextInSequence", "edm:type",
-    "Aggregation/edm:hasView", "Aggregation/edm:object"
-  );
+  private BinaryMaker binaryMaker;
 
   public ProfileReader(List<String> canonicalFieldList, List<String> profiles) {
-    this.canonicalFieldList = canonicalFieldList;
+    binaryMaker = new BinaryMaker(canonicalFieldList);
     this.profiles = profiles;
     rowIndex = new HashMap<>();
   }
 
-  public Map<List<Row>, Double> buildCluster() {
+  public Map<List<RecordPattern>, Double> buildCluster() {
     return buildCluster(DEFAULT_TRESHOLD);
   }
 
-  public Map<List<Row>, Double> buildCluster(double treshold) {
-    List<String> patterns = createPatternList();
+  public Map<List<RecordPattern>, Double> buildCluster(double treshold) {
+    List<String> binaryPatterns = createBinaryPatternList();
 
-    Clustering clustering = new Clustering(patterns, treshold);
+    Clustering clustering = new Clustering(binaryPatterns, treshold);
     List<List<String>> clusters = clustering.getClusters();
 
-    Map<List<Row>, Double> sortableClusters = new HashMap<>();
+    Map<List<RecordPattern>, Double> sortableClusters = new HashMap<>();
     for (List<String> terms : clusters) {
       double sum = 0.0;
-      Map<String, Row> sortableTerms = new HashMap<>();
+      Map<String, RecordPattern> sortableTerms = new HashMap<>();
       for (String term : terms) {
-        Row row = rowIndex.get(term);
-        sum += row.percent;
+        RecordPattern row = rowIndex.get(term);
+        sum += row.getPercent();
         sortableTerms.put(term, row);
       }
 
-      List<Row> sortedTerms = sortTerms(sortableTerms);
+      List<RecordPattern> sortedTerms = sortTerms(sortableTerms);
       sortableClusters.put(sortedTerms, sum);
     }
 
     return sortClusters(sortableClusters);
   }
 
-  private Map<List<Row>, Double> sortClusters(Map<List<Row>, Double> sortableClusters) {
-    Map<List<Row>, Double> sortedClusters = sortableClusters.
+  private Map<List<RecordPattern>, Double> sortClusters(Map<List<RecordPattern>, Double> sortableClusters) {
+    Map<List<RecordPattern>, Double> sortedClusters = sortableClusters.
       entrySet().
       stream().
       sorted((e1, e2) -> e2.getValue().compareTo(e1.getValue())).
@@ -98,7 +80,7 @@ public class ProfileReader {
     return i++;
   }
 
-  private List<Row> sortTerms(Map<String, Row> sortableTerms) {
+  private List<RecordPattern> sortTerms(Map<String, RecordPattern> sortableTerms) {
     return sortableTerms.
           entrySet().
           stream().
@@ -107,97 +89,29 @@ public class ProfileReader {
               e1.getValue().getPercent()
             )
           ).
-          map(e -> (Row) e.getValue()).
+          map(e -> (RecordPattern) e.getValue()).
           collect(
             Collectors.
               toList()
           );
   }
 
-  public int count(List<Row> rows) {
+  public int count(List<RecordPattern> rows) {
     int sum = 0;
-    for (Row row : rows) {
+    for (RecordPattern row : rows) {
       sum += row.getCount();
     }
     return sum;
   }
 
-  public List<String> createPatternList() {
-    List<String> patterns = new ArrayList<>();
+  public List<String> createBinaryPatternList() {
+    List<String> binaryPatterns = new ArrayList<>();
     for (String line : profiles) {
-      Row row = new Row(Arrays.asList(line.split(",")));
-      patterns.add(row.getBinary());
+      RecordPattern row = new RecordPattern(binaryMaker, Arrays.asList(line.split(",")));
+      binaryPatterns.add(row.getBinary());
       rowIndex.put(row.getBinary(), row);
     }
-    return patterns;
-  }
-
-  private String fieldListToBinary(List<String> actual) {
-    List<String> binary = new ArrayList<>();
-    for (String field : canonicalFieldList) {
-      String bit = actual.contains(field) ? "1" : "0";
-      if (MANDATORY_FIELDS.contains(field)) {
-        bit = bit + bit + bit;
-      } else if (FUNCTIONAL_FIELDS.contains(field)) {
-        bit = bit + bit;
-      }
-      binary.add(bit);
-    }
-    return StringUtils.join(binary, "");
-  }
-
-  /**
-   * Value object representing a row in the file which represents a profile.
-   */
-  public class Row {
-    private List<String> record;
-    private String fields;
-    private List<String> fieldList;
-    private String binary;
-    private Integer length;
-    private Integer count;
-    private Integer total;
-    private Double percent;
-
-    public Row(List<String> rec) {
-      record = rec;
-      fields = rec.get(0);
-      length = Integer.parseInt(rec.get(1));
-      count = Integer.parseInt(rec.get(2));
-      total = Integer.parseInt(rec.get(3));
-      percent = Double.parseDouble(rec.get(4));
-
-      fieldList = Arrays.asList(fields.split(";"));
-      binary = fieldListToBinary(fieldList);
-    }
-
-    public String asCsv() {
-      return StringUtils.join(record, ",");
-    }
-
-    public String getFields() {
-      return fields;
-    }
-
-    public String getBinary() {
-      return binary;
-    }
-
-    public List<String> getFieldList() {
-      return fieldList;
-    }
-
-    public Integer getLength() {
-      return length;
-    }
-
-    public Integer getCount() {
-      return count;
-    }
-
-    public Double getPercent() {
-      return percent;
-    }
+    return binaryPatterns;
   }
 
   public static void main(String[] args) throws IOException {
@@ -218,12 +132,12 @@ public class ProfileReader {
 
     ProfileReader profileReader = new ProfileReader(canonicalFieldList, profiles);
     if (produceList) {
-      List<String> patterns = profileReader.createPatternList();
-      for (String pattern : patterns) {
-        System.out.println(pattern);
+      List<String> binaryPatterns = profileReader.createBinaryPatternList();
+      for (String binaryPattern : binaryPatterns) {
+        System.out.println(binaryPattern);
       }
     } else {
-      Map<List<ProfileReader.Row>, Double> sortedClusters = profileReader.buildCluster();
+      Map<List<RecordPattern>, Double> sortedClusters = profileReader.buildCluster();
 
       int idx = 0;
       sortedClusters.

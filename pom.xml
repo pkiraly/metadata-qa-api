@@ -121,6 +121,16 @@
           <version>4.5.2</version>
         </dependency>
     -->
+    <!--
+      Hierarchical context runner for jUnit
+      https://github.com/bechte/junit-hierarchicalcontextrunner/wiki
+     -->
+    <dependency>
+      <groupId>de.bechte.junit</groupId>
+      <artifactId>junit-hierarchicalcontextrunner</artifactId>
+      <version>4.12.1</version>
+      <scope>test</scope>
+    </dependency>
   </dependencies>
 
   <build>
