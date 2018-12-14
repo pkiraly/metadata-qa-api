@@ -88,17 +88,17 @@ public class DefaultSolrClient implements SolrClient {
             ));
           }
         } catch (IOException e) {
-          e.printStackTrace();
+          LOGGER.severe("Error with connecting to " + url + ": " + e.getMessage());
         }
       } catch (IOException e) {
-        e.printStackTrace();
+        LOGGER.severe("Error with connecting to " + url + ": " + e.getMessage());
       } finally {
         if (urlConnection != null) {
           urlConnection.disconnect();
         }
       }
     } catch (MalformedURLException e) {
-      e.printStackTrace();
+      LOGGER.severe("Error with connecting to " + url + ": " + e.getMessage());
     }
 
     // add request header
