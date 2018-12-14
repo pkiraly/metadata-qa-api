@@ -52,19 +52,27 @@ public class ProfileReaderTest {
         pattern.getFields());
     assertEquals(35.8252427184466, pattern.getPercent(), 0.00001);
     assertEquals(71.74757281553397, cluster.getValue(), 0.0001);
+    assertEquals(1478, getSum(clusters.get(0).getKey()));
 
     assertEquals(21.844660194174757, clusters.get(1).getValue(), 0.0001);
+    assertEquals(450, getSum(clusters.get(1).getKey()));
     assertEquals(3.4951456310679614, clusters.get(2).getValue(), 0.0001);
+    assertEquals(72, getSum(clusters.get(2).getKey()));
     assertEquals(1.5048543689320388, clusters.get(3).getValue(), 0.0001);
+    assertEquals(31, getSum(clusters.get(3).getKey()));
     assertEquals(0.8737864077669903, clusters.get(4).getValue(), 0.0001);
+    assertEquals(18, getSum(clusters.get(4).getKey()));
     assertEquals(0.4368932038834952, clusters.get(5).getValue(), 0.0001);
+    assertEquals(9, getSum(clusters.get(5).getKey()));
     assertEquals(0.04854368932038835, clusters.get(6).getValue(), 0.0001);
+    assertEquals(1, getSum(clusters.get(6).getKey()));
     assertEquals(0.04854368932038835, clusters.get(7).getValue(), 0.0001);
+    assertEquals(1, getSum(clusters.get(7).getKey()));
 
     sortedClusters.entrySet().stream().forEach((pCluster) -> {
       int i = profileReader.getNext();
       int sum = profileReader.count(pCluster.getKey());
-      System.err.printf("#%d=%d\n", i, sum);
+      // System.err.printf("#%d=%d\n", i, sum);
       pCluster.
           getKey().
           forEach((pRow) -> {
@@ -72,5 +80,13 @@ public class ProfileReaderTest {
           });
         // System.err.printf("=%.2f%%\n", cluster.getValue());
       });
+  }
+
+  private int getSum(List<RecordPattern> patterns) {
+    int sum = 0;
+    for (RecordPattern pattern : patterns) {
+      sum += pattern.getCount();
+    }
+    return sum;
   }
 }
