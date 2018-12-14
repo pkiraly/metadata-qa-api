@@ -51,7 +51,9 @@ public class UniquenessCalculator implements Calculator, Serializable {
     solrFields = new ArrayList<>();
     for (String label : schema.getSolrFields().keySet()) {
       UniquenessField field = new UniquenessField(label);
-      field.setJsonPath(schema.getPathByLabel(label).getAbsoluteJsonPath().replace("[*]", ""));
+      field.setJsonPath(
+          schema.getPathByLabel(label).getAbsoluteJsonPath().replace("[*]", "")
+      );
       String solrField = schema.getSolrFields().get(label);
       if (solrField.endsWith(SUFFIX)) {
         solrField = solrField.substring(0, solrField.length() - SUFFIX_LENGTH) + "_ss";
@@ -77,7 +79,7 @@ public class UniquenessCalculator implements Calculator, Serializable {
   @Override
   public void measure(JsonPathCache cache) {
     String recordId = cache.getRecordId();
-    if (recordId.startsWith("/")) {
+    if (StringUtils.isNotBlank(recordId) && recordId.startsWith("/")) {
       recordId = recordId.substring(1);
     }
 
@@ -87,8 +89,14 @@ public class UniquenessCalculator implements Calculator, Serializable {
           cache, recordId, solrClient, solrField
       );
       fieldCalculator.calculate();
-      resultMap.put(solrField.getSolrField() + "/count", fieldCalculator.getAverageCount());
-      resultMap.put(solrField.getSolrField() + "/score", fieldCalculator.getAverageScore());
+      resultMap.put(
+          solrField.getSolrField() + "/count",
+          fieldCalculator.getAverageCount()
+      );
+      resultMap.put(
+          solrField.getSolrField() + "/score",
+          fieldCalculator.getAverageScore()
+      );
     }
   }
 
@@ -125,5 +133,9 @@ public class UniquenessCalculator implements Calculator, Serializable {
       headers.add(field.getSolrField() + "/score");
     }
     return headers;
+  }
+
+  public List<UniquenessField> getSolrFields() {
+    return solrFields;
   }
 }

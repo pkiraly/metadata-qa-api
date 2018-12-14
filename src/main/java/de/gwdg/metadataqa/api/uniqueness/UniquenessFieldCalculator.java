@@ -30,7 +30,10 @@ public class UniquenessFieldCalculator {
   double averageCount;
   double averageScore;
 
-  public UniquenessFieldCalculator(JsonPathCache cache, String recordId, SolrClient solrClient, UniquenessField solrField) {
+  public UniquenessFieldCalculator(JsonPathCache cache,
+                                   String recordId,
+                                   SolrClient solrClient,
+                                   UniquenessField solrField) {
     this.cache = cache;
     this.recordId = recordId;
     this.solrClient = solrClient;
@@ -44,13 +47,18 @@ public class UniquenessFieldCalculator {
       for (XmlFieldInstance fieldInstance : values) {
         String value = fieldInstance.getValue();
         if (StringUtils.isNotBlank(value)) {
-          String solrResponse = solrClient.getSolrSearchResponse(uniquenessField.getSolrField(), value);
+          String solrResponse = solrClient.getSolrSearchResponse(
+              uniquenessField.getSolrField(), value
+          );
           int count = extractor.extractNumFound(solrResponse, recordId);
           if (count == 0) {
             count = 1;
           }
           double score = Math.pow(
-            (calculateScore(uniquenessField.getTotal(), count) / uniquenessField.getScoreForUniqueValue()),
+            (
+              calculateScore(uniquenessField.getTotal(), count)
+              / uniquenessField.getScoreForUniqueValue()
+            ),
             3.0
           );
 

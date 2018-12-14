@@ -12,6 +12,7 @@ public class UniquenessField implements Serializable {
    * The schema label of the field.
    */
   String label;
+
   /**
    * A Solr field.
    */
@@ -21,6 +22,7 @@ public class UniquenessField implements Serializable {
    * A JSON path expression.
    */
   String jsonPath;
+
   int total;
   double scoreForUniqueValue;
 
@@ -58,5 +60,16 @@ public class UniquenessField implements Serializable {
 
   public double getScoreForUniqueValue() {
     return scoreForUniqueValue;
+  }
+
+  @Override
+  public String toString() {
+    return "UniquenessField{"
+        + "label='" + label + '\''
+        + ", solrField='" + solrField + '\''
+        + ", jsonPath='" + jsonPath + '\''
+        + ", total=" + total
+        + ", scoreForUniqueValue=" + scoreForUniqueValue
+        + '}';
   }
 }
