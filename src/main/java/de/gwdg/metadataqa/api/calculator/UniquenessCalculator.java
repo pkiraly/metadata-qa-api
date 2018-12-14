@@ -6,7 +6,6 @@ import de.gwdg.metadataqa.api.interfaces.Calculator;
 import de.gwdg.metadataqa.api.model.JsonPathCache;
 import de.gwdg.metadataqa.api.schema.Schema;
 import de.gwdg.metadataqa.api.util.CompressionLevel;
-import org.apache.commons.httpclient.HttpClient;
 import org.apache.commons.lang3.StringUtils;
 
 import java.io.Serializable;
