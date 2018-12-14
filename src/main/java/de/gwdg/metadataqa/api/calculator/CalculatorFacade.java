@@ -11,6 +11,8 @@ import de.gwdg.metadataqa.api.problemcatalog.ProblemCatalog;
 import de.gwdg.metadataqa.api.problemcatalog.TitleAndDescriptionAreSame;
 import de.gwdg.metadataqa.api.schema.EdmSchema;
 import de.gwdg.metadataqa.api.schema.Schema;
+import de.gwdg.metadataqa.api.uniqueness.DefaultSolrClient;
+import de.gwdg.metadataqa.api.uniqueness.SolrClient;
 import de.gwdg.metadataqa.api.uniqueness.SolrConfiguration;
 import de.gwdg.metadataqa.api.uniqueness.TfIdf;
 import de.gwdg.metadataqa.api.util.CompressionLevel;
@@ -93,8 +95,12 @@ public class CalculatorFacade implements Serializable {
   protected boolean completenessCollectFields = false;
   protected boolean saturationExtendedResult = false;
   protected boolean checkSkippableCollections = false;
+
+  protected boolean uniquenessMeasurementEnabled = false;
+
   protected CompressionLevel compressionLevel = CompressionLevel.NORMAL;
 
+  protected SolrClient solrClient;
   protected SolrConfiguration solrConfiguration = null;
 
   /**
@@ -229,6 +235,18 @@ public class CalculatorFacade implements Serializable {
               MultilingualitySaturationCalculator.ResultTypes.EXTENDED);
       }
       calculators.add(multilingualSaturationCalculator);
+    }
+
+    if (uniquenessMeasurementEnabled) {
+      if (solrClient == null && solrConfiguration == null) {
+        throw new IllegalArgumentException(
+          "If Uniqueness measurement is enabled, Solr configuration should not be null."
+        );
+      }
+      if (solrClient == null) {
+        solrClient = new DefaultSolrClient(solrConfiguration);
+      }
+      calculators.add(new UniquenessCalculator(solrClient, schema));
     }
   }
 
@@ -430,6 +448,22 @@ public class CalculatorFacade implements Serializable {
   }
 
   /**
+   * Is uniqueness measurement enabled?
+   * @return uniqueness measurement flag
+   */
+  public boolean isUniquenessMeasurementEnabled() {
+    return uniquenessMeasurementEnabled;
+  }
+
+  /**
+   * Flag to enable uniqueness measurement.
+   * @param uniquenessMeasurementEnabled The flag
+   */
+  public void enableUniquenessMeasurement(boolean uniquenessMeasurementEnabled) {
+    this.uniquenessMeasurementEnabled = uniquenessMeasurementEnabled;
+  }
+
+  /**
    * Return the list of all registered calculators.
    *
    * @return
@@ -615,5 +649,9 @@ public class CalculatorFacade implements Serializable {
 
   public void setSchema(Schema schema) {
     this.schema = schema;
+  }
+
+  public void setSolrClient(SolrClient solrClient) {
+    this.solrClient = solrClient;
   }
 }

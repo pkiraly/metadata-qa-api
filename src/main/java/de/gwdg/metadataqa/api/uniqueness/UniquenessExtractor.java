@@ -23,16 +23,16 @@ public class UniquenessExtractor implements Serializable {
   public UniquenessExtractor() {
   }
 
-    /**
-     * Extracts sums and average of TF-IDF value for the schema's Solr field array.
-     *
-     * @param jsonString
-     *    The JSON string
-     * @param recordId
-     *    The record identifier
-     * @return
-     *    Sums and average of TF-IDF value
-     */
+  /**
+   * Extracts sums and average of TF-IDF value for the schema's Solr field array.
+   *
+   * @param jsonString
+   *    The JSON string
+   * @param recordId
+   *    The record identifier
+   * @return
+   *    Sums and average of TF-IDF value
+   */
   public Integer extractNumFound(String jsonString, String recordId) {
     int numFound = 1;
     if (StringUtils.isBlank(jsonString)) {
@@ -49,8 +49,8 @@ public class UniquenessExtractor implements Serializable {
         LOGGER.severe("No 'response' part in Solr response: " + jsonString);
       }
     } else {
-      System.err.println(">>" + document + "<<");
-      System.err.println(document.getClass());
+      LOGGER.severe("Problem with parsing Solr response: >>" + document
+          + "<< class:" + document.getClass());
     }
 
     return numFound;
