@@ -1,13 +1,10 @@
 package de.gwdg.metadataqa.api.calculator;
 
-import de.gwdg.metadataqa.api.uniqueness.SolrClient;
-import de.gwdg.metadataqa.api.uniqueness.UniquenessFieldCalculator;
+import de.gwdg.metadataqa.api.uniqueness.*;
 import de.gwdg.metadataqa.api.counter.FieldCounter;
 import de.gwdg.metadataqa.api.interfaces.Calculator;
 import de.gwdg.metadataqa.api.model.JsonPathCache;
 import de.gwdg.metadataqa.api.schema.Schema;
-import de.gwdg.metadataqa.api.uniqueness.UniquenessExtractor;
-import de.gwdg.metadataqa.api.uniqueness.UniquenessField;
 import de.gwdg.metadataqa.api.util.CompressionLevel;
 import org.apache.commons.httpclient.HttpClient;
 import org.apache.commons.lang3.StringUtils;
@@ -27,24 +24,25 @@ public class UniquenessCalculator implements Calculator, Serializable {
 
   public static final String CALCULATOR_NAME = "uniqueness";
 
-  private static final Logger LOGGER = Logger.getLogger(UniquenessCalculator.class.getCanonicalName());
+  private static final Logger LOGGER = Logger.getLogger(
+      UniquenessCalculator.class.getCanonicalName()
+  );
   public static final String SUFFIX = "_txt";
   public static final int SUFFIX_LENGTH = SUFFIX.length();
 
   private UniquenessExtractor extractor;
   private List<UniquenessField> solrFields;
+
   private SolrClient solrClient;
 
-  private static HttpClient httpClient = new HttpClient();
   private FieldCounter<Double> resultMap;
 
-  public UniquenessCalculator() {
-    // TODO make it configurable
-    solrClient = new SolrClient();
+  public UniquenessCalculator(SolrClient solrClient) {
+    this.solrClient = solrClient;
   }
 
-  public UniquenessCalculator(Schema schema) {
-    this();
+  public UniquenessCalculator(SolrClient solrClient, Schema schema) {
+    this(solrClient);
     extractor = new UniquenessExtractor();
     initialize(schema);
   }
@@ -85,7 +83,9 @@ public class UniquenessCalculator implements Calculator, Serializable {
 
     resultMap = new FieldCounter<>();
     for (UniquenessField solrField : solrFields) {
-      UniquenessFieldCalculator fieldCalculator = new UniquenessFieldCalculator(cache, recordId, solrClient, solrField);
+      UniquenessFieldCalculator fieldCalculator = new UniquenessFieldCalculator(
+          cache, recordId, solrClient, solrField
+      );
       fieldCalculator.calculate();
       resultMap.put(solrField.getSolrField() + "/count", fieldCalculator.getAverageCount());
       resultMap.put(solrField.getSolrField() + "/score", fieldCalculator.getAverageScore());

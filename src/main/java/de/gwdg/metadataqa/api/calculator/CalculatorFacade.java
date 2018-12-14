@@ -95,7 +95,7 @@ public class CalculatorFacade implements Serializable {
   protected boolean checkSkippableCollections = false;
   protected CompressionLevel compressionLevel = CompressionLevel.NORMAL;
 
-  private SolrConfiguration solrConfiguration = null;
+  protected SolrConfiguration solrConfiguration = null;
 
   /**
    * Flag to detect status changes (default: false).
