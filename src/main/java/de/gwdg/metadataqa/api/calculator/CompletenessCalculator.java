@@ -94,40 +94,21 @@ public class CompletenessCalculator<T extends XmlFieldInstance> implements Calcu
           continue;
         }
         Object rawJsonFragment = cache.getFragment(collection.getJsonPath());
-        if (rawJsonFragment == null) {
-          for (JsonBranch child : collection.getChildren()) {
-            if (!child.isActive()) {
-              continue;
-            }
-            handleValues(completenessCounter, child, null);
-          }
+        List<Object> jsonFragments = Converter.jsonObjectToList(rawJsonFragment);
+        if (jsonFragments.isEmpty()) {
+          handleEmptyFragment(collection);
         } else {
-          List<Object> jsonFragments = Converter.jsonObjectToList(rawJsonFragment);
-          if (jsonFragments.isEmpty()) {
-            for (JsonBranch child : collection.getChildren()) {
-              if (!child.isActive()) {
-                continue;
-              }
-              handleValues(completenessCounter, child, null);
-            }
-          } else {
-            for (int i = 0, len = jsonFragments.size(); i < len; i++) {
-              Object jsonFragment = jsonFragments.get(i);
-              if (skippedEntitySelector.isCollectionSkippable(skippableIds, collection, i, cache, jsonFragment)) {
-                for (JsonBranch child : collection.getChildren()) {
-                  if (!child.isActive()) {
-                    continue;
-                  }
-                  handleValues(completenessCounter, child, null);
+          for (int i = 0, len = jsonFragments.size(); i < len; i++) {
+            Object jsonFragment = jsonFragments.get(i);
+            if (skippedEntitySelector.isCollectionSkippable(skippableIds, collection, i, cache, jsonFragment)) {
+              handleEmptyFragment(collection);
+            } else {
+              for (JsonBranch child : collection.getChildren()) {
+                if (!child.isActive()) {
+                  continue;
                 }
-              } else {
-                for (JsonBranch child : collection.getChildren()) {
-                  if (!child.isActive()) {
-                    continue;
-                  }
-                  String address = String.format("%s/%d/%s", collection.getJsonPath(), i, child.getJsonPath());
-                  evaluateJsonBranch(child, cache, completenessCounter, address, jsonFragment);
-                }
+                String address = String.format("%s/%d/%s", collection.getJsonPath(), i, child.getJsonPath());
+                evaluateJsonBranch(child, cache, completenessCounter, address, jsonFragment);
               }
             }
           }
@@ -146,6 +127,15 @@ public class CompletenessCalculator<T extends XmlFieldInstance> implements Calcu
         }
         completenessCounter.increaseInstance(fieldGroup.getCategory(), existing);
       }
+    }
+  }
+
+  public void handleEmptyFragment(JsonBranch collection) {
+    for (JsonBranch child : collection.getChildren()) {
+      if (!child.isActive()) {
+        continue;
+      }
+      handleValues(completenessCounter, child, null);
     }
   }
 
@@ -172,17 +162,18 @@ public class CompletenessCalculator<T extends XmlFieldInstance> implements Calcu
   }
   */
 
-  public void evaluateJsonBranch(
-      JsonBranch jsonBranch,
-      JsonPathCache cache,
-      CompletenessCounter completenessCounter,
-      String address,
-      Object jsonFragment) {
+  public void evaluateJsonBranch(JsonBranch jsonBranch,
+                                 JsonPathCache cache,
+                                 CompletenessCounter completenessCounter,
+                                 String address,
+                                 Object jsonFragment) {
     List<T> values = cache.get(address, jsonBranch.getJsonPath(), jsonFragment);
     handleValues(completenessCounter, jsonBranch, values);
   }
 
-  private void handleValues(CompletenessCounter completenessCounter, JsonBranch jsonBranch, List<T> values) {
+  private void handleValues(CompletenessCounter completenessCounter,
+                            JsonBranch jsonBranch,
+                            List<T> values) {
     if (completeness) {
       completenessCounter.increaseTotal(jsonBranch.getCategories());
     }
@@ -194,10 +185,9 @@ public class CompletenessCalculator<T extends XmlFieldInstance> implements Calcu
     }
   }
 
-  private void handleNonNullValues(
-      CompletenessCounter completenessCounter,
-      JsonBranch jsonBranch,
-      List<T> values) {
+  private void handleNonNullValues(CompletenessCounter completenessCounter,
+                                   JsonBranch jsonBranch,
+                                   List<T> values) {
     final String label = jsonBranch.getLabel();
 
     if (completeness) {
