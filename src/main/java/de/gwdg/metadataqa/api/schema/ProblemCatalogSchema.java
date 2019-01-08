@@ -11,25 +11,25 @@ public interface ProblemCatalogSchema {
 
   /**
    * Get path of empty strings.
-   * @return
+   * @return List of empty string paths
    */
   List<String> getEmptyStringPaths();
 
   /**
    * Get the subject path.
-   * @return
+   * @return The subject path
    */
   String getSubjectPath();
 
   /**
    * Get the title path.
-   * @return
+   * @return The title path
    */
   String getTitlePath();
 
   /**
    * Get the description path.
-   * @return
+   * @return The description path
    */
   String getDescriptionPath();
 
