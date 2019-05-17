@@ -292,18 +292,24 @@ public class EdmFullBeanSchema extends EdmSchema implements Serializable {
     NO_LANGUAGE_FIELDS.addAll(Arrays.asList(
       "ProvidedCHO", "ProvidedCHO/rdf:about",
       "Proxy",
-      "Proxy/rdf:about", "Proxy/edm:isNextInSequence", "Proxy/edm:type",
-      "Proxy/ore:proxyFor", "Proxy/ore:proxyIn", "Proxy/edm:europeanaProxy",
+        "Proxy/rdf:about", "Proxy/edm:isNextInSequence", "Proxy/edm:type",
+        "Proxy/ore:proxyFor", "Proxy/ore:proxyIn", "Proxy/edm:europeanaProxy",
+        "Proxy/edm:year", "Proxy/edm:userTag", "Proxy/edm:hasMet", "Proxy/edm:incorporates",
+        "Proxy/edm:isDerivativeOf", "Proxy/edm:isRepresentationOf", "Proxy/edm:isSimilarTo",
+        "Proxy/edm:isSuccessorOf", "Proxy/edm:realizes", "Proxy/edm:wasPresentAt",
       "Aggregation",
-      "Aggregation/edm:isShownAt",
-      "Aggregation/edm:isShownBy", "Aggregation/edm:object",
-      "Aggregation/edm:hasView", "Aggregation/rdf:about",
+        "Aggregation/edm:isShownAt", "Aggregation/edm:isShownBy", "Aggregation/edm:object",
+        "Aggregation/edm:hasView", "Aggregation/rdf:about", "Aggregation/edm:rights",
+        "Aggregation/edm:ugc", "Aggregation/edm:aggregatedCHO",
       "Place",
-      "Place/rdf:about", "Place/wgs84:lat", "Place/wgs84:long",
-      "Place/wgs84:alt", "Place/wgs84_pos:lat_long", "Place/owl:sameAs",
-      "Agent", "Agent/rdf:about",
-      "Timespan", "Timespan/rdf:about",
-      "Concept", "Concept/rdf:about"
+        "Place/rdf:about", "Place/wgs84:lat", "Place/wgs84:long",
+        "Place/wgs84:alt", "Place/wgs84_pos:lat_long", "Place/owl:sameAs",
+      "Agent",
+        "Agent/rdf:about", "Agent/edm:hasMet", "Agent/edm:isRelatedTo", "Agent/owl:sameAs",
+      "Timespan",
+        "Timespan/rdf:about", "Timespan/owl:sameAs",
+      "Concept",
+        "Concept/rdf:about"
     ));
 
     SOLR_FIELDS.put("Proxy/dc:title", "dc_title_txt");
