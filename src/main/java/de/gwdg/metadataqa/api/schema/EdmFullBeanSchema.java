@@ -301,15 +301,18 @@ public class EdmFullBeanSchema extends EdmSchema implements Serializable {
         "Aggregation/edm:isShownAt", "Aggregation/edm:isShownBy", "Aggregation/edm:object",
         "Aggregation/edm:hasView", "Aggregation/rdf:about", "Aggregation/edm:rights",
         "Aggregation/edm:ugc", "Aggregation/edm:aggregatedCHO",
+      "Agent",
+        "Agent/rdf:about", "Agent/edm:hasMet", "Agent/edm:isRelatedTo", "Agent/owl:sameAs",
+      "Concept",
+        "Concept/rdf:about", "Concept/skos:broader", "Concept/skos:narrower", "Concept/skos:related",
+        "Concept/skos:broadMatch", "Concept/skos:narrowMatch", "Concept/skos:relatedMatch",
+        "Concept/skos:exactMatch", "Concept/skos:closeMatch", "Concept/skos:notation",
+        "Concept/skos:inScheme",
       "Place",
         "Place/rdf:about", "Place/wgs84:lat", "Place/wgs84:long",
         "Place/wgs84:alt", "Place/wgs84_pos:lat_long", "Place/owl:sameAs",
-      "Agent",
-        "Agent/rdf:about", "Agent/edm:hasMet", "Agent/edm:isRelatedTo", "Agent/owl:sameAs",
       "Timespan",
-        "Timespan/rdf:about", "Timespan/owl:sameAs",
-      "Concept",
-        "Concept/rdf:about"
+        "Timespan/rdf:about", "Timespan/owl:sameAs"
     ));
 
     SOLR_FIELDS.put("Proxy/dc:title", "dc_title_txt");
