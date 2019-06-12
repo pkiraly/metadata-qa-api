@@ -34,13 +34,13 @@ public class ProfileReaderTest {
   public void testExtraction() {
     ProfileReader profileReader = new ProfileReader(canonicalFieldList, profiles);
     Map<List<RecordPattern>, Double> sortedClusters = profileReader.buildCluster();
-    assertEquals(8, sortedClusters.size());
+    assertEquals(9, sortedClusters.size());
     List<Map.Entry<List<RecordPattern>, Double>> clusters =
         new ArrayList(sortedClusters.entrySet());
-    assertEquals(8, clusters.size());
+    assertEquals(9, clusters.size());
     Map.Entry<List<RecordPattern>, Double> cluster = clusters.get(0);
     List<RecordPattern> patterns = cluster.getKey();
-    assertEquals(5, patterns.size());
+    assertEquals(4, patterns.size());
     RecordPattern pattern = patterns.get(0);
     assertEquals(10, (int) pattern.getLength());
     assertEquals(738, (int) pattern.getCount());
@@ -50,21 +50,21 @@ public class ProfileReaderTest {
         "dc:title;dc:creator;dc:publisher;dc:type;dc:identifier;dc:language;dc:subject;dcterms:issued;edm:type;dcterms:isVersionOf",
         pattern.getFields());
     assertEquals(35.8252427184466, pattern.getPercent(), 0.00001);
-    assertEquals(71.74757281553397, cluster.getValue(), 0.0001);
-    assertEquals(1478, getSum(clusters.get(0).getKey()));
+    assertEquals(36.650485436893206, cluster.getValue(), 0.0001);
+    assertEquals(755, getSum(clusters.get(0).getKey()));
 
-    assertEquals(21.844660194174757, clusters.get(1).getValue(), 0.0001);
-    assertEquals(450, getSum(clusters.get(1).getKey()));
-    assertEquals(3.4951456310679614, clusters.get(2).getValue(), 0.0001);
-    assertEquals(72, getSum(clusters.get(2).getKey()));
-    assertEquals(1.5048543689320388, clusters.get(3).getValue(), 0.0001);
-    assertEquals(31, getSum(clusters.get(3).getKey()));
-    assertEquals(0.8737864077669903, clusters.get(4).getValue(), 0.0001);
-    assertEquals(18, getSum(clusters.get(4).getKey()));
+    assertEquals(35.92233009708738, clusters.get(1).getValue(), 0.0001);
+    assertEquals(740, getSum(clusters.get(1).getKey()));
+    assertEquals(21.844660194174757, clusters.get(2).getValue(), 0.0001);
+    assertEquals(450, getSum(clusters.get(2).getKey()));
+    assertEquals(3.4951456310679614, clusters.get(3).getValue(), 0.0001);
+    assertEquals(72, getSum(clusters.get(3).getKey()));
+    assertEquals(1.2135922330097086, clusters.get(4).getValue(), 0.0001);
+    assertEquals(25, getSum(clusters.get(4).getKey()));
     assertEquals(0.4368932038834952, clusters.get(5).getValue(), 0.0001);
     assertEquals(9, getSum(clusters.get(5).getKey()));
-    assertEquals(0.04854368932038835, clusters.get(6).getValue(), 0.0001);
-    assertEquals(1, getSum(clusters.get(6).getKey()));
+    assertEquals(0.33980582524271846, clusters.get(6).getValue(), 0.0001);
+    assertEquals(7, getSum(clusters.get(6).getKey()));
     assertEquals(0.04854368932038835, clusters.get(7).getValue(), 0.0001);
     assertEquals(1, getSum(clusters.get(7).getKey()));
 
