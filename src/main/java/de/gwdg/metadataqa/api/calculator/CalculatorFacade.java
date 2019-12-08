@@ -286,12 +286,20 @@ public class CalculatorFacade implements Serializable {
       throws InvalidJsonException {
     changed();
 
-    cache = PathCacheFactory.getInstance(schema.getFormat(), jsonRecord);
-
     List<String> items = new ArrayList<>();
-    for (Calculator calculator : getCalculators()) {
-      calculator.measure(cache);
-      items.add(calculator.getCsv(false, compressionLevel));
+
+    if (schema == null) {
+      throw new IllegalStateException("schema is missing");
+    } else {
+      Format format = schema.getFormat();
+      if (format != null && jsonRecord != null) {
+        cache = PathCacheFactory.getInstance(schema.getFormat(), jsonRecord);
+
+        for (Calculator calculator : getCalculators()) {
+          calculator.measure(cache);
+          items.add(calculator.getCsv(false, compressionLevel));
+        }
+      }
     }
 
     return StringUtils.join(items, ",");
