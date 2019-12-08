@@ -1,7 +1,7 @@
 package de.gwdg.metadataqa.api.calculator;
 
 import de.gwdg.metadataqa.api.model.JsonPathCache;
-import de.gwdg.metadataqa.api.schema.EdmOaiPmhXmlSchema;
+import de.gwdg.metadataqa.api.schema.EdmOaiPmhJsonSchema;
 import de.gwdg.metadataqa.api.schema.Schema;
 import de.gwdg.metadataqa.api.util.CompressionLevel;
 import de.gwdg.metadataqa.api.util.FileUtils;
@@ -37,7 +37,7 @@ public class TruncatedIDTest {
 
   @Before
   public void setUp() throws URISyntaxException, IOException {
-    schema = new EdmOaiPmhXmlSchema();
+    schema = new EdmOaiPmhJsonSchema();
     calculator = new FieldExtractor(schema);
     String jsonContent = FileUtils.readFirstLine("issue-examples/issue41-truncatedID.json");
     cache = new JsonPathCache(jsonContent);

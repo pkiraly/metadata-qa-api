@@ -64,7 +64,9 @@ public final class JsonUtils {
     return extracted;
   }
 
-  public static List<? extends XmlFieldInstance> extractFieldInstanceList(Object value, String recordId, String jsonPath) {
+  public static List<? extends XmlFieldInstance> extractFieldInstanceList(Object value,
+                                                                          String recordId,
+                                                                          String jsonPath) {
     List<EdmFieldInstance> extracted = new ArrayList<>();
     if (value.getClass() == String.class) {
       extracted.add(new EdmFieldInstance((String) value));

@@ -16,7 +16,7 @@ import java.util.Map;
  * This class represents what fields will be analyzed in different measurements.
  * @author Péter Király <peter.kiraly at gwdg.de>
  */
-public class EdmOaiPmhXmlLimitedSchema extends EdmSchema implements Serializable {
+public class EdmOaiPmLimitedJsonSchema extends EdmSchema implements Serializable {
 
   private static final List<JsonBranch> PATHS = new ArrayList<>();
   private static final List<FieldGroup> FIELD_GROUPS = new ArrayList<>();
@@ -249,6 +249,11 @@ public class EdmOaiPmhXmlLimitedSchema extends EdmSchema implements Serializable
   @Override
   public String getDescriptionPath() {
     return DESCRIPTION_PATH;
+  }
+
+  @Override
+  public Format getFormat() {
+    return Format.JSON;
   }
 
   @Override

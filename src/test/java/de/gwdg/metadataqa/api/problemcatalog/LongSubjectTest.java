@@ -2,9 +2,8 @@ package de.gwdg.metadataqa.api.problemcatalog;
 
 import de.gwdg.metadataqa.api.counter.FieldCounter;
 import de.gwdg.metadataqa.api.model.JsonPathCache;
-import de.gwdg.metadataqa.api.schema.EdmOaiPmhXmlSchema;
+import de.gwdg.metadataqa.api.schema.EdmOaiPmhJsonSchema;
 import de.gwdg.metadataqa.api.schema.EdmSchema;
-import de.gwdg.metadataqa.api.schema.Schema;
 import de.gwdg.metadataqa.api.util.FileUtils;
 import java.io.IOException;
 import java.net.URISyntaxException;
@@ -44,7 +43,7 @@ public class LongSubjectTest {
   public void test() throws IOException, URISyntaxException {
     JsonPathCache cache = new JsonPathCache(FileUtils.readFirstLine("problem-catalog/long-subject.json"));
 
-    EdmSchema schema = new EdmOaiPmhXmlSchema();
+    EdmSchema schema = new EdmOaiPmhJsonSchema();
     ProblemCatalog catalog = new ProblemCatalog(schema);
     ProblemDetector detector = null;
     try {
@@ -60,7 +59,7 @@ public class LongSubjectTest {
 
   @Test
   public void testGetHeaders() {
-    EdmSchema schema = new EdmOaiPmhXmlSchema();
+    EdmSchema schema = new EdmOaiPmhJsonSchema();
     ProblemCatalog catalog = new ProblemCatalog(schema);
     LongSubject detector = new LongSubject(catalog);
 

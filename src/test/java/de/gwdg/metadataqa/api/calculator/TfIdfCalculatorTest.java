@@ -1,7 +1,7 @@
 package de.gwdg.metadataqa.api.calculator;
 
 import de.gwdg.metadataqa.api.schema.EdmFullBeanSchema;
-import de.gwdg.metadataqa.api.schema.EdmOaiPmhXmlSchema;
+import de.gwdg.metadataqa.api.schema.EdmOaiPmhJsonSchema;
 import java.util.Arrays;
 import java.util.List;
 import org.junit.After;
@@ -38,7 +38,7 @@ public class TfIdfCalculatorTest {
 
   @Test
   public void testGetHeaders() {
-    TfIdfCalculator calculator = new TfIdfCalculator(new EdmOaiPmhXmlSchema());
+    TfIdfCalculator calculator = new TfIdfCalculator(new EdmOaiPmhJsonSchema());
     List<String> expected = Arrays.asList(
       "Proxy/dc:title:sum", "Proxy/dc:title:avg",
       "Proxy/dcterms:alternative:sum", "Proxy/dcterms:alternative:avg",
@@ -54,7 +54,7 @@ public class TfIdfCalculatorTest {
 
   @Test
   public void getCalculatorName() throws Exception {
-    TfIdfCalculator calculator = new TfIdfCalculator(new EdmOaiPmhXmlSchema());
+    TfIdfCalculator calculator = new TfIdfCalculator(new EdmOaiPmhJsonSchema());
     assertEquals("uniqueness", calculator.getCalculatorName());
   }
 

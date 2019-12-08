@@ -1,6 +1,6 @@
 package de.gwdg.metadataqa.api.calculator;
 
-import de.gwdg.metadataqa.api.model.JsonPathCache;
+import de.gwdg.metadataqa.api.model.PathCache;
 import de.gwdg.metadataqa.api.model.XmlFieldInstance;
 import java.util.List;
 
@@ -9,6 +9,6 @@ import java.util.List;
  * @author Péter Király <peter.kiraly at gwdg.de>
  */
 public interface SkippedEntryChecker {
-  List<String> getSkippableCollectionIds(JsonPathCache jsonPathCache);
+  List<String> getSkippableCollectionIds(PathCache cache);
   <T extends XmlFieldInstance> String extractId(T value);
 }

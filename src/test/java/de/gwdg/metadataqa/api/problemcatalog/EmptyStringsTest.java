@@ -1,8 +1,7 @@
 package de.gwdg.metadataqa.api.problemcatalog;
 
-import de.gwdg.metadataqa.api.schema.EdmOaiPmhXmlSchema;
+import de.gwdg.metadataqa.api.schema.EdmOaiPmhJsonSchema;
 import de.gwdg.metadataqa.api.schema.EdmSchema;
-import de.gwdg.metadataqa.api.schema.Schema;
 import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.Before;
@@ -37,7 +36,7 @@ public class EmptyStringsTest {
 
   @Test
   public void testGetHeaders() {
-    EdmSchema schema = new EdmOaiPmhXmlSchema();
+    EdmSchema schema = new EdmOaiPmhJsonSchema();
     ProblemCatalog catalog = new ProblemCatalog(schema);
     EmptyStrings detector = new EmptyStrings(catalog);
 

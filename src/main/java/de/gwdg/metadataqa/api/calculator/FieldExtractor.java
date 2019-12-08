@@ -3,7 +3,7 @@ package de.gwdg.metadataqa.api.calculator;
 import com.jayway.jsonpath.InvalidJsonException;
 import de.gwdg.metadataqa.api.counter.FieldCounter;
 import de.gwdg.metadataqa.api.interfaces.Calculator;
-import de.gwdg.metadataqa.api.model.JsonPathCache;
+import de.gwdg.metadataqa.api.model.PathCache;
 import de.gwdg.metadataqa.api.model.XmlFieldInstance;
 import de.gwdg.metadataqa.api.schema.Schema;
 import de.gwdg.metadataqa.api.util.CompressionLevel;
@@ -53,12 +53,12 @@ public class FieldExtractor implements Calculator, Serializable {
   }
 
   @Override
-  public void measure(JsonPathCache cache)
+  public void measure(PathCache cache)
       throws InvalidJsonException {
     resultMap = new FieldCounter<>();
     List<XmlFieldInstance> instances = cache.get(getIdPath());
     if (instances == null || instances.size() == 0) {
-      LOGGER.severe("No record ID in " + cache.getJsonString());
+      LOGGER.severe("No record ID in " + cache.getContent());
       resultMap.put(FIELD_NAME, "");
       return;
     }

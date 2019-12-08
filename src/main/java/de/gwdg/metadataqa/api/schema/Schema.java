@@ -15,6 +15,8 @@ import java.util.Map;
  */
 public interface Schema {
 
+  Format getFormat();
+
   /**
    * Return collection paths.
    * @return List of collection paths

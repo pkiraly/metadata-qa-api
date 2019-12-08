@@ -4,7 +4,7 @@ import de.gwdg.metadataqa.api.interfaces.Observer;
 import de.gwdg.metadataqa.api.interfaces.Observable;
 import de.gwdg.metadataqa.api.counter.FieldCounter;
 import de.gwdg.metadataqa.api.interfaces.Calculator;
-import de.gwdg.metadataqa.api.model.JsonPathCache;
+import de.gwdg.metadataqa.api.model.PathCache;
 import de.gwdg.metadataqa.api.schema.ProblemCatalogSchema;
 import de.gwdg.metadataqa.api.util.CompressionLevel;
 import java.io.Serializable;
@@ -27,7 +27,7 @@ public class ProblemCatalog implements Calculator, Serializable, Observable {
   private final List<Observer> problems = new ArrayList<>();
   private String jsonString;
   private Object jsonDocument;
-  private JsonPathCache cache;
+  private PathCache cache;
   private FieldCounter<Double> fieldCounter;
   private ProblemCatalogSchema schema;
 
@@ -68,7 +68,7 @@ public class ProblemCatalog implements Calculator, Serializable, Observable {
   }
 
   @Override
-  public void measure(JsonPathCache cache) {
+  public void measure(PathCache cache) {
     this.cache = cache;
     this.fieldCounter = new FieldCounter<>();
     notifyObservers();

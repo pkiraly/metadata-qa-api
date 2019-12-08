@@ -1,3 +1,4 @@
+
 package de.gwdg.metadataqa.api.json;
 
 import de.gwdg.metadataqa.api.model.Category;

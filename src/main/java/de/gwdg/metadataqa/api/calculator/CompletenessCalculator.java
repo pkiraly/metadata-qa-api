@@ -6,8 +6,9 @@ import de.gwdg.metadataqa.api.counter.FieldCounter;
 import de.gwdg.metadataqa.api.interfaces.Calculator;
 import de.gwdg.metadataqa.api.json.FieldGroup;
 import de.gwdg.metadataqa.api.json.JsonBranch;
-import de.gwdg.metadataqa.api.model.JsonPathCache;
+import de.gwdg.metadataqa.api.model.PathCache;
 import de.gwdg.metadataqa.api.model.XmlFieldInstance;
+import de.gwdg.metadataqa.api.schema.Format;
 import de.gwdg.metadataqa.api.schema.Schema;
 import de.gwdg.metadataqa.api.util.CompressionLevel;
 import de.gwdg.metadataqa.api.util.Converter;
@@ -26,11 +27,14 @@ import org.apache.commons.lang3.StringUtils;
  * @author Péter Király <peter.kiraly at gwdg.de>
  * @param <T>
  */
-public class CompletenessCalculator<T extends XmlFieldInstance> implements Calculator, Serializable {
+public class CompletenessCalculator<T extends XmlFieldInstance>
+      implements Calculator, Serializable {
 
   public static final String CALCULATOR_NAME = "completeness";
 
-  private static final Logger LOGGER = Logger.getLogger(CompletenessCalculator.class.getCanonicalName());
+  private static final Logger LOGGER = Logger.getLogger(
+    CompletenessCalculator.class.getCanonicalName()
+  );
 
   private String inputFileName;
 
@@ -65,7 +69,7 @@ public class CompletenessCalculator<T extends XmlFieldInstance> implements Calcu
   }
 
   @Override
-  public void measure(JsonPathCache cache)
+  public void measure(PathCache cache)
       throws InvalidJsonException {
     completenessCounter = new CompletenessCounter();
     existenceCounter = new FieldCounter<>();
@@ -94,7 +98,9 @@ public class CompletenessCalculator<T extends XmlFieldInstance> implements Calcu
           continue;
         }
         Object rawJsonFragment = cache.getFragment(collection.getJsonPath());
-        List<Object> jsonFragments = Converter.jsonObjectToList(rawJsonFragment);
+        List<Object> jsonFragments = schema.getFormat().equals(Format.JSON)
+          ? Converter.jsonObjectToList(rawJsonFragment)
+          : (List<Object>) rawJsonFragment;
         if (jsonFragments.isEmpty()) {
           handleEmptyFragment(collection);
         } else {
@@ -163,7 +169,7 @@ public class CompletenessCalculator<T extends XmlFieldInstance> implements Calcu
   */
 
   public void evaluateJsonBranch(JsonBranch jsonBranch,
-                                 JsonPathCache cache,
+                                 PathCache cache,
                                  CompletenessCounter completenessCounter,
                                  String address,
                                  Object jsonFragment) {

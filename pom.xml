@@ -131,6 +131,12 @@
       <version>4.12.2</version>
       <scope>test</scope>
     </dependency>
+    <!-- https://mvnrepository.com/artifact/jaxen/jaxen -->
+    <dependency>
+      <groupId>org.apache.ws.commons</groupId>
+      <artifactId>ws-commons-util</artifactId>
+      <version>1.0.1</version>
+    </dependency>
   </dependencies>
 
   <build>

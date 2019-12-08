@@ -1,6 +1,6 @@
 package de.gwdg.metadataqa.api.interfaces;
 
-import de.gwdg.metadataqa.api.model.JsonPathCache;
+import de.gwdg.metadataqa.api.model.PathCache;
 import de.gwdg.metadataqa.api.util.CompressionLevel;
 import java.util.List;
 import java.util.Map;
@@ -16,7 +16,7 @@ public interface Calculator {
    * @param cache
    *   The JSON cache object
    */
-  void measure(JsonPathCache cache);
+  void measure(PathCache cache);
 
   /**
    * Get results as a simple map.

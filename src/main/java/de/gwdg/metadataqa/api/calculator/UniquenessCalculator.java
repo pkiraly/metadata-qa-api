@@ -1,9 +1,9 @@
 package de.gwdg.metadataqa.api.calculator;
 
+import de.gwdg.metadataqa.api.model.PathCache;
 import de.gwdg.metadataqa.api.uniqueness.*;
 import de.gwdg.metadataqa.api.counter.FieldCounter;
 import de.gwdg.metadataqa.api.interfaces.Calculator;
-import de.gwdg.metadataqa.api.model.JsonPathCache;
 import de.gwdg.metadataqa.api.schema.Schema;
 import de.gwdg.metadataqa.api.util.CompressionLevel;
 import org.apache.commons.lang3.StringUtils;
@@ -76,7 +76,7 @@ public class UniquenessCalculator implements Calculator, Serializable {
   }
 
   @Override
-  public void measure(JsonPathCache cache) {
+  public void measure(PathCache cache) {
     String recordId = cache.getRecordId();
     if (StringUtils.isNotBlank(recordId) && recordId.startsWith("/")) {
       recordId = recordId.substring(1);

@@ -6,8 +6,8 @@ import de.gwdg.metadataqa.api.counter.FieldCounter;
 import de.gwdg.metadataqa.api.interfaces.Calculator;
 import de.gwdg.metadataqa.api.json.JsonBranch;
 import de.gwdg.metadataqa.api.model.EdmFieldInstance;
-import de.gwdg.metadataqa.api.model.JsonPathCache;
 import de.gwdg.metadataqa.api.model.LanguageSaturationType;
+import de.gwdg.metadataqa.api.model.PathCache;
 import de.gwdg.metadataqa.api.schema.Schema;
 import de.gwdg.metadataqa.api.util.CompressionLevel;
 import de.gwdg.metadataqa.api.util.Converter;
@@ -117,7 +117,7 @@ public class MultilingualitySaturationCalculator implements Calculator, Serializ
   }
 
   @Override
-  public void measure(JsonPathCache cache)
+  public void measure(PathCache cache)
       throws InvalidJsonException {
 
     rawLanguageMap = new LinkedHashMap<>();
@@ -129,7 +129,7 @@ public class MultilingualitySaturationCalculator implements Calculator, Serializ
     saturationMap = calculateScore(rawLanguageMap);
   }
 
-  private void measureFlatSchema(JsonPathCache cache) {
+  private void measureFlatSchema(PathCache cache) {
     for (JsonBranch jsonBranch : schema.getPaths()) {
       if (jsonBranch.isActive()
         && !schema.getNoLanguageFields().contains(jsonBranch.getLabel())) {
@@ -138,7 +138,7 @@ public class MultilingualitySaturationCalculator implements Calculator, Serializ
     }
   }
 
-  private void measureHierarchicalSchema(JsonPathCache cache) {
+  private void measureHierarchicalSchema(PathCache cache) {
     List<String> skippableIds = getSkippableIds(cache);
     for (JsonBranch collection : schema.getCollectionPaths()) {
       if (!collection.isActive()) {
@@ -153,7 +153,7 @@ public class MultilingualitySaturationCalculator implements Calculator, Serializ
     }
   }
 
-  private List<String> getSkippableIds(JsonPathCache cache) {
+  private List<String> getSkippableIds(PathCache cache) {
     return skippedEntryChecker != null
           ? skippedEntryChecker.getSkippableCollectionIds(cache)
           : new ArrayList<>();
@@ -170,7 +170,7 @@ public class MultilingualitySaturationCalculator implements Calculator, Serializ
   }
 
   private void measureExistingCollection(Object rawJsonFragment,
-        JsonBranch collection, JsonPathCache cache, List<String> skippableIds) {
+        JsonBranch collection, PathCache cache, List<String> skippableIds) {
     List<Object> jsonFragments = Converter.jsonObjectToList(rawJsonFragment);
     if (jsonFragments.isEmpty()) {
       measureMissingCollection(collection);
@@ -204,7 +204,7 @@ public class MultilingualitySaturationCalculator implements Calculator, Serializ
       Object jsonFragment,
       JsonBranch jsonBranch,
       String address,
-      JsonPathCache cache,
+      PathCache cache,
       Map<String, List<SortedMap<LanguageSaturationType, Double>>> rawLanguageMap) {
     List<EdmFieldInstance> values = cache.get(address, jsonBranch.getJsonPath(), jsonFragment);
     Map<LanguageSaturationType, BasicCounter> languages = new TreeMap<>();

@@ -2,7 +2,7 @@ package de.gwdg.metadataqa.api.calculator.edm;
 
 import de.gwdg.metadataqa.api.json.JsonUtils;
 import de.gwdg.metadataqa.api.model.EdmFieldInstance;
-import de.gwdg.metadataqa.api.model.JsonPathCache;
+import de.gwdg.metadataqa.api.model.PathCache;
 import de.gwdg.metadataqa.api.util.Converter;
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -29,7 +29,7 @@ public final class EnhancementIdExtractor implements Serializable {
   private EnhancementIdExtractor() {
   }
 
-  public static List<String> extractIds(JsonPathCache cache) {
+  public static List<String> extractIds(PathCache cache) {
     List<String> enhancementIds = new ArrayList<>();
     Object rawJsonFragment = cache.getFragment(PATH);
     List<Object> jsonFragments = Converter.jsonObjectToList(rawJsonFragment);

@@ -250,6 +250,11 @@ public class EdmFullBeanLimitedSchema extends EdmSchema implements Serializable 
   }
 
   @Override
+  public Format getFormat() {
+    return Format.JSON;
+  }
+
+  @Override
   public List<JsonBranch> getCollectionPaths() {
     return new ArrayList();
   }

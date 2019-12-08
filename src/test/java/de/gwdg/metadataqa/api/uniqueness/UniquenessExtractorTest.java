@@ -2,10 +2,8 @@ package de.gwdg.metadataqa.api.uniqueness;
 
 import com.jayway.jsonpath.Configuration;
 import com.jayway.jsonpath.spi.json.JsonProvider;
-import de.gwdg.metadataqa.api.counter.FieldCounter;
 import de.gwdg.metadataqa.api.model.JsonPathCache;
 import de.gwdg.metadataqa.api.model.XmlFieldInstance;
-import de.gwdg.metadataqa.api.schema.EdmOaiPmhXmlSchema;
 import de.gwdg.metadataqa.api.util.FileUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.junit.*;

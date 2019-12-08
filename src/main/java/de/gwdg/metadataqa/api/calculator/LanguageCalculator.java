@@ -6,7 +6,7 @@ import de.gwdg.metadataqa.api.counter.FieldCounter;
 import de.gwdg.metadataqa.api.interfaces.Calculator;
 import de.gwdg.metadataqa.api.json.JsonBranch;
 import de.gwdg.metadataqa.api.model.EdmFieldInstance;
-import de.gwdg.metadataqa.api.model.JsonPathCache;
+import de.gwdg.metadataqa.api.model.PathCache;
 import de.gwdg.metadataqa.api.schema.Schema;
 import de.gwdg.metadataqa.api.util.CompressionLevel;
 import de.gwdg.metadataqa.api.util.Converter;
@@ -61,7 +61,7 @@ public class LanguageCalculator implements Calculator, Serializable {
   }
 
   @Override
-  public void measure(JsonPathCache cache)
+  public void measure(PathCache cache)
       throws InvalidJsonException {
 
     languageMap = new FieldCounter<>();
@@ -105,7 +105,7 @@ public class LanguageCalculator implements Calculator, Serializable {
       Object jsonFragment,
       JsonBranch jsonBranch,
       String address,
-      JsonPathCache cache,
+      PathCache cache,
       FieldCounter<String> languageMap,
       Map<String, SortedMap<String, Integer>> rawLanguageMap) {
     List<EdmFieldInstance> values = cache.get(address, jsonBranch.getJsonPath(), jsonFragment);

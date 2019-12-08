@@ -1,7 +1,7 @@
 package de.gwdg.metadataqa.api.calculator;
 
 import de.gwdg.metadataqa.api.model.JsonPathCache;
-import de.gwdg.metadataqa.api.schema.EdmOaiPmhXmlSchema;
+import de.gwdg.metadataqa.api.schema.EdmOaiPmhJsonSchema;
 import de.gwdg.metadataqa.api.util.CompressionLevel;
 import de.gwdg.metadataqa.api.util.FileUtils;
 import java.io.IOException;
@@ -44,13 +44,13 @@ public class MultilingualitySaturationCalculatorTest {
 
   @Test
   public void testConstructor() {
-    MultilingualitySaturationCalculator calculator = new MultilingualitySaturationCalculator(new EdmOaiPmhXmlSchema());
+    MultilingualitySaturationCalculator calculator = new MultilingualitySaturationCalculator(new EdmOaiPmhJsonSchema());
     assertNotNull(calculator);
   }
 
   @Test
   public void testMeasure() throws URISyntaxException, IOException {
-    MultilingualitySaturationCalculator calculator = new MultilingualitySaturationCalculator(new EdmOaiPmhXmlSchema());
+    MultilingualitySaturationCalculator calculator = new MultilingualitySaturationCalculator(new EdmOaiPmhJsonSchema());
     JsonPathCache cache = new JsonPathCache(FileUtils.readFirstLine("general/test.json"));
     calculator.measure(cache);
     assertNotNull(calculator.getCsv(false, CompressionLevel.NORMAL));
@@ -64,7 +64,7 @@ public class MultilingualitySaturationCalculatorTest {
 
   @Test
   public void testCountersGetLanguageMap() throws URISyntaxException, IOException {
-    MultilingualitySaturationCalculator calculator = new MultilingualitySaturationCalculator(new EdmOaiPmhXmlSchema());
+    MultilingualitySaturationCalculator calculator = new MultilingualitySaturationCalculator(new EdmOaiPmhJsonSchema());
     JsonPathCache cache = new JsonPathCache(FileUtils.readFirstLine("general/test.json"));
     calculator.measure(cache);
     String languages = calculator.getCsv(true, CompressionLevel.NORMAL);
@@ -77,7 +77,7 @@ public class MultilingualitySaturationCalculatorTest {
 
   @Test
   public void testCountersGetLanguageMapForPLace() throws URISyntaxException, IOException {
-    MultilingualitySaturationCalculator calculator = new MultilingualitySaturationCalculator(new EdmOaiPmhXmlSchema());
+    MultilingualitySaturationCalculator calculator = new MultilingualitySaturationCalculator(new EdmOaiPmhJsonSchema());
     JsonPathCache cache = new JsonPathCache(FileUtils.readFirstLine("general/test-place.json"));
     calculator.measure(cache);
     String languages = calculator.getCsv(true, CompressionLevel.NORMAL);
@@ -90,7 +90,7 @@ public class MultilingualitySaturationCalculatorTest {
 
   @Test
   public void testGetLanguageMap() throws URISyntaxException, IOException {
-    MultilingualitySaturationCalculator calculator = new MultilingualitySaturationCalculator(new EdmOaiPmhXmlSchema());
+    MultilingualitySaturationCalculator calculator = new MultilingualitySaturationCalculator(new EdmOaiPmhJsonSchema());
     JsonPathCache cache = new JsonPathCache(FileUtils.readFirstLine("general/test.json"));
     calculator.measure(cache);
 
@@ -239,7 +239,7 @@ public class MultilingualitySaturationCalculatorTest {
 
   @Test
   public void testGetLanguageMapWithPlace() throws URISyntaxException, IOException {
-    MultilingualitySaturationCalculator calculator = new MultilingualitySaturationCalculator(new EdmOaiPmhXmlSchema());
+    MultilingualitySaturationCalculator calculator = new MultilingualitySaturationCalculator(new EdmOaiPmhJsonSchema());
     JsonPathCache cache = new JsonPathCache(FileUtils.readFirstLine("general/test-place.json"));
     calculator.measure(cache);
 
@@ -285,7 +285,7 @@ public class MultilingualitySaturationCalculatorTest {
 
   @Test
   public void testGetHeaders() {
-    MultilingualitySaturationCalculator calculator = new MultilingualitySaturationCalculator(new EdmOaiPmhXmlSchema());
+    MultilingualitySaturationCalculator calculator = new MultilingualitySaturationCalculator(new EdmOaiPmhJsonSchema());
     List<String> expected = Arrays.asList("lang:Proxy/dc:title", "lang:Proxy/dcterms:alternative", "lang:Proxy/dc:description", "lang:Proxy/dc:creator", "lang:Proxy/dc:publisher", "lang:Proxy/dc:contributor", "lang:Proxy/dc:type", "lang:Proxy/dc:identifier", "lang:Proxy/dc:language", "lang:Proxy/dc:coverage", "lang:Proxy/dcterms:temporal", "lang:Proxy/dcterms:spatial", "lang:Proxy/dc:subject", "lang:Proxy/dc:date", "lang:Proxy/dcterms:created", "lang:Proxy/dcterms:issued", "lang:Proxy/dcterms:extent", "lang:Proxy/dcterms:medium", "lang:Proxy/dcterms:provenance", "lang:Proxy/dcterms:hasPart", "lang:Proxy/dcterms:isPartOf", "lang:Proxy/dc:format", "lang:Proxy/dc:source", "lang:Proxy/dc:rights", "lang:Proxy/dc:relation", "lang:Proxy/edm:year", "lang:Proxy/edm:userTag", "lang:Proxy/dcterms:conformsTo", "lang:Proxy/dcterms:hasFormat", "lang:Proxy/dcterms:hasVersion", "lang:Proxy/dcterms:isFormatOf", "lang:Proxy/dcterms:isReferencedBy", "lang:Proxy/dcterms:isReplacedBy", "lang:Proxy/dcterms:isRequiredBy", "lang:Proxy/dcterms:isVersionOf", "lang:Proxy/dcterms:references", "lang:Proxy/dcterms:replaces", "lang:Proxy/dcterms:requires", "lang:Proxy/dcterms:tableOfContents", "lang:Proxy/edm:currentLocation", "lang:Proxy/edm:hasMet", "lang:Proxy/edm:hasType", "lang:Proxy/edm:incorporates", "lang:Proxy/edm:isDerivativeOf", "lang:Proxy/edm:isRelatedTo", "lang:Proxy/edm:isRepresentationOf", "lang:Proxy/edm:isSimilarTo", "lang:Proxy/edm:isSuccessorOf", "lang:Proxy/edm:realizes", "lang:Proxy/edm:wasPresentAt", "lang:Aggregation/edm:rights", "lang:Aggregation/edm:provider", "lang:Aggregation/edm:dataProvider", "lang:Aggregation/dc:rights", "lang:Aggregation/edm:ugc", "lang:Aggregation/edm:aggregatedCHO", "lang:Aggregation/edm:intermediateProvider", "lang:Place/dcterms:isPartOf", "lang:Place/dcterms:hasPart", "lang:Place/skos:prefLabel", "lang:Place/skos:altLabel", "lang:Place/skos:note", "lang:Agent/edm:begin", "lang:Agent/edm:end", "lang:Agent/edm:hasMet", "lang:Agent/edm:isRelatedTo", "lang:Agent/owl:sameAs", "lang:Agent/foaf:name", "lang:Agent/dc:date", "lang:Agent/dc:identifier", "lang:Agent/rdaGr2:dateOfBirth", "lang:Agent/rdaGr2:placeOfBirth", "lang:Agent/rdaGr2:dateOfDeath", "lang:Agent/rdaGr2:placeOfDeath", "lang:Agent/rdaGr2:dateOfEstablishment", "lang:Agent/rdaGr2:dateOfTermination", "lang:Agent/rdaGr2:gender", "lang:Agent/rdaGr2:professionOrOccupation", "lang:Agent/rdaGr2:biographicalInformation", "lang:Agent/skos:prefLabel", "lang:Agent/skos:altLabel", "lang:Agent/skos:note", "lang:Timespan/edm:begin", "lang:Timespan/edm:end", "lang:Timespan/dcterms:isPartOf", "lang:Timespan/dcterms:hasPart", "lang:Timespan/edm:isNextInSequence", "lang:Timespan/owl:sameAs", "lang:Timespan/skos:prefLabel", "lang:Timespan/skos:altLabel", "lang:Timespan/skos:note", "lang:Concept/skos:broader", "lang:Concept/skos:narrower", "lang:Concept/skos:related", "lang:Concept/skos:broadMatch", "lang:Concept/skos:narrowMatch", "lang:Concept/skos:relatedMatch", "lang:Concept/skos:exactMatch", "lang:Concept/skos:closeMatch", "lang:Concept/skos:notation", "lang:Concept/skos:inScheme", "lang:Concept/skos:prefLabel", "lang:Concept/skos:altLabel", "lang:Concept/skos:note", "multilingualitySaturation:normalized");
     assertEquals(105, calculator.getHeader().size());
     assertEquals(expected, calculator.getHeader());
@@ -299,7 +299,7 @@ public class MultilingualitySaturationCalculatorTest {
 
   @Test
   public void testIssue8MultipleSameLanguages() throws URISyntaxException, IOException {
-    MultilingualitySaturationCalculator calculator = new MultilingualitySaturationCalculator(new EdmOaiPmhXmlSchema());
+    MultilingualitySaturationCalculator calculator = new MultilingualitySaturationCalculator(new EdmOaiPmhJsonSchema());
     JsonPathCache cache = new JsonPathCache(FileUtils.readFirstLine("issue-examples/issue8-multiple-same-languages.json"));
     calculator.measure(cache);
     Map<String, Double> languages = calculator.getSaturationMap();
@@ -309,7 +309,7 @@ public class MultilingualitySaturationCalculatorTest {
 
   @Test
   public void testComplexResponse() throws URISyntaxException, IOException {
-    MultilingualitySaturationCalculator calculator = new MultilingualitySaturationCalculator(new EdmOaiPmhXmlSchema());
+    MultilingualitySaturationCalculator calculator = new MultilingualitySaturationCalculator(new EdmOaiPmhJsonSchema());
     calculator.setResultType(MultilingualitySaturationCalculator.ResultTypes.EXTENDED);
     JsonPathCache cache = new JsonPathCache(FileUtils.readFirstLine("issue-examples/issue8-multiple-same-languages.json"));
     calculator.measure(cache);

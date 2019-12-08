@@ -2,7 +2,7 @@ package de.gwdg.metadataqa.api.problemcatalog;
 
 import de.gwdg.metadataqa.api.counter.FieldCounter;
 import de.gwdg.metadataqa.api.model.JsonPathCache;
-import de.gwdg.metadataqa.api.schema.EdmOaiPmhXmlSchema;
+import de.gwdg.metadataqa.api.schema.EdmOaiPmhJsonSchema;
 import de.gwdg.metadataqa.api.schema.EdmSchema;
 import de.gwdg.metadataqa.api.util.FileUtils;
 import java.io.IOException;
@@ -37,7 +37,7 @@ public class DuplicatedStringsTest {
 
   @Before
   public void setUp() throws URISyntaxException, IOException {
-    EdmSchema schema = new EdmOaiPmhXmlSchema();
+    EdmSchema schema = new EdmOaiPmhJsonSchema();
     ProblemCatalog catalog = new ProblemCatalog(schema);
     detector = new DuplicatedStrings(catalog);
 

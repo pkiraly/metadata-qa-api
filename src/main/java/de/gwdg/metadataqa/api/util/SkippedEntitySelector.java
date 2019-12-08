@@ -2,7 +2,7 @@ package de.gwdg.metadataqa.api.util;
 
 import de.gwdg.metadataqa.api.calculator.SkippedEntryChecker;
 import de.gwdg.metadataqa.api.json.JsonBranch;
-import de.gwdg.metadataqa.api.model.JsonPathCache;
+import de.gwdg.metadataqa.api.model.PathCache;
 import de.gwdg.metadataqa.api.model.XmlFieldInstance;
 import java.io.Serializable;
 import java.util.List;
@@ -30,7 +30,7 @@ public class SkippedEntitySelector<T extends XmlFieldInstance> implements Serial
       List<String> skippableIds,
       JsonBranch collection,
       int i,
-      JsonPathCache cache,
+      PathCache cache,
       Object jsonFragment) {
     boolean skippable = false;
     JsonBranch identifierPath = collection.getIdentifier();

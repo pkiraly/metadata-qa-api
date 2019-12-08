@@ -2,10 +2,11 @@ package de.gwdg.metadataqa.api.problemcatalog;
 
 import de.gwdg.metadataqa.api.counter.FieldCounter;
 import de.gwdg.metadataqa.api.model.EdmFieldInstance;
-import de.gwdg.metadataqa.api.model.JsonPathCache;
 import java.io.Serializable;
 import java.util.List;
 import java.util.logging.Logger;
+
+import de.gwdg.metadataqa.api.model.PathCache;
 import org.apache.commons.lang3.StringUtils;
 
 /**
@@ -25,7 +26,7 @@ public class EmptyStrings extends ProblemDetector implements Serializable {
   }
 
   @Override
-  public void update(JsonPathCache cache, FieldCounter<Double> results) {
+  public void update(PathCache cache, FieldCounter<Double> results) {
     double value = 0;
     for (String path : schema.getEmptyStringPaths()) {
       List<EdmFieldInstance> subjects = cache.get(path);

@@ -6,7 +6,7 @@ import de.gwdg.metadataqa.api.json.FieldGroup;
 import de.gwdg.metadataqa.api.json.JsonBranch;
 import de.gwdg.metadataqa.api.model.Category;
 import de.gwdg.metadataqa.api.model.JsonPathCache;
-import de.gwdg.metadataqa.api.schema.EdmOaiPmhXmlLimitedSchema;
+import de.gwdg.metadataqa.api.schema.EdmOaiPmLimitedJsonSchema;
 import de.gwdg.metadataqa.api.schema.Schema;
 import de.gwdg.metadataqa.api.util.CompressionLevel;
 import de.gwdg.metadataqa.api.util.FileUtils;
@@ -48,7 +48,7 @@ public class CompletenessCalculatorLimitedTest {
 
   @Before
   public void setUp() throws URISyntaxException, IOException {
-    calculator = new CompletenessCalculator(new EdmOaiPmhXmlLimitedSchema());
+    calculator = new CompletenessCalculator(new EdmOaiPmLimitedJsonSchema());
     cache = new JsonPathCache(FileUtils.readFirstLine("general/test.json"));
   }
 
@@ -61,7 +61,7 @@ public class CompletenessCalculatorLimitedTest {
   @Test
   public void testCompleteness() throws URISyntaxException, IOException {
 
-    assertEquals("de.gwdg.metadataqa.api.schema.EdmOaiPmhXmlLimitedSchema",
+    assertEquals("de.gwdg.metadataqa.api.schema.EdmOaiPmLimitedJsonSchema",
       calculator.getSchema().getClass().getName());
     assertEquals(0, calculator.getSchema().getCollectionPaths().size());
     assertEquals(35, calculator.getSchema().getPaths().size());
@@ -118,7 +118,7 @@ public class CompletenessCalculatorLimitedTest {
   }
 
   private void printCheck(Category category, CompletenessCalculator calculator) {
-    EdmOaiPmhXmlLimitedSchema schema = new EdmOaiPmhXmlLimitedSchema();
+    EdmOaiPmLimitedJsonSchema schema = new EdmOaiPmLimitedJsonSchema();
 
     FieldCounter<Double> fieldCounter = calculator.getCompletenessCounter().getFieldCounter();
     FieldCounter<Boolean> existenceCounter = calculator.getExistenceCounter();
@@ -205,7 +205,7 @@ public class CompletenessCalculatorLimitedTest {
 
   @Test
   public void testGetHeaders() {
-    calculator = new CompletenessCalculator(new EdmOaiPmhXmlLimitedSchema());
+    calculator = new CompletenessCalculator(new EdmOaiPmLimitedJsonSchema());
     List<String> headers = calculator.getHeader();
     List<String> expected = Arrays.asList("completeness:TOTAL", "completeness:MANDATORY", "completeness:DESCRIPTIVENESS", "completeness:SEARCHABILITY", "completeness:CONTEXTUALIZATION", "completeness:IDENTIFICATION", "completeness:BROWSING", "completeness:VIEWING", "completeness:REUSABILITY", "completeness:MULTILINGUALITY", "existence:edm:ProvidedCHO/@about", "existence:Proxy/dc:title", "existence:Proxy/dcterms:alternative", "existence:Proxy/dc:description", "existence:Proxy/dc:creator", "existence:Proxy/dc:publisher", "existence:Proxy/dc:contributor", "existence:Proxy/dc:type", "existence:Proxy/dc:identifier", "existence:Proxy/dc:language", "existence:Proxy/dc:coverage", "existence:Proxy/dcterms:temporal", "existence:Proxy/dcterms:spatial", "existence:Proxy/dc:subject", "existence:Proxy/dc:date", "existence:Proxy/dcterms:created", "existence:Proxy/dcterms:issued", "existence:Proxy/dcterms:extent", "existence:Proxy/dcterms:medium", "existence:Proxy/dcterms:provenance", "existence:Proxy/dcterms:hasPart", "existence:Proxy/dcterms:isPartOf", "existence:Proxy/dc:format", "existence:Proxy/dc:source", "existence:Proxy/dc:rights", "existence:Proxy/dc:relation", "existence:Proxy/edm:isNextInSequence", "existence:Proxy/edm:type", "existence:Aggregation/edm:rights", "existence:Aggregation/edm:provider", "existence:Aggregation/edm:dataProvider", "existence:Aggregation/edm:isShownAt", "existence:Aggregation/edm:isShownBy", "existence:Aggregation/edm:object", "existence:Aggregation/edm:hasView", "cardinality:edm:ProvidedCHO/@about", "cardinality:Proxy/dc:title", "cardinality:Proxy/dcterms:alternative", "cardinality:Proxy/dc:description", "cardinality:Proxy/dc:creator", "cardinality:Proxy/dc:publisher", "cardinality:Proxy/dc:contributor", "cardinality:Proxy/dc:type", "cardinality:Proxy/dc:identifier", "cardinality:Proxy/dc:language", "cardinality:Proxy/dc:coverage", "cardinality:Proxy/dcterms:temporal", "cardinality:Proxy/dcterms:spatial", "cardinality:Proxy/dc:subject", "cardinality:Proxy/dc:date", "cardinality:Proxy/dcterms:created", "cardinality:Proxy/dcterms:issued", "cardinality:Proxy/dcterms:extent", "cardinality:Proxy/dcterms:medium", "cardinality:Proxy/dcterms:provenance", "cardinality:Proxy/dcterms:hasPart", "cardinality:Proxy/dcterms:isPartOf", "cardinality:Proxy/dc:format", "cardinality:Proxy/dc:source", "cardinality:Proxy/dc:rights", "cardinality:Proxy/dc:relation", "cardinality:Proxy/edm:isNextInSequence", "cardinality:Proxy/edm:type", "cardinality:Aggregation/edm:rights", "cardinality:Aggregation/edm:provider", "cardinality:Aggregation/edm:dataProvider", "cardinality:Aggregation/edm:isShownAt", "cardinality:Aggregation/edm:isShownBy", "cardinality:Aggregation/edm:object", "cardinality:Aggregation/edm:hasView");
     assertEquals(expected, headers);
@@ -258,5 +258,4 @@ public class CompletenessCalculatorLimitedTest {
     assertEquals("0.4,1.0,0.181818,0.388889,0.272727,0.5,0.357143,0.75,0.363636,0.4,1,1,0,0,0,0,0,1,1,0,0,0,0,1,0,0,0,0,0,0,0,1,0,0,1,0,0,1,1,1,1,1,1,1,0,1,1,0,0,0,0,0,1,1,0,0,0,0,5,0,0,0,0,0,0,0,1,0,0,1,0,0,1,1,1,1,1,1,1,0",
     calculator.getCsv(false, CompressionLevel.NORMAL));
   }
-
 }

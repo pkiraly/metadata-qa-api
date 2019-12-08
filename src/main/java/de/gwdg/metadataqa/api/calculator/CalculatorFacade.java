@@ -3,13 +3,15 @@ package de.gwdg.metadataqa.api.calculator;
 import com.jayway.jsonpath.InvalidJsonException;
 import de.gwdg.metadataqa.api.counter.Counters;
 import de.gwdg.metadataqa.api.interfaces.Calculator;
-import de.gwdg.metadataqa.api.model.JsonPathCache;
+import de.gwdg.metadataqa.api.model.PathCache;
+import de.gwdg.metadataqa.api.model.PathCacheFactory;
 import de.gwdg.metadataqa.api.model.XmlFieldInstance;
 import de.gwdg.metadataqa.api.problemcatalog.EmptyStrings;
 import de.gwdg.metadataqa.api.problemcatalog.LongSubject;
 import de.gwdg.metadataqa.api.problemcatalog.ProblemCatalog;
 import de.gwdg.metadataqa.api.problemcatalog.TitleAndDescriptionAreSame;
 import de.gwdg.metadataqa.api.schema.EdmSchema;
+import de.gwdg.metadataqa.api.schema.Format;
 import de.gwdg.metadataqa.api.schema.Schema;
 import de.gwdg.metadataqa.api.uniqueness.DefaultSolrClient;
 import de.gwdg.metadataqa.api.uniqueness.SolrClient;
@@ -138,7 +140,8 @@ public class CalculatorFacade implements Serializable {
    */
   protected MultilingualitySaturationCalculator multilingualSaturationCalculator;
 
-  protected JsonPathCache<? extends XmlFieldInstance> cache;
+  protected Format format = Format.JSON;
+  protected PathCache<? extends XmlFieldInstance> cache;
 
   protected Schema schema;
 
@@ -283,8 +286,7 @@ public class CalculatorFacade implements Serializable {
       throws InvalidJsonException {
     changed();
 
-    // JsonPathCache<T> cache = new JsonPathCache<>(jsonRecord);
-    cache = new JsonPathCache<>(jsonRecord);
+    cache = PathCacheFactory.getInstance(schema.getFormat(), jsonRecord);
 
     List<String> items = new ArrayList<>();
     for (Calculator calculator : getCalculators()) {
@@ -631,7 +633,7 @@ public class CalculatorFacade implements Serializable {
     this.compressionLevel = compressionLevel;
   }
 
-  public JsonPathCache<? extends XmlFieldInstance> getCache() {
+  public PathCache<? extends XmlFieldInstance> getCache() {
     return cache;
   }
 

@@ -382,6 +382,11 @@ public class MarcJsonSchema implements Schema, ProblemCatalogSchema, Serializabl
   }
 
   @Override
+  public Format getFormat() {
+    return Format.JSON;
+  }
+
+  @Override
   public List<JsonBranch> getCollectionPaths() {
     return new ArrayList(COLLECTION_PATHS.values());
   }

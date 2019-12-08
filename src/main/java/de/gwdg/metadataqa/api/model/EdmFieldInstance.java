@@ -23,6 +23,11 @@ public class EdmFieldInstance extends XmlFieldInstance {
     super(value, language);
   }
 
+  public EdmFieldInstance(String value, String language, String resource) {
+    super(value, language);
+    this.resource = resource;
+  }
+
   public String getResource() {
     return resource;
   }
