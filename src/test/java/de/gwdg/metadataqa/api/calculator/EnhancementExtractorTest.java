@@ -2,6 +2,10 @@ package de.gwdg.metadataqa.api.calculator;
 
 import de.gwdg.metadataqa.api.calculator.edm.EnhancementIdExtractor;
 import de.gwdg.metadataqa.api.model.JsonPathCache;
+import de.gwdg.metadataqa.api.model.PathCache;
+import de.gwdg.metadataqa.api.model.XmlPathCache;
+import de.gwdg.metadataqa.api.schema.EdmOaiPmhJsonSchema;
+import de.gwdg.metadataqa.api.schema.EdmOaiPmhXmlSchema;
 import de.gwdg.metadataqa.api.util.FileUtils;
 import java.io.IOException;
 import java.net.URISyntaxException;
@@ -19,7 +23,7 @@ import static org.junit.Assert.*;
  */
 public class EnhancementExtractorTest {
 
-  JsonPathCache cache;
+  PathCache cache;
 
   public EnhancementExtractorTest() {
   }
@@ -42,11 +46,19 @@ public class EnhancementExtractorTest {
   }
 
   @Test
-  public void hello() {
-    // EnhancementIdExtractor extractor = new EnhancementIdExtractor();
-    List<String> enhancementIds = EnhancementIdExtractor.extractIds(cache);
+  public void testJson() {
+    List<String> enhancementIds = EnhancementIdExtractor.extractIds(cache, new EdmOaiPmhJsonSchema());
     assertTrue(!enhancementIds.isEmpty());
     assertEquals(1, enhancementIds.size());
     assertEquals("http://dbpedia.org/resource/Portrait", enhancementIds.get(0));
+  }
+
+  @Test
+  public void testXml() throws IOException, URISyntaxException {
+    cache = new XmlPathCache(FileUtils.readContent("general/europeana-oai-pmh.xml"));
+    List<String> enhancementIds = EnhancementIdExtractor.extractIds(cache, new EdmOaiPmhXmlSchema());
+    assertTrue(!enhancementIds.isEmpty());
+    assertEquals(27, enhancementIds.size());
+    assertEquals("http://data.europeana.eu/agent/base/142035", enhancementIds.get(0));
   }
 }

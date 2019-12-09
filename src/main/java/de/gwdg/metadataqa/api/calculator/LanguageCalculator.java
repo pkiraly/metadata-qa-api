@@ -7,6 +7,7 @@ import de.gwdg.metadataqa.api.interfaces.Calculator;
 import de.gwdg.metadataqa.api.json.JsonBranch;
 import de.gwdg.metadataqa.api.model.EdmFieldInstance;
 import de.gwdg.metadataqa.api.model.PathCache;
+import de.gwdg.metadataqa.api.schema.Format;
 import de.gwdg.metadataqa.api.schema.Schema;
 import de.gwdg.metadataqa.api.util.CompressionLevel;
 import de.gwdg.metadataqa.api.util.Converter;
@@ -85,7 +86,7 @@ public class LanguageCalculator implements Calculator, Serializable {
             }
           }
         } else {
-          List<Object> jsonFragments = Converter.jsonObjectToList(rawJsonFragment);
+          List<Object> jsonFragments = Converter.jsonObjectToList(rawJsonFragment, schema);
           for (int i = 0, len = jsonFragments.size(); i < len; i++) {
             Object jsonFragment = jsonFragments.get(i);
             for (JsonBranch child : collection.getChildren()) {

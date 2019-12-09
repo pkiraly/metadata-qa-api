@@ -1,8 +1,11 @@
 package de.gwdg.metadataqa.api.calculator.edm;
 
+import de.gwdg.metadataqa.api.json.JsonBranch;
 import de.gwdg.metadataqa.api.json.JsonUtils;
 import de.gwdg.metadataqa.api.model.EdmFieldInstance;
 import de.gwdg.metadataqa.api.model.PathCache;
+import de.gwdg.metadataqa.api.schema.Format;
+import de.gwdg.metadataqa.api.schema.Schema;
 import de.gwdg.metadataqa.api.util.Converter;
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -24,15 +27,51 @@ public final class EnhancementIdExtractor implements Serializable {
     "edm:type"
   );
 
+  private static final List<String> TECHNICAL_PROPERTIES_LABELS = Arrays.asList(
+    "Proxy/rdf:about",
+    "Proxy/edm:europeanaProxy",
+    "Proxy/ore:proxyFor",
+    "Proxy/ore:proxyIn",
+    "Proxy/edm:type"
+  );
+
   private static final String PATH = "$.['ore:Proxy'][?(@['edm:europeanaProxy'][0] == 'true')]";
 
   private EnhancementIdExtractor() {
   }
 
-  public static List<String> extractIds(PathCache cache) {
+  public static List<String> extractIds(PathCache cache, Schema schema) {
     List<String> enhancementIds = new ArrayList<>();
-    Object rawJsonFragment = cache.getFragment(PATH);
-    List<Object> jsonFragments = Converter.jsonObjectToList(rawJsonFragment);
+    String path = schema.getPathByLabel("Proxy").getJsonPath().replace("false", "true");
+    Object rawJsonFragment = cache.getFragment(path);
+    List<Object> jsonFragments = Converter.jsonObjectToList(rawJsonFragment, schema);
+    if (schema.getFormat().equals(Format.JSON)) {
+      processJson(enhancementIds, jsonFragments);
+    } else if (schema.getFormat().equals(Format.XML)) {
+      processXml(cache, schema, enhancementIds, jsonFragments);
+    }
+    return enhancementIds;
+  }
+
+  public static void processXml(PathCache cache, Schema schema, List<String> enhancementIds, List<Object> jsonFragments) {
+    JsonBranch parent = schema.getPathByLabel("Proxy");
+    for (JsonBranch child : parent.getChildren()) {
+      if (isEnrichmentField(child.getLabel())) {
+        String address = child.getAbsoluteJsonPath(schema.getFormat());
+        Object context = jsonFragments.get(0);
+        List<EdmFieldInstance> fieldInstances = (List<EdmFieldInstance>) cache.get(address, child.getJsonPath(), context);
+        if (fieldInstances != null && !fieldInstances.isEmpty()) {
+          for (EdmFieldInstance fieldInstance : fieldInstances) {
+            if (fieldInstance.isUrl()) {
+              enhancementIds.add(fieldInstance.getUrl());
+            }
+          }
+        }
+      }
+    }
+  }
+
+  public static void processJson(List<String> enhancementIds, List<Object> jsonFragments) {
     Map<String, Object> jsonFragment = (Map) jsonFragments.get(0);
     for (String fieldName : jsonFragment.keySet()) {
       if (isEnrichmentField(fieldName)) {
@@ -47,10 +86,10 @@ public final class EnhancementIdExtractor implements Serializable {
         }
       }
     }
-    return enhancementIds;
   }
 
   private static boolean isEnrichmentField(String fieldName) {
-    return !TECHNICAL_PROPERTIES.contains(fieldName);
+    return !TECHNICAL_PROPERTIES.contains(fieldName)
+         & !TECHNICAL_PROPERTIES_LABELS.contains(fieldName);
   }
 }

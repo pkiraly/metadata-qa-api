@@ -171,7 +171,7 @@ public class MultilingualitySaturationCalculator implements Calculator, Serializ
 
   private void measureExistingCollection(Object rawJsonFragment,
         JsonBranch collection, PathCache cache, List<String> skippableIds) {
-    List<Object> jsonFragments = Converter.jsonObjectToList(rawJsonFragment);
+    List<Object> jsonFragments = Converter.jsonObjectToList(rawJsonFragment, schema);
     if (jsonFragments.isEmpty()) {
       measureMissingCollection(collection);
     } else {

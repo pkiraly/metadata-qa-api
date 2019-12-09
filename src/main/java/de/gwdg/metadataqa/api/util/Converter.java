@@ -6,6 +6,9 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.LinkedHashMap;
 import java.util.List;
+
+import de.gwdg.metadataqa.api.schema.Format;
+import de.gwdg.metadataqa.api.schema.Schema;
 import net.minidev.json.JSONArray;
 import org.apache.commons.lang3.StringUtils;
 
@@ -104,6 +107,15 @@ public final class Converter {
       value = value.replaceAll("\\.0+$", "");
     }
     return value;
+  }
+
+  public static List<Object> jsonObjectToList(Object jsonFragment, Schema schema) {
+    List<Object> list = null;
+    if (schema.getFormat().equals(Format.JSON))
+      list = Converter.jsonObjectToList(jsonFragment);
+    else
+      list = (List<Object>) jsonFragment;
+    return list;
   }
 
   public static List<Object> jsonObjectToList(Object jsonFragment) {

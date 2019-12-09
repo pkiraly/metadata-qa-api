@@ -141,7 +141,7 @@ public class MarcJsonTest {
   public void testSubfield() {
     Object rawFragment = cache.getFragment("$.datafield[?(@.tag == '016')]subfield");
     assertNotNull(rawFragment);
-    List<Object> fragments = Converter.jsonObjectToList(rawFragment);
+    List<Object> fragments = Converter.jsonObjectToList(rawFragment, schema);
     assertEquals(1, fragments.size());
     assertEquals("net.minidev.json.JSONArray", fragments.get(0).getClass().getCanonicalName());
     Map first = (Map)((JSONArray)fragments.get(0)).get(0);
@@ -186,7 +186,7 @@ public class MarcJsonTest {
   public void testSubfieldMultiple() {
     Object rawFragment = cache.getFragment("$.datafield[?(@.tag == '924')]subfield");
     assertNotNull(rawFragment);
-    List<Object> fragments = Converter.jsonObjectToList(rawFragment);
+    List<Object> fragments = Converter.jsonObjectToList(rawFragment, schema);
     assertEquals(12, fragments.size());
     for (Object fragment : fragments) {
       // System.err.printf("fragment: '%s'\n", fragment);
@@ -200,7 +200,7 @@ public class MarcJsonTest {
 
     rawFragment = cache.getFragment(branch.getJsonPath());
     assertNotNull(rawFragment);
-    List<Object> fieldInstances = Converter.jsonObjectToList(rawFragment);
+    List<Object> fieldInstances = Converter.jsonObjectToList(rawFragment, schema);
     assertEquals(12, fragments.size());
     for (int i = 0; i < fieldInstances.size(); i++) {
       Object fieldInstance = fieldInstances.get(i);
@@ -244,7 +244,7 @@ public class MarcJsonTest {
     // System.err.printf("rawJsonFragment: %s\n", rawJsonFragment);
     List<Object> jsonFragments = new ArrayList<>();
     if (rawJsonFragment != null)
-      jsonFragments = Converter.jsonObjectToList(rawJsonFragment);
+      jsonFragments = Converter.jsonObjectToList(rawJsonFragment, schema);
     return jsonFragments;
   }
 
@@ -260,7 +260,7 @@ public class MarcJsonTest {
     String path = schema.getPathByLabel("016$ind1").getJsonPath();
     Object rawJsonFragment = cache.getFragment(branch.getJsonPath());
     if (rawJsonFragment != null) {
-      List<Object> jsonFragments = Converter.jsonObjectToList(rawJsonFragment);
+      List<Object> jsonFragments = Converter.jsonObjectToList(rawJsonFragment, schema);
       for (int i = 0, len = jsonFragments.size(); i < len; i++) {
         values = cache.get(path, path, jsonFragments.get(i));
         assertEquals(1, values.size());
@@ -280,7 +280,7 @@ public class MarcJsonTest {
         // System.err.printf("collection branch: label: %s, path: %s\n", branch.getLabel(), branch.getJsonPath());
         Object rawJsonFragment = cache.getFragment(branch.getJsonPath());
         if (rawJsonFragment != null) {
-          List<Object> jsonFragments = Converter.jsonObjectToList(rawJsonFragment);
+          List<Object> jsonFragments = Converter.jsonObjectToList(rawJsonFragment, schema);
           for (int i = 0, len = jsonFragments.size(); i < len; i++) {
             Object jsonFragment = jsonFragments.get(i);
             // System.err.printf("jsonFragment: %s\n", jsonFragment);

@@ -98,9 +98,7 @@ public class CompletenessCalculator<T extends XmlFieldInstance>
           continue;
         }
         Object rawJsonFragment = cache.getFragment(collection.getJsonPath());
-        List<Object> jsonFragments = schema.getFormat().equals(Format.JSON)
-          ? Converter.jsonObjectToList(rawJsonFragment)
-          : (List<Object>) rawJsonFragment;
+        List<Object> jsonFragments = Converter.jsonObjectToList(rawJsonFragment, schema);
         if (jsonFragments.isEmpty()) {
           handleEmptyFragment(collection);
         } else {

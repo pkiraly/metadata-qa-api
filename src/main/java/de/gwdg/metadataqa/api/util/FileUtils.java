@@ -1,7 +1,8 @@
 package de.gwdg.metadataqa.api.util;
 
 import com.jayway.jsonpath.Configuration;
-import java.io.IOException;
+
+import java.io.*;
 import java.net.URISyntaxException;
 import java.net.URL;
 import java.nio.charset.Charset;
@@ -50,5 +51,24 @@ public final class FileUtils {
     String jsonString = readFirstLine(fileName);
     Object jsonDoc = Configuration.defaultConfiguration().jsonProvider().parse(jsonString);
     return jsonDoc;
+  }
+
+  public static String readFromUrl(String url) throws IOException {
+    InputStream is = new URL(url).openStream();
+    try {
+      BufferedReader rd = new BufferedReader(new InputStreamReader(is, Charset.forName("UTF-8")));
+      return readAll(rd);
+    } finally {
+      is.close();
+    }
+  }
+
+  private static String readAll(Reader rd) throws IOException {
+    StringBuilder sb = new StringBuilder();
+    int cp;
+    while ((cp = rd.read()) != -1) {
+      sb.append((char) cp);
+    }
+    return sb.toString();
   }
 }

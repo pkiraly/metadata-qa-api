@@ -6,6 +6,7 @@ import de.gwdg.metadataqa.api.model.EdmFieldInstance;
 import de.gwdg.metadataqa.api.model.PathCache;
 import de.gwdg.metadataqa.api.problemcatalog.ProblemCatalog;
 import de.gwdg.metadataqa.api.problemcatalog.ProblemDetector;
+import de.gwdg.metadataqa.api.schema.Format;
 import de.gwdg.metadataqa.api.schema.Schema;
 import de.gwdg.metadataqa.api.util.Converter;
 import java.io.Serializable;
@@ -45,7 +46,7 @@ public class AmbiguousPrefLabel extends ProblemDetector implements Serializable 
       String parentPath = branch.getParent().getJsonPath();
       Object rawEntityFragment = cache.getFragment(parentPath);
       if (rawEntityFragment != null) {
-        List<Object> entities = Converter.jsonObjectToList(rawEntityFragment);
+        List<Object> entities = Converter.jsonObjectToList(rawEntityFragment, (Schema) schema);
         for (int i = 0; i < entities.size(); i++) {
           value += countPerEntity(i, branch, cache);
         }
