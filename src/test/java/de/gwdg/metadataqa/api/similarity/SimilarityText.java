@@ -1,6 +1,5 @@
 package de.gwdg.metadataqa.api.similarity;
 
-import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.text.similarity.*;
 import org.junit.Test;
 

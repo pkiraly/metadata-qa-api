@@ -1,6 +1,5 @@
 package de.gwdg.metadataqa.api.abbreviation;
 
-import de.gwdg.metadataqa.api.abbreviation.AbbreviationManager;
 import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.Before;

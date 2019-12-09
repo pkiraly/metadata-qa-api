@@ -1,7 +1,5 @@
 package de.gwdg.metadataqa.api.similarity;
 
-import org.apache.commons.lang3.StringUtils;
-
 import java.io.IOException;
 import java.nio.charset.Charset;
 import java.nio.file.Files;

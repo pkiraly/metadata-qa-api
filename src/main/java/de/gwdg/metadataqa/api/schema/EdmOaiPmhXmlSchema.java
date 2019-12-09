@@ -319,8 +319,8 @@ public class EdmOaiPmhXmlSchema extends EdmSchema implements Serializable {
   }
 
   public EdmOaiPmhXmlSchema() {
-    extractableFields.put("recordId", "//identifier");
-    extractableFields.put("dataset", "//setSpec");
+    extractableFields.put("recordId", "//oai:identifier");
+    extractableFields.put("dataset", "//edm:EuropeanaAggregation[1]/edm:datasetName[1]");
     extractableFields.put("dataProvider", "//ore:Aggregation[1]/edm:dataProvider[1]");
     // extractableFields.put("country", "edm:EuropeanaAggregation[1]['edm:country'][1]");
     // extractableFields.put("language", "edm:EuropeanaAggregation[1]['edm:language'][1]");

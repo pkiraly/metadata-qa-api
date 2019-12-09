@@ -17,8 +17,6 @@ import static org.junit.Assert.*;
 import net.minidev.json.JSONArray;
 import static com.jayway.jsonpath.Criteria.where;
 import static com.jayway.jsonpath.Filter.filter;
-import static com.jayway.jsonpath.Criteria.where;
-import static com.jayway.jsonpath.Filter.filter;
 
 /**
  *

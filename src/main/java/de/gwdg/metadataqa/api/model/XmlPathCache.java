@@ -2,10 +2,8 @@ package de.gwdg.metadataqa.api.model;
 
 import com.jayway.jsonpath.*;
 import com.jayway.jsonpath.spi.json.JsonProvider;
-import de.gwdg.metadataqa.api.json.JsonUtils;
 import de.gwdg.metadataqa.api.util.ExceptionUtils;
 import de.gwdg.metadataqa.api.xml.OaiPmhXPath;
-import net.minidev.json.JSONArray;
 
 import java.util.HashMap;
 import java.util.List;
