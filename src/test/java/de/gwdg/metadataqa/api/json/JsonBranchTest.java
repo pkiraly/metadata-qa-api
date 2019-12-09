@@ -1,7 +1,6 @@
 package de.gwdg.metadataqa.api.json;
 
-import de.gwdg.metadataqa.api.schema.EdmFullBeanSchema;
-import de.gwdg.metadataqa.api.schema.Schema;
+import de.gwdg.metadataqa.api.schema.*;
 import org.junit.Test;
 
 import static org.junit.Assert.assertEquals;
@@ -40,5 +39,23 @@ public class JsonBranchTest {
       europeanaProxy.getChildren().get(0).getParent().getJsonPath());
     assertEquals("$.['proxies'][?(@['europeanaProxy'] == true)][*]['about']",
       europeanaProxy.getChildren().get(0).getAbsoluteJsonPath());
+  }
+
+  @Test
+  public void testParent() {
+    Schema schema = new EdmOaiPmhXmlSchema();
+    JsonBranch providerProxyXml = schema.getPathByLabel("Proxy");
+    assertEquals("//ore:Proxy[edm:europeanaProxy/text() = 'false']/@rdf:about",
+      providerProxyXml.getChildren().get(0).getAbsoluteJsonPath(schema.getFormat()));
+
+    schema = new EdmOaiPmhJsonSchema();
+    JsonBranch providerProxyJson = schema.getPathByLabel("Proxy");
+    assertEquals("$.['ore:Proxy'][?(@['edm:europeanaProxy'][0] == 'false')][*]['@about']",
+      providerProxyJson.getChildren().get(0).getAbsoluteJsonPath(schema.getFormat()));
+
+    schema = new EdmFullBeanSchema();
+    providerProxyJson = schema.getPathByLabel("Proxy");
+    assertEquals("$.['proxies'][?(@['europeanaProxy'] == false)][*]['about']",
+      providerProxyJson.getChildren().get(0).getAbsoluteJsonPath(schema.getFormat()));
   }
 }

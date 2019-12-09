@@ -2,6 +2,7 @@
 package de.gwdg.metadataqa.api.json;
 
 import de.gwdg.metadataqa.api.model.Category;
+import de.gwdg.metadataqa.api.schema.Format;
 
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -60,8 +61,16 @@ public class JsonBranch implements Cloneable, Serializable {
   }
 
   public String getAbsoluteJsonPath() {
+    return getAbsoluteJsonPath(Format.JSON);
+  }
+
+  public String getAbsoluteJsonPath(Format format) {
     if (getParent() != null) {
-      return getParent().getJsonPath() + getJsonPath().replace("$.", "[*]");
+      if (format.equals(Format.JSON)) {
+        return getParent().getJsonPath() + getJsonPath().replace("$.", "[*]");
+      } else if (format.equals(Format.XML)) {
+        return getParent().getJsonPath() + "/" + getJsonPath();
+      }
     }
     return getJsonPath();
   }
