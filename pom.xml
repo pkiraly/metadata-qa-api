@@ -105,6 +105,12 @@
       <artifactId>language-detector</artifactId>
       <version>0.6</version>
     </dependency>
+    <!-- CSV reader. Docs: http://opencsv.sourceforge.net -->
+    <dependency>
+      <groupId>com.opencsv</groupId>
+      <artifactId>opencsv</artifactId>
+      <version>4.5</version>
+    </dependency>
     <!--
       http://commons.apache.org/proper/commons-text/
       https://mvnrepository.com/artifact/org.apache.commons/commons-text
@@ -121,6 +127,7 @@
           <version>4.5.2</version>
         </dependency>
     -->
+
     <!--
       Hierarchical context runner for jUnit
       https://github.com/bechte/junit-hierarchicalcontextrunner/wiki
