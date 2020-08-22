@@ -1,7 +1,7 @@
 package de.gwdg.metadataqa.api.json;
 
 import de.gwdg.metadataqa.api.calculator.CompletenessCalculator;
-import de.gwdg.metadataqa.api.model.JsonPathCache;
+import de.gwdg.metadataqa.api.model.pathcache.JsonPathCache;
 import de.gwdg.metadataqa.api.schema.EdmFullBeanSchema;
 import de.gwdg.metadataqa.api.util.CompressionLevel;
 import de.gwdg.metadataqa.api.util.FileUtils;

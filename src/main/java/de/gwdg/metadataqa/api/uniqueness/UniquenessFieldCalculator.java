@@ -1,6 +1,6 @@
 package de.gwdg.metadataqa.api.uniqueness;
 
-import de.gwdg.metadataqa.api.model.PathCache;
+import de.gwdg.metadataqa.api.model.pathcache.PathCache;
 import de.gwdg.metadataqa.api.model.XmlFieldInstance;
 import org.apache.commons.lang3.StringUtils;
 

@@ -1,4 +1,6 @@
-package de.gwdg.metadataqa.api.model;
+package de.gwdg.metadataqa.api.model.pathcache;
+
+import de.gwdg.metadataqa.api.model.XmlFieldInstance;
 
 import java.util.List;
 import java.util.Map;

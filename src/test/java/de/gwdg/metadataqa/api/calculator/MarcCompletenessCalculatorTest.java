@@ -1,7 +1,7 @@
 package de.gwdg.metadataqa.api.calculator;
 
 import de.gwdg.metadataqa.api.counter.FieldCounter;
-import de.gwdg.metadataqa.api.model.JsonPathCache;
+import de.gwdg.metadataqa.api.model.pathcache.JsonPathCache;
 import de.gwdg.metadataqa.api.schema.MarcJsonSchema;
 import de.gwdg.metadataqa.api.util.FileUtils;
 import java.io.IOException;

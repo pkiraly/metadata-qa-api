@@ -2,7 +2,7 @@ package de.gwdg.metadataqa.api.util;
 
 import de.gwdg.metadataqa.api.calculator.SkippedEntryChecker;
 import de.gwdg.metadataqa.api.json.JsonBranch;
-import de.gwdg.metadataqa.api.model.PathCache;
+import de.gwdg.metadataqa.api.model.pathcache.PathCache;
 import de.gwdg.metadataqa.api.model.XmlFieldInstance;
 import java.io.Serializable;
 import java.util.List;

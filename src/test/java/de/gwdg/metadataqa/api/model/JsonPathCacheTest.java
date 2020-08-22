@@ -1,5 +1,6 @@
 package de.gwdg.metadataqa.api.model;
 
+import de.gwdg.metadataqa.api.model.pathcache.JsonPathCache;
 import de.gwdg.metadataqa.api.util.FileUtils;
 import java.io.IOException;
 import java.net.URISyntaxException;

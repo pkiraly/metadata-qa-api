@@ -1,9 +1,15 @@
-package de.gwdg.metadataqa.api.model;
+package de.gwdg.metadataqa.api.model.pathcache;
 
-import com.jayway.jsonpath.*;
-import com.jayway.jsonpath.spi.json.JsonProvider;
+import de.gwdg.metadataqa.api.json.JsonUtils;
+import de.gwdg.metadataqa.api.model.XmlFieldInstance;
 import de.gwdg.metadataqa.api.util.ExceptionUtils;
-import de.gwdg.metadataqa.api.xml.OaiPmhXPath;
+import com.jayway.jsonpath.Configuration;
+import com.jayway.jsonpath.InvalidJsonException;
+import com.jayway.jsonpath.InvalidPathException;
+import com.jayway.jsonpath.JsonPath;
+import com.jayway.jsonpath.PathNotFoundException;
+import com.jayway.jsonpath.spi.json.JsonProvider;
+import net.minidev.json.JSONArray;
 
 import java.util.HashMap;
 import java.util.List;
@@ -17,37 +23,37 @@ import java.util.logging.Logger;
  * @param <T> the type of elements held in this object. It should be the
  *           extension of XmlFieldInstance class.
  */
-public class XmlPathCache<T extends XmlFieldInstance> implements PathCache {
+public class JsonPathCache<T extends XmlFieldInstance> implements PathCache {
 
   private static final Logger LOGGER = Logger.getLogger(
-    XmlPathCache.class.getCanonicalName()
+    JsonPathCache.class.getCanonicalName()
   );
 
-  private final Object parsedDocument;
+  private final Object document;
   private String recordId;
   private String content;
   private final Map<String, List<T>> cache = new HashMap<>();
   private final Map<String, Object> typedCache = new HashMap<>();
   private final Map<String, Object> fragmentCache = new HashMap<>();
   private static final JsonProvider JSON_PROVIDER = Configuration.defaultConfiguration().jsonProvider();
-  OaiPmhXPath oaiPmhXPath;
 
-  public XmlPathCache(String content) throws InvalidJsonException {
+  public JsonPathCache(String content) throws InvalidJsonException {
     this.content = content;
-    oaiPmhXPath = new OaiPmhXPath(content);
-    this.parsedDocument = oaiPmhXPath.getDocument();
+    this.document = JSON_PROVIDER.parse(content);
   }
 
-  public XmlPathCache(Object jsonDocument) {
-    this.parsedDocument = jsonDocument;
+  public JsonPathCache(Object jsonDocument) {
+    this.document = jsonDocument;
   }
 
   private void set(String address, String jsonPath, Object jsonFragment, Class clazz) {
-    List<T> instances = read(jsonPath, jsonFragment);
-    /*
+    List<T> instances = null;
+    Object value = read(jsonPath, jsonFragment);
     if (value != null) {
       if (clazz == null) {
-        instances = (List<T>) oaiPmhXPath.extractFieldInstanceList(value, recordId, jsonPath);
+        instances = (List<T>) JsonUtils.extractFieldInstanceList(
+          value, recordId, jsonPath
+        );
       } else {
         if (value instanceof JSONArray) {
           typedCache.put(address, clazz.cast(((JSONArray) value).get(0)));
@@ -56,23 +62,22 @@ public class XmlPathCache<T extends XmlFieldInstance> implements PathCache {
         }
       }
     }
-    */
     cache.put(address, instances);
   }
 
-  public List<T> read(String path, Object jsonFragment) {
-    List<T> value = null;
+  public Object read(String jsonPath, Object jsonFragment) {
+    Object value = null;
     try {
       if (jsonFragment != null) {
-        value = (List<T>) oaiPmhXPath.extractFieldInstanceList(jsonFragment, path);
+        value = JsonPath.read(jsonFragment, jsonPath);
       } else {
-        value = (List<T>) oaiPmhXPath.extractFieldInstanceList(path);
+        value = JsonPath.read(document, jsonPath);
       }
     } catch (PathNotFoundException e) {
       // LOGGER.severe("PathNotFound: " + jsonPath + " " + e.getLocalizedMessage() + extractRelevantPath(e));
     } catch (InvalidPathException e) {
       LOGGER.log(Level.SEVERE, "Invalid Path: {0} {1}\n{2}", new Object[]{
-        path, e.getLocalizedMessage(), ExceptionUtils.extractRelevantPath(e)
+        jsonPath, e.getLocalizedMessage(), ExceptionUtils.extractRelevantPath(e)
       });
     }
     return value;
@@ -81,11 +86,6 @@ public class XmlPathCache<T extends XmlFieldInstance> implements PathCache {
   public List<T> get(String jsonPath) {
     return get(jsonPath, jsonPath, null, null);
   }
-
-  // @Override
-  // public Object get(String path, Class clazz) {
-  //   return null;
-  // }
 
   public <E> E get(String jsonPath, Class<E> clazz) {
     if (!typedCache.containsKey(jsonPath)) {
@@ -105,13 +105,13 @@ public class XmlPathCache<T extends XmlFieldInstance> implements PathCache {
     return cache.get(address);
   }
 
-  public Object getFragment(String path) {
+  public Object getFragment(String jsonPath) {
     Object jsonFragment = null;
-    if (!fragmentCache.containsKey(path)) {
-      jsonFragment = oaiPmhXPath.extractNodes(path);
-      fragmentCache.put(path, jsonFragment);
+    if (!fragmentCache.containsKey(jsonPath)) {
+      jsonFragment = read(jsonPath, null);
+      fragmentCache.put(jsonPath, jsonFragment);
     } else {
-      jsonFragment = fragmentCache.get(path);
+      jsonFragment = fragmentCache.get(jsonPath);
     }
     return jsonFragment;
   }

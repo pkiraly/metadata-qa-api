@@ -6,7 +6,7 @@ import java.io.Serializable;
 import java.util.List;
 import java.util.logging.Logger;
 
-import de.gwdg.metadataqa.api.model.PathCache;
+import de.gwdg.metadataqa.api.model.pathcache.PathCache;
 import org.apache.commons.lang3.StringUtils;
 
 /**

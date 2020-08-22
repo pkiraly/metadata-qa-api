@@ -3,7 +3,8 @@ package de.gwdg.metadataqa.api.calculator;
 import com.jayway.jsonpath.InvalidJsonException;
 import de.gwdg.metadataqa.api.counter.Counters;
 import de.gwdg.metadataqa.api.interfaces.Calculator;
-import de.gwdg.metadataqa.api.model.PathCache;
+import de.gwdg.metadataqa.api.model.pathcache.CsvPathCache;
+import de.gwdg.metadataqa.api.model.pathcache.PathCache;
 import de.gwdg.metadataqa.api.model.PathCacheFactory;
 import de.gwdg.metadataqa.api.model.XmlFieldInstance;
 import de.gwdg.metadataqa.api.problemcatalog.EmptyStrings;
@@ -24,6 +25,8 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.logging.Logger;
+
+import de.gwdg.metadataqa.api.util.CsvReader;
 import org.apache.commons.lang3.StringUtils;
 
 /**
@@ -142,8 +145,8 @@ public class CalculatorFacade implements Serializable {
 
   protected Format format = Format.JSON;
   protected PathCache<? extends XmlFieldInstance> cache;
-
   protected Schema schema;
+  protected CsvReader csvReader;
 
   /**
    * Create calculator facade with the default configuration.
@@ -276,13 +279,13 @@ public class CalculatorFacade implements Serializable {
    * @param <T>
    *   A class defining the internal representation of a field. It should be
    *   an extension of XmlFieldInstance
-   * @param jsonRecord
+   * @param content
    *   The JSON record
    * @return
    *   The result of measurements as a CSV string
    * @throws InvalidJsonException
    */
-  protected <T extends XmlFieldInstance> String measureWithGenerics(String jsonRecord)
+  protected <T extends XmlFieldInstance> String measureWithGenerics(String content)
       throws InvalidJsonException {
     changed();
 
@@ -292,8 +295,11 @@ public class CalculatorFacade implements Serializable {
       throw new IllegalStateException("schema is missing");
     } else {
       Format format = schema.getFormat();
-      if (format != null && jsonRecord != null) {
-        cache = PathCacheFactory.getInstance(schema.getFormat(), jsonRecord);
+      if (format != null && content != null) {
+        cache = PathCacheFactory.getInstance(schema.getFormat(), content);
+        if (schema.getFormat().equals(Format.CSV)) {
+          ((CsvPathCache)cache).setCsvReader(csvReader);
+        }
 
         for (Calculator calculator : getCalculators()) {
           calculator.measure(cache);
@@ -663,5 +669,9 @@ public class CalculatorFacade implements Serializable {
 
   public void setSolrClient(SolrClient solrClient) {
     this.solrClient = solrClient;
+  }
+
+  public void setCsvReader(CsvReader csvReader) {
+    this.csvReader = csvReader;
   }
 }

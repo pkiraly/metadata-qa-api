@@ -1,9 +1,9 @@
 package de.gwdg.metadataqa.api.calculator;
 
 import de.gwdg.metadataqa.api.calculator.edm.EnhancementIdExtractor;
-import de.gwdg.metadataqa.api.model.JsonPathCache;
-import de.gwdg.metadataqa.api.model.PathCache;
-import de.gwdg.metadataqa.api.model.XmlPathCache;
+import de.gwdg.metadataqa.api.model.pathcache.JsonPathCache;
+import de.gwdg.metadataqa.api.model.pathcache.PathCache;
+import de.gwdg.metadataqa.api.model.pathcache.XmlPathCache;
 import de.gwdg.metadataqa.api.schema.EdmOaiPmhJsonSchema;
 import de.gwdg.metadataqa.api.schema.EdmOaiPmhXmlSchema;
 import de.gwdg.metadataqa.api.util.FileUtils;

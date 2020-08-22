@@ -1,6 +1,6 @@
 package de.gwdg.metadataqa.api.interfaces;
 
-import de.gwdg.metadataqa.api.model.PathCache;
+import de.gwdg.metadataqa.api.model.pathcache.PathCache;
 import de.gwdg.metadataqa.api.util.CompressionLevel;
 import java.util.List;
 import java.util.Map;

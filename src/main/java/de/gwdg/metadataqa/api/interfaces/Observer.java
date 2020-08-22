@@ -1,7 +1,7 @@
 package de.gwdg.metadataqa.api.interfaces;
 
 import de.gwdg.metadataqa.api.counter.FieldCounter;
-import de.gwdg.metadataqa.api.model.PathCache;
+import de.gwdg.metadataqa.api.model.pathcache.PathCache;
 
 /**
  * Implementation of the Observer design pattern

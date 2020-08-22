@@ -1,8 +1,8 @@
 package de.gwdg.metadataqa.api.calculator;
 
 import de.bechte.junit.runners.context.HierarchicalContextRunner;
-import de.gwdg.metadataqa.api.model.JsonPathCache;
-import de.gwdg.metadataqa.api.model.PathCache;
+import de.gwdg.metadataqa.api.model.pathcache.JsonPathCache;
+import de.gwdg.metadataqa.api.model.pathcache.PathCache;
 import de.gwdg.metadataqa.api.schema.EdmOaiPmhJsonSchema;
 import de.gwdg.metadataqa.api.schema.Schema;
 import de.gwdg.metadataqa.api.uniqueness.SolrClient;
