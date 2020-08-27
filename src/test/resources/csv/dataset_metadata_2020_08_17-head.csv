@@ -1,0 +1,186 @@
+url,name,alternateName,description,variablesMeasured,measurementTechnique,sameAs,doi,identifier,author,isAccessibleForFree,dateModified,distribution,spatialCoverage,provider,funder,temporalCoverage
+https://neurovault.org/images/384958/,massiveauditorylexicaldecision_FreqCOCAspok+speech+massiveauditorylexicaldecision_NumSylls+massiv...n+text_length+massiveauditorylexicaldecision_PhonLev+concreteness_Conc.M - wK2O6_2020-05-08_22:08: massiveauditorylexicaldecisionFreqcocaspok,"","<p></p>
+
+[![glassbrain](https://neurovault.org/media/images/7422/glass_brain_384958.jpg)](https://neurovault.org/images/384958)
+
+### Collection description
+
+<p>None</p>
+
+###Subject species
+
+homo sapiens
+
+###Modality
+
+ fMRI-BOLD
+
+### Analysis level
+
+group
+
+### Cognitive paradigm (task)
+
+None / Other
+
+### Map type
+
+V","","","","",neurovault.image:384958,"","",2020-05-09,"contentUrl: ""https://neurovault.org//media/images/7422/task-perception_contrast-massiveauditorylexicaldecisionFreqcocaspok_stat-variance_statmap.nii.gz"" encodingFormat: ""nifti""","","","",
+https://neurovault.org/images/93390/,Language in the aging brain: The network dynamics of cognitive decline and preservation: 520398_AV-freq_AudVid600,"","<p></p>
+
+### Collection description
+
+<p>Contrasts from the sensori-motor task of the Camcan dataset</p>
+
+###Subject species
+
+homo sapiens
+
+###Modality
+
+ fMRI-BOLD
+
+### Analysis level
+
+single-subject
+
+### Map type
+
+Z","","","","",neurovault.image:93390,"","",2018-10-13,"contentUrl: ""https://neurovault.org//media/images/4342/sub-CC520398_AudVid600_z_score.nii.gz"" encodingFormat: ""nifti""","","","",
+https://neurovault.org/images/70883/,The Human Connectome Project: A data acquisition perspective: 121921_SOCIAL_TOM,"","<p></p>
+
+[![glassbrain](https://neurovault.org/media/images/4337/glass_brain_70883.jpg)](https://neurovault.org/images/70883)
+
+### Collection description
+
+<p>Volumetric z-statistic maps, for base contrasts, corresponding to the 788 subjects with full records of the HCP900 release.</p>
+
+###Subject species
+
+homo sapiens
+
+###Modality
+
+ fMRI-BOLD
+
+### Analysis level
+
+single-subject
+
+### Cognitive paradigm (task)
+
+social cognition (theory of mind) fMRI task paradigm
+
+### Map type
+
+Z","","","","",neurovault.image:70883,"","",2018-10-13,"contentUrl: ""https://neurovault.org//media/images/4337/z_TOM_75.nii.gz"" encodingFormat: ""nifti""","","","",
+https://neurovault.org/images/396131/,OHBM_ANOVA_dMRI: rs11760622 anova dmri,"","<p>6.0.1                                                                           </p>
+
+[![glassbrain](https://neurovault.org/media/images/8480/glass_brain_396131.jpg)](https://neurovault.org/images/396131)
+
+### Collection description
+
+<p></p>
+
+###Subject species
+
+homo sapiens
+
+###Modality
+
+ Other
+
+### Analysis level
+
+other
+
+### Cognitive paradigm (task)
+
+None / Other
+
+### Map type
+
+Other","","","","",neurovault.image:396131,"","",2020-07-21,"contentUrl: ""https://neurovault.org//media/images/8480/rs11760622_anova_dmri.nii.gz"" encodingFormat: ""nifti""","","","",
+https://neurovault.org/images/370058/,IBC release 2: sub-15_ses-20_task-bang_ffx_talk-no_talk,"","<p></p>
+
+[![glassbrain](https://neurovault.org/media/images/6618/glass_brain_370058.jpg)](https://neurovault.org/images/370058)
+
+### Collection description
+
+<p>The individual Brain Charting (IBC) Project is using high resolution fMRI to map 13 subjects that undergo a large number of tasks: the HCP tasks, the so-called ARCHI tasks, a specific language task, video watching, low-level visual stimulation etc. The native resolution of the data is 1.5mm isotropic. Their main value lies in the large number of contrasts probed, the level of detail and the high SNR per subject. This dataset is meant to provide the basis of a functional brain atlas. We upload here smoothed individual SPMs. The uploaded maps comprise session-specific and fixed effects across maps acquired with AP and PA phase encoding directions. </p>
+
+<p>Note that Neurovault collection #4438 is a subset of that one. In the present collections, some details have been fixed, including mroe accurate and unique file naming.</p>
+
+###Subject species
+
+homo sapiens
+
+###Modality
+
+ fMRI-BOLD
+
+### Analysis level
+
+single-subject
+
+### Cognitive paradigm (task)
+
+movie watching task
+
+### Map type
+
+Z","","","","",neurovault.image:370058,"","",2020-02-15,"contentUrl: ""https://neurovault.org//media/images/6618/talk-no_talk_21.nii.gz"" encodingFormat: ""nifti""","","","",
+https://explore.openaire.eu/search/publication?articleId=dedup_wf_001::0e01a7dd17cbf5aff52a35a64470a50c,Ramsey Rule with Progressive Utility in Long Term Yield Curves Modeling,"","The purpose of this paper relies on the study of long term yield curves modeling. Inspired by the economic litterature, it provides a financial interpretation of the Ramsey rule that links discount rate and marginal utility of aggregate optimal consumption. For such a long maturity modelization, the possibility of adjusting preferences to new economic information is crucial. Thus, after recalling some important properties on progressive utility, this paper first provides an extension of the notion of a consistent progressive utility to a consistent pair of progressive utilities of investment and consumption. An optimality condition is that the utility from the wealth satisfies a second order SPDE of HJB type involving the Fenchel-Legendre transform of the utility from consumption. This SPDE is solved in order to give a full characterization of this class of consistent progressive pair of utilities. An application of this results is to revisit the classical backward optimization problem in the light of progressive utility theory, emphasizing intertemporal-consistency issue. Then we study the dynamics of the marginal utility yield curve, and give example with backward and progressive power utilities.","","","http://arxiv.org/abs/1404.1895,http://arxiv.org/pdf/1404.1895,https://hal.archives-ouvertes.fr/hal-00974815,https://hal.archives-ouvertes.fr/hal-00974815/document,https://hal.archives-ouvertes.fr/hal-00974815/file/RamseyOct19.pdf,https://hal.archives-ouvertes.fr/hal-00974815/file/USPDEBen06_04_14.pdf,https://hal.archives-ouvertes.fr/hal-00974815v2/document","",arxiv:1404.1895,"El Karoui, Nicole; Hillairet, Caroline; Mrad, Mohamed","",2014-04-07,"","","","",
+https://scicrunch.org/resources/Any/record/nlx_144509-1/SCR_013051/resolver?q=*&l=,PhenomicDB,"SCR_013051, (PhenomicDB, RRID:SCR_013051), PhenomicDB","PhenomicDB is a multi-organism phenotype-genotype database including human, mouse, fruit fly, C.elegans, and other model organisms. The inclusion of gene indices (NCBI Gene) and orthologs (same gene in different organisms) from HomoloGene allows to compare phenotypes of a given gene over many organisms simultaneously. PhenomicDB contains data from publicly available primary databases: FlyBase, Flyrnai.org, WormBase, Phenobank, CYGD, MatDB, OMIM, MGI, ZFIN, SGD, DictyBase, NCBI Gene, and HomoloGene. We brought this wealth of data into a single integrated resource by coarse-grained semantic mapping of the phenotypic data fields, by including common gene indexes (NCBI Gene), and by the use of associated orthology relationships (HomoloGene). PhenomicDB is thought as a first step towards comparative phenomics and will improve the understanding of the gene functions by combining the knowledge about phenotypes from several organisms. It is not intended to compete with the much more dedicated primary source databases but tries to compensate its partial loss of depth by linking back to the primary sources. The basic functional concept of PhenomicDB is an integrated meta-search-engine for phenotypes. Users should be aware that comparison of genotypes or even phenotypes between organisms as different as yeast and man can have serious scientific hurdles. Nevertheless finding that the phenotype of a given mouse gene is described as ??similar to psoriasis?? and at the same time that the human ortholog has been described as a gene causing skin defects can lead to novelty and interesting hypotheses. Similarly, a gene involved in cancer in mammalian organisms could show a proliferation phenotype in a lower organism such as yeast and thus, give further insights to a researcher.","","","","",RRID:SCR_013051),"","",2010-06-24,"","","","",
+https://neurovault.org/images/4380/,A Sensitive and Specific Neural Signature for Picture-Induced Negative Affect: IAPS Subject 128 Image 3550,"","<p>Created by iimg_reconstruct_vols</p>
+
+[![glassbrain](https://neurovault.org/media/images/503/glass_brain_4380.jpg)](https://neurovault.org/images/4380)
+
+### Collection description
+
+<p>This dataset contains single trial responses to 30 images from the International Affective Picture Set from 182 subjects.  These data were used to train the Picture Induced Negative Emotion Signature described in Chang et al., 2015 (http://journals.plos.org/plosbiology/article?id=10.1371/journal.pbio.1002180).  The details of the experiment can be seen in Gianaros et al., 2014 (doi: 10.1016/j.biopsych.2013.10.012)</p>
+
+<p>Negative photographs (Pictures: 2053, 3051, 3102, 3120, 3350, 3500, 3550, 6831, 9040, 9050, 9252, 9300, 9400, 9810, 9921) depicted bodily illness and injury (10 photographs), acts of aggression (2 photographs), members of hate groups (1 photograph), transportation accidents (1 photograph) and human waste (1 photograph). Neutral photographs (Pictures: 5720, 5800, 7000, 7006, 7010, 7040, 7060, 7090, 7100,7130, 7150, 7217, 7490, 7500, 9210) depicted inanimate objects (10 photographs) or neutral scenes (5 photographs).</p>
+
+###Subject species
+
+homo sapiens
+
+###Modality
+
+ fMRI-BOLD
+
+### Analysis level
+
+single-subject
+
+### Cognitive paradigm (task)
+
+International Affective Picture System
+
+### Map type
+
+U","","","","",neurovault.image:4380,"","",2018-06-30,"contentUrl: ""https://neurovault.org//media/images/503/IAPS_Subject_128_Image_3550.nii.gz"" encodingFormat: ""nifti""","","","",
+https://www.neurovault.org/images/18442/,Cognitive Atlas Terms NeuroSynth Decoding: speech perception regparams,"","<p>speech perception_regparams.nii.gz</p>
+
+[![glassbrain](https://neurovault.org/media/images/1274/glass_brain_18442.jpg)](https://neurovault.org/images/18442)
+
+### Collection description
+
+<p>Logistic Regression regression parameters (not Z scored) for each of 399 Cognitive Atlas concepts, trained via custom neurosynth extraction of the terms across 11,405 pubmed papers. The Logistic Regression uses a binary matrix of 11405 rows (pubmed papers) x 399 (cognitive atlas terms found in at least 10 papers) columns as Y, and binary feature maps (11405 rows x 28549 columns) as X. These maps are the regression parameter matrix (28K by 399 columns) transformed back into images (4mm resolution).</p>
+
+###Subject species
+
+homo sapiens
+
+###Modality
+
+ Other
+
+### Cognitive paradigm (task)
+
+None / Other
+
+### Map type
+
+Other","","","","",neurovault.image:18442,"","",2016-03-28,"","","","",

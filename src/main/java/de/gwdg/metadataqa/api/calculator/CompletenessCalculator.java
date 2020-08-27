@@ -70,14 +70,7 @@ public class CompletenessCalculator<T extends XmlFieldInstance>
   @Override
   public void measure(PathCache cache)
       throws InvalidJsonException {
-    completenessCounter = new CompletenessCounter();
-    existenceCounter = new FieldCounter<>();
-    cardinalityCounter = new FieldCounter<>();
-    if (collectFields) {
-      missingFields = new ArrayList<>();
-      emptyFields = new ArrayList<>();
-      existingFields = new ArrayList<>();
-    }
+    initializeCounters();
 
     List<String> skippableIds = skippedEntryChecker != null
           ? skippedEntryChecker.getSkippableCollectionIds(cache)
@@ -130,6 +123,17 @@ public class CompletenessCalculator<T extends XmlFieldInstance>
         }
         completenessCounter.increaseInstance(fieldGroup.getCategory(), existing);
       }
+    }
+  }
+
+  public void initializeCounters() {
+    completenessCounter = new CompletenessCounter();
+    existenceCounter = new FieldCounter<>();
+    cardinalityCounter = new FieldCounter<>();
+    if (collectFields) {
+      missingFields = new ArrayList<>();
+      emptyFields = new ArrayList<>();
+      existingFields = new ArrayList<>();
     }
   }
 

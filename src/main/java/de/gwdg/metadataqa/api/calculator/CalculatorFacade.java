@@ -116,7 +116,7 @@ public class CalculatorFacade implements Serializable {
   /**
    * The list of registered calculator objects. Those will do the measurements
    */
-  protected List<Calculator> calculators;
+  protected List<Calculator> calculators = new ArrayList<>();
 
   /**
    * The field extractor object.

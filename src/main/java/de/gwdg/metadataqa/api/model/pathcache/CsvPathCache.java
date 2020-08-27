@@ -3,6 +3,7 @@ package de.gwdg.metadataqa.api.model.pathcache;
 import com.jayway.jsonpath.InvalidJsonException;
 import de.gwdg.metadataqa.api.model.XmlFieldInstance;
 import de.gwdg.metadataqa.api.util.CsvReader;
+import org.apache.commons.lang3.StringUtils;
 
 import java.io.IOException;
 import java.util.*;
@@ -42,14 +43,13 @@ public class CsvPathCache<T extends XmlFieldInstance> implements PathCache {
   }
 
   public List<T> read(String path, Object jsonFragment) {
-    List<XmlFieldInstance> list = null;
-    if (record.containsValue(path)) {
-      list = new ArrayList<>();
-      list.add(new XmlFieldInstance(record.get(path)));
+    List<T> list = null;
+    if (record.containsKey(path) && StringUtils.isNotBlank(record.get(path))) {
+      list = (List<T>) Arrays.asList(new XmlFieldInstance(record.get(path)));
     } else {
-      // LOGGER.severe("PathNotFound: " + jsonPath + " " + e.getLocalizedMessage() + extractRelevantPath(e));
+      // LOGGER.severe("PathNotFound: " + path);
     }
-    return (List<T>) list;
+    return list;
   }
 
   public List<T> get(String jsonPath) {

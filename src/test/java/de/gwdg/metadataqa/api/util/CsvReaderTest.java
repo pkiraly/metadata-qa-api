@@ -1,12 +1,17 @@
 package de.gwdg.metadataqa.api.util;
 
-import com.opencsv.CSVParser;
-import com.opencsv.CSVParserBuilder;
+import com.opencsv.*;
+import com.opencsv.exceptions.CsvValidationException;
+import de.gwdg.metadataqa.api.calculator.CalculatorFacade;
+import de.gwdg.metadataqa.api.schema.GoogleDatasetSchema;
+import org.apache.commons.lang3.StringUtils;
 import org.junit.Test;
 
+import java.io.File;
+import java.io.FileReader;
 import java.io.IOException;
+import java.io.StringWriter;
 import java.util.Arrays;
-import java.util.Locale;
 import java.util.Map;
 
 import static org.junit.Assert.assertEquals;
@@ -121,4 +126,78 @@ public class CsvReaderTest {
     assertNotNull(record);
     assertEquals(0, record.size());
   }
+
+  @Test
+  public void testFromFile() {
+    String fileName = "src/test/resources/csv/dataset_metadata_2020_08_17-head.csv";
+    File file = new File(fileName);
+
+    try {
+      // Map<String, String> values = new CSVReaderHeaderAware(
+      //  new FileReader(fileName)).readMap();
+      // System.err.println(values.size());
+      CSVReaderHeaderAware reader = new CSVReaderHeaderAware(new FileReader(fileName));
+      Map<String,String> record = null;
+      do {
+        record = reader.readMap();
+        if (record != null) {
+          System.err.println(record.get("url"));
+        }
+      } while (record != null);
+      /*
+      CSVIterator iterator = new CSVIterator(
+                                );
+      CSVReader reader2 = new CSVReader(new FileReader("yourfile.csv"));
+      while (iterator.hasNext()) {
+        String[] nextLine = iterator.next();
+        System.out.println(nextLine[0] + nextLine[1] + "etc...");
+      }
+       */
+    } catch (IOException e) {
+      e.printStackTrace();
+    } catch (CsvValidationException e) {
+      e.printStackTrace();
+    }
+  }
+
+  @Test
+  public void testFromFile2() {
+    CalculatorFacade facade = new CalculatorFacade();
+    facade.setSchema(new GoogleDatasetSchema());
+    CsvReader csvReader = new CsvReader();
+    csvReader.setHeader(new String[]{
+      "url", "name", "alternateName", "description", "variablesMeasured",
+      "measurementTechnique", "sameAs", "doi", "identifier", "author",
+      "isAccessibleForFree", "dateModified", "distribution", "spatialCoverage",
+      "provider", "funder", "temporalCoverage"
+    });
+    facade.setCsvReader(csvReader);
+    facade.enableCompletenessMeasurement(true);
+    facade.configure();
+
+    String fileName = "src/test/resources/csv/dataset_metadata_2020_08_17-head.csv";
+    File file = new File(fileName);
+
+    try {
+      CSVIterator iterator = new CSVIterator(new CSVReaderHeaderAware(new FileReader(fileName)));
+      while (iterator.hasNext()) {
+        String line = toCsv(iterator.next());
+        String metrics = facade.measure(line);
+        System.err.println(metrics);
+      }
+    } catch (IOException e) {
+      e.printStackTrace();
+    } catch (CsvValidationException e) {
+      e.printStackTrace();
+    }
+  }
+
+  private String toCsv(String[] cells) throws IOException {
+    StringWriter stringWriter = new StringWriter();
+    CSVWriter csvWriter = new CSVWriter(stringWriter);
+    csvWriter.writeNext(cells);
+    csvWriter.close();
+    return stringWriter.toString().trim();
+  }
+
 }
