@@ -9,7 +9,7 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
-public class GoogleDatasetSchema implements Schema {
+public class GoogleDatasetSchema implements Schema, CsvAwareSchema {
 
   private static final Map<String, JsonBranch> PATHS = new LinkedHashMap<>();
   private static final Map<String, JsonBranch> COLLECTION_PATHS = new LinkedHashMap<>();
@@ -101,6 +101,15 @@ public class GoogleDatasetSchema implements Schema {
     if (branch.isCollection()) {
       COLLECTION_PATHS.put(branch.getLabel(), branch);
     }
+  }
+
+  @Override
+  public List<String> getHeader() {
+    List<String> headers = new ArrayList<>();
+    for (JsonBranch branch : PATHS.values()) {
+      headers.add(branch.getJsonPath());
+    }
+    return headers;
   }
 
 }

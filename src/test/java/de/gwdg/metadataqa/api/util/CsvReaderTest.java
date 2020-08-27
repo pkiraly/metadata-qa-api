@@ -161,16 +161,12 @@ public class CsvReaderTest {
   }
 
   @Test
-  public void testFromFile2() {
+  public void testCalculator() {
     CalculatorFacade facade = new CalculatorFacade();
-    facade.setSchema(new GoogleDatasetSchema());
+    GoogleDatasetSchema schema = new GoogleDatasetSchema();
+    facade.setSchema(schema);
     CsvReader csvReader = new CsvReader();
-    csvReader.setHeader(new String[]{
-      "url", "name", "alternateName", "description", "variablesMeasured",
-      "measurementTechnique", "sameAs", "doi", "identifier", "author",
-      "isAccessibleForFree", "dateModified", "distribution", "spatialCoverage",
-      "provider", "funder", "temporalCoverage"
-    });
+    csvReader.setHeader(schema.getHeader());
     facade.setCsvReader(csvReader);
     facade.enableCompletenessMeasurement(true);
     facade.configure();
