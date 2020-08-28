@@ -1,9 +1,11 @@
 package de.gwdg.metadataqa.api.util;
 
 import com.opencsv.CSVParser;
+import com.opencsv.CSVWriter;
 import com.opencsv.ICSVParser;
 
 import java.io.IOException;
+import java.io.StringWriter;
 import java.util.Arrays;
 import java.util.LinkedHashMap;
 import java.util.List;
@@ -47,4 +49,13 @@ public class CsvReader {
     }
     return record;
   }
+
+  public static String toCsv(String[] cells) throws IOException {
+    StringWriter stringWriter = new StringWriter();
+    CSVWriter csvWriter = new CSVWriter(stringWriter);
+    csvWriter.writeNext(cells);
+    csvWriter.close();
+    return stringWriter.toString().trim();
+  }
+
 }

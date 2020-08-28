@@ -176,11 +176,23 @@ public class CsvReaderTest {
 
     try {
       CSVIterator iterator = new CSVIterator(new CSVReaderHeaderAware(new FileReader(fileName)));
+      StringBuffer result = new StringBuffer();
       while (iterator.hasNext()) {
         String line = toCsv(iterator.next());
         String metrics = facade.measure(line);
-        System.err.println(metrics);
+        result.append(metrics + "\n");
       }
+      String expected = "0.352941,1.0,NaN,NaN,NaN,NaN,NaN,NaN,NaN,NaN,1,1,0,1,0,0,0,0,1,0,0,1,1,0,0,0,0,1,1,0,1,0,0,0,0,1,0,0,1,1,0,0,0,0\n"
+        + "0.352941,1.0,NaN,NaN,NaN,NaN,NaN,NaN,NaN,NaN,1,1,0,1,0,0,0,0,1,0,0,1,1,0,0,0,0,1,1,0,1,0,0,0,0,1,0,0,1,1,0,0,0,0\n"
+        + "0.352941,1.0,NaN,NaN,NaN,NaN,NaN,NaN,NaN,NaN,1,1,0,1,0,0,0,0,1,0,0,1,1,0,0,0,0,1,1,0,1,0,0,0,0,1,0,0,1,1,0,0,0,0\n"
+        + "0.352941,1.0,NaN,NaN,NaN,NaN,NaN,NaN,NaN,NaN,1,1,0,1,0,0,0,0,1,0,0,1,1,0,0,0,0,1,1,0,1,0,0,0,0,1,0,0,1,1,0,0,0,0\n"
+        + "0.352941,1.0,NaN,NaN,NaN,NaN,NaN,NaN,NaN,NaN,1,1,0,1,0,0,0,0,1,0,0,1,1,0,0,0,0,1,1,0,1,0,0,0,0,1,0,0,1,1,0,0,0,0\n"
+        + "0.411765,1.0,NaN,NaN,NaN,NaN,NaN,NaN,NaN,NaN,1,1,0,1,0,0,1,0,1,1,0,1,0,0,0,0,0,1,1,0,1,0,0,1,0,1,1,0,1,0,0,0,0,0\n"
+        + "0.352941,1.0,NaN,NaN,NaN,NaN,NaN,NaN,NaN,NaN,1,1,1,1,0,0,0,0,1,0,0,1,0,0,0,0,0,1,1,1,1,0,0,0,0,1,0,0,1,0,0,0,0,0\n"
+        + "0.352941,1.0,NaN,NaN,NaN,NaN,NaN,NaN,NaN,NaN,1,1,0,1,0,0,0,0,1,0,0,1,1,0,0,0,0,1,1,0,1,0,0,0,0,1,0,0,1,1,0,0,0,0\n"
+        + "0.294118,1.0,NaN,NaN,NaN,NaN,NaN,NaN,NaN,NaN,1,1,0,1,0,0,0,0,1,0,0,1,0,0,0,0,0,1,1,0,1,0,0,0,0,1,0,0,1,0,0,0,0,0\n";
+      assertEquals(expected, result.toString());
+
     } catch (IOException e) {
       e.printStackTrace();
     } catch (CsvValidationException e) {

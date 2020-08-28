@@ -24,6 +24,8 @@ public class JsonBranch implements Cloneable, Serializable {
   private List<JsonBranch> children = new ArrayList<>();
   private boolean collection = false;
   private boolean isActive = true;
+  private boolean isExtractable = false;
+  private boolean isMandatory = false;
 
   public JsonBranch(String label, String jsonPath, String solrFieldName) {
     this.label = label;
@@ -31,16 +33,22 @@ public class JsonBranch implements Cloneable, Serializable {
     this.solrFieldName = solrFieldName;
   }
 
+  public JsonBranch(String jsonPath, Category... categories) {
+    this.label = jsonPath;
+    this.jsonPath = jsonPath;
+    setCategories(Arrays.asList(categories));
+  }
+
   public JsonBranch(String label, String jsonPath, Category... categories) {
     this.label = label;
     this.jsonPath = jsonPath;
-    this.categories = Arrays.asList(categories);
+    setCategories(Arrays.asList(categories));
   }
 
   public JsonBranch(String label, JsonBranch parent, String jsonPath, Category... categories) {
     this.label = label;
     this.jsonPath = jsonPath;
-    this.categories = Arrays.asList(categories);
+    setCategories(Arrays.asList(categories));
     setParent(parent);
   }
 
@@ -48,16 +56,18 @@ public class JsonBranch implements Cloneable, Serializable {
     return label;
   }
 
-  public void setLabel(String label) {
+  public JsonBranch setLabel(String label) {
     this.label = label;
+    return this;
   }
 
   public String getJsonPath() {
     return jsonPath;
   }
 
-  public void setJsonPath(String jsonPath) {
+  public JsonBranch setJsonPath(String jsonPath) {
     this.jsonPath = jsonPath;
+    return this;
   }
 
   public String getAbsoluteJsonPath() {
@@ -90,55 +100,64 @@ public class JsonBranch implements Cloneable, Serializable {
     return categories;
   }
 
-  public void setCategories(List<Category> categories) {
+  public JsonBranch setCategories(List<Category> categories) {
     this.categories = categories;
+    if (categories.contains(Category.MANDATORY))
+      isMandatory = true;
+    return this;
   }
 
   public String getSolrFieldName() {
     return solrFieldName;
   }
 
-  public void setSolrFieldName(String solrFieldName) {
+  public JsonBranch setSolrFieldName(String solrFieldName) {
     this.solrFieldName = solrFieldName;
+    return this;
   }
 
   public JsonBranch getParent() {
     return parent;
   }
 
-  public void setParent(JsonBranch parent) {
+  public JsonBranch setParent(JsonBranch parent) {
     this.parent = parent;
     this.parent.addChild(this);
+    return this;
   }
 
-  public void addChild(JsonBranch child) {
+  public JsonBranch addChild(JsonBranch child) {
     if (!this.children.contains(child)) {
       this.children.add(child);
     }
+    return this;
   }
 
   public List<JsonBranch> getChildren() {
     return children;
   }
 
-  public void setChildren(List<JsonBranch> children) {
+  public JsonBranch setChildren(List<JsonBranch> children) {
     this.children = children;
+    return this;
   }
 
   public boolean isCollection() {
     return collection;
   }
 
-  public void setCollection(boolean collection) {
+  public JsonBranch setCollection(boolean collection) {
     this.collection = collection;
+    return this;
   }
 
   public JsonBranch getIdentifier() {
     return identifier;
   }
 
-  public void setIdentifier(JsonBranch identifier) {
+  public JsonBranch setIdentifier(JsonBranch identifier) {
     this.identifier = identifier;
+    return this;
   }
 
   public boolean isActive() {
@@ -148,6 +167,24 @@ public class JsonBranch implements Cloneable, Serializable {
   public JsonBranch setActive(boolean active) {
     isActive = active;
     return this;
+  }
+
+  public boolean isExtractable() {
+    return isExtractable;
+  }
+
+  public JsonBranch setExtractable() {
+    isExtractable = true;
+    return this;
+  }
+
+  public JsonBranch setExtractable(boolean extractable) {
+    isExtractable = extractable;
+    return this;
+  }
+
+  public boolean isMandatory() {
+    return isMandatory;
   }
 
   @Override
