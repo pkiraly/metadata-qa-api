@@ -14,6 +14,7 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.util.Arrays;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import static org.junit.Assert.*;
@@ -86,11 +87,30 @@ public class BaseSchemaTest {
       .setCsvReader(
         new CsvReader()
           .setHeader(((CsvAwareSchema) schema).getHeader()))
-      .enableCompletenessMeasurement(true);
-    //  facade.configure();
+      .enableCompletenessMeasurement()
+      .enableFieldCardinalityMeasurement();
+    // facade.configure();
 
     String fileName = "src/test/resources/csv/dataset_metadata_2020_08_17-head.csv";
     File file = new File(fileName);
+
+    List<String> outputHeader = facade.getHeader();
+    assertEquals(
+      Arrays.asList(
+        "completeness:TOTAL", "completeness:MANDATORY", "completeness:DESCRIPTIVENESS", "completeness:SEARCHABILITY",
+        "completeness:CONTEXTUALIZATION", "completeness:IDENTIFICATION", "completeness:BROWSING", "completeness:VIEWING",
+        "completeness:REUSABILITY", "completeness:MULTILINGUALITY", "existence:url", "existence:name",
+        "existence:alternateName", "existence:description", "existence:variablesMeasured", "existence:measurementTechnique",
+        "existence:sameAs", "existence:doi", "existence:identifier", "existence:author", "existence:isAccessibleForFree",
+        "existence:dateModified", "existence:distribution", "existence:spatialCoverage", "existence:provider",
+        "existence:funder", "existence:temporalCoverage", "cardinality:url", "cardinality:name", "cardinality:alternateName",
+        "cardinality:description", "cardinality:variablesMeasured", "cardinality:measurementTechnique", "cardinality:sameAs",
+        "cardinality:doi", "cardinality:identifier", "cardinality:author", "cardinality:isAccessibleForFree",
+        "cardinality:dateModified", "cardinality:distribution", "cardinality:spatialCoverage", "cardinality:provider",
+        "cardinality:funder", "cardinality:temporalCoverage"
+      ),
+      outputHeader
+    );
 
     try {
       CSVIterator iterator = new CSVIterator(new CSVReaderHeaderAware(new FileReader(fileName)));

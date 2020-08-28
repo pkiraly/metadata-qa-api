@@ -83,11 +83,11 @@ public class CalculatorFacadeTest {
 
     calculator.enableTfIdfMeasurement(true);
     calculator.configureSolr("localhost", "8983", "solr/europeana");
-    calculator.changed();
+    calculator.conditionalConfiguration();
     calculators = calculator.getCalculators();
     assertEquals(2, calculators.size());
 
-    calculator.changed();
+    calculator.conditionalConfiguration();
     calculators = calculator.getCalculators();
     assertEquals(2, calculators.size());
   }
@@ -98,7 +98,7 @@ public class CalculatorFacadeTest {
     CalculatorFacade calculator = new CalculatorFacade();
     calculator.setSchema(new EdmOaiPmhJsonSchema());
     calculator.enableTfIdfMeasurement(true);
-    calculator.changed();
+    calculator.conditionalConfiguration();
 
     List<Calculator> calculators = calculator.getCalculators();
 

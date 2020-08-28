@@ -37,9 +37,7 @@ CalculatorFacade facade = new CalculatorFacade()
     new CsvReader()
       .setHeader(((CsvAwareSchema) schema).getHeader()))
   // we will measure completeness now
- .enableCompletenessMeasurement(true);
-// finally you have to activate the configuration
-facade.configure();
+ .enableCompletenessMeasurement();
 ```
 
 These are the two important requirements for the start of the measuring. The measuring is simple:
@@ -50,19 +48,29 @@ calculator.measure(input)
 
 The `input` should be a string formatted as JSON, XML or CSV.
 
+An example:
+
 ```Java
+// collect the output into a container. The output is a CSV file
+StringBuffer output = new StringBuffer();
+
+// get the header of the output CSV
+output.append(calculator.getHeader())
+
 // The input could be JSON, XML or CSV. 
 // You can set any kind of datasource, as long it returns a String
 Iterator iterator = ...;
 while (iterator.hasNext()) {
   try {
-    // process the input
+    // measure the input
     String csv = calculator.measure(iterator.next());
     // save csv
+    output.append(csv);
   } catch (InvalidJsonException e) {
     // handle exception
   }
 }
+String metrics = output.toString();
 ```
 
 For the usage and implementation of the API see https://github.com/pkiraly/europeana-qa-api.

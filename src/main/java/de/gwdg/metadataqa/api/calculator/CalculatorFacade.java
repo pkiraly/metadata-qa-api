@@ -179,7 +179,7 @@ public class CalculatorFacade implements Serializable {
     this.problemCatalogMeasurementEnabled = runProblemCatalog;
   }
 
-  protected void changed() {
+  protected void conditionalConfiguration() {
     if (changed) {
       configure();
       changed = false;
@@ -287,7 +287,7 @@ public class CalculatorFacade implements Serializable {
    */
   protected <T extends XmlFieldInstance> String measureWithGenerics(String content)
       throws InvalidJsonException {
-    changed();
+    conditionalConfiguration();
 
     List<String> items = new ArrayList<>();
 
@@ -311,6 +311,10 @@ public class CalculatorFacade implements Serializable {
     return StringUtils.join(items, ",");
   }
 
+  public CalculatorFacade enableFieldExtractor() {
+    return enableFieldExtractor(true);
+  }
+
   public CalculatorFacade enableFieldExtractor(boolean flag) {
     this.fieldExtractorEnabled = flag;
     changed = true;
@@ -328,6 +332,10 @@ public class CalculatorFacade implements Serializable {
    */
   public boolean isFieldExistenceMeasurementEnabled() {
     return fieldExistenceMeasurementEnabled;
+  }
+
+  public CalculatorFacade enableFieldExistenceMeasurement() {
+    return enableFieldExistenceMeasurement(true);
   }
 
   /**
@@ -351,6 +359,10 @@ public class CalculatorFacade implements Serializable {
     return fieldCardinalityMeasurementEnabled;
   }
 
+  public CalculatorFacade enableFieldCardinalityMeasurement() {
+    return enableFieldCardinalityMeasurement(true);
+  }
+
   /**
    * configure to run the cardinality measurement.
    * @param runFieldCardinality
@@ -370,6 +382,10 @@ public class CalculatorFacade implements Serializable {
    */
   public boolean isCompletenessMeasurementEnabled() {
     return completenessMeasurementEnabled;
+  }
+
+  public CalculatorFacade enableCompletenessMeasurement() {
+    return enableCompletenessMeasurement(true);
   }
 
   /**
@@ -394,6 +410,10 @@ public class CalculatorFacade implements Serializable {
     return languageMeasurementEnabled;
   }
 
+  public CalculatorFacade enableLanguageMeasurement() {
+    return enableLanguageMeasurement(true);
+  }
+
   /**
    * Configure whether or not run the language detector.
    *
@@ -414,6 +434,10 @@ public class CalculatorFacade implements Serializable {
    */
   public boolean isMultilingualSaturationMeasurementEnabled() {
     return multilingualSaturationMeasurementEnabled;
+  }
+
+  public CalculatorFacade enableMultilingualSaturationMeasurement() {
+    return enableMultilingualSaturationMeasurement(true);
   }
 
   /**
@@ -438,6 +462,10 @@ public class CalculatorFacade implements Serializable {
     return tfIdfMeasurementEnabled;
   }
 
+  public CalculatorFacade enableTfIdfMeasurement() {
+    return enableTfIdfMeasurement(true);
+  }
+
   /**
    * Configure whether or not run the uniqueness measurement.
    * @param runTfIdf
@@ -459,6 +487,10 @@ public class CalculatorFacade implements Serializable {
     return problemCatalogMeasurementEnabled;
   }
 
+  public CalculatorFacade enableProblemCatalogMeasurement() {
+    return enableProblemCatalogMeasurement(true);
+  }
+
   /**
    * Configure to run the problem catalog measurement.
    * @param runProblemCatalog
@@ -477,6 +509,10 @@ public class CalculatorFacade implements Serializable {
    */
   public boolean isUniquenessMeasurementEnabled() {
     return uniquenessMeasurementEnabled;
+  }
+
+  public CalculatorFacade enableUniquenessMeasurement() {
+    return enableUniquenessMeasurement(true);
   }
 
   /**
@@ -636,6 +672,7 @@ public class CalculatorFacade implements Serializable {
   }
 
   public List<String> getHeader() {
+    conditionalConfiguration();
     List<String> header = new ArrayList<>();
     for (Calculator calculator : getCalculators()) {
       header.addAll(calculator.getHeader());
