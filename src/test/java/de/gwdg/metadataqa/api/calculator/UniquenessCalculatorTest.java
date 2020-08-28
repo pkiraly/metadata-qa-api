@@ -88,15 +88,14 @@ public class UniquenessCalculatorTest {
 
     @Before
     public void setUp() {
-      facade = new CalculatorFacade();
-      facade.setSchema(schema);
-      facade.setSolrClient(solrClient);
-
-      facade.enableFieldExtractor(true);
-      facade.enableFieldExistenceMeasurement(false);
-      facade.enableCompletenessMeasurement(false);
-      facade.enableFieldCardinalityMeasurement(false);
-      facade.enableUniquenessMeasurement(true);
+      facade = new CalculatorFacade()
+        .setSchema(schema)
+        .setSolrClient(solrClient)
+        .enableFieldExtractor()
+        .disableFieldExistenceMeasurement()
+        .disableCompletenessMeasurement()
+        .disableFieldCardinalityMeasurement()
+        .enableUniquenessMeasurement();
 
       facade.configure();
     }

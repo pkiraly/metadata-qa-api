@@ -72,16 +72,16 @@ public class CalculatorFacadeTest {
 
   @Test
   public void testChanged() {
-    CalculatorFacade calculator = new CalculatorFacade();
-    calculator.setSchema(new EdmOaiPmhJsonSchema());
-    calculator.enableFieldExtractor(false);
+    CalculatorFacade calculator = new CalculatorFacade()
+      .setSchema(new EdmOaiPmhJsonSchema())
+      .disableFieldExtractor();
 
     assertFalse(calculator.isTfIdfMeasurementEnabled());
     calculator.configure();
     List<Calculator> calculators = calculator.getCalculators();
     assertEquals(1, calculators.size());
 
-    calculator.enableTfIdfMeasurement(true);
+    calculator.enableTfIdfMeasurement();
     calculator.configureSolr("localhost", "8983", "solr/europeana");
     calculator.conditionalConfiguration();
     calculators = calculator.getCalculators();
@@ -95,9 +95,9 @@ public class CalculatorFacadeTest {
 
   @Test(expected = IllegalArgumentException.class)
   public void testTfIdfWithWrongConfiguration() {
-    CalculatorFacade calculator = new CalculatorFacade();
-    calculator.setSchema(new EdmOaiPmhJsonSchema());
-    calculator.enableTfIdfMeasurement(true);
+    CalculatorFacade calculator = new CalculatorFacade()
+      .setSchema(new EdmOaiPmhJsonSchema())
+      .enableTfIdfMeasurement();
     calculator.conditionalConfiguration();
 
     List<Calculator> calculators = calculator.getCalculators();

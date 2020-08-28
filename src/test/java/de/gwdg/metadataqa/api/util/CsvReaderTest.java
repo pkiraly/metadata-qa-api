@@ -133,26 +133,14 @@ public class CsvReaderTest {
     File file = new File(fileName);
 
     try {
-      // Map<String, String> values = new CSVReaderHeaderAware(
-      //  new FileReader(fileName)).readMap();
-      // System.err.println(values.size());
       CSVReaderHeaderAware reader = new CSVReaderHeaderAware(new FileReader(fileName));
       Map<String,String> record = null;
       do {
         record = reader.readMap();
         if (record != null) {
-          System.err.println(record.get("url"));
+          // System.err.println(record.get("url"));
         }
       } while (record != null);
-      /*
-      CSVIterator iterator = new CSVIterator(
-                                );
-      CSVReader reader2 = new CSVReader(new FileReader("yourfile.csv"));
-      while (iterator.hasNext()) {
-        String[] nextLine = iterator.next();
-        System.out.println(nextLine[0] + nextLine[1] + "etc...");
-      }
-       */
     } catch (IOException e) {
       e.printStackTrace();
     } catch (CsvValidationException e) {
@@ -162,23 +150,21 @@ public class CsvReaderTest {
 
   @Test
   public void testCalculator() {
-    CalculatorFacade facade = new CalculatorFacade();
     GoogleDatasetSchema schema = new GoogleDatasetSchema();
-    facade.setSchema(schema);
-    CsvReader csvReader = new CsvReader();
-    csvReader.setHeader(schema.getHeader());
-    facade.setCsvReader(csvReader);
-    facade.enableCompletenessMeasurement(true);
-    facade.configure();
+
+    CalculatorFacade facade = new CalculatorFacade()
+      .setSchema(schema)
+      .setCsvReader(new CsvReader().setHeader(schema.getHeader()))
+      .enableCompletenessMeasurement();
 
     String fileName = "src/test/resources/csv/dataset_metadata_2020_08_17-head.csv";
     File file = new File(fileName);
 
     try {
-      CSVIterator iterator = new CSVIterator(new CSVReaderHeaderAware(new FileReader(fileName)));
+      CSVIterator iterator = new CSVIterator(new CSVReaderHeaderAware(new FileReader(file)));
       StringBuffer result = new StringBuffer();
       while (iterator.hasNext()) {
-        String line = toCsv(iterator.next());
+        String line = CsvReader.toCsv(iterator.next());
         String metrics = facade.measure(line);
         result.append(metrics + "\n");
       }
@@ -199,13 +185,4 @@ public class CsvReaderTest {
       e.printStackTrace();
     }
   }
-
-  private String toCsv(String[] cells) throws IOException {
-    StringWriter stringWriter = new StringWriter();
-    CSVWriter csvWriter = new CSVWriter(stringWriter);
-    csvWriter.writeNext(cells);
-    csvWriter.close();
-    return stringWriter.toString().trim();
-  }
-
 }

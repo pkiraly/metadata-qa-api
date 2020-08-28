@@ -315,6 +315,10 @@ public class CalculatorFacade implements Serializable {
     return enableFieldExtractor(true);
   }
 
+  public CalculatorFacade disableFieldExtractor() {
+    return enableFieldExtractor(false);
+  }
+
   public CalculatorFacade enableFieldExtractor(boolean flag) {
     this.fieldExtractorEnabled = flag;
     changed = true;
@@ -336,6 +340,10 @@ public class CalculatorFacade implements Serializable {
 
   public CalculatorFacade enableFieldExistenceMeasurement() {
     return enableFieldExistenceMeasurement(true);
+  }
+
+  public CalculatorFacade disableFieldExistenceMeasurement() {
+    return enableFieldExistenceMeasurement(false);
   }
 
   /**
@@ -363,6 +371,10 @@ public class CalculatorFacade implements Serializable {
     return enableFieldCardinalityMeasurement(true);
   }
 
+  public CalculatorFacade disableFieldCardinalityMeasurement() {
+    return enableFieldCardinalityMeasurement(false);
+  }
+
   /**
    * configure to run the cardinality measurement.
    * @param runFieldCardinality
@@ -386,6 +398,10 @@ public class CalculatorFacade implements Serializable {
 
   public CalculatorFacade enableCompletenessMeasurement() {
     return enableCompletenessMeasurement(true);
+  }
+
+  public CalculatorFacade disableCompletenessMeasurement() {
+    return enableCompletenessMeasurement(false);
   }
 
   /**
@@ -414,6 +430,10 @@ public class CalculatorFacade implements Serializable {
     return enableLanguageMeasurement(true);
   }
 
+  public CalculatorFacade disableLanguageMeasurement() {
+    return enableLanguageMeasurement(false);
+  }
+
   /**
    * Configure whether or not run the language detector.
    *
@@ -438,6 +458,10 @@ public class CalculatorFacade implements Serializable {
 
   public CalculatorFacade enableMultilingualSaturationMeasurement() {
     return enableMultilingualSaturationMeasurement(true);
+  }
+
+  public CalculatorFacade disableMultilingualSaturationMeasurement() {
+    return enableMultilingualSaturationMeasurement(false);
   }
 
   /**
@@ -466,6 +490,10 @@ public class CalculatorFacade implements Serializable {
     return enableTfIdfMeasurement(true);
   }
 
+  public CalculatorFacade disableTfIdfMeasurement() {
+    return enableTfIdfMeasurement(false);
+  }
+
   /**
    * Configure whether or not run the uniqueness measurement.
    * @param runTfIdf
@@ -491,6 +519,10 @@ public class CalculatorFacade implements Serializable {
     return enableProblemCatalogMeasurement(true);
   }
 
+  public CalculatorFacade disableProblemCatalogMeasurement() {
+    return enableProblemCatalogMeasurement(false);
+  }
+
   /**
    * Configure to run the problem catalog measurement.
    * @param runProblemCatalog
@@ -513,6 +545,10 @@ public class CalculatorFacade implements Serializable {
 
   public CalculatorFacade enableUniquenessMeasurement() {
     return enableUniquenessMeasurement(true);
+  }
+
+  public CalculatorFacade disableUniquenessMeasurement() {
+    return enableUniquenessMeasurement(false);
   }
 
   /**
