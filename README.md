@@ -43,12 +43,12 @@ CalculatorFacade facade = new CalculatorFacade()
 These are the two important requirements for the start of the measuring. The measuring is simple:
 
 ```Java
-calculator.measure(input)
+String csv = calculator.measure(input)
 ```
 
-The `input` should be a string formatted as JSON, XML or CSV.
+The `input` should be a string formatted as JSON, XML or CSV. The output is a comma separated line. The calculator.getHeader() returns the list of the column names.
 
-An example:
+An example which collects output into a StringBuffer (you can persist lines into a CSV file or into a database):
 
 ```Java
 // collect the output into a container. The output is a CSV file
@@ -70,6 +70,8 @@ while (iterator.hasNext()) {
     // handle exception
   }
 }
+
+// get the output
 String metrics = output.toString();
 ```
 
