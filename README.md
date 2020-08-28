@@ -46,7 +46,7 @@ These are the two important requirements for the start of the measuring. The mea
 String csv = calculator.measure(input)
 ```
 
-The `input` should be a string formatted as JSON, XML or CSV. The output is a comma separated line. The calculator.getHeader() returns the list of the column names.
+The `input` should be a string formatted as JSON, XML or CSV. The output is a comma separated line. The `calculator.getHeader()` returns the list of the column names.
 
 An example which collects output into a StringBuffer (you can persist lines into a CSV file or into a database):
 
