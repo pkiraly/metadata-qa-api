@@ -15,6 +15,7 @@ public class GoogleDatasetSchema implements Schema, CsvAwareSchema {
   private static final Map<String, JsonBranch> COLLECTION_PATHS = new LinkedHashMap<>();
   private static final Map<String, JsonBranch> DIRECT_CHILDREN = new LinkedHashMap<>();
   private static Map<String, String> extractableFields = new LinkedHashMap<>();
+  private static List<Category> categories = null;
 
   static {
     addPath(new JsonBranch("url", "url", Category.MANDATORY));
@@ -93,14 +94,22 @@ public class GoogleDatasetSchema implements Schema, CsvAwareSchema {
     extractableFields.put(label, jsonPath);
   }
 
+  @Override
+  public List<Category> getCategories() {
+    if (categories == null)
+      categories = Category.extractCategories(PATHS.values());
+
+    return categories;
+  }
+
   private static void addPath(JsonBranch branch) {
     PATHS.put(branch.getLabel(), branch);
-    if (branch.getParent() == null) {
+
+    if (branch.getParent() == null)
       DIRECT_CHILDREN.put(branch.getLabel(), branch);
-    }
-    if (branch.isCollection()) {
+
+    if (branch.isCollection())
       COLLECTION_PATHS.put(branch.getLabel(), branch);
-    }
   }
 
   @Override

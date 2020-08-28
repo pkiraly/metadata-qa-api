@@ -1,6 +1,7 @@
 package de.gwdg.metadataqa.api.counter;
 
 import de.gwdg.metadataqa.api.model.Category;
+import de.gwdg.metadataqa.api.schema.Schema;
 
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
@@ -15,8 +16,10 @@ public class CompletenessCounter {
 
   public static final String TOTAL = "TOTAL";
   private Map<String, BasicCounter> basicCounters;
+  private Schema schema;
 
-  public CompletenessCounter() {
+  public CompletenessCounter(Schema schema) {
+    this.schema = schema;
     initialize();
   }
 
@@ -62,15 +65,15 @@ public class CompletenessCounter {
 
   private void initialize() {
     basicCounters = new LinkedHashMap<>();
-    for (String name : getHeaders()) {
+    for (String name : getHeaders(schema)) {
       basicCounters.put(name, new BasicCounter());
     }
   }
 
-  public static List<String> getHeaders() {
+  public static List<String> getHeaders(Schema schema) {
     List<String> headers = new ArrayList<>();
     headers.add(TOTAL);
-    for (Category category : Category.values()) {
+    for (Category category : schema.getCategories()) { // Category.values()
       headers.add(category.name());
     }
     return headers;

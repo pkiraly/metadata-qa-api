@@ -127,7 +127,7 @@ public class CompletenessCalculator<T extends XmlFieldInstance>
   }
 
   public void initializeCounters() {
-    completenessCounter = new CompletenessCounter();
+    completenessCounter = new CompletenessCounter(schema);
     existenceCounter = new FieldCounter<>();
     cardinalityCounter = new FieldCounter<>();
     if (collectFields) {
@@ -317,7 +317,7 @@ public class CompletenessCalculator<T extends XmlFieldInstance>
     List<String> headers = new ArrayList<>();
 
     if (completeness) {
-      for (String name : CompletenessCounter.getHeaders()) {
+      for (String name : CompletenessCounter.getHeaders(schema)) {
         headers.add("completeness:" + name);
       }
     }

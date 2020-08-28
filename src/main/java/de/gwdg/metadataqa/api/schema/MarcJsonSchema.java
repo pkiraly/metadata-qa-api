@@ -2,6 +2,8 @@ package de.gwdg.metadataqa.api.schema;
 
 import de.gwdg.metadataqa.api.json.FieldGroup;
 import de.gwdg.metadataqa.api.json.JsonBranch;
+import de.gwdg.metadataqa.api.model.Category;
+
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
@@ -18,6 +20,7 @@ public class MarcJsonSchema implements Schema, ProblemCatalogSchema, Serializabl
   private static final Map<String, JsonBranch> COLLECTION_PATHS = new LinkedHashMap<>();
   private static final Map<String, JsonBranch> DIRECT_CHILDREN = new LinkedHashMap<>();
   private static Map<String, String> extractableFields = new LinkedHashMap<>();
+  private static List<Category> categories = null;
 
   public static final String DATAFIELD_PATTERN = "$.datafield[?(@.tag == '%s')].subfield[?(@.code == '%s')].content";
   public static final String DATAFIELD_PARENT_PATTERN = "$.datafield[?(@.tag == '%s')]";
@@ -433,12 +436,12 @@ public class MarcJsonSchema implements Schema, ProblemCatalogSchema, Serializabl
 
   private static void addPath(JsonBranch branch) {
     PATHS.put(branch.getLabel(), branch);
-    if (branch.getParent() == null) {
+
+    if (branch.getParent() == null)
       DIRECT_CHILDREN.put(branch.getLabel(), branch);
-    }
-    if (branch.isCollection()) {
+
+    if (branch.isCollection())
       COLLECTION_PATHS.put(branch.getLabel(), branch);
-    }
   }
 
   @Override
@@ -464,5 +467,13 @@ public class MarcJsonSchema implements Schema, ProblemCatalogSchema, Serializabl
   @Override
   public JsonBranch getPathByLabel(String label) {
     return PATHS.get(label);
+  }
+
+  @Override
+  public List<Category> getCategories() {
+    if (categories == null) {
+      categories = Category.extractCategories(PATHS.values());
+    }
+    return categories;
   }
 }

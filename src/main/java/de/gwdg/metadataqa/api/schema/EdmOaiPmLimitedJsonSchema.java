@@ -25,6 +25,7 @@ public class EdmOaiPmLimitedJsonSchema extends EdmSchema implements Serializable
   private static Map<String, String> extractableFields = new LinkedHashMap<>();
   private static final List<String> EMPTY_STRINGS = new ArrayList<>();
   private static final Map<String, JsonBranch> COLLECTION_PATHS = new LinkedHashMap<>();
+  private static List<Category> categories = null;
 
   private static final String LONG_SUBJECT_PATH =
     "$.['ore:Proxy'][?(@['edm:europeanaProxy'][0] == 'false')]['dc:subject']";
@@ -34,131 +35,131 @@ public class EdmOaiPmLimitedJsonSchema extends EdmSchema implements Serializable
     "$.['ore:Proxy'][?(@['edm:europeanaProxy'][0] == 'false')]['dc:description']";
 
   static {
-    PATHS.add(new JsonBranch("edm:ProvidedCHO/@about",
+    addPath(new JsonBranch("edm:ProvidedCHO/@about",
       "$.['edm:ProvidedCHO'][0]['@about']",
       Category.MANDATORY));
-    PATHS.add(new JsonBranch("Proxy/dc:title",
+    addPath(new JsonBranch("Proxy/dc:title",
       "$.['ore:Proxy'][?(@['edm:europeanaProxy'][0] == 'false')]['dc:title']",
       Category.DESCRIPTIVENESS, Category.SEARCHABILITY,
       Category.IDENTIFICATION, Category.MULTILINGUALITY));
-    PATHS.add(new JsonBranch("Proxy/dcterms:alternative",
+    addPath(new JsonBranch("Proxy/dcterms:alternative",
       "$.['ore:Proxy'][?(@['edm:europeanaProxy'][0] == 'false')]['dcterms:alternative']",
       Category.DESCRIPTIVENESS, Category.SEARCHABILITY,
       Category.IDENTIFICATION, Category.MULTILINGUALITY));
-    PATHS.add(new JsonBranch("Proxy/dc:description",
+    addPath(new JsonBranch("Proxy/dc:description",
       "$.['ore:Proxy'][?(@['edm:europeanaProxy'][0] == 'false')]['dc:description']",
       Category.DESCRIPTIVENESS, Category.SEARCHABILITY,
       Category.CONTEXTUALIZATION, Category.IDENTIFICATION,
       Category.MULTILINGUALITY));
-    PATHS.add(new JsonBranch("Proxy/dc:creator",
+    addPath(new JsonBranch("Proxy/dc:creator",
       "$.['ore:Proxy'][?(@['edm:europeanaProxy'][0] == 'false')]['dc:creator']",
       Category.DESCRIPTIVENESS, Category.SEARCHABILITY,
       Category.CONTEXTUALIZATION, Category.BROWSING));
-    PATHS.add(new JsonBranch("Proxy/dc:publisher",
+    addPath(new JsonBranch("Proxy/dc:publisher",
       "$.['ore:Proxy'][?(@['edm:europeanaProxy'][0] == 'false')]['dc:publisher']",
       Category.SEARCHABILITY, Category.REUSABILITY));
-    PATHS.add(new JsonBranch("Proxy/dc:contributor",
+    addPath(new JsonBranch("Proxy/dc:contributor",
       "$.['ore:Proxy'][?(@['edm:europeanaProxy'][0] == 'false')]['dc:contributor']",
       Category.SEARCHABILITY));
-    PATHS.add(new JsonBranch("Proxy/dc:type",
+    addPath(new JsonBranch("Proxy/dc:type",
       "$.['ore:Proxy'][?(@['edm:europeanaProxy'][0] == 'false')]['dc:type']",
       Category.SEARCHABILITY, Category.CONTEXTUALIZATION,
       Category.IDENTIFICATION, Category.BROWSING));
-    PATHS.add(new JsonBranch("Proxy/dc:identifier",
+    addPath(new JsonBranch("Proxy/dc:identifier",
       "$.['ore:Proxy'][?(@['edm:europeanaProxy'][0] == 'false')]['dc:identifier']",
       Category.IDENTIFICATION));
-    PATHS.add(new JsonBranch("Proxy/dc:language",
+    addPath(new JsonBranch("Proxy/dc:language",
       "$.['ore:Proxy'][?(@['edm:europeanaProxy'][0] == 'false')]['dc:language']",
       Category.DESCRIPTIVENESS, Category.MULTILINGUALITY));
-    PATHS.add(new JsonBranch("Proxy/dc:coverage",
+    addPath(new JsonBranch("Proxy/dc:coverage",
       "$.['ore:Proxy'][?(@['edm:europeanaProxy'][0] == 'false')]['dc:coverage']",
       Category.SEARCHABILITY, Category.CONTEXTUALIZATION,
       Category.BROWSING));
-    PATHS.add(new JsonBranch("Proxy/dcterms:temporal",
+    addPath(new JsonBranch("Proxy/dcterms:temporal",
       "$.['ore:Proxy'][?(@['edm:europeanaProxy'][0] == 'false')]['dcterms:temporal']",
       Category.SEARCHABILITY, Category.CONTEXTUALIZATION,
       Category.BROWSING));
-    PATHS.add(new JsonBranch("Proxy/dcterms:spatial",
+    addPath(new JsonBranch("Proxy/dcterms:spatial",
       "$.['ore:Proxy'][?(@['edm:europeanaProxy'][0] == 'false')]['dcterms:spatial']",
       Category.SEARCHABILITY, Category.CONTEXTUALIZATION,
       Category.BROWSING));
-    PATHS.add(new JsonBranch("Proxy/dc:subject",
+    addPath(new JsonBranch("Proxy/dc:subject",
       "$.['ore:Proxy'][?(@['edm:europeanaProxy'][0] == 'false')]['dc:subject']",
       Category.DESCRIPTIVENESS, Category.SEARCHABILITY,
       Category.CONTEXTUALIZATION, Category.MULTILINGUALITY));
-    PATHS.add(new JsonBranch("Proxy/dc:date",
+    addPath(new JsonBranch("Proxy/dc:date",
       "$.['ore:Proxy'][?(@['edm:europeanaProxy'][0] == 'false')]['dc:date']",
       Category.IDENTIFICATION, Category.BROWSING,
       Category.REUSABILITY));
-    PATHS.add(new JsonBranch("Proxy/dcterms:created",
+    addPath(new JsonBranch("Proxy/dcterms:created",
       "$.['ore:Proxy'][?(@['edm:europeanaProxy'][0] == 'false')]['dcterms:created']",
       Category.IDENTIFICATION, Category.REUSABILITY));
-    PATHS.add(new JsonBranch("Proxy/dcterms:issued",
+    addPath(new JsonBranch("Proxy/dcterms:issued",
       "$.['ore:Proxy'][?(@['edm:europeanaProxy'][0] == 'false')]['dcterms:issued']",
       Category.IDENTIFICATION, Category.REUSABILITY));
-    PATHS.add(new JsonBranch("Proxy/dcterms:extent",
+    addPath(new JsonBranch("Proxy/dcterms:extent",
       "$.['ore:Proxy'][?(@['edm:europeanaProxy'][0] == 'false')]['dcterms:extent']",
       Category.DESCRIPTIVENESS, Category.REUSABILITY));
-    PATHS.add(new JsonBranch("Proxy/dcterms:medium",
+    addPath(new JsonBranch("Proxy/dcterms:medium",
       "$.['ore:Proxy'][?(@['edm:europeanaProxy'][0] == 'false')]['dcterms:medium']",
       Category.DESCRIPTIVENESS, Category.REUSABILITY));
-    PATHS.add(new JsonBranch("Proxy/dcterms:provenance",
+    addPath(new JsonBranch("Proxy/dcterms:provenance",
       "$.['ore:Proxy'][?(@['edm:europeanaProxy'][0] == 'false')]['dcterms:provenance']",
       Category.DESCRIPTIVENESS));
-    PATHS.add(new JsonBranch("Proxy/dcterms:hasPart",
+    addPath(new JsonBranch("Proxy/dcterms:hasPart",
       "$.['ore:Proxy'][?(@['edm:europeanaProxy'][0] == 'false')]['dcterms:hasPart']",
       Category.SEARCHABILITY, Category.CONTEXTUALIZATION,
       Category.BROWSING));
-    PATHS.add(new JsonBranch("Proxy/dcterms:isPartOf",
+    addPath(new JsonBranch("Proxy/dcterms:isPartOf",
       "$.['ore:Proxy'][?(@['edm:europeanaProxy'][0] == 'false')]['dcterms:isPartOf']",
       Category.SEARCHABILITY, Category.CONTEXTUALIZATION,
       Category.BROWSING));
-    PATHS.add(new JsonBranch("Proxy/dc:format",
+    addPath(new JsonBranch("Proxy/dc:format",
       "$.['ore:Proxy'][?(@['edm:europeanaProxy'][0] == 'false')]['dc:format']",
       Category.DESCRIPTIVENESS, Category.REUSABILITY));
-    PATHS.add(new JsonBranch("Proxy/dc:source",
+    addPath(new JsonBranch("Proxy/dc:source",
       "$.['ore:Proxy'][?(@['edm:europeanaProxy'][0] == 'false')]['dc:source']",
       Category.DESCRIPTIVENESS));
-    PATHS.add(new JsonBranch("Proxy/dc:rights",
+    addPath(new JsonBranch("Proxy/dc:rights",
       "$.['ore:Proxy'][?(@['edm:europeanaProxy'][0] == 'false')]['dc:rights']",
       Category.REUSABILITY));
-    PATHS.add(new JsonBranch("Proxy/dc:relation",
+    addPath(new JsonBranch("Proxy/dc:relation",
       "$.['ore:Proxy'][?(@['edm:europeanaProxy'][0] == 'false')]['dc:relation']",
       Category.SEARCHABILITY, Category.CONTEXTUALIZATION,
       Category.BROWSING));
-    PATHS.add(new JsonBranch("Proxy/edm:isNextInSequence",
+    addPath(new JsonBranch("Proxy/edm:isNextInSequence",
       "$.['ore:Proxy'][?(@['edm:europeanaProxy'][0] == 'false')]['edm:isNextInSequence']",
       Category.SEARCHABILITY, Category.CONTEXTUALIZATION,
       Category.BROWSING));
-    PATHS.add(new JsonBranch("Proxy/edm:type",
+    addPath(new JsonBranch("Proxy/edm:type",
       "$.['ore:Proxy'][?(@['edm:europeanaProxy'][0] == 'false')]['edm:type']",
       Category.SEARCHABILITY, Category.BROWSING));
     /*
-    paths.add(new JsonBranch("Proxy/edm:rights",
+    addPath(new JsonBranch("Proxy/edm:rights",
       "$.['ore:Proxy'][?(@['edm:europeanaProxy'][0] == 'false')]['edm:rights']",
       Category.MANDATORY, Category.REUSABILITY));
     */
-    PATHS.add(new JsonBranch("Aggregation/edm:rights",
+    addPath(new JsonBranch("Aggregation/edm:rights",
       "$.['ore:Aggregation'][0]['edm:rights']",
       Category.MANDATORY, Category.REUSABILITY));
-    PATHS.add(new JsonBranch("Aggregation/edm:provider",
+    addPath(new JsonBranch("Aggregation/edm:provider",
       "$.['ore:Aggregation'][0]['edm:provider']",
       Category.MANDATORY, Category.SEARCHABILITY, Category.IDENTIFICATION));
-    PATHS.add(new JsonBranch("Aggregation/edm:dataProvider",
+    addPath(new JsonBranch("Aggregation/edm:dataProvider",
       "$.['ore:Aggregation'][0]['edm:dataProvider']",
       Category.MANDATORY, Category.SEARCHABILITY,
       Category.IDENTIFICATION));
-    PATHS.add(new JsonBranch("Aggregation/edm:isShownAt",
+    addPath(new JsonBranch("Aggregation/edm:isShownAt",
       "$.['ore:Aggregation'][0]['edm:isShownAt']",
       Category.BROWSING, Category.VIEWING));
-    PATHS.add(new JsonBranch("Aggregation/edm:isShownBy",
+    addPath(new JsonBranch("Aggregation/edm:isShownBy",
       "$.['ore:Aggregation'][0]['edm:isShownBy']",
       Category.BROWSING, Category.VIEWING,
       Category.REUSABILITY));
-    PATHS.add(new JsonBranch("Aggregation/edm:object",
+    addPath(new JsonBranch("Aggregation/edm:object",
       "$.['ore:Aggregation'][0]['edm:object']",
       Category.VIEWING, Category.REUSABILITY));
-    PATHS.add(new JsonBranch("Aggregation/edm:hasView",
+    addPath(new JsonBranch("Aggregation/edm:hasView",
       "$.['ore:Aggregation'][0]['edm:hasView']",
       Category.BROWSING, Category.VIEWING));
 
@@ -194,6 +195,13 @@ public class EdmOaiPmLimitedJsonSchema extends EdmSchema implements Serializable
     EMPTY_STRINGS.add("$.['ore:Proxy'][?(@['edm:europeanaProxy'][0] == 'false')]['dc:description']");
     EMPTY_STRINGS.add("$.['ore:Proxy'][?(@['edm:europeanaProxy'][0] == 'false')]['dc:subject']");
 
+  }
+
+  private static void addPath(JsonBranch branch) {
+    PATHS.add(branch);
+
+    if (branch.isCollection())
+      COLLECTION_PATHS.put(branch.getLabel(), branch);
   }
 
   @Override
@@ -269,5 +277,13 @@ public class EdmOaiPmLimitedJsonSchema extends EdmSchema implements Serializable
   @Override
   public JsonBranch getPathByLabel(String label) {
     throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+  }
+
+  @Override
+  public List<Category> getCategories() {
+    if (categories == null) {
+      categories = Category.extractCategories(PATHS);
+    }
+    return categories;
   }
 }

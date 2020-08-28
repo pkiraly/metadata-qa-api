@@ -26,6 +26,7 @@ public class EdmFullBeanSchema extends EdmSchema implements Serializable {
   private static final List<String> EMPTY_STRINGS = new ArrayList<>();
   private static final Map<String, JsonBranch> PATHS = new LinkedHashMap<>();
   private static final Map<String, JsonBranch> COLLECTION_PATHS = new LinkedHashMap<>();
+  private static List<Category> categories = null;
 
   private static final String LONG_SUBJECT_PATH =
     "$.['proxies'][?(@['europeanaProxy'] == false)]['dcSubject']";
@@ -395,9 +396,8 @@ public class EdmFullBeanSchema extends EdmSchema implements Serializable {
 
   private static void addPath(JsonBranch branch) {
     PATHS.put(branch.getLabel(), branch);
-    if (branch.isCollection()) {
+    if (branch.isCollection())
       COLLECTION_PATHS.put(branch.getLabel(), branch);
-    }
   }
 
   @Override
@@ -414,4 +414,13 @@ public class EdmFullBeanSchema extends EdmSchema implements Serializable {
   public JsonBranch getPathByLabel(String label) {
     return PATHS.get(label);
   }
+
+  @Override
+  public List<Category> getCategories() {
+    if (categories == null) {
+      categories = Category.extractCategories(PATHS.values());
+    }
+    return categories;
+  }
+
 }

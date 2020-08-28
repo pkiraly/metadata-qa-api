@@ -97,17 +97,18 @@ public class BaseSchemaTest {
     List<String> outputHeader = facade.getHeader();
     assertEquals(
       Arrays.asList(
-        "completeness:TOTAL", "completeness:MANDATORY", "completeness:DESCRIPTIVENESS", "completeness:SEARCHABILITY",
-        "completeness:CONTEXTUALIZATION", "completeness:IDENTIFICATION", "completeness:BROWSING", "completeness:VIEWING",
-        "completeness:REUSABILITY", "completeness:MULTILINGUALITY", "existence:url", "existence:name",
-        "existence:alternateName", "existence:description", "existence:variablesMeasured", "existence:measurementTechnique",
-        "existence:sameAs", "existence:doi", "existence:identifier", "existence:author", "existence:isAccessibleForFree",
-        "existence:dateModified", "existence:distribution", "existence:spatialCoverage", "existence:provider",
-        "existence:funder", "existence:temporalCoverage", "cardinality:url", "cardinality:name", "cardinality:alternateName",
-        "cardinality:description", "cardinality:variablesMeasured", "cardinality:measurementTechnique", "cardinality:sameAs",
-        "cardinality:doi", "cardinality:identifier", "cardinality:author", "cardinality:isAccessibleForFree",
-        "cardinality:dateModified", "cardinality:distribution", "cardinality:spatialCoverage", "cardinality:provider",
-        "cardinality:funder", "cardinality:temporalCoverage"
+        "completeness:TOTAL", "completeness:MANDATORY",
+        "existence:url", "existence:name", "existence:alternateName", "existence:description",
+        "existence:variablesMeasured", "existence:measurementTechnique", "existence:sameAs",
+        "existence:doi", "existence:identifier", "existence:author", "existence:isAccessibleForFree",
+        "existence:dateModified", "existence:distribution", "existence:spatialCoverage",
+        "existence:provider", "existence:funder", "existence:temporalCoverage",
+        "cardinality:url", "cardinality:name", "cardinality:alternateName",
+        "cardinality:description", "cardinality:variablesMeasured",
+        "cardinality:measurementTechnique", "cardinality:sameAs", "cardinality:doi",
+        "cardinality:identifier", "cardinality:author", "cardinality:isAccessibleForFree",
+        "cardinality:dateModified", "cardinality:distribution", "cardinality:spatialCoverage",
+        "cardinality:provider", "cardinality:funder", "cardinality:temporalCoverage"
       ),
       outputHeader
     );
@@ -120,15 +121,15 @@ public class BaseSchemaTest {
         String metrics = facade.measure(line);
         result.append(metrics + "\n");
       }
-      String expected = "0.352941,1.0,NaN,NaN,NaN,NaN,NaN,NaN,NaN,NaN,1,1,0,1,0,0,0,0,1,0,0,1,1,0,0,0,0,1,1,0,1,0,0,0,0,1,0,0,1,1,0,0,0,0\n"
-        + "0.352941,1.0,NaN,NaN,NaN,NaN,NaN,NaN,NaN,NaN,1,1,0,1,0,0,0,0,1,0,0,1,1,0,0,0,0,1,1,0,1,0,0,0,0,1,0,0,1,1,0,0,0,0\n"
-        + "0.352941,1.0,NaN,NaN,NaN,NaN,NaN,NaN,NaN,NaN,1,1,0,1,0,0,0,0,1,0,0,1,1,0,0,0,0,1,1,0,1,0,0,0,0,1,0,0,1,1,0,0,0,0\n"
-        + "0.352941,1.0,NaN,NaN,NaN,NaN,NaN,NaN,NaN,NaN,1,1,0,1,0,0,0,0,1,0,0,1,1,0,0,0,0,1,1,0,1,0,0,0,0,1,0,0,1,1,0,0,0,0\n"
-        + "0.352941,1.0,NaN,NaN,NaN,NaN,NaN,NaN,NaN,NaN,1,1,0,1,0,0,0,0,1,0,0,1,1,0,0,0,0,1,1,0,1,0,0,0,0,1,0,0,1,1,0,0,0,0\n"
-        + "0.411765,1.0,NaN,NaN,NaN,NaN,NaN,NaN,NaN,NaN,1,1,0,1,0,0,1,0,1,1,0,1,0,0,0,0,0,1,1,0,1,0,0,1,0,1,1,0,1,0,0,0,0,0\n"
-        + "0.352941,1.0,NaN,NaN,NaN,NaN,NaN,NaN,NaN,NaN,1,1,1,1,0,0,0,0,1,0,0,1,0,0,0,0,0,1,1,1,1,0,0,0,0,1,0,0,1,0,0,0,0,0\n"
-        + "0.352941,1.0,NaN,NaN,NaN,NaN,NaN,NaN,NaN,NaN,1,1,0,1,0,0,0,0,1,0,0,1,1,0,0,0,0,1,1,0,1,0,0,0,0,1,0,0,1,1,0,0,0,0\n"
-        + "0.294118,1.0,NaN,NaN,NaN,NaN,NaN,NaN,NaN,NaN,1,1,0,1,0,0,0,0,1,0,0,1,0,0,0,0,0,1,1,0,1,0,0,0,0,1,0,0,1,0,0,0,0,0\n";
+      String expected = "0.352941,1.0,1,1,0,1,0,0,0,0,1,0,0,1,1,0,0,0,0,1,1,0,1,0,0,0,0,1,0,0,1,1,0,0,0,0\n"
+        + "0.352941,1.0,1,1,0,1,0,0,0,0,1,0,0,1,1,0,0,0,0,1,1,0,1,0,0,0,0,1,0,0,1,1,0,0,0,0\n"
+        + "0.352941,1.0,1,1,0,1,0,0,0,0,1,0,0,1,1,0,0,0,0,1,1,0,1,0,0,0,0,1,0,0,1,1,0,0,0,0\n"
+        + "0.352941,1.0,1,1,0,1,0,0,0,0,1,0,0,1,1,0,0,0,0,1,1,0,1,0,0,0,0,1,0,0,1,1,0,0,0,0\n"
+        + "0.352941,1.0,1,1,0,1,0,0,0,0,1,0,0,1,1,0,0,0,0,1,1,0,1,0,0,0,0,1,0,0,1,1,0,0,0,0\n"
+        + "0.411765,1.0,1,1,0,1,0,0,1,0,1,1,0,1,0,0,0,0,0,1,1,0,1,0,0,1,0,1,1,0,1,0,0,0,0,0\n"
+        + "0.352941,1.0,1,1,1,1,0,0,0,0,1,0,0,1,0,0,0,0,0,1,1,1,1,0,0,0,0,1,0,0,1,0,0,0,0,0\n"
+        + "0.352941,1.0,1,1,0,1,0,0,0,0,1,0,0,1,1,0,0,0,0,1,1,0,1,0,0,0,0,1,0,0,1,1,0,0,0,0\n"
+        + "0.294118,1.0,1,1,0,1,0,0,0,0,1,0,0,1,0,0,0,0,0,1,1,0,1,0,0,0,0,1,0,0,1,0,0,0,0,0\n";
       assertEquals(expected, result.toString());
     } catch (IOException e) {
       e.printStackTrace();

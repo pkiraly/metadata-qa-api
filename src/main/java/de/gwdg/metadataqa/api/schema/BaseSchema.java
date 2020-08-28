@@ -2,6 +2,7 @@ package de.gwdg.metadataqa.api.schema;
 
 import de.gwdg.metadataqa.api.json.FieldGroup;
 import de.gwdg.metadataqa.api.json.JsonBranch;
+import de.gwdg.metadataqa.api.model.Category;
 
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
@@ -14,6 +15,8 @@ public class BaseSchema implements Schema, CsvAwareSchema {
   private static final Map<String, JsonBranch> COLLECTION_PATHS = new LinkedHashMap<>();
   private static final Map<String, JsonBranch> DIRECT_CHILDREN = new LinkedHashMap<>();
   private static Map<String, String> extractableFields = new LinkedHashMap<>();
+  private List<Category> categories = null;
+
   private Format format;
 
   public BaseSchema() {
@@ -31,6 +34,18 @@ public class BaseSchema implements Schema, CsvAwareSchema {
     if (branch.isExtractable())
       extractableFields.put(branch.getLabel(), branch.getJsonPath());
 
+    return this;
+  }
+
+  public BaseSchema addField(String fieldName) {
+    addField(new JsonBranch(fieldName));
+    return this;
+  }
+
+  public BaseSchema addFields(String... fields) {
+    for (String fieldName : fields) {
+      addField(fieldName);
+    }
     return this;
   }
 
@@ -92,6 +107,14 @@ public class BaseSchema implements Schema, CsvAwareSchema {
   @Override
   public void addExtractableField(String label, String jsonPath) {
     extractableFields.put(label, jsonPath);
+  }
+
+  @Override
+  public List<Category> getCategories() {
+    if (categories == null) {
+      categories = Category.extractCategories(PATHS.values());
+    }
+    return categories;
   }
 
   private static void addPath(JsonBranch branch) {
