@@ -311,8 +311,10 @@ public class CalculatorFacade implements Serializable {
     return StringUtils.join(items, ",");
   }
 
-  public void enableFieldExtractor(boolean flag) {
+  public CalculatorFacade enableFieldExtractor(boolean flag) {
     this.fieldExtractorEnabled = flag;
+    changed = true;
+    return this;
   }
 
   public boolean isFieldExtractorEnabled() {
@@ -332,12 +334,12 @@ public class CalculatorFacade implements Serializable {
    * Sets whether or not to run the field existence measurement.
    * @param runFieldExistence
    *    field existence measurement flag
+   * @return
    */
-  public void enableFieldExistenceMeasurement(boolean runFieldExistence) {
-    if (this.fieldExistenceMeasurementEnabled != runFieldExistence) {
-      this.fieldExistenceMeasurementEnabled = runFieldExistence;
-      changed = true;
-    }
+  public CalculatorFacade enableFieldExistenceMeasurement(boolean runFieldExistence) {
+    this.fieldExistenceMeasurementEnabled = runFieldExistence;
+    changed = true;
+    return this;
   }
 
   /**
@@ -353,12 +355,12 @@ public class CalculatorFacade implements Serializable {
    * configure to run the cardinality measurement.
    * @param runFieldCardinality
    *    cardinality measurement flag
+   * @return
    */
-  public void enableFieldCardinalityMeasurement(boolean runFieldCardinality) {
-    if (this.fieldCardinalityMeasurementEnabled != runFieldCardinality) {
-      this.fieldCardinalityMeasurementEnabled = runFieldCardinality;
-      changed = true;
-    }
+  public CalculatorFacade enableFieldCardinalityMeasurement(boolean runFieldCardinality) {
+    this.fieldCardinalityMeasurementEnabled = runFieldCardinality;
+    changed = true;
+    return this;
   }
 
   /**
@@ -374,12 +376,12 @@ public class CalculatorFacade implements Serializable {
    * Sets the flag whether or not run the completeness measurement.
    * @param runCompleteness
    *    flag whether or not run the completeness measurement
+   * @return
    */
-  public void enableCompletenessMeasurement(boolean runCompleteness) {
-    if (this.completenessMeasurementEnabled != runCompleteness) {
-      this.completenessMeasurementEnabled = runCompleteness;
-      changed = true;
-    }
+  public CalculatorFacade enableCompletenessMeasurement(boolean runCompleteness) {
+    this.completenessMeasurementEnabled = runCompleteness;
+    changed = true;
+    return this;
   }
 
   /**
@@ -396,9 +398,12 @@ public class CalculatorFacade implements Serializable {
    * Configure whether or not run the language detector.
    *
    * @param runLanguage
+   * @return
    */
-  public void enableLanguageMeasurement(boolean runLanguage) {
+  public CalculatorFacade enableLanguageMeasurement(boolean runLanguage) {
     this.languageMeasurementEnabled = runLanguage;
+    changed = true;
+    return this;
   }
 
   /**
@@ -415,9 +420,12 @@ public class CalculatorFacade implements Serializable {
    * Configure whether or not run the language detector.
    *
    * @param runMultilingualSaturation
+   * @return
    */
-  public void enableMultilingualSaturationMeasurement(boolean runMultilingualSaturation) {
+  public CalculatorFacade enableMultilingualSaturationMeasurement(boolean runMultilingualSaturation) {
     this.multilingualSaturationMeasurementEnabled = runMultilingualSaturation;
+    changed = true;
+    return this;
   }
 
   /**
@@ -434,12 +442,12 @@ public class CalculatorFacade implements Serializable {
    * Configure whether or not run the uniqueness measurement.
    * @param runTfIdf
    *   uniqueness measurement flag
+   * @return
    */
-  public void enableTfIdfMeasurement(boolean runTfIdf) {
-    if (this.tfIdfMeasurementEnabled != runTfIdf) {
-      this.tfIdfMeasurementEnabled = runTfIdf;
-      changed = true;
-    }
+  public CalculatorFacade enableTfIdfMeasurement(boolean runTfIdf) {
+    this.tfIdfMeasurementEnabled = runTfIdf;
+    changed = true;
+    return this;
   }
 
   /**
@@ -455,12 +463,12 @@ public class CalculatorFacade implements Serializable {
    * Configure to run the problem catalog measurement.
    * @param runProblemCatalog
    *   problem catalog measurement flag
+   * @return
    */
-  public void enableProblemCatalogMeasurement(boolean runProblemCatalog) {
-    if (this.problemCatalogMeasurementEnabled != runProblemCatalog) {
-      this.problemCatalogMeasurementEnabled = runProblemCatalog;
-      changed = true;
-    }
+  public CalculatorFacade enableProblemCatalogMeasurement(boolean runProblemCatalog) {
+    this.problemCatalogMeasurementEnabled = runProblemCatalog;
+    changed = true;
+    return this;
   }
 
   /**
@@ -474,9 +482,12 @@ public class CalculatorFacade implements Serializable {
   /**
    * Flag to enable uniqueness measurement.
    * @param uniquenessMeasurementEnabled The flag
+   * @return
    */
-  public void enableUniquenessMeasurement(boolean uniquenessMeasurementEnabled) {
+  public CalculatorFacade enableUniquenessMeasurement(boolean uniquenessMeasurementEnabled) {
     this.uniquenessMeasurementEnabled = uniquenessMeasurementEnabled;
+    changed = true;
+    return this;
   }
 
   /**
@@ -506,15 +517,15 @@ public class CalculatorFacade implements Serializable {
    *
    * @param collectTfIdfTerms
    *   The TF-IDF collector flag
+   * @return
    */
-  public void collectTfIdfTerms(boolean collectTfIdfTerms) {
-    if (this.collectTfIdfTerms != collectTfIdfTerms) {
-      this.collectTfIdfTerms = collectTfIdfTerms;
-      changed = true;
-      if (tfidfCalculator != null) {
-        tfidfCalculator.enableTermCollection(collectTfIdfTerms);
-      }
+  public CalculatorFacade collectTfIdfTerms(boolean collectTfIdfTerms) {
+    this.collectTfIdfTerms = collectTfIdfTerms;
+    if (tfidfCalculator != null) {
+      tfidfCalculator.enableTermCollection(collectTfIdfTerms);
     }
+    changed = true;
+    return this;
   }
 
   /**
@@ -532,12 +543,12 @@ public class CalculatorFacade implements Serializable {
    *
    * @param completenessCollectFields
    *   The completenessCollectFields flag
+   * @return
    */
-  public void completenessCollectFields(boolean completenessCollectFields) {
-    if (this.completenessCollectFields != completenessCollectFields) {
-      this.completenessCollectFields = completenessCollectFields;
-      changed = true;
-    }
+  public CalculatorFacade completenessCollectFields(boolean completenessCollectFields) {
+    this.completenessCollectFields = completenessCollectFields;
+    changed = true;
+    return this;
   }
 
   /**
@@ -615,11 +626,13 @@ public class CalculatorFacade implements Serializable {
     return StringUtils.join(results, ",");
   }
 
-  public void configureSolr(String solrHost, String solrPort, String solrPath) {
+  public CalculatorFacade configureSolr(String solrHost, String solrPort, String solrPath) {
     solrConfiguration = new SolrConfiguration(solrHost, solrPort, solrPath);
     if (this.tfidfCalculator != null) {
       this.tfidfCalculator.setSolrConfiguration(solrConfiguration);
     }
+    changed = true;
+    return this;
   }
 
   public List<String> getHeader() {
@@ -635,16 +648,20 @@ public class CalculatorFacade implements Serializable {
     return saturationExtendedResult;
   }
 
-  public void setSaturationExtendedResult(boolean saturationExtendedResult) {
+  public CalculatorFacade setSaturationExtendedResult(boolean saturationExtendedResult) {
     this.saturationExtendedResult = saturationExtendedResult;
+    changed = true;
+    return this;
   }
 
   public CompressionLevel getCompressionLevel() {
     return compressionLevel;
   }
 
-  public void setCompressionLevel(CompressionLevel compressionLevel) {
+  public CalculatorFacade setCompressionLevel(CompressionLevel compressionLevel) {
     this.compressionLevel = compressionLevel;
+    changed = true;
+    return this;
   }
 
   public PathCache<? extends XmlFieldInstance> getCache() {
@@ -655,23 +672,31 @@ public class CalculatorFacade implements Serializable {
     return checkSkippableCollections;
   }
 
-  public void setCheckSkippableCollections(boolean checkSkippableCollections) {
+  public CalculatorFacade setCheckSkippableCollections(boolean checkSkippableCollections) {
     this.checkSkippableCollections = checkSkippableCollections;
+    changed = true;
+    return this;
   }
 
   public Schema getSchema() {
     return schema;
   }
 
-  public void setSchema(Schema schema) {
+  public CalculatorFacade setSchema(Schema schema) {
     this.schema = schema;
+    changed = true;
+    return this;
   }
 
-  public void setSolrClient(SolrClient solrClient) {
+  public CalculatorFacade setSolrClient(SolrClient solrClient) {
     this.solrClient = solrClient;
+    changed = true;
+    return this;
   }
 
-  public void setCsvReader(CsvReader csvReader) {
+  public CalculatorFacade setCsvReader(CsvReader csvReader) {
     this.csvReader = csvReader;
+    changed = true;
+    return this;
   }
 }

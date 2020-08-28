@@ -1,24 +1,68 @@
 # Metadata Quality Assurance Framework API
 
-This project is the central piece of the Metadata Quality Assurance Framework, every other project is 
-built on top of it. It provides a general framework for measuring metadata quality in different 
+This project is the central piece of the Metadata Quality Assurance
+Framework, every other project is built on top of it. It provides
+a general framework for measuring metadata quality in different 
 digital collections.
 
-If you want to implement it to your collection you have to define a schema, which is a kind of
-presentation of an existing metadata schema, and configure the basic facade, which will run the calculation.
+If you want to implement it to your collection you have to define
+a schema, which presentats an existing metadata schema, and
+configure the basic facade, which will run the calculation.
+
+Define a schema:
+```Java
+Schema schema = new BaseSchema()
+  // this schema will be used for a CSV file
+  .setFormat(Format.CSV)
+  // JsonBranch represents a data element, which might have 
+  // a number of properties
+  .addField(
+    new JsonBranch("url", Category.MANDATORY)
+        .setExtractable()
+  )
+  .addField(new JsonBranch("name"))
+  .addField(new JsonBranch("alternateName"))
+  ...
+  .addField(new JsonBranch("temporalCoverage"));
+```
+
+Define what to measure via a `CalculatorFacade` object:
 
 ```Java
-CalculatorFacade calculator = new CalculatorFacade();
-// do some configuration with the accessor of calculator Facade
-for (String jsonRecord : jsonRecords) {
-    try {
-        String csv = calculator.measure(jsonRecord);
-        // save csv
-    } catch (InvalidJsonException e) {
-        // handle exception
-    }
-}
+CalculatorFacade facade = new CalculatorFacade()
+  // set the schema which describes the source
+  .setSchema(schema)
+  // right now it is a CSV source, so we set how to parse it
+  .setCsvReader(
+    new CsvReader()
+      .setHeader(((CsvAwareSchema) schema).getHeader()))
+  // we will measure completeness now
+ .enableCompletenessMeasurement(true);
+// finally you have to activate the configuration
+facade.configure();
+```
 
+These are the two important requirements for the start of the measuring. The measuring is simple:
+
+```Java
+calculator.measure(input)
+```
+
+The `input` should be a string formatted as JSON, XML or CSV.
+
+```Java
+// The input could be JSON, XML or CSV. 
+// You can set any kind of datasource, as long it returns a String
+Iterator iterator = ...;
+while (iterator.hasNext()) {
+  try {
+    // process the input
+    String csv = calculator.measure(iterator.next());
+    // save csv
+  } catch (InvalidJsonException e) {
+    // handle exception
+  }
+}
 ```
 
 For the usage and implementation of the API see https://github.com/pkiraly/europeana-qa-api.

@@ -23,12 +23,14 @@ public class CsvReader {
     this.parser = parser;
   }
 
-  public void setHeader(List<String> header) {
+  public CsvReader setHeader(List<String> header) {
     this.header = header;
+    return this;
   }
 
-  public void setHeader(String[] header) {
+  public CsvReader setHeader(String[] header) {
     this.header = Arrays.asList(header);
+    return this;
   }
 
   public List<String> getHeader() {

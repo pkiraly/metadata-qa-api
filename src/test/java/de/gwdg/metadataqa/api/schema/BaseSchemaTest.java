@@ -81,13 +81,13 @@ public class BaseSchemaTest {
       .addField(new JsonBranch("funder"))
       .addField(new JsonBranch("temporalCoverage"));
 
-    CalculatorFacade facade = new CalculatorFacade();
-    facade.setSchema(schema);
-    CsvReader csvReader = new CsvReader();
-    csvReader.setHeader(((CsvAwareSchema) schema).getHeader());
-    facade.setCsvReader(csvReader);
-    facade.enableCompletenessMeasurement(true);
-    facade.configure();
+    CalculatorFacade facade = new CalculatorFacade()
+      .setSchema(schema)
+      .setCsvReader(
+        new CsvReader()
+          .setHeader(((CsvAwareSchema) schema).getHeader()))
+      .enableCompletenessMeasurement(true);
+    //  facade.configure();
 
     String fileName = "src/test/resources/csv/dataset_metadata_2020_08_17-head.csv";
     File file = new File(fileName);
