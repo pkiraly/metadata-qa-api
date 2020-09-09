@@ -144,6 +144,13 @@
       <artifactId>ws-commons-util</artifactId>
       <version>1.0.1</version>
     </dependency>
+
+    <!-- YAML processing -->
+    <dependency>
+      <groupId>org.yaml</groupId>
+      <artifactId>snakeyaml</artifactId>
+      <version>1.21</version>
+    </dependency>
   </dependencies>
 
   <build>
