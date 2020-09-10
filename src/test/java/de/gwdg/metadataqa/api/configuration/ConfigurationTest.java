@@ -19,7 +19,7 @@ public class ConfigurationTest {
     Yaml yaml = new Yaml(new Constructor(Configuration.class));
     InputStream inputStream = this.getClass()
       .getClassLoader()
-      .getResourceAsStream("yaml/configuration.yaml");
+      .getResourceAsStream("configuration/configuration.yaml");
     Configuration config = (Configuration) yaml.load(inputStream);
     testConfiguration(config);
   }
@@ -27,14 +27,20 @@ public class ConfigurationTest {
   @Test
   public void testReading_fromFile() throws FileNotFoundException {
     Yaml yaml = new Yaml(new Constructor(Configuration.class));
-    InputStream inputStream = new FileInputStream(new File("src/test/resources/yaml/configuration.yaml"));
+    InputStream inputStream = new FileInputStream(new File("src/test/resources/configuration/configuration.yaml"));
     Configuration config = (Configuration) yaml.load(inputStream);
     testConfiguration(config);
   }
 
   @Test
-  public void testReading_fromConfigurationReader() throws FileNotFoundException {
-    Configuration config = ConfigurationReader.readYaml("src/test/resources/yaml/configuration.yaml");
+  public void testReading_fromConfigurationReader_yaml() throws FileNotFoundException {
+    Configuration config = ConfigurationReader.readYaml("src/test/resources/configuration/configuration.yaml");
+    testConfiguration(config);
+  }
+
+  @Test
+  public void testReading_fromConfigurationReader_json() throws FileNotFoundException {
+    Configuration config = ConfigurationReader.readJson("src/test/resources/configuration/configuration.json");
     testConfiguration(config);
   }
 
