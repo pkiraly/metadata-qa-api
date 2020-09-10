@@ -6,6 +6,7 @@ public class Field {
   private String name;
   private String path;
   private List<String> categories;
+  private boolean extractable;
 
   public String getName() {
     return name;
@@ -29,5 +30,13 @@ public class Field {
 
   public void setCategories(List<String> categories) {
     this.categories = categories;
+  }
+
+  public boolean isExtractable() {
+    return extractable;
+  }
+
+  public void setExtractable(boolean extractable) {
+    this.extractable = extractable;
   }
 }

@@ -1,0 +1,21 @@
+format: csv
+fields:
+  - name: url
+    categories: [MANDATORY]
+    extractable: true
+  - name: name
+  - name: alternateName
+  - name: description
+  - name: variablesMeasured
+  - name: measurementTechnique
+  - name: sameAs
+  - name: doi
+  - name: identifier
+  - name: author
+  - name: isAccessibleForFree
+  - name: dateModified
+  - name: distribution
+  - name: spatialCoverage
+  - name: provider
+  - name: funder
+  - name: temporalCoverage

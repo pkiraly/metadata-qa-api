@@ -1,5 +1,8 @@
 package de.gwdg.metadataqa.api.configuration;
 
+import de.gwdg.metadataqa.api.model.Category;
+import de.gwdg.metadataqa.api.schema.Format;
+import de.gwdg.metadataqa.api.schema.Schema;
 import org.junit.Test;
 import org.yaml.snakeyaml.Yaml;
 import org.yaml.snakeyaml.constructor.Constructor;
@@ -9,8 +12,7 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.InputStream;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.*;
 
 public class ConfigurationTest {
 
@@ -42,6 +44,36 @@ public class ConfigurationTest {
   public void testReading_fromConfigurationReader_json() throws FileNotFoundException {
     Configuration config = ConfigurationReader.readJson("src/test/resources/configuration/configuration.json");
     testConfiguration(config);
+  }
+
+  @Test
+  public void test_asSchema() throws FileNotFoundException {
+    Schema schema = ConfigurationReader
+      .readYaml(
+        "src/test/resources/configuration/configuration.yaml"
+      )
+      .asSchema();
+
+    assertEquals(Format.JSON, schema.getFormat());
+    assertEquals(3, schema.getPaths().size());
+  }
+
+  @Test
+  public void test_asSchema_withMeemoo() throws FileNotFoundException {
+    Schema schema = ConfigurationReader
+      .readYaml(
+        "src/test/resources/configuration/meemoo.yaml"
+      )
+      .asSchema();
+
+    assertEquals(Format.CSV, schema.getFormat());
+    assertEquals(17, schema.getPaths().size());
+    assertEquals("url", schema.getPaths().get(0).getLabel());
+    assertEquals(1, schema.getPaths().get(0).getCategories().size());
+    assertEquals(Category.MANDATORY, schema.getPaths().get(0).getCategories().get(0));
+    assertTrue(schema.getPaths().get(0).isExtractable());
+
+    assertEquals(0, schema.getPaths().get(1).getCategories().size());
   }
 
   public void testConfiguration(Configuration config) {

@@ -1,5 +1,8 @@
 package de.gwdg.metadataqa.api.configuration;
 
+import de.gwdg.metadataqa.api.schema.Schema;
+import de.gwdg.metadataqa.api.util.SchemaFactory;
+
 import java.util.List;
 
 public class Configuration {
@@ -29,5 +32,9 @@ public class Configuration {
 
   public void setGroups(List<Group> groups) {
     this.groups = groups;
+  }
+
+  public Schema asSchema() {
+    return SchemaFactory.fromConfig(this);
   }
 }

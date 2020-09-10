@@ -11,10 +11,10 @@ import java.util.Map;
 
 public class BaseSchema implements Schema, CsvAwareSchema {
 
-  private static final Map<String, JsonBranch> PATHS = new LinkedHashMap<>();
-  private static final Map<String, JsonBranch> COLLECTION_PATHS = new LinkedHashMap<>();
-  private static final Map<String, JsonBranch> DIRECT_CHILDREN = new LinkedHashMap<>();
-  private static Map<String, String> extractableFields = new LinkedHashMap<>();
+  private final Map<String, JsonBranch> PATHS = new LinkedHashMap<>();
+  private final Map<String, JsonBranch> COLLECTION_PATHS = new LinkedHashMap<>();
+  private final Map<String, JsonBranch> DIRECT_CHILDREN = new LinkedHashMap<>();
+  private Map<String, String> extractableFields = new LinkedHashMap<>();
   private List<Category> categories = null;
 
   private Format format;
@@ -117,7 +117,7 @@ public class BaseSchema implements Schema, CsvAwareSchema {
     return categories;
   }
 
-  private static void addPath(JsonBranch branch) {
+  private void addPath(JsonBranch branch) {
     PATHS.put(branch.getLabel(), branch);
     if (branch.getParent() == null) {
       DIRECT_CHILDREN.put(branch.getLabel(), branch);
@@ -134,5 +134,13 @@ public class BaseSchema implements Schema, CsvAwareSchema {
       headers.add(branch.getJsonPath());
     }
     return headers;
+  }
+
+  @Override
+  public String toString() {
+    return "BaseSchema{" +
+      "categories=" + categories +
+      ", format=" + format +
+      '}';
   }
 }
