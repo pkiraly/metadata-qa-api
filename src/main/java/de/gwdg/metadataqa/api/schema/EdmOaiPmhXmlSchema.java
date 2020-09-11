@@ -3,6 +3,7 @@ package de.gwdg.metadataqa.api.schema;
 import de.gwdg.metadataqa.api.json.FieldGroup;
 import de.gwdg.metadataqa.api.json.JsonBranch;
 import de.gwdg.metadataqa.api.model.Category;
+import de.gwdg.metadataqa.api.rule.RuleChecker;
 
 import java.io.Serializable;
 import java.util.*;
@@ -22,6 +23,7 @@ public class EdmOaiPmhXmlSchema extends EdmSchema implements Serializable {
   private static final Map<String, JsonBranch> PATHS = new LinkedHashMap<>();
   private static final Map<String, JsonBranch> COLLECTION_PATHS = new LinkedHashMap<>();
   private static List<Category> categories = null;
+  private static List<RuleChecker> ruleChecker;
 
   private static final String LONG_SUBJECT_PATH =
     "//ore:Proxy[edm:europeanaProxy/text() = 'false']/dc:subject";
@@ -415,5 +417,10 @@ public class EdmOaiPmhXmlSchema extends EdmSchema implements Serializable {
       categories = Category.extractCategories(PATHS.values());
     }
     return categories;
+  }
+
+  @Override
+  public List<RuleChecker> getRuleCheckers() {
+    return ruleChecker;
   }
 }

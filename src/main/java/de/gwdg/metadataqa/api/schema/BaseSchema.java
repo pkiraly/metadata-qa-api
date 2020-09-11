@@ -3,6 +3,9 @@ package de.gwdg.metadataqa.api.schema;
 import de.gwdg.metadataqa.api.json.FieldGroup;
 import de.gwdg.metadataqa.api.json.JsonBranch;
 import de.gwdg.metadataqa.api.model.Category;
+import de.gwdg.metadataqa.api.rule.PatternChecker;
+import de.gwdg.metadataqa.api.rule.RuleChecker;
+import org.apache.commons.lang3.StringUtils;
 
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
@@ -16,6 +19,7 @@ public class BaseSchema implements Schema, CsvAwareSchema {
   private final Map<String, JsonBranch> DIRECT_CHILDREN = new LinkedHashMap<>();
   private Map<String, String> extractableFields = new LinkedHashMap<>();
   private List<Category> categories = null;
+  private List<RuleChecker> ruleCheckers;
 
   private Format format;
 
@@ -115,6 +119,18 @@ public class BaseSchema implements Schema, CsvAwareSchema {
       categories = Category.extractCategories(PATHS.values());
     }
     return categories;
+  }
+
+  @Override
+  public List<RuleChecker> getRuleCheckers() {
+    if (ruleCheckers == null) {
+      ruleCheckers = new ArrayList<>();
+      for (JsonBranch branch : PATHS.values())
+        if (StringUtils.isNotBlank(branch.getPattern()))
+          ruleCheckers.add(new PatternChecker(branch, branch.getPattern(), branch.getLabel()));
+      categories = Category.extractCategories(PATHS.values());
+    }
+    return ruleCheckers;
   }
 
   private void addPath(JsonBranch branch) {

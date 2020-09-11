@@ -26,6 +26,7 @@ public class JsonBranch implements Cloneable, Serializable {
   private boolean isActive = true;
   private boolean isExtractable = false;
   private boolean isMandatory = false;
+  private String pattern;
 
   public JsonBranch(String label, String jsonPath, String solrFieldName) {
     this.label = label;
@@ -181,6 +182,14 @@ public class JsonBranch implements Cloneable, Serializable {
   public JsonBranch setExtractable(boolean extractable) {
     isExtractable = extractable;
     return this;
+  }
+
+  public String getPattern() {
+    return pattern;
+  }
+
+  public void setPattern(String pattern) {
+    this.pattern = pattern;
   }
 
   public boolean isMandatory() {

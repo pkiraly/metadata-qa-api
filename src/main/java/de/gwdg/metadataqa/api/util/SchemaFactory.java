@@ -35,6 +35,10 @@ public class SchemaFactory {
       if (field.isExtractable())
         branch.setExtractable();
 
+      if (field.getRules() != null)
+        if (StringUtils.isNotBlank(field.getRules().getPattern()))
+          branch.setPattern(field.getRules().getPattern());
+
       schema.addField(branch);
     }
 

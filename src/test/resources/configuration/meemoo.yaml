@@ -3,6 +3,8 @@ fields:
   - name: url
     categories: [MANDATORY]
     extractable: true
+    rules:
+      pattern: ^https?://.*$
   - name: name
   - name: alternateName
   - name: description

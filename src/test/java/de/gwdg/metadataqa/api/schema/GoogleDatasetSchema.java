@@ -3,6 +3,7 @@ package de.gwdg.metadataqa.api.schema;
 import de.gwdg.metadataqa.api.json.FieldGroup;
 import de.gwdg.metadataqa.api.json.JsonBranch;
 import de.gwdg.metadataqa.api.model.Category;
+import de.gwdg.metadataqa.api.rule.RuleChecker;
 
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
@@ -16,6 +17,7 @@ public class GoogleDatasetSchema implements Schema, CsvAwareSchema {
   private static final Map<String, JsonBranch> DIRECT_CHILDREN = new LinkedHashMap<>();
   private static Map<String, String> extractableFields = new LinkedHashMap<>();
   private static List<Category> categories = null;
+  private static List<RuleChecker> ruleCheckers = null;
 
   static {
     addPath(new JsonBranch("url", "url", Category.MANDATORY));
@@ -38,6 +40,7 @@ public class GoogleDatasetSchema implements Schema, CsvAwareSchema {
 
     extractableFields.put("url", "url");
   }
+
 
   @Override
   public Format getFormat() {
@@ -100,6 +103,11 @@ public class GoogleDatasetSchema implements Schema, CsvAwareSchema {
       categories = Category.extractCategories(PATHS.values());
 
     return categories;
+  }
+
+  @Override
+  public List<RuleChecker> getRuleCheckers() {
+    return ruleCheckers;
   }
 
   private static void addPath(JsonBranch branch) {

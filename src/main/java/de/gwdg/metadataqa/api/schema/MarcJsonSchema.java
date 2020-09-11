@@ -3,6 +3,7 @@ package de.gwdg.metadataqa.api.schema;
 import de.gwdg.metadataqa.api.json.FieldGroup;
 import de.gwdg.metadataqa.api.json.JsonBranch;
 import de.gwdg.metadataqa.api.model.Category;
+import de.gwdg.metadataqa.api.rule.RuleChecker;
 
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -21,6 +22,7 @@ public class MarcJsonSchema implements Schema, ProblemCatalogSchema, Serializabl
   private static final Map<String, JsonBranch> DIRECT_CHILDREN = new LinkedHashMap<>();
   private static Map<String, String> extractableFields = new LinkedHashMap<>();
   private static List<Category> categories = null;
+  private static List<RuleChecker> ruleChecker = null;
 
   public static final String DATAFIELD_PATTERN = "$.datafield[?(@.tag == '%s')].subfield[?(@.code == '%s')].content";
   public static final String DATAFIELD_PARENT_PATTERN = "$.datafield[?(@.tag == '%s')]";
@@ -475,5 +477,10 @@ public class MarcJsonSchema implements Schema, ProblemCatalogSchema, Serializabl
       categories = Category.extractCategories(PATHS.values());
     }
     return categories;
+  }
+
+  @Override
+  public List<RuleChecker> getRuleCheckers() {
+    return ruleChecker;
   }
 }

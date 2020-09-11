@@ -3,6 +3,7 @@ package de.gwdg.metadataqa.api.schema;
 import de.gwdg.metadataqa.api.json.FieldGroup;
 import de.gwdg.metadataqa.api.json.JsonBranch;
 import de.gwdg.metadataqa.api.model.Category;
+import de.gwdg.metadataqa.api.rule.RuleChecker;
 
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -25,6 +26,7 @@ public class EdmFullBeanLimitedSchema extends EdmSchema implements Serializable 
   private static Map<String, String> extractableFields = new LinkedHashMap<>();
   private static final List<String> EMPTY_STRINGS = new ArrayList<>();
   private static List<Category> categories = null;
+  private static List<RuleChecker> ruleChecker;
 
   private static final String LONG_SUBJECT_PATH =
     "$.['proxies'][?(@['europeanaProxy'] == false)]['dcSubject']";
@@ -281,5 +283,10 @@ public class EdmFullBeanLimitedSchema extends EdmSchema implements Serializable 
   @Override
   public JsonBranch getPathByLabel(String label) {
     throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+  }
+
+  @Override
+  public List<RuleChecker> getRuleCheckers() {
+    return ruleChecker;
   }
 }

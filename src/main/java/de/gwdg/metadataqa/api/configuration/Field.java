@@ -7,6 +7,7 @@ public class Field {
   private String path;
   private List<String> categories;
   private boolean extractable;
+  private Rule rules;
 
   public String getName() {
     return name;
@@ -38,5 +39,13 @@ public class Field {
 
   public void setExtractable(boolean extractable) {
     this.extractable = extractable;
+  }
+
+  public Rule getRules() {
+    return rules;
+  }
+
+  public void setRules(Rule rules) {
+    this.rules = rules;
   }
 }

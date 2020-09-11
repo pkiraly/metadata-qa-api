@@ -11,6 +11,7 @@ import de.gwdg.metadataqa.api.problemcatalog.EmptyStrings;
 import de.gwdg.metadataqa.api.problemcatalog.LongSubject;
 import de.gwdg.metadataqa.api.problemcatalog.ProblemCatalog;
 import de.gwdg.metadataqa.api.problemcatalog.TitleAndDescriptionAreSame;
+import de.gwdg.metadataqa.api.rule.RuleCatalog;
 import de.gwdg.metadataqa.api.schema.EdmSchema;
 import de.gwdg.metadataqa.api.schema.Format;
 import de.gwdg.metadataqa.api.schema.Schema;
@@ -74,6 +75,12 @@ public class CalculatorFacade implements Serializable {
    * (default: false).
    */
   protected boolean problemCatalogMeasurementEnabled = false;
+
+  /**
+   * Flag whether or not run the rule catalog
+   * (default: false).
+   */
+  protected boolean ruleCatalogMeasurementEnabled = false;
 
   /**
    * Flag whether or not run the language detector
@@ -225,6 +232,10 @@ public class CalculatorFacade implements Serializable {
         new EmptyStrings(problemCatalog);
         calculators.add(problemCatalog);
       }
+    }
+
+    if (ruleCatalogMeasurementEnabled) {
+      calculators.add(new RuleCatalog(schema));
     }
 
     if (languageMeasurementEnabled) {
@@ -531,6 +542,35 @@ public class CalculatorFacade implements Serializable {
    */
   public CalculatorFacade enableProblemCatalogMeasurement(boolean runProblemCatalog) {
     this.problemCatalogMeasurementEnabled = runProblemCatalog;
+    changed = true;
+    return this;
+  }
+
+  /**
+   * Gets flag whether to run the rule catalog measurement.
+   * @return
+   *   problem catalog measurement flag
+   */
+  public boolean isRuleCatalogMeasurementEnabled() {
+    return ruleCatalogMeasurementEnabled;
+  }
+
+  public CalculatorFacade enableRuleCatalogMeasurement() {
+    return enableRuleCatalogMeasurement(true);
+  }
+
+  public CalculatorFacade disableRuleCatalogMeasurement() {
+    return enableRuleCatalogMeasurement(false);
+  }
+
+  /**
+   * Configure to run the problem catalog measurement.
+   * @param run
+   *   problem catalog measurement flag
+   * @return
+   */
+  public CalculatorFacade enableRuleCatalogMeasurement(boolean run) {
+    this.ruleCatalogMeasurementEnabled = run;
     changed = true;
     return this;
   }

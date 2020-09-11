@@ -9,6 +9,7 @@ import de.gwdg.metadataqa.api.configuration.ConfigurationReader;
 import de.gwdg.metadataqa.api.configuration.Field;
 import de.gwdg.metadataqa.api.json.JsonBranch;
 import de.gwdg.metadataqa.api.model.Category;
+import de.gwdg.metadataqa.api.rule.RuleCatalog;
 import de.gwdg.metadataqa.api.util.CsvReader;
 import de.gwdg.metadataqa.api.util.SchemaFactory;
 import org.junit.Test;
@@ -160,6 +161,9 @@ public class BaseSchemaTest {
       )
       .asSchema();
 
+    assertNotNull(schema.getRuleCheckers());
+    assertEquals(1, schema.getRuleCheckers().size());
+
     CalculatorFacade facade = new CalculatorFacade()
       .setSchema(schema)
       .setCsvReader(
@@ -214,5 +218,82 @@ public class BaseSchemaTest {
     } catch (CsvValidationException e) {
       e.printStackTrace();
     }
+  }
+
+  @Test
+  public void runRuleCatalog() throws FileNotFoundException {
+    Schema schema = ConfigurationReader
+      .readYaml(
+        "src/test/resources/configuration/meemoo.yaml"
+      )
+      .asSchema();
+
+    assertNotNull(schema.getRuleCheckers());
+    assertEquals(1, schema.getRuleCheckers().size());
+
+    CalculatorFacade facade = new CalculatorFacade()
+      .setSchema(schema)
+      .setCsvReader(
+        new CsvReader()
+          .setHeader(((CsvAwareSchema) schema).getHeader()))
+      .enableCompletenessMeasurement()
+      .enableFieldCardinalityMeasurement()
+      .enableRuleCatalogMeasurement();
+    facade.configure();
+
+    assertEquals(RuleCatalog.class, facade.getCalculators().get(1).getClass());
+
+    // [
+    // de.gwdg.metadataqa.api.calculator.CompletenessCalculator@62043840,
+    // de.gwdg.metadataqa.api.rule.RuleCatalog@5315b42e
+    // ]
+
+    String fileName = "src/test/resources/csv/dataset_metadata_2020_08_17-head.csv";
+    File file = new File(fileName);
+
+    List<String> outputHeader = facade.getHeader();
+    assertEquals(
+      Arrays.asList(
+        "completeness:TOTAL", "completeness:MANDATORY",
+        "existence:url", "existence:name", "existence:alternateName", "existence:description",
+        "existence:variablesMeasured", "existence:measurementTechnique", "existence:sameAs",
+        "existence:doi", "existence:identifier", "existence:author", "existence:isAccessibleForFree",
+        "existence:dateModified", "existence:distribution", "existence:spatialCoverage",
+        "existence:provider", "existence:funder", "existence:temporalCoverage",
+        "cardinality:url", "cardinality:name", "cardinality:alternateName",
+        "cardinality:description", "cardinality:variablesMeasured",
+        "cardinality:measurementTechnique", "cardinality:sameAs", "cardinality:doi",
+        "cardinality:identifier", "cardinality:author", "cardinality:isAccessibleForFree",
+        "cardinality:dateModified", "cardinality:distribution", "cardinality:spatialCoverage",
+        "cardinality:provider", "cardinality:funder", "cardinality:temporalCoverage",
+        "pattern:url"
+      ),
+      outputHeader
+    );
+
+    try {
+      CSVIterator iterator = new CSVIterator(new CSVReaderHeaderAware(new FileReader(fileName)));
+      StringBuffer result = new StringBuffer();
+      while (iterator.hasNext()) {
+        String line = CsvReader.toCsv(iterator.next());
+        String metrics = facade.measure(line);
+        result.append(metrics + "\n");
+      }
+      String expected = "0.352941,1.0,1,1,0,1,0,0,0,0,1,0,0,1,1,0,0,0,0,1,1,0,1,0,0,0,0,1,0,0,1,1,0,0,0,0,1\n"
+        + "0.352941,1.0,1,1,0,1,0,0,0,0,1,0,0,1,1,0,0,0,0,1,1,0,1,0,0,0,0,1,0,0,1,1,0,0,0,0,1\n"
+        + "0.352941,1.0,1,1,0,1,0,0,0,0,1,0,0,1,1,0,0,0,0,1,1,0,1,0,0,0,0,1,0,0,1,1,0,0,0,0,1\n"
+        + "0.352941,1.0,1,1,0,1,0,0,0,0,1,0,0,1,1,0,0,0,0,1,1,0,1,0,0,0,0,1,0,0,1,1,0,0,0,0,1\n"
+        + "0.352941,1.0,1,1,0,1,0,0,0,0,1,0,0,1,1,0,0,0,0,1,1,0,1,0,0,0,0,1,0,0,1,1,0,0,0,0,1\n"
+        + "0.411765,1.0,1,1,0,1,0,0,1,0,1,1,0,1,0,0,0,0,0,1,1,0,1,0,0,1,0,1,1,0,1,0,0,0,0,0,1\n"
+        + "0.352941,1.0,1,1,1,1,0,0,0,0,1,0,0,1,0,0,0,0,0,1,1,1,1,0,0,0,0,1,0,0,1,0,0,0,0,0,1\n"
+        + "0.352941,1.0,1,1,0,1,0,0,0,0,1,0,0,1,1,0,0,0,0,1,1,0,1,0,0,0,0,1,0,0,1,1,0,0,0,0,1\n"
+        + "0.294118,1.0,1,1,0,1,0,0,0,0,1,0,0,1,0,0,0,0,0,1,1,0,1,0,0,0,0,1,0,0,1,0,0,0,0,0,1\n";
+      assertEquals(expected, result.toString());
+    } catch (IOException e) {
+      e.printStackTrace();
+    } catch (CsvValidationException e) {
+      e.printStackTrace();
+    }
+
   }
 }
