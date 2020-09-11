@@ -1,14 +1,11 @@
 package de.gwdg.metadataqa.api.rule;
 
 import de.gwdg.metadataqa.api.counter.FieldCounter;
-import de.gwdg.metadataqa.api.interfaces.Observable;
 import de.gwdg.metadataqa.api.model.pathcache.PathCache;
 
 /**
  * Implementation of the Observer design pattern
  * (<a href="https://en.wikipedia.org/wiki/Observer_pattern">https://en.wikipedia.org/wiki/Observer_pattern</a>).
- * See comments of the Observable interface.
- * @see Observable
  * @author Péter Király <peter.kiraly at gwdg.de>
  */
 public interface RuleChecker {
