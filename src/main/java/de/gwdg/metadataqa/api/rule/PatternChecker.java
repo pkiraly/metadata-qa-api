@@ -25,12 +25,15 @@ public class PatternChecker implements RuleChecker {
     double result = 0.0;
     boolean allPassed = true;
     boolean isNA = true;
-    for (XmlFieldInstance instance : (List<XmlFieldInstance>) cache.get(field.getJsonPath())) {
-      if (instance.hasValue()) {
-        isNA = false;
-        if (!pattern.matcher(instance.getValue()).matches()) {
-          allPassed = false;
-          break;
+    List<XmlFieldInstance> instances = (List<XmlFieldInstance>) cache.get(field.getJsonPath());
+    if (instances != null && !instances.isEmpty()) {
+      for (XmlFieldInstance instance : instances) {
+        if (instance.hasValue()) {
+          isNA = false;
+          if (!pattern.matcher(instance.getValue()).matches()) {
+            allPassed = false;
+            break;
+          }
         }
       }
     }
