@@ -3,6 +3,8 @@ package de.gwdg.metadataqa.api.schema;
 import de.gwdg.metadataqa.api.json.FieldGroup;
 import de.gwdg.metadataqa.api.json.JsonBranch;
 import de.gwdg.metadataqa.api.model.Category;
+import de.gwdg.metadataqa.api.rule.DisjointChecker;
+import de.gwdg.metadataqa.api.rule.EqualityChecker;
 import de.gwdg.metadataqa.api.rule.PatternChecker;
 import de.gwdg.metadataqa.api.rule.RuleChecker;
 import org.apache.commons.lang3.StringUtils;
@@ -125,9 +127,14 @@ public class BaseSchema implements Schema, CsvAwareSchema {
   public List<RuleChecker> getRuleCheckers() {
     if (ruleCheckers == null) {
       ruleCheckers = new ArrayList<>();
-      for (JsonBranch branch : PATHS.values())
+      for (JsonBranch branch : PATHS.values()) {
         if (StringUtils.isNotBlank(branch.getPattern()))
           ruleCheckers.add(new PatternChecker(branch, branch.getPattern(), branch.getLabel()));
+        if (StringUtils.isNotBlank(branch.getEquals()))
+          ruleCheckers.add(new EqualityChecker(branch, branch.getEquals(), branch.getLabel()));
+        if (StringUtils.isNotBlank(branch.getDisjoint()))
+          ruleCheckers.add(new DisjointChecker(branch, branch.getDisjoint(), branch.getLabel()));
+      }
       categories = Category.extractCategories(PATHS.values());
     }
     return ruleCheckers;

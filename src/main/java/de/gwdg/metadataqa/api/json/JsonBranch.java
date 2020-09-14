@@ -27,6 +27,8 @@ public class JsonBranch implements Cloneable, Serializable {
   private boolean isExtractable = false;
   private boolean isMandatory = false;
   private String pattern;
+  private String equals;
+  private String disjoint;
 
   public JsonBranch(String label, String jsonPath, String solrFieldName) {
     this.label = label;
@@ -190,6 +192,22 @@ public class JsonBranch implements Cloneable, Serializable {
 
   public void setPattern(String pattern) {
     this.pattern = pattern;
+  }
+
+  public String getEquals() {
+    return equals;
+  }
+
+  public void setEquals(String equals) {
+    this.equals = equals;
+  }
+
+  public String getDisjoint() {
+    return disjoint;
+  }
+
+  public void setDisjoint(String disjoint) {
+    this.disjoint = disjoint;
   }
 
   public boolean isMandatory() {

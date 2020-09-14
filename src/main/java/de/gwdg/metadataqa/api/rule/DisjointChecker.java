@@ -6,15 +6,14 @@ import de.gwdg.metadataqa.api.model.XmlFieldInstance;
 import de.gwdg.metadataqa.api.model.pathcache.PathCache;
 
 import java.util.List;
-import java.util.regex.Pattern;
 
-public class PatternChecker extends SingleFieldChecker {
+public class DisjointChecker extends SingleFieldChecker {
 
-  protected Pattern pattern;
+  protected String fixedValue;
 
-  public PatternChecker(JsonBranch field, String pattern, String header) {
-    super(field, "pattern:" + header);
-    this.pattern = Pattern.compile(pattern);
+  public DisjointChecker(JsonBranch field, String fixedValue, String header) {
+    super(field, "disjoint:" + header);
+    this.fixedValue = fixedValue;
   }
 
   @Override
@@ -27,7 +26,7 @@ public class PatternChecker extends SingleFieldChecker {
       for (XmlFieldInstance instance : instances) {
         if (instance.hasValue()) {
           isNA = false;
-          if (!pattern.matcher(instance.getValue()).matches()) {
+          if (fixedValue.equals(instance.getValue())) {
             allPassed = false;
             break;
           }
