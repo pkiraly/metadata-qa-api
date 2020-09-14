@@ -5,7 +5,7 @@
   <groupId>de.gwdg.metadataqa</groupId>
   <artifactId>metadata-qa-api</artifactId>
   <packaging>jar</packaging>
-  <version>0.6-SNAPSHOT</version>
+  <version>0.6</version>
   <name>Metadata Quality Assurance Framework API</name>
   <description>
     A metadata quality assurance framework. It checks some metrics of 
@@ -44,11 +44,11 @@
       <id>ossrh</id>
       <url>https://oss.sonatype.org/content/repositories/snapshots</url>
     </snapshotRepository>
-    <!--
     <repository>
       <id>ossrh</id>
       <url>https://oss.sonatype.org/service/local/staging/deploy/maven2/</url>
     </repository>
+    <!--
     -->
   </distributionManagement>
 
