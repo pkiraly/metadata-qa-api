@@ -21,17 +21,20 @@ public class PatternChecker implements RuleChecker {
   }
 
   @Override
-  public void update(PathCache cache, FieldCounter<Boolean> results) {
+  public void update(PathCache cache, FieldCounter<RuleCheckingOutput> results) {
     double result = 0.0;
     boolean allPassed = true;
+    boolean isNA = true;
     for (XmlFieldInstance instance : (List<XmlFieldInstance>) cache.get(field.getJsonPath())) {
-      if (instance.hasValue())
+      if (instance.hasValue()) {
+        isNA = false;
         if (!pattern.matcher(instance.getValue()).matches()) {
           allPassed = false;
           break;
         }
+      }
     }
-    results.put(header, allPassed);
+    results.put(header, RuleCheckingOutput.create(isNA, allPassed));
   }
 
   @Override

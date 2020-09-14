@@ -75,5 +75,4 @@ public class FieldCounter<T> {
     }
     return values;
   }
-
 }

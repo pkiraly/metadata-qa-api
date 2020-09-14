@@ -7,6 +7,7 @@ import java.util.Arrays;
 import java.util.LinkedHashMap;
 import java.util.List;
 
+import de.gwdg.metadataqa.api.rule.RuleCheckingOutput;
 import de.gwdg.metadataqa.api.schema.Format;
 import de.gwdg.metadataqa.api.schema.Schema;
 import net.minidev.json.JSONArray;
@@ -86,6 +87,8 @@ public final class Converter {
       text = (String) value;
     } else if (value instanceof List) {
       text = StringUtils.join(((List) value), ", ");
+    } else if (value instanceof RuleCheckingOutput) {
+      text = ((RuleCheckingOutput)value).asString();
     } else {
       throw new InvalidParameterException("Object has an unhandled type: " + value.getClass().getCanonicalName() + " " + value);
     }

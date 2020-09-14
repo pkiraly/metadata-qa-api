@@ -19,7 +19,7 @@ public interface RuleChecker {
    * @param results
    *   The result map
    */
-  void update(PathCache cache, FieldCounter<Boolean> results);
+  void update(PathCache cache, FieldCounter<RuleCheckingOutput> results);
 
   /**
    * Get a header, which is the name of metric, the observer measures.

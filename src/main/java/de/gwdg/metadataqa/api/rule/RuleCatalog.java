@@ -16,7 +16,7 @@ public class RuleCatalog implements Calculator, Serializable {
 
   private final List<RuleChecker> ruleCheckers = new ArrayList<>();
   private PathCache cache;
-  private FieldCounter<Boolean> fieldCounter;
+  private FieldCounter<RuleCheckingOutput> fieldCounter;
   private static final String CALCULATOR_NAME = "ruleCatalog";
   private Schema schema;
 
