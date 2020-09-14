@@ -11,7 +11,7 @@ public abstract class SingleFieldChecker implements RuleChecker {
 
   public SingleFieldChecker(JsonBranch field, String header) {
     this.field = field;
-    this.header = "pattern:" + header;
+    this.header = header;
   }
 
   @Override
