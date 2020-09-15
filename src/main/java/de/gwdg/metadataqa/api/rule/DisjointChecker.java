@@ -11,7 +11,11 @@ public class DisjointChecker extends SingleFieldChecker {
 
   protected String fixedValue;
 
-  public DisjointChecker(JsonBranch field, String fixedValue, String header) {
+  public DisjointChecker(JsonBranch field, String disjoint) {
+    this(field, field.getLabel(), disjoint);
+  }
+
+  public DisjointChecker(JsonBranch field, String header, String fixedValue) {
     super(field, "disjoint:" + header);
     this.fixedValue = fixedValue;
   }

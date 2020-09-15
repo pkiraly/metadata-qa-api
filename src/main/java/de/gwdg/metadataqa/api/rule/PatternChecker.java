@@ -12,7 +12,11 @@ public class PatternChecker extends SingleFieldChecker {
 
   protected Pattern pattern;
 
-  public PatternChecker(JsonBranch field, String pattern, String header) {
+  public PatternChecker(JsonBranch field, String pattern) {
+    this(field, field.getLabel(), pattern);
+  }
+
+  public PatternChecker(JsonBranch field, String header, String pattern) {
     super(field, "pattern:" + header);
     this.pattern = Pattern.compile(pattern);
   }

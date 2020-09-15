@@ -7,17 +7,17 @@ import de.gwdg.metadataqa.api.model.pathcache.PathCache;
 
 import java.util.List;
 
-public class EqualityChecker extends SingleFieldChecker {
+public class EnumerationChecker extends SingleFieldChecker {
 
-  protected String fixedValue;
+  protected List<String> fixedValues;
 
-  public EqualityChecker(JsonBranch field, String fixedValue) {
-    this(field, field.getLabel(), fixedValue);
+  public EnumerationChecker(JsonBranch field, List<String> fixedValues) {
+    this(field, field.getLabel(), fixedValues);
   }
 
-  public EqualityChecker(JsonBranch field, String header, String fixedValue) {
-    super(field, "equals:" + header);
-    this.fixedValue = fixedValue;
+  public EnumerationChecker(JsonBranch field, String header, List<String> fixedValues) {
+    super(field, "in:" + header);
+    this.fixedValues = fixedValues;
   }
 
   @Override
@@ -30,7 +30,7 @@ public class EqualityChecker extends SingleFieldChecker {
       for (XmlFieldInstance instance : instances) {
         if (instance.hasValue()) {
           isNA = false;
-          if (!fixedValue.equals(instance.getValue())) {
+          if (!fixedValues.contains(instance.getValue())) {
             allPassed = false;
             break;
           }

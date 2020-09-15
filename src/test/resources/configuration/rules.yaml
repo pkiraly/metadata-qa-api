@@ -1,0 +1,3 @@
+and:
+  - equals: for example
+  - in: [aa, bb]

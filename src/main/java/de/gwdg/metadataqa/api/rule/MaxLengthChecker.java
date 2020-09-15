@@ -7,22 +7,21 @@ import de.gwdg.metadataqa.api.model.pathcache.PathCache;
 
 import java.util.List;
 
-public class EqualityChecker extends SingleFieldChecker {
+public class MaxLengthChecker extends SingleFieldChecker {
 
-  protected String fixedValue;
+  protected Integer maxLength;
 
-  public EqualityChecker(JsonBranch field, String fixedValue) {
-    this(field, field.getLabel(), fixedValue);
+  public MaxLengthChecker(JsonBranch field, Integer maxLength) {
+    this(field, field.getLabel(), maxLength);
   }
 
-  public EqualityChecker(JsonBranch field, String header, String fixedValue) {
-    super(field, "equals:" + header);
-    this.fixedValue = fixedValue;
+  public MaxLengthChecker(JsonBranch field, String header, Integer maxLength) {
+    super(field, "maxLength:" + header);
+    this.maxLength = maxLength;
   }
 
   @Override
   public void update(PathCache cache, FieldCounter<RuleCheckingOutput> results) {
-    double result = 0.0;
     boolean allPassed = true;
     boolean isNA = true;
     List<XmlFieldInstance> instances = (List<XmlFieldInstance>) cache.get(field.getJsonPath());
@@ -30,7 +29,7 @@ public class EqualityChecker extends SingleFieldChecker {
       for (XmlFieldInstance instance : instances) {
         if (instance.hasValue()) {
           isNA = false;
-          if (!fixedValue.equals(instance.getValue())) {
+          if (instance.getValue().length() > maxLength) {
             allPassed = false;
             break;
           }

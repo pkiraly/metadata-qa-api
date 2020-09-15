@@ -7,31 +7,30 @@ import de.gwdg.metadataqa.api.model.pathcache.PathCache;
 
 import java.util.List;
 
-public class EqualityChecker extends SingleFieldChecker {
+public class HasValueChecker extends SingleFieldChecker {
 
   protected String fixedValue;
 
-  public EqualityChecker(JsonBranch field, String fixedValue) {
+  public HasValueChecker(JsonBranch field, String fixedValue) {
     this(field, field.getLabel(), fixedValue);
   }
 
-  public EqualityChecker(JsonBranch field, String header, String fixedValue) {
-    super(field, "equals:" + header);
+  public HasValueChecker(JsonBranch field, String header, String fixedValue) {
+    super(field, "hasValue:" + header);
     this.fixedValue = fixedValue;
   }
 
   @Override
   public void update(PathCache cache, FieldCounter<RuleCheckingOutput> results) {
-    double result = 0.0;
-    boolean allPassed = true;
+    boolean allPassed = false;
     boolean isNA = true;
     List<XmlFieldInstance> instances = (List<XmlFieldInstance>) cache.get(field.getJsonPath());
     if (instances != null && !instances.isEmpty()) {
       for (XmlFieldInstance instance : instances) {
         if (instance.hasValue()) {
           isNA = false;
-          if (!fixedValue.equals(instance.getValue())) {
-            allPassed = false;
+          if (instance.getValue().equals(fixedValue)) {
+            allPassed = true;
             break;
           }
         }

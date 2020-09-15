@@ -1,6 +1,7 @@
 
 package de.gwdg.metadataqa.api.json;
 
+import de.gwdg.metadataqa.api.configuration.Rule;
 import de.gwdg.metadataqa.api.model.Category;
 import de.gwdg.metadataqa.api.schema.Format;
 
@@ -26,9 +27,24 @@ public class JsonBranch implements Cloneable, Serializable {
   private boolean isActive = true;
   private boolean isExtractable = false;
   private boolean isMandatory = false;
+  private Rule rules;
+  /*
   private String pattern;
   private String equals;
   private String disjoint;
+  private List<String> in;
+  private int minCount;
+  private int maxCount;
+  private int minExclusive;
+  private int minInclusive;
+  private int maxExclusive;
+  private int maxInclusive;
+  private int minLength;
+  private int maxLength;
+  private int lessThan;
+  private int lessThanOrEquals;
+  private String hasValue;
+   */
 
   public JsonBranch(String label, String jsonPath, String solrFieldName) {
     this.label = label;
@@ -186,6 +202,7 @@ public class JsonBranch implements Cloneable, Serializable {
     return this;
   }
 
+  /*
   public String getPattern() {
     return pattern;
   }
@@ -208,6 +225,23 @@ public class JsonBranch implements Cloneable, Serializable {
 
   public void setDisjoint(String disjoint) {
     this.disjoint = disjoint;
+  }
+
+  public List<String> getIn() {
+    return in;
+  }
+
+  public void setIn(List<String> in) {
+    this.in = in;
+  }
+   */
+
+  public Rule getRules() {
+    return rules;
+  }
+
+  public void setRules(Rule rules) {
+    this.rules = rules;
   }
 
   public boolean isMandatory() {
@@ -244,4 +278,5 @@ public class JsonBranch implements Cloneable, Serializable {
 
     return cloned;
   }
+
 }

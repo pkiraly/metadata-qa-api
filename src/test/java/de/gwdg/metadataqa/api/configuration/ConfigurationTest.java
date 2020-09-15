@@ -99,4 +99,22 @@ public class ConfigurationTest {
     assertEquals(1, group.getCategories().size());
     assertEquals("MANDATORY", group.getCategories().get(0));
   }
+
+  @Test
+  public void testReading_rules() {
+    Yaml yaml = new Yaml(new Constructor(Rulex.class));
+    InputStream inputStream = this.getClass()
+      .getClassLoader()
+      .getResourceAsStream("configuration/rules.yaml");
+    Rulex rule = (Rulex) yaml.load(inputStream);
+    assertNotNull(rule.getAnd());
+    assertEquals(2, rule.getAnd().size());
+    assertNotNull(rule.getAnd().get(0).getEquals());
+    assertEquals("for example", rule.getAnd().get(0).getEquals());
+    assertNotNull(rule.getAnd().get(1).getIn());
+    assertEquals(2, rule.getAnd().get(1).getIn().size());
+    assertEquals("aa", rule.getAnd().get(1).getIn().get(0));
+    assertEquals("bb", rule.getAnd().get(1).getIn().get(1));
+  }
+
 }

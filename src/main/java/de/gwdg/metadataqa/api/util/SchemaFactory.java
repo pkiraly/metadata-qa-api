@@ -36,8 +36,24 @@ public class SchemaFactory {
         branch.setExtractable();
 
       if (field.getRules() != null)
+        branch.setRules(field.getRules());
+      /*
         if (StringUtils.isNotBlank(field.getRules().getPattern()))
           branch.setPattern(field.getRules().getPattern());
+
+      if (StringUtils.isNotBlank(field.getRules().getEquals()))
+        branch.setEquals(field.getRules().getEquals());
+
+      if (StringUtils.isNotBlank(field.getRules().getDisjoint()))
+        branch.setDisjoint(field.getRules().getDisjoint());
+
+      if (field.getRules().getIn() != null &&
+          !field.getRules().getIn().isEmpty())
+        branch.setIn(field.getRules().getIn());
+
+      if (field.getRules().getMinCount() != null)
+        branch.setM(field.getRules().getDisjoint());
+       */
 
       schema.addField(branch);
     }
