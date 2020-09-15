@@ -277,7 +277,15 @@ public class CalculatorFacade implements Serializable {
    *   Invalid Json exception
    */
   public String measure(String jsonRecord) throws InvalidJsonException {
-    return this.<XmlFieldInstance>measureWithGenerics(jsonRecord);
+    return (String) this.<XmlFieldInstance>measureWithGenerics(jsonRecord);
+  }
+
+  public List<String> measureAsList(String jsonRecord) throws InvalidJsonException {
+    return (List<String>) this.<XmlFieldInstance>measureWithGenerics(jsonRecord, List.class);
+  }
+
+  public Map<String, Object> measureAsMap(String jsonRecord) throws InvalidJsonException {
+    return (Map<String, Object>) this.<XmlFieldInstance>measureWithGenerics(jsonRecord, Map.class);
   }
 
   /**
@@ -296,11 +304,25 @@ public class CalculatorFacade implements Serializable {
    *   The result of measurements as a CSV string
    * @throws InvalidJsonException
    */
-  protected <T extends XmlFieldInstance> String measureWithGenerics(String content)
+  protected <T extends XmlFieldInstance> Object measureWithGenerics(String content)
+    throws InvalidJsonException {
+    return measureWithGenerics(content, String.class);
+  }
+
+  protected <T extends XmlFieldInstance> Object measureWithGenerics(String content, Class outputClass)
       throws InvalidJsonException {
     conditionalConfiguration();
 
-    List<String> items = new ArrayList<>();
+    Object result = null;
+    if (outputClass.equals(String.class)) {
+      result = new ArrayList<String>();
+    } else if (outputClass.equals(List.class)) {
+      result = new ArrayList<String>();
+    } else if (outputClass.equals(Map.class)) {
+      result = new LinkedHashMap<>();
+    } else {
+      throw new IllegalArgumentException("Only String, List and Map acceptable, but " + outputClass.getName() + " was given");
+    }
 
     if (schema == null) {
       throw new IllegalStateException("schema is missing");
@@ -314,12 +336,22 @@ public class CalculatorFacade implements Serializable {
 
         for (Calculator calculator : getCalculators()) {
           calculator.measure(cache);
-          items.add(calculator.getCsv(false, compressionLevel));
+          if (outputClass.equals(String.class) || outputClass.equals(List.class)) {
+            ((List<String>) result).add(calculator.getCsv(false, compressionLevel));
+          } else if (outputClass.equals(String.class)) {
+            ((Map)result).putAll(calculator.getResultMap());
+          }
         }
       }
     }
 
-    return StringUtils.join(items, ",");
+    if (outputClass.equals(String.class)) {
+      return StringUtils.join((List<String>) result,",");
+    } else if (outputClass.equals(List.class) ||
+               outputClass.equals(String.class)) {
+      return result;
+    }
+    return null;
   }
 
   public CalculatorFacade enableFieldExtractor() {
