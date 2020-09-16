@@ -418,7 +418,7 @@ public class CompletenessCalculatorTest {
     calculator.measure(cache);
     List<Integer> expected = Arrays.asList(new Integer[]{1, 1, 1, 0, 0, 0, 0, 0, 1, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 1, 0, 0, 1, 1, 0, 0, 1, 1, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0});
     assertEquals(125, calculator.getExistenceCounter().size());
-    assertEquals(expected, calculator.getExistenceCounter().getList());
+    assertEquals(expected, calculator.getExistenceCounter().getCsv());
   }
 
   @Test

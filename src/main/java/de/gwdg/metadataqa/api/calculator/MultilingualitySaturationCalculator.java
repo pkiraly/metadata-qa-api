@@ -336,6 +336,11 @@ public class MultilingualitySaturationCalculator implements Calculator, Serializ
 
   @Override
   public String getCsv(boolean withLabel, CompressionLevel compressionLevel) {
+    return saturationMap.getCsv(withLabel, compressionLevel);
+  }
+
+  @Override
+  public List<String> getList(boolean withLabel, CompressionLevel compressionLevel) {
     return saturationMap.getList(withLabel, compressionLevel);
   }
 

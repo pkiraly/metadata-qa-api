@@ -336,9 +336,11 @@ public class CalculatorFacade implements Serializable {
 
         for (Calculator calculator : getCalculators()) {
           calculator.measure(cache);
-          if (outputClass.equals(String.class) || outputClass.equals(List.class)) {
+          if (outputClass.equals(String.class)) {
             ((List<String>) result).add(calculator.getCsv(false, compressionLevel));
-          } else if (outputClass.equals(String.class)) {
+          } else if (outputClass.equals(List.class)) {
+            ((List<String>) result).addAll(calculator.getList(false, compressionLevel));
+          } else if (outputClass.equals(Map.class)) {
             ((Map)result).putAll(calculator.getResultMap());
           }
         }
@@ -348,7 +350,7 @@ public class CalculatorFacade implements Serializable {
     if (outputClass.equals(String.class)) {
       return StringUtils.join((List<String>) result,",");
     } else if (outputClass.equals(List.class) ||
-               outputClass.equals(String.class)) {
+               outputClass.equals(Map.class)) {
       return result;
     }
     return null;

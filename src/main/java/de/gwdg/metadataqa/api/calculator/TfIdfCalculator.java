@@ -141,6 +141,11 @@ public class TfIdfCalculator implements Calculator, Serializable {
 
   @Override
   public String getCsv(boolean withLabel, CompressionLevel compressionLevel) {
+    return resultMap.getCsv(withLabel, compressionLevel);
+  }
+
+  @Override
+  public List<String> getList(boolean withLabel, CompressionLevel compressionLevel) {
     return resultMap.getList(withLabel, compressionLevel);
   }
 

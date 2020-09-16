@@ -8,6 +8,7 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import org.apache.commons.lang3.StringUtils;
+import org.jetbrains.annotations.NotNull;
 
 /**
  *
@@ -46,11 +47,17 @@ public class FieldCounter<T> {
     return fieldMap;
   }
 
-  public String getList(boolean withLabel) {
-    return getList(withLabel, CompressionLevel.ZERO);
+  public String getCsv(boolean withLabel) {
+    return getCsv(withLabel, CompressionLevel.ZERO);
   }
 
-  public String getList(boolean withLabel, CompressionLevel compressionLevel) {
+  public String getCsv(boolean withLabel, CompressionLevel compressionLevel) {
+    List<String> items = getList(withLabel, compressionLevel);
+    return StringUtils.join(items, ',');
+  }
+
+  @NotNull
+  public List<String> getList(boolean withLabel, CompressionLevel compressionLevel) {
     List<String> items = new ArrayList<>();
     for (Map.Entry<String, T> entry : fieldMap.entrySet()) {
       String item = "";
@@ -65,10 +72,10 @@ public class FieldCounter<T> {
       item += value;
       items.add(item);
     }
-    return StringUtils.join(items, ',');
+    return items;
   }
 
-  public List<Integer> getList() {
+  public List<Integer> getCsv() {
     List<Integer> values = new LinkedList<>();
     for (T value : fieldMap.values()) {
       values.add(Converter.asInteger(value));

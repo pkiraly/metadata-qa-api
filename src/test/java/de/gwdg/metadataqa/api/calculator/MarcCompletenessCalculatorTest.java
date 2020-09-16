@@ -50,8 +50,8 @@ public class MarcCompletenessCalculatorTest {
     FieldCounter<Boolean> existenceCounter = calculator.getExistenceCounter();
     FieldCounter<Integer> cardinalityCounter = calculator.getCardinalityCounter();
 
-    System.err.println(fieldCounter.getList(true));
-    System.err.println(existenceCounter.getList(true));
-    System.err.println(cardinalityCounter.getList(true));
+    System.err.println(fieldCounter.getCsv(true));
+    System.err.println(existenceCounter.getCsv(true));
+    System.err.println(cardinalityCounter.getCsv(true));
   }
 }

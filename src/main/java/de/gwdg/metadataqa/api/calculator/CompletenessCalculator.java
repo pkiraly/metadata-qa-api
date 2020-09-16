@@ -296,20 +296,26 @@ public class CompletenessCalculator<T extends XmlFieldInstance>
 
   @Override
   public String getCsv(boolean withLabel, CompressionLevel compressionLevel) {
+    List<String> csvs = getList(withLabel, compressionLevel);
+    return StringUtils.join(csvs, ",");
+  }
+
+  @Override
+  public List<String> getList(boolean withLabel, CompressionLevel compressionLevel) {
     List<String> csvs = new ArrayList<>();
     if (completeness) {
-      csvs.add(completenessCounter.getFieldCounter().getList(withLabel, compressionLevel));
+      csvs.addAll(completenessCounter.getFieldCounter().getList(withLabel, compressionLevel));
     }
 
     if (existence) {
-      csvs.add(existenceCounter.getList(withLabel, compressionLevel));
+      csvs.addAll(existenceCounter.getList(withLabel, compressionLevel));
     }
 
     if (cardinality) {
-      csvs.add(cardinalityCounter.getList(withLabel, compressionLevel));
+      csvs.addAll(cardinalityCounter.getList(withLabel, compressionLevel));
     }
 
-    return StringUtils.join(csvs, ",");
+    return csvs;
   }
 
   @Override

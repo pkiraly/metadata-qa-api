@@ -13,7 +13,6 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.logging.Logger;
-import java.util.regex.Pattern;
 
 /**
  *
@@ -89,6 +88,11 @@ public class ProblemCatalog implements Calculator, Serializable, Observable {
 
   @Override
   public String getCsv(boolean withLabels, CompressionLevel compressionLevel) {
+    return fieldCounter.getCsv(withLabels, compressionLevel);
+  }
+
+  @Override
+  public List<String> getList(boolean withLabels, CompressionLevel compressionLevel) {
     return fieldCounter.getList(withLabels, compressionLevel);
   }
 

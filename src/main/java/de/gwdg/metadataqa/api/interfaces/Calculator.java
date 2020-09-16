@@ -43,6 +43,8 @@ public interface Calculator {
    */
   String getCsv(boolean withLabels, CompressionLevel compressionLevel);
 
+  List<String> getList(boolean withLabels, CompressionLevel compressionLevel);
+
   /**
    * Get header (the name of metrics) as a list.
    * @return The list of metrics.

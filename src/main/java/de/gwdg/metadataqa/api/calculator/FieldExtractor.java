@@ -106,6 +106,11 @@ public class FieldExtractor implements Calculator, Serializable {
 
   @Override
   public String getCsv(boolean withLabel, CompressionLevel compressionLevel) {
+    return resultMap.getCsv(withLabel, CompressionLevel.ZERO); // the extracted fields should never be compressed!
+  }
+
+  @Override
+  public List<String> getList(boolean withLabel, CompressionLevel compressionLevel) {
     return resultMap.getList(withLabel, CompressionLevel.ZERO); // the extracted fields should never be compressed!
   }
 
