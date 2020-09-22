@@ -240,8 +240,9 @@ public class JsonBranch implements Cloneable, Serializable {
     return rules;
   }
 
-  public void setRules(Rule rules) {
+  public JsonBranch setRules(Rule rules) {
     this.rules = rules;
+    return this;
   }
 
   public boolean isMandatory() {

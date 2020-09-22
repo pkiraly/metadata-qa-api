@@ -7,6 +7,7 @@ import de.gwdg.metadataqa.api.calculator.CalculatorFacade;
 import de.gwdg.metadataqa.api.configuration.Configuration;
 import de.gwdg.metadataqa.api.configuration.ConfigurationReader;
 import de.gwdg.metadataqa.api.configuration.Field;
+import de.gwdg.metadataqa.api.configuration.Rule;
 import de.gwdg.metadataqa.api.json.JsonBranch;
 import de.gwdg.metadataqa.api.model.Category;
 import de.gwdg.metadataqa.api.rule.RuleCatalog;
@@ -294,6 +295,138 @@ public class BaseSchemaTest {
     } catch (CsvValidationException e) {
       e.printStackTrace();
     }
-
   }
+
+  @Test
+  public void testAddField() {
+    Schema schema = new BaseSchema()
+      .setFormat(Format.CSV)
+      .addField("url");
+
+    assertEquals(1, schema.getPaths().size());
+    assertEquals("url", schema.getPaths().get(0).getLabel());
+    assertEquals("url", schema.getPaths().get(0).getJsonPath());
+  }
+
+  @Test
+  public void testAddFields() {
+    Schema schema = new BaseSchema()
+      .setFormat(Format.CSV)
+      .addFields("url", "name");
+
+    assertEquals(2, schema.getPaths().size());
+    assertEquals("url", schema.getPaths().get(0).getLabel());
+    assertEquals("url", schema.getPaths().get(0).getJsonPath());
+    assertEquals("name", schema.getPaths().get(1).getLabel());
+    assertEquals("name", schema.getPaths().get(1).getJsonPath());
+  }
+
+  @Test
+  public void testGetRootChildrenPaths() {
+    Schema schema = new BaseSchema()
+      .setFormat(Format.CSV)
+      .addFields("url", "name");
+
+    assertEquals(2, schema.getRootChildrenPaths().size());
+  }
+
+  @Test
+  public void testGetPathByLabel() {
+    Schema schema = new BaseSchema()
+      .setFormat(Format.CSV)
+      .addFields("url", "name");
+
+    assertEquals("url", schema.getPathByLabel("url").getLabel());
+  }
+
+  @Test(expected = UnsupportedOperationException.class)
+  public void testGetNoLanguageFields() {
+    Schema schema = new BaseSchema()
+      .setFormat(Format.CSV)
+      .addFields("url", "name");
+
+    schema.getNoLanguageFields();
+  }
+
+  @Test(expected = UnsupportedOperationException.class)
+  public void testGetSolrFields() {
+    Schema schema = new BaseSchema()
+      .setFormat(Format.CSV)
+      .addFields("url", "name");
+
+    schema.getSolrFields();
+  }
+
+  @Test
+  public void testAddExtractableField() {
+    Schema schema = new BaseSchema()
+      .setFormat(Format.CSV)
+      .addFields("url", "name");
+
+    schema.addExtractableField("url", "url");
+
+    assertEquals(2, schema.getPaths().size());
+    assertEquals(1, schema.getExtractableFields().size());
+    assertEquals("url", schema.getExtractableFields().get("url"));
+  }
+
+  @Test
+  public void testSetExtractableFields() {
+    Schema schema = new BaseSchema()
+      .setFormat(Format.CSV)
+      .addFields("url", "name");
+
+    Map<String, String> map = new HashMap<>();
+    map.put("url", "url");
+    schema.setExtractableFields(map);
+
+    assertEquals(2, schema.getPaths().size());
+    assertEquals(1, schema.getExtractableFields().size());
+    assertEquals("url", schema.getExtractableFields().get("url"));
+  }
+
+  @Test
+  public void testRuleCheckers() {
+    Rule rule = new Rule();
+    rule.setEquals("3");
+    rule.setDisjoint("4");
+    rule.setIn(Arrays.asList("a", "b"));
+    rule.setMinCount(1);
+    rule.setMaxCount(1);
+    rule.setMinLength(1);
+    rule.setMaxLength(10);
+    rule.setMaxLength(10);
+    rule.setPattern("^http");
+
+    Schema schema = new BaseSchema()
+      .setFormat(Format.CSV)
+      .addField(new JsonBranch("url", "url").setRules(rule));
+
+    assertEquals(8, schema.getRuleCheckers().size());
+    assertEquals("de.gwdg.metadataqa.api.rule.PatternChecker",
+      schema.getRuleCheckers().get(0).getClass().getName());
+    assertEquals("de.gwdg.metadataqa.api.rule.EqualityChecker",
+      schema.getRuleCheckers().get(1).getClass().getName());
+    assertEquals("de.gwdg.metadataqa.api.rule.DisjointChecker",
+      schema.getRuleCheckers().get(2).getClass().getName());
+    assertEquals("de.gwdg.metadataqa.api.rule.EnumerationChecker",
+      schema.getRuleCheckers().get(3).getClass().getName());
+    assertEquals("de.gwdg.metadataqa.api.rule.MinCountChecker",
+      schema.getRuleCheckers().get(4).getClass().getName());
+    assertEquals("de.gwdg.metadataqa.api.rule.MaxCountChecker",
+      schema.getRuleCheckers().get(5).getClass().getName());
+    assertEquals("de.gwdg.metadataqa.api.rule.MinLengthChecker",
+      schema.getRuleCheckers().get(6).getClass().getName());
+    assertEquals("de.gwdg.metadataqa.api.rule.MaxLengthChecker",
+      schema.getRuleCheckers().get(7).getClass().getName());
+  }
+
+  @Test
+  public void testToString() {
+    Schema schema = new BaseSchema()
+      .setFormat(Format.CSV)
+      .addFields("url", "name");
+    assertEquals("BaseSchema{categories=null, format=CSV}", schema.toString());
+  }
+
 }
