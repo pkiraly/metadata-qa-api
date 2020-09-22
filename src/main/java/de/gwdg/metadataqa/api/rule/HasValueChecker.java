@@ -11,6 +11,10 @@ public class HasValueChecker extends SingleFieldChecker {
 
   protected String fixedValue;
 
+  /**
+   * @param field The field
+   * @param fixedValue The fixed value  check against
+   */
   public HasValueChecker(JsonBranch field, String fixedValue) {
     this(field, field.getLabel(), fixedValue);
   }

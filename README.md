@@ -77,6 +77,8 @@ String metrics = output.toString();
 
 For the usage and implementation of the API see https://github.com/pkiraly/europeana-qa-api.
 
+Java doc for the actual development version of the API: https://pkiraly.github.io/metadata-qa-api.
+
 [![Build Status](https://travis-ci.org/pkiraly/metadata-qa-api.svg?branch=master)](https://travis-ci.org/pkiraly/metadata-qa-api)
 [![Coverage Status](https://coveralls.io/repos/github/pkiraly/metadata-qa-api/badge.svg?branch=master)](https://coveralls.io/github/pkiraly/metadata-qa-api?branch=master)
 [![javadoc](https://javadoc.io/badge2/de.gwdg.metadataqa/metadata-qa-api/javadoc.svg)](https://javadoc.io/doc/de.gwdg.metadataqa/metadata-qa-api)

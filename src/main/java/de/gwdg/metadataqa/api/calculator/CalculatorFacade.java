@@ -309,7 +309,8 @@ public class CalculatorFacade implements Serializable {
     return measureWithGenerics(content, String.class);
   }
 
-  protected <T extends XmlFieldInstance> Object measureWithGenerics(String content, Class outputClass)
+  protected <T extends XmlFieldInstance> Object measureWithGenerics(String content,
+                                                                    Class outputClass)
       throws InvalidJsonException {
     conditionalConfiguration();
 
