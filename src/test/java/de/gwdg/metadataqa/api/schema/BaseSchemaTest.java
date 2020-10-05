@@ -4,15 +4,11 @@ import com.opencsv.CSVIterator;
 import com.opencsv.CSVReaderHeaderAware;
 import com.opencsv.exceptions.CsvValidationException;
 import de.gwdg.metadataqa.api.calculator.CalculatorFacade;
-import de.gwdg.metadataqa.api.configuration.Configuration;
-import de.gwdg.metadataqa.api.configuration.ConfigurationReader;
-import de.gwdg.metadataqa.api.configuration.Field;
-import de.gwdg.metadataqa.api.configuration.Rule;
+import de.gwdg.metadataqa.api.configuration.*;
 import de.gwdg.metadataqa.api.json.JsonBranch;
 import de.gwdg.metadataqa.api.model.Category;
 import de.gwdg.metadataqa.api.rule.RuleCatalog;
 import de.gwdg.metadataqa.api.util.CsvReader;
-import de.gwdg.metadataqa.api.util.SchemaFactory;
 import org.junit.Test;
 
 import java.io.File;

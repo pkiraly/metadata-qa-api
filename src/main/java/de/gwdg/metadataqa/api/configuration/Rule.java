@@ -9,6 +9,7 @@ public class Rule {
   private String disjoint;
   private List<String> in;
   private List<Rule> and;
+  private List<Rule> or;
   private Integer minCount;
   private Integer maxCount;
   private Integer minExclusive;
@@ -29,12 +30,22 @@ public class Rule {
     this.pattern = pattern;
   }
 
+  public Rule withPattern(String pattern) {
+    setPattern(pattern);
+    return this;
+  }
+
   public String getEquals() {
     return equals;
   }
 
   public void setEquals(String equals) {
     this.equals = equals;
+  }
+
+  public Rule withEquals(String equals) {
+    setEquals(equals);
+    return this;
   }
 
   public String getDisjoint() {
@@ -45,12 +56,22 @@ public class Rule {
     this.disjoint = disjoint;
   }
 
+  public Rule withDisjoint(String disjoint) {
+    setDisjoint(disjoint);
+    return this;
+  }
+
   public List<String> getIn() {
     return in;
   }
 
   public void setIn(List<String> in) {
     this.in = in;
+  }
+
+  public Rule withIn(List<String> in) {
+    setIn(in);
+    return this;
   }
 
   public List<Rule> getAnd() {
@@ -61,12 +82,35 @@ public class Rule {
     this.and = and;
   }
 
+  public Rule withAnd(List<Rule> and) {
+    setAnd(and);
+    return this;
+  }
+
+  public List<Rule> getOr() {
+    return and;
+  }
+
+  public void setOr(List<Rule> or) {
+    this.or = or;
+  }
+
+  public Rule withOr(List<Rule> or) {
+    setOr(or);
+    return this;
+  }
+
   public Integer getMinCount() {
     return minCount;
   }
 
   public void setMinCount(int minCount) {
     this.minCount = minCount;
+  }
+
+  public Rule withMinCount(int minCount) {
+    setMinCount(minCount);
+    return this;
   }
 
   public Integer getMaxCount() {
@@ -77,12 +121,22 @@ public class Rule {
     this.maxCount = maxCount;
   }
 
+  public Rule withMaxCount(int maxCount) {
+    setMaxCount(maxCount);
+    return this;
+  }
+
   public Integer getMinExclusive() {
     return minExclusive;
   }
 
   public void setMinExclusive(int minExclusive) {
     this.minExclusive = minExclusive;
+  }
+
+  public Rule withMinExclusive(int minExclusive) {
+    setMinExclusive(minExclusive);
+    return this;
   }
 
   public Integer getMinInclusive() {
@@ -93,12 +147,22 @@ public class Rule {
     this.minInclusive = minInclusive;
   }
 
+  public Rule withMinInclusive(int minInclusive) {
+    setMinInclusive(minInclusive);
+    return this;
+  }
+
   public Integer getMaxExclusive() {
     return maxExclusive;
   }
 
   public void setMaxExclusive(int maxExclusive) {
     this.maxExclusive = maxExclusive;
+  }
+
+  public Rule withMaxExclusive(int maxExclusive) {
+    setMaxExclusive(maxExclusive);
+    return this;
   }
 
   public Integer getMaxInclusive() {
@@ -109,12 +173,22 @@ public class Rule {
     this.maxInclusive = maxInclusive;
   }
 
+  public Rule withMaxInclusive(int maxInclusive) {
+    setMaxInclusive(maxInclusive);
+    return this;
+  }
+
   public Integer getMinLength() {
     return minLength;
   }
 
   public void setMinLength(int minLength) {
     this.minLength = minLength;
+  }
+
+  public Rule withMinLength(int minLength) {
+    setMinLength(minLength);
+    return this;
   }
 
   public Integer getMaxLength() {
@@ -125,12 +199,22 @@ public class Rule {
     this.maxLength = maxLength;
   }
 
+  public Rule withMaxLength(int maxLength) {
+    setMaxLength(maxLength);
+    return this;
+  }
+
   public Integer getLessThan() {
     return lessThan;
   }
 
   public void setLessThan(int lessThan) {
     this.lessThan = lessThan;
+  }
+
+  public Rule withLessThan(int lessThan) {
+    setLessThan(lessThan);
+    return this;
   }
 
   public Integer getLessThanOrEquals() {
@@ -141,11 +225,21 @@ public class Rule {
     this.lessThanOrEquals = lessThanOrEquals;
   }
 
+  public Rule withLessThanOrEquals(int lessThanOrEquals) {
+    setLessThanOrEquals(lessThanOrEquals);
+    return this;
+  }
+
   public String getHasValue() {
     return hasValue;
   }
 
   public void setHasValue(String hasValue) {
     this.hasValue = hasValue;
+  }
+
+  public Rule withHasValue(String hasValue) {
+    setHasValue(hasValue);
+    return this;
   }
 }

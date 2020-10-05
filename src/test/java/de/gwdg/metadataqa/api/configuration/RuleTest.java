@@ -2,9 +2,7 @@ package de.gwdg.metadataqa.api.configuration;
 
 import org.junit.Test;
 
-import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.List;
 
 import static org.junit.Assert.assertEquals;
 
@@ -12,28 +10,26 @@ public class RuleTest {
 
   @Test
   public void testAnd() {
-    List<Rule> and = new ArrayList<>();
-    Rule r1 = new Rule();
-    r1.setMinCount(1);
-    Rule r2 = new Rule();
-    r2.setMaxCount(2);
 
-    Rule rule = new Rule();
-    rule.setAnd(Arrays.asList(r1, r2));
+    Rule rule = new Rule()
+      .withAnd(Arrays.asList(
+        new Rule().withMinCount(1),
+        new Rule().withMaxCount(2)
+      ));
 
     assertEquals(2, rule.getAnd().size());
   }
 
   @Test
   public void testProperties() {
-    Rule rule = new Rule();
-    rule.setMinInclusive(1);
-    rule.setMaxInclusive(2);
-    rule.setMinExclusive(1);
-    rule.setMaxExclusive(2);
-    rule.setLessThan(1);
-    rule.setLessThanOrEquals(1);
-    rule.setHasValue("a");
+    Rule rule = new Rule()
+      .withMinInclusive(1)
+      .withMaxInclusive(2)
+      .withMinExclusive(1)
+      .withMaxExclusive(2)
+      .withLessThan(1)
+      .withLessThanOrEquals(1)
+      .withHasValue("a");
 
     assertEquals(1, (int) rule.getMinInclusive());
     assertEquals(2, (int) rule.getMaxInclusive());

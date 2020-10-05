@@ -1,5 +1,8 @@
 package de.gwdg.metadataqa.api.rule;
 
+/**
+ * Enumeration represents possible output of a rule checker: NA, PASSED, FAILED
+ */
 public enum RuleCheckingOutput {
   NA(-1),
   FAILED(0),
