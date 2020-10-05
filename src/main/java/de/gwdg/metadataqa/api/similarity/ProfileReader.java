@@ -1,6 +1,9 @@
 package de.gwdg.metadataqa.api.similarity;
 
+import de.gwdg.metadataqa.api.util.FileUtils;
+
 import java.io.IOException;
+import java.net.URISyntaxException;
 import java.nio.charset.Charset;
 import java.nio.file.Files;
 import java.nio.file.Paths;
@@ -10,6 +13,8 @@ import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
 /**
@@ -112,17 +117,19 @@ public class ProfileReader {
     return binaryPatterns;
   }
 
-  public static void main(String[] args) throws IOException {
+  public static void main(String[] args) throws IOException, URISyntaxException {
     String fieldListFile = args[0];
     String profileFile = args[1];
 
     boolean produceList = (args.length > 2 && args[2].equals("list"));
 
+    /*
     List<String> fieldLines = Files.readAllLines(
       Paths.get(fieldListFile), Charset.defaultCharset()
     );
-
     List<String> canonicalFieldList = Arrays.asList(fieldLines.get(0).split(";"));
+    */
+    List<String> canonicalFieldList = ProfileReader.parseFieldCountFile(fieldListFile);
 
     List<String> profiles = Files.readAllLines(
       Paths.get(profileFile), Charset.defaultCharset()
@@ -152,5 +159,20 @@ public class ProfileReader {
             });
         });
     }
+  }
+
+  public static List<String> parseFieldCountFile(String fileName)
+      throws IOException, URISyntaxException {
+    List<String> fields = new ArrayList<>();
+    String line = FileUtils.readFirstLine(fileName);
+    Matcher matcher = Pattern.compile("^[^,]+,\"(.*)\"$").matcher(line);
+    if (matcher.matches()) {
+      String fieldsWithCount = matcher.group(1);
+      for (String fieldWithCount : fieldsWithCount.split(",")) {
+        String[] parts = fieldWithCount.split("=");
+        fields.add(parts[0]);
+      }
+    }
+    return fields;
   }
 }
