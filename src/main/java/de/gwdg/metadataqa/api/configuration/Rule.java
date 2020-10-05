@@ -88,7 +88,7 @@ public class Rule {
   }
 
   public List<Rule> getOr() {
-    return and;
+    return or;
   }
 
   public void setOr(List<Rule> or) {
