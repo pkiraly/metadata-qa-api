@@ -18,8 +18,8 @@ public class RuleTest {
       ));
 
     assertEquals(2, rule.getAnd().size());
-    assertEquals(1, (int) rule.getOr().get(0).getMinCount());
-    assertEquals(2, (int) rule.getOr().get(1).getMaxCount());
+    assertEquals(1, (int) rule.getAnd().get(0).getMinCount());
+    assertEquals(2, (int) rule.getAnd().get(1).getMaxCount());
   }
 
   @Test
