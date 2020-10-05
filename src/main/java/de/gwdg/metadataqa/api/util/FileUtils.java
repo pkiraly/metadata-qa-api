@@ -9,7 +9,10 @@ import java.nio.charset.Charset;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Scanner;
+
 import org.apache.commons.lang3.StringUtils;
 
 /**
@@ -31,7 +34,7 @@ public final class FileUtils {
   public static Path getPath(String fileName) throws IOException, URISyntaxException {
     URL url = classLoader.getResource(fileName);
     if (url == null) {
-      throw new IOException(String.format("File %s in not available", fileName));
+      throw new IOException(String.format("File %s is not available", fileName));
     }
     return Paths.get(url.toURI());
   }
@@ -70,5 +73,20 @@ public final class FileUtils {
       sb.append((char) cp);
     }
     return sb.toString();
+  }
+
+  public static List<String> readLinesFromFile(String fileName) throws IOException {
+    List<String> lines = new ArrayList<>();
+    Scanner scanner = new Scanner(new File(fileName));
+    while (scanner.hasNextLine()) {
+      lines.add(scanner.nextLine());
+    }
+    scanner.close();
+    return lines;
+  }
+
+  public static String readFirstLineFromFile(String fileName) throws IOException {
+    List<String> lines = FileUtils.readLinesFromFile(fileName);
+    return lines.get(0);
   }
 }

@@ -23,7 +23,7 @@ public class ProfileReaderTest {
   @Before
   public void setUp() {
     try {
-      canonicalFieldList = ProfileReader.parseFieldCountFile(fieldsFile);
+      canonicalFieldList = ProfileReader.parseFieldCountLine(FileUtils.readFirstLine(fieldsFile));
       profiles = FileUtils.readLines(profileFile);
     } catch (URISyntaxException e) {
       e.printStackTrace();
@@ -94,7 +94,7 @@ public class ProfileReaderTest {
         "dcterms:extent", "dcterms:medium", "dcterms:isPartOf", "dc:format",
         "edm:type", "dc:title"
       ),
-      ProfileReader.parseFieldCountFile(fieldsFile)
+      ProfileReader.parseFieldCountLine(FileUtils.readFirstLine(fieldsFile))
     );
   }
 }

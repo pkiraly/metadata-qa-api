@@ -129,7 +129,8 @@ public class ProfileReader {
     );
     List<String> canonicalFieldList = Arrays.asList(fieldLines.get(0).split(";"));
     */
-    List<String> canonicalFieldList = ProfileReader.parseFieldCountFile(fieldListFile);
+    List<String> canonicalFieldList = ProfileReader.parseFieldCountLine(
+      FileUtils.readFirstLineFromFile(fieldListFile));
 
     List<String> profiles = Files.readAllLines(
       Paths.get(profileFile), Charset.defaultCharset()
@@ -161,10 +162,9 @@ public class ProfileReader {
     }
   }
 
-  public static List<String> parseFieldCountFile(String fileName)
+  public static List<String> parseFieldCountLine(String line)
       throws IOException, URISyntaxException {
     List<String> fields = new ArrayList<>();
-    String line = FileUtils.readFirstLine(fileName);
     Matcher matcher = Pattern.compile("^[^,]+,\"(.*)\"$").matcher(line);
     if (matcher.matches()) {
       String fieldsWithCount = matcher.group(1);
