@@ -97,4 +97,6 @@ public class ProfileReaderTest {
       ProfileReader.parseFieldCountLine(FileUtils.readFirstLine(fieldsFile))
     );
   }
+
+  
 }

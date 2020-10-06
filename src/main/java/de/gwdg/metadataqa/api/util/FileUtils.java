@@ -23,9 +23,6 @@ public final class FileUtils {
 
   private static ClassLoader classLoader = FileUtils.class.getClassLoader();
 
-  private FileUtils() {
-  }
-
   public static List<String> readLines(String fileName)
       throws URISyntaxException, IOException {
     return Files.readAllLines(getPath(fileName), Charset.defaultCharset());
