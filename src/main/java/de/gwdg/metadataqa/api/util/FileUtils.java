@@ -47,12 +47,6 @@ public final class FileUtils {
     return StringUtils.join(readLinesFromResource(fileName), "");
   }
 
-  public static Object buildDoc(String fileName) throws URISyntaxException, IOException {
-    String jsonString = readFirstLineFromResource(fileName);
-    Object jsonDoc = Configuration.defaultConfiguration().jsonProvider().parse(jsonString);
-    return jsonDoc;
-  }
-
   public static String readFromUrl(String url) throws IOException {
     InputStream is = new URL(url).openStream();
     try {
