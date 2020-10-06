@@ -4,6 +4,9 @@ import org.junit.Test;
 
 import java.io.File;
 import java.io.IOException;
+import java.lang.reflect.Constructor;
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Modifier;
 import java.net.URISyntaxException;
 import java.nio.file.Path;
 import java.util.List;
@@ -85,4 +88,20 @@ public class FileUtilsTest {
     fail("'File is not available' exception did not throw!");
   }
 
+  @Test(expected = InstantiationException.class)
+  public void Constructor_instantiationIsImpossible()
+      throws NoSuchMethodException, IllegalAccessException,
+             InstantiationException, InvocationTargetException {
+    Constructor<FileUtils> constructor = FileUtils.class.getDeclaredConstructor();
+    assertTrue(Modifier.isPrivate(constructor.getModifiers()));
+    constructor.setAccessible(true);
+    try {
+      FileUtils u = constructor.newInstance();
+      assertNull(u);
+    } catch (InstantiationException e) {
+      assertNotNull(e);
+      throw e;
+    }
+    fail("Instantiation exception did not throw!");
+  }
 }

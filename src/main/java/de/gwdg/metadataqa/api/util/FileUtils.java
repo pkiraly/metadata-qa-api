@@ -1,7 +1,5 @@
 package de.gwdg.metadataqa.api.util;
 
-import com.jayway.jsonpath.Configuration;
-
 import java.io.*;
 import java.net.URISyntaxException;
 import java.net.URL;
@@ -19,7 +17,7 @@ import org.apache.commons.lang3.StringUtils;
  *
  * @author Péter Király <peter.kiraly at gwdg.de>
  */
-public final class FileUtils {
+public abstract class FileUtils {
 
   private static ClassLoader classLoader = FileUtils.class.getClassLoader();
 
