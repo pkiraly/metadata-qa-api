@@ -6,7 +6,10 @@ import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
+import java.io.ByteArrayOutputStream;
+import java.io.File;
 import java.io.IOException;
+import java.io.PrintStream;
 import java.net.URISyntaxException;
 import java.util.*;
 
@@ -98,5 +101,27 @@ public class ProfileReaderTest {
     );
   }
 
+  @Test
+  public void main() throws IOException, URISyntaxException {
+    String dir = new File(".").getAbsolutePath() + "/src/test/resources/profiles/";
+    String fieldsFile = dir + "d-989.profile-field-counts.csv";
+    String profileFile = dir + "d-989.profile-patterns.csv";
 
+    ByteArrayOutputStream outContent = new ByteArrayOutputStream();
+    System.setOut(new PrintStream(outContent));
+
+    ProfileReader.main(new String[]{fieldsFile, profileFile});
+    String common = ",d-989,dc:title;dc:description;dc:creator;dc:contributor;dc:type;dc:identifier;dc:language;";
+    String expected =
+      "0" + common + "dc:coverage;dc:subject;dcterms:extent;dcterms:medium;dcterms:isPartOf;dc:format;edm:type,14,2555,32.6059213884635\n" +
+      "0" + common + "dc:coverage;dc:subject;dc:date;dcterms:extent;dcterms:medium;dcterms:isPartOf;dc:format;edm:type,15,1356,17.304747320061256\n" +
+      "1" + common + "dc:subject;dcterms:extent;dcterms:isPartOf;edm:type,11,2547,32.503828483920365\n" +
+      "2" + common + "dc:subject;dcterms:extent;dcterms:medium;dcterms:isPartOf;dc:format;edm:type,13,798,10.183767228177642\n" +
+      "2" + common + "dc:coverage;dc:subject;dcterms:extent;dcterms:isPartOf;edm:type,12,358,4.568657478305258\n" +
+      "3" + common + "dc:subject;dc:date;dcterms:extent;dcterms:medium;dcterms:isPartOf;dc:format;edm:type,14,156,1.9908116385911179\n" +
+      "3" + common + "dc:coverage;dc:date;dcterms:extent;dcterms:medium;dcterms:isPartOf;dc:format;edm:type,14,12,0.15313935681470137\n" +
+      "3" + common + "dc:coverage;dc:subject;dc:date;dcterms:extent;dcterms:isPartOf;edm:type,13,8,0.10209290454313426\n" +
+      "4" + common + "dc:subject;dc:date;dcterms:extent;dcterms:isPartOf;edm:type,12,46,0.587034201123022\n";
+    assertEquals(expected, outContent.toString());
+  }
 }
