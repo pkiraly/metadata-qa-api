@@ -45,7 +45,7 @@ public class TfIdfExtractorTest {
   public String readContent(String fileName) throws URISyntaxException, IOException {
     // Path path = Paths.get(getClass().getClassLoader().getResource(fileName).toURI());
     // List<String> lines = Files.readAllLines(path, Charset.defaultCharset());
-    return StringUtils.join(FileUtils.readLines(fileName), "");
+    return StringUtils.join(FileUtils.readLinesFromResource(fileName), "");
   }
 
   @Test

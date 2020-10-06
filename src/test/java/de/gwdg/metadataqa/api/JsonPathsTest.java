@@ -36,7 +36,7 @@ public class JsonPathsTest {
   @Test
   public void testJsonPathManual() throws URISyntaxException, IOException {
     document = Configuration.defaultConfiguration()
-          .jsonProvider().parse(FileUtils.readContent("general/book.json"));
+          .jsonProvider().parse(FileUtils.readContentFromResource("general/book.json"));
 
     List<String> authors = JsonPath.read(document, "$.store.book[*].author");
     assertEquals(
@@ -48,7 +48,7 @@ public class JsonPathsTest {
 
     List<Map<String, Object>> expensiveBooks = JsonPath
           .using(Configuration.defaultConfiguration())
-          .parse(FileUtils.readContent("general/book.json"))
+          .parse(FileUtils.readContentFromResource("general/book.json"))
           .read("$.store.book[?(@.price > 10)]", List.class);
     assertEquals(2, expensiveBooks.size());
 
@@ -77,7 +77,7 @@ public class JsonPathsTest {
   @Test
   public void testOr() throws URISyntaxException, IOException {
     document = Configuration.defaultConfiguration()
-          .jsonProvider().parse(FileUtils.readContent("general/test.json"));
+          .jsonProvider().parse(FileUtils.readContentFromResource("general/test.json"));
     String providerProxy = "$.['ore:Proxy'][?(@['edm:europeanaProxy'][0] == 'false')][?]";
 
     String idPath = "$.identifier";

@@ -1,7 +1,6 @@
 package de.gwdg.metadataqa.api.similarity;
 
 import de.gwdg.metadataqa.api.util.FileUtils;
-import org.junit.Before;
 import org.junit.Test;
 
 import java.io.IOException;
@@ -17,8 +16,8 @@ public class RecordPatternTest {
   public void testConstructor() throws IOException, URISyntaxException {
     String fieldsFile = "profiles/d-989.profile-field-counts.csv";
     String profileFile = "profiles/d-989.profile-patterns.csv";
-    List<String> canonicalFieldList = ProfileReader.parseFieldCountLine(FileUtils.readFirstLine(fieldsFile));;
-    List<String> profiles = FileUtils.readLines(profileFile);
+    List<String> canonicalFieldList = ProfileReader.parseFieldCountLine(FileUtils.readFirstLineFromResource(fieldsFile));;
+    List<String> profiles = FileUtils.readLinesFromResource(profileFile);
 
     BinaryMaker binaryMaker = new BinaryMaker(canonicalFieldList);
     RecordPattern row = new RecordPattern(binaryMaker, Arrays.asList(profiles.get(0).trim().split(",")));

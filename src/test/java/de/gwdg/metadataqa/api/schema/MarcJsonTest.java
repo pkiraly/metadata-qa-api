@@ -43,7 +43,7 @@ public class MarcJsonTest {
 
   @Before
   public void setUp() throws URISyntaxException, IOException {
-    cache = new JsonPathCache(FileUtils.readFirstLine("general/marc.json"));
+    cache = new JsonPathCache(FileUtils.readFirstLineFromResource("general/marc.json"));
     initializeFixedValues();
     // "$.datafield[?(@.tag == '016')]"
   }

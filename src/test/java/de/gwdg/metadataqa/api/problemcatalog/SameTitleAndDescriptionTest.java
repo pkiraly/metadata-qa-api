@@ -42,7 +42,7 @@ public class SameTitleAndDescriptionTest {
 
   @Test
   public void hello() throws IOException, URISyntaxException {
-    String jsonString = FileUtils.readFirstLine("problem-catalog/same-title-and-description.json");
+    String jsonString = FileUtils.readFirstLineFromResource("problem-catalog/same-title-and-description.json");
     JsonPathCache cache = new JsonPathCache(jsonString);
 
     EdmSchema schema = new EdmOaiPmhJsonSchema();

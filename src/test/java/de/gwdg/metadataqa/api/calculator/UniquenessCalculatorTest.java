@@ -36,7 +36,7 @@ public class UniquenessCalculatorTest {
     );
     schema = new EdmOaiPmhJsonSchema();
     calculator = new UniquenessCalculator(solrClient, schema);
-    jsonString = FileUtils.readFirstLine("general/test.json");
+    jsonString = FileUtils.readFirstLineFromResource("general/test.json");
     cache = new JsonPathCache(jsonString);
   }
 

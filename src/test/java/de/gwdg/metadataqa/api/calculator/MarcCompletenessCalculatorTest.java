@@ -35,7 +35,7 @@ public class MarcCompletenessCalculatorTest {
   @Before
   public void setUp() throws URISyntaxException, IOException {
     calculator = new CompletenessCalculator(new MarcJsonSchema());
-    cache = new JsonPathCache(FileUtils.readFirstLine("general/marc.json"));
+    cache = new JsonPathCache(FileUtils.readFirstLineFromResource("general/marc.json"));
   }
 
   @After

@@ -105,7 +105,7 @@ public class JsonPathCacheTest {
 
   @Test
   public void testLanguage() throws URISyntaxException, IOException {
-    jsonString = FileUtils.readFirstLine("problem-catalog/same-title-and-description.json");
+    jsonString = FileUtils.readFirstLineFromResource("problem-catalog/same-title-and-description.json");
     String jsonPath = "$.['edm:Place'][0]['skos:prefLabel']";
 
     JsonPathCache cache = new JsonPathCache(jsonString);
@@ -123,7 +123,7 @@ public class JsonPathCacheTest {
    */
   @Test
   public void testArrayInInnerArray() throws URISyntaxException, IOException {
-    jsonString = FileUtils.readFirstLine("issue-examples/issue5-array-in-innerarray.json");
+    jsonString = FileUtils.readFirstLineFromResource("issue-examples/issue5-array-in-innerarray.json");
     String jsonPath = "$.['ore:Proxy'][?(@['edm:europeanaProxy'][0] == 'false')]['dcterms:created']";
 
     JsonPathCache cache = new JsonPathCache(jsonString);
@@ -143,7 +143,7 @@ public class JsonPathCacheTest {
    */
   @Test
   public void testDataProviderHash() throws URISyntaxException, IOException {
-    jsonString = FileUtils.readFirstLine("issue-examples/issue6-handling-missing-provider.json");
+    jsonString = FileUtils.readFirstLineFromResource("issue-examples/issue6-handling-missing-provider.json");
     String jsonPath = "$.['ore:Aggregation'][0]['edm:dataProvider'][0]";
 
     JsonPathCache cache = new JsonPathCache(jsonString);

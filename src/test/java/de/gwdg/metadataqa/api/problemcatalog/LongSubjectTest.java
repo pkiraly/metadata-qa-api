@@ -41,7 +41,7 @@ public class LongSubjectTest {
 
   @Test
   public void test() throws IOException, URISyntaxException {
-    JsonPathCache cache = new JsonPathCache(FileUtils.readFirstLine("problem-catalog/long-subject.json"));
+    JsonPathCache cache = new JsonPathCache(FileUtils.readFirstLineFromResource("problem-catalog/long-subject.json"));
 
     EdmSchema schema = new EdmOaiPmhJsonSchema();
     ProblemCatalog catalog = new ProblemCatalog(schema);

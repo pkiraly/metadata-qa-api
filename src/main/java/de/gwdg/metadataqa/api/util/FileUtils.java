@@ -23,7 +23,7 @@ public final class FileUtils {
 
   private static ClassLoader classLoader = FileUtils.class.getClassLoader();
 
-  public static List<String> readLines(String fileName)
+  public static List<String> readLinesFromResource(String fileName)
       throws URISyntaxException, IOException {
     return Files.readAllLines(getPath(fileName), Charset.defaultCharset());
   }
@@ -36,19 +36,19 @@ public final class FileUtils {
     return Paths.get(url.toURI());
   }
 
-  public static String readFirstLine(String fileName)
+  public static String readFirstLineFromResource(String fileName)
       throws URISyntaxException, IOException {
-    List<String> lines = readLines(fileName);
+    List<String> lines = readLinesFromResource(fileName);
     return lines.get(0);
   }
 
-  public static String readContent(String fileName)
+  public static String readContentFromResource(String fileName)
       throws URISyntaxException, IOException {
-    return StringUtils.join(readLines(fileName), "");
+    return StringUtils.join(readLinesFromResource(fileName), "");
   }
 
   public static Object buildDoc(String fileName) throws URISyntaxException, IOException {
-    String jsonString = readFirstLine(fileName);
+    String jsonString = readFirstLineFromResource(fileName);
     Object jsonDoc = Configuration.defaultConfiguration().jsonProvider().parse(jsonString);
     return jsonDoc;
   }

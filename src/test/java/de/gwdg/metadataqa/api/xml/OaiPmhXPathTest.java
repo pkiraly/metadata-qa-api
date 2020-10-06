@@ -163,7 +163,7 @@ public class OaiPmhXPathTest {
     assertEquals(
       expected,
       calculatorFacade.measure(
-        FileUtils.readContent(
+        FileUtils.readContentFromResource(
           "general/europeana-oai-pmh-92062-BibliographicResource_1000126015451.xml")
       )
     );
@@ -180,7 +180,7 @@ public class OaiPmhXPathTest {
     assertEquals("//skos:Concept", path);
 
     OaiPmhXPath oaiPmhXPath = new OaiPmhXPath(
-      FileUtils.readContent(
+      FileUtils.readContentFromResource(
         "general/europeana-oai-pmh-92062-BibliographicResource_1000126015451.xml")
     );
     List<Node> attr = oaiPmhXPath.extractNodes("//skos:Concept[1]/@rdf:about");

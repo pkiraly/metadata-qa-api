@@ -41,7 +41,7 @@ public class DuplicatedStringsTest {
     ProblemCatalog catalog = new ProblemCatalog(schema);
     detector = new DuplicatedStrings(catalog);
 
-    cache = new JsonPathCache(FileUtils.readFirstLine(problemFileName));
+    cache = new JsonPathCache(FileUtils.readFirstLineFromResource(problemFileName));
   }
 
   @After

@@ -36,7 +36,7 @@ public class NodeEnabledCalculatorTest {
 
   @Test
   public void hello() throws URISyntaxException, IOException {
-    String jsonString = FileUtils.readFirstLine("general/test.json");
+    String jsonString = FileUtils.readFirstLineFromResource("general/test.json");
 
     Object jsonDocument = Configuration.defaultConfiguration().jsonProvider().parse(jsonString);
     for (JsonBranch collectionBranch : schema.getCollectionPaths()) {

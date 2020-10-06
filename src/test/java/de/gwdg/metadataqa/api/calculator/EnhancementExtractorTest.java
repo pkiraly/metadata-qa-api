@@ -38,7 +38,7 @@ public class EnhancementExtractorTest {
 
   @Before
   public void setUp() throws URISyntaxException, IOException {
-    cache = new JsonPathCache(FileUtils.readFirstLine("general/test.json"));
+    cache = new JsonPathCache(FileUtils.readFirstLineFromResource("general/test.json"));
   }
 
   @After
@@ -55,7 +55,7 @@ public class EnhancementExtractorTest {
 
   @Test
   public void testXml() throws IOException, URISyntaxException {
-    cache = new XmlPathCache(FileUtils.readContent("general/europeana-oai-pmh.xml"));
+    cache = new XmlPathCache(FileUtils.readContentFromResource("general/europeana-oai-pmh.xml"));
     List<String> enhancementIds = EnhancementIdExtractor.extractIds(cache, new EdmOaiPmhXmlSchema());
     assertTrue(!enhancementIds.isEmpty());
     assertEquals(27, enhancementIds.size());

@@ -47,7 +47,7 @@ public class CalculatorFacadeTest {
     calculatorFacade.setSchema(new EdmOaiPmhJsonSchema());
     calculatorFacade.configure();
     String expected = "0.184,1.0,0.181818,0.388889,0.272727,0.5,0.357143,0.75,0.363636,0.4,1,1,1,0,0,0,0,0,1,1,0,0,0,0,1,0,0,0,0,0,0,0,1,0,0,1,0,0,1,1,0,0,1,1,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,1,1,1,1,1,1,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,1,0,0,1,1,1,0,0,0,0,0,1,1,0,0,0,0,5,0,0,0,0,0,0,0,1,0,0,1,0,0,1,1,0,0,1,1,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,1,1,1,1,1,1,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,12,0,0,0.0,0.0,0.0";
-    assertEquals(expected, calculatorFacade.measure(FileUtils.readFirstLine("general/test.json")));
+    assertEquals(expected, calculatorFacade.measure(FileUtils.readFirstLineFromResource("general/test.json")));
   }
 
   @Test
@@ -56,7 +56,7 @@ public class CalculatorFacadeTest {
     calculatorFacade.setSchema(new EdmOaiPmhJsonSchema());
     calculatorFacade.configure();
     Map<String, Object> result = calculatorFacade.measureAsMap(
-      FileUtils.readFirstLine("general/test.json")
+      FileUtils.readFirstLineFromResource("general/test.json")
     );
     assertTrue(result instanceof Map);
     assertEquals(263, result.size());
@@ -70,7 +70,7 @@ public class CalculatorFacadeTest {
     calculatorFacade.configure();
 
     List<String> result = calculatorFacade.measureAsList(
-      FileUtils.readFirstLine("general/test.json")
+      FileUtils.readFirstLineFromResource("general/test.json")
     );
     assertTrue(result instanceof List);
     assertEquals(263, result.size());
@@ -83,7 +83,7 @@ public class CalculatorFacadeTest {
     calculatorFacade.setSchema(new EdmOaiPmhJsonSchema());
     calculatorFacade.configure();
     String expected = "0.184,1.0,0.181818,0.388889,0.272727,0.5,0.357143,0.75,0.363636,0.4,1,1,1,0,0,0,0,0,1,1,0,0,0,0,1,0,0,0,0,0,0,0,1,0,0,1,0,0,1,1,0,0,1,1,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,1,1,1,1,1,1,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,1,0,0,1,1,1,0,0,0,0,0,1,1,0,0,0,0,5,0,0,0,0,0,0,0,1,0,0,1,0,0,1,1,0,0,1,1,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,1,1,1,1,1,1,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,12,0,0,0.0,0.0,0.0";
-    assertEquals(expected, calculatorFacade.measure(FileUtils.readFirstLine("general/test.json")));
+    assertEquals(expected, calculatorFacade.measure(FileUtils.readFirstLineFromResource("general/test.json")));
   }
 
   @Test

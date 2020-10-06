@@ -17,7 +17,7 @@ public class JsonUtilsTest {
   String problemFileName = "issue-examples/issue48.json";
 
   public JsonUtilsTest() throws IOException, URISyntaxException {
-    jsonString = FileUtils.readFirstLine(problemFileName);
+    jsonString = FileUtils.readFirstLineFromResource(problemFileName);
   }
 
   @BeforeClass

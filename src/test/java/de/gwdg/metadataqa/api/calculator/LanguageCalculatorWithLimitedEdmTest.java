@@ -27,7 +27,7 @@ public class LanguageCalculatorWithLimitedEdmTest {
   @Test
   public void testMeasure() throws URISyntaxException, IOException {
     LanguageCalculator calculator = new LanguageCalculator(new EdmOaiPmLimitedJsonSchema());
-    JsonPathCache cache = new JsonPathCache(FileUtils.readFirstLine("general/test.json"));
+    JsonPathCache cache = new JsonPathCache(FileUtils.readFirstLineFromResource("general/test.json"));
     calculator.measure(cache);
     assertNotNull(calculator.getCsv(false, CompressionLevel.NORMAL));
     assertEquals("de:1,_1:1,_1:1,_1:1,_1:1,_1:1,_0:1,_0:1,_1:1,_1:1,_1:1,_1:1,de:4;en:1,_1:1,_1:1,_1:1,_1:1,_1:1,_1:1,_1:1,_2:1,_1:1,_1:1,_0:1,_1:1,_2:1,en:1,_0:1", calculator.getCsv(false, CompressionLevel.NORMAL));
@@ -36,7 +36,7 @@ public class LanguageCalculatorWithLimitedEdmTest {
   @Test
   public void testCountersGetLanguageMap() throws URISyntaxException, IOException {
     LanguageCalculator calculator = new LanguageCalculator(new EdmOaiPmLimitedJsonSchema());
-    JsonPathCache cache = new JsonPathCache(FileUtils.readFirstLine("general/test.json"));
+    JsonPathCache cache = new JsonPathCache(FileUtils.readFirstLineFromResource("general/test.json"));
     calculator.measure(cache);
     String languages = calculator.getCsv(true, CompressionLevel.NORMAL);
     assertNotNull(languages);
@@ -46,7 +46,7 @@ public class LanguageCalculatorWithLimitedEdmTest {
   @Test
   public void testGetLanguageMap() throws URISyntaxException, IOException {
     LanguageCalculator calculator = new LanguageCalculator(new EdmOaiPmLimitedJsonSchema());
-    JsonPathCache cache = new JsonPathCache(FileUtils.readFirstLine("general/test.json"));
+    JsonPathCache cache = new JsonPathCache(FileUtils.readFirstLineFromResource("general/test.json"));
     calculator.measure(cache);
 
     Map<String, String> languages = calculator.getLanguageMap();

@@ -39,7 +39,7 @@ public class TruncatedIDTest {
   public void setUp() throws URISyntaxException, IOException {
     schema = new EdmOaiPmhJsonSchema();
     calculator = new FieldExtractor(schema);
-    String jsonContent = FileUtils.readFirstLine("issue-examples/issue41-truncatedID.json");
+    String jsonContent = FileUtils.readFirstLineFromResource("issue-examples/issue41-truncatedID.json");
     cache = new JsonPathCache(jsonContent);
   }
 

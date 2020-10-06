@@ -40,7 +40,7 @@ public class UniquenessExtractorTest {
   }
 
   public String readContent(String fileName) throws URISyntaxException, IOException {
-    return StringUtils.join(FileUtils.readLines(fileName), "");
+    return StringUtils.join(FileUtils.readLinesFromResource(fileName), "");
   }
 
   @Test
@@ -57,7 +57,7 @@ public class UniquenessExtractorTest {
 
   @Test
   public void testJsonPath() throws URISyntaxException, IOException {
-    JsonPathCache cache = new JsonPathCache(FileUtils.readFirstLine("general/edm-fullbean.json"));
+    JsonPathCache cache = new JsonPathCache(FileUtils.readFirstLineFromResource("general/edm-fullbean.json"));
     String path = "$.['proxies'][?(@['europeanaProxy'] == false)]['dcTitle']";
     List<XmlFieldInstance> values = (List<XmlFieldInstance>) cache.get(path);
     assertEquals(1, values.size());
