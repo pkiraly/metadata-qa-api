@@ -35,5 +35,32 @@ public class RecordPatternTest {
     ), row.getFieldList());
 
     assertEquals("11111111111111111111001111111111111", row.getBinary());
+
+    // TODO: deprecate
+    assertNull(row.getLength());
+    assertNull(row.getTotal());
+
+    assertEquals("RecordPattern{" +
+        "record=[" +
+          "d-989, " +
+          "dc:title;dc:description;dc:creator;dc:contributor;dc:type;dc:identifier;dc:language;" +
+          "dc:coverage;dc:subject;dcterms:extent;dcterms:medium;dcterms:isPartOf;dc:format;edm:type, " +
+          "14, " +
+          "2555, " +
+          "32.6059213884635], " +
+        "fields='dc:title;dc:description;dc:creator;dc:contributor;dc:type;dc:identifier;dc:language;" +
+                "dc:coverage;dc:subject;dcterms:extent;dcterms:medium;dcterms:isPartOf;dc:format;edm:type', " +
+        "fieldList=[dc:title, dc:description, dc:creator, dc:contributor, dc:type, dc:identifier, " +
+                   "dc:language, dc:coverage, dc:subject, dcterms:extent, dcterms:medium, " +
+                   "dcterms:isPartOf, dc:format, edm:type], " +
+        "binary='11111111111111111111001111111111111', " +
+        "id='d-989', " +
+        "length=null, " +
+        "count=2555, " +
+        "numberOfFields=14, " +
+        "total=null, " +
+        "percent=32.6059213884635" +
+      "}",
+      row.toString());
   }
 }
