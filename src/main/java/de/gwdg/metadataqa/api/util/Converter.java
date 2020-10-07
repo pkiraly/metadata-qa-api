@@ -66,6 +66,18 @@ public abstract class Converter {
       case "java.lang.Integer":
         intValue = (Integer) value;
         break;
+      case "java.lang.Double":
+        intValue = (Integer) ((Long) Math.round((Double) value)).intValue();
+        break;
+      case "java.lang.Long":
+        intValue = (Integer) ((Long) value).intValue();
+        break;
+      case "java.lang.Float":
+        intValue = (Integer) Math.round((float)value);
+        break;
+      case "java.lang.String":
+        intValue = asInteger(Double.parseDouble((String)value));
+        break;
       default:
         intValue = (Integer) value;
         break;

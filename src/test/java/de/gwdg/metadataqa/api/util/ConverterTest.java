@@ -7,6 +7,7 @@ import org.junit.BeforeClass;
 import org.junit.Test;
 
 import java.math.BigDecimal;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 
@@ -61,6 +62,36 @@ ConverterTest {
     assertEquals(new Integer(0), Converter.asInteger(false));
     assertEquals(new Integer(1), Converter.asInteger(new Integer(1)));
     assertEquals(new Integer(1), Converter.asInteger(1));
+    assertEquals(new Integer(1), Converter.asInteger(1.0));
+    assertEquals(new Integer(2), Converter.asInteger(1.9));
+    assertEquals(new Integer(1), Converter.asInteger(new Double(1.0)));
+    assertEquals(new Integer(1), Converter.asInteger(new Float(1.0)));
+    assertEquals(new Integer(2), Converter.asInteger(new Float(1.9)));
+    assertEquals(new Integer(1), Converter.asInteger("1"));
+    assertEquals(new Integer(1), Converter.asInteger("1.0"));
+    assertEquals(new Integer(2), Converter.asInteger("1.9"));
+  }
+
+  @Test(expected = ClassCastException.class)
+  public void asInteger_withList() {
+    try {
+      assertEquals(new Integer(2), Converter.asInteger(new ArrayList()));
+    } catch (ClassCastException e) {
+      assertEquals("java.util.ArrayList cannot be cast to java.lang.Integer", e.getMessage());
+      throw e;
+    }
+    fail("Exception was not thrown.");
+  }
+
+  @Test(expected = NumberFormatException.class)
+  public void asInteger_withAlpha() {
+    try {
+      assertEquals(new Integer(2), Converter.asInteger("text"));
+    } catch (NumberFormatException e) {
+      assertEquals("For input string: \"text\"", e.getMessage());
+      throw e;
+    }
+    fail("Exception was not thrown.");
   }
 
   @Test
