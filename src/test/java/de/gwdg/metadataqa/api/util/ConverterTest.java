@@ -51,6 +51,19 @@ ConverterTest {
     assertEquals(1.0, Converter.asDouble(new Integer(1)), 0.00001);
     assertEquals(1.0, Converter.asDouble(1), 0.00001);
     assertEquals(1.0, Converter.asDouble(1.0), 0.00001);
+    assertEquals(1.0, Converter.asDouble("1.0"), 0.00001);
+    assertEquals(1.0, Converter.asDouble("1"), 0.00001);
+  }
+
+  @Test(expected = NumberFormatException.class)
+  public void asDouble_withAlpha() {
+    try {
+      assertEquals(new Integer(2), Converter.asDouble("text"));
+    } catch (NumberFormatException e) {
+      assertEquals("For input string: \"text\"", e.getMessage());
+      throw e;
+    }
+    fail("Exception was not thrown.");
   }
 
   @Test
@@ -61,6 +74,7 @@ ConverterTest {
     assertEquals(new Integer(0), Converter.asInteger(new Boolean(false)));
     assertEquals(new Integer(0), Converter.asInteger(false));
     assertEquals(new Integer(1), Converter.asInteger(new Integer(1)));
+    assertEquals(new Integer(1), Converter.asInteger(new Long(1)));
     assertEquals(new Integer(1), Converter.asInteger(1));
     assertEquals(new Integer(1), Converter.asInteger(1.0));
     assertEquals(new Integer(2), Converter.asInteger(1.9));

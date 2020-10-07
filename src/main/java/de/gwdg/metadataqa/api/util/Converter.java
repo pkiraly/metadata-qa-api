@@ -39,6 +39,9 @@ public abstract class Converter {
       case "java.lang.Integer":
         doubleValue = ((Integer) value).doubleValue();
         break;
+      case "java.lang.String":
+        doubleValue = Double.parseDouble((String) value);
+        break;
       default:
         doubleValue = (Double) value;
         break;
