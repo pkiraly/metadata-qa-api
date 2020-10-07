@@ -16,6 +16,10 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collector;
+import java.util.stream.Collectors;
+
+import org.apache.commons.lang3.BooleanUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.junit.After;
 import org.junit.AfterClass;
@@ -198,9 +202,13 @@ public class CompletenessCalculatorLimitedTest {
   public void testExistenceList() throws URISyntaxException, IOException {
     calculator.collectFields(true);
     calculator.measure(cache);
-    List<Integer> expected = Arrays.asList(new Integer[]{1,1,0,0,0,0,0,1,1,0,0,0,0,1,0,0,0,0,0,0,0,1,0,0,1,0,0,1,1,1,1,1,1,1,0});
+    List<Integer> expected = Arrays.asList(new Integer[]{
+      1,1,0,0,0,0,0,1,1,0,0,0,0,1,0,0,0,0,0,0,0,1,0,0,1,0,0,1,1,1,1,1,1,1,0});
     assertEquals(35, calculator.getExistenceCounter().size());
-    assertEquals(expected, calculator.getExistenceCounter().getCsv());
+    assertEquals(expected,
+      calculator.getExistenceCounter().getCsv().stream()
+        .map(v -> BooleanUtils.toInteger((boolean)v))
+        .collect(Collectors.toCollection(ArrayList::new)));
   }
 
   @Test

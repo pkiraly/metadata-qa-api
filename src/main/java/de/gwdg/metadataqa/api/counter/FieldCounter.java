@@ -8,7 +8,7 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import org.apache.commons.lang3.StringUtils;
-import org.jetbrains.annotations.NotNull;
+import org.apache.commons.lang3.BooleanUtils;
 
 /**
  *
@@ -56,7 +56,6 @@ public class FieldCounter<T> {
     return StringUtils.join(items, ',');
   }
 
-  @NotNull
   public List<String> getList(boolean withLabel, CompressionLevel compressionLevel) {
     List<String> items = new ArrayList<>();
     for (Map.Entry<String, T> entry : fieldMap.entrySet()) {
@@ -82,4 +81,5 @@ public class FieldCounter<T> {
     }
     return values;
   }
+
 }
