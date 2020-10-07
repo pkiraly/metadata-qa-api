@@ -75,10 +75,10 @@ public class FieldCounter<T> {
     return items;
   }
 
-  public List<Integer> getCsv() {
-    List<Integer> values = new LinkedList<>();
+  public List<T> getCsv() {
+    List<T> values = new LinkedList<>();
     for (T value : fieldMap.values()) {
-      values.add(Converter.asInteger(value));
+      values.add(value);
     }
     return values;
   }
