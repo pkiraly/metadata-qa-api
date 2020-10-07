@@ -23,6 +23,8 @@ import org.apache.commons.lang3.BooleanUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.junit.After;
 import org.junit.AfterClass;
+
+import static java.util.stream.Collectors.toList;
 import static org.junit.Assert.*;
 import org.junit.Before;
 import org.junit.BeforeClass;
@@ -208,7 +210,7 @@ public class CompletenessCalculatorLimitedTest {
     assertEquals(expected,
       calculator.getExistenceCounter().getCsv().stream()
         .map(v -> BooleanUtils.toInteger((boolean)v))
-        .collect(Collectors.toCollection(ArrayList::new)));
+        .collect(toList()));
   }
 
   @Test

@@ -17,7 +17,7 @@ import org.apache.commons.lang3.StringUtils;
  *
  * @author Péter Király <peter.kiraly at gwdg.de>
  */
-public final class Converter {
+public abstract class Converter {
 
   private Converter() {
   }
@@ -89,8 +89,10 @@ public final class Converter {
       text = StringUtils.join(((List) value), ", ");
     } else if (value instanceof RuleCheckingOutput) {
       text = ((RuleCheckingOutput)value).asString();
+    } else if (value instanceof BigDecimal) {
+      text = value.toString();
     } else {
-      throw new InvalidParameterException("Object has an unhandled type: " + value.getClass().getCanonicalName() + " " + value);
+      throw new IllegalArgumentException("Object has an unhandled type: " + value.getClass().getCanonicalName() + " " + value);
     }
     return text;
   }

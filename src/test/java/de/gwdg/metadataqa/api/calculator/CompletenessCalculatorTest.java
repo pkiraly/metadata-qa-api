@@ -16,12 +16,13 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
-import java.util.stream.Collectors;
 
 import org.apache.commons.lang3.BooleanUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.junit.After;
 import org.junit.AfterClass;
+
+import static java.util.stream.Collectors.toList;
 import static org.junit.Assert.*;
 import org.junit.Before;
 import org.junit.BeforeClass;
@@ -423,7 +424,7 @@ public class CompletenessCalculatorTest {
     assertEquals(125, calculator.getExistenceCounter().size());
     assertEquals(expected, calculator.getExistenceCounter().getCsv().stream()
       .map(v -> BooleanUtils.toInteger((boolean)v))
-      .collect(Collectors.toCollection(ArrayList::new)));
+      .collect(toList()));
   }
 
   @Test
