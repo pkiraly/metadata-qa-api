@@ -44,7 +44,7 @@ public class DefaultSolrClient implements SolrClient {
     return jsonString;
   }
 
-  private String buildUrl(String solrField, String value) {
+  public String buildUrl(String solrField, String value) {
     String url;
     if (value.equals("*")) {
       url = String.format(getSolrSearchAllPattern(), solrField, value);
