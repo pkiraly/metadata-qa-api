@@ -160,16 +160,6 @@ public class BaseSchema implements Schema, CsvAwareSchema {
     return ruleCheckers;
   }
 
-  private void addPath(JsonBranch branch) {
-    PATHS.put(branch.getLabel(), branch);
-    if (branch.getParent() == null) {
-      DIRECT_CHILDREN.put(branch.getLabel(), branch);
-    }
-    if (branch.isCollection()) {
-      COLLECTION_PATHS.put(branch.getLabel(), branch);
-    }
-  }
-
   @Override
   public List<String> getHeader() {
     List<String> headers = new ArrayList<>();

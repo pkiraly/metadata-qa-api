@@ -7,7 +7,9 @@ import de.gwdg.metadataqa.api.calculator.CalculatorFacade;
 import de.gwdg.metadataqa.api.configuration.*;
 import de.gwdg.metadataqa.api.json.JsonBranch;
 import de.gwdg.metadataqa.api.model.Category;
+import de.gwdg.metadataqa.api.rule.HasValueChecker;
 import de.gwdg.metadataqa.api.rule.RuleCatalog;
+import de.gwdg.metadataqa.api.rule.RuleChecker;
 import de.gwdg.metadataqa.api.util.CsvReader;
 import org.junit.Test;
 
@@ -425,4 +427,28 @@ public class BaseSchemaTest {
     assertEquals("BaseSchema{categories=null, format=CSV}", schema.toString());
   }
 
+  @Test
+  public void testCollection() {
+    Schema schema = new BaseSchema()
+      .addField(new JsonBranch("author", "author").setCollection(true))
+      .addField(new JsonBranch("title", "title").setCollection(false))
+      ;
+    assertNotNull(schema.getCollectionPaths());
+    assertEquals(1, schema.getCollectionPaths().size());
+    assertEquals("author", schema.getCollectionPaths().get(0).getLabel());
+  }
+
+  @Test
+  public void getRuleChecker() {
+    Schema schema = new BaseSchema()
+      .addField(new JsonBranch("author", "author").setRules(
+        new Rule().withHasValue("a")
+      ))
+      .addField(new JsonBranch("title", "title").setCollection(false))
+      ;
+    List<RuleChecker> checkers = schema.getRuleCheckers();
+    assertNotNull(checkers);
+    assertEquals(1, checkers.size());
+    assertEquals(HasValueChecker.class, checkers.get(0).getClass());
+  }
 }
