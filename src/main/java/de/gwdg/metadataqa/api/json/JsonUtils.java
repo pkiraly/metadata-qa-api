@@ -54,6 +54,8 @@ public final class JsonUtils {
               LOGGER.severe("Unhandled array2 type: " + getType(array2.get(j)));
             }
           }
+        } else if (array1.get(i).getClass() == String.class) {
+          extracted.add((String) array1.get(i));
         } else {
           LOGGER.severe("Unhandled array1 type: " + getType(array1.get(i)));
         }
