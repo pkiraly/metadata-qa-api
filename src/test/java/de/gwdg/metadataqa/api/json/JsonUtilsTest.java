@@ -7,6 +7,7 @@ import de.gwdg.metadataqa.api.model.pathcache.JsonPathCache;
 import de.gwdg.metadataqa.api.schema.EdmFullBeanSchema;
 import de.gwdg.metadataqa.api.util.CompressionLevel;
 import de.gwdg.metadataqa.api.util.FileUtils;
+import net.minidev.json.JSONArray;
 import org.junit.*;
 
 import java.io.IOException;
@@ -79,5 +80,64 @@ public class JsonUtilsTest {
     List<String> list = JsonUtils.extractList(jsonDoc);
     assertEquals(2, list.size());
     assertEquals(Arrays.asList("a", "b"), list);
+  }
+
+  @Test
+  public void extract() {
+    Object jsonDoc = JSON_PROVIDER.parse("{\"a\":[\"a\", \"b\"]}");
+    Object value = JsonUtils.extractField(jsonDoc, "$.a");
+    assertEquals(JSONArray.class, value.getClass());
+    JSONArray list = (JSONArray) value;
+
+    assertEquals(2, list.size());
+    assertEquals("a", list.get(0));
+    assertEquals("b", list.get(1));
+    assertEquals(Arrays.asList("a", "b"), list);
+  }
+
+  @Test
+  public void getType() {
+    assertEquals(
+      "java.lang.String",
+      JsonUtils.getType(JSON_PROVIDER.parse("\"a\"")));
+
+    assertEquals(
+      "java.lang.String",
+      JsonUtils.getType(JSON_PROVIDER.parse("a")));
+
+    assertEquals(
+      "net.minidev.json.JSONArray",
+      JsonUtils.getType(JSON_PROVIDER.parse("[1, 2]")));
+
+    assertEquals(
+      "net.minidev.json.JSONArray",
+      JsonUtils.getType(JSON_PROVIDER.parse("[\"a\", \"b\"]")));
+
+    assertEquals(
+      "java.util.LinkedHashMap",
+      JsonUtils.getType(JSON_PROVIDER.parse("{\"a\":[\"a\", \"b\"]}")));
+  }
+
+  @Test
+  public void extractString() {
+    assertEquals(
+      "a",
+      JsonUtils.extractString(JSON_PROVIDER.parse("\"a\"")));
+
+    assertEquals(
+      "a",
+      JsonUtils.extractString(JSON_PROVIDER.parse("a")));
+
+    assertEquals(
+      "1",
+      JsonUtils.extractString(JSON_PROVIDER.parse("[1, 2]")));
+
+    assertEquals(
+      "a",
+      JsonUtils.extractString(JSON_PROVIDER.parse("[\"a\", \"b\"]")));
+
+    assertEquals(
+      "a",
+      JsonUtils.extractString(JSON_PROVIDER.parse("{\"a\":[\"a\", \"b\"]}")));
   }
 }

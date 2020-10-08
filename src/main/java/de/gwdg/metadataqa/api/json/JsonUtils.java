@@ -194,17 +194,19 @@ public final class JsonUtils {
       extracted = (String) value;
     } else if (value.getClass() == LinkedHashMap.class) {
       Map<String, String> map = (LinkedHashMap<String, String>) value;
-      for (String val : map.values()) {
-        extracted = val;
+      for (Object val : map.values()) {
+        extracted = extractString(val);
         break;
       }
+    } else if (value.getClass() == JSONArray.class) {
+      extracted = ((JSONArray) value).get(0).toString();
     } else {
       LOGGER.severe("Unhandled object type: " + getType(value));
     }
     return extracted;
   }
 
-  private static String getType(Object obj) {
+  public static String getType(Object obj) {
     return obj.getClass().getCanonicalName();
   }
 }
