@@ -9,14 +9,15 @@ import java.util.List;
 
 public class MaxCountChecker extends SingleFieldChecker {
 
+  public static final String prefix = "maxCount";
   protected Integer maxCount;
 
-  public MaxCountChecker(JsonBranch field, Integer maxCount) {
+  public MaxCountChecker(JsonBranch field, int maxCount) {
     this(field, field.getLabel(), maxCount);
   }
 
-  public MaxCountChecker(JsonBranch field, String header, Integer maxCount) {
-    super(field, "maxCount:" + header);
+  public MaxCountChecker(JsonBranch field, String header, int maxCount) {
+    super(field, prefix + ":" + header);
     this.maxCount = maxCount;
   }
 

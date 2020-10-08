@@ -9,6 +9,7 @@ import java.util.List;
 
 public class MaxLengthChecker extends SingleFieldChecker {
 
+  public static final String prefix = "maxLength";
   protected Integer maxLength;
 
   public MaxLengthChecker(JsonBranch field, Integer maxLength) {
@@ -16,7 +17,7 @@ public class MaxLengthChecker extends SingleFieldChecker {
   }
 
   public MaxLengthChecker(JsonBranch field, String header, Integer maxLength) {
-    super(field, "maxLength:" + header);
+    super(field, prefix + ":" + header);
     this.maxLength = maxLength;
   }
 

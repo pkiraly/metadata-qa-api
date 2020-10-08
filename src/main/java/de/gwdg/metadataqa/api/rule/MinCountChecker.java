@@ -9,6 +9,7 @@ import java.util.List;
 
 public class MinCountChecker extends SingleFieldChecker {
 
+  public static final String prefix = "minCount";
   protected Integer minCount;
 
   public MinCountChecker(JsonBranch field, Integer minCount) {
@@ -16,7 +17,7 @@ public class MinCountChecker extends SingleFieldChecker {
   }
 
   public MinCountChecker(JsonBranch field, String header, Integer minCount) {
-    super(field, "minCount:" + header);
+    super(field, prefix + ":" + header);
     this.minCount = minCount;
   }
 

@@ -9,6 +9,7 @@ import java.util.List;
 
 public class EqualityChecker extends SingleFieldChecker {
 
+  public static final String prefix = "equals";
   protected String fixedValue;
 
   public EqualityChecker(JsonBranch field, String fixedValue) {
@@ -16,7 +17,7 @@ public class EqualityChecker extends SingleFieldChecker {
   }
 
   public EqualityChecker(JsonBranch field, String header, String fixedValue) {
-    super(field, "equals:" + header);
+    super(field, prefix + ":" + header);
     this.fixedValue = fixedValue;
   }
 

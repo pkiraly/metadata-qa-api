@@ -9,6 +9,7 @@ import java.util.List;
 
 public class EnumerationChecker extends SingleFieldChecker {
 
+  public static final String prefix = "in";
   protected List<String> fixedValues;
 
   public EnumerationChecker(JsonBranch field, List<String> fixedValues) {
@@ -16,7 +17,7 @@ public class EnumerationChecker extends SingleFieldChecker {
   }
 
   public EnumerationChecker(JsonBranch field, String header, List<String> fixedValues) {
-    super(field, "in:" + header);
+    super(field, prefix + ":" + header);
     this.fixedValues = fixedValues;
   }
 

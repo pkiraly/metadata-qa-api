@@ -9,6 +9,7 @@ import java.util.List;
 
 public class DisjointChecker extends SingleFieldChecker {
 
+  public static final String prefix = "disjoint";
   protected String fixedValue;
 
   public DisjointChecker(JsonBranch field, String disjoint) {
@@ -16,7 +17,7 @@ public class DisjointChecker extends SingleFieldChecker {
   }
 
   public DisjointChecker(JsonBranch field, String header, String fixedValue) {
-    super(field, "disjoint:" + header);
+    super(field, prefix + ":" + header);
     this.fixedValue = fixedValue;
   }
 

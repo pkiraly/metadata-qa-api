@@ -9,6 +9,7 @@ import java.util.List;
 
 public class MinLengthChecker extends SingleFieldChecker {
 
+  public static final String prefix = "minLength";
   protected Integer minLength;
 
   public MinLengthChecker(JsonBranch field, Integer minLength) {
@@ -16,7 +17,7 @@ public class MinLengthChecker extends SingleFieldChecker {
   }
 
   public MinLengthChecker(JsonBranch field, String header, Integer minLength) {
-    super(field, "minLength:" + header);
+    super(field, prefix + ":" + header);
     this.minLength = minLength;
   }
 
