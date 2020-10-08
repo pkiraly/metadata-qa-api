@@ -133,6 +133,27 @@ public class JsonBranchTest {
   }
 
   @Test
+  public void test_toString_withParent() {
+    JsonBranch path1 = new JsonBranch("author", "author")
+      .setParent(new JsonBranch("book", "book"));
+    assertEquals(
+      "JsonBranch{label=author, jsonPath=author, categories=[], " +
+        "solrFieldName=null, parent=book, identifier=null, nr_of_children=0, collection=false}",
+      path1.toString());
+  }
+
+  @Test
+  public void test_toString_withIdentifier() {
+    JsonBranch path1 = new JsonBranch("author", "author")
+      .setParent(new JsonBranch("book", "book"))
+      .setIdentifier(new JsonBranch("id"));
+    assertEquals(
+      "JsonBranch{label=author, jsonPath=author, categories=[], " +
+        "solrFieldName=null, parent=book, identifier=id, nr_of_children=0, collection=false}",
+      path1.toString());
+  }
+
+  @Test
   public void setChildren() {
     JsonBranch path = new JsonBranch("author", "author")
       .setChildren(Arrays.asList(
