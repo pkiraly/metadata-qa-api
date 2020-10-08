@@ -3,8 +3,9 @@ package de.gwdg.metadataqa.api.json;
 import de.gwdg.metadataqa.api.schema.*;
 import org.junit.Test;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
+import java.util.Arrays;
+
+import static org.junit.Assert.*;
 
 public class JsonBranchTest {
 
@@ -58,4 +59,91 @@ public class JsonBranchTest {
     assertEquals("$.['proxies'][?(@['europeanaProxy'] == false)][*]['about']",
       providerProxyJson.getChildren().get(0).getAbsoluteJsonPath(schema.getFormat()));
   }
+
+  @Test
+  public void constructWithSolr() {
+    JsonBranch path = new JsonBranch("author", "author", "author");
+    assertEquals("author", path.getLabel());
+    assertEquals("author", path.getJsonPath());
+    assertEquals("author", path.getSolrFieldName());
+  }
+
+  @Test
+  public void setLabel() {
+    JsonBranch path1 = new JsonBranch("author", "author", "author");
+    JsonBranch path2 = path1.setLabel("author2");
+    assertEquals(path1, path2);
+    assertTrue(path1.equals(path2));
+    assertEquals("author2", path1.getLabel());
+    assertEquals("author2", path2.getLabel());
+  }
+
+  @Test
+  public void setSolrFieldName() {
+    JsonBranch path1 = new JsonBranch("author", "author", "author");
+    JsonBranch path2 = path1.setSolrFieldName("author2");
+    assertEquals(path1, path2);
+    assertTrue(path1.equals(path2));
+    assertEquals("author2", path1.getSolrFieldName());
+    assertEquals("author2", path2.getSolrFieldName());
+  }
+
+  @Test
+  public void setExtractable_notChained() {
+    JsonBranch path1 = new JsonBranch("author", "author", "author");
+    JsonBranch path2 = path1.setExtractable();
+    assertEquals(path1, path2);
+    assertTrue(path1.equals(path2));
+    assertTrue(path1.isExtractable());
+    assertTrue(path2.isExtractable());
+  }
+
+  @Test
+  public void setExtractable_chained() {
+    JsonBranch path1 = new JsonBranch("author", "author", "author")
+      .setExtractable();
+    assertEquals("author", path1.getSolrFieldName());
+    assertTrue(path1.isExtractable());
+
+    JsonBranch path2 = new JsonBranch("author", "author", "author")
+      .setExtractable(true);
+    assertEquals("author", path2.getSolrFieldName());
+    assertTrue(path2.isExtractable());
+
+    JsonBranch path3 = new JsonBranch("author", "author", "author")
+      .setExtractable(false);
+    assertEquals("author", path3.getSolrFieldName());
+    assertFalse(path3.isExtractable());
+  }
+
+  @Test
+  public void getAbsolutePath() {
+    JsonBranch path = new JsonBranch("author", "author", "author");
+    assertEquals("author", path.getAbsoluteJsonPath(Format.CSV));
+    assertEquals("author", path.getAbsoluteJsonPath(0));
+  }
+
+  @Test
+  public void test_toString() {
+    JsonBranch path1 = new JsonBranch("author", "author");
+    assertEquals(
+      "JsonBranch{label=author, jsonPath=author, categories=[], " +
+        "solrFieldName=null, parent=null, identifier=null, nr_of_children=0, collection=false}",
+      path1.toString());
+  }
+
+  @Test
+  public void setChildren() {
+    JsonBranch path = new JsonBranch("author", "author")
+      .setChildren(Arrays.asList(
+        new JsonBranch("name", "name"),
+        new JsonBranch("date", "date")
+      ));
+
+    assertEquals(2, path.getChildren().size());
+    assertEquals("author", path.getLabel());
+    assertEquals("name", path.getChildren().get(0).getLabel());
+    assertEquals("date", path.getChildren().get(1).getLabel());
+  }
+
 }

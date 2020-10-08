@@ -258,7 +258,7 @@ public class JsonBranch implements Cloneable, Serializable {
           + ", solrFieldName=" + solrFieldName
           + ", parent=" + (parent == null ? "null" : parent.getLabel())
           + ", identifier=" + (identifier == null ? "null" : identifier.getLabel())
-          + ", nr of children=" + children.size()
+          + ", nr_of_children=" + children.size()
           + ", collection=" + collection
           + '}';
   }
