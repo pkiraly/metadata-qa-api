@@ -3,6 +3,8 @@ package de.gwdg.metadataqa.api.json;
 import com.jayway.jsonpath.Configuration;
 import com.jayway.jsonpath.spi.json.JsonProvider;
 import de.gwdg.metadataqa.api.calculator.CompletenessCalculator;
+import de.gwdg.metadataqa.api.model.EdmFieldInstance;
+import de.gwdg.metadataqa.api.model.XmlFieldInstance;
 import de.gwdg.metadataqa.api.model.pathcache.JsonPathCache;
 import de.gwdg.metadataqa.api.schema.EdmFullBeanSchema;
 import de.gwdg.metadataqa.api.util.CompressionLevel;
@@ -12,17 +14,19 @@ import org.junit.*;
 
 import java.io.IOException;
 import java.net.URISyntaxException;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNull;
 
 public class JsonUtilsTest {
 
   Object jsonDoc;
   String jsonString;
   String problemFileName = "issue-examples/issue48.json";
-  private static final JsonProvider JSON_PROVIDER = Configuration.defaultConfiguration()
+  private static final JsonProvider PARSER = Configuration.defaultConfiguration()
     .jsonProvider();
 
   public JsonUtilsTest() throws IOException, URISyntaxException {
@@ -60,7 +64,7 @@ public class JsonUtilsTest {
 
   @Test
   public void extractList_string() {
-    Object jsonDoc = JSON_PROVIDER.parse("a");
+    Object jsonDoc = PARSER.parse("a");
     List<String> list = JsonUtils.extractList(jsonDoc);
     assertEquals(1, list.size());
     assertEquals(Arrays.asList("a"), list);
@@ -68,7 +72,7 @@ public class JsonUtilsTest {
 
   @Test
   public void extractList_list() {
-    Object jsonDoc = JSON_PROVIDER.parse("[\"a\", \"b\"]");
+    Object jsonDoc = PARSER.parse("[\"a\", \"b\"]");
     List<String> list = JsonUtils.extractList(jsonDoc);
     assertEquals(2, list.size());
     assertEquals(Arrays.asList("a", "b"), list);
@@ -76,15 +80,51 @@ public class JsonUtilsTest {
 
   @Test
   public void extractList_listOfList() {
-    Object jsonDoc = JSON_PROVIDER.parse("[[\"a\", \"b\"]]");
+    Object jsonDoc = PARSER.parse("[[\"a\", \"b\"]]");
     List<String> list = JsonUtils.extractList(jsonDoc);
     assertEquals(2, list.size());
     assertEquals(Arrays.asList("a", "b"), list);
   }
 
   @Test
+  public void extractList_listOfListOfMap() {
+    assertEquals(Arrays.asList("a", "d"),
+      JsonUtils.extractList(PARSER.parse("[[\"a\", {\"@about\": \"d\"}]]")));
+
+    assertEquals(Arrays.asList("a", "d"),
+      JsonUtils.extractList(PARSER.parse("[[\"a\", {\"@resource\": \"d\"}]]")));
+
+    assertEquals(Arrays.asList("a", "d"),
+      JsonUtils.extractList(PARSER.parse("[[\"a\", {\"#value\": \"d\"}]]")));
+  }
+
+  @Test
+  public void extractList_map() {
+    Object jsonDoc = PARSER.parse("{\"a\": \"b\"}");
+    List<String> list = JsonUtils.extractList(jsonDoc);
+    assertEquals(1, list.size());
+    assertEquals(Arrays.asList("b"), list);
+  }
+
+  @Test
+  public void extractList_mapOfList() {
+    Object jsonDoc = PARSER.parse("{\"a\": [\"a\", \"b\"]}");
+    List<String> list = JsonUtils.extractList(jsonDoc);
+    assertEquals(2, list.size());
+    assertEquals(Arrays.asList("a", "b"), list);
+  }
+
+  @Test
+  public void extractList_mapOfMap() {
+    Object jsonDoc = PARSER.parse("{\"a\": [\"a\", \"b\"], \"b\": \"c\"}");
+    List<String> list = JsonUtils.extractList(jsonDoc);
+    assertEquals(3, list.size());
+    assertEquals(Arrays.asList("a", "b", "c"), list);
+  }
+
+  @Test
   public void extract() {
-    Object jsonDoc = JSON_PROVIDER.parse("{\"a\":[\"a\", \"b\"]}");
+    Object jsonDoc = PARSER.parse("{\"a\":[\"a\", \"b\"]}");
     Object value = JsonUtils.extractField(jsonDoc, "$.a");
     assertEquals(JSONArray.class, value.getClass());
     JSONArray list = (JSONArray) value;
@@ -96,48 +136,174 @@ public class JsonUtilsTest {
   }
 
   @Test
-  public void getType() {
+  public void testGetType() {
     assertEquals(
       "java.lang.String",
-      JsonUtils.getType(JSON_PROVIDER.parse("\"a\"")));
+      JsonUtils.getType(PARSER.parse("\"a\"")));
 
     assertEquals(
       "java.lang.String",
-      JsonUtils.getType(JSON_PROVIDER.parse("a")));
+      JsonUtils.getType(PARSER.parse("a")));
 
     assertEquals(
       "net.minidev.json.JSONArray",
-      JsonUtils.getType(JSON_PROVIDER.parse("[1, 2]")));
+      JsonUtils.getType(PARSER.parse("[1, 2]")));
 
     assertEquals(
       "net.minidev.json.JSONArray",
-      JsonUtils.getType(JSON_PROVIDER.parse("[\"a\", \"b\"]")));
+      JsonUtils.getType(PARSER.parse("[\"a\", \"b\"]")));
 
     assertEquals(
       "java.util.LinkedHashMap",
-      JsonUtils.getType(JSON_PROVIDER.parse("{\"a\":[\"a\", \"b\"]}")));
+      JsonUtils.getType(PARSER.parse("{\"a\":[\"a\", \"b\"]}")));
   }
 
   @Test
-  public void extractString() {
+  public void testExtractString() {
     assertEquals(
       "a",
-      JsonUtils.extractString(JSON_PROVIDER.parse("\"a\"")));
+      JsonUtils.extractString(PARSER.parse("\"a\"")));
 
     assertEquals(
       "a",
-      JsonUtils.extractString(JSON_PROVIDER.parse("a")));
+      JsonUtils.extractString(PARSER.parse("a")));
 
     assertEquals(
       "1",
-      JsonUtils.extractString(JSON_PROVIDER.parse("[1, 2]")));
+      JsonUtils.extractString(PARSER.parse("[1, 2]")));
 
     assertEquals(
       "a",
-      JsonUtils.extractString(JSON_PROVIDER.parse("[\"a\", \"b\"]")));
+      JsonUtils.extractString(PARSER.parse("[\"a\", \"b\"]")));
 
     assertEquals(
       "a",
-      JsonUtils.extractString(JSON_PROVIDER.parse("{\"a\":[\"a\", \"b\"]}")));
+      JsonUtils.extractString(PARSER.parse("{\"a\":[\"a\", \"b\"]}")));
+  }
+
+  @Test
+  public void testExtractFieldInstanceList() {
+    assertEquals(
+      Arrays.asList(new EdmFieldInstance("a")),
+      extractFieldInstanceList("\"a\"", ""));
+
+    assertNull(extractFieldInstanceList("[]", ""));
+
+    assertEquals(
+      Arrays.asList(new EdmFieldInstance("a")),
+      extractFieldInstanceList("[\"a\"]", ""));
+
+    assertEquals(
+      createFieldList("a", "b"),
+      extractFieldInstanceList("[\"a\", \"b\"]", ""));
+
+    assertEquals(
+      createFieldList("a", "b"),
+      extractFieldInstanceList("[null, \"a\", \"b\"]", ""));
+
+    assertEquals(
+      createFieldList("a", "true"),
+      extractFieldInstanceList("[null, \"a\", true]", ""));
+
+    assertEquals(
+      createFieldList("a", "false"),
+      extractFieldInstanceList("[null, \"a\", false]", ""));
+
+    assertEquals(
+      createFieldList("a", "12.3"),
+      extractFieldInstanceList("[null, \"a\", 12.3]", ""));
+
+    assertEquals(
+      createFieldList("a", "123000000000000"),
+      extractFieldInstanceList("[null, \"a\", 123000000000000]", ""));
+
+    assertEquals(
+      createFieldList("a", "12.30000000000001"),
+      extractFieldInstanceList("[null, \"a\", 12.30000000000001]", ""));
+
+    assertEquals(
+      createFieldList("a", "b", "c"),
+      extractFieldInstanceList("[null, \"a\", [\"b\", \"c\"]]", ""));
+
+    List<EdmFieldInstance> expected = (List<EdmFieldInstance>) createFieldList("a");
+    expected.add(new EdmFieldInstance(null, null, "c"));
+    assertEquals(
+      expected,
+      extractFieldInstanceList("[null, \"a\", {\"@about\": \"c\"}]", ""));
+
+    expected = (List<EdmFieldInstance>) createFieldList("a");
+    expected.add(new EdmFieldInstance(null, null, "c"));
+    assertEquals(
+      expected,
+      extractFieldInstanceList("[null, \"a\", {\"@resource\": \"c\"}]", ""));
+
+    assertEquals(
+      createFieldList("a", "c"),
+      extractFieldInstanceList("[null, \"a\", {\"#value\": \"c\"}]", ""));
+
+    expected = (List<EdmFieldInstance>) createFieldList("a");
+    expected.add(new EdmFieldInstance(null, "c", null));
+    assertEquals(
+      expected,
+      extractFieldInstanceList("[null, \"a\", {\"@lang\": \"c\"}]", ""));
+
+    assertEquals(
+      createFieldList("a", "c"),
+      extractFieldInstanceList("[null, \"a\", {\"def\": \"c\"}]", ""));
+
+    expected = (List<EdmFieldInstance>) createFieldList("a");
+    expected.add(new EdmFieldInstance(null, null, null));
+    assertEquals(
+      expected,
+      extractFieldInstanceList("[null, \"a\", {\"def\": [\"c\", \"d\"]}]", ""));
+
+    assertEquals(
+      createFieldList("a", "c"),
+      extractFieldInstanceList("[null, \"a\", {\"def\": [\"c\"]}]", ""));
+
+    assertEquals(
+      Arrays.asList(new EdmFieldInstance("1")),
+      extractFieldInstanceList("1", ""));
+
+    assertEquals(
+      Arrays.asList(new EdmFieldInstance("1.2")),
+      extractFieldInstanceList("1.2", ""));
+
+    assertEquals(
+      Arrays.asList(new EdmFieldInstance("100.0")),
+      extractFieldInstanceList("1.0E+2", ""));
+
+    assertEquals(
+      Arrays.asList(new EdmFieldInstance("100.0")),
+      extractFieldInstanceList("1E+2", ""));
+
+    assertEquals(
+      Arrays.asList(new EdmFieldInstance("10000000000000000000")),
+      extractFieldInstanceList("10000000000000000000", ""));
+
+    assertEquals(
+      Arrays.asList(new EdmFieldInstance("10.000000000000000001")),
+      extractFieldInstanceList("10.000000000000000001", ""));
+
+    assertEquals(
+      Arrays.asList(new EdmFieldInstance("true")),
+      extractFieldInstanceList("true", ""));
+
+    assertEquals(
+      Arrays.asList(new EdmFieldInstance("false")),
+      extractFieldInstanceList("false", ""));
+
+  }
+
+  private List<? extends XmlFieldInstance> extractFieldInstanceList(String json, String path) {
+    return JsonUtils.extractFieldInstanceList(PARSER.parse(json), "1", path);
+  }
+
+  private List<? extends XmlFieldInstance> createFieldList(String... args) {
+    List<EdmFieldInstance> list = new ArrayList<>();
+    for (String var : args)
+      list.add(new EdmFieldInstance(var));
+
+    return list;
   }
 }

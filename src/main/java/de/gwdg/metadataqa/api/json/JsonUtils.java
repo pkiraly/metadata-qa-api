@@ -5,6 +5,7 @@ import com.jayway.jsonpath.JsonPath;
 import de.gwdg.metadataqa.api.model.XmlFieldInstance;
 
 import java.math.BigDecimal;
+import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
@@ -21,6 +22,7 @@ public final class JsonUtils {
   private static final Logger LOGGER = Logger.getLogger(JsonUtils.class.getCanonicalName());
 
   private JsonUtils() {
+    throw new AssertionError();
   }
 
   public static Object extractField(Object document, String jsonPath) {
@@ -60,6 +62,10 @@ public final class JsonUtils {
           LOGGER.severe("Unhandled array1 type: " + getType(array1.get(i)));
         }
       }
+    } else if (value.getClass() == LinkedHashMap.class) {
+      for (Object innerValue : ((Map)value).values()) {
+        extracted.addAll(extractList(innerValue));
+      }
     } else {
       LOGGER.severe("Unhandled object type: " + getType(value));
     }
@@ -90,8 +96,12 @@ public final class JsonUtils {
           extracted.add(new EdmFieldInstance(Boolean.toString((Boolean) outerVal)));
         } else if (outerVal.getClass() == Double.class) {
           extracted.add(new EdmFieldInstance(Double.toString((Double) outerVal)));
+        } else if (outerVal.getClass() == Long.class) {
+          extracted.add(new EdmFieldInstance(Long.toString((Long) outerVal)));
         } else if (outerVal.getClass() == BigDecimal.class) {
           extracted.add(new EdmFieldInstance(((BigDecimal) outerVal).toString()));
+        } else if (outerVal.getClass() == BigInteger.class) {
+          extracted.add(new EdmFieldInstance(((BigInteger) outerVal).toString()));
         } else if (outerVal.getClass() == JSONArray.class) {
           extracted.addAll(extractInnerArray(outerVal, recordId, jsonPath));
         } else if (outerVal.getClass() == LinkedHashMap.class) {
@@ -107,14 +117,16 @@ public final class JsonUtils {
       extracted.add(hashToFieldInstance(value, recordId, jsonPath));
     } else if (value.getClass() == Integer.class) {
       extracted.add(new EdmFieldInstance(Integer.toString((int) value)));
-    } else if (value.getClass() == Double.class) {
-      extracted.add(new EdmFieldInstance(Double.toString((double) value)));
     } else if (value.getClass() == Float.class) {
       extracted.add(new EdmFieldInstance(Float.toString((float) value)));
+    } else if (value.getClass() == Double.class) {
+      extracted.add(new EdmFieldInstance(Double.toString((double) value)));
     } else if (value.getClass() == Boolean.class) {
       extracted.add(new EdmFieldInstance(Boolean.toString((boolean) value)));
     } else if (value.getClass() == java.math.BigDecimal.class) {
       extracted.add(new EdmFieldInstance(((BigDecimal) value).toString()));
+    } else if (value.getClass() == java.math.BigInteger.class) {
+      extracted.add(new EdmFieldInstance(((BigInteger) value).toString()));
     } else {
       LOGGER.severe(String.format(
             "Unhandled object type: %s, [record ID: %s, path: %s]",
@@ -193,7 +205,7 @@ public final class JsonUtils {
     if (value.getClass() == String.class) {
       extracted = (String) value;
     } else if (value.getClass() == LinkedHashMap.class) {
-      Map<String, String> map = (LinkedHashMap<String, String>) value;
+      Map<String, Object> map = (LinkedHashMap<String, Object>) value;
       for (Object val : map.values()) {
         extracted = extractString(val);
         break;
