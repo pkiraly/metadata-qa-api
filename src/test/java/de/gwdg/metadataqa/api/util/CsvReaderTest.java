@@ -14,8 +14,7 @@ import java.io.StringWriter;
 import java.util.Arrays;
 import java.util.Map;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.*;
 
 public class CsvReaderTest {
 
@@ -46,7 +45,7 @@ public class CsvReaderTest {
     assertEquals(2, columns.length);
   }
 
-  @Test
+  @Test(expected = IllegalArgumentException.class)
   public void testAsMap_noHeader() {
     CsvReader reader = new CsvReader();
     Map<String, String> record = null;
@@ -54,7 +53,11 @@ public class CsvReaderTest {
       record = reader.asMap("Jim,64");
     } catch (IOException e) {
       //
+    } catch (IllegalArgumentException e) {
+      assertEquals("The size of columns are different than the size of headers", e.getMessage());
+      throw e;
     }
+    fail("This point should not be accessed");
     assertNotNull(record);
     assertEquals(0, record.size());
   }
@@ -117,6 +120,7 @@ public class CsvReaderTest {
          .withQuoteChar('"')
          .withEscapeChar('\\')
          .build());
+    reader.setHeader(Arrays.asList("name", "age"));
     Map<String, String> record = null;
     try {
       record = reader.asMap("Jim,64");
@@ -124,13 +128,12 @@ public class CsvReaderTest {
       //
     }
     assertNotNull(record);
-    assertEquals(0, record.size());
+    assertEquals(2, record.size());
   }
 
   @Test
   public void testFromFile() {
     String fileName = "src/test/resources/csv/dataset_metadata_2020_08_17-head.csv";
-    File file = new File(fileName);
 
     try {
       CSVReaderHeaderAware reader = new CSVReaderHeaderAware(new FileReader(fileName));

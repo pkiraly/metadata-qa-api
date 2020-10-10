@@ -1,6 +1,8 @@
 package de.gwdg.metadataqa.api.calculator;
 
 import com.jayway.jsonpath.InvalidJsonException;
+import de.gwdg.metadataqa.api.calculator.output.OutputCollector;
+import de.gwdg.metadataqa.api.calculator.output.OutputFactory;
 import de.gwdg.metadataqa.api.counter.Counters;
 import de.gwdg.metadataqa.api.interfaces.Calculator;
 import de.gwdg.metadataqa.api.model.pathcache.CsvPathCache;
@@ -21,10 +23,7 @@ import de.gwdg.metadataqa.api.uniqueness.SolrConfiguration;
 import de.gwdg.metadataqa.api.uniqueness.TfIdf;
 import de.gwdg.metadataqa.api.util.CompressionLevel;
 import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.LinkedHashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.logging.Logger;
 
 import de.gwdg.metadataqa.api.util.CsvReader;
@@ -269,23 +268,50 @@ public class CalculatorFacade implements Serializable {
 
   /**
    * Run the measurements with each Calculator then returns the result as CSV.
-   * @param jsonRecord
+   * @param record
    *   The JSON record string
    * @return
    *   The result of measurements as a CSV string
    * @throws InvalidJsonException
    *   Invalid Json exception
    */
-  public String measure(String jsonRecord) throws InvalidJsonException {
-    return (String) this.<XmlFieldInstance>measureWithGenerics(jsonRecord);
+  public String measure(String record) throws InvalidJsonException {
+    return (String) this.<XmlFieldInstance>measureWithGenerics(record);
   }
 
-  public List<String> measureAsList(String jsonRecord) throws InvalidJsonException {
-    return (List<String>) this.<XmlFieldInstance>measureWithGenerics(jsonRecord, List.class);
+  public List<String> measureAsList(String record) throws InvalidJsonException {
+    return (List<String>) this.<XmlFieldInstance>measureWithGenerics(
+      record, OutputCollector.TYPE.STRING_LIST);
   }
 
-  public Map<String, Object> measureAsMap(String jsonRecord) throws InvalidJsonException {
-    return (Map<String, Object>) this.<XmlFieldInstance>measureWithGenerics(jsonRecord, Map.class);
+  public List<Object> measureAsListOfObjects(String record) throws InvalidJsonException {
+    return (List<Object>) this.<XmlFieldInstance>measureWithGenerics(
+      record, OutputCollector.TYPE.OBJECT_LIST);
+  }
+
+  public Map<String, Object> measureAsMap(String record) throws InvalidJsonException {
+    return (Map<String, Object>) this.<XmlFieldInstance>measureWithGenerics(
+      record, OutputCollector.TYPE.MAP);
+  }
+
+  public String measureCsv(List<String> record) throws InvalidJsonException {
+    return (String) this.<XmlFieldInstance>measureCavWithGenerics(
+      record, OutputCollector.TYPE.STRING);
+  }
+
+  public List<String> measureCsvAsList(List<String> record) throws InvalidJsonException {
+    return (List<String>) this.<XmlFieldInstance>measureCavWithGenerics(
+      record, OutputCollector.TYPE.STRING_LIST);
+  }
+
+  public List<Object> measureCsvAsListOfObjects(List<String> record) throws InvalidJsonException {
+    return (List<Object>) this.<XmlFieldInstance>measureCavWithGenerics(
+      record, OutputCollector.TYPE.OBJECT_LIST);
+  }
+
+  public Map<String, Object> measureCsvAsMap(List<String> record) throws InvalidJsonException {
+    return (Map<String, Object>) this.<XmlFieldInstance>measureCavWithGenerics(
+      record, OutputCollector.TYPE.MAP);
   }
 
   /**
@@ -306,24 +332,16 @@ public class CalculatorFacade implements Serializable {
    */
   protected <T extends XmlFieldInstance> Object measureWithGenerics(String content)
     throws InvalidJsonException {
-    return measureWithGenerics(content, String.class);
+    return measureWithGenerics(content, OutputCollector.TYPE.STRING);
   }
 
+
   protected <T extends XmlFieldInstance> Object measureWithGenerics(String content,
-                                                                    Class outputClass)
+                                                                    OutputCollector.TYPE type)
       throws InvalidJsonException {
     conditionalConfiguration();
 
-    Object result = null;
-    if (outputClass.equals(String.class)) {
-      result = new ArrayList<String>();
-    } else if (outputClass.equals(List.class)) {
-      result = new ArrayList<String>();
-    } else if (outputClass.equals(Map.class)) {
-      result = new LinkedHashMap<>();
-    } else {
-      throw new IllegalArgumentException("Only String, List and Map acceptable, but " + outputClass.getName() + " was given");
-    }
+    OutputCollector collector = OutputFactory.createOutput(type);
 
     if (schema == null) {
       throw new IllegalStateException("schema is missing");
@@ -334,27 +352,40 @@ public class CalculatorFacade implements Serializable {
         if (schema.getFormat().equals(Format.CSV)) {
           ((CsvPathCache)cache).setCsvReader(csvReader);
         }
-
-        for (Calculator calculator : getCalculators()) {
-          calculator.measure(cache);
-          if (outputClass.equals(String.class)) {
-            ((List<String>) result).add(calculator.getCsv(false, compressionLevel));
-          } else if (outputClass.equals(List.class)) {
-            ((List<String>) result).addAll(calculator.getList(false, compressionLevel));
-          } else if (outputClass.equals(Map.class)) {
-            ((Map)result).putAll(calculator.getResultMap());
-          }
-        }
+        runMeasurements(collector);
       }
     }
 
-    if (outputClass.equals(String.class)) {
-      return StringUtils.join((List<String>) result,",");
-    } else if (outputClass.equals(List.class) ||
-               outputClass.equals(Map.class)) {
-      return result;
+    return collector.getResults();
+  }
+
+  protected <T extends XmlFieldInstance> Object measureCavWithGenerics(List<String> content,
+                                                                       OutputCollector.TYPE type)
+      throws InvalidJsonException {
+
+    if (schema == null)
+      throw new IllegalStateException("schema is missing");
+
+    Format format = schema.getFormat();
+    if (format == null || format != Format.CSV)
+      throw new IllegalStateException("Format is not CSV");
+
+    conditionalConfiguration();
+    OutputCollector collector = OutputFactory.createOutput(type);
+
+    if (content != null) {
+      cache = new CsvPathCache<>(csvReader, content);
+      runMeasurements(collector);
     }
-    return null;
+
+    return collector.getResults();
+  }
+
+  private void runMeasurements(OutputCollector collector) {
+    for (Calculator calculator : getCalculators()) {
+      calculator.measure(cache);
+      collector.addResult(calculator, compressionLevel);
+    }
   }
 
   public CalculatorFacade enableFieldExtractor() {

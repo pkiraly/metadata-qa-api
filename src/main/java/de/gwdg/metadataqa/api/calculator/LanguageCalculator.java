@@ -205,6 +205,11 @@ public class LanguageCalculator implements Calculator, Serializable {
     return languageMap.getCsv(withLabel, compressionLevel.ZERO);
   }
 
+  @Override
+  public List<Object> getCsv() {
+    return languageMap.getCsv();
+  }
+
   public List<String> getList(boolean withLabel, CompressionLevel compressionLevel) {
     return languageMap.getList(withLabel, compressionLevel.ZERO);
   }

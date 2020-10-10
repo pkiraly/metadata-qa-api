@@ -37,6 +37,10 @@ public class CsvPathCache<T extends XmlFieldInstance> implements PathCache {
     // this.parsedDocument = jsonDocument;
   }
 
+  public CsvPathCache(CsvReader csvReader, List<String> input) {
+    record = csvReader.createMap(input);
+  }
+
   private void set(String address, String jsonPath, Object jsonFragment, Class clazz) {
     List<T> instances = read(jsonPath, jsonFragment);
     cache.put(address, instances);

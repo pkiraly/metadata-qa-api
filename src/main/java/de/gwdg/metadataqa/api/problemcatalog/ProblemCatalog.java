@@ -97,6 +97,11 @@ public class ProblemCatalog implements Calculator, Serializable, Observable {
   }
 
   @Override
+  public List<Object> getCsv() {
+    return fieldCounter.getCsv();
+  }
+
+  @Override
   public List<String> getHeader() {
     List<String> headers = new ArrayList<>();
     for (Observer observer : problems) {

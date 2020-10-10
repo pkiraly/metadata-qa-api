@@ -43,6 +43,8 @@ public interface Calculator {
    */
   String getCsv(boolean withLabels, CompressionLevel compressionLevel);
 
+  List<Object> getCsv();
+
   List<String> getList(boolean withLabels, CompressionLevel compressionLevel);
 
   /**

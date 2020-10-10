@@ -55,6 +55,11 @@ public class RuleCatalog implements Calculator, Serializable {
   }
 
   @Override
+  public List<Object> getCsv() {
+    return fieldCounter.getCsv();
+  }
+
+  @Override
   public List<String> getList(boolean withLabels, CompressionLevel compressionLevel) {
     return fieldCounter.getList(withLabels, compressionLevel);
   }

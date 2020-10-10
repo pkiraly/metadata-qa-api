@@ -3,6 +3,7 @@ package de.gwdg.metadataqa.api.util;
 import com.opencsv.CSVParser;
 import com.opencsv.CSVWriter;
 import com.opencsv.ICSVParser;
+import org.jetbrains.annotations.NotNull;
 
 import java.io.IOException;
 import java.io.StringWriter;
@@ -43,11 +44,29 @@ public class CsvReader {
 
   public Map<String, String> asMap(String input) throws IOException {
     String[] columns = asArray(input);
+    return createMap(columns);
+  }
+
+  public Map<String, String> createMap(String[] columns) {
     Map<String, String> record = new LinkedHashMap<>();
     if (header != null && columns.length == header.size()) {
       for (int i = 0; i < columns.length; i++) {
         record.put(header.get(i), columns[i]);
       }
+    } else {
+      throw new IllegalArgumentException("The size of columns are different than the size of headers");
+    }
+    return record;
+  }
+
+  public Map<String, String> createMap(List<String> columns) {
+    Map<String, String> record = new LinkedHashMap<>();
+    if (header != null && columns.size() == header.size()) {
+      for (int i = 0; i < columns.size(); i++) {
+        record.put(header.get(i), columns.get(i));
+      }
+    } else {
+      throw new IllegalArgumentException("The size of columns are different than the size of headers");
     }
     return record;
   }

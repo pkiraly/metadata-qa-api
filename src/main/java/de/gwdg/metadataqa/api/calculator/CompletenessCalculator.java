@@ -19,7 +19,11 @@ import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.logging.Logger;
+
+import org.apache.commons.lang3.BooleanUtils;
 import org.apache.commons.lang3.StringUtils;
+
+import static java.util.stream.Collectors.toList;
 
 /**
  *
@@ -266,7 +270,9 @@ public class CompletenessCalculator<T extends XmlFieldInstance>
 
     if (existence) {
       for (Entry e : existenceCounter.getMap().entrySet()) {
-        resultMap.put("existence:" + e.getKey(), e.getValue());
+        resultMap.put(
+          "existence:" + e.getKey(),
+          BooleanUtils.toInteger((Boolean)e.getValue()));
       }
     }
 
@@ -299,6 +305,27 @@ public class CompletenessCalculator<T extends XmlFieldInstance>
     List<String> csvs = getList(withLabel, compressionLevel);
     return StringUtils.join(csvs, ",");
   }
+
+  @Override
+  public List<Object> getCsv() {
+    List<Object> csvs = new ArrayList<>();
+    if (completeness) {
+      csvs.addAll(completenessCounter.getFieldCounter().getCsv());
+    }
+
+    if (existence) {
+      csvs.addAll(existenceCounter.getCsv().stream()
+        .map(v -> BooleanUtils.toInteger((boolean)v))
+        .collect(toList()));
+    }
+
+    if (cardinality) {
+      csvs.addAll(cardinalityCounter.getCsv());
+    }
+
+    return csvs;
+  }
+
 
   @Override
   public List<String> getList(boolean withLabel, CompressionLevel compressionLevel) {
