@@ -46,7 +46,26 @@ These are the two important requirements for the start of the measuring. The mea
 String csv = calculator.measure(input)
 ```
 
-The `input` should be a string formatted as JSON, XML or CSV. The output is a comma separated line. The `calculator.getHeader()` returns the list of the column names.
+The `input` should be a string formatted as JSON, XML or CSV. 
+The output is a comma separated line. The `calculator.getHeader()` 
+returns the list of the column names.
+
+There are a couple of alternatives, if you would like to receive a 
+List or a Map:
+
+* `String measure(String record) throws InvalidJsonException`
+* `List<String> measureAsList(String record) throws InvalidJsonException`
+* `List<Object> measureAsListOfObjects(String record) throws InvalidJsonException`
+* `Map<String, Object> measureAsMap(String record) throws InvalidJsonException`
+
+If your input is a CSV file, and you already processed the lines 
+into list of cells, you might want to use the following alternative
+methods:
+
+* `String measureCsv(List<String> record) throws InvalidJsonException`
+* `List<String> measureCsvAsList(List<String> record) throws InvalidJsonException`
+* `List<Object> measureCsvAsListOfObjects(List<String> record) throws InvalidJsonException`
+* `Map<String, Object> measureCsvAsMap(List<String> record) throws InvalidJsonException`
 
 An example which collects output into a StringBuffer (you can persist lines into a CSV file or into a database):
 
