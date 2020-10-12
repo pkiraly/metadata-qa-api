@@ -279,8 +279,18 @@ public class CalculatorFacade implements Serializable {
     return (String) this.<XmlFieldInstance>measureWithGenerics(record);
   }
 
+  public String measure(List<String> record) throws InvalidJsonException {
+    return (String) this.<XmlFieldInstance>measureCsvWithGenerics(
+      record, OutputCollector.TYPE.STRING);
+  }
+
   public List<String> measureAsList(String record) throws InvalidJsonException {
     return (List<String>) this.<XmlFieldInstance>measureWithGenerics(
+      record, OutputCollector.TYPE.STRING_LIST);
+  }
+
+  public List<String> measureAsList(List<String> record) throws InvalidJsonException {
+    return (List<String>) this.<XmlFieldInstance>measureCsvWithGenerics(
       record, OutputCollector.TYPE.STRING_LIST);
   }
 
@@ -289,28 +299,18 @@ public class CalculatorFacade implements Serializable {
       record, OutputCollector.TYPE.OBJECT_LIST);
   }
 
+  public List<Object> measureAsListOfObjects(List<String> record) throws InvalidJsonException {
+    return (List<Object>) this.<XmlFieldInstance>measureCsvWithGenerics(
+      record, OutputCollector.TYPE.OBJECT_LIST);
+  }
+
   public Map<String, Object> measureAsMap(String record) throws InvalidJsonException {
     return (Map<String, Object>) this.<XmlFieldInstance>measureWithGenerics(
       record, OutputCollector.TYPE.MAP);
   }
 
-  public String measureCsv(List<String> record) throws InvalidJsonException {
-    return (String) this.<XmlFieldInstance>measureCavWithGenerics(
-      record, OutputCollector.TYPE.STRING);
-  }
-
-  public List<String> measureCsvAsList(List<String> record) throws InvalidJsonException {
-    return (List<String>) this.<XmlFieldInstance>measureCavWithGenerics(
-      record, OutputCollector.TYPE.STRING_LIST);
-  }
-
-  public List<Object> measureCsvAsListOfObjects(List<String> record) throws InvalidJsonException {
-    return (List<Object>) this.<XmlFieldInstance>measureCavWithGenerics(
-      record, OutputCollector.TYPE.OBJECT_LIST);
-  }
-
-  public Map<String, Object> measureCsvAsMap(List<String> record) throws InvalidJsonException {
-    return (Map<String, Object>) this.<XmlFieldInstance>measureCavWithGenerics(
+  public Map<String, Object> measureAsMap(List<String> record) throws InvalidJsonException {
+    return (Map<String, Object>) this.<XmlFieldInstance>measureCsvWithGenerics(
       record, OutputCollector.TYPE.MAP);
   }
 
@@ -359,7 +359,7 @@ public class CalculatorFacade implements Serializable {
     return collector.getResults();
   }
 
-  protected <T extends XmlFieldInstance> Object measureCavWithGenerics(List<String> content,
+  protected <T extends XmlFieldInstance> Object measureCsvWithGenerics(List<String> content,
                                                                        OutputCollector.TYPE type)
       throws InvalidJsonException {
 

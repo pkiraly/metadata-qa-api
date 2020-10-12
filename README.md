@@ -59,13 +59,12 @@ List or a Map:
 * `Map<String, Object> measureAsMap(String record) throws InvalidJsonException`
 
 If your input is a CSV file, and you already processed the lines 
-into list of cells, you might want to use the following alternative
-methods:
+into list of cells, you could use the same methods:
 
-* `String measureCsv(List<String> record) throws InvalidJsonException`
-* `List<String> measureCsvAsList(List<String> record) throws InvalidJsonException`
-* `List<Object> measureCsvAsListOfObjects(List<String> record) throws InvalidJsonException`
-* `Map<String, Object> measureCsvAsMap(List<String> record) throws InvalidJsonException`
+* `String measure(List<String> record) throws InvalidJsonException`
+* `List<String> measureAsList(List<String> record) throws InvalidJsonException`
+* `List<Object> measureAsListOfObjects(List<String> record) throws InvalidJsonException`
+* `Map<String, Object> measureAsMap(List<String> record) throws InvalidJsonException`
 
 An example which collects output into a StringBuffer (you can persist lines into a CSV file or into a database):
 

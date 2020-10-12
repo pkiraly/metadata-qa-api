@@ -162,7 +162,7 @@ public class CalculatorFacadeTest {
     CalculatorFacade facade = createCalculatorFacadeForCsv();
     CSVIterator iterator = createCsvIterator();
 
-    String metrics = facade.measureCsv(Arrays.asList(iterator.next()));
+    String metrics = facade.measure(Arrays.asList(iterator.next()));
     String expected = "0.352941,1.0,1,1,0,1,0,0,0,0,1,0,0,1,1,0,0,0,0,1,1,0,1,0,0,0,0,1,0,0,1,1,0,0,0,0";
     assertEquals(expected, metrics);
 
@@ -176,7 +176,7 @@ public class CalculatorFacadeTest {
     CalculatorFacade facade = createCalculatorFacadeForCsv();
     CSVIterator iterator = createCsvIterator();
 
-    List<String> result = facade.measureCsvAsList(Arrays.asList(iterator.next()));
+    List<String> result = facade.measureAsList(Arrays.asList(iterator.next()));
     List<String> expected = Arrays.asList("0.352941", "1.0", "1", "1", "0", "1", "0", "0", "0", "0", "1", "0", "0", "1", "1", "0", "0", "0", "0", "1", "1", "0", "1", "0", "0", "0", "0", "1", "0", "0", "1", "1", "0", "0", "0", "0");
     assertEquals(expected, result);
 
@@ -190,7 +190,7 @@ public class CalculatorFacadeTest {
     CalculatorFacade facade = createCalculatorFacadeForCsv();
     CSVIterator iterator = createCsvIterator();
 
-    List<Object> result = facade.measureCsvAsListOfObjects(Arrays.asList(iterator.next()));
+    List<Object> result = facade.measureAsListOfObjects(Arrays.asList(iterator.next()));
     List<Object> expected = Arrays.asList(0.35294117647058826, 1.0, 1, 1, 0, 1, 0, 0, 0, 0, 1, 0, 0, 1, 1, 0, 0, 0, 0, 1, 1, 0, 1, 0, 0, 0, 0, 1, 0, 0, 1, 1, 0, 0, 0, 0);
     assertEquals(expected, result);
 
@@ -204,7 +204,7 @@ public class CalculatorFacadeTest {
     CalculatorFacade facade = createCalculatorFacadeForCsv();
     CSVIterator iterator = createCsvIterator();
 
-    Map<String, Object> result = facade.measureCsvAsMap(Arrays.asList(iterator.next()));
+    Map<String, Object> result = facade.measureAsMap(Arrays.asList(iterator.next()));
     Map<String, Object> expected = new LinkedHashMap<>();
     expected.put("TOTAL", 0.35294117647058826);
     expected.put("MANDATORY", 1.0);
