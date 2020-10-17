@@ -158,8 +158,6 @@ public class AbbreviationManager implements Serializable {
   private Path getPath(String fileName)
       throws IOException, URISyntaxException {
     Path path;
-    Path p = FileUtils.getPath(fileName);
-    System.err.println("p: " + p);
     URL url = getClass().getClassLoader().getResource(fileName);
     if (url == null) {
       throw new IOException(String.format("File %s is not existing", fileName));
