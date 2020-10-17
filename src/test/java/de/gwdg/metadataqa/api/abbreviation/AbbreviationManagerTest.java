@@ -113,8 +113,17 @@ public class AbbreviationManagerTest {
   @Test
   public void searchById_normal() {
     AbbreviationManager manager = new AbbreviationManager();
+    manager.processLine("263;Dummy value", 1, true);
     manager.processLine("264;Preiser Records; Austria", 1, true);
     assertEquals("Preiser Records; Austria", manager.searchById(264));
+  }
+
+  @Test
+  public void searchById_nonexisting() {
+    AbbreviationManager manager = new AbbreviationManager();
+    manager.processLine("263;Dummy value", 1, true);
+    manager.processLine("264;Preiser Records; Austria", 1, true);
+    assertNull(manager.searchById(265));
   }
 
   @Test
