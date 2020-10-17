@@ -28,23 +28,6 @@ public class JsonBranch implements Cloneable, Serializable {
   private boolean isExtractable = false;
   private boolean isMandatory = false;
   private Rule rules;
-  /*
-  private String pattern;
-  private String equals;
-  private String disjoint;
-  private List<String> in;
-  private int minCount;
-  private int maxCount;
-  private int minExclusive;
-  private int minInclusive;
-  private int maxExclusive;
-  private int maxInclusive;
-  private int minLength;
-  private int maxLength;
-  private int lessThan;
-  private int lessThanOrEquals;
-  private String hasValue;
-   */
 
   public JsonBranch(String label, String jsonPath, String solrFieldName) {
     this.label = label;
@@ -107,7 +90,7 @@ public class JsonBranch implements Cloneable, Serializable {
   public String getAbsoluteJsonPath(int i) {
     if (getParent() != null) {
       String parentPath = getParent().getJsonPath();
-      String currentPath = (i == -1)
+      String currentPath = (i == -1 || parentPath.endsWith("[0]"))
         ? getJsonPath().replace("$.", "")
         : getJsonPath().replace("$.", "[" + i + "]");
       return parentPath + currentPath;
@@ -202,40 +185,6 @@ public class JsonBranch implements Cloneable, Serializable {
     return this;
   }
 
-  /*
-  public String getPattern() {
-    return pattern;
-  }
-
-  public void setPattern(String pattern) {
-    this.pattern = pattern;
-  }
-
-  public String getEquals() {
-    return equals;
-  }
-
-  public void setEquals(String equals) {
-    this.equals = equals;
-  }
-
-  public String getDisjoint() {
-    return disjoint;
-  }
-
-  public void setDisjoint(String disjoint) {
-    this.disjoint = disjoint;
-  }
-
-  public List<String> getIn() {
-    return in;
-  }
-
-  public void setIn(List<String> in) {
-    this.in = in;
-  }
-   */
-
   public Rule getRules() {
     return rules;
   }
@@ -279,5 +228,4 @@ public class JsonBranch implements Cloneable, Serializable {
 
     return cloned;
   }
-
 }

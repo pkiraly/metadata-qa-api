@@ -176,4 +176,14 @@ public class AbbreviationManager implements Serializable {
   public Map<String, Integer> getData() {
     return data;
   }
+
+  /**
+   * Do not create new abbreviation, simply returns an existing or a default number
+   * @param key
+   * @param defaultValue
+   * @return
+   */
+  public Integer getOrDefault(String key, Integer defaultValue) {
+    return data.getOrDefault(key, defaultValue);
+  }
 }
