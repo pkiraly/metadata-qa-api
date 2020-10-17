@@ -1,5 +1,7 @@
 package de.gwdg.metadataqa.api.abbreviation;
 
+import de.gwdg.metadataqa.api.util.FileUtils;
+
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -130,6 +132,7 @@ public class AbbreviationManager implements Serializable {
       for (Map.Entry<String, Integer> entry : data.entrySet()) {
         writer.println(String.format("%d;%s", entry.getValue(), entry.getKey()));
       }
+      writer.flush();
     }
   }
 
@@ -155,6 +158,8 @@ public class AbbreviationManager implements Serializable {
   private Path getPath(String fileName)
       throws IOException, URISyntaxException {
     Path path;
+    Path p = FileUtils.getPath(fileName);
+    System.err.println("p: " + p);
     URL url = getClass().getClassLoader().getResource(fileName);
     if (url == null) {
       throw new IOException(String.format("File %s is not existing", fileName));
