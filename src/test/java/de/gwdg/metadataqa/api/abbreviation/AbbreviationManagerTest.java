@@ -81,10 +81,11 @@ public class AbbreviationManagerTest {
 
   @Test
   public void save() {
-    String testFile = "src/test/resources/abbreviation/test.csv";
     assertFalse(new File(testFile).exists());
+
     AbbreviationManager manager = new AbbreviationManager();
     manager.processLine("264;Preiser Records; Austria", 1, true);
+
     try {
       new File(testFile).createNewFile();
       manager.save(testFile);
