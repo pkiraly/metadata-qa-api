@@ -2,8 +2,6 @@ package de.gwdg.metadataqa.api.rule;
 
 import de.gwdg.metadataqa.api.json.JsonBranch;
 
-import java.util.regex.Pattern;
-
 public abstract class SingleFieldChecker implements RuleChecker {
 
   protected JsonBranch field;

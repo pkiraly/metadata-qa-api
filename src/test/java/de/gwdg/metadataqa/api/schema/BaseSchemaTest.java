@@ -28,7 +28,7 @@ public class BaseSchemaTest {
   public void testConstructor() throws Exception {
     Schema schema = new BaseSchema()
       .setFormat(Format.CSV)
-      .addField(new JsonBranch("url", Category.MANDATORY).setExtractable())
+      .addField(new JsonBranch("url").setCategories(Category.MANDATORY).setExtractable())
       .addField(new JsonBranch("name"))
       .addField(new JsonBranch("alternateName"))
       .addField(new JsonBranch("description"))
@@ -67,7 +67,7 @@ public class BaseSchemaTest {
   public void testCalculation() throws Exception {
     Schema schema = new BaseSchema()
       .setFormat(Format.CSV)
-      .addField(new JsonBranch("url", Category.MANDATORY).setExtractable())
+      .addField(new JsonBranch("url").setCategories(Category.MANDATORY).setExtractable())
       .addField(new JsonBranch("name"))
       .addField(new JsonBranch("alternateName"))
       .addField(new JsonBranch("description"))
@@ -142,10 +142,88 @@ public class BaseSchemaTest {
   }
 
   @Test
+  public void testCalculation_noHeader_nonexistent() throws Exception {
+    Schema schema = new BaseSchema()
+      .setFormat(Format.CSV)
+      .addField(new JsonBranch("url").setCategories(Category.MANDATORY).setExtractable())
+      .addField(new JsonBranch("name"))
+      .addField(new JsonBranch("alternateName"))
+      .addField(new JsonBranch("description"))
+      .addField(new JsonBranch("variablesMeasured"))
+      .addField(new JsonBranch("measurementTechnique"))
+      .addField(new JsonBranch("sameAs"))
+      .addField(new JsonBranch("doi"))
+      .addField(new JsonBranch("identifier"))
+      .addField(new JsonBranch("author"))
+      .addField(new JsonBranch("isAccessibleForFree"))
+      .addField(new JsonBranch("dateModified"))
+      .addField(new JsonBranch("distribution"))
+      .addField(new JsonBranch("spatialCoverage"))
+      .addField(new JsonBranch("provider"))
+      .addField(new JsonBranch("funder"))
+      .addField(new JsonBranch("temporalCoverageX"));
+
+    CalculatorFacade facade = new CalculatorFacade()
+      .setSchema(schema)
+      .setCsvReader(
+        new CsvReader()
+          .setHeader(((CsvAwareSchema) schema).getHeader()))
+      .enableCompletenessMeasurement()
+      .enableFieldCardinalityMeasurement();
+    // facade.configure();
+
+    String fileName = "src/test/resources/csv/dataset_metadata_2020_08_17-head.csv";
+    File file = new File(fileName);
+
+    List<String> outputHeader = facade.getHeader();
+    assertEquals(
+      Arrays.asList(
+        "completeness:TOTAL", "completeness:MANDATORY",
+        "existence:url", "existence:name", "existence:alternateName", "existence:description",
+        "existence:variablesMeasured", "existence:measurementTechnique", "existence:sameAs",
+        "existence:doi", "existence:identifier", "existence:author", "existence:isAccessibleForFree",
+        "existence:dateModified", "existence:distribution", "existence:spatialCoverage",
+        "existence:provider", "existence:funder", "existence:temporalCoverageX",
+        "cardinality:url", "cardinality:name", "cardinality:alternateName",
+        "cardinality:description", "cardinality:variablesMeasured",
+        "cardinality:measurementTechnique", "cardinality:sameAs", "cardinality:doi",
+        "cardinality:identifier", "cardinality:author", "cardinality:isAccessibleForFree",
+        "cardinality:dateModified", "cardinality:distribution", "cardinality:spatialCoverage",
+        "cardinality:provider", "cardinality:funder", "cardinality:temporalCoverageX"
+      ),
+      outputHeader
+    );
+
+    try {
+      CSVIterator iterator = new CSVIterator(new CSVReaderHeaderAware(new FileReader(fileName)));
+      StringBuffer result = new StringBuffer();
+      while (iterator.hasNext()) {
+        String line = CsvReader.toCsv(iterator.next());
+        String metrics = facade.measure(line);
+        result.append(metrics + "\n");
+      }
+      String expected = "0.352941,1.0,1,1,0,1,0,0,0,0,1,0,0,1,1,0,0,0,0,1,1,0,1,0,0,0,0,1,0,0,1,1,0,0,0,0\n"
+        + "0.352941,1.0,1,1,0,1,0,0,0,0,1,0,0,1,1,0,0,0,0,1,1,0,1,0,0,0,0,1,0,0,1,1,0,0,0,0\n"
+        + "0.352941,1.0,1,1,0,1,0,0,0,0,1,0,0,1,1,0,0,0,0,1,1,0,1,0,0,0,0,1,0,0,1,1,0,0,0,0\n"
+        + "0.352941,1.0,1,1,0,1,0,0,0,0,1,0,0,1,1,0,0,0,0,1,1,0,1,0,0,0,0,1,0,0,1,1,0,0,0,0\n"
+        + "0.352941,1.0,1,1,0,1,0,0,0,0,1,0,0,1,1,0,0,0,0,1,1,0,1,0,0,0,0,1,0,0,1,1,0,0,0,0\n"
+        + "0.411765,1.0,1,1,0,1,0,0,1,0,1,1,0,1,0,0,0,0,0,1,1,0,1,0,0,1,0,1,1,0,1,0,0,0,0,0\n"
+        + "0.352941,1.0,1,1,1,1,0,0,0,0,1,0,0,1,0,0,0,0,0,1,1,1,1,0,0,0,0,1,0,0,1,0,0,0,0,0\n"
+        + "0.352941,1.0,1,1,0,1,0,0,0,0,1,0,0,1,1,0,0,0,0,1,1,0,1,0,0,0,0,1,0,0,1,1,0,0,0,0\n"
+        + "0.294118,1.0,1,1,0,1,0,0,0,0,1,0,0,1,0,0,0,0,0,1,1,0,1,0,0,0,0,1,0,0,1,0,0,0,0,0\n";
+      assertEquals(expected, result.toString());
+    } catch (IOException e) {
+      e.printStackTrace();
+    } catch (CsvValidationException e) {
+      e.printStackTrace();
+    }
+  }
+
+  @Test
   public void testCalculation_setFirstRowAsHeader() throws Exception {
     Schema schema = new BaseSchema()
       .setFormat(Format.CSV)
-      .addField(new JsonBranch("url", Category.MANDATORY).setExtractable())
+      .addField(new JsonBranch("url").setCategories(Category.MANDATORY).setExtractable())
       .addField(new JsonBranch("name"))
       .addField(new JsonBranch("alternateName"))
       .addField(new JsonBranch("description"))
@@ -217,6 +295,112 @@ public class BaseSchemaTest {
   }
 
   @Test
+  public void testCalculation_limitFields() throws Exception {
+    Schema schema = new BaseSchema()
+      .setFormat(Format.CSV)
+      .addField(new JsonBranch("url").setCategories(Category.MANDATORY).setExtractable())
+      .addField(new JsonBranch("name"))
+      .addField(new JsonBranch("alternateName"))
+    ;
+
+    CalculatorFacade facade = new CalculatorFacade()
+      .setSchema(schema)
+      .setCsvReader(true)
+      .enableCompletenessMeasurement()
+      .enableFieldCardinalityMeasurement();
+
+    String fileName = "src/test/resources/csv/dataset_metadata_2020_08_17-head.csv";
+
+    List<String> outputHeader = facade.getHeader();
+    assertEquals(
+      Arrays.asList(
+        "completeness:TOTAL", "completeness:MANDATORY",
+        "existence:url", "existence:name", "existence:alternateName",
+        "cardinality:url", "cardinality:name", "cardinality:alternateName"
+      ),
+      outputHeader
+    );
+
+    try {
+      CSVIterator iterator = new CSVIterator(new CSVReader(new FileReader(fileName)));
+      StringBuffer result = new StringBuffer();
+      while (iterator.hasNext()) {
+        String line = CsvReader.toCsv(iterator.next());
+        String metrics = facade.measure(line);
+        if (!metrics.isEmpty())
+          result.append(metrics + "\n");
+      }
+      String expected = "0.666667,1.0,1,1,0,1,1,0\n" +
+        "0.666667,1.0,1,1,0,1,1,0\n" +
+        "0.666667,1.0,1,1,0,1,1,0\n" +
+        "0.666667,1.0,1,1,0,1,1,0\n" +
+        "0.666667,1.0,1,1,0,1,1,0\n" +
+        "0.666667,1.0,1,1,0,1,1,0\n" +
+        "1.0,1.0,1,1,1,1,1,1\n" +
+        "0.666667,1.0,1,1,0,1,1,0\n" +
+        "0.666667,1.0,1,1,0,1,1,0\n";
+      assertEquals(expected, result.toString());
+    } catch (IOException e) {
+      e.printStackTrace();
+    } catch (CsvValidationException e) {
+      e.printStackTrace();
+    }
+  }
+
+  @Test
+  public void testCalculation_nonexistentFields() throws Exception {
+    Schema schema = new BaseSchema()
+      .setFormat(Format.CSV)
+      .addField(new JsonBranch("url").setCategories(Category.MANDATORY).setExtractable())
+      .addField(new JsonBranch("name"))
+      .addField(new JsonBranch("nonexistent"))
+    ;
+
+    CalculatorFacade facade = new CalculatorFacade()
+      .setSchema(schema)
+      .setCsvReader(true)
+      .enableCompletenessMeasurement()
+      .enableFieldCardinalityMeasurement();
+
+    String fileName = "src/test/resources/csv/dataset_metadata_2020_08_17-head.csv";
+
+    List<String> outputHeader = facade.getHeader();
+    assertEquals(
+      Arrays.asList(
+        "completeness:TOTAL", "completeness:MANDATORY",
+        "existence:url", "existence:name", "existence:nonexistent",
+        "cardinality:url", "cardinality:name", "cardinality:nonexistent"
+      ),
+      outputHeader
+    );
+
+    try {
+      CSVIterator iterator = new CSVIterator(new CSVReader(new FileReader(fileName)));
+      StringBuffer result = new StringBuffer();
+      while (iterator.hasNext()) {
+        String line = CsvReader.toCsv(iterator.next());
+        String metrics = facade.measure(line);
+        if (!metrics.isEmpty())
+          result.append(metrics + "\n");
+      }
+      String expected = "0.666667,1.0,1,1,0,1,1,0\n" +
+        "0.666667,1.0,1,1,0,1,1,0\n" +
+        "0.666667,1.0,1,1,0,1,1,0\n" +
+        "0.666667,1.0,1,1,0,1,1,0\n" +
+        "0.666667,1.0,1,1,0,1,1,0\n" +
+        "0.666667,1.0,1,1,0,1,1,0\n" +
+        "0.666667,1.0,1,1,0,1,1,0\n" +
+        "0.666667,1.0,1,1,0,1,1,0\n" +
+        "0.666667,1.0,1,1,0,1,1,0\n";
+      assertEquals(expected, result.toString());
+    } catch (IOException e) {
+      e.printStackTrace();
+    } catch (CsvValidationException e) {
+      e.printStackTrace();
+    }
+  }
+
+  @Test
   public void config2Schema() throws FileNotFoundException {
     Schema schema = ConfigurationReader
       .readYaml(
@@ -226,6 +410,42 @@ public class BaseSchemaTest {
 
     assertEquals(Format.JSON, schema.getFormat());
     assertEquals(3, schema.getPaths().size());
+  }
+
+  @Test
+  public void config2Schema_categories() throws FileNotFoundException {
+    Schema schema = ConfigurationReader
+      .readYaml("src/test/resources/configuration/configuration_categories.yaml")
+      .asSchema();
+
+    assertEquals(Format.JSON, schema.getFormat());
+    assertEquals(3, schema.getPaths().size());
+    assertEquals(
+      Arrays.asList("MANDATORY", "DESCRIPTIVENESS", "SEARCHABILITY", "IDENTIFICATION",
+        "CUSTOM", "MULTILINGUALITY"),
+      schema.getCategories()
+    );
+    assertTrue(schema.getCategories().contains("CUSTOM"));
+  }
+
+  @Test
+  public void config2Schema_conflicting_categories() throws FileNotFoundException {
+    Schema schema = ConfigurationReader
+      .readYaml("src/test/resources/configuration/configuration_conflicting_categories.yaml")
+      .asSchema();
+
+    assertEquals(Format.JSON, schema.getFormat());
+    assertEquals(3, schema.getPaths().size());
+    assertEquals(
+      Arrays.asList("MANDATORY", "DESCRIPTIVENESS", "SEARCHABILITY", "IDENTIFICATION",
+        "CUSTOM", "MULTILINGUALITY"),
+      schema.getCategories()
+    );
+    assertTrue(schema.getCategories().contains("CUSTOM"));
+    assertEquals(
+      Arrays.asList("DESCRIPTIVENESS", "SEARCHABILITY", "IDENTIFICATION",
+        "MULTILINGUALITY", "CUSTOM"),
+      schema.getPathByLabel("Proxy/dc:title").getCategories());
   }
 
   @Test

@@ -1,6 +1,5 @@
 package de.gwdg.metadataqa.api.configuration;
 
-import de.gwdg.metadataqa.api.model.Category;
 import de.gwdg.metadataqa.api.schema.Format;
 import de.gwdg.metadataqa.api.schema.Schema;
 import org.junit.Test;
@@ -70,7 +69,7 @@ public class ConfigurationTest {
     assertEquals(17, schema.getPaths().size());
     assertEquals("url", schema.getPaths().get(0).getLabel());
     assertEquals(1, schema.getPaths().get(0).getCategories().size());
-    assertEquals(Category.MANDATORY, schema.getPaths().get(0).getCategories().get(0));
+    assertEquals("MANDATORY", schema.getPaths().get(0).getCategories().get(0));
     assertTrue(schema.getPaths().get(0).isExtractable());
 
     assertEquals(0, schema.getPaths().get(1).getCategories().size());

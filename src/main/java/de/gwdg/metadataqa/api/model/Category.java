@@ -1,6 +1,5 @@
 package de.gwdg.metadataqa.api.model;
 
-import com.jayway.jsonpath.JsonPath;
 import de.gwdg.metadataqa.api.json.JsonBranch;
 
 import java.util.ArrayList;
@@ -28,18 +27,39 @@ public enum Category {
     this.name = name;
   }
 
-  public static List<Category> extractCategories(Collection<JsonBranch> paths) {
-    List<Category> existingCategories = new ArrayList<>();
-    for (JsonBranch branch : paths)
-      if (!branch.getCategories().isEmpty())
-        for (Category category : branch.getCategories())
-          if (!existingCategories.contains(category))
-            existingCategories.add(category);
+  public static List<String> extractCategories(Collection<JsonBranch> paths) {
+    return extractCategories(paths, false);
+  }
 
-    List<Category> goodOrder = new ArrayList<>();
+  public static List<String> extractCategories(Collection<JsonBranch> paths,
+                                                 boolean reorder) {
+    List<String> existingCategories = extractExistingCategories(paths);
+
+    if (reorder)
+      existingCategories = reorder(existingCategories);
+
+    return existingCategories;
+  }
+
+  private static List<String> extractExistingCategories(Collection<JsonBranch> paths) {
+    List<String> existingCategories = new ArrayList<>();
+    for (JsonBranch branch : paths)
+      for (String category : branch.getCategories())
+        if (!existingCategories.contains(category))
+          existingCategories.add(category);
+
+    return existingCategories;
+  }
+
+  private static List<String> reorder(List<String> existingCategories) {
+    List<String> goodOrder = new ArrayList<>();
     for (Category category : values())
-      if (existingCategories.contains(category))
-        goodOrder.add(category);
+      if (existingCategories.contains(category.toString())) {
+        goodOrder.add(category.toString());
+        existingCategories.remove(category.toString());
+      }
+
+    goodOrder.addAll(existingCategories);
 
     return goodOrder;
   }

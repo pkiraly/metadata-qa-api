@@ -25,7 +25,10 @@ import de.gwdg.metadataqa.api.util.CompressionLevel;
 
 import java.io.IOException;
 import java.io.Serializable;
-import java.util.*;
+import java.util.LinkedHashMap;
+import java.util.Map;
+import java.util.List;
+import java.util.ArrayList;
 import java.util.logging.Logger;
 
 import de.gwdg.metadataqa.api.util.CsvReader;

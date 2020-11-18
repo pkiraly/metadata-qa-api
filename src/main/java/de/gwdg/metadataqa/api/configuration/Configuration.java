@@ -9,6 +9,7 @@ public class Configuration {
   private String format;
   private List<Field> fields;
   private List<Group> groups;
+  private List<String> categories;
 
   public String getFormat() {
     return format;
@@ -32,6 +33,19 @@ public class Configuration {
 
   public void setGroups(List<Group> groups) {
     this.groups = groups;
+  }
+
+  public List<String> getCategories() {
+    return categories;
+  }
+
+  public boolean hasCategories() {
+    return categories != null && !categories.isEmpty();
+  }
+
+
+  public void setCategories(List<String> categories) {
+    this.categories = categories;
   }
 
   public Schema asSchema() {

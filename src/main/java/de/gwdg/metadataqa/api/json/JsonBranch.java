@@ -18,7 +18,7 @@ public class JsonBranch implements Cloneable, Serializable {
 
   private String label;
   private String jsonPath;
-  private List<Category> categories;
+  private List<String> categories = new ArrayList<>();
   private String solrFieldName;
   private JsonBranch parent = null;
   private JsonBranch identifier = null;
@@ -35,22 +35,22 @@ public class JsonBranch implements Cloneable, Serializable {
     this.solrFieldName = solrFieldName;
   }
 
-  public JsonBranch(String jsonPath, Category... categories) {
+  public JsonBranch(String jsonPath) { // String... categories
     this.label = jsonPath;
     this.jsonPath = jsonPath;
-    setCategories(Arrays.asList(categories));
+    // setCategories(Arrays.asList(categories));
   }
 
-  public JsonBranch(String label, String jsonPath, Category... categories) {
+  public JsonBranch(String label, String jsonPath) { // String... categories
     this.label = label;
     this.jsonPath = jsonPath;
-    setCategories(Arrays.asList(categories));
+    // setCategories(Arrays.asList(categories));
   }
 
-  public JsonBranch(String label, JsonBranch parent, String jsonPath, Category... categories) {
+  public JsonBranch(String label, JsonBranch parent, String jsonPath) { // String... categories
     this.label = label;
     this.jsonPath = jsonPath;
-    setCategories(Arrays.asList(categories));
+    // setCategories(Arrays.asList(categories));
     setParent(parent);
   }
 
@@ -98,13 +98,24 @@ public class JsonBranch implements Cloneable, Serializable {
     return getJsonPath();
   }
 
-  public List<Category> getCategories() {
+  public List<String> getCategories() {
     return categories;
   }
 
-  public JsonBranch setCategories(List<Category> categories) {
+  public JsonBranch setCategories(Category... categories) {
+    List<String> categories2 = new ArrayList<>();
+    for (Category category : categories)
+      categories2.add(category.toString());
+    return setCategories(categories2);
+  }
+
+  public JsonBranch setCategories(String... categories) {
+    return setCategories(Arrays.asList(categories));
+  }
+
+  public JsonBranch setCategories(List<String> categories) {
     this.categories = categories;
-    if (categories.contains(Category.MANDATORY))
+    if (categories.contains(Category.MANDATORY.toString()))
       isMandatory = true;
     return this;
   }
@@ -216,7 +227,7 @@ public class JsonBranch implements Cloneable, Serializable {
   public Object clone() throws CloneNotSupportedException {
     JsonBranch cloned = (JsonBranch) super.clone();
 
-    if (children != null && children.size() > 0) {
+    if (children != null && !children.isEmpty()) {
       List<JsonBranch> clonedChildren = new ArrayList<JsonBranch>();
       for (JsonBranch child : children) {
         JsonBranch clonedChild = (JsonBranch) child.clone();

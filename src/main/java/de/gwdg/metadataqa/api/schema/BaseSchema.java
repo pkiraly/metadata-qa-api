@@ -18,7 +18,7 @@ public class BaseSchema implements Schema, CsvAwareSchema {
   private final Map<String, JsonBranch> COLLECTION_PATHS = new LinkedHashMap<>();
   private final Map<String, JsonBranch> DIRECT_CHILDREN = new LinkedHashMap<>();
   private Map<String, String> extractableFields = new LinkedHashMap<>();
-  private List<Category> categories = null;
+  private List<String> categories = null;
   private List<RuleChecker> ruleCheckers;
 
   private Format format;
@@ -114,7 +114,7 @@ public class BaseSchema implements Schema, CsvAwareSchema {
   }
 
   @Override
-  public List<Category> getCategories() {
+  public List<String> getCategories() {
     if (categories == null) {
       categories = Category.extractCategories(PATHS.values());
     }
@@ -175,5 +175,9 @@ public class BaseSchema implements Schema, CsvAwareSchema {
       "categories=" + categories +
       ", format=" + format +
       '}';
+  }
+
+  public void setCategories(List<String> categories) {
+    this.categories = categories;
   }
 }

@@ -2,7 +2,6 @@ package de.gwdg.metadataqa.api.schema;
 
 import de.gwdg.metadataqa.api.json.FieldGroup;
 import de.gwdg.metadataqa.api.json.JsonBranch;
-import de.gwdg.metadataqa.api.model.Category;
 import de.gwdg.metadataqa.api.rule.RuleChecker;
 
 import java.util.List;
@@ -94,7 +93,7 @@ public interface Schema {
    */
   void addExtractableField(String label, String jsonPath);
 
-  List<Category> getCategories();
+  List<String> getCategories();
 
   List<RuleChecker> getRuleCheckers();
 }

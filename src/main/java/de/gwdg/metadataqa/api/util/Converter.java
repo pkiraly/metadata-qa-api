@@ -1,7 +1,6 @@
 package de.gwdg.metadataqa.api.util;
 
 import java.math.BigDecimal;
-import java.security.InvalidParameterException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.LinkedHashMap;

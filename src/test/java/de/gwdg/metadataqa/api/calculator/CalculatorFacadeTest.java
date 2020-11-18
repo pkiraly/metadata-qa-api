@@ -253,7 +253,7 @@ public class CalculatorFacadeTest {
   private CalculatorFacade createCalculatorFacadeForCsv() {
     Schema schema = new BaseSchema()
       .setFormat(Format.CSV)
-      .addField(new JsonBranch("url", Category.MANDATORY).setExtractable())
+      .addField(new JsonBranch("url").setCategories(Category.MANDATORY).setExtractable())
       .addField(new JsonBranch("name"))
       .addField(new JsonBranch("alternateName"))
       .addField(new JsonBranch("description"))

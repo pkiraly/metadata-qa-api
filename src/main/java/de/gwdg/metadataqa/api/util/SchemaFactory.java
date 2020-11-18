@@ -3,7 +3,6 @@ package de.gwdg.metadataqa.api.util;
 import de.gwdg.metadataqa.api.configuration.Configuration;
 import de.gwdg.metadataqa.api.configuration.Field;
 import de.gwdg.metadataqa.api.json.JsonBranch;
-import de.gwdg.metadataqa.api.model.Category;
 import de.gwdg.metadataqa.api.schema.BaseSchema;
 import de.gwdg.metadataqa.api.schema.Format;
 import de.gwdg.metadataqa.api.schema.Schema;
@@ -11,12 +10,19 @@ import org.apache.commons.lang3.StringUtils;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Logger;
 
 public class SchemaFactory {
+
+  private static final Logger LOGGER = Logger.getLogger(SchemaFactory.class.getCanonicalName());
 
   public static Schema fromConfig(Configuration config) {
     BaseSchema schema = new BaseSchema()
       .setFormat(Format.valueOf(config.getFormat().toUpperCase()));
+
+    boolean hasCategories = config.hasCategories();
+    if (hasCategories)
+      schema.setCategories(config.getCategories());
 
     for (Field field : config.getFields()) {
       JsonBranch branch = new JsonBranch(field.getName());
@@ -25,9 +31,24 @@ public class SchemaFactory {
         branch.setJsonPath(field.getPath());
 
       if (field.getCategories() != null) {
-        List<Category> categories = new ArrayList<>();
+        List<String> categories = new ArrayList<>();
         for (String category : field.getCategories()) {
-          categories.add(Category.valueOf(category));
+          if (hasCategories) {
+            if (config.getCategories().contains(category))
+              categories.add(category);
+            else
+              LOGGER.warning(String.format("Invalid category for field '%s': '%s'",
+                field.getName(), category));
+          } else {
+            /*
+            try {
+              Category c = Category.valueOf(category);
+            } catch (IllegalArgumentException e) {
+              LOGGER.warning("Invalid category: " + category);
+            }
+             */
+            categories.add(category);
+          }
         }
         branch.setCategories(categories);
       }

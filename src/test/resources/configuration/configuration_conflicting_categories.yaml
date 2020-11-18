@@ -1,0 +1,35 @@
+format: json
+fields:
+  - name: edm:ProvidedCHO/@about
+    path:  $.['providedCHOs'][0]['about']
+    categories:
+      - MANDATORY
+  - name: Proxy/dc:title
+    path: $.['proxies'][?(@['europeanaProxy'] == false)]['dcTitle']
+    categories:
+      - DESCRIPTIVENESS
+      - SEARCHABILITY
+      - IDENTIFICATION
+      - MULTILINGUALITY
+      - CUSTOM
+      - CUSTOM2
+  - name: Proxy/dcterms:alternative
+    path: $.['proxies'][?(@['europeanaProxy'] == false)]['dctermsAlternative']
+    categories:
+      - DESCRIPTIVENESS
+      - SEARCHABILITY
+      - IDENTIFICATION
+      - MULTILINGUALITY
+groups:
+  - fields:
+      - Proxy/dc:title
+      - Proxy/dc:description
+    categories:
+      - MANDATORY
+categories:
+  - MANDATORY
+  - DESCRIPTIVENESS
+  - SEARCHABILITY
+  - IDENTIFICATION
+  - CUSTOM
+  - MULTILINGUALITY

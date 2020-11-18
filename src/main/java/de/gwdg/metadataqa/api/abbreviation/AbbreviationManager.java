@@ -1,7 +1,5 @@
 package de.gwdg.metadataqa.api.abbreviation;
 
-import de.gwdg.metadataqa.api.util.FileUtils;
-
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.PrintWriter;

@@ -26,7 +26,7 @@ public class EdmOaiPmhJsonSchema extends EdmSchema implements Serializable {
   private static final List<String> EMPTY_STRINGS = new ArrayList<>();
   private static final Map<String, JsonBranch> PATHS = new LinkedHashMap<>();
   private static final Map<String, JsonBranch> COLLECTION_PATHS = new LinkedHashMap<>();
-  private static List<Category> categories = null;
+  private static List<String> categories = null;
   private static List<RuleChecker> ruleChecker;
 
   private static final String LONG_SUBJECT_PATH =
@@ -41,7 +41,8 @@ public class EdmOaiPmhJsonSchema extends EdmSchema implements Serializable {
     providedCHO.setCollection(true);
     addPath(providedCHO);
     JsonBranch providedCHOIdentifier = new JsonBranch("ProvidedCHO/rdf:about",
-      providedCHO, "$.['@about']", Category.MANDATORY);
+      providedCHO, "$.['@about']")
+      .setCategories(Category.MANDATORY);
     providedCHO.setIdentifier(providedCHOIdentifier);
     addPath(providedCHOIdentifier);
 
@@ -53,75 +54,75 @@ public class EdmOaiPmhJsonSchema extends EdmSchema implements Serializable {
     proxy.setIdentifier(proxyIdentifier);
     addPath(proxyIdentifier);
 
-    addPath(new JsonBranch("Proxy/dc:title", proxy, "$.['dc:title']",
-      Category.DESCRIPTIVENESS, Category.SEARCHABILITY,
+    addPath(new JsonBranch("Proxy/dc:title", proxy, "$.['dc:title']")
+      .setCategories(Category.DESCRIPTIVENESS, Category.SEARCHABILITY,
       Category.IDENTIFICATION, Category.MULTILINGUALITY));
-    addPath(new JsonBranch("Proxy/dcterms:alternative", proxy, "$.['dcterms:alternative']",
-      Category.DESCRIPTIVENESS, Category.SEARCHABILITY,
+    addPath(new JsonBranch("Proxy/dcterms:alternative", proxy, "$.['dcterms:alternative']")
+      .setCategories(Category.DESCRIPTIVENESS, Category.SEARCHABILITY,
       Category.IDENTIFICATION, Category.MULTILINGUALITY));
-    addPath(new JsonBranch("Proxy/dc:description", proxy, "$.['dc:description']",
-      Category.DESCRIPTIVENESS, Category.SEARCHABILITY,
+    addPath(new JsonBranch("Proxy/dc:description", proxy, "$.['dc:description']")
+      .setCategories(Category.DESCRIPTIVENESS, Category.SEARCHABILITY,
       Category.CONTEXTUALIZATION, Category.IDENTIFICATION,
       Category.MULTILINGUALITY));
-    addPath(new JsonBranch("Proxy/dc:creator", proxy, "$.['dc:creator']",
-      Category.DESCRIPTIVENESS, Category.SEARCHABILITY,
+    addPath(new JsonBranch("Proxy/dc:creator", proxy, "$.['dc:creator']")
+      .setCategories(Category.DESCRIPTIVENESS, Category.SEARCHABILITY,
       Category.CONTEXTUALIZATION, Category.BROWSING));
-    addPath(new JsonBranch("Proxy/dc:publisher", proxy, "$.['dc:publisher']",
-      Category.SEARCHABILITY, Category.REUSABILITY));
-    addPath(new JsonBranch("Proxy/dc:contributor", proxy, "$.['dc:contributor']",
-      Category.SEARCHABILITY));
-    addPath(new JsonBranch("Proxy/dc:type", proxy, "$.['dc:type']",
-      Category.SEARCHABILITY, Category.CONTEXTUALIZATION,
+    addPath(new JsonBranch("Proxy/dc:publisher", proxy, "$.['dc:publisher']")
+      .setCategories(Category.SEARCHABILITY, Category.REUSABILITY));
+    addPath(new JsonBranch("Proxy/dc:contributor", proxy, "$.['dc:contributor']")
+      .setCategories(Category.SEARCHABILITY));
+    addPath(new JsonBranch("Proxy/dc:type", proxy, "$.['dc:type']")
+      .setCategories(Category.SEARCHABILITY, Category.CONTEXTUALIZATION,
       Category.IDENTIFICATION, Category.BROWSING));
-    addPath(new JsonBranch("Proxy/dc:identifier", proxy, "$.['dc:identifier']",
-      Category.IDENTIFICATION));
-    addPath(new JsonBranch("Proxy/dc:language", proxy, "$.['dc:language']",
-      Category.DESCRIPTIVENESS, Category.MULTILINGUALITY));
-    addPath(new JsonBranch("Proxy/dc:coverage", proxy, "$.['dc:coverage']",
-      Category.SEARCHABILITY, Category.CONTEXTUALIZATION,
+    addPath(new JsonBranch("Proxy/dc:identifier", proxy, "$.['dc:identifier']")
+      .setCategories(Category.IDENTIFICATION));
+    addPath(new JsonBranch("Proxy/dc:language", proxy, "$.['dc:language']")
+      .setCategories(Category.DESCRIPTIVENESS, Category.MULTILINGUALITY));
+    addPath(new JsonBranch("Proxy/dc:coverage", proxy, "$.['dc:coverage']")
+      .setCategories(Category.SEARCHABILITY, Category.CONTEXTUALIZATION,
       Category.BROWSING));
-    addPath(new JsonBranch("Proxy/dcterms:temporal", proxy, "$.['dcterms:temporal']",
-      Category.SEARCHABILITY, Category.CONTEXTUALIZATION,
+    addPath(new JsonBranch("Proxy/dcterms:temporal", proxy, "$.['dcterms:temporal']")
+      .setCategories(Category.SEARCHABILITY, Category.CONTEXTUALIZATION,
       Category.BROWSING));
-    addPath(new JsonBranch("Proxy/dcterms:spatial", proxy, "$.['dcterms:spatial']",
-      Category.SEARCHABILITY, Category.CONTEXTUALIZATION,
+    addPath(new JsonBranch("Proxy/dcterms:spatial", proxy, "$.['dcterms:spatial']")
+      .setCategories(Category.SEARCHABILITY, Category.CONTEXTUALIZATION,
       Category.BROWSING));
-    addPath(new JsonBranch("Proxy/dc:subject", proxy, "$.['dc:subject']",
-      Category.DESCRIPTIVENESS, Category.SEARCHABILITY,
+    addPath(new JsonBranch("Proxy/dc:subject", proxy, "$.['dc:subject']")
+      .setCategories(Category.DESCRIPTIVENESS, Category.SEARCHABILITY,
       Category.CONTEXTUALIZATION, Category.MULTILINGUALITY));
-    addPath(new JsonBranch("Proxy/dc:date", proxy, "$.['dc:date']",
-      Category.IDENTIFICATION, Category.BROWSING,
+    addPath(new JsonBranch("Proxy/dc:date", proxy, "$.['dc:date']")
+      .setCategories(Category.IDENTIFICATION, Category.BROWSING,
       Category.REUSABILITY));
-    addPath(new JsonBranch("Proxy/dcterms:created", proxy, "$.['dcterms:created']",
-      Category.IDENTIFICATION, Category.REUSABILITY));
-    addPath(new JsonBranch("Proxy/dcterms:issued", proxy, "$.['dcterms:issued']",
-      Category.IDENTIFICATION, Category.REUSABILITY));
-    addPath(new JsonBranch("Proxy/dcterms:extent", proxy, "$.['dcterms:extent']",
-      Category.DESCRIPTIVENESS, Category.REUSABILITY));
-    addPath(new JsonBranch("Proxy/dcterms:medium", proxy, "$.['dcterms:medium']",
-      Category.DESCRIPTIVENESS, Category.REUSABILITY));
-    addPath(new JsonBranch("Proxy/dcterms:provenance", proxy, "$.['dcterms:provenance']",
-      Category.DESCRIPTIVENESS));
-    addPath(new JsonBranch("Proxy/dcterms:hasPart", proxy, "$.['dcterms:hasPart']",
-      Category.SEARCHABILITY, Category.CONTEXTUALIZATION,
+    addPath(new JsonBranch("Proxy/dcterms:created", proxy, "$.['dcterms:created']")
+      .setCategories(Category.IDENTIFICATION, Category.REUSABILITY));
+    addPath(new JsonBranch("Proxy/dcterms:issued", proxy, "$.['dcterms:issued']")
+      .setCategories(Category.IDENTIFICATION, Category.REUSABILITY));
+    addPath(new JsonBranch("Proxy/dcterms:extent", proxy, "$.['dcterms:extent']")
+      .setCategories(Category.DESCRIPTIVENESS, Category.REUSABILITY));
+    addPath(new JsonBranch("Proxy/dcterms:medium", proxy, "$.['dcterms:medium']")
+      .setCategories(Category.DESCRIPTIVENESS, Category.REUSABILITY));
+    addPath(new JsonBranch("Proxy/dcterms:provenance", proxy, "$.['dcterms:provenance']")
+      .setCategories(Category.DESCRIPTIVENESS));
+    addPath(new JsonBranch("Proxy/dcterms:hasPart", proxy, "$.['dcterms:hasPart']")
+      .setCategories(Category.SEARCHABILITY, Category.CONTEXTUALIZATION,
       Category.BROWSING));
-    addPath(new JsonBranch("Proxy/dcterms:isPartOf", proxy, "$.['dcterms:isPartOf']",
-      Category.SEARCHABILITY, Category.CONTEXTUALIZATION,
+    addPath(new JsonBranch("Proxy/dcterms:isPartOf", proxy, "$.['dcterms:isPartOf']")
+      .setCategories(Category.SEARCHABILITY, Category.CONTEXTUALIZATION,
       Category.BROWSING));
-    addPath(new JsonBranch("Proxy/dc:format", proxy, "$.['dc:format']",
-      Category.DESCRIPTIVENESS, Category.REUSABILITY));
-    addPath(new JsonBranch("Proxy/dc:source", proxy, "$.['dc:source']",
-      Category.DESCRIPTIVENESS));
-    addPath(new JsonBranch("Proxy/dc:rights", proxy, "$.['dc:rights']",
-      Category.REUSABILITY));
-    addPath(new JsonBranch("Proxy/dc:relation", proxy, "$.['dc:relation']",
-      Category.SEARCHABILITY, Category.CONTEXTUALIZATION,
+    addPath(new JsonBranch("Proxy/dc:format", proxy, "$.['dc:format']")
+      .setCategories(Category.DESCRIPTIVENESS, Category.REUSABILITY));
+    addPath(new JsonBranch("Proxy/dc:source", proxy, "$.['dc:source']")
+      .setCategories(Category.DESCRIPTIVENESS));
+    addPath(new JsonBranch("Proxy/dc:rights", proxy, "$.['dc:rights']")
+      .setCategories(Category.REUSABILITY));
+    addPath(new JsonBranch("Proxy/dc:relation", proxy, "$.['dc:relation']")
+      .setCategories(Category.SEARCHABILITY, Category.CONTEXTUALIZATION,
       Category.BROWSING));
-    addPath(new JsonBranch("Proxy/edm:isNextInSequence", proxy, "$.['edm:isNextInSequence']",
-      Category.SEARCHABILITY, Category.CONTEXTUALIZATION,
+    addPath(new JsonBranch("Proxy/edm:isNextInSequence", proxy, "$.['edm:isNextInSequence']")
+      .setCategories(Category.SEARCHABILITY, Category.CONTEXTUALIZATION,
       Category.BROWSING));
-    addPath(new JsonBranch("Proxy/edm:type", proxy, "$.['edm:type']",
-      Category.SEARCHABILITY, Category.BROWSING));
+    addPath(new JsonBranch("Proxy/edm:type", proxy, "$.['edm:type']")
+      .setCategories(Category.SEARCHABILITY, Category.BROWSING));
     addPath(new JsonBranch("Proxy/edm:europeanaProxy", proxy, "$.['edm:europeanaProxy']"));
     addPath(new JsonBranch("Proxy/edm:year", proxy, "$.['edm:year']"));
     addPath(new JsonBranch("Proxy/edm:userTag", proxy, "$.['edm:userTag']"));
@@ -158,23 +159,23 @@ public class EdmOaiPmhJsonSchema extends EdmSchema implements Serializable {
     addPath(aggregationIdentifier);
     aggregation.setIdentifier(aggregationIdentifier);
 
-    addPath(new JsonBranch("Aggregation/edm:rights", aggregation, "$.['edm:rights']",
-      Category.MANDATORY, Category.REUSABILITY));
-    addPath(new JsonBranch("Aggregation/edm:provider", aggregation, "$.['edm:provider']",
-      Category.MANDATORY, Category.SEARCHABILITY,
+    addPath(new JsonBranch("Aggregation/edm:rights", aggregation, "$.['edm:rights']")
+      .setCategories(Category.MANDATORY, Category.REUSABILITY));
+    addPath(new JsonBranch("Aggregation/edm:provider", aggregation, "$.['edm:provider']")
+      .setCategories(Category.MANDATORY, Category.SEARCHABILITY,
       Category.IDENTIFICATION));
-    addPath(new JsonBranch("Aggregation/edm:dataProvider", aggregation, "$.['edm:dataProvider']",
-      Category.MANDATORY, Category.SEARCHABILITY,
+    addPath(new JsonBranch("Aggregation/edm:dataProvider", aggregation, "$.['edm:dataProvider']")
+      .setCategories(Category.MANDATORY, Category.SEARCHABILITY,
       Category.IDENTIFICATION));
-    addPath(new JsonBranch("Aggregation/edm:isShownAt", aggregation, "$.['edm:isShownAt']",
-      Category.BROWSING, Category.VIEWING));
-    addPath(new JsonBranch("Aggregation/edm:isShownBy", aggregation, "$.['edm:isShownBy']",
-      Category.BROWSING, Category.VIEWING,
+    addPath(new JsonBranch("Aggregation/edm:isShownAt", aggregation, "$.['edm:isShownAt']")
+      .setCategories(Category.BROWSING, Category.VIEWING));
+    addPath(new JsonBranch("Aggregation/edm:isShownBy", aggregation, "$.['edm:isShownBy']")
+      .setCategories(Category.BROWSING, Category.VIEWING,
       Category.REUSABILITY));
-    addPath(new JsonBranch("Aggregation/edm:object", aggregation, "$.['edm:object']",
-      Category.VIEWING, Category.REUSABILITY));
-    addPath(new JsonBranch("Aggregation/edm:hasView", aggregation, "$.['edm:hasView']",
-      Category.BROWSING, Category.VIEWING));
+    addPath(new JsonBranch("Aggregation/edm:object", aggregation, "$.['edm:object']")
+      .setCategories(Category.VIEWING, Category.REUSABILITY));
+    addPath(new JsonBranch("Aggregation/edm:hasView", aggregation, "$.['edm:hasView']")
+      .setCategories(Category.BROWSING, Category.VIEWING));
     addPath(new JsonBranch("Aggregation/dc:rights", aggregation, "$.['dc:rights']"));
     addPath(new JsonBranch("Aggregation/edm:ugc", aggregation, "$.['edm:ugc']"));
     addPath(new JsonBranch("Aggregation/edm:aggregatedCHO", aggregation, "$.['edm:aggregatedCHO']"));
@@ -407,9 +408,9 @@ public class EdmOaiPmhJsonSchema extends EdmSchema implements Serializable {
   }
 
   @Override
-  public List<Category> getCategories() {
+  public List<String> getCategories() {
     if (categories == null) {
-      categories = Category.extractCategories(PATHS.values());
+      categories = Category.extractCategories(PATHS.values(), true);
     }
     return categories;
   }

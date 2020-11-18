@@ -42,11 +42,10 @@ public class CompletenessCounter {
     }
   }
 
-  public void increaseInstance(List<Category> categories) {
+  public void increaseInstance(List<String> categories) {
     basicCounters.get(TOTAL).increaseInstance();
-    for (Category category : categories) {
-      basicCounters.get(category.name()).increaseInstance();
-    }
+    for (String category : categories)
+      basicCounters.get(category).increaseInstance();
   }
 
   public void increaseInstance(Category category, boolean increase) {
@@ -56,25 +55,24 @@ public class CompletenessCounter {
     }
   }
 
-  public void increaseTotal(List<Category> categories) {
+  public void increaseTotal(List<String> categories) {
     basicCounters.get(TOTAL).increaseTotal();
-    for (Category category : categories) {
-      basicCounters.get(category.name()).increaseTotal();
-    }
+    for (String category : categories)
+      if (category != null)
+        basicCounters.get(category).increaseTotal();
   }
 
   private void initialize() {
     basicCounters = new LinkedHashMap<>();
-    for (String name : getHeaders(schema)) {
+    for (String name : getHeaders(schema))
       basicCounters.put(name, new BasicCounter());
-    }
   }
 
   public static List<String> getHeaders(Schema schema) {
     List<String> headers = new ArrayList<>();
     headers.add(TOTAL);
-    for (Category category : schema.getCategories()) { // Category.values()
-      headers.add(category.name());
+    for (String category : schema.getCategories()) {
+      headers.add(category);
     }
     return headers;
   }
