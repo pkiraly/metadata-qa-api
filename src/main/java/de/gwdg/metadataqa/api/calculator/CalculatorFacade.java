@@ -22,6 +22,8 @@ import de.gwdg.metadataqa.api.uniqueness.SolrClient;
 import de.gwdg.metadataqa.api.uniqueness.SolrConfiguration;
 import de.gwdg.metadataqa.api.uniqueness.TfIdf;
 import de.gwdg.metadataqa.api.util.CompressionLevel;
+
+import java.io.IOException;
 import java.io.Serializable;
 import java.util.*;
 import java.util.logging.Logger;
@@ -39,6 +41,11 @@ public class CalculatorFacade implements Serializable {
   private static final Logger LOGGER = Logger.getLogger(
       CalculatorFacade.class.getCanonicalName()
   );
+
+  /**
+   * Is it the first record?
+   */
+  protected boolean isFirstRecord = true;
 
   /**
    * Flag whether or not the field extractor is enabled (default: false).
@@ -349,14 +356,28 @@ public class CalculatorFacade implements Serializable {
       Format format = schema.getFormat();
       if (format != null && content != null) {
         cache = PathCacheFactory.getInstance(schema.getFormat(), content);
-        if (schema.getFormat().equals(Format.CSV)) {
-          ((CsvPathCache)cache).setCsvReader(csvReader);
-        }
-        runMeasurements(collector);
+        if (schema.getFormat().equals(Format.CSV))
+          initializeCsvCache(content);
+
+        if (!(isFirstRecord && schema.getFormat().equals(Format.CSV) && csvReader.isHeaderAware()))
+          runMeasurements(collector);
+
+        isFirstRecord = false;
       }
     }
 
     return collector.getResults();
+  }
+
+  private void initializeCsvCache(String content) {
+    if (isFirstRecord && csvReader.isHeaderAware())
+      try {
+        csvReader.setHeader(content);
+      } catch (IOException e) {
+        e.printStackTrace();
+      }
+
+    ((CsvPathCache)cache).setCsvReader(csvReader);
   }
 
   protected <T extends XmlFieldInstance> Object measureCsvWithGenerics(List<String> content,
@@ -869,6 +890,16 @@ public class CalculatorFacade implements Serializable {
 
   public CalculatorFacade setSolrClient(SolrClient solrClient) {
     this.solrClient = solrClient;
+    changed = true;
+    return this;
+  }
+
+  public CalculatorFacade setCsvReader() {
+    return setCsvReader(false);
+  }
+
+  public CalculatorFacade setCsvReader(boolean headerAware) {
+    this.csvReader = new CsvReader().setHeaderAware(headerAware);
     changed = true;
     return this;
   }

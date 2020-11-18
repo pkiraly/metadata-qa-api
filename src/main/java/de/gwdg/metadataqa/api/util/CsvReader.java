@@ -15,6 +15,7 @@ import java.util.Map;
 public class CsvReader {
   private List<String> header;
   private ICSVParser parser;
+  private boolean headerAware;
 
   public CsvReader() {
     parser = new CSVParser();
@@ -31,6 +32,11 @@ public class CsvReader {
 
   public CsvReader setHeader(String[] header) {
     this.header = Arrays.asList(header);
+    return this;
+  }
+
+  public CsvReader setHeader(String header) throws IOException {
+    this.header = Arrays.asList(asArray(header));
     return this;
   }
 
@@ -79,4 +85,12 @@ public class CsvReader {
     return stringWriter.toString().trim();
   }
 
+  public boolean isHeaderAware() {
+    return headerAware;
+  }
+
+  public CsvReader setHeaderAware(boolean headerAware) {
+    this.headerAware = headerAware;
+    return this;
+  }
 }

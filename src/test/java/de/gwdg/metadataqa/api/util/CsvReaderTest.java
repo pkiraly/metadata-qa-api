@@ -79,6 +79,22 @@ public class CsvReaderTest {
   }
 
   @Test
+  public void testAsMap_setHeaderString() {
+    CsvReader reader = new CsvReader();
+    Map<String, String> record = null;
+    try {
+      reader.setHeader("name,age");
+      record = reader.asMap("Jim,64");
+    } catch (IOException e) {
+      //
+    }
+    assertNotNull(record);
+    assertEquals(2, record.size());
+    assertEquals("Jim", record.get("name"));
+    assertEquals("64", record.get("age"));
+  }
+
+  @Test
   public void testAsMap_withHeader_asList() {
     CsvReader reader = new CsvReader();
     reader.setHeader(Arrays.asList("name", "age"));
@@ -187,5 +203,17 @@ public class CsvReaderTest {
     } catch (CsvValidationException e) {
       e.printStackTrace();
     }
+  }
+
+  @Test
+  public void testIsHeaderAware() {
+    CsvReader reader1 = new CsvReader();
+    assertFalse(reader1.isHeaderAware());
+
+    CsvReader reader2 = new CsvReader().setHeaderAware(false);
+    assertFalse(reader2.isHeaderAware());
+
+    CsvReader reader3 = new CsvReader().setHeaderAware(false);
+    assertFalse(reader3.isHeaderAware());
   }
 }
