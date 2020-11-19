@@ -683,7 +683,7 @@ public class BaseSchemaTest {
   public void testRuleCheckers() {
     Rule rule = new Rule();
     rule.setEquals("3");
-    rule.setDisjoint("4");
+    rule.setDisjoint("uri");
     rule.setIn(Arrays.asList("a", "b"));
     rule.setMinCount(1);
     rule.setMaxCount(1);
@@ -694,7 +694,9 @@ public class BaseSchemaTest {
 
     Schema schema = new BaseSchema()
       .setFormat(Format.CSV)
-      .addField(new JsonBranch("url", "url").setRules(rule));
+      .addField(new JsonBranch("url", "url").setRule(rule))
+      .addField(new JsonBranch("uri", "uri"))
+    ;
 
     assertEquals(8, schema.getRuleCheckers().size());
     assertEquals("de.gwdg.metadataqa.api.rule.PatternChecker",
@@ -737,7 +739,7 @@ public class BaseSchemaTest {
   @Test
   public void getRuleChecker() {
     Schema schema = new BaseSchema()
-      .addField(new JsonBranch("author", "author").setRules(
+      .addField(new JsonBranch("author", "author").addRule(
         new Rule().withHasValue("a")
       ))
       .addField(new JsonBranch("title", "title").setCollection(false))

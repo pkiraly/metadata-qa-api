@@ -7,18 +7,16 @@ import de.gwdg.metadataqa.api.model.pathcache.PathCache;
 
 import java.util.List;
 
-public class DisjointChecker extends SingleFieldChecker {
+public class DisjointChecker extends PropertyPairChecker {
 
   public static final String prefix = "disjoint";
-  protected String fixedValue;
 
-  public DisjointChecker(JsonBranch field, String disjoint) {
-    this(field, field.getLabel(), disjoint);
+  public DisjointChecker(JsonBranch field1, JsonBranch field2) {
+    this(field1, field2, field1.getLabel());
   }
 
-  public DisjointChecker(JsonBranch field, String header, String fixedValue) {
-    super(field, prefix + ":" + header);
-    this.fixedValue = fixedValue;
+  public DisjointChecker(JsonBranch field1, JsonBranch field2, String header) {
+    super(field1, field2, prefix + ":" + header);
   }
 
   @Override
@@ -26,19 +24,21 @@ public class DisjointChecker extends SingleFieldChecker {
     double result = 0.0;
     boolean allPassed = true;
     boolean isNA = true;
-    List<XmlFieldInstance> instances = (List<XmlFieldInstance>) cache.get(field.getJsonPath());
-    if (instances != null && !instances.isEmpty()) {
-      for (XmlFieldInstance instance : instances) {
-        if (instance.hasValue()) {
+    List<XmlFieldInstance> instances1 = (List<XmlFieldInstance>) cache.get(field1.getJsonPath());
+    List<XmlFieldInstance> instances2 = (List<XmlFieldInstance>) cache.get(field2.getJsonPath());
+    if (instances1 != null && !instances1.isEmpty()) {
+      for (XmlFieldInstance instance1 : instances1) {
+        if (instance1.hasValue()) {
           isNA = false;
-          if (fixedValue.equals(instance.getValue())) {
-            allPassed = false;
-            break;
+          for (XmlFieldInstance instance2 : instances2) {
+            if (instance1.getValue().equals(instance2.getValue())) {
+              allPassed = false;
+              break;
+            }
           }
         }
       }
     }
     results.put(header, RuleCheckingOutput.create(isNA, allPassed));
   }
-
 }

@@ -27,7 +27,7 @@ public class EdmOaiPmhXmlSchema extends EdmSchema implements Serializable {
   private static final Map<String, JsonBranch> PATHS = new LinkedHashMap<>();
   private static final Map<String, JsonBranch> COLLECTION_PATHS = new LinkedHashMap<>();
   private static List<String> categories = null;
-  private static List<RuleChecker> ruleChecker;
+  private static List<RuleChecker> ruleCheckers;
 
   private static final String LONG_SUBJECT_PATH =
     "//ore:Proxy[edm:europeanaProxy/text() = 'false']/dc:subject";
@@ -426,6 +426,9 @@ public class EdmOaiPmhXmlSchema extends EdmSchema implements Serializable {
 
   @Override
   public List<RuleChecker> getRuleCheckers() {
-    return ruleChecker;
+    if (ruleCheckers == null) {
+      ruleCheckers = SchemaUtils.getRuleCheckers(this);
+    }
+    return ruleCheckers;
   }
 }

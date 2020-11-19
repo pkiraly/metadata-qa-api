@@ -22,7 +22,7 @@ public class MarcJsonSchema implements Schema, ProblemCatalogSchema, Serializabl
   private static final Map<String, JsonBranch> DIRECT_CHILDREN = new LinkedHashMap<>();
   private static Map<String, String> extractableFields = new LinkedHashMap<>();
   private static List<String> categories = null;
-  private static List<RuleChecker> ruleChecker = null;
+  private static List<RuleChecker> ruleCheckers = null;
 
   public static final String DATAFIELD_PATTERN = "$.datafield[?(@.tag == '%s')].subfield[?(@.code == '%s')].content";
   public static final String DATAFIELD_PARENT_PATTERN = "$.datafield[?(@.tag == '%s')]";
@@ -481,6 +481,9 @@ public class MarcJsonSchema implements Schema, ProblemCatalogSchema, Serializabl
 
   @Override
   public List<RuleChecker> getRuleCheckers() {
-    return ruleChecker;
+    if (ruleCheckers == null) {
+      ruleCheckers = SchemaUtils.getRuleCheckers(this);
+    }
+    return ruleCheckers;
   }
 }

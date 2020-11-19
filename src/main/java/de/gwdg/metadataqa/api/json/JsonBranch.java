@@ -27,7 +27,7 @@ public class JsonBranch implements Cloneable, Serializable {
   private boolean isActive = true;
   private boolean isExtractable = false;
   private boolean isMandatory = false;
-  private Rule rules;
+  private List<Rule> rules;
 
   public JsonBranch(String label, String jsonPath, String solrFieldName) {
     this.label = label;
@@ -196,11 +196,23 @@ public class JsonBranch implements Cloneable, Serializable {
     return this;
   }
 
-  public Rule getRules() {
+  public List<Rule> getRules() {
     return rules;
   }
 
-  public JsonBranch setRules(Rule rules) {
+  public JsonBranch addRule(Rule rule) {
+    if (this.rules == null)
+      this.rules = new ArrayList<>();
+    this.rules.add(rule);
+    return this;
+  }
+
+  public JsonBranch setRule(Rule rule) {
+    this.rules = Arrays.asList(rule);
+    return this;
+  }
+
+  public JsonBranch setRules(List<Rule> rules) {
     this.rules = rules;
     return this;
   }
