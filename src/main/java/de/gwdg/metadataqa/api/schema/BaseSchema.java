@@ -4,7 +4,17 @@ import de.gwdg.metadataqa.api.configuration.Rule;
 import de.gwdg.metadataqa.api.json.FieldGroup;
 import de.gwdg.metadataqa.api.json.JsonBranch;
 import de.gwdg.metadataqa.api.model.Category;
-import de.gwdg.metadataqa.api.rule.*;
+import de.gwdg.metadataqa.api.rule.DisjointChecker;
+import de.gwdg.metadataqa.api.rule.EqualityChecker;
+import de.gwdg.metadataqa.api.rule.PatternChecker;
+import de.gwdg.metadataqa.api.rule.RuleChecker;
+import de.gwdg.metadataqa.api.rule.EnumerationChecker;
+import de.gwdg.metadataqa.api.rule.MinCountChecker;
+import de.gwdg.metadataqa.api.rule.MaxCountChecker;
+import de.gwdg.metadataqa.api.rule.MinLengthChecker;
+import de.gwdg.metadataqa.api.rule.MaxLengthChecker;
+import de.gwdg.metadataqa.api.rule.HasValueChecker;
+
 import org.apache.commons.lang3.StringUtils;
 
 import java.util.ArrayList;
@@ -85,7 +95,7 @@ public class BaseSchema implements Schema, CsvAwareSchema {
 
   @Override
   public List<FieldGroup> getFieldGroups() {
-    return new ArrayList<FieldGroup>();
+    return new ArrayList<>();
   }
 
   @Override

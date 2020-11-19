@@ -1,9 +1,14 @@
 package de.gwdg.metadataqa.api.util;
 
-import java.io.*;
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.io.Reader;
 import java.net.URISyntaxException;
 import java.net.URL;
-import java.nio.charset.Charset;
+import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -19,13 +24,13 @@ import org.apache.commons.lang3.StringUtils;
  */
 public abstract class FileUtils {
 
-  private static ClassLoader classLoader = FileUtils.class.getClassLoader();
+  private static final ClassLoader classLoader = FileUtils.class.getClassLoader();
 
   private FileUtils() {}
 
   public static List<String> readLinesFromResource(String fileName)
       throws URISyntaxException, IOException {
-    return Files.readAllLines(getPath(fileName), Charset.defaultCharset());
+    return Files.readAllLines(getPath(fileName), StandardCharsets.UTF_8);
   }
 
   public static Path getPath(String fileName) throws IOException, URISyntaxException {
@@ -48,12 +53,9 @@ public abstract class FileUtils {
   }
 
   public static String readFromUrl(String url) throws IOException {
-    InputStream is = new URL(url).openStream();
-    try {
-      BufferedReader rd = new BufferedReader(new InputStreamReader(is, Charset.forName("UTF-8")));
+    try (InputStream is = new URL(url).openStream()) {
+      BufferedReader rd = new BufferedReader(new InputStreamReader(is, StandardCharsets.UTF_8));
       return readAll(rd);
-    } finally {
-      is.close();
     }
   }
 

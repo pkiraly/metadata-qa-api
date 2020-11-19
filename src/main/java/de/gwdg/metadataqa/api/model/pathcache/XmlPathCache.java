@@ -1,7 +1,8 @@
 package de.gwdg.metadataqa.api.model.pathcache;
 
-import com.jayway.jsonpath.*;
-import com.jayway.jsonpath.spi.json.JsonProvider;
+import com.jayway.jsonpath.InvalidJsonException;
+import com.jayway.jsonpath.InvalidPathException;
+import com.jayway.jsonpath.PathNotFoundException;
 import de.gwdg.metadataqa.api.model.XmlFieldInstance;
 import de.gwdg.metadataqa.api.util.ExceptionUtils;
 import de.gwdg.metadataqa.api.xml.OaiPmhXPath;
@@ -24,40 +25,20 @@ public class XmlPathCache<T extends XmlFieldInstance> implements PathCache {
     XmlPathCache.class.getCanonicalName()
   );
 
-  private final Object parsedDocument;
   private String recordId;
   private String content;
   private final Map<String, List<T>> cache = new HashMap<>();
   private final Map<String, Object> typedCache = new HashMap<>();
   private final Map<String, Object> fragmentCache = new HashMap<>();
-  private static final JsonProvider JSON_PROVIDER = Configuration.defaultConfiguration().jsonProvider();
   OaiPmhXPath oaiPmhXPath;
 
   public XmlPathCache(String content) throws InvalidJsonException {
     this.content = content;
     oaiPmhXPath = new OaiPmhXPath(content);
-    this.parsedDocument = oaiPmhXPath.getDocument();
-  }
-
-  public XmlPathCache(Object jsonDocument) {
-    this.parsedDocument = jsonDocument;
   }
 
   private void set(String address, String jsonPath, Object jsonFragment, Class clazz) {
     List<T> instances = read(jsonPath, jsonFragment);
-    /*
-    if (value != null) {
-      if (clazz == null) {
-        instances = (List<T>) oaiPmhXPath.extractFieldInstanceList(value, recordId, jsonPath);
-      } else {
-        if (value instanceof JSONArray) {
-          typedCache.put(address, clazz.cast(((JSONArray) value).get(0)));
-        } else {
-          typedCache.put(address, value);
-        }
-      }
-    }
-    */
     cache.put(address, instances);
   }
 
@@ -120,7 +101,7 @@ public class XmlPathCache<T extends XmlFieldInstance> implements PathCache {
   /**
    * Get a JSON fragment from cache.
    *
-   * @param address - a unique address for cahce
+   * @param address - a unique address for cache
    * @param jsonPath - a JSON path expression
    * @param jsonFragment - a JSON fragment in which the path should be searched for
    *
