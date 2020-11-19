@@ -11,7 +11,7 @@ import de.gwdg.metadataqa.api.util.CompressionLevel;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.Serializable;
-import java.nio.charset.Charset;
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
@@ -103,7 +103,7 @@ public class TfIdfCalculator implements Calculator, Serializable {
       IOUtils.copy(method.getResponseBodyAsStream(), baos);
       byte[] responseBody = baos.toByteArray();
 
-      jsonString = new String(responseBody, Charset.forName("UTF-8"));
+      jsonString = new String(responseBody, StandardCharsets.UTF_8);
     } catch (HttpException e) {
       LOGGER.severe("Fatal protocol violation: " + e.getMessage());
     } catch (IOException e) {

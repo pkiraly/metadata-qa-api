@@ -1,10 +1,13 @@
 package de.gwdg.metadataqa.api.calculator;
 
 import de.gwdg.metadataqa.api.model.pathcache.PathCache;
-import de.gwdg.metadataqa.api.uniqueness.*;
 import de.gwdg.metadataqa.api.counter.FieldCounter;
 import de.gwdg.metadataqa.api.interfaces.Calculator;
 import de.gwdg.metadataqa.api.schema.Schema;
+import de.gwdg.metadataqa.api.uniqueness.SolrClient;
+import de.gwdg.metadataqa.api.uniqueness.UniquenessExtractor;
+import de.gwdg.metadataqa.api.uniqueness.UniquenessField;
+import de.gwdg.metadataqa.api.uniqueness.UniquenessFieldCalculator;
 import de.gwdg.metadataqa.api.util.CompressionLevel;
 import org.apache.commons.lang3.StringUtils;
 
@@ -13,7 +16,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.LinkedHashMap;
-import java.util.logging.Logger;
 
 /**
  *
@@ -23,16 +25,13 @@ public class UniquenessCalculator implements Calculator, Serializable {
 
   public static final String CALCULATOR_NAME = "uniqueness";
 
-  private static final Logger LOGGER = Logger.getLogger(
-      UniquenessCalculator.class.getCanonicalName()
-  );
   public static final String SUFFIX = "_txt";
   public static final int SUFFIX_LENGTH = SUFFIX.length();
 
   private UniquenessExtractor extractor;
   private List<UniquenessField> solrFields;
 
-  private SolrClient solrClient;
+  private final SolrClient solrClient;
 
   private FieldCounter<Double> resultMap;
 
@@ -108,13 +107,13 @@ public class UniquenessCalculator implements Calculator, Serializable {
   }
 
   @Override
-  public Map<String, ? extends Object> getResultMap() {
+  public Map<String, ?> getResultMap() {
     return resultMap.getMap();
   }
 
   @Override
-  public Map<String, Map<String, ? extends Object>> getLabelledResultMap() {
-    Map<String, Map<String, ? extends Object>> labelledResultMap = new LinkedHashMap<>();
+  public Map<String, Map<String, ?>> getLabelledResultMap() {
+    Map<String, Map<String, ?>> labelledResultMap = new LinkedHashMap<>();
     labelledResultMap.put(getCalculatorName(), resultMap.getMap());
     return labelledResultMap;
   }

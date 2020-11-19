@@ -6,7 +6,11 @@ import de.gwdg.metadataqa.api.model.Category;
 import de.gwdg.metadataqa.api.rule.RuleChecker;
 
 import java.io.Serializable;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+import java.util.LinkedHashMap;
+import java.util.Map;
 
 /**
  * The Europeana Data Model (EDM) representation of the metadata schema interface.

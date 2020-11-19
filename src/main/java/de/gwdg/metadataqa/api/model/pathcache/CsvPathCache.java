@@ -6,7 +6,10 @@ import de.gwdg.metadataqa.api.util.CsvReader;
 import org.apache.commons.lang3.StringUtils;
 
 import java.io.IOException;
-import java.util.*;
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 import java.util.logging.Logger;
 
 /**
@@ -48,11 +51,11 @@ public class CsvPathCache<T extends XmlFieldInstance> implements PathCache {
 
   public List<T> read(String path, Object jsonFragment) {
     List<T> list = null;
-    if (record.containsKey(path) && StringUtils.isNotBlank(record.get(path))) {
+    if (record.containsKey(path) && StringUtils.isNotBlank(record.get(path)))
       list = (List<T>) Arrays.asList(new XmlFieldInstance(record.get(path)));
-    } else {
-      // LOGGER.severe("PathNotFound: " + path);
-    }
+    // else
+    //   LOGGER.severe("PathNotFound: " + path);
+
     return list;
   }
 
@@ -85,7 +88,7 @@ public class CsvPathCache<T extends XmlFieldInstance> implements PathCache {
   /**
    * Get a JSON fragment from cache.
    *
-   * @param address - a unique address for cahce
+   * @param address - a unique address for cache
    * @param jsonPath - a JSON path expression
    * @param jsonFragment - a JSON fragment in which the path should be searched for
    *
