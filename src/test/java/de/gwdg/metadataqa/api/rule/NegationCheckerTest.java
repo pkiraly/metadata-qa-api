@@ -11,11 +11,9 @@ import de.gwdg.metadataqa.api.util.CsvReader;
 import org.junit.Before;
 import org.junit.Test;
 
-import java.util.Arrays;
-
 import static org.junit.Assert.assertEquals;
 
-public class EqualityCheckerTest {
+public class NegationCheckerTest {
 
   protected Schema schema;
   protected CsvPathCache cache;
@@ -35,32 +33,32 @@ public class EqualityCheckerTest {
 
   @Test
   public void prefix() {
-    assertEquals("equals", EqualityChecker.prefix);
+    assertEquals("not", NegationChecker.prefix);
   }
 
   @Test
   public void success() {
-    EqualityChecker checker = new EqualityChecker(
-      schema.getPathByLabel("name"), schema.getPathByLabel("alt"));
+    NegationChecker checker = new NegationChecker(
+      new DisjointChecker(schema.getPathByLabel("name"), schema.getPathByLabel("title")));
 
     FieldCounter fieldCounter = new FieldCounter<>();
     checker.update(cache, fieldCounter);
 
     assertEquals(1, fieldCounter.size());
-    assertEquals("equals:name-alt", checker.getHeader());
-    assertEquals(RuleCheckingOutput.PASSED, fieldCounter.get(checker.getHeader()));
+    assertEquals("not:disjoint:name-title", checker.getHeader());
+    assertEquals(RuleCheckingOutput.FAILED, fieldCounter.get(checker.getHeader()));
   }
 
   @Test
   public void failure() {
-    EqualityChecker checker = new EqualityChecker(
-      schema.getPathByLabel("name"), schema.getPathByLabel("title"));
+    NegationChecker checker = new NegationChecker(
+      new DisjointChecker(schema.getPathByLabel("name"), schema.getPathByLabel("alt")));
 
     FieldCounter fieldCounter = new FieldCounter<>();
     checker.update(cache, fieldCounter);
 
     assertEquals(1, fieldCounter.size());
-    assertEquals("equals:name-title", checker.getHeader());
-    assertEquals(RuleCheckingOutput.FAILED, fieldCounter.get(checker.getHeader()));
+    assertEquals("not:disjoint:name-alt", checker.getHeader());
+    assertEquals(RuleCheckingOutput.PASSED, fieldCounter.get(checker.getHeader()));
   }
 }

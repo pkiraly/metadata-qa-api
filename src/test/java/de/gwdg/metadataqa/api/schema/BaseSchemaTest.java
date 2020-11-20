@@ -682,7 +682,7 @@ public class BaseSchemaTest {
   @Test
   public void testRuleCheckers() {
     Rule rule = new Rule();
-    rule.setEquals("3");
+    rule.setEquals("uri");
     rule.setDisjoint("uri");
     rule.setIn(Arrays.asList("a", "b"));
     rule.setMinCount(1);
