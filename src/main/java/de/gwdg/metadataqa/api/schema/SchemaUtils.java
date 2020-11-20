@@ -23,11 +23,11 @@ public class SchemaUtils {
   private static final Logger LOGGER = Logger.getLogger(SchemaUtils.class.getCanonicalName());
 
   /**
-   *
    * @param schema
    * @return
    */
   public static List<RuleChecker> getRuleCheckers(Schema schema) {
+    setSchemaForFields(schema);
     List<RuleChecker> ruleCheckers = new ArrayList<>();
     for (JsonBranch branch : schema.getPaths()) {
       if (branch.getRules() != null) {
@@ -67,5 +67,10 @@ public class SchemaUtils {
       }
     }
     return ruleCheckers;
+  }
+
+  public static void setSchemaForFields(Schema schema) {
+    for (JsonBranch branch : schema.getPaths())
+      branch.setSchema(schema);
   }
 }

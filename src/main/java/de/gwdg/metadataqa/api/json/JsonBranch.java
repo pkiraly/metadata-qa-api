@@ -4,6 +4,7 @@ package de.gwdg.metadataqa.api.json;
 import de.gwdg.metadataqa.api.configuration.Rule;
 import de.gwdg.metadataqa.api.model.Category;
 import de.gwdg.metadataqa.api.schema.Format;
+import de.gwdg.metadataqa.api.schema.Schema;
 
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -28,6 +29,7 @@ public class JsonBranch implements Cloneable, Serializable {
   private boolean isExtractable = false;
   private boolean isMandatory = false;
   private List<Rule> rules;
+  private Schema schema;
 
   public JsonBranch(String label, String jsonPath, String solrFieldName) {
     this.label = label;
@@ -73,7 +75,12 @@ public class JsonBranch implements Cloneable, Serializable {
   }
 
   public String getAbsoluteJsonPath() {
-    return getAbsoluteJsonPath(Format.JSON);
+    Format format = hasFormat() ? schema.getFormat() : Format.JSON;
+    return getAbsoluteJsonPath(format);
+  }
+
+  public boolean hasFormat() {
+    return schema != null && schema.getFormat() != null;
   }
 
   public String getAbsoluteJsonPath(Format format) {
@@ -250,5 +257,13 @@ public class JsonBranch implements Cloneable, Serializable {
     }
 
     return cloned;
+  }
+
+  public void setSchema(Schema schema) {
+    this.schema = schema;
+  }
+
+  public Schema getSchema() {
+    return schema;
   }
 }

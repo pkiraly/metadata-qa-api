@@ -12,7 +12,7 @@ public class DisjointChecker extends PropertyPairChecker {
   public static final String prefix = "disjoint";
 
   public DisjointChecker(JsonBranch field1, JsonBranch field2) {
-    this(field1, field2, field1.getLabel());
+    this(field1, field2, field1.getLabel() + "-" + field2.getLabel());
   }
 
   public DisjointChecker(JsonBranch field1, JsonBranch field2, String header) {
@@ -21,17 +21,15 @@ public class DisjointChecker extends PropertyPairChecker {
 
   @Override
   public void update(PathCache cache, FieldCounter<RuleCheckingOutput> results) {
-    double result = 0.0;
     boolean allPassed = true;
-    boolean isNA = true;
-    List<XmlFieldInstance> instances1 = (List<XmlFieldInstance>) cache.get(field1.getJsonPath());
-    List<XmlFieldInstance> instances2 = (List<XmlFieldInstance>) cache.get(field2.getJsonPath());
-    if (instances1 != null && !instances1.isEmpty()) {
+    boolean isNA = false;
+    List<XmlFieldInstance> instances1 = (List<XmlFieldInstance>) cache.get(field1.getAbsoluteJsonPath().replace("[*]", ""));
+    List<XmlFieldInstance> instances2 = (List<XmlFieldInstance>) cache.get(field2.getAbsoluteJsonPath().replace("[*]", ""));
+    if (instances1 != null && !instances1.isEmpty() && instances2 != null && !instances2.isEmpty()) {
       for (XmlFieldInstance instance1 : instances1) {
         if (instance1.hasValue()) {
-          isNA = false;
           for (XmlFieldInstance instance2 : instances2) {
-            if (instance1.getValue().equals(instance2.getValue())) {
+            if (instance2.hasValue() && instance1.getValue().equals(instance2.getValue())) {
               allPassed = false;
               break;
             }

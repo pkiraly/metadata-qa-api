@@ -45,7 +45,7 @@ public class DisjointCheckerTest {
     checker.update(cache, fieldCounter);
 
     assertEquals(1, fieldCounter.size());
-    assertEquals("disjoint:name", checker.getHeader());
+    assertEquals("disjoint:name-title", checker.getHeader());
     assertEquals(RuleCheckingOutput.PASSED, fieldCounter.get(checker.getHeader()));
   }
 
@@ -58,7 +58,7 @@ public class DisjointCheckerTest {
     checker.update(cache, fieldCounter);
 
     assertEquals(1, fieldCounter.size());
-    assertEquals("disjoint:name", checker.getHeader());
+    assertEquals("disjoint:name-alt", checker.getHeader());
     assertEquals(RuleCheckingOutput.FAILED, fieldCounter.get(checker.getHeader()));
   }
 }

@@ -25,6 +25,7 @@ public class BaseSchema implements Schema, CsvAwareSchema {
   }
 
   public BaseSchema addField(JsonBranch branch) {
+    branch.setSchema(this);
     PATHS.put(branch.getLabel(), branch);
 
     if (branch.getParent() == null)
@@ -121,42 +122,8 @@ public class BaseSchema implements Schema, CsvAwareSchema {
 
   @Override
   public List<RuleChecker> getRuleCheckers() {
-
     if (ruleCheckers == null) {
       ruleCheckers = SchemaUtils.getRuleCheckers(this);
-      /*
-      ruleCheckers = new ArrayList<>();
-      for (JsonBranch branch : PATHS.values()) {
-        if (branch.getRules() != null) {
-          Rule rules = branch.getRules();
-          if (StringUtils.isNotBlank(rules.getPattern()))
-            ruleCheckers.add(new PatternChecker(branch, rules.getPattern()));
-          if (StringUtils.isNotBlank(rules.getEquals()))
-            ruleCheckers.add(new EqualityChecker(branch, rules.getEquals()));
-          if (StringUtils.isNotBlank(rules.getDisjoint()))
-            ruleCheckers.add(new DisjointChecker(branch, rules.getDisjoint()));
-          if (rules.getIn() != null && !rules.getIn().isEmpty())
-            ruleCheckers.add(new EnumerationChecker(branch, rules.getIn()));
-          if (rules.getMinCount() != null)
-            ruleCheckers.add(new MinCountChecker(branch, rules.getMinCount()));
-          if (rules.getMaxCount() != null)
-            ruleCheckers.add(new MaxCountChecker(branch, rules.getMaxCount()));
-          if (rules.getMinLength() != null)
-            ruleCheckers.add(new MinLengthChecker(branch, rules.getMinLength()));
-          if (rules.getMaxLength() != null)
-            ruleCheckers.add(new MaxLengthChecker(branch, rules.getMaxLength()));
-          if (StringUtils.isNotBlank(rules.getHasValue()))
-            ruleCheckers.add(new HasValueChecker(branch, rules.getHasValue()));
-
-          //  private Integer minExclusive;
-          //  private Integer minInclusive;
-          //  private Integer maxExclusive;
-          //  private Integer maxInclusive;
-          //  private Integer lessThan;
-          //  private Integer lessThanOrEquals;
-        }
-      }
-      */
     }
     return ruleCheckers;
   }
