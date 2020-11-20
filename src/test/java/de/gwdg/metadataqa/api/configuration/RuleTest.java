@@ -61,8 +61,8 @@ public class RuleTest {
       .withMaxInclusive(2)
       .withMinExclusive(1)
       .withMaxExclusive(2)
-      .withLessThan(1)
-      .withLessThanOrEquals(1)
+      .withLessThan("uri")
+      .withLessThanOrEquals("uri")
       .withHasValue("a")
       .withMinLength(1)
       .withMaxLength(2)
@@ -76,8 +76,8 @@ public class RuleTest {
     assertEquals(2, (int) rule.getMaxInclusive());
     assertEquals(1, (int) rule.getMinExclusive());
     assertEquals(2, (int) rule.getMaxExclusive());
-    assertEquals(1, (int) rule.getLessThan());
-    assertEquals(1, (int) rule.getLessThanOrEquals());
+    assertEquals("uri", rule.getLessThan());
+    assertEquals("uri", rule.getLessThanOrEquals());
     assertEquals("a", rule.getHasValue());
     assertEquals(1, (int) rule.getMinLength());
     assertEquals(2, (int) rule.getMaxLength());

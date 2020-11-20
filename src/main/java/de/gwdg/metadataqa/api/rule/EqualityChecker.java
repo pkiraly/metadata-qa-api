@@ -7,18 +7,17 @@ import de.gwdg.metadataqa.api.model.pathcache.PathCache;
 
 import java.util.List;
 
-public class EqualityChecker extends SingleFieldChecker {
+public class EqualityChecker extends PropertyPairChecker {
 
   public static final String prefix = "equals";
   protected String fixedValue;
 
-  public EqualityChecker(JsonBranch field, String fixedValue) {
-    this(field, field.getLabel(), fixedValue);
+  public EqualityChecker(JsonBranch field1, JsonBranch field2) {
+    this(field1, field2, field1.getLabel() + "-" + field2.getLabel());
   }
 
-  public EqualityChecker(JsonBranch field, String header, String fixedValue) {
-    super(field, prefix + ":" + header);
-    this.fixedValue = fixedValue;
+  public EqualityChecker(JsonBranch field1, JsonBranch field2, String header) {
+    super(field1, field2, prefix + ":" + header);
   }
 
   @Override
@@ -26,14 +25,18 @@ public class EqualityChecker extends SingleFieldChecker {
     double result = 0.0;
     boolean allPassed = true;
     boolean isNA = true;
-    List<XmlFieldInstance> instances = (List<XmlFieldInstance>) cache.get(field.getJsonPath());
-    if (instances != null && !instances.isEmpty()) {
-      for (XmlFieldInstance instance : instances) {
-        if (instance.hasValue()) {
+    // List<XmlFieldInstance> instances = (List<XmlFieldInstance>) cache.get(field.getJsonPath());
+    List<XmlFieldInstance> instances1 = (List<XmlFieldInstance>) cache.get(field1.getAbsoluteJsonPath().replace("[*]", ""));
+    List<XmlFieldInstance> instances2 = (List<XmlFieldInstance>) cache.get(field2.getAbsoluteJsonPath().replace("[*]", ""));
+    if (instances1 != null && !instances1.isEmpty() && instances2 != null && !instances2.isEmpty()) {
+      for (XmlFieldInstance instance1 : instances1) {
+        if (instance1.hasValue()) {
           isNA = false;
-          if (!fixedValue.equals(instance.getValue())) {
-            allPassed = false;
-            break;
+          for (XmlFieldInstance instance2 : instances2) {
+            if (instance2.hasValue() && !instance1.getValue().equals(instance2.getValue())) {
+              allPassed = false;
+              break;
+            }
           }
         }
       }

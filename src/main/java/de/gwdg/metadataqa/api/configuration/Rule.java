@@ -18,8 +18,8 @@ public class Rule {
   private Integer maxInclusive;
   private Integer minLength;
   private Integer maxLength;
-  private Integer lessThan;
-  private Integer lessThanOrEquals;
+  private String lessThan;
+  private String lessThanOrEquals;
   private String hasValue;
 
   public String getPattern() {
@@ -204,28 +204,28 @@ public class Rule {
     return this;
   }
 
-  public Integer getLessThan() {
+  public String getLessThan() {
     return lessThan;
   }
 
-  public void setLessThan(int lessThan) {
+  public void setLessThan(String lessThan) {
     this.lessThan = lessThan;
   }
 
-  public Rule withLessThan(int lessThan) {
+  public Rule withLessThan(String lessThan) {
     setLessThan(lessThan);
     return this;
   }
 
-  public Integer getLessThanOrEquals() {
+  public String getLessThanOrEquals() {
     return lessThanOrEquals;
   }
 
-  public void setLessThanOrEquals(int lessThanOrEquals) {
+  public void setLessThanOrEquals(String lessThanOrEquals) {
     this.lessThanOrEquals = lessThanOrEquals;
   }
 
-  public Rule withLessThanOrEquals(int lessThanOrEquals) {
+  public Rule withLessThanOrEquals(String lessThanOrEquals) {
     setLessThanOrEquals(lessThanOrEquals);
     return this;
   }
