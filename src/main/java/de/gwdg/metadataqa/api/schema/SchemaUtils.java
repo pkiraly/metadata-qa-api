@@ -2,16 +2,17 @@ package de.gwdg.metadataqa.api.schema;
 
 import de.gwdg.metadataqa.api.configuration.Rule;
 import de.gwdg.metadataqa.api.json.JsonBranch;
-import de.gwdg.metadataqa.api.rule.DisjointChecker;
-import de.gwdg.metadataqa.api.rule.EnumerationChecker;
-import de.gwdg.metadataqa.api.rule.EqualityChecker;
-import de.gwdg.metadataqa.api.rule.HasValueChecker;
-import de.gwdg.metadataqa.api.rule.MaxCountChecker;
-import de.gwdg.metadataqa.api.rule.MaxLengthChecker;
-import de.gwdg.metadataqa.api.rule.MinCountChecker;
-import de.gwdg.metadataqa.api.rule.MinLengthChecker;
-import de.gwdg.metadataqa.api.rule.NumericValueChecker;
-import de.gwdg.metadataqa.api.rule.PatternChecker;
+import de.gwdg.metadataqa.api.rule.pairchecker.DisjointChecker;
+import de.gwdg.metadataqa.api.rule.pairchecker.LessThanPairChecker;
+import de.gwdg.metadataqa.api.rule.singlefieldchecker.EnumerationChecker;
+import de.gwdg.metadataqa.api.rule.pairchecker.EqualityChecker;
+import de.gwdg.metadataqa.api.rule.singlefieldchecker.HasValueChecker;
+import de.gwdg.metadataqa.api.rule.singlefieldchecker.MaxCountChecker;
+import de.gwdg.metadataqa.api.rule.singlefieldchecker.MaxLengthChecker;
+import de.gwdg.metadataqa.api.rule.singlefieldchecker.MinCountChecker;
+import de.gwdg.metadataqa.api.rule.singlefieldchecker.MinLengthChecker;
+import de.gwdg.metadataqa.api.rule.singlefieldchecker.NumericValueChecker;
+import de.gwdg.metadataqa.api.rule.singlefieldchecker.PatternChecker;
 import de.gwdg.metadataqa.api.rule.RuleChecker;
 import org.apache.commons.lang3.StringUtils;
 
@@ -76,10 +77,13 @@ public class SchemaUtils {
           if (rule.getMaxExclusive() != null)
             ruleCheckers.add(new NumericValueChecker(branch, rule.getMinInclusive(),
               NumericValueChecker.TYPE.MaxExclusive));
-        }
 
-        //  private Integer lessThan;
-        //  private Integer lessThanOrEquals;
+          if (rule.getLessThan() != null)
+            pair(schema, ruleCheckers, branch, rule.getLessThan(), "LessThan");
+
+          if (rule.getLessThanOrEquals() != null)
+            pair(schema, ruleCheckers, branch, rule.getLessThan(), "lessThanOrEquals");
+        }
       }
     }
     return ruleCheckers;
@@ -96,6 +100,12 @@ public class SchemaUtils {
       switch (type) {
         case "equals":   ruleChecker = new EqualityChecker(branch, field2); break;
         case "disjoint": ruleChecker = new DisjointChecker(branch, field2); break;
+        case "lessThan":
+          ruleChecker = new LessThanPairChecker(branch, field2,
+            LessThanPairChecker.TYPE.LessThan); break;
+        case "lessThanOrEquals":
+          ruleChecker = new LessThanPairChecker(branch, field2,
+            LessThanPairChecker.TYPE.LessThanOrEquals); break;
       }
       if (ruleChecker != null)
         ruleCheckers.add(ruleChecker);

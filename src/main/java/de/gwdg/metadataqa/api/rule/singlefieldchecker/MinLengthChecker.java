@@ -1,38 +1,38 @@
-package de.gwdg.metadataqa.api.rule;
+package de.gwdg.metadataqa.api.rule.singlefieldchecker;
 
 import de.gwdg.metadataqa.api.counter.FieldCounter;
 import de.gwdg.metadataqa.api.json.JsonBranch;
 import de.gwdg.metadataqa.api.model.XmlFieldInstance;
 import de.gwdg.metadataqa.api.model.pathcache.PathCache;
+import de.gwdg.metadataqa.api.rule.RuleCheckingOutput;
 
 import java.util.List;
-import java.util.regex.Pattern;
 
-public class PatternChecker extends SingleFieldChecker {
+public class MinLengthChecker extends SingleFieldChecker {
 
-  public static final String prefix = "pattern";
-  protected Pattern pattern;
+  public static final String prefix = "minLength";
+  protected Integer minLength;
 
-  public PatternChecker(JsonBranch field, String pattern) {
-    this(field, field.getLabel(), pattern);
+  public MinLengthChecker(JsonBranch field, Integer minLength) {
+    this(field, field.getLabel(), minLength);
   }
 
-  public PatternChecker(JsonBranch field, String header, String pattern) {
+  public MinLengthChecker(JsonBranch field, String header, Integer minLength) {
     super(field, prefix + ":" + header);
-    this.pattern = Pattern.compile(pattern);
+    this.minLength = minLength;
   }
 
   @Override
   public void update(PathCache cache, FieldCounter<RuleCheckingOutput> results) {
-    double result = 0.0;
     boolean allPassed = true;
     boolean isNA = true;
     List<XmlFieldInstance> instances = (List<XmlFieldInstance>) cache.get(field.getJsonPath());
+    int count = 0;
     if (instances != null && !instances.isEmpty()) {
       for (XmlFieldInstance instance : instances) {
         if (instance.hasValue()) {
           isNA = false;
-          if (!pattern.matcher(instance.getValue()).matches()) {
+          if (instance.getValue().length() < minLength) {
             allPassed = false;
             break;
           }

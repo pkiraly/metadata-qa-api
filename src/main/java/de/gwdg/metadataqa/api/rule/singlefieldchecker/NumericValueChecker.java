@@ -1,9 +1,10 @@
-package de.gwdg.metadataqa.api.rule;
+package de.gwdg.metadataqa.api.rule.singlefieldchecker;
 
 import de.gwdg.metadataqa.api.counter.FieldCounter;
 import de.gwdg.metadataqa.api.json.JsonBranch;
 import de.gwdg.metadataqa.api.model.XmlFieldInstance;
 import de.gwdg.metadataqa.api.model.pathcache.PathCache;
+import de.gwdg.metadataqa.api.rule.RuleCheckingOutput;
 
 import java.util.List;
 import java.util.logging.Logger;
@@ -13,16 +14,14 @@ public class NumericValueChecker extends SingleFieldChecker {
   private static final Logger LOGGER = Logger.getLogger(NumericValueChecker.class.getCanonicalName());
 
   public enum TYPE {
-    MinInclusive(">=", "minInclusive"),
-    MaxInclusive("<=", "maxInclusive"),
-    MinExclusive(">", "minExclusive"),
-    MaxExclusive("<", "maxExclusive");
+    MinInclusive("minInclusive"),
+    MaxInclusive("maxInclusive"),
+    MinExclusive("minExclusive"),
+    MaxExclusive("maxExclusive");
 
-    private String operator;
     private String prefix;
 
-    TYPE(String operator, String prefix) {
-      this.operator = operator;
+    TYPE(String prefix) {
       this.prefix = prefix;
     }
   }
@@ -52,16 +51,7 @@ public class NumericValueChecker extends SingleFieldChecker {
           isNA = false;
           try {
             double value = Double.parseDouble(stringValue);
-            LOGGER.info("value: " + stringValue);
-            LOGGER.info("limit: " + limit);
-            LOGGER.info("type: " + type);
-            switch (type) {
-              case MinInclusive: if (value < limit) allPassed = false; break;
-              case MaxInclusive: if (value > limit) allPassed = false; break;
-              case MinExclusive: if (value <= limit) allPassed = false; break;
-              case MaxExclusive: if (value >= limit) allPassed = false; break;
-              default: break;
-            }
+            allPassed = checkValue(value);
           } catch (NumberFormatException e) {
             allPassed = false;
           }
@@ -72,5 +62,17 @@ public class NumericValueChecker extends SingleFieldChecker {
     }
 
     results.put(header, RuleCheckingOutput.create(isNA, allPassed));
+  }
+
+  private boolean checkValue(double value) {
+    boolean allPassed = true;
+    switch (type) {
+      case MinInclusive: if (value < limit)  allPassed = false; break;
+      case MaxInclusive: if (value > limit)  allPassed = false; break;
+      case MinExclusive: if (value <= limit) allPassed = false; break;
+      case MaxExclusive: if (value >= limit) allPassed = false; break;
+      default: break;
+    }
+    return allPassed;
   }
 }

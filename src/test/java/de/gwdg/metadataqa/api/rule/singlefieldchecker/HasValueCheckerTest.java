@@ -1,6 +1,9 @@
-package de.gwdg.metadataqa.api.rule;
+package de.gwdg.metadataqa.api.rule.singlefieldchecker;
 
 import de.gwdg.metadataqa.api.counter.FieldCounter;
+import de.gwdg.metadataqa.api.rule.CheckerTestBase;
+import de.gwdg.metadataqa.api.rule.RuleCheckingOutput;
+import org.junit.Assert;
 import org.junit.Test;
 
 import static org.junit.Assert.assertEquals;
@@ -21,7 +24,7 @@ public class HasValueCheckerTest extends CheckerTestBase {
 
     assertEquals(1, fieldCounter.size());
     assertEquals("hasValue:name", checker.getHeader());
-    assertEquals(RuleCheckingOutput.PASSED, fieldCounter.get("hasValue:name"));
+    Assert.assertEquals(RuleCheckingOutput.PASSED, fieldCounter.get("hasValue:name"));
   }
 
   @Test
