@@ -1,6 +1,9 @@
-package de.gwdg.metadataqa.api.rule;
+package de.gwdg.metadataqa.api.rule.singlefieldchecker;
 
 import de.gwdg.metadataqa.api.counter.FieldCounter;
+import de.gwdg.metadataqa.api.rule.CheckerTestBase;
+import de.gwdg.metadataqa.api.rule.RuleCheckingOutput;
+import org.junit.Assert;
 import org.junit.Test;
 
 import java.util.Arrays;
@@ -24,7 +27,7 @@ public class EnumerationCheckerTest extends CheckerTestBase {
 
     assertEquals(1, fieldCounter.size());
     assertEquals("in:name", checker.getHeader());
-    assertEquals(RuleCheckingOutput.PASSED, fieldCounter.get(checker.getHeader()));
+    Assert.assertEquals(RuleCheckingOutput.PASSED, fieldCounter.get(checker.getHeader()));
   }
 
   @Test

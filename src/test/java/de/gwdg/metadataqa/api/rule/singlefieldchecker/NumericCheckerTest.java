@@ -1,14 +1,17 @@
-package de.gwdg.metadataqa.api.rule;
+package de.gwdg.metadataqa.api.rule.singlefieldchecker;
 
 import de.gwdg.metadataqa.api.counter.FieldCounter;
 import de.gwdg.metadataqa.api.model.PathCacheFactory;
 import de.gwdg.metadataqa.api.model.pathcache.CsvPathCache;
+import de.gwdg.metadataqa.api.rule.RuleChecker;
+import de.gwdg.metadataqa.api.rule.RuleCheckingOutput;
 import de.gwdg.metadataqa.api.schema.BaseSchema;
 import de.gwdg.metadataqa.api.schema.CsvAwareSchema;
 import de.gwdg.metadataqa.api.schema.Format;
 import de.gwdg.metadataqa.api.schema.Schema;
 import de.gwdg.metadataqa.api.util.CsvReader;
-import de.gwdg.metadataqa.api.rule.NumericValueChecker.TYPE;
+import de.gwdg.metadataqa.api.rule.singlefieldchecker.NumericValueChecker.TYPE;
+import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -34,7 +37,7 @@ public class NumericCheckerTest {
 
   @Test
   public void minInclusive_passed() {
-    assertEquals(RuleCheckingOutput.PASSED, run(0.9, TYPE.MinInclusive));
+    Assert.assertEquals(RuleCheckingOutput.PASSED, run(0.9, TYPE.MinInclusive));
     assertEquals(RuleCheckingOutput.PASSED, run(1, TYPE.MinInclusive));
   }
 

@@ -1,13 +1,16 @@
-package de.gwdg.metadataqa.api.rule;
+package de.gwdg.metadataqa.api.rule.pairchecker;
 
 import de.gwdg.metadataqa.api.counter.FieldCounter;
 import de.gwdg.metadataqa.api.model.PathCacheFactory;
 import de.gwdg.metadataqa.api.model.pathcache.CsvPathCache;
+import de.gwdg.metadataqa.api.rule.RuleCheckingOutput;
+import de.gwdg.metadataqa.api.rule.pairchecker.DisjointChecker;
 import de.gwdg.metadataqa.api.schema.BaseSchema;
 import de.gwdg.metadataqa.api.schema.CsvAwareSchema;
 import de.gwdg.metadataqa.api.schema.Format;
 import de.gwdg.metadataqa.api.schema.Schema;
 import de.gwdg.metadataqa.api.util.CsvReader;
+import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -46,7 +49,7 @@ public class DisjointCheckerTest {
 
     assertEquals(1, fieldCounter.size());
     assertEquals("disjoint:name-title", checker.getHeader());
-    assertEquals(RuleCheckingOutput.PASSED, fieldCounter.get(checker.getHeader()));
+    Assert.assertEquals(RuleCheckingOutput.PASSED, fieldCounter.get(checker.getHeader()));
   }
 
   @Test
