@@ -11,7 +11,12 @@ import org.xml.sax.SAXException;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
-import javax.xml.xpath.*;
+import javax.xml.xpath.XPath;
+import javax.xml.xpath.XPathConstants;
+import javax.xml.xpath.XPathExpression;
+import javax.xml.xpath.XPathFactory;
+import javax.xml.xpath.XPathExpressionException;
+
 import java.io.ByteArrayInputStream;
 import java.io.File;
 import java.io.IOException;
@@ -22,7 +27,7 @@ import java.util.List;
 import java.util.Map;
 
 public class OaiPmhXPath {
-  private static Map<String, String> prefixMap = new LinkedHashMap<String, String>() {{
+  private static final Map<String, String> prefixMap = new LinkedHashMap<String, String>() {{
     put("xsi", "http://www.w3.org/2001/XMLSchema-instance");
     put("rdf", "http://www.w3.org/1999/02/22-rdf-syntax-ns#");
     put("dc", "http://purl.org/dc/elements/1.1/");
@@ -45,8 +50,8 @@ public class OaiPmhXPath {
     put("oai", "http://www.openarchives.org/OAI/2.0/");
   }};
 
-  private static XPath xpathEngine = initializeEngine();
-  private static DocumentBuilder builder = initializeDocumentBuilder();
+  private static final XPath xpathEngine = initializeEngine();
+  private static final DocumentBuilder builder = initializeDocumentBuilder();
 
   private static XPath initializeEngine() {
     XPathFactory xPathfactory = XPathFactory.newInstance();

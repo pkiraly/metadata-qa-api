@@ -1,6 +1,7 @@
-package de.gwdg.metadataqa.api.rule;
+package de.gwdg.metadataqa.api.rule.singlefieldchecker;
 
 import de.gwdg.metadataqa.api.json.JsonBranch;
+import de.gwdg.metadataqa.api.rule.RuleChecker;
 
 public abstract class SingleFieldChecker implements RuleChecker {
 

@@ -1,24 +1,25 @@
-package de.gwdg.metadataqa.api.rule;
+package de.gwdg.metadataqa.api.rule.singlefieldchecker;
 
 import de.gwdg.metadataqa.api.counter.FieldCounter;
 import de.gwdg.metadataqa.api.json.JsonBranch;
 import de.gwdg.metadataqa.api.model.XmlFieldInstance;
 import de.gwdg.metadataqa.api.model.pathcache.PathCache;
+import de.gwdg.metadataqa.api.rule.RuleCheckingOutput;
 
 import java.util.List;
 
-public class MaxLengthChecker extends SingleFieldChecker {
+public class MinLengthChecker extends SingleFieldChecker {
 
-  public static final String prefix = "maxLength";
-  protected Integer maxLength;
+  public static final String prefix = "minLength";
+  protected Integer minLength;
 
-  public MaxLengthChecker(JsonBranch field, Integer maxLength) {
-    this(field, field.getLabel(), maxLength);
+  public MinLengthChecker(JsonBranch field, Integer minLength) {
+    this(field, field.getLabel(), minLength);
   }
 
-  public MaxLengthChecker(JsonBranch field, String header, Integer maxLength) {
+  public MinLengthChecker(JsonBranch field, String header, Integer minLength) {
     super(field, prefix + ":" + header);
-    this.maxLength = maxLength;
+    this.minLength = minLength;
   }
 
   @Override
@@ -26,11 +27,12 @@ public class MaxLengthChecker extends SingleFieldChecker {
     boolean allPassed = true;
     boolean isNA = true;
     List<XmlFieldInstance> instances = (List<XmlFieldInstance>) cache.get(field.getJsonPath());
+    int count = 0;
     if (instances != null && !instances.isEmpty()) {
       for (XmlFieldInstance instance : instances) {
         if (instance.hasValue()) {
           isNA = false;
-          if (instance.getValue().length() > maxLength) {
+          if (instance.getValue().length() < minLength) {
             allPassed = false;
             break;
           }

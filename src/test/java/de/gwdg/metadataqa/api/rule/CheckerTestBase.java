@@ -16,7 +16,10 @@ public class CheckerTestBase {
 
   @Before
   public void setUp() throws Exception {
-    schema = new BaseSchema().setFormat(Format.CSV).addField("name");
+    schema = new BaseSchema()
+      .setFormat(Format.CSV)
+      .addField("name")
+    ;
 
     cache = (CsvPathCache) PathCacheFactory.getInstance(schema.getFormat(), "a");
     cache.setCsvReader(new CsvReader().setHeader(((CsvAwareSchema) schema).getHeader()));

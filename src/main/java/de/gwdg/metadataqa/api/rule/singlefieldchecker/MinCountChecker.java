@@ -1,24 +1,25 @@
-package de.gwdg.metadataqa.api.rule;
+package de.gwdg.metadataqa.api.rule.singlefieldchecker;
 
 import de.gwdg.metadataqa.api.counter.FieldCounter;
 import de.gwdg.metadataqa.api.json.JsonBranch;
 import de.gwdg.metadataqa.api.model.XmlFieldInstance;
 import de.gwdg.metadataqa.api.model.pathcache.PathCache;
+import de.gwdg.metadataqa.api.rule.RuleCheckingOutput;
 
 import java.util.List;
 
-public class MaxCountChecker extends SingleFieldChecker {
+public class MinCountChecker extends SingleFieldChecker {
 
-  public static final String prefix = "maxCount";
-  protected Integer maxCount;
+  public static final String prefix = "minCount";
+  protected Integer minCount;
 
-  public MaxCountChecker(JsonBranch field, int maxCount) {
-    this(field, field.getLabel(), maxCount);
+  public MinCountChecker(JsonBranch field, Integer minCount) {
+    this(field, field.getLabel(), minCount);
   }
 
-  public MaxCountChecker(JsonBranch field, String header, int maxCount) {
+  public MinCountChecker(JsonBranch field, String header, Integer minCount) {
     super(field, prefix + ":" + header);
-    this.maxCount = maxCount;
+    this.minCount = minCount;
   }
 
   @Override
@@ -35,7 +36,7 @@ public class MaxCountChecker extends SingleFieldChecker {
         }
       }
     }
-    if (count <= maxCount)
+    if (count >= minCount)
       allPassed = true;
     results.put(header, RuleCheckingOutput.create(isNA, allPassed));
   }

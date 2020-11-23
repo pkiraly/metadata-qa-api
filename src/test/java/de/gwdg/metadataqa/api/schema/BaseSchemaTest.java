@@ -8,7 +8,7 @@ import de.gwdg.metadataqa.api.calculator.CalculatorFacade;
 import de.gwdg.metadataqa.api.configuration.*;
 import de.gwdg.metadataqa.api.json.JsonBranch;
 import de.gwdg.metadataqa.api.model.Category;
-import de.gwdg.metadataqa.api.rule.HasValueChecker;
+import de.gwdg.metadataqa.api.rule.singlefieldchecker.HasValueChecker;
 import de.gwdg.metadataqa.api.rule.RuleCatalog;
 import de.gwdg.metadataqa.api.rule.RuleChecker;
 import de.gwdg.metadataqa.api.util.CsvReader;
@@ -682,8 +682,8 @@ public class BaseSchemaTest {
   @Test
   public void testRuleCheckers() {
     Rule rule = new Rule();
-    rule.setEquals("3");
-    rule.setDisjoint("4");
+    rule.setEquals("uri");
+    rule.setDisjoint("uri");
     rule.setIn(Arrays.asList("a", "b"));
     rule.setMinCount(1);
     rule.setMaxCount(1);
@@ -694,24 +694,26 @@ public class BaseSchemaTest {
 
     Schema schema = new BaseSchema()
       .setFormat(Format.CSV)
-      .addField(new JsonBranch("url", "url").setRules(rule));
+      .addField(new JsonBranch("url", "url").setRule(rule))
+      .addField(new JsonBranch("uri", "uri"))
+    ;
 
     assertEquals(8, schema.getRuleCheckers().size());
-    assertEquals("de.gwdg.metadataqa.api.rule.PatternChecker",
+    assertEquals("de.gwdg.metadataqa.api.rule.singlefieldchecker.PatternChecker",
       schema.getRuleCheckers().get(0).getClass().getName());
-    assertEquals("de.gwdg.metadataqa.api.rule.EqualityChecker",
+    assertEquals("de.gwdg.metadataqa.api.rule.pairchecker.EqualityChecker",
       schema.getRuleCheckers().get(1).getClass().getName());
-    assertEquals("de.gwdg.metadataqa.api.rule.DisjointChecker",
+    assertEquals("de.gwdg.metadataqa.api.rule.pairchecker.DisjointChecker",
       schema.getRuleCheckers().get(2).getClass().getName());
-    assertEquals("de.gwdg.metadataqa.api.rule.EnumerationChecker",
+    assertEquals("de.gwdg.metadataqa.api.rule.singlefieldchecker.EnumerationChecker",
       schema.getRuleCheckers().get(3).getClass().getName());
-    assertEquals("de.gwdg.metadataqa.api.rule.MinCountChecker",
+    assertEquals("de.gwdg.metadataqa.api.rule.singlefieldchecker.MinCountChecker",
       schema.getRuleCheckers().get(4).getClass().getName());
-    assertEquals("de.gwdg.metadataqa.api.rule.MaxCountChecker",
+    assertEquals("de.gwdg.metadataqa.api.rule.singlefieldchecker.MaxCountChecker",
       schema.getRuleCheckers().get(5).getClass().getName());
-    assertEquals("de.gwdg.metadataqa.api.rule.MinLengthChecker",
+    assertEquals("de.gwdg.metadataqa.api.rule.singlefieldchecker.MinLengthChecker",
       schema.getRuleCheckers().get(6).getClass().getName());
-    assertEquals("de.gwdg.metadataqa.api.rule.MaxLengthChecker",
+    assertEquals("de.gwdg.metadataqa.api.rule.singlefieldchecker.MaxLengthChecker",
       schema.getRuleCheckers().get(7).getClass().getName());
   }
 
@@ -737,7 +739,7 @@ public class BaseSchemaTest {
   @Test
   public void getRuleChecker() {
     Schema schema = new BaseSchema()
-      .addField(new JsonBranch("author", "author").setRules(
+      .addField(new JsonBranch("author", "author").addRule(
         new Rule().withHasValue("a")
       ))
       .addField(new JsonBranch("title", "title").setCollection(false))

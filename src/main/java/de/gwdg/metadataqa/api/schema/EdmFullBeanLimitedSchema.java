@@ -26,7 +26,7 @@ public class EdmFullBeanLimitedSchema extends EdmSchema implements Serializable 
   private static Map<String, String> extractableFields = new LinkedHashMap<>();
   private static final List<String> EMPTY_STRINGS = new ArrayList<>();
   private static List<String> categories = null;
-  private static List<RuleChecker> ruleChecker;
+  private static List<RuleChecker> ruleCheckers;
 
   private static final String LONG_SUBJECT_PATH =
     "$.['proxies'][?(@['europeanaProxy'] == false)]['dcSubject']";
@@ -287,6 +287,9 @@ public class EdmFullBeanLimitedSchema extends EdmSchema implements Serializable 
 
   @Override
   public List<RuleChecker> getRuleCheckers() {
-    return ruleChecker;
+    if (ruleCheckers == null) {
+      ruleCheckers = SchemaUtils.getRuleCheckers(this);
+    }
+    return ruleCheckers;
   }
 }

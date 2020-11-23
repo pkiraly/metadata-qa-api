@@ -1,38 +1,42 @@
-package de.gwdg.metadataqa.api.rule;
+package de.gwdg.metadataqa.api.rule.singlefieldchecker;
 
 import de.gwdg.metadataqa.api.counter.FieldCounter;
 import de.gwdg.metadataqa.api.json.JsonBranch;
 import de.gwdg.metadataqa.api.model.XmlFieldInstance;
 import de.gwdg.metadataqa.api.model.pathcache.PathCache;
+import de.gwdg.metadataqa.api.rule.RuleCheckingOutput;
 
 import java.util.List;
 
-public class DisjointChecker extends SingleFieldChecker {
+public class HasValueChecker extends SingleFieldChecker {
 
-  public static final String prefix = "disjoint";
+  public static final String prefix = "hasValue";
   protected String fixedValue;
 
-  public DisjointChecker(JsonBranch field, String disjoint) {
-    this(field, field.getLabel(), disjoint);
+  /**
+   * @param field The field
+   * @param fixedValue The fixed value  check against
+   */
+  public HasValueChecker(JsonBranch field, String fixedValue) {
+    this(field, field.getLabel(), fixedValue);
   }
 
-  public DisjointChecker(JsonBranch field, String header, String fixedValue) {
+  public HasValueChecker(JsonBranch field, String header, String fixedValue) {
     super(field, prefix + ":" + header);
     this.fixedValue = fixedValue;
   }
 
   @Override
   public void update(PathCache cache, FieldCounter<RuleCheckingOutput> results) {
-    double result = 0.0;
-    boolean allPassed = true;
+    boolean allPassed = false;
     boolean isNA = true;
     List<XmlFieldInstance> instances = (List<XmlFieldInstance>) cache.get(field.getJsonPath());
     if (instances != null && !instances.isEmpty()) {
       for (XmlFieldInstance instance : instances) {
         if (instance.hasValue()) {
           isNA = false;
-          if (fixedValue.equals(instance.getValue())) {
-            allPassed = false;
+          if (instance.getValue().equals(fixedValue)) {
+            allPassed = true;
             break;
           }
         }

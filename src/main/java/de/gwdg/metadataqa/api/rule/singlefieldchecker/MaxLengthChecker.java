@@ -1,41 +1,38 @@
-package de.gwdg.metadataqa.api.rule;
+package de.gwdg.metadataqa.api.rule.singlefieldchecker;
 
 import de.gwdg.metadataqa.api.counter.FieldCounter;
 import de.gwdg.metadataqa.api.json.JsonBranch;
 import de.gwdg.metadataqa.api.model.XmlFieldInstance;
 import de.gwdg.metadataqa.api.model.pathcache.PathCache;
+import de.gwdg.metadataqa.api.rule.RuleCheckingOutput;
 
 import java.util.List;
 
-public class HasValueChecker extends SingleFieldChecker {
+public class MaxLengthChecker extends SingleFieldChecker {
 
-  public static final String prefix = "hasValue";
-  protected String fixedValue;
+  public static final String prefix = "maxLength";
+  protected Integer maxLength;
 
-  /**
-   * @param field The field
-   * @param fixedValue The fixed value  check against
-   */
-  public HasValueChecker(JsonBranch field, String fixedValue) {
-    this(field, field.getLabel(), fixedValue);
+  public MaxLengthChecker(JsonBranch field, Integer maxLength) {
+    this(field, field.getLabel(), maxLength);
   }
 
-  public HasValueChecker(JsonBranch field, String header, String fixedValue) {
+  public MaxLengthChecker(JsonBranch field, String header, Integer maxLength) {
     super(field, prefix + ":" + header);
-    this.fixedValue = fixedValue;
+    this.maxLength = maxLength;
   }
 
   @Override
   public void update(PathCache cache, FieldCounter<RuleCheckingOutput> results) {
-    boolean allPassed = false;
+    boolean allPassed = true;
     boolean isNA = true;
     List<XmlFieldInstance> instances = (List<XmlFieldInstance>) cache.get(field.getJsonPath());
     if (instances != null && !instances.isEmpty()) {
       for (XmlFieldInstance instance : instances) {
         if (instance.hasValue()) {
           isNA = false;
-          if (instance.getValue().equals(fixedValue)) {
-            allPassed = true;
+          if (instance.getValue().length() > maxLength) {
+            allPassed = false;
             break;
           }
         }

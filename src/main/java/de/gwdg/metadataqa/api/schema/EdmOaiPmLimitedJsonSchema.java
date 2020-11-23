@@ -27,7 +27,7 @@ public class EdmOaiPmLimitedJsonSchema extends EdmSchema implements Serializable
   private static final List<String> EMPTY_STRINGS = new ArrayList<>();
   private static final Map<String, JsonBranch> COLLECTION_PATHS = new LinkedHashMap<>();
   private static List<String> categories = null;
-  private static List<RuleChecker> ruleChecker;
+  private static List<RuleChecker> ruleCheckers;
 
   private static final String LONG_SUBJECT_PATH =
     "$.['ore:Proxy'][?(@['edm:europeanaProxy'][0] == 'false')]['dc:subject']";
@@ -291,6 +291,9 @@ public class EdmOaiPmLimitedJsonSchema extends EdmSchema implements Serializable
 
   @Override
   public List<RuleChecker> getRuleCheckers() {
-    return ruleChecker;
+    if (ruleCheckers == null) {
+      ruleCheckers = SchemaUtils.getRuleCheckers(this);
+    }
+    return ruleCheckers;
   }
 }

@@ -1,24 +1,26 @@
-package de.gwdg.metadataqa.api.rule;
+package de.gwdg.metadataqa.api.rule.singlefieldchecker;
 
 import de.gwdg.metadataqa.api.counter.FieldCounter;
 import de.gwdg.metadataqa.api.json.JsonBranch;
 import de.gwdg.metadataqa.api.model.XmlFieldInstance;
 import de.gwdg.metadataqa.api.model.pathcache.PathCache;
+import de.gwdg.metadataqa.api.rule.RuleCheckingOutput;
 
 import java.util.List;
+import java.util.regex.Pattern;
 
-public class EnumerationChecker extends SingleFieldChecker {
+public class PatternChecker extends SingleFieldChecker {
 
-  public static final String prefix = "in";
-  protected List<String> fixedValues;
+  public static final String prefix = "pattern";
+  protected Pattern pattern;
 
-  public EnumerationChecker(JsonBranch field, List<String> fixedValues) {
-    this(field, field.getLabel(), fixedValues);
+  public PatternChecker(JsonBranch field, String pattern) {
+    this(field, field.getLabel(), pattern);
   }
 
-  public EnumerationChecker(JsonBranch field, String header, List<String> fixedValues) {
+  public PatternChecker(JsonBranch field, String header, String pattern) {
     super(field, prefix + ":" + header);
-    this.fixedValues = fixedValues;
+    this.pattern = Pattern.compile(pattern);
   }
 
   @Override
@@ -31,7 +33,7 @@ public class EnumerationChecker extends SingleFieldChecker {
       for (XmlFieldInstance instance : instances) {
         if (instance.hasValue()) {
           isNA = false;
-          if (!fixedValues.contains(instance.getValue())) {
+          if (!pattern.matcher(instance.getValue()).matches()) {
             allPassed = false;
             break;
           }

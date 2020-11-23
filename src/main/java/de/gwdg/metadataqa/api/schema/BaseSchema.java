@@ -1,11 +1,9 @@
 package de.gwdg.metadataqa.api.schema;
 
-import de.gwdg.metadataqa.api.configuration.Rule;
 import de.gwdg.metadataqa.api.json.FieldGroup;
 import de.gwdg.metadataqa.api.json.JsonBranch;
 import de.gwdg.metadataqa.api.model.Category;
-import de.gwdg.metadataqa.api.rule.*;
-import org.apache.commons.lang3.StringUtils;
+import de.gwdg.metadataqa.api.rule.RuleChecker;
 
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
@@ -27,6 +25,7 @@ public class BaseSchema implements Schema, CsvAwareSchema {
   }
 
   public BaseSchema addField(JsonBranch branch) {
+    branch.setSchema(this);
     PATHS.put(branch.getLabel(), branch);
 
     if (branch.getParent() == null)
@@ -85,7 +84,7 @@ public class BaseSchema implements Schema, CsvAwareSchema {
 
   @Override
   public List<FieldGroup> getFieldGroups() {
-    return new ArrayList<FieldGroup>();
+    return new ArrayList<>();
   }
 
   @Override
@@ -124,38 +123,7 @@ public class BaseSchema implements Schema, CsvAwareSchema {
   @Override
   public List<RuleChecker> getRuleCheckers() {
     if (ruleCheckers == null) {
-      ruleCheckers = new ArrayList<>();
-      for (JsonBranch branch : PATHS.values()) {
-        if (branch.getRules() != null) {
-          Rule rules = branch.getRules();
-          if (StringUtils.isNotBlank(rules.getPattern()))
-            ruleCheckers.add(new PatternChecker(branch, rules.getPattern()));
-          if (StringUtils.isNotBlank(rules.getEquals()))
-            ruleCheckers.add(new EqualityChecker(branch, rules.getEquals()));
-          if (StringUtils.isNotBlank(rules.getDisjoint()))
-            ruleCheckers.add(new DisjointChecker(branch, rules.getDisjoint()));
-          if (rules.getIn() != null && !rules.getIn().isEmpty())
-            ruleCheckers.add(new EnumerationChecker(branch, rules.getIn()));
-          if (rules.getMinCount() != null)
-            ruleCheckers.add(new MinCountChecker(branch, rules.getMinCount()));
-          if (rules.getMaxCount() != null)
-            ruleCheckers.add(new MaxCountChecker(branch, rules.getMaxCount()));
-          if (rules.getMinLength() != null)
-            ruleCheckers.add(new MinLengthChecker(branch, rules.getMinLength()));
-          if (rules.getMaxLength() != null)
-            ruleCheckers.add(new MaxLengthChecker(branch, rules.getMaxLength()));
-          if (StringUtils.isNotBlank(rules.getHasValue()))
-            ruleCheckers.add(new HasValueChecker(branch, rules.getHasValue()));
-
-          //  private Integer minExclusive;
-          //  private Integer minInclusive;
-          //  private Integer maxExclusive;
-          //  private Integer maxInclusive;
-          //  private Integer lessThan;
-          //  private Integer lessThanOrEquals;
-        }
-      }
-      categories = Category.extractCategories(PATHS.values());
+      ruleCheckers = SchemaUtils.getRuleCheckers(this);
     }
     return ruleCheckers;
   }

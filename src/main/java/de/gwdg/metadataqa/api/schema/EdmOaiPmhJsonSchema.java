@@ -11,6 +11,7 @@ import java.util.Arrays;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.logging.Logger;
 
 /**
  * The Europeana Data Model (EDM) representation of the metadata schema interface.
@@ -18,6 +19,8 @@ import java.util.Map;
  * @author Péter Király <peter.kiraly at gwdg.de>
  */
 public class EdmOaiPmhJsonSchema extends EdmSchema implements Serializable {
+
+  private static final Logger LOGGER = Logger.getLogger(EdmOaiPmhJsonSchema.class.getCanonicalName());
 
   private static final List<FieldGroup> FIELD_GROUPS = new ArrayList<>();
   private static final List<String> NO_LANGUAGE_FIELDS = new ArrayList<>();
@@ -27,7 +30,7 @@ public class EdmOaiPmhJsonSchema extends EdmSchema implements Serializable {
   private static final Map<String, JsonBranch> PATHS = new LinkedHashMap<>();
   private static final Map<String, JsonBranch> COLLECTION_PATHS = new LinkedHashMap<>();
   private static List<String> categories = null;
-  private static List<RuleChecker> ruleChecker;
+  private static List<RuleChecker> ruleCheckers;
 
   private static final String LONG_SUBJECT_PATH =
     "$.['ore:Proxy'][?(@['edm:europeanaProxy'][0] == 'false')]['dc:subject']";
@@ -417,6 +420,9 @@ public class EdmOaiPmhJsonSchema extends EdmSchema implements Serializable {
 
   @Override
   public List<RuleChecker> getRuleCheckers() {
-    return ruleChecker;
+    if (ruleCheckers == null) {
+      ruleCheckers = SchemaUtils.getRuleCheckers(this);
+    }
+    return ruleCheckers;
   }
 }
