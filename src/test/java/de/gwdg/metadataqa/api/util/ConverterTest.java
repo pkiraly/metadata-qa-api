@@ -4,6 +4,7 @@ import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.Before;
 import org.junit.BeforeClass;
+import org.junit.ComparisonFailure;
 import org.junit.Test;
 
 import java.math.BigDecimal;
@@ -86,7 +87,7 @@ ConverterTest {
     assertEquals(new Integer(2), Converter.asInteger("1.9"));
   }
 
-  @Test(expected = ClassCastException.class)
+  @Test(expected = ComparisonFailure.class)
   public void asInteger_withList() {
     try {
       assertEquals(new Integer(2), Converter.asInteger(new ArrayList()));
