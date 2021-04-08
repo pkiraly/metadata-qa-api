@@ -2,9 +2,6 @@ language: java
 
 dist: trusty
 
-jdk:
-  - oraclejdk8
-
 install: mvn clean install -Ptravis
 
 after_success:
