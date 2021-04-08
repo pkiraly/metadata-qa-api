@@ -2,6 +2,9 @@ language: java
 
 dist: trusty
 
+jdk:
+  - openjdk11
+
 install: mvn clean install -Ptravis
 
 after_success:
