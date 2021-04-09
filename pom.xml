@@ -161,13 +161,6 @@
       <artifactId>jackson-databind</artifactId>
       <version>2.12.2</version>
     </dependency>
-
-    <!-- needs for the coverall plugin -->
-    <dependency>
-      <groupId>javax.xml.bind</groupId>
-      <artifactId>jaxb-api</artifactId>
-      <version>2.3.1</version>
-    </dependency>
   </dependencies>
 
   <build>
@@ -289,6 +282,12 @@
         <groupId>org.eluder.coveralls</groupId>
         <artifactId>coveralls-maven-plugin</artifactId>
         <version>4.3.0</version>
+        <!-- needs for the coverall plugin -->
+        <dependency>
+          <groupId>javax.xml.bind</groupId>
+          <artifactId>jaxb-api</artifactId>
+          <version>2.3.1</version>
+        </dependency>
       </plugin>
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
