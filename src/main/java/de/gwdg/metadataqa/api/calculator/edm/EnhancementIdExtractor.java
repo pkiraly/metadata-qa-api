@@ -35,7 +35,7 @@ public final class EnhancementIdExtractor implements Serializable {
     "Proxy/edm:type"
   );
 
-  private static final String PATH = "$.['ore:Proxy'][?(@['edm:europeanaProxy'][0] == 'true')]";
+  // private static final String PATH = "$.['ore:Proxy'][?(@['edm:europeanaProxy'][0] == 'true')]";
 
   private EnhancementIdExtractor() {
   }
@@ -72,18 +72,17 @@ public final class EnhancementIdExtractor implements Serializable {
   }
 
   public static void processJson(List<String> enhancementIds, List<Object> jsonFragments) {
-    Map<String, Object> jsonFragment = (Map) jsonFragments.get(0);
+    Map<String, Object> jsonFragment = (Map<String, Object>) jsonFragments.get(0);
     for (String fieldName : jsonFragment.keySet()) {
       if (isEnrichmentField(fieldName)) {
         List<EdmFieldInstance> fieldInstances =
           (List<EdmFieldInstance>) JsonUtils.extractFieldInstanceList(
             jsonFragment.get(fieldName), null, null
           );
-        for (EdmFieldInstance fieldInstance : fieldInstances) {
-          if (fieldInstance.isUrl()) {
-            enhancementIds.add(fieldInstance.getUrl());
-          }
-        }
+        if (fieldInstances != null)
+          for (EdmFieldInstance fieldInstance : fieldInstances)
+            if (fieldInstance.isUrl())
+              enhancementIds.add(fieldInstance.getUrl());
       }
     }
   }

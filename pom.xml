@@ -61,6 +61,11 @@
     <skipCobertura>false</skipCobertura>
     <skipStaging>true</skipStaging>
     <skipJavadoc>false</skipJavadoc>
+    <project.timezone>UTC</project.timezone>
+    <project.language>en</project.language>
+    <project.region>US</project.region>
+    <argLine>-Duser.timezone=${project.timezone} -Dfile.encoding=${project.build.sourceEncoding} -Duser.language=${project.language} -Duser.region=${project.region}</argLine>
+    <skipUnitTests>false</skipUnitTests>
   </properties>
 
   <dependencies>
@@ -283,7 +288,9 @@
         <artifactId>maven-surefire-plugin</artifactId>
         <version>3.0.0-M3</version>
         <configuration>
-          <argLine>--illegal-access=permit</argLine>
+          <!-- testsToExclude come from the profile-->
+          <excludedGroups>${testsToExclude}</excludedGroups>
+          <skip>${skipUnitTests}</skip>
         </configuration>
       </plugin>
       <plugin>
