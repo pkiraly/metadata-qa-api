@@ -161,6 +161,13 @@
       <artifactId>jackson-databind</artifactId>
       <version>2.12.2</version>
     </dependency>
+
+    <!-- needs for the coverall plugin -->
+    <dependency>
+      <groupId>javax.xml.bind</groupId>
+      <artifactId>jaxb-api</artifactId>
+      <version>2.3.1</version>
+    </dependency>
   </dependencies>
 
   <build>
