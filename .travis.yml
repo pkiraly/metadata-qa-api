@@ -8,4 +8,4 @@ jdk:
 install: mvn clean install -Ptravis
 
 after_success:
-  - mvn clean cobertura:cobertura coveralls:report
+  - mvn clean jacoco:prepare-agent install jacoco:report coveralls:report
