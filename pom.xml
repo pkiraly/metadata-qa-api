@@ -315,6 +315,7 @@
 
   <reporting>
     <plugins>
+      <!--
       <plugin>
         <groupId>org.codehaus.mojo</groupId>
         <artifactId>cobertura-maven-plugin</artifactId>
@@ -335,6 +336,7 @@
           </reportSet>
         </reportSets>
       </plugin>
+       -->
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-checkstyle-plugin</artifactId>
