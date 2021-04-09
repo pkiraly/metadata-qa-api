@@ -290,6 +290,8 @@ so you can use it in a chain such as `new Rule().withMinCount(1).withMaxCount(3)
 
 ## More info
 
+Since version 0.8-SNAPSHOT the project requires Java 11.
+
 For the usage and implementation of the API see https://github.com/pkiraly/europeana-qa-api.
 
 Java doc for the actual development version of the API: https://pkiraly.github.io/metadata-qa-api.
