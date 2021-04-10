@@ -137,7 +137,7 @@ public class LanguageCalculator implements Calculator, Serializable {
         if (!existing.containsKey(key)) {
           existing.put(key, instance.get(key));
         } else {
-          if (key != "_1") {
+          if (key != null && !key.equals("_1")) {
             existing.put(key, existing.get(key) + instance.get(key));
           }
         }
