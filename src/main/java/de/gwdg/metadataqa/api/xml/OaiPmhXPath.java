@@ -103,7 +103,6 @@ public class OaiPmhXPath {
     } catch (SAXException e) {
       e.printStackTrace();
     } catch (IOException e) {
-      e.printStackTrace();
       LOGGER.log(Level.WARNING, "buildUrl", e);
     }
   }
