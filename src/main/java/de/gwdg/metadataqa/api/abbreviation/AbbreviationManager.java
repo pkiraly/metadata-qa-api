@@ -131,7 +131,6 @@ public class AbbreviationManager implements Serializable {
         writer.println(String.format("%d;%s", entry.getValue(), entry.getKey()));
       }
       writer.flush();
-      writer.close();
     }
   }
 
