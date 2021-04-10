@@ -10,6 +10,7 @@ import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLEncoder;
+import java.util.logging.Level;
 import java.util.logging.Logger;
 
 /**
@@ -54,7 +55,7 @@ public class DefaultSolrClient implements SolrClient {
         String encodedValue = URLEncoder.encode(value, "UTF-8");
         url = String.format(getSolrSearchPattern(), solrField, encodedValue);
       } catch (UnsupportedEncodingException e) {
-        e.printStackTrace();
+        LOGGER.log(Level.WARNING, "buildUrl", e);
         url = String.format(getSolrSearchPattern(), solrField, value);
       }
     }

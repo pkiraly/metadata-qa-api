@@ -29,6 +29,7 @@ import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.List;
 import java.util.ArrayList;
+import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import de.gwdg.metadataqa.api.util.CsvReader;
@@ -377,7 +378,7 @@ public class CalculatorFacade implements Serializable {
       try {
         csvReader.setHeader(content);
       } catch (IOException e) {
-        e.printStackTrace();
+        LOGGER.log(Level.WARNING, "initializeCsvCache", e);
       }
 
     ((CsvPathCache)cache).setCsvReader(csvReader);

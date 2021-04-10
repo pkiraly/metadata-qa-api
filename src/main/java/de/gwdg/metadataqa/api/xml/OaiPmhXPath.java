@@ -25,8 +25,12 @@ import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 public class OaiPmhXPath {
+  private static final Logger LOGGER = Logger.getLogger(OaiPmhXPath.class.getCanonicalName());
+
   private static final Map<String, String> prefixMap = new LinkedHashMap<String, String>() {{
     put("xsi", "http://www.w3.org/2001/XMLSchema-instance");
     put("rdf", "http://www.w3.org/1999/02/22-rdf-syntax-ns#");
@@ -100,6 +104,7 @@ public class OaiPmhXPath {
       e.printStackTrace();
     } catch (IOException e) {
       e.printStackTrace();
+      LOGGER.log(Level.WARNING, "buildUrl", e);
     }
   }
 
@@ -113,7 +118,7 @@ public class OaiPmhXPath {
     } catch (SAXException e) {
       e.printStackTrace();
     } catch (IOException e) {
-      e.printStackTrace();
+      LOGGER.log(Level.WARNING, "parseContent", e);
     }
   }
 
@@ -144,7 +149,7 @@ public class OaiPmhXPath {
         }
       }
     } catch (XPathExpressionException e) {
-      e.printStackTrace();
+      LOGGER.log(Level.WARNING, "extractFieldInstanceList", e);
     }
     return list;
   }
@@ -167,7 +172,7 @@ public class OaiPmhXPath {
         }
       }
     } catch (XPathExpressionException e) {
-      e.printStackTrace();
+      LOGGER.log(Level.WARNING, "extractNodes", e);
     }
     return list;
   }
