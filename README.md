@@ -299,3 +299,5 @@ Java doc for the actual development version of the API: https://pkiraly.github.i
 [![Build Status](https://travis-ci.org/pkiraly/metadata-qa-api.svg?branch=master)](https://travis-ci.org/pkiraly/metadata-qa-api)
 [![Coverage Status](https://coveralls.io/repos/github/pkiraly/metadata-qa-api/badge.svg?branch=master)](https://coveralls.io/github/pkiraly/metadata-qa-api?branch=develop)
 [![javadoc](https://javadoc.io/badge2/de.gwdg.metadataqa/metadata-qa-api/javadoc.svg)](https://javadoc.io/doc/de.gwdg.metadataqa/metadata-qa-api)
+[![Maven Central](https://img.shields.io/maven-central/v/de.gwdg.metadataqa/metadata-qa-api.svg)](https://search.maven.org/artifact/de.gwdg.metadataqa/metadata-qa-api)
+
