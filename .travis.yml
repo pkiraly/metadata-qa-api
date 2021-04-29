@@ -8,4 +8,4 @@ jdk:
 install: mvn clean install -Ptravis
 
 after_success:
-  - mvn coveralls:report
+  - mvn jacoco:report coveralls:report
