@@ -59,7 +59,7 @@ ConverterTest {
   @Test(expected = NumberFormatException.class)
   public void asDouble_withAlpha() {
     try {
-      assertEquals(new Integer(2), Converter.asDouble("text"));
+      assertEquals(Double.valueOf(2), Converter.asDouble("text"));
     } catch (NumberFormatException e) {
       assertEquals("For input string: \"text\"", e.getMessage());
       throw e;
@@ -69,22 +69,22 @@ ConverterTest {
 
   @Test
   public void asInteger() {
-    assertEquals(new Integer(1), Converter.asInteger(new BigDecimal(1)));
-    assertEquals(new Integer(1), Converter.asInteger(new Boolean(true)));
-    assertEquals(new Integer(1), Converter.asInteger(true));
-    assertEquals(new Integer(0), Converter.asInteger(new Boolean(false)));
-    assertEquals(new Integer(0), Converter.asInteger(false));
-    assertEquals(new Integer(1), Converter.asInteger(new Integer(1)));
-    assertEquals(new Integer(1), Converter.asInteger(new Long(1)));
-    assertEquals(new Integer(1), Converter.asInteger(1));
-    assertEquals(new Integer(1), Converter.asInteger(1.0));
-    assertEquals(new Integer(2), Converter.asInteger(1.9));
-    assertEquals(new Integer(1), Converter.asInteger(new Double(1.0)));
-    assertEquals(new Integer(1), Converter.asInteger(new Float(1.0)));
-    assertEquals(new Integer(2), Converter.asInteger(new Float(1.9)));
-    assertEquals(new Integer(1), Converter.asInteger("1"));
-    assertEquals(new Integer(1), Converter.asInteger("1.0"));
-    assertEquals(new Integer(2), Converter.asInteger("1.9"));
+    assertEquals(Integer.valueOf(1), Converter.asInteger(new BigDecimal(1)));
+    assertEquals(Integer.valueOf(1), Converter.asInteger(Boolean.valueOf(true)));
+    assertEquals(Integer.valueOf(1), Converter.asInteger(true));
+    assertEquals(Integer.valueOf(0), Converter.asInteger(Boolean.valueOf(false)));
+    assertEquals(Integer.valueOf(0), Converter.asInteger(false));
+    assertEquals(Integer.valueOf(1), Converter.asInteger(Integer.valueOf(1)));
+    assertEquals(Integer.valueOf(1), Converter.asInteger(Long.valueOf(1)));
+    assertEquals(Integer.valueOf(1), Converter.asInteger(1));
+    assertEquals(Integer.valueOf(1), Converter.asInteger(1.0));
+    assertEquals(Integer.valueOf(2), Converter.asInteger(1.9));
+    assertEquals(Integer.valueOf(1), Converter.asInteger(Double.valueOf(1.0)));
+    assertEquals(Integer.valueOf(1), Converter.asInteger(Float.valueOf("1.0")));
+    assertEquals(Integer.valueOf(2), Converter.asInteger(Float.valueOf("1.9")));
+    assertEquals(Integer.valueOf(1), Converter.asInteger("1"));
+    assertEquals(Integer.valueOf(1), Converter.asInteger("1.0"));
+    assertEquals(Integer.valueOf(2), Converter.asInteger("1.9"));
   }
 
   @Test(expected = ComparisonFailure.class)

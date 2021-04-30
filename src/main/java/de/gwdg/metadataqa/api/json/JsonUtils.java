@@ -206,10 +206,7 @@ public final class JsonUtils {
       extracted = (String) value;
     } else if (value.getClass() == LinkedHashMap.class) {
       Map<String, Object> map = (LinkedHashMap<String, Object>) value;
-      for (Object val : map.values()) {
-        extracted = extractString(val);
-        break;
-      }
+      extracted = extractString(map.values().toArray()[0]);
     } else if (value.getClass() == JSONArray.class) {
       extracted = ((JSONArray) value).get(0).toString();
     } else {

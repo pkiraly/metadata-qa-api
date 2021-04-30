@@ -165,16 +165,12 @@ public class Counters {
 
   public String getLanguageMap(boolean withLabel) {
     List<String> items = new ArrayList<>();
-    if (withLabel) {
-      for (Map.Entry<String, String> entry : languageMap.entrySet()) {
-        String item = withLabel
-          ? String.format("\"%s\":\"%s\"", entry.getKey(), entry.getValue())
-          : entry.getValue();
-        items.add(item);
-      }
-    } else {
+    if (withLabel)
+      for (Map.Entry<String, String> entry : languageMap.entrySet())
+        items.add(String.format("\"%s\":\"%s\"", entry.getKey(), entry.getValue()));
+    else
       items = (List) languageMap.values();
-    }
+
     return StringUtils.join(items, ",");
   }
 

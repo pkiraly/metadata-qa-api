@@ -44,7 +44,8 @@ public class OaiPmhXPathTest {
 
   @Test
   public void testNamespaces() {
-    XPath xpathEngine = OaiPmhXPath.getXpathEngine();
+    OaiPmhXPath oaiPmhXPath = new OaiPmhXPath(new File(inputFile));
+    XPath xpathEngine = oaiPmhXPath.getXpathEngine();
 
     for (String prefix : prefixMap.keySet()) {
       String uri = prefixMap.get(prefix);

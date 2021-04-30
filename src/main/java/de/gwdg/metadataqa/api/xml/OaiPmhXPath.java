@@ -31,30 +31,31 @@ import java.util.logging.Logger;
 public class OaiPmhXPath {
   private static final Logger LOGGER = Logger.getLogger(OaiPmhXPath.class.getCanonicalName());
 
-  private static final Map<String, String> prefixMap = new LinkedHashMap<String, String>() {{
-    put("xsi", "http://www.w3.org/2001/XMLSchema-instance");
-    put("rdf", "http://www.w3.org/1999/02/22-rdf-syntax-ns#");
-    put("dc", "http://purl.org/dc/elements/1.1/");
-    put("dcterms", "http://purl.org/dc/terms/");
-    put("edm", "http://www.europeana.eu/schemas/edm/");
-    put("owl", "http://www.w3.org/2002/07/owl#");
-    put("wgs84_pos", "http://www.w3.org/2003/01/geo/wgs84_pos#");
-    put("skos", "http://www.w3.org/2004/02/skos/core#");
-    put("rdaGr2", "http://rdvocab.info/ElementsGr2/");
-    put("foaf", "http://xmlns.com/foaf/0.1/");
-    put("ebucore", "http://www.ebu.ch/metadata/ontologies/ebucore/ebucore#");
-    put("doap", "http://usefulinc.com/ns/doap#");
-    put("odrl", "http://www.w3.org/ns/odrl/2/");
-    put("cc", "http://creativecommons.org/ns#");
-    put("ore", "http://www.openarchives.org/ore/terms/");
-    put("svcs", "http://rdfs.org/sioc/services#");
-    put("oa", "http://www.w3.org/ns/oa#");
-    put("dqv", "http://www.w3.org/ns/dqv#");
-    put("xml", "http://www.w3.org/XML/1998/namespace");
-    put("oai", "http://www.openarchives.org/OAI/2.0/");
-  }};
+  private static final Map<String, String> prefixMap = new LinkedHashMap<String, String>();
+  static {
+    prefixMap.put("xsi", "http://www.w3.org/2001/XMLSchema-instance");
+    prefixMap.put("rdf", "http://www.w3.org/1999/02/22-rdf-syntax-ns#");
+    prefixMap.put("dc", "http://purl.org/dc/elements/1.1/");
+    prefixMap.put("dcterms", "http://purl.org/dc/terms/");
+    prefixMap.put("edm", "http://www.europeana.eu/schemas/edm/");
+    prefixMap.put("owl", "http://www.w3.org/2002/07/owl#");
+    prefixMap.put("wgs84_pos", "http://www.w3.org/2003/01/geo/wgs84_pos#");
+    prefixMap.put("skos", "http://www.w3.org/2004/02/skos/core#");
+    prefixMap.put("rdaGr2", "http://rdvocab.info/ElementsGr2/");
+    prefixMap.put("foaf", "http://xmlns.com/foaf/0.1/");
+    prefixMap.put("ebucore", "http://www.ebu.ch/metadata/ontologies/ebucore/ebucore#");
+    prefixMap.put("doap", "http://usefulinc.com/ns/doap#");
+    prefixMap.put("odrl", "http://www.w3.org/ns/odrl/2/");
+    prefixMap.put("cc", "http://creativecommons.org/ns#");
+    prefixMap.put("ore", "http://www.openarchives.org/ore/terms/");
+    prefixMap.put("svcs", "http://rdfs.org/sioc/services#");
+    prefixMap.put("oa", "http://www.w3.org/ns/oa#");
+    prefixMap.put("dqv", "http://www.w3.org/ns/dqv#");
+    prefixMap.put("xml", "http://www.w3.org/XML/1998/namespace");
+    prefixMap.put("oai", "http://www.openarchives.org/OAI/2.0/");
+  }
 
-  private static final XPath xpathEngine = initializeEngine();
+  private final XPath xpathEngine = initializeEngine();
   private static final DocumentBuilder builder = initializeDocumentBuilder();
 
   private static XPath initializeEngine() {
@@ -185,7 +186,7 @@ public class OaiPmhXPath {
     return value;
   }
 
-  public static XPath getXpathEngine() {
+  public XPath getXpathEngine() {
     return xpathEngine;
   }
 
