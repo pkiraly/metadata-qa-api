@@ -94,12 +94,12 @@ public class TfIdfCalculator implements Calculator, Serializable {
     params.setIntParameter(HttpMethodParams.BUFFER_WARN_TRIGGER_LIMIT, MEGABYTE);
     method.setParams(params);
     try {
-      int statusCode = HTTP_CLIENT.executeMethod(method);
+      var statusCode = HTTP_CLIENT.executeMethod(method);
       if (statusCode != HttpStatus.SC_OK) {
         LOGGER.severe("Method failed: " + method.getStatusLine());
       }
 
-      ByteArrayOutputStream baos = new ByteArrayOutputStream();
+      var baos = new ByteArrayOutputStream();
       IOUtils.copy(method.getResponseBodyAsStream(), baos);
       byte[] responseBody = baos.toByteArray();
 

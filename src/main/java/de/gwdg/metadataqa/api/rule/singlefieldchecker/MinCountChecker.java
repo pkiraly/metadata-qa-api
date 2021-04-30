@@ -27,15 +27,13 @@ public class MinCountChecker extends SingleFieldChecker {
     boolean allPassed = true;
     boolean isNA = true;
     List<XmlFieldInstance> instances = (List<XmlFieldInstance>) cache.get(field.getJsonPath());
-    int count = 0;
-    if (instances != null && !instances.isEmpty()) {
-      for (XmlFieldInstance instance : instances) {
+    var count = 0;
+    if (instances != null && !instances.isEmpty())
+      for (XmlFieldInstance instance : instances)
         if (instance.hasValue()) {
           count++;
           isNA = false;
         }
-      }
-    }
     if (count >= minCount)
       allPassed = true;
     results.put(header, RuleCheckingOutput.create(isNA, allPassed));

@@ -9,19 +9,13 @@ public class SolrClientMock implements SolrClient {
   public String getSolrSearchResponse(String solrField, String value) {
 
     if (value.equals("*")) {
-      int numFound = 0;
-      switch (solrField) {
-        case "dc_title_ss":
-          numFound = 4000;
-          break;
-        case "dcterms_alternative_ss":
-          numFound = 1000;
-          break;
-        case "dc_description_ss":
-          numFound = 2000;
-          break;
-        default:
-          break;
+      var numFound = 0;
+      if ("dc_title_ss".equals(solrField)) {
+        numFound = 4000;
+      } else if ("dcterms_alternative_ss".equals(solrField)) {
+        numFound = 1000;
+      } else if ("dc_description_ss".equals(solrField)) {
+        numFound = 2000;
       }
       return "{\"response\":{\"numFound\":" + numFound + "}}";
     } else if (solrField.equals("dc_title_ss")

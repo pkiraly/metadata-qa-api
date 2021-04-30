@@ -75,7 +75,7 @@ public class AbbreviationManager implements Serializable {
     try {
       path = getPath(pFileName);
       List<String> lines = Files.readAllLines(path, Charset.defaultCharset());
-      int i = 1;
+      var i = 1;
       for (String line : lines) {
         processLine(line, i, parse);
       }
@@ -102,9 +102,9 @@ public class AbbreviationManager implements Serializable {
    */
   public Integer lookup(String entry) {
     if (!data.containsKey(entry)) {
-      int oldsize = data.size();
+      var oldsize = data.size();
       data.put(entry, data.size() + 1);
-      String msg = String.format(
+      var msg = String.format(
         "new entry: %s (size: %d -> %d)",
         entry, oldsize, data.size()
       );

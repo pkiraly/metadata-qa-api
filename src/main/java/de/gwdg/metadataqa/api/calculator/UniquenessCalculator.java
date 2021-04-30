@@ -52,14 +52,14 @@ public class UniquenessCalculator implements Calculator, Serializable {
       field.setJsonPath(
           schema.getPathByLabel(label).getAbsoluteJsonPath().replace("[*]", "")
       );
-      String solrField = schema.getSolrFields().get(label);
+      var solrField = schema.getSolrFields().get(label);
       if (solrField.endsWith(SUFFIX)) {
         solrField = solrField.substring(0, solrField.length() - SUFFIX_LENGTH) + "_ss";
       }
       field.setSolrField(solrField);
 
-      String solrResponse = solrClient.getSolrSearchResponse(solrField, "*");
-      int numFound = extractor.extractNumFound(solrResponse, "total");
+      var solrResponse = solrClient.getSolrSearchResponse(solrField, "*");
+      var numFound = extractor.extractNumFound(solrResponse, "total");
       field.setTotal(numFound);
       field.setScoreForUniqueValue(
         UniquenessFieldCalculator.calculateScore(numFound, 1.0)

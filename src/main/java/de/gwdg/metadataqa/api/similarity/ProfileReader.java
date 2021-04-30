@@ -100,10 +100,9 @@ public class ProfileReader {
   }
 
   public int count(List<RecordPattern> rows) {
-    int sum = 0;
-    for (RecordPattern row : rows) {
+    var sum = 0;
+    for (RecordPattern row : rows)
       sum += row.getCount();
-    }
     return sum;
   }
 
@@ -144,13 +143,11 @@ public class ProfileReader {
       }
     } else {
       Map<List<RecordPattern>, Double> sortedClusters = profileReader.buildCluster();
-
-      int idx = 0;
       sortedClusters.
         entrySet().
         stream().
         forEach((cluster) -> {
-          int i = profileReader.getNext();
+          var i = profileReader.getNext();
           // int sum = profileReader.count(cluster.getKey());
           // System.out.printf("#%d=%d\n", i, sum);
           cluster.

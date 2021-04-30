@@ -133,7 +133,7 @@ public class CompletenessCalculatorLimitedTest {
     List<String> fields = getFieldsByCategory(category, schema);
     System.err.println(category + ": " + StringUtils.join(fields, ", "));
     System.err.println(calculator.getCompletenessCounter().get(category.name()).toString());
-    int i = 0;
+    var i = 0;
     for (String field : fields) {
       System.err.println(
             String.format(
@@ -155,12 +155,10 @@ public class CompletenessCalculatorLimitedTest {
     Map<String, Boolean> existenceMap = calculator.getExistenceMap();
     assertEquals(35, existenceMap.size());
 
-    int existingFieldCounter = 0;
-    for (boolean existing : existenceMap.values()) {
-      if (existing) {
+    var existingFieldCounter = 0;
+    for (boolean existing : existenceMap.values())
+      if (existing)
         existingFieldCounter++;
-      }
-    }
     assertEquals(14, existingFieldCounter);
 
     assertTrue(existenceMap.get("edm:ProvidedCHO/@about"));

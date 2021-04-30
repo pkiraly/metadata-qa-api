@@ -50,9 +50,9 @@ public final class StringDuplicationDetector {
    *   True is the string is a duplication.
    */
   public static boolean isDuplicated(final String input) {
-    int len = input.length();
-    if (len % 2 == 0) {
-      int half = len / 2;
+    var len = input.length();
+    if (isEven(len)) {
+      var half = len / 2;
       if (hasEqualParts(input, half, half)) {
         return true;
       }
@@ -61,7 +61,7 @@ public final class StringDuplicationDetector {
         return hasEqualParts(input, half - 1, half + 1);
       }
     } else {
-      int half = len / 2;
+      var half = len / 2;
       String middlePart = input.substring(half - 1, half + 2);
       if (isSpaceCommaSpace(middlePart)) {
         return hasEqualParts(input, half - 1, half + 2);
@@ -71,6 +71,10 @@ public final class StringDuplicationDetector {
       }
     }
     return false;
+  }
+
+  private static boolean isEven(int len) {
+    return len % 2 == 0;
   }
 
   /**
