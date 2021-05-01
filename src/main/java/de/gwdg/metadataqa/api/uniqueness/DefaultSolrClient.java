@@ -5,6 +5,7 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.io.Serializable;
 import java.io.UnsupportedEncodingException;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
@@ -18,7 +19,7 @@ import java.util.logging.Logger;
  *
  * @author Péter Király <peter.kiraly at gwdg.de>
  */
-public class DefaultSolrClient implements SolrClient {
+public class DefaultSolrClient implements SolrClient, Serializable {
 
   private static final Logger LOGGER = Logger.getLogger(DefaultSolrClient.class.getCanonicalName());
 

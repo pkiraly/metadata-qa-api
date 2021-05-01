@@ -230,9 +230,7 @@ public class MultilingualitySaturationCalculator implements Calculator, Serializ
   }
 
   private void updateMaps(String label, SortedMap<LanguageSaturationType, Double> instance) {
-    if (!rawLanguageMap.containsKey(label)) {
-      rawLanguageMap.put(label, new ArrayList<>());
-    }
+    rawLanguageMap.computeIfAbsent(label, s -> new ArrayList<>());
     rawLanguageMap.get(label).add(instance);
   }
 

@@ -126,22 +126,18 @@ public class AbbreviationManager implements Serializable {
    */
   public void save(String fileName)
       throws FileNotFoundException, UnsupportedEncodingException {
-    try (PrintWriter writer = new PrintWriter(fileName, "UTF-8")) {
-      for (Map.Entry<String, Integer> entry : data.entrySet()) {
+    try (var writer = new PrintWriter(fileName, "UTF-8")) {
+      for (Map.Entry<String, Integer> entry : data.entrySet())
         writer.println(String.format("%d;%s", entry.getValue(), entry.getKey()));
-      }
       writer.flush();
     }
   }
 
   public String searchById(Integer id) {
-    if (data.containsValue(id)) {
-      for (String key : data.keySet()) {
-        if (data.get(key).equals(id)) {
-          return key;
-        }
-      }
-    }
+    if (data.containsValue(id))
+      for (Map.Entry<String, Integer> entry : data.entrySet())
+        if (entry.getValue().equals(id))
+          return entry.getKey();
 
     return null;
   }
@@ -156,11 +152,11 @@ public class AbbreviationManager implements Serializable {
   private Path getPath(String fileName)
       throws IOException, URISyntaxException {
     Path path;
-    URL url = getClass().getClassLoader().getResource(fileName);
-    if (url == null) {
+    var url = getClass().getClassLoader().getResource(fileName);
+    if (url == null)
       throw new IOException(String.format("File %s is not existing", fileName));
-    }
-    URI uri = url.toURI();
+
+    var uri = url.toURI();
     Map<String, String> env = new HashMap<>();
     if (uri.toString().contains("!")) {
       String[] parts = uri.toString().split("!");

@@ -64,10 +64,8 @@ public class AmbiguousPrefLabel extends ProblemDetector implements Serializable 
     Map<String, Integer> labelCounter = new HashMap<>();
     for (EdmFieldInstance subject : subjects) {
       if (subject.getLanguage() != null) {
-        int count = labelCounter.containsKey(subject.getLanguage())
-                  ? labelCounter.get(subject.getLanguage())
-                  : 0;
-        labelCounter.put(subject.getLanguage(), ++count);
+        labelCounter.computeIfAbsent(subject.getLanguage(), s -> 0);
+        labelCounter.put(subject.getLanguage(), labelCounter.get(subject.getLanguage()) + 1);
       }
     }
     return labelCounter;
