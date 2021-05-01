@@ -6,5 +6,4 @@ package de.gwdg.metadataqa.api.schema;
  */
 public abstract class EdmSchema implements Schema, ProblemCatalogSchema {
 
-
 }

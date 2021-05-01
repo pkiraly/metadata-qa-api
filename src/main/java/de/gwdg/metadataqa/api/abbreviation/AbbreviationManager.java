@@ -7,7 +7,6 @@ import java.io.Serializable;
 import java.io.UnsupportedEncodingException;
 import java.net.URI;
 import java.net.URISyntaxException;
-import java.net.URL;
 import java.nio.charset.Charset;
 import java.nio.file.FileSystem;
 import java.nio.file.FileSystemNotFoundException;
@@ -52,6 +51,7 @@ import java.util.logging.Logger;
 public class AbbreviationManager implements Serializable {
 
   private static final Logger LOGGER = Logger.getLogger(AbbreviationManager.class.getCanonicalName());
+  private static final long serialVersionUID = 8680703008286808252L;
   private Map<String, Integer> data;
   private static FileSystem fs;
   private String fileName;
@@ -149,10 +149,10 @@ public class AbbreviationManager implements Serializable {
    * @throws IOException
    * @throws URISyntaxException
    */
-  private Path getPath(String fileName)
+  private static Path getPath(String fileName)
       throws IOException, URISyntaxException {
     Path path;
-    var url = getClass().getClassLoader().getResource(fileName);
+    var url = AbbreviationManager.class.getClassLoader().getResource(fileName);
     if (url == null)
       throw new IOException(String.format("File %s is not existing", fileName));
 
@@ -160,9 +160,8 @@ public class AbbreviationManager implements Serializable {
     Map<String, String> env = new HashMap<>();
     if (uri.toString().contains("!")) {
       String[] parts = uri.toString().split("!");
-      if (fs == null) {
+      if (fs == null)
         fs = FileSystems.newFileSystem(URI.create(parts[0]), env);
-      }
       path = fs.getPath(parts[1]);
     } else {
       path = Paths.get(uri);

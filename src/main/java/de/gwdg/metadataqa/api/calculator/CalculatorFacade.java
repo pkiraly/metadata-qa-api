@@ -45,6 +45,7 @@ public class CalculatorFacade implements Serializable {
   private static final Logger LOGGER = Logger.getLogger(
       CalculatorFacade.class.getCanonicalName()
   );
+  private static final long serialVersionUID = -5956665711362465908L;
 
   /**
    * Is it the first record?
@@ -160,7 +161,7 @@ public class CalculatorFacade implements Serializable {
    */
   protected MultilingualitySaturationCalculator multilingualSaturationCalculator;
 
-  protected Format format = Format.JSON;
+  // protected Format format = Format.JSON;
   protected PathCache<? extends XmlFieldInstance> cache;
   protected Schema schema;
   protected CsvReader csvReader;
@@ -234,14 +235,13 @@ public class CalculatorFacade implements Serializable {
       calculators.add(tfidfCalculator);
     }
 
-    if (problemCatalogMeasurementEnabled) {
-      if (schema instanceof EdmSchema) {
-        ProblemCatalog problemCatalog = new ProblemCatalog((EdmSchema) schema);
-        new LongSubject(problemCatalog);
-        new TitleAndDescriptionAreSame(problemCatalog);
-        new EmptyStrings(problemCatalog);
-        calculators.add(problemCatalog);
-      }
+    // TODO: move it into europeana lib
+    if (problemCatalogMeasurementEnabled && schema instanceof EdmSchema) {
+      var problemCatalog = new ProblemCatalog((EdmSchema) schema);
+      new LongSubject(problemCatalog);
+      new TitleAndDescriptionAreSame(problemCatalog);
+      new EmptyStrings(problemCatalog);
+      calculators.add(problemCatalog);
     }
 
     if (ruleCatalogMeasurementEnabled) {
@@ -279,50 +279,50 @@ public class CalculatorFacade implements Serializable {
 
   /**
    * Run the measurements with each Calculator then returns the result as CSV.
-   * @param record
+   * @param inputRecord
    *   The JSON record string
    * @return
    *   The result of measurements as a CSV string
    * @throws InvalidJsonException
    *   Invalid Json exception
    */
-  public String measure(String record) throws InvalidJsonException {
-    return (String) this.<XmlFieldInstance>measureWithGenerics(record);
+  public String measure(String inputRecord) throws InvalidJsonException {
+    return (String) this.<XmlFieldInstance>measureWithGenerics(inputRecord);
   }
 
-  public String measure(List<String> record) throws InvalidJsonException {
+  public String measure(List<String> inputRecord) throws InvalidJsonException {
     return (String) this.<XmlFieldInstance>measureCsvWithGenerics(
-      record, OutputCollector.TYPE.STRING);
+      inputRecord, OutputCollector.TYPE.STRING);
   }
 
-  public List<String> measureAsList(String record) throws InvalidJsonException {
+  public List<String> measureAsList(String inputRecord) throws InvalidJsonException {
     return (List<String>) this.<XmlFieldInstance>measureWithGenerics(
-      record, OutputCollector.TYPE.STRING_LIST);
+      inputRecord, OutputCollector.TYPE.STRING_LIST);
   }
 
-  public List<String> measureAsList(List<String> record) throws InvalidJsonException {
+  public List<String> measureAsList(List<String> inputRecord) throws InvalidJsonException {
     return (List<String>) this.<XmlFieldInstance>measureCsvWithGenerics(
-      record, OutputCollector.TYPE.STRING_LIST);
+      inputRecord, OutputCollector.TYPE.STRING_LIST);
   }
 
-  public List<Object> measureAsListOfObjects(String record) throws InvalidJsonException {
+  public List<Object> measureAsListOfObjects(String inputRecord) throws InvalidJsonException {
     return (List<Object>) this.<XmlFieldInstance>measureWithGenerics(
-      record, OutputCollector.TYPE.OBJECT_LIST);
+      inputRecord, OutputCollector.TYPE.OBJECT_LIST);
   }
 
-  public List<Object> measureAsListOfObjects(List<String> record) throws InvalidJsonException {
+  public List<Object> measureAsListOfObjects(List<String> inputRecord) throws InvalidJsonException {
     return (List<Object>) this.<XmlFieldInstance>measureCsvWithGenerics(
-      record, OutputCollector.TYPE.OBJECT_LIST);
+      inputRecord, OutputCollector.TYPE.OBJECT_LIST);
   }
 
-  public Map<String, Object> measureAsMap(String record) throws InvalidJsonException {
+  public Map<String, Object> measureAsMap(String inputRecord) throws InvalidJsonException {
     return (Map<String, Object>) this.<XmlFieldInstance>measureWithGenerics(
-      record, OutputCollector.TYPE.MAP);
+      inputRecord, OutputCollector.TYPE.MAP);
   }
 
-  public Map<String, Object> measureAsMap(List<String> record) throws InvalidJsonException {
+  public Map<String, Object> measureAsMap(List<String> inputRecord) throws InvalidJsonException {
     return (Map<String, Object>) this.<XmlFieldInstance>measureCsvWithGenerics(
-      record, OutputCollector.TYPE.MAP);
+      inputRecord, OutputCollector.TYPE.MAP);
   }
 
   /**
@@ -357,7 +357,7 @@ public class CalculatorFacade implements Serializable {
     if (schema == null) {
       throw new IllegalStateException("schema is missing");
     } else {
-      Format format = schema.getFormat();
+      var format = schema.getFormat();
       if (format != null && content != null) {
         cache = PathCacheFactory.getInstance(schema.getFormat(), content);
         if (schema.getFormat().equals(Format.CSV))
@@ -391,7 +391,7 @@ public class CalculatorFacade implements Serializable {
     if (schema == null)
       throw new IllegalStateException("schema is missing");
 
-    Format format = schema.getFormat();
+    var format = schema.getFormat();
     if (format == null || format != Format.CSV)
       throw new IllegalStateException("Format is not CSV");
 

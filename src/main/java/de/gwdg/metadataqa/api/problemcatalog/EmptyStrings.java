@@ -18,6 +18,7 @@ public class EmptyStrings extends ProblemDetector implements Serializable {
   private static final Logger LOGGER = Logger.getLogger(EmptyStrings.class.getCanonicalName());
 
   private static final String NAME = "EmptyStrings";
+  private static final long serialVersionUID = 2943902241047693938L;
 
   public EmptyStrings(ProblemCatalog problemCatalog) {
     this.problemCatalog = problemCatalog;

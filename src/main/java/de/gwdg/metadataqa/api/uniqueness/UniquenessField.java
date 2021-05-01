@@ -8,6 +8,9 @@ import java.io.Serializable;
  * @author Péter Király <peter.kiraly at gwdg.de>
  */
 public class UniquenessField implements Serializable {
+
+  private static final long serialVersionUID = -7884318134197445871L;
+
   /**
    * The schema label of the field.
    */

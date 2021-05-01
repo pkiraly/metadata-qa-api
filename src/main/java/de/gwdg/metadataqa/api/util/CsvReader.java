@@ -5,13 +5,16 @@ import com.opencsv.CSVWriter;
 import com.opencsv.ICSVParser;
 
 import java.io.IOException;
+import java.io.Serializable;
 import java.io.StringWriter;
 import java.util.Arrays;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
-public class CsvReader {
+public class CsvReader implements Serializable {
+
+  private static final long serialVersionUID = 2096388277803061095L;
   private List<String> header;
   private ICSVParser parser;
   private boolean headerAware;

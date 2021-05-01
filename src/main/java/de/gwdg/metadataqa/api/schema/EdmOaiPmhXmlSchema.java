@@ -22,6 +22,7 @@ public class EdmOaiPmhXmlSchema extends EdmSchema implements Serializable {
   private static final List<FieldGroup> FIELD_GROUPS = new ArrayList<>();
   private static final List<String> NO_LANGUAGE_FIELDS = new ArrayList<>();
   private static final Map<String, String> SOLR_FIELDS = new LinkedHashMap<>();
+  private static final long serialVersionUID = -3148099352945824132L;
   private Map<String, String> extractableFields = new LinkedHashMap<>();
   private static final List<String> EMPTY_STRINGS = new ArrayList<>();
   private static final Map<String, JsonBranch> PATHS = new LinkedHashMap<>();

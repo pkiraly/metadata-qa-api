@@ -10,6 +10,7 @@ import org.apache.commons.lang3.StringUtils;
  */
 public class XmlFieldInstance implements Serializable {
 
+  private static final long serialVersionUID = 4355586872066308913L;
   private String value;
   private String language;
 

@@ -19,6 +19,7 @@ public class UniquenessExtractor implements Serializable {
 
   private static final Logger LOGGER = Logger.getLogger(UniquenessExtractor.class.getCanonicalName());
   private static final JsonProvider JSON_PROVIDER = Configuration.defaultConfiguration().jsonProvider();
+  private static final long serialVersionUID = -4924105546725077045L;
 
   public UniquenessExtractor() {
   }

@@ -17,6 +17,7 @@ import java.util.Map;
  */
 public class MarcJsonSchema implements Schema, ProblemCatalogSchema, Serializable {
 
+  private static final long serialVersionUID = -351328095358861985L;
   private static final Map<String, JsonBranch> PATHS = new LinkedHashMap<>();
   private static final Map<String, JsonBranch> COLLECTION_PATHS = new LinkedHashMap<>();
   private static final Map<String, JsonBranch> DIRECT_CHILDREN = new LinkedHashMap<>();

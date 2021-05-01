@@ -3,6 +3,7 @@ package de.gwdg.metadataqa.api.counter;
 import de.gwdg.metadataqa.api.model.Category;
 import de.gwdg.metadataqa.api.schema.Schema;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
@@ -12,9 +13,10 @@ import java.util.Map;
  *
  * @author Péter Király <peter.kiraly at gwdg.de>
  */
-public class CompletenessCounter {
+public class CompletenessCounter implements Serializable {
 
   public static final String TOTAL = "TOTAL";
+  private static final long serialVersionUID = -3954161093449269927L;
   private Map<String, BasicCounter> basicCounters;
   private Schema schema;
 

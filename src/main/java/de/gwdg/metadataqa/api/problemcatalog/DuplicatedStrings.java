@@ -15,6 +15,7 @@ import org.apache.commons.lang3.StringUtils;
 public class DuplicatedStrings extends ProblemDetector implements Serializable {
 
   private static final String NAME = "DuplicatedStrings";
+  private static final long serialVersionUID = -4765488439405459205L;
 
   public DuplicatedStrings(ProblemCatalog problemCatalog) {
     this.problemCatalog = problemCatalog;

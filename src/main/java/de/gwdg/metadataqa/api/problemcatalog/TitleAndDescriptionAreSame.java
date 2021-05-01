@@ -22,6 +22,7 @@ public class TitleAndDescriptionAreSame extends ProblemDetector
   );
 
   private static final String NAME = "TitleAndDescriptionAreSame";
+  private static final long serialVersionUID = 1973864683478009809L;
 
   public TitleAndDescriptionAreSame(ProblemCatalog problemCatalog) {
     this.problemCatalog = problemCatalog;

@@ -16,6 +16,7 @@ import java.util.List;
  */
 public class SkippedEntitySelector<T extends XmlFieldInstance> implements Serializable {
 
+  private static final long serialVersionUID = 6798466355837341681L;
   private SkippedEntryChecker skippedEntryChecker;
 
   public SkippedEntitySelector() {

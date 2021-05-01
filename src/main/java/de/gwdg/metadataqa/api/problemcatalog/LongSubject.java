@@ -25,6 +25,7 @@ public class LongSubject extends ProblemDetector implements Serializable {
 
   private static final String NAME = "LongSubject";
   private static final int MAX_LENGTH = 50;
+  private static final long serialVersionUID = 4666546113157987333L;
 
   public LongSubject(ProblemCatalog problemCatalog) {
     this.problemCatalog = problemCatalog;

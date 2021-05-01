@@ -19,6 +19,7 @@ import java.util.Map;
  */
 public class EdmOaiPmLimitedJsonSchema extends EdmSchema implements Serializable {
 
+  private static final long serialVersionUID = -9205604492275740771L;
   private static final List<JsonBranch> PATHS = new ArrayList<>();
   private static final List<FieldGroup> FIELD_GROUPS = new ArrayList<>();
   private static final List<String> NO_LANGUAGE_FIELDS = new ArrayList<>();

@@ -19,6 +19,7 @@ import java.util.Map;
  */
 public class EdmFullBeanSchema extends EdmSchema implements Serializable {
 
+  private static final long serialVersionUID = 3673596446212645981L;
   // private final static List<JsonBranch> paths = new ArrayList<>();
   private static final List<FieldGroup> FIELD_GROUPS = new ArrayList<>();
   private static final List<String> NO_LANGUAGE_FIELDS = new ArrayList<>();

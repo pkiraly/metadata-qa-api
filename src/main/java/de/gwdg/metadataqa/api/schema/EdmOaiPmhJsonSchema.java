@@ -22,6 +22,7 @@ public class EdmOaiPmhJsonSchema extends EdmSchema implements Serializable {
 
   private static final Logger LOGGER = Logger.getLogger(EdmOaiPmhJsonSchema.class.getCanonicalName());
 
+  private static final long serialVersionUID = 5281918481768643599L;
   private static final List<FieldGroup> FIELD_GROUPS = new ArrayList<>();
   private static final List<String> NO_LANGUAGE_FIELDS = new ArrayList<>();
   private static final Map<String, String> SOLR_FIELDS = new LinkedHashMap<>();

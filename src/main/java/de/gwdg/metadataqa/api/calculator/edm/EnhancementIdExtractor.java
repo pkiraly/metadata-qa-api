@@ -34,6 +34,7 @@ public final class EnhancementIdExtractor implements Serializable {
     "Proxy/ore:proxyIn",
     "Proxy/edm:type"
   );
+  private static final long serialVersionUID = -7398960966530263051L;
 
   // private static final String PATH = "$.['ore:Proxy'][?(@['edm:europeanaProxy'][0] == 'true')]";
 

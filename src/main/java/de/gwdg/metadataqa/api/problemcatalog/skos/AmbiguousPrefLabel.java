@@ -30,6 +30,7 @@ public class AmbiguousPrefLabel extends ProblemDetector implements Serializable 
     "Place/skos:prefLabel",
     "Timespan/skos:prefLabel"
   );
+  private static final long serialVersionUID = 7644339329704804931L;
 
   public AmbiguousPrefLabel(ProblemCatalog problemCatalog) {
     this.problemCatalog = problemCatalog;
