@@ -24,8 +24,8 @@ public class MinLengthChecker extends SingleFieldChecker {
 
   @Override
   public void update(PathCache cache, FieldCounter<RuleCheckingOutput> results) {
-    boolean allPassed = true;
-    boolean isNA = true;
+    var allPassed = true;
+    var isNA = true;
     List<XmlFieldInstance> instances = (List<XmlFieldInstance>) cache.get(field.getJsonPath());
     if (instances != null && !instances.isEmpty()) {
       for (XmlFieldInstance instance : instances) {

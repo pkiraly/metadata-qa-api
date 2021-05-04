@@ -23,9 +23,8 @@ public class EqualityChecker extends PropertyPairChecker {
 
   @Override
   public void update(PathCache cache, FieldCounter<RuleCheckingOutput> results) {
-    double result = 0.0;
-    boolean allPassed = true;
-    boolean isNA = true;
+    var allPassed = true;
+    var isNA = true;
     // List<XmlFieldInstance> instances = (List<XmlFieldInstance>) cache.get(field.getJsonPath());
     List<XmlFieldInstance> instances1 = (List<XmlFieldInstance>) cache.get(field1.getAbsoluteJsonPath().replace("[*]", ""));
     List<XmlFieldInstance> instances2 = (List<XmlFieldInstance>) cache.get(field2.getAbsoluteJsonPath().replace("[*]", ""));

@@ -25,9 +25,9 @@ public class PatternChecker extends SingleFieldChecker {
 
   @Override
   public void update(PathCache cache, FieldCounter<RuleCheckingOutput> results) {
-    double result = 0.0;
-    boolean allPassed = true;
-    boolean isNA = true;
+    var result = 0.0;
+    var allPassed = true;
+    var isNA = true;
     List<XmlFieldInstance> instances = (List<XmlFieldInstance>) cache.get(field.getJsonPath());
     if (instances != null && !instances.isEmpty()) {
       for (XmlFieldInstance instance : instances) {

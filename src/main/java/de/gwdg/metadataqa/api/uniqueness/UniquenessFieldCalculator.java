@@ -75,7 +75,7 @@ public class UniquenessFieldCalculator {
   }
 
   private Double getAverage(List<Double> numbers, String recordId, String type) {
-    Double result = 0.0;
+    var result = 0.0;
     if (!numbers.isEmpty()) {
       if (numbers.size() == 1) {
         result = numbers.get(0);
