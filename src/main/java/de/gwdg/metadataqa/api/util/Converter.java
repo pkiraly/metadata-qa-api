@@ -60,7 +60,7 @@ public interface Converter {
         intValue = ((BigDecimal) value).intValue();
         break;
       case "java.lang.Boolean":
-        intValue = (Boolean) value ? 1 : 0;
+        intValue = Boolean.TRUE.equals(value) ? 1 : 0;
         break;
       case "java.lang.Integer":
         intValue = (Integer) value;
@@ -89,11 +89,11 @@ public interface Converter {
     if (value == null) {
       text = "null";
     } else if (value instanceof Boolean) {
-      text = (Boolean) value ? "1" : "0";
+      text = Boolean.TRUE.equals(value) ? "1" : "0";
     } else if (value instanceof Integer) {
       text = Integer.toString((Integer) value);
     } else if (value instanceof Double) {
-      text = String.format("%.6f", (Double) value);
+      text = String.format("%.6f", value);
     } else if (value instanceof String) {
       text = (String) value;
     } else if (value instanceof List) {

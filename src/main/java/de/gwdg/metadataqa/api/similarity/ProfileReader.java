@@ -86,15 +86,10 @@ public class ProfileReader {
           entrySet().
           stream().
           sorted(
-            (e1, e2) -> e2.getValue().getPercent().compareTo(
-              e1.getValue().getPercent()
-            )
+            (e1, e2) -> e2.getValue().getPercent().compareTo(e1.getValue().getPercent())
           ).
-          map(e -> e.getValue()).
-          collect(
-            Collectors.
-              toList()
-          );
+          map(Map.Entry::getValue).
+          collect(Collectors.toList());
   }
 
   public int count(List<RecordPattern> rows) {
@@ -144,21 +139,16 @@ public class ProfileReader {
       sortedClusters.
         entrySet().
         stream().
-        forEach((cluster) -> {
+        forEach(cluster -> {
           var i = profileReader.getNext();
-          // int sum = profileReader.count(cluster.getKey());
-          // System.out.printf("#%d=%d\n", i, sum);
           cluster.
             getKey().
-            forEach((row) -> {
-              System.out.printf("%d,%s\n", i, row.asCsv());
-            });
+            forEach(row -> System.out.printf("%d,%s\n", i, row.asCsv()));
         });
     }
   }
 
-  public static List<String> parseFieldCountLine(String line)
-      throws IOException, URISyntaxException {
+  public static List<String> parseFieldCountLine(String line) {
     List<String> fields = new ArrayList<>();
     var matcher = Pattern.compile("^[^,]+,\"(.*)\"$").matcher(line);
     if (matcher.matches()) {

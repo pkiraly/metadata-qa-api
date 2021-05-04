@@ -10,7 +10,7 @@ import static org.junit.Assert.assertEquals;
 /**
  * http://commons.apache.org/proper/commons-text/javadocs/api-release/org/apache/commons/text/similarity/package-summary.html
  */
-public class SimilarityText {
+public class SimilarityTest {
 
   @Test
   public void clustering() {

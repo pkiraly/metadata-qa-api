@@ -31,7 +31,7 @@ import java.util.logging.Logger;
 public class OaiPmhXPath {
   private static final Logger LOGGER = Logger.getLogger(OaiPmhXPath.class.getCanonicalName());
 
-  private static final Map<String, String> prefixMap = new LinkedHashMap<String, String>();
+  private static final Map<String, String> prefixMap = new LinkedHashMap<>();
   static {
     prefixMap.put("xsi", "http://www.w3.org/2001/XMLSchema-instance");
     prefixMap.put("rdf", "http://www.w3.org/1999/02/22-rdf-syntax-ns#");
