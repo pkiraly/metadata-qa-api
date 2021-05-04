@@ -43,7 +43,7 @@ public class NumericValueChecker extends SingleFieldChecker {
   public void update(PathCache cache, FieldCounter<RuleCheckingOutput> results) {
     var allPassed = true;
     var isNA = true;
-    List<XmlFieldInstance> instances = (List<XmlFieldInstance>) cache.get(field.getJsonPath());
+    List<XmlFieldInstance> instances = cache.get(field.getJsonPath());
     if (instances != null && !instances.isEmpty()) {
       for (XmlFieldInstance instance : instances) {
         if (instance.hasValue()) {

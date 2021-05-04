@@ -63,7 +63,7 @@ public class ProfileReader {
   }
 
   private Map<List<RecordPattern>, Double> sortClusters(Map<List<RecordPattern>, Double> sortableClusters) {
-    Map<List<RecordPattern>, Double> sortedClusters = sortableClusters.
+    return sortableClusters.
       entrySet().
       stream().
       sorted((e1, e2) -> e2.getValue().compareTo(e1.getValue())).
@@ -75,7 +75,6 @@ public class ProfileReader {
           LinkedHashMap::new
         )
       );
-    return sortedClusters;
   }
 
   public int getNext() {
@@ -91,7 +90,7 @@ public class ProfileReader {
               e1.getValue().getPercent()
             )
           ).
-          map(e -> (RecordPattern) e.getValue()).
+          map(e -> e.getValue()).
           collect(
             Collectors.
               toList()

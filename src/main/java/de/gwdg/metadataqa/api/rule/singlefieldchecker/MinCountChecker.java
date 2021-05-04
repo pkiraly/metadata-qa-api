@@ -26,7 +26,7 @@ public class MinCountChecker extends SingleFieldChecker {
   public void update(PathCache cache, FieldCounter<RuleCheckingOutput> results) {
     var allPassed = true;
     var isNA = true;
-    List<XmlFieldInstance> instances = (List<XmlFieldInstance>) cache.get(field.getJsonPath());
+    List<XmlFieldInstance> instances = cache.get(field.getJsonPath());
     var count = 0;
     if (instances != null && !instances.isEmpty())
       for (XmlFieldInstance instance : instances)

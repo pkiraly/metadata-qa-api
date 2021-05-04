@@ -69,7 +69,7 @@ public class GoogleDatasetSchema implements Schema, CsvAwareSchema {
 
   @Override
   public List<FieldGroup> getFieldGroups() {
-    return new ArrayList<FieldGroup>();
+    return new ArrayList<>();
   }
 
   @Override

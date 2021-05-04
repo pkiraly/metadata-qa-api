@@ -16,10 +16,7 @@ import org.apache.commons.lang3.StringUtils;
  *
  * @author Péter Király <peter.kiraly at gwdg.de>
  */
-public abstract class Converter {
-
-  private Converter() {
-  }
+public interface Converter {
 
   /**
    * Transforms different objects (BigDecimal, Integer) to Double.

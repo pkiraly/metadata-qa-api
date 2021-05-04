@@ -409,7 +409,7 @@ public class MarcJsonSchema implements Schema, ProblemCatalogSchema, Serializabl
 
   @Override
   public List<FieldGroup> getFieldGroups() {
-    return new ArrayList<FieldGroup>();
+    return new ArrayList<>();
   }
 
   @Override
