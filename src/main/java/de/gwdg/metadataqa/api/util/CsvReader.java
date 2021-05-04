@@ -80,8 +80,8 @@ public class CsvReader implements Serializable {
   }
 
   public static String toCsv(String[] cells) throws IOException {
-    StringWriter stringWriter = new StringWriter();
-    CSVWriter csvWriter = new CSVWriter(stringWriter);
+    var stringWriter = new StringWriter();
+    var csvWriter = new CSVWriter(stringWriter);
     csvWriter.writeNext(cells);
     csvWriter.close();
     return stringWriter.toString().trim();

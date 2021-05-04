@@ -108,10 +108,9 @@ public class DefaultSolrClient implements SolrClient, Serializable {
   }
 
   private String readStream(InputStream in) throws IOException {
-    BufferedReader rd = new BufferedReader(new InputStreamReader(in));
-
-    StringBuffer result = new StringBuffer();
-    String line = "";
+    var rd = new BufferedReader(new InputStreamReader(in));
+    var result = new StringBuffer();
+    var line = "";
     while ((line = rd.readLine()) != null) {
       result.append(line);
     }

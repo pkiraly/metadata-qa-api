@@ -20,7 +20,7 @@ public class RecordPatternTest {
     List<String> profiles = FileUtils.readLinesFromResource(profileFile);
 
     BinaryMaker binaryMaker = new BinaryMaker(canonicalFieldList);
-    RecordPattern row = new RecordPattern(binaryMaker, Arrays.asList(profiles.get(0).trim().split(",")));
+    var row = new RecordPattern(binaryMaker, Arrays.asList(profiles.get(0).trim().split(",")));
     assertEquals("d-989", row.getId());
     assertEquals(
       "dc:title;dc:description;dc:creator;dc:contributor;dc:type;dc:identifier;dc:language;dc:coverage;dc:subject;dcterms:extent;dcterms:medium;dcterms:isPartOf;dc:format;edm:type",

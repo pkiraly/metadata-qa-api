@@ -361,7 +361,7 @@ public class MarcJsonSchema implements Schema, ProblemCatalogSchema, Serializabl
   }
 
   private static void registerDatafieldBranch(String tag, String... codes) {
-    JsonBranch parent = new JsonBranch(tag, createDatafieldParentPath(tag));
+    var parent = new JsonBranch(tag, createDatafieldParentPath(tag));
     parent.setCollection(true);
     addPath(parent);
     addPath(new JsonBranch(tag + "$ind1", parent, DATAFIELD_IND1_PATTERN));

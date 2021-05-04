@@ -34,10 +34,10 @@ public abstract class FileUtils {
   }
 
   public static Path getPath(String fileName) throws IOException, URISyntaxException {
-    URL url = classLoader.getResource(fileName);
-    if (url == null) {
+    var url = classLoader.getResource(fileName);
+    if (url == null)
       throw new IOException(String.format("File %s is not available", fileName));
-    }
+
     return Paths.get(url.toURI());
   }
 
@@ -54,13 +54,13 @@ public abstract class FileUtils {
 
   public static String readFromUrl(String url) throws IOException {
     try (InputStream is = new URL(url).openStream()) {
-      BufferedReader rd = new BufferedReader(new InputStreamReader(is, StandardCharsets.UTF_8));
+      var rd = new BufferedReader(new InputStreamReader(is, StandardCharsets.UTF_8));
       return readAll(rd);
     }
   }
 
   private static String readAll(Reader rd) throws IOException {
-    StringBuilder sb = new StringBuilder();
+    var sb = new StringBuilder();
     int cp;
     while ((cp = rd.read()) != -1) {
       sb.append((char) cp);
@@ -70,7 +70,7 @@ public abstract class FileUtils {
 
   public static List<String> readLinesFromFile(String fileName) throws IOException {
     List<String> lines = new ArrayList<>();
-    Scanner scanner = new Scanner(new File(fileName));
+    var scanner = new Scanner(new File(fileName));
     while (scanner.hasNextLine()) {
       lines.add(scanner.nextLine());
     }

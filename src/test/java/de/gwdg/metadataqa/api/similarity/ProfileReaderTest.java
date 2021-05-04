@@ -37,7 +37,7 @@ public class ProfileReaderTest {
 
   @Test
   public void testExtraction() {
-    ProfileReader profileReader = new ProfileReader(canonicalFieldList, profiles);
+    var profileReader = new ProfileReader(canonicalFieldList, profiles);
     Map<List<RecordPattern>, Double> sortedClusters = profileReader.buildCluster();
     assertEquals(5, sortedClusters.size());
     List<Map.Entry<List<RecordPattern>, Double>> clusters =

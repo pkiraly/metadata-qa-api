@@ -27,7 +27,7 @@ public class MaxCountChecker extends SingleFieldChecker {
     var allPassed = true;
     var isNA = true;
     List<XmlFieldInstance> instances = (List<XmlFieldInstance>) cache.get(field.getJsonPath());
-    int count = 0;
+    var count = 0;
     if (instances != null && !instances.isEmpty()) {
       for (XmlFieldInstance instance : instances) {
         if (instance.hasValue()) {

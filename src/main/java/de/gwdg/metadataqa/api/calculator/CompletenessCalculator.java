@@ -158,7 +158,7 @@ public class CompletenessCalculator<T extends XmlFieldInstance>
       JsonPathCache cache,
       Object jsonFragment)
   {
-    boolean skippable = false;
+    var skippable = false;
     JsonBranch identifierPath = collection.getIdentifier();
     if (!skippableIds.isEmpty() && identifierPath != null) {
       String address = String.format("%s/%d/%s",

@@ -62,7 +62,7 @@ public final class StringDuplicationDetector {
       }
     } else {
       var half = len / 2;
-      String middlePart = input.substring(half - 1, half + 2);
+      var middlePart = input.substring(half - 1, half + 2);
       if (isSpaceCommaSpace(middlePart)) {
         return hasEqualParts(input, half - 1, half + 2);
       } else if (isCommaInTheMiddle(middlePart)
@@ -89,8 +89,8 @@ public final class StringDuplicationDetector {
   private static boolean hasEqualParts(final String input,
                                        final int beginTo,
                                        final int endFrom) {
-    String begin = input.substring(0, beginTo);
-    String end = input.substring(endFrom);
+    var begin = input.substring(0, beginTo);
+    var end = input.substring(endFrom);
     return begin.equals(end);
   }
 }

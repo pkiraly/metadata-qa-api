@@ -35,10 +35,9 @@ public class UniquenessExtractor implements Serializable {
    *    Sums and average of TF-IDF value
    */
   public Integer extractNumFound(String jsonString, String recordId) {
-    int numFound = 1;
-    if (StringUtils.isBlank(jsonString)) {
+    var numFound = 1;
+    if (StringUtils.isBlank(jsonString))
       return numFound;
-    }
 
     Object document = JSON_PROVIDER.parse(jsonString);
     if (document instanceof LinkedHashMap) {

@@ -33,7 +33,7 @@ public class SkippedEntitySelector<T extends XmlFieldInstance> implements Serial
       int i,
       PathCache cache,
       Object jsonFragment) {
-    boolean skippable = false;
+    var skippable = false;
     JsonBranch identifierPath = collection.getIdentifier();
     if (!skippableIds.isEmpty() && identifierPath != null) {
       var address = String.format("%s/%d/%s",

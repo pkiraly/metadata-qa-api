@@ -59,9 +59,9 @@ public class OaiPmhXPath {
   private static final DocumentBuilder builder = initializeDocumentBuilder();
 
   private static XPath initializeEngine() {
-    XPathFactory xPathfactory = XPathFactory.newInstance();
-    XPath xpathEngine = xPathfactory.newXPath();
-    NamespaceContextImpl nsContext = new NamespaceContextImpl();
+    var xPathfactory = XPathFactory.newInstance();
+    var xpathEngine = xPathfactory.newXPath();
+    var nsContext = new NamespaceContextImpl();
     for (String prefix : prefixMap.keySet())
       nsContext.startPrefixMapping(prefix, prefixMap.get(prefix));
     xpathEngine.setNamespaceContext(nsContext);

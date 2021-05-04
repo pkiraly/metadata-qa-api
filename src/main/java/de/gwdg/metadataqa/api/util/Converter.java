@@ -88,7 +88,7 @@ public abstract class Converter {
   }
 
   public static String asString(Object value) {
-    String text = "";
+    var text = "";
     if (value == null) {
       text = "null";
     } else if (value instanceof Boolean) {

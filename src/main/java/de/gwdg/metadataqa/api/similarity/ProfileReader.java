@@ -13,7 +13,6 @@ import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
@@ -43,12 +42,12 @@ public class ProfileReader {
   public Map<List<RecordPattern>, Double> buildCluster(double treshold) {
     List<String> binaryPatterns = createBinaryPatternList();
 
-    Clustering clustering = new Clustering(binaryPatterns, treshold);
+    var clustering = new Clustering(binaryPatterns, treshold);
     List<List<String>> clusters = clustering.getClusters();
 
     Map<List<RecordPattern>, Double> sortableClusters = new HashMap<>();
     for (List<String> terms : clusters) {
-      double sum = 0.0;
+      var sum = 0.0;
       Map<String, RecordPattern> sortableTerms = new HashMap<>();
       for (String term : terms) {
         RecordPattern row = rowIndex.get(term);
@@ -109,7 +108,7 @@ public class ProfileReader {
   public List<String> createBinaryPatternList() {
     List<String> binaryPatterns = new ArrayList<>();
     for (String line : profiles) {
-      RecordPattern row = new RecordPattern(binaryMaker, Arrays.asList(line.split(",")));
+      var row = new RecordPattern(binaryMaker, Arrays.asList(line.split(",")));
       binaryPatterns.add(row.getBinary());
       rowIndex.put(row.getBinary(), row);
     }
@@ -135,7 +134,7 @@ public class ProfileReader {
       Paths.get(profileFile), Charset.defaultCharset()
     );
 
-    ProfileReader profileReader = new ProfileReader(canonicalFieldList, profiles);
+    var profileReader = new ProfileReader(canonicalFieldList, profiles);
     if (produceList) {
       List<String> binaryPatterns = profileReader.createBinaryPatternList();
       for (String binaryPattern : binaryPatterns) {
@@ -162,7 +161,7 @@ public class ProfileReader {
   public static List<String> parseFieldCountLine(String line)
       throws IOException, URISyntaxException {
     List<String> fields = new ArrayList<>();
-    Matcher matcher = Pattern.compile("^[^,]+,\"(.*)\"$").matcher(line);
+    var matcher = Pattern.compile("^[^,]+,\"(.*)\"$").matcher(line);
     if (matcher.matches()) {
       String fieldsWithCount = matcher.group(1);
       for (String fieldWithCount : fieldsWithCount.split(",")) {

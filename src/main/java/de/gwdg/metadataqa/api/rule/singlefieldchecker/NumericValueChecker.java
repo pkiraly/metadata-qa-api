@@ -47,10 +47,10 @@ public class NumericValueChecker extends SingleFieldChecker {
     if (instances != null && !instances.isEmpty()) {
       for (XmlFieldInstance instance : instances) {
         if (instance.hasValue()) {
-          String stringValue = instance.getValue();
+          var stringValue = instance.getValue();
           isNA = false;
           try {
-            double value = Double.parseDouble(stringValue);
+            var value = Double.parseDouble(stringValue);
             allPassed = checkValue(value);
           } catch (NumberFormatException e) {
             allPassed = false;

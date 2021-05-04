@@ -48,7 +48,7 @@ public class Cluster implements Iterable<Term> {
   }
 
   public boolean isSimilarTo(Cluster other, double treshold) {
-    boolean isSimilar = false;
+    var isSimilar = false;
     for (Term term : terms) {
       for (Term otherTerm : other.getTerms()) {
         if (term.hasDistance(otherTerm)

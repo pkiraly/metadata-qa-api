@@ -77,7 +77,7 @@ public class LessThanPairChecker extends PropertyPairChecker {
   }
 
   private boolean checkValues(String value1, String value2) {
-    boolean allPassed = false;
+    var allPassed = false;
     switch (type) {
       case LESS_THAN:           allPassed = lessThan(value1, value2);         break;
       case LESS_THAN_OR_EQUALS: allPassed = lessThanOrEquals(value1, value2); break;

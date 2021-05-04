@@ -25,7 +25,7 @@ public class SchemaFactory {
       schema.setCategories(config.getCategories());
 
     for (Field field : config.getFields()) {
-      JsonBranch branch = new JsonBranch(field.getName());
+      var branch = new JsonBranch(field.getName());
 
       if (StringUtils.isNotBlank(field.getPath()))
         branch.setJsonPath(field.getPath());

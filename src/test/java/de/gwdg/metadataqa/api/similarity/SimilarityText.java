@@ -16,7 +16,7 @@ public class SimilarityText {
   public void clustering() {
     List<String> patterns = Arrays.asList("0001", "0011", "0000", "1001");
     double treshold = 0.70;
-    Clustering clustering = new Clustering(patterns, treshold);
+    var clustering = new Clustering(patterns, treshold);
     List<List<String>> clusters = clustering.getClusters();
 
     assertEquals(Arrays.asList("0011", "0001", "1001"), clusters.get(0));
@@ -29,7 +29,7 @@ public class SimilarityText {
       "Sosztakovics", "Rubens", "Shostakovic", "1001"
     );
     double treshold = 0.70;
-    Clustering clustering = new Clustering(patterns, treshold);
+    var clustering = new Clustering(patterns, treshold);
     List<List<String>> clusters = clustering.getClusters();
 
     assertEquals(Arrays.asList("Shostakovic", "Sosztakovics"), clusters.get(0));

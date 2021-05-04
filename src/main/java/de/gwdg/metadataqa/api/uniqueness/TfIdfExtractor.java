@@ -58,7 +58,7 @@ public class TfIdfExtractor {
     FieldCounter<Double> results = new FieldCounter<>();
     termsCollection = new LinkedHashMap<>();
     Object document = JSON_PROVIDER.parse(jsonString);
-    String path = String.format("$.termVectors.['%s']", recordId);
+    var path = String.format("$.termVectors.['%s']", recordId);
     Map value = (LinkedHashMap) JsonPath.read(document, path);
     for (String field : schema.getSolrFields().keySet()) {
       if (doCollectTerms) {

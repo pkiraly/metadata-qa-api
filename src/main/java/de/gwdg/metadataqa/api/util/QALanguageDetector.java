@@ -37,9 +37,7 @@ class QALanguageDetector {
   }
 
   public Optional<LdLocale> detect(String text) {
-    //query:
-    TextObject textObject = textObjectFactory.forText(text);
-    Optional<LdLocale> lang = languageDetector.detect(textObject);
-    return lang;
+    var textObject = textObjectFactory.forText(text);
+    return languageDetector.detect(textObject);
   }
 }

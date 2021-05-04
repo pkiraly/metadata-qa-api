@@ -39,10 +39,10 @@ public class Clustering {
   private void initializeClusters(List<String> patterns) {
     for (var i = 0; i < patterns.size(); i++) {
       String pattern = patterns.get(i);
-      Term term = getOrCreateTerm(pattern);
+      var term = getOrCreateTerm(pattern);
       for (int j = i + 1; j < patterns.size(); j++) {
         String otherPattern = patterns.get(j);
-        Term otherTerm = getOrCreateTerm(otherPattern);
+        var otherTerm = getOrCreateTerm(otherPattern);
         double distance = jaroWinkler.apply(pattern, otherPattern);
         if (distance >= treshold) {
           term.setDistance(otherTerm, distance);
