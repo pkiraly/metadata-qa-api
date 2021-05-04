@@ -67,7 +67,7 @@ public class EdmFieldInstance extends XmlFieldInstance {
 
   @Override
   public int hashCode() {
-    int hash = 5;
+    var hash = 5;
     hash = 19 * hash + Objects.hashCode(getValue());
     hash = 19 * hash + Objects.hashCode(getLanguage());
     hash = 19 * hash + Objects.hashCode(getResource());

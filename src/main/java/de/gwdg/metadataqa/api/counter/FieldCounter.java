@@ -61,17 +61,17 @@ public class FieldCounter<T> implements Serializable {
   public List<String> getList(boolean withLabel, CompressionLevel compressionLevel) {
     List<String> items = new ArrayList<>();
     for (Map.Entry<String, T> entry : fieldMap.entrySet()) {
-      String item = "";
+      var item = new StringBuilder();
       if (withLabel) {
-        item += String.format("\"%s\":", entry.getKey());
+        item.append(String.format("\"%s\":", entry.getKey()));
       }
-      String value = Converter.asString(entry.getValue());
+      var value = Converter.asString(entry.getValue());
       if (!(entry.getValue() instanceof Integer)
           && compressionLevel != CompressionLevel.ZERO) {
         value = Converter.compressNumber(value, compressionLevel);
       }
-      item += value;
-      items.add(item);
+      item.append(value);
+      items.add(item.toString());
     }
     return items;
   }

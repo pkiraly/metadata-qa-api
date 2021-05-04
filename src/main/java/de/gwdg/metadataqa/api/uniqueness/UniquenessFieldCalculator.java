@@ -88,7 +88,7 @@ public class UniquenessFieldCalculator {
       }
       if (type.equals("score") && (result < 0.0 || result > 1.0)) {
         List<String> pairs = new ArrayList<>();
-        for (int i = 0; i < numbers.size(); i++) {
+        for (var i = 0; i < numbers.size(); i++) {
           pairs.add(String.format("%f -> %f", counts.get(i), numbers.get(i)));
         }
         LOGGER.severe(String.format("EXTREME AVERAGE at %s: %f <- average of %s",

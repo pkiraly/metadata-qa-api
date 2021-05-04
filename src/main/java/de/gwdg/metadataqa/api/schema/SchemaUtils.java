@@ -97,15 +97,14 @@ public class SchemaUtils {
     JsonBranch field2 = schema.getPathByLabel(fieldReference);
     if (field2 != null) {
       RuleChecker ruleChecker = null;
-      switch (type) {
-        case "equals":   ruleChecker = new EqualityChecker(branch, field2); break;
-        case "disjoint": ruleChecker = new DisjointChecker(branch, field2); break;
-        case "lessThan":
-          ruleChecker = new LessThanPairChecker(branch, field2,
-            LessThanPairChecker.TYPE.LESS_THAN); break;
-        case "lessThanOrEquals":
-          ruleChecker = new LessThanPairChecker(branch, field2,
-            LessThanPairChecker.TYPE.LESS_THAN_OR_EQUALS); break;
+      if ("equals".equals(type)) {
+        ruleChecker = new EqualityChecker(branch, field2);
+      } else if ("disjoint".equals(type)) {
+        ruleChecker = new DisjointChecker(branch, field2);
+      } else if ("lessThan".equals(type)) {
+        ruleChecker = new LessThanPairChecker(branch, field2, LessThanPairChecker.TYPE.LESS_THAN);
+      } else if ("lessThanOrEquals".equals(type)) {
+        ruleChecker = new LessThanPairChecker(branch, field2, LessThanPairChecker.TYPE.LESS_THAN_OR_EQUALS);
       }
       if (ruleChecker != null)
         ruleCheckers.add(ruleChecker);

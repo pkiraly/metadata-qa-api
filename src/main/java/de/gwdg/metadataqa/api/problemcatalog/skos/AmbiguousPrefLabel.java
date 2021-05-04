@@ -40,14 +40,14 @@ public class AmbiguousPrefLabel extends ProblemDetector implements Serializable 
 
   @Override
   public void update(PathCache cache, FieldCounter<Double> results) {
-    int value = 0;
+    var value = 0;
     for (String label : LABELS) {
       JsonBranch branch = ((Schema) schema).getPathByLabel(label);
       String parentPath = branch.getParent().getJsonPath();
       Object rawEntityFragment = cache.getFragment(parentPath);
       if (rawEntityFragment != null) {
         List<Object> entities = Converter.jsonObjectToList(rawEntityFragment, (Schema) schema);
-        for (int i = 0; i < entities.size(); i++) {
+        for (var i = 0; i < entities.size(); i++) {
           value += countPerEntity(i, branch, cache);
         }
       }
@@ -73,7 +73,7 @@ public class AmbiguousPrefLabel extends ProblemDetector implements Serializable 
   }
 
   private int countAmbiguousPrefLabels(Map<String, Integer> labelCounter) {
-    int value = 0;
+    var value = 0;
 
     for (Map.Entry<String, Integer> entry : labelCounter.entrySet()) {
       if (entry.getValue() > 1) {

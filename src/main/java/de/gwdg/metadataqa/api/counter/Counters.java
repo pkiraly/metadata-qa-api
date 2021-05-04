@@ -92,7 +92,7 @@ public class Counters {
                              String key,
                              Double value,
                              CompressionLevel compressionLevel) {
-    String valueAsString = String.format("%f", value);
+    var valueAsString = String.format("%f", value);
     if (compressionLevel != CompressionLevel.ZERO) {
       valueAsString = Converter.compressNumber(valueAsString, compressionLevel);
     }
@@ -132,12 +132,12 @@ public class Counters {
   public String getTfIdfList(boolean withLabel) {
     List<String> items = new ArrayList<>();
     for (Map.Entry<String, Double> entry : tfIdfList.entrySet()) {
-      String item = "";
+      var item = new StringBuilder();
       if (withLabel) {
-        item += String.format("\"%s\":", entry.getKey());
+        item.append(String.format("\"%s\":", entry.getKey()));
       }
-      item += String.format("%.8f", entry.getValue());
-      items.add(item);
+      item.append(String.format("%.8f", entry.getValue()));
+      items.add(item.toString());
     }
     return StringUtils.join(items, ',');
   }
@@ -149,16 +149,16 @@ public class Counters {
   public String getProblemList(boolean withLabel, CompressionLevel compressionLevel) {
     List<String> items = new ArrayList<>();
     for (Map.Entry<String, Double> entry : problemList.entrySet()) {
-      String item = "";
+      var item = new StringBuilder();
       if (withLabel) {
-        item += String.format("\"%s\":", entry.getKey());
+        item.append(String.format("\"%s\":", entry.getKey()));
       }
-      String nr = String.format("%.8f", entry.getValue());
+      var nr = String.format("%.8f", entry.getValue());
       if (compressionLevel != CompressionLevel.ZERO) {
         nr = Converter.compressNumber(nr, compressionLevel);
       }
-      item += nr;
-      items.add(item);
+      item.append(nr);
+      items.add(item.toString());
     }
     return StringUtils.join(items, ',');
   }

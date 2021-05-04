@@ -159,7 +159,7 @@ public final class JsonUtils {
 
   public static EdmFieldInstance hashToFieldInstance(Object innerVal, String recordId, String jsonPath)  {
     Map<String, Object> map = (LinkedHashMap<String, Object>) innerVal;
-    EdmFieldInstance instance = new EdmFieldInstance();
+    var instance = new EdmFieldInstance();
     for (Map.Entry<String, Object> entry : map.entrySet()) {
       Object value = entry.getValue();
       if (entry.getKey().equals("@about")) {

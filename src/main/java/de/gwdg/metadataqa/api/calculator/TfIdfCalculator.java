@@ -90,7 +90,7 @@ public class TfIdfCalculator implements Calculator, Serializable {
 
     String url = String.format(getSolrSearchPath(), recordId).replace("\"", "%22");
     HttpMethod method = new GetMethod(url);
-    HttpMethodParams params = new HttpMethodParams();
+    var params = new HttpMethodParams();
     params.setIntParameter(HttpMethodParams.BUFFER_WARN_TRIGGER_LIMIT, MEGABYTE);
     method.setParams(params);
     try {
@@ -101,9 +101,7 @@ public class TfIdfCalculator implements Calculator, Serializable {
 
       var baos = new ByteArrayOutputStream();
       IOUtils.copy(method.getResponseBodyAsStream(), baos);
-      byte[] responseBody = baos.toByteArray();
-
-      jsonString = new String(responseBody, StandardCharsets.UTF_8);
+      jsonString = baos.toString(StandardCharsets.UTF_8);
     } catch (HttpException e) {
       LOGGER.severe("Fatal protocol violation: " + e.getMessage());
     } catch (IOException e) {

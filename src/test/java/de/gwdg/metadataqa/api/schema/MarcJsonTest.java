@@ -202,7 +202,7 @@ public class MarcJsonTest {
     assertNotNull(rawFragment);
     List<Object> fieldInstances = Converter.jsonObjectToList(rawFragment, schema);
     assertEquals(12, fragments.size());
-    for (int i = 0; i < fieldInstances.size(); i++) {
+    for (var i = 0; i < fieldInstances.size(); i++) {
       Object fieldInstance = fieldInstances.get(i);
       // System.err.printf("fieldInstance: '%s'\n", fieldInstance);
       List<Object> subfieldInstances = null;
@@ -491,7 +491,7 @@ public class MarcJsonTest {
 
   private Map<String, List<String>> asMap(List<String>... values) {
     Map<String, List<String>> map = new HashMap<>();
-    for (int i = 0; i<values.length; i++) {
+    for (var i = 0; i<values.length; i++) {
       String key = values[i].remove(0);
       map.put(key, values[i]);
     }
@@ -500,7 +500,7 @@ public class MarcJsonTest {
 
   private Map<String, List<String>> asSimpleMap(String... values) {
     Map<String, List<String>> map = new HashMap<>();
-    for (int i = 0; i<values.length; i += 2) {
+    for (var i = 0; i<values.length; i += 2) {
       map.put(values[i], Arrays.asList(values[i + 1]));
     }
     return map;

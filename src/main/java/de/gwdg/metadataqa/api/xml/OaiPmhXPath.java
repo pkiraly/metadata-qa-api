@@ -131,7 +131,7 @@ public class OaiPmhXPath {
     try {
       XPathExpression expr = xpathEngine.compile(xpath);
       NodeList nodes = (NodeList) expr.evaluate(context, XPathConstants.NODESET);
-      for (int i = 0; i < nodes.getLength(); i++) {
+      for (var i = 0; i < nodes.getLength(); i++) {
         Node node = nodes.item(i);
         if (node.getNodeType() == Node.ELEMENT_NODE) {
           String value = node.getTextContent();
@@ -163,7 +163,7 @@ public class OaiPmhXPath {
     try {
       XPathExpression expr = xpathEngine.compile(xpath);
       NodeList nodes = (NodeList) expr.evaluate(context, XPathConstants.NODESET);
-      for (int i = 0; i < nodes.getLength(); i++) {
+      for (var i = 0; i < nodes.getLength(); i++) {
         Node node = nodes.item(i);
         if (node.getNodeType() == Node.ELEMENT_NODE) {
           list.add(node);

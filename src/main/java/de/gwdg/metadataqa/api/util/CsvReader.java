@@ -58,7 +58,7 @@ public class CsvReader implements Serializable {
   public Map<String, String> createMap(String[] columns) {
     Map<String, String> record = new LinkedHashMap<>();
     if (header != null && columns.length == header.size()) {
-      for (int i = 0; i < columns.length; i++) {
+      for (var i = 0; i < columns.length; i++) {
         record.put(header.get(i), columns[i]);
       }
     } else {
@@ -70,7 +70,7 @@ public class CsvReader implements Serializable {
   public Map<String, String> createMap(List<String> columns) {
     Map<String, String> record = new LinkedHashMap<>();
     if (header != null && columns.size() == header.size()) {
-      for (int i = 0; i < columns.size(); i++) {
+      for (var i = 0; i < columns.size(); i++) {
         record.put(header.get(i), columns.get(i));
       }
     } else {

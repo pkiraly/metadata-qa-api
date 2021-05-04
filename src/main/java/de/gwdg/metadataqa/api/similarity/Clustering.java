@@ -37,7 +37,7 @@ public class Clustering {
   }
 
   private void initializeClusters(List<String> patterns) {
-    for (int i = 0; i < patterns.size(); i++) {
+    for (var i = 0; i < patterns.size(); i++) {
       String pattern = patterns.get(i);
       Term term = getOrCreateTerm(pattern);
       for (int j = i + 1; j < patterns.size(); j++) {
@@ -54,7 +54,7 @@ public class Clustering {
 
   private void makeClusters() {
     List<Cluster> clusts = new ArrayList<>(clusterIndex.values());
-    for (int i = 0; i < clusts.size(); i++) {
+    for (var i = 0; i < clusts.size(); i++) {
       Cluster a = clusts.get(i);
       if (a.isActive()) {
         for (int j = i + 1; j < clusts.size(); j++) {

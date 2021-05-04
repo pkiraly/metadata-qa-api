@@ -64,7 +64,7 @@ public class XmlFieldInstance implements Serializable {
 
   @Override
   public int hashCode() {
-    int hash = 5;
+    var hash = 5;
     hash = 19 * hash + Objects.hashCode(this.value);
     hash = 19 * hash + Objects.hashCode(this.language);
     return hash;

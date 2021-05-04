@@ -47,7 +47,7 @@ public class SimilarityText {
     List<String> patterns = Arrays.asList("0001", "0011", "0000", "1001");
     Map<List<String>, Double> atomicDistance = new HashMap<>();
     List<Cluster> clusters = new ArrayList<>();
-    for (int i = 0; i < patterns.size(); i++) {
+    for (var i = 0; i < patterns.size(); i++) {
       String a = patterns.get(i);
       Term at = new Term(a);
       clusters.add(new Cluster(at));

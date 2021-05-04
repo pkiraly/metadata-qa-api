@@ -13,9 +13,8 @@ import java.io.FileInputStream;
 public class ConfigurationReader {
 
   public static Configuration readJson(String fileName) throws FileNotFoundException {
-    ObjectMapper objectMapper = new ObjectMapper();
-
-    File file = new File(fileName);
+    var objectMapper = new ObjectMapper();
+    var file = new File(fileName);
     Configuration config;
     try {
       config = objectMapper.readValue(file, Configuration.class);
@@ -26,7 +25,7 @@ public class ConfigurationReader {
   }
 
   public static Configuration readYaml(String fileName) throws FileNotFoundException {
-    Yaml yaml = new Yaml(new Constructor(Configuration.class));
+    var yaml = new Yaml(new Constructor(Configuration.class));
     InputStream inputStream = new FileInputStream(new File(fileName));
     return yaml.load(inputStream);
   }
