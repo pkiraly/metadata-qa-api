@@ -12,7 +12,7 @@ public class HasValueCheckerTest extends CheckerTestBase {
 
   @Test
   public void prefix() {
-    assertEquals("hasValue", HasValueChecker.prefix);
+    assertEquals("hasValue", HasValueChecker.PREFIX);
   }
 
   @Test

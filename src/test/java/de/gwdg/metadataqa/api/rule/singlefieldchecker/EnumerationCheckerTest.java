@@ -14,7 +14,7 @@ public class EnumerationCheckerTest extends CheckerTestBase {
 
   @Test
   public void prefix() {
-    assertEquals("in", EnumerationChecker.prefix);
+    assertEquals("in", EnumerationChecker.PREFIX);
   }
 
   @Test

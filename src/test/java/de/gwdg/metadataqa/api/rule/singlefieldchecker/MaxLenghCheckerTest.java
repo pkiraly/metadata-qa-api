@@ -12,7 +12,7 @@ public class MaxLenghCheckerTest extends CheckerTestBase {
 
   @Test
   public void prefix() {
-    assertEquals("maxLength", MaxLengthChecker.prefix);
+    assertEquals("maxLength", MaxLengthChecker.PREFIX);
   }
 
   @Test

@@ -64,19 +64,19 @@ public class SchemaUtils {
 
           if (rule.getMinInclusive() != null)
             ruleCheckers.add(new NumericValueChecker(branch, rule.getMinInclusive(),
-              NumericValueChecker.TYPE.MinInclusive));
+              NumericValueChecker.TYPE.MIN_INCLUSIVE));
 
           if (rule.getMaxInclusive() != null)
             ruleCheckers.add(new NumericValueChecker(branch, rule.getMinInclusive(),
-              NumericValueChecker.TYPE.MaxInclusive));
+              NumericValueChecker.TYPE.MAX_INCLUSIVE));
 
           if (rule.getMinExclusive() != null)
             ruleCheckers.add(new NumericValueChecker(branch, rule.getMinInclusive(),
-              NumericValueChecker.TYPE.MinExclusive));
+              NumericValueChecker.TYPE.MIN_EXCLUSIVE));
 
           if (rule.getMaxExclusive() != null)
             ruleCheckers.add(new NumericValueChecker(branch, rule.getMinInclusive(),
-              NumericValueChecker.TYPE.MaxExclusive));
+              NumericValueChecker.TYPE.MAX_EXCLUSIVE));
 
           if (rule.getLessThan() != null)
             pair(schema, ruleCheckers, branch, rule.getLessThan(), "LessThan");
@@ -102,10 +102,10 @@ public class SchemaUtils {
         case "disjoint": ruleChecker = new DisjointChecker(branch, field2); break;
         case "lessThan":
           ruleChecker = new LessThanPairChecker(branch, field2,
-            LessThanPairChecker.TYPE.LessThan); break;
+            LessThanPairChecker.TYPE.LESS_THAN); break;
         case "lessThanOrEquals":
           ruleChecker = new LessThanPairChecker(branch, field2,
-            LessThanPairChecker.TYPE.LessThanOrEquals); break;
+            LessThanPairChecker.TYPE.LESS_THAN_OR_EQUALS); break;
       }
       if (ruleChecker != null)
         ruleCheckers.add(ruleChecker);

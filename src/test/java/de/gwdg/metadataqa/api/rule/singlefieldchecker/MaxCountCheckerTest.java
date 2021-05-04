@@ -12,7 +12,7 @@ public class MaxCountCheckerTest extends CheckerTestBase {
 
   @Test
   public void prefix() {
-    assertEquals("maxCount", MaxCountChecker.prefix);
+    assertEquals("maxCount", MaxCountChecker.PREFIX);
   }
 
   @Test

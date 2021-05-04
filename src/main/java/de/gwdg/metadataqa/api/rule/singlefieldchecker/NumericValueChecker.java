@@ -14,10 +14,10 @@ public class NumericValueChecker extends SingleFieldChecker {
   private static final Logger LOGGER = Logger.getLogger(NumericValueChecker.class.getCanonicalName());
 
   public enum TYPE {
-    MinInclusive("minInclusive"),
-    MaxInclusive("maxInclusive"),
-    MinExclusive("minExclusive"),
-    MaxExclusive("maxExclusive");
+    MIN_INCLUSIVE("minInclusive"),
+    MAX_INCLUSIVE("maxInclusive"),
+    MIN_EXCLUSIVE("minExclusive"),
+    MAX_EXCLUSIVE("maxExclusive");
 
     private String prefix;
 
@@ -67,10 +67,10 @@ public class NumericValueChecker extends SingleFieldChecker {
   private boolean checkValue(double value) {
     boolean allPassed = true;
     switch (type) {
-      case MinInclusive: if (value < limit)  allPassed = false; break;
-      case MaxInclusive: if (value > limit)  allPassed = false; break;
-      case MinExclusive: if (value <= limit) allPassed = false; break;
-      case MaxExclusive: if (value >= limit) allPassed = false; break;
+      case MIN_INCLUSIVE: if (value < limit)  allPassed = false; break;
+      case MAX_INCLUSIVE: if (value > limit)  allPassed = false; break;
+      case MIN_EXCLUSIVE: if (value <= limit) allPassed = false; break;
+      case MAX_EXCLUSIVE: if (value >= limit) allPassed = false; break;
       default: break;
     }
     return allPassed;

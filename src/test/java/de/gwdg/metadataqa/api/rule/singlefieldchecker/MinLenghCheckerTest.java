@@ -12,7 +12,7 @@ public class MinLenghCheckerTest extends CheckerTestBase {
 
   @Test
   public void prefix() {
-    assertEquals("minLength", MinLengthChecker.prefix);
+    assertEquals("minLength", MinLengthChecker.PREFIX);
   }
 
   @Test

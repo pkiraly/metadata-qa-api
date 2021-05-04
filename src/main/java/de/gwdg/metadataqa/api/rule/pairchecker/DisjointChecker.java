@@ -10,14 +10,14 @@ import java.util.List;
 
 public class DisjointChecker extends PropertyPairChecker {
 
-  public static final String prefix = "disjoint";
+  public static final String PREFIX = "disjoint";
 
   public DisjointChecker(JsonBranch field1, JsonBranch field2) {
     this(field1, field2, field1.getLabel() + "-" + field2.getLabel());
   }
 
   public DisjointChecker(JsonBranch field1, JsonBranch field2, String header) {
-    super(field1, field2, prefix + ":" + header);
+    super(field1, field2, PREFIX + ":" + header);
   }
 
   @Override

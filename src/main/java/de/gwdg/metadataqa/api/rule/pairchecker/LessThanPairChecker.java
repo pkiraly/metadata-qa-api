@@ -12,8 +12,8 @@ import java.util.regex.Pattern;
 public class LessThanPairChecker extends PropertyPairChecker {
 
   public enum TYPE {
-    LessThan("lessThan"),
-    LessThanOrEquals("lessThanOrEquals")
+    LESS_THAN("lessThan"),
+    LESS_THAN_OR_EQUALS("lessThanOrEquals")
     ;
 
     private String prefix;
@@ -79,8 +79,8 @@ public class LessThanPairChecker extends PropertyPairChecker {
   private boolean checkValues(String value1, String value2) {
     boolean allPassed = false;
     switch (type) {
-      case LessThan:         allPassed = lessThan(value1, value2);         break;
-      case LessThanOrEquals: allPassed = lessThanOrEquals(value1, value2); break;
+      case LESS_THAN:           allPassed = lessThan(value1, value2);         break;
+      case LESS_THAN_OR_EQUALS: allPassed = lessThanOrEquals(value1, value2); break;
       default: break;
     }
     return allPassed;

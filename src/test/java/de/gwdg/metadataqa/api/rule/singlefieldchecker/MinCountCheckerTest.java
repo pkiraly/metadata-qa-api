@@ -12,7 +12,7 @@ public class MinCountCheckerTest extends CheckerTestBase {
 
   @Test
   public void prefix() {
-    assertEquals("minCount", MinCountChecker.prefix);
+    assertEquals("minCount", MinCountChecker.PREFIX);
   }
 
   @Test

@@ -10,7 +10,7 @@ import java.util.List;
 
 public class HasValueChecker extends SingleFieldChecker {
 
-  public static final String prefix = "hasValue";
+  public static final String PREFIX = "hasValue";
   protected String fixedValue;
 
   /**
@@ -22,7 +22,7 @@ public class HasValueChecker extends SingleFieldChecker {
   }
 
   public HasValueChecker(JsonBranch field, String header, String fixedValue) {
-    super(field, prefix + ":" + header);
+    super(field, PREFIX + ":" + header);
     this.fixedValue = fixedValue;
   }
 

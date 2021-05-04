@@ -37,49 +37,49 @@ public class NumericCheckerTest {
 
   @Test
   public void minInclusive_passed() {
-    Assert.assertEquals(RuleCheckingOutput.PASSED, run(0.9, TYPE.MinInclusive));
-    assertEquals(RuleCheckingOutput.PASSED, run(1, TYPE.MinInclusive));
+    Assert.assertEquals(RuleCheckingOutput.PASSED, run(0.9, TYPE.MIN_INCLUSIVE));
+    assertEquals(RuleCheckingOutput.PASSED, run(1, TYPE.MIN_INCLUSIVE));
   }
 
   @Test
   public void minInclusive_failed() {
-    assertEquals(RuleCheckingOutput.FAILED, run(1.1, TYPE.MinInclusive));
+    assertEquals(RuleCheckingOutput.FAILED, run(1.1, TYPE.MIN_INCLUSIVE));
   }
 
   @Test
   public void maxInclusive_passed() {
-    assertEquals(RuleCheckingOutput.PASSED, run(1, TYPE.MaxInclusive));
-    assertEquals(RuleCheckingOutput.PASSED, run(1.1, TYPE.MaxInclusive));
+    assertEquals(RuleCheckingOutput.PASSED, run(1, TYPE.MAX_INCLUSIVE));
+    assertEquals(RuleCheckingOutput.PASSED, run(1.1, TYPE.MAX_INCLUSIVE));
   }
 
   @Test
   public void maxInclusive_failed() {
-    assertEquals(RuleCheckingOutput.FAILED, run(0.9, TYPE.MaxInclusive));
+    assertEquals(RuleCheckingOutput.FAILED, run(0.9, TYPE.MAX_INCLUSIVE));
   }
 
   @Test
   public void minExclusive_passed() {
-    assertEquals(RuleCheckingOutput.PASSED, run(0.9, TYPE.MinExclusive));
+    assertEquals(RuleCheckingOutput.PASSED, run(0.9, TYPE.MIN_EXCLUSIVE));
   }
 
   @Test
   public void minExclusive_failed() {
-    assertEquals(RuleCheckingOutput.FAILED, run(1, TYPE.MinExclusive));
+    assertEquals(RuleCheckingOutput.FAILED, run(1, TYPE.MIN_EXCLUSIVE));
   }
 
   @Test
   public void maxExclusive_passed() {
-    assertEquals(RuleCheckingOutput.PASSED, run(1.1, TYPE.MaxExclusive));
+    assertEquals(RuleCheckingOutput.PASSED, run(1.1, TYPE.MAX_EXCLUSIVE));
   }
 
   @Test
   public void maxExclusive_failed() {
-    assertEquals(RuleCheckingOutput.FAILED, run(1, TYPE.MaxExclusive));
+    assertEquals(RuleCheckingOutput.FAILED, run(1, TYPE.MAX_EXCLUSIVE));
   }
 
   @Test
   public void nonnumeric() {
-    assertEquals(RuleCheckingOutput.FAILED, run("alt", 1, TYPE.MaxExclusive));
+    assertEquals(RuleCheckingOutput.FAILED, run("alt", 1, TYPE.MAX_EXCLUSIVE));
   }
 
   private RuleCheckingOutput run(double limit, NumericValueChecker.TYPE type) {

@@ -5,14 +5,14 @@ import de.gwdg.metadataqa.api.model.pathcache.PathCache;
 
 public class NegationChecker implements RuleChecker {
 
-  public static final String prefix = "not";
+  public static final String PREFIX = "not";
 
   private RuleChecker ruleChecker;
   protected String header;
 
   public NegationChecker(RuleChecker ruleChecker) {
     this.ruleChecker = ruleChecker;
-    this.header = prefix + ":" + ruleChecker.getHeader();
+    this.header = PREFIX + ":" + ruleChecker.getHeader();
   }
 
   @Override

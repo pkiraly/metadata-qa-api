@@ -11,7 +11,7 @@ import java.util.regex.Pattern;
 
 public class PatternChecker extends SingleFieldChecker {
 
-  public static final String prefix = "pattern";
+  public static final String PREFIX = "pattern";
   protected Pattern pattern;
 
   public PatternChecker(JsonBranch field, String pattern) {
@@ -19,7 +19,7 @@ public class PatternChecker extends SingleFieldChecker {
   }
 
   public PatternChecker(JsonBranch field, String header, String pattern) {
-    super(field, prefix + ":" + header);
+    super(field, PREFIX + ":" + header);
     this.pattern = Pattern.compile(pattern);
   }
 

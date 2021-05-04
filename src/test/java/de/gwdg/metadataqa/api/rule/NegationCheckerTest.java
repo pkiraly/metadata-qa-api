@@ -34,7 +34,7 @@ public class NegationCheckerTest {
 
   @Test
   public void prefix() {
-    assertEquals("not", NegationChecker.prefix);
+    assertEquals("not", NegationChecker.PREFIX);
   }
 
   @Test

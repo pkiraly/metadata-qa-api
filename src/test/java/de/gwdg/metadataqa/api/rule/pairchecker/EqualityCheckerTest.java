@@ -35,7 +35,7 @@ public class EqualityCheckerTest {
 
   @Test
   public void prefix() {
-    assertEquals("equals", EqualityChecker.prefix);
+    assertEquals("equals", EqualityChecker.PREFIX);
   }
 
   @Test

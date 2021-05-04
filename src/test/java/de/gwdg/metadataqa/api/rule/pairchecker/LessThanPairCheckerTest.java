@@ -36,22 +36,22 @@ public class LessThanPairCheckerTest {
 
   @Test
   public void lessThan_success() {
-    Assert.assertEquals(RuleCheckingOutput.PASSED, run("title", "name", TYPE.LessThan));
+    Assert.assertEquals(RuleCheckingOutput.PASSED, run("title", "name", TYPE.LESS_THAN));
   }
 
   @Test
   public void lessThan_failure() {
-    Assert.assertEquals(RuleCheckingOutput.FAILED, run("name", "title", TYPE.LessThan));
+    Assert.assertEquals(RuleCheckingOutput.FAILED, run("name", "title", TYPE.LESS_THAN));
   }
 
   @Test
   public void lessThanOrEquals_success() {
-    Assert.assertEquals(RuleCheckingOutput.PASSED, run("title", "alt", TYPE.LessThanOrEquals));
+    Assert.assertEquals(RuleCheckingOutput.PASSED, run("title", "alt", TYPE.LESS_THAN_OR_EQUALS));
   }
 
   @Test
   public void lessThanOrEquals_failure() {
-    Assert.assertEquals(RuleCheckingOutput.FAILED, run("name", "alt", TYPE.LessThanOrEquals));
+    Assert.assertEquals(RuleCheckingOutput.FAILED, run("name", "alt", TYPE.LESS_THAN_OR_EQUALS));
   }
 
   @Test

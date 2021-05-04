@@ -12,7 +12,7 @@ public class PatternCheckerTest extends CheckerTestBase {
 
   @Test
   public void prefix() {
-    assertEquals("pattern", PatternChecker.prefix);
+    assertEquals("pattern", PatternChecker.PREFIX);
   }
 
   @Test

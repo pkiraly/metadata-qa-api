@@ -10,7 +10,7 @@ import java.util.List;
 
 public class EqualityChecker extends PropertyPairChecker {
 
-  public static final String prefix = "equals";
+  public static final String PREFIX = "equals";
   protected String fixedValue;
 
   public EqualityChecker(JsonBranch field1, JsonBranch field2) {
@@ -18,7 +18,7 @@ public class EqualityChecker extends PropertyPairChecker {
   }
 
   public EqualityChecker(JsonBranch field1, JsonBranch field2, String header) {
-    super(field1, field2, prefix + ":" + header);
+    super(field1, field2, PREFIX + ":" + header);
   }
 
   @Override
