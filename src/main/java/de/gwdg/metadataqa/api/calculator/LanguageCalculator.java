@@ -177,8 +177,8 @@ public class LanguageCalculator implements Calculator, Serializable {
 
   private SortedMap<String, Integer> transformLanguages(Map<String, BasicCounter> languages) {
     SortedMap<String, Integer> result = new TreeMap<>();
-    for (String lang : languages.keySet()) {
-      result.put(lang, ((Double) languages.get(lang).getTotal()).intValue());
+    for (Map.Entry<String, BasicCounter> lang : languages.entrySet()) {
+      result.put(lang.getKey(), ((Double) lang.getValue().getTotal()).intValue());
     }
     return result;
   }
@@ -201,7 +201,7 @@ public class LanguageCalculator implements Calculator, Serializable {
 
   @Override
   public String getCsv(boolean withLabel, CompressionLevel compressionLevel) {
-    return languageMap.getCsv(withLabel, compressionLevel.ZERO);
+    return languageMap.getCsv(withLabel, CompressionLevel.ZERO);
   }
 
   @Override
@@ -210,7 +210,7 @@ public class LanguageCalculator implements Calculator, Serializable {
   }
 
   public List<String> getList(boolean withLabel, CompressionLevel compressionLevel) {
-    return languageMap.getList(withLabel, compressionLevel.ZERO);
+    return languageMap.getList(withLabel, CompressionLevel.ZERO);
   }
 
 }

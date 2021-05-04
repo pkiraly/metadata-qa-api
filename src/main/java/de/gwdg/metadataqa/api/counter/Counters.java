@@ -213,7 +213,7 @@ public class Counters {
   }
 
   public String getFullResults(boolean withLabel, CompressionLevel compressionLevel) {
-    String result = "";
+    var result = "";
     if (StringUtils.isNotBlank((String) fields.get("datasetCode"))
         && StringUtils.isNotBlank((String) fields.get("dataProviderCode"))) {
       result += String.format("%s,%s,",

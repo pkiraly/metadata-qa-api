@@ -43,6 +43,9 @@ public class MultilingualitySaturationCalculator implements Calculator, Serializ
   public static final int LOW_FROM = 2;
   public static final int LOW_TO = 3;
   public static final double TRANSLATION_MODIFIER = -0.2;
+  public static final String SUM = CALCULATOR_NAME + ":sum";
+  public static final String AVERAGE = CALCULATOR_NAME + ":average";
+  public static final String NORMALIZED = CALCULATOR_NAME + ":normalized";
 
   /**
    * The result type of multilinguality.
@@ -108,10 +111,10 @@ public class MultilingualitySaturationCalculator implements Calculator, Serializ
       }
     }
     if (resultType.equals(ResultTypes.EXTENDED)) {
-      headers.add(CALCULATOR_NAME + ":sum");
-      headers.add(CALCULATOR_NAME + ":average");
+      headers.add(SUM);
+      headers.add(AVERAGE);
     }
-    headers.add(CALCULATOR_NAME + ":normalized");
+    headers.add(NORMALIZED);
 
     return headers;
   }
@@ -243,37 +246,35 @@ public class MultilingualitySaturationCalculator implements Calculator, Serializ
   }
 
   private String extractLanguagesFromRaw(Map<String, Integer> languages) {
-    String result = "";
-    for (String lang : languages.keySet()) {
-      if (result.length() > 0) {
-        result += ";";
-      }
-      result += lang + ":" + languages.get(lang);
+    var result = new StringBuilder();
+    for (Map.Entry<String, Integer> lang : languages.entrySet()) {
+      if (result.length() > 0)
+        result.append(";");
+      result.append(lang.getKey() + ":" + lang.getValue());
     }
-    return result;
+    return result.toString();
   }
 
   private String extractLanguages(Map<String, BasicCounter> languages) {
-    String result = "";
-    for (String lang : languages.keySet()) {
-      if (result.length() > 0) {
-        result += ";";
-      }
-      result += lang + ":" + languages.get(lang).getTotalAsInt();
+    var result = new StringBuilder();
+    for (Map.Entry<String, BasicCounter> lang : languages.entrySet()) {
+      if (result.length() > 0)
+        result.append(";");
+      result.append(lang.getKey() + ":" + lang.getValue().getTotalAsInt());
     }
-    return result;
+    return result.toString();
   }
 
   private SortedMap<LanguageSaturationType, Double> transformLanguages(
       Map<LanguageSaturationType, BasicCounter> languages, int languageCount) {
     SortedMap<LanguageSaturationType, Double> result = new TreeMap<>();
-    for (LanguageSaturationType lang : languages.keySet()) {
-      result.put(lang, languages.get(lang).getTotal());
-    }
+    for (Map.Entry<LanguageSaturationType, BasicCounter> lang : languages.entrySet())
+      result.put(lang.getKey(), lang.getValue().getTotal());
+
     if (result.containsKey(LanguageSaturationType.LANGUAGE)
         && result.get(LanguageSaturationType.LANGUAGE) > 1
         && languageCount > 1) {
-      Double count = result.remove(LanguageSaturationType.LANGUAGE);
+      var count = result.remove(LanguageSaturationType.LANGUAGE);
       result.put(LanguageSaturationType.TRANSLATION, normalizeTranslationCount(languageCount));
     }
     if (languageCount > 1) {
@@ -283,7 +284,7 @@ public class MultilingualitySaturationCalculator implements Calculator, Serializ
   }
 
   private double normalizeTranslationCount(double count) {
-    double normalized = 0.0;
+    var normalized = 0.0;
     if (isLow(count)) {
       normalized = NORMALIZED_LOW;
     } else if (isMiddle(count)) {
@@ -317,12 +318,11 @@ public class MultilingualitySaturationCalculator implements Calculator, Serializ
 
   private Map<String, Map<String, Object>> mergeMaps() {
     Map<String, Map<String, Object>> map = new LinkedHashMap<>();
-    for (String key : rawLanguageMap.keySet()) {
+    for (Map.Entry<String, List<SortedMap<LanguageSaturationType, Double>>> rawEntry : rawLanguageMap.entrySet()) {
       Map<String, Object> entry = new LinkedHashMap<>();
-      List<Object> list = new ArrayList<>();
-      entry.put("instances", normalizeRawValue(rawLanguageMap.get(key)));
-      entry.put("score", rawScoreMap.get(key));
-      map.put(key, entry);
+      entry.put("instances", normalizeRawValue(rawEntry.getValue()));
+      entry.put("score", rawScoreMap.get(rawEntry.getKey()));
+      map.put(rawEntry.getKey(), entry);
     }
     return map;
   }
@@ -357,7 +357,7 @@ public class MultilingualitySaturationCalculator implements Calculator, Serializ
       }
 
       if (best != LanguageSaturationType.NA) {
-        double modifier = 0.0;
+        var modifier = 0.0;
         if (best == LanguageSaturationType.TRANSLATION
             && result.containsKey(LanguageSaturationType.STRING)) {
           modifier = TRANSLATION_MODIFIER;
@@ -372,14 +372,16 @@ public class MultilingualitySaturationCalculator implements Calculator, Serializ
 
   private FieldCounter<Double> calculateScore(Map<String,
       List<SortedMap<LanguageSaturationType, Double>>> rawLanguageMap) {
-    double sum, average, normalized;
+    double sum;
+    double average;
+    double normalized;
     List<Double> sums = new ArrayList<>();
     FieldCounter<Double> languageMap = new FieldCounter<>();
-    for (String field : rawLanguageMap.keySet()) {
+    for (Map.Entry<String, List<SortedMap<LanguageSaturationType, Double>>> field : rawLanguageMap.entrySet()) {
       Map<String, Double> fieldMap = new LinkedHashMap<>();
-      List<SortedMap<LanguageSaturationType, Double>> values = rawLanguageMap.get(field);
+      List<SortedMap<LanguageSaturationType, Double>> values = field.getValue();
       sum = 0.0;
-      boolean isSet = false;
+      var isSet = false;
       for (SortedMap<LanguageSaturationType, Double> value : values) {
         double saturation = value.firstKey().value();
         if (saturation == -1.0) {
@@ -405,24 +407,24 @@ public class MultilingualitySaturationCalculator implements Calculator, Serializ
       fieldMap.put("sum", sum);
       fieldMap.put("average", average);
       fieldMap.put("normalized", normalized);
-      rawScoreMap.put(field, fieldMap);
+      rawScoreMap.put(field.getKey(), fieldMap);
 
       if (resultType.equals(ResultTypes.NORMAL)) {
-        languageMap.put(field, normalized);
+        languageMap.put(field.getKey(), normalized);
       } else {
-        languageMap.put(field + ":sum", sum);
-        languageMap.put(field + ":average", average);
-        languageMap.put(field + ":normalized", normalized);
+        languageMap.put(field.getKey() + ":sum", sum);
+        languageMap.put(field.getKey() + ":average", average);
+        languageMap.put(field.getKey() + ":normalized", normalized);
       }
     }
     sum = summarize(sums);
     average = sum / (double) sums.size();
     normalized = normalize(average);
     if (resultType.equals(ResultTypes.EXTENDED)) {
-      languageMap.put(CALCULATOR_NAME + ":sum", sum);
-      languageMap.put(CALCULATOR_NAME + ":average", average);
+      languageMap.put(SUM, sum);
+      languageMap.put(AVERAGE, average);
     }
-    languageMap.put(CALCULATOR_NAME + ":normalized", normalized);
+    languageMap.put(NORMALIZED, normalized);
 
     return languageMap;
   }

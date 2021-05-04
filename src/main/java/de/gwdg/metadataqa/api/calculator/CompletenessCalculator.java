@@ -118,9 +118,9 @@ public class CompletenessCalculator<T extends XmlFieldInstance>
 
     if (schema.getFieldGroups() != null) {
       for (FieldGroup fieldGroup : schema.getFieldGroups()) {
-        boolean existing = false;
+        var existing = false;
         for (String field : fieldGroup.getFields()) {
-          if (existenceCounter.get(field) == true) {
+          if (existenceCounter.get(field)) {
             existing = true;
             break;
           }
@@ -223,17 +223,14 @@ public class CompletenessCalculator<T extends XmlFieldInstance>
   }
 
   private void handleNullValues(JsonBranch jsonBranch) {
-    if (existence && !existenceCounter.has(jsonBranch.getLabel())) {
+    if (existence && !existenceCounter.has(jsonBranch.getLabel()))
       existenceCounter.put(jsonBranch.getLabel(), false);
-    }
-    if (cardinality && !cardinalityCounter.has(jsonBranch.getLabel())) {
+
+    if (cardinality && !cardinalityCounter.has(jsonBranch.getLabel()))
       cardinalityCounter.put(jsonBranch.getLabel(), 0);
-    }
-    if (collectFields) {
-      if (!missingFields.contains(jsonBranch.getLabel())) {
-        missingFields.add(jsonBranch.getLabel());
-      }
-    }
+
+    if (collectFields && !missingFields.contains(jsonBranch.getLabel()))
+      missingFields.add(jsonBranch.getLabel());
   }
 
   public void collectFields(boolean collectFields) {
@@ -269,15 +266,15 @@ public class CompletenessCalculator<T extends XmlFieldInstance>
     }
 
     if (existence) {
-      for (Entry e : existenceCounter.getMap().entrySet()) {
+      for (Entry<String, Boolean> e : existenceCounter.getMap().entrySet()) {
         resultMap.put(
           "existence:" + e.getKey(),
-          BooleanUtils.toInteger((Boolean)e.getValue()));
+          BooleanUtils.toInteger(e.getValue()));
       }
     }
 
     if (cardinality) {
-      for (Entry e : cardinalityCounter.getMap().entrySet()) {
+      for (Entry<String, Integer> e : cardinalityCounter.getMap().entrySet()) {
         resultMap.put("cardinality:" + e.getKey(), e.getValue());
       }
     }

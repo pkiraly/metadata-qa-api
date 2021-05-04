@@ -79,7 +79,7 @@ public class TfIdfCalculator implements Calculator, Serializable {
     }
 
     String solrJsonResponse = getSolrResponse(recordId);
-    TfIdfExtractor extractor = new TfIdfExtractor(schema);
+    var extractor = new TfIdfExtractor(schema);
     resultMap = extractor.extract(solrJsonResponse, recordId, termCollectionEnabled);
     // counters.setTfIdfList(resultMap);
     termsCollection = extractor.getTermsCollection();
