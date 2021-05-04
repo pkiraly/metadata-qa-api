@@ -28,7 +28,7 @@ public class DuplicatedStrings extends ProblemDetector implements Serializable {
     double value = 0;
     for (String path : schema.getEmptyStringPaths()) {
       List<EdmFieldInstance> subjects = cache.get(path);
-      if (subjects != null && !subjects.isEmpty() && !subjects.isEmpty()) {
+      if (subjects != null && !subjects.isEmpty()) {
         for (EdmFieldInstance subject : subjects) {
           if (StringUtils.isNotBlank(subject.getValue())) {
             if (StringDuplicationDetector.isDuplicated(subject.getValue())) {
@@ -45,6 +45,4 @@ public class DuplicatedStrings extends ProblemDetector implements Serializable {
   public String getHeader() {
     return NAME;
   }
-
-
 }

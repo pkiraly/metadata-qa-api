@@ -109,18 +109,12 @@ public class ProfileReader {
     return binaryPatterns;
   }
 
-  public static void main(String[] args) throws IOException, URISyntaxException {
+  public static void main(String[] args) throws IOException {
     String fieldListFile = args[0];
     String profileFile = args[1];
 
     boolean produceList = (args.length > 2 && args[2].equals("list"));
 
-    /*
-    List<String> fieldLines = Files.readAllLines(
-      Paths.get(fieldListFile), Charset.defaultCharset()
-    );
-    List<String> canonicalFieldList = Arrays.asList(fieldLines.get(0).split(";"));
-    */
     List<String> canonicalFieldList = ProfileReader.parseFieldCountLine(
       FileUtils.readFirstLineFromFile(fieldListFile));
 
