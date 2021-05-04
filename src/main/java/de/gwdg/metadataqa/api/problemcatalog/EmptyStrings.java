@@ -32,7 +32,7 @@ public class EmptyStrings extends ProblemDetector implements Serializable {
     for (String path : schema.getEmptyStringPaths()) {
       List<EdmFieldInstance> subjects = cache.get(path);
       if (subjects != null && !subjects.isEmpty()) {
-        if (subjects.size() > 0) {
+        if (!subjects.isEmpty()) {
           for (EdmFieldInstance subject : subjects) {
             if (StringUtils.isBlank(subject.getValue())) {
               value += 1;

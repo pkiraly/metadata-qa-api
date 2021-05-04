@@ -9,7 +9,7 @@ import java.util.List;
 
 public class StringOutputCollector implements OutputCollector {
 
-  List<String> result = new ArrayList<String>();
+  List<String> result = new ArrayList<>();
 
   @Override
   public void addResult(Calculator calculator, CompressionLevel compressionLevel) {
@@ -18,6 +18,6 @@ public class StringOutputCollector implements OutputCollector {
 
   @Override
   public Object getResults() {
-    return StringUtils.join((List<String>) result,",");
+    return StringUtils.join(result,",");
   }
 }

@@ -8,7 +8,7 @@ import java.util.List;
 
 public class StringListOutputCollector implements OutputCollector {
 
-  List<String> result = new ArrayList<String>();
+  List<String> result = new ArrayList<>();
 
   @Override
   public void addResult(Calculator calculator, CompressionLevel compressionLevel) {

@@ -120,7 +120,7 @@ public class CompletenessCalculator<T extends XmlFieldInstance>
       for (FieldGroup fieldGroup : schema.getFieldGroups()) {
         var existing = false;
         for (String field : fieldGroup.getFields()) {
-          if (existenceCounter.get(field)) {
+          if (Boolean.TRUE.equals(existenceCounter.get(field))) {
             existing = true;
             break;
           }

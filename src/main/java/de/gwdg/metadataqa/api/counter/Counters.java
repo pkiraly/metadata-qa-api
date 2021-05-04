@@ -24,8 +24,6 @@ public class Counters {
   private Map<String, String> results = new LinkedHashMap<>();
   private Map<String, Double> resultsDouble = new LinkedHashMap<>();
 
-  private boolean returnFieldExistenceList = false;
-  private boolean returnFieldInstanceList = false;
   private boolean returnTfIdf = false;
   private boolean returnProblems = false;
   private boolean returnLanguage = false;
@@ -48,25 +46,6 @@ public class Counters {
   public Map<String, Double> getResultsDouble() {
     return resultsDouble;
   }
-
-  /*
-  public Map<String, Double> getResults() {
-    // calculateResults();
-    Map<String, Double> result = new HashMap<>();
-    for (Map.Entry<String, BasicCounter> entry : basicCounters.entrySet()) {
-      result.put(entry.getKey(), entry.getValue().getResult());
-    }
-
-    if (returnTfIdf == true) {
-      result.putAll(tfIdfList);
-    }
-
-    if (returnProblems == true)
-      result.putAll(problemList);
-
-    return result;
-  }
-  */
 
   public List<String> getResultsAsList() {
     return getResultsAsList(true);
@@ -115,15 +94,6 @@ public class Counters {
   public String getResultsAsCSV(boolean withLabel, CompressionLevel compressionLevel) {
     return StringUtils.join(getResultsAsList(withLabel, compressionLevel), ",");
   }
-
-  /*
-  public void printResults() {
-    // calculateResults();
-    for (Map.Entry<String, BasicCounter> entry : basicCounters.entrySet()) {
-      System.err.println(entry.getKey() + ": " + entry.getValue().getResult());
-    }
-  }
-  */
 
   public void setTfIdfList(Map<String, Double> tdIdf) {
     this.tfIdfList = tdIdf;
@@ -223,16 +193,7 @@ public class Counters {
       result += String.format("%s,", recordId);
     }
     result += getResultsAsCSV(withLabel, compressionLevel);
-    /*
-    if (returnFieldExistenceList == true) {
-      result += ',' + getExistenceList(withLabel);
-    }
-    */
-    /*
-    if (returnFieldInstanceList == true) {
-      result += ',' + getInstanceList(withLabel);
-    }
-    */
+
     if (returnTfIdf) {
       result += ',' + getTfIdfList(withLabel);
     }
@@ -243,14 +204,6 @@ public class Counters {
       result += ',' + getLanguageMap(withLabel);
     }
     return result;
-  }
-
-  public void returnFieldExistenceList(boolean returnFieldExistenceList) {
-    this.returnFieldExistenceList = returnFieldExistenceList;
-  }
-
-  public void returnFieldInstanceList(boolean returnFieldInstanceList) {
-    this.returnFieldInstanceList = returnFieldInstanceList;
   }
 
   public void returnTfIdfList(boolean returnTfIdf) {

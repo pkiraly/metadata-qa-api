@@ -38,7 +38,7 @@ public class LongSubject extends ProblemDetector implements Serializable {
     double value = 0;
     List<EdmFieldInstance> subjects = cache.get(schema.getSubjectPath());
     if (subjects != null && !subjects.isEmpty()) {
-      if (subjects.size() > 0) {
+      if (!subjects.isEmpty()) {
         for (EdmFieldInstance subject : subjects) {
           if (StringUtils.isNotBlank(subject.getValue())
               && subject.getValue().length() > MAX_LENGTH) {

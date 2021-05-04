@@ -60,7 +60,7 @@ public final class EnhancementIdExtractor implements Serializable {
       if (isEnrichmentField(child.getLabel())) {
         String address = child.getAbsoluteJsonPath(schema.getFormat());
         Object context = jsonFragments.get(0);
-        List<EdmFieldInstance> fieldInstances = (List<EdmFieldInstance>) cache.get(address, child.getJsonPath(), context);
+        List<EdmFieldInstance> fieldInstances = cache.get(address, child.getJsonPath(), context);
         if (fieldInstances != null && !fieldInstances.isEmpty()) {
           for (EdmFieldInstance fieldInstance : fieldInstances) {
             if (fieldInstance.isUrl()) {

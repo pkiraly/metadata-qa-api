@@ -37,13 +37,11 @@ public class TitleAndDescriptionAreSame extends ProblemDetector
     if (titles != null && !titles.isEmpty()) {
       List<EdmFieldInstance> descriptions = cache.get(schema.getDescriptionPath());
       if (descriptions != null && !descriptions.isEmpty()) {
-        if (titles.size() > 0) {
-          if (descriptions.size() > 0) {
-            for (EdmFieldInstance title : titles) {
-              if (descriptions.contains(title)) {
-                value = 1;
-                break;
-              }
+        if (!titles.isEmpty() && !descriptions.isEmpty()) {
+          for (EdmFieldInstance title : titles) {
+            if (descriptions.contains(title)) {
+              value = 1;
+              break;
             }
           }
         }

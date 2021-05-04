@@ -86,15 +86,12 @@ public class EdmFieldInstance extends XmlFieldInstance {
       return false;
     }
     final EdmFieldInstance other = (EdmFieldInstance) obj;
-    if (!Objects.equals(this.getValue(), other.getValue())) {
+    if (   !Objects.equals(this.getValue(), other.getValue())
+        || !Objects.equals(this.getLanguage(), other.getLanguage())
+        || !Objects.equals(this.getResource(), other.getResource())) {
       return false;
     }
-    if (!Objects.equals(this.getLanguage(), other.getLanguage())) {
-      return false;
-    }
-    if (!Objects.equals(this.getResource(), other.getResource())) {
-      return false;
-    }
+
     return true;
   }
 }

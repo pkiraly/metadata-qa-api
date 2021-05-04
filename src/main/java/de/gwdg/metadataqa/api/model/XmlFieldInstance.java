@@ -82,12 +82,11 @@ public class XmlFieldInstance implements Serializable {
       return false;
     }
     final XmlFieldInstance other = (XmlFieldInstance) obj;
-    if (!Objects.equals(this.value, other.value)) {
+    if (  !Objects.equals(this.value, other.value)
+       || !Objects.equals(this.language, other.language)) {
       return false;
     }
-    if (!Objects.equals(this.language, other.language)) {
-      return false;
-    }
+
     return true;
   }
 }

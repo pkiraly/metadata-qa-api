@@ -29,7 +29,6 @@ public class CsvPathCache<T extends XmlFieldInstance> implements PathCache {
   private final Map<String, List<T>> cache = new HashMap<>();
   private final Map<String, Object> typedCache = new HashMap<>();
   private final Map<String, Object> fragmentCache = new HashMap<>();
-  private CsvReader csvReader;
   private Map<String, String> record;
 
   public CsvPathCache(String content) throws InvalidJsonException {
@@ -126,7 +125,6 @@ public class CsvPathCache<T extends XmlFieldInstance> implements PathCache {
   }
 
   public void setCsvReader(CsvReader csvReader) {
-    this.csvReader = csvReader;
     try {
       record = csvReader.asMap(content);
     } catch (IOException e) {

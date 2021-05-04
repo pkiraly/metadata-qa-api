@@ -274,7 +274,7 @@ public class MultilingualitySaturationCalculator implements Calculator, Serializ
     if (result.containsKey(LanguageSaturationType.LANGUAGE)
         && result.get(LanguageSaturationType.LANGUAGE) > 1
         && languageCount > 1) {
-      var count = result.remove(LanguageSaturationType.LANGUAGE);
+      result.remove(LanguageSaturationType.LANGUAGE);
       result.put(LanguageSaturationType.TRANSLATION, normalizeTranslationCount(languageCount));
     }
     if (languageCount > 1) {

@@ -247,7 +247,7 @@ public class JsonBranch implements Cloneable, Serializable {
     JsonBranch cloned = (JsonBranch) super.clone();
 
     if (children != null && !children.isEmpty()) {
-      List<JsonBranch> clonedChildren = new ArrayList<JsonBranch>();
+      List<JsonBranch> clonedChildren = new ArrayList<>();
       for (JsonBranch child : children) {
         JsonBranch clonedChild = (JsonBranch) child.clone();
         clonedChild.parent = cloned;

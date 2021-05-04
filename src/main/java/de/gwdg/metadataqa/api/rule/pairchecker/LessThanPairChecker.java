@@ -44,8 +44,8 @@ public class LessThanPairChecker extends PropertyPairChecker {
   public void update(PathCache cache, FieldCounter<RuleCheckingOutput> results) {
     var allPassed = true;
     var isNA = false;
-    List<XmlFieldInstance> instances1 = (List<XmlFieldInstance>) cache.get(field1.getAbsoluteJsonPath().replace("[*]", ""));
-    List<XmlFieldInstance> instances2 = (List<XmlFieldInstance>) cache.get(field2.getAbsoluteJsonPath().replace("[*]", ""));
+    List<XmlFieldInstance> instances1 = cache.get(field1.getAbsoluteJsonPath().replace("[*]", ""));
+    List<XmlFieldInstance> instances2 = cache.get(field2.getAbsoluteJsonPath().replace("[*]", ""));
     if (instances1 != null && !instances1.isEmpty() && instances2 != null && !instances2.isEmpty()) {
       for (XmlFieldInstance instance1 : instances1) {
         if (instance1.hasValue()) {

@@ -18,7 +18,6 @@ public class RuleCatalog implements Calculator, Serializable {
   private static final Logger LOGGER = Logger.getLogger(RuleCatalog.class.getCanonicalName());
 
   private final List<RuleChecker> ruleCheckers = new ArrayList<>();
-  private PathCache cache;
   private FieldCounter<RuleCheckingOutput> fieldCounter;
   private static final String CALCULATOR_NAME = "ruleCatalog";
   private Schema schema;
@@ -33,7 +32,6 @@ public class RuleCatalog implements Calculator, Serializable {
 
   @Override
   public void measure(PathCache cache) {
-    this.cache = cache;
     this.fieldCounter = new FieldCounter<>();
     for (RuleChecker ruleChecker : schema.getRuleCheckers()) {
       ruleChecker.update(cache, fieldCounter);
