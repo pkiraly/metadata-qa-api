@@ -29,7 +29,6 @@ public class LanguageCalculator implements Calculator, Serializable {
 
   private static final Logger LOGGER = Logger.getLogger(LanguageCalculator.class.getCanonicalName());
 
-  private String inputFileName;
   private FieldCounter<String> languageMap;
   private Map<String, SortedMap<String, Integer>> rawLanguageMap;
 
@@ -90,7 +89,7 @@ public class LanguageCalculator implements Calculator, Serializable {
             Object jsonFragment = jsonFragments.get(i);
             for (JsonBranch child : collection.getChildren()) {
               if (child.isActive() && !schema.getNoLanguageFields().contains(child.getLabel())) {
-                String address = String.format("%s/%d/%s",
+                var address = String.format("%s/%d/%s",
                   collection.getJsonPath(), i, child.getJsonPath());
                 extractLanguageTags(jsonFragment, child, address, cache, languageMap, rawLanguageMap);
               }
@@ -133,12 +132,12 @@ public class LanguageCalculator implements Calculator, Serializable {
       rawLanguageMap.put(label, instance);
     } else {
       Map<String, Integer> existing = rawLanguageMap.get(label);
-      for (String key : instance.keySet()) {
-        if (!existing.containsKey(key)) {
-          existing.put(key, instance.get(key));
+      for (Map.Entry<String, Integer> entry : instance.entrySet()) {
+        if (!existing.containsKey(entry.getKey())) {
+          existing.put(entry.getKey(), entry.getValue());
         } else {
-          if (key != null && !key.equals("_1")) {
-            existing.put(key, existing.get(key) + instance.get(key));
+          if (entry.getKey() != null && !entry.getKey().equals("_1")) {
+            existing.put(entry.getKey(), existing.get(entry.getKey()) + entry.getValue());
           }
         }
       }
@@ -155,25 +154,25 @@ public class LanguageCalculator implements Calculator, Serializable {
   }
 
   private String extractLanguagesFromRaw(Map<String, Integer> languages) {
-    String result = "";
-    for (String lang : languages.keySet()) {
+    var result = new StringBuilder();
+    for (Map.Entry<String, Integer> lang : languages.entrySet()) {
       if (result.length() > 0) {
-        result += ";";
+        result.append(";");
       }
-      result += lang + ":" + languages.get(lang);
+      result.append(lang.getKey() + ":" + lang.getValue());
     }
-    return result;
+    return result.toString();
   }
 
   private String extractLanguages(Map<String, BasicCounter> languages) {
-    String result = "";
-    for (String lang : languages.keySet()) {
+    var result = new StringBuilder();
+    for (Map.Entry<String, BasicCounter> lang : languages.entrySet()) {
       if (result.length() > 0) {
-        result += ";";
+        result.append(";");
       }
-      result += lang + ":" + ((Double) languages.get(lang).getTotal()).intValue();
+      result.append(lang.getKey() + ":" + ((Double) lang.getValue().getTotal()).intValue());
     }
-    return result;
+    return result.toString();
   }
 
   private SortedMap<String, Integer> transformLanguages(Map<String, BasicCounter> languages) {

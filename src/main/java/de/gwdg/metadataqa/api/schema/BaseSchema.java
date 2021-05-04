@@ -5,13 +5,15 @@ import de.gwdg.metadataqa.api.json.JsonBranch;
 import de.gwdg.metadataqa.api.model.Category;
 import de.gwdg.metadataqa.api.rule.RuleChecker;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
-public class BaseSchema implements Schema, CsvAwareSchema {
+public class BaseSchema implements Schema, CsvAwareSchema, Serializable {
 
+  private static final long serialVersionUID = 6775942932769040511L;
   private final Map<String, JsonBranch> PATHS = new LinkedHashMap<>();
   private final Map<String, JsonBranch> COLLECTION_PATHS = new LinkedHashMap<>();
   private final Map<String, JsonBranch> DIRECT_CHILDREN = new LinkedHashMap<>();

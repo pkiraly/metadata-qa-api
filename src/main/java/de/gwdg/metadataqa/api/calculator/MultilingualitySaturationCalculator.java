@@ -188,7 +188,7 @@ public class MultilingualitySaturationCalculator implements Calculator, Serializ
           for (JsonBranch child : collection.getChildren()) {
             if (child.isActive()
               && !schema.getNoLanguageFields().contains(child.getLabel())) {
-              String address = String.format(
+              var address = String.format(
                 "%s/%d/%s",
                 collection.getJsonPath(), i, child.getJsonPath()
               );

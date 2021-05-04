@@ -2,6 +2,8 @@ package de.gwdg.metadataqa.api.counter;
 
 import de.gwdg.metadataqa.api.util.CompressionLevel;
 import de.gwdg.metadataqa.api.util.Converter;
+
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.LinkedList;
@@ -14,8 +16,9 @@ import org.apache.commons.lang3.StringUtils;
  * @author Péter Király <peter.kiraly at gwdg.de>
  * @param <T> the type of elements held in this collection
  */
-public class FieldCounter<T> {
+public class FieldCounter<T> implements Serializable {
 
+  private static final long serialVersionUID = -2422037365837281017L;
   private final Map<String, T> fieldMap;
 
   public FieldCounter() {

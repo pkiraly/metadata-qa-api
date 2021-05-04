@@ -57,7 +57,7 @@ public class FieldExtractor implements Calculator, Serializable {
       throws InvalidJsonException {
     resultMap = new FieldCounter<>();
     List<XmlFieldInstance> instances = cache.get(getIdPath());
-    if (instances == null || instances.size() == 0) {
+    if (instances == null || instances.isEmpty()) {
       LOGGER.severe("No record ID in " + cache.getContent());
       resultMap.put(FIELD_NAME, "");
       return;
@@ -70,9 +70,9 @@ public class FieldExtractor implements Calculator, Serializable {
       for (String fieldName : schema.getExtractableFields().keySet()) {
         if (!fieldName.equals(FIELD_NAME)) {
           path = schema.getExtractableFields().get(fieldName);
-          List<XmlFieldInstance> values = (List<XmlFieldInstance>) cache.get(path);
+          List<XmlFieldInstance> values = cache.get(path);
           String value = null;
-          if (values == null || values.isEmpty() || values.size() == 0 || values.get(0) == null || values.get(0).getValue() == null) {
+          if (values == null || values.isEmpty() || values.get(0) == null || values.get(0).getValue() == null) {
             // logger.warning("Null value in field: " + fieldName + " (" + path + ")");
             value = null;
           } else {

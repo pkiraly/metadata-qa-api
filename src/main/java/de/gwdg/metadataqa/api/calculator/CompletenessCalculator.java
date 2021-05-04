@@ -107,7 +107,7 @@ public class CompletenessCalculator<T extends XmlFieldInstance>
                 if (!child.isActive()) {
                   continue;
                 }
-                String address = String.format("%s/%d/%s", collection.getJsonPath(), i, child.getJsonPath());
+                var address = String.format("%s/%d/%s", collection.getJsonPath(), i, child.getJsonPath());
                 evaluateJsonBranch(child, cache, completenessCounter, address, jsonFragment);
               }
             }

@@ -36,10 +36,10 @@ public class SkippedEntitySelector<T extends XmlFieldInstance> implements Serial
     boolean skippable = false;
     JsonBranch identifierPath = collection.getIdentifier();
     if (!skippableIds.isEmpty() && identifierPath != null) {
-      String address = String.format("%s/%d/%s",
+      var address = String.format("%s/%d/%s",
         collection.getJsonPath(), i, identifierPath.getJsonPath());
       List<T> values = cache.get(address, identifierPath.getJsonPath(), jsonFragment);
-      String id = (skippedEntryChecker != null)
+      var id = (skippedEntryChecker != null)
             ? skippedEntryChecker.extractId(values.get(0))
             : values.get(0).getValue();
       skippable = skippableIds.contains(id);
