@@ -31,6 +31,7 @@ public class EdmFullBeanSchema extends EdmSchema implements Serializable {
   private static List<String> categories = null;
   private static List<RuleChecker> ruleCheckers;
 
+  public static final String ABOUT = "$.['about']";
   private static final String LONG_SUBJECT_PATH =
     "$.['proxies'][?(@['europeanaProxy'] == false)]['dcSubject']";
   private static final String TITLE_PATH =
@@ -38,13 +39,14 @@ public class EdmFullBeanSchema extends EdmSchema implements Serializable {
   private static final String DESCRIPTION_PATH =
     "$.['proxies'][?(@['europeanaProxy'] == false)]['dcDescription']";
 
+
   static {
     JsonBranch providedCHO = new JsonBranch("ProvidedCHO", "$.['providedCHOs'][0]");
     providedCHO.setCollection(true);
     addPath(providedCHO);
 
     JsonBranch providedCHOIdentifier = new JsonBranch("ProvidedCHO/rdf:about",
-      providedCHO, "$.['about']")
+      providedCHO, ABOUT)
       .setCategories(Category.MANDATORY);
     providedCHO.setIdentifier(providedCHOIdentifier);
     addPath(providedCHOIdentifier);
@@ -53,7 +55,7 @@ public class EdmFullBeanSchema extends EdmSchema implements Serializable {
     proxy.setCollection(true);
     addPath(proxy);
 
-    JsonBranch proxyIdentifier = new JsonBranch("Proxy/rdf:about", proxy, "$.['about']");
+    JsonBranch proxyIdentifier = new JsonBranch("Proxy/rdf:about", proxy, ABOUT);
     proxy.setIdentifier(proxyIdentifier);
     addPath(proxyIdentifier);
 
@@ -156,7 +158,7 @@ public class EdmFullBeanSchema extends EdmSchema implements Serializable {
     JsonBranch aggregation = new JsonBranch("Aggregation", "$.['aggregations'][0]");
     aggregation.setCollection(true);
     addPath(aggregation);
-    JsonBranch aggregationIdentifier = new JsonBranch("Aggregation/rdf:about", aggregation, "$.['about']");
+    JsonBranch aggregationIdentifier = new JsonBranch("Aggregation/rdf:about", aggregation, ABOUT);
     addPath(aggregationIdentifier);
     aggregation.setIdentifier(aggregationIdentifier);
 
@@ -185,11 +187,11 @@ public class EdmFullBeanSchema extends EdmSchema implements Serializable {
     JsonBranch place = new JsonBranch("Place", "$.['places']");
     place.setCollection(true);
     addPath(place);
-    JsonBranch placeIdentifier = new JsonBranch("Place/rdf:about", place, "$.['about']");
+    JsonBranch placeIdentifier = new JsonBranch("Place/rdf:about", place, ABOUT);
     addPath(placeIdentifier);
     place.setIdentifier(placeIdentifier);
 
-    addPath(new JsonBranch("Place/rdf:about", place, "$.['about']"));
+    addPath(new JsonBranch("Place/rdf:about", place, ABOUT));
     addPath(new JsonBranch("Place/wgs84:lat", place, "$.['latitude']"));
     addPath(new JsonBranch("Place/wgs84:long", place, "$.['longitude']"));
     addPath(new JsonBranch("Place/wgs84:alt", place, "$.['altitude']"));
@@ -204,7 +206,7 @@ public class EdmFullBeanSchema extends EdmSchema implements Serializable {
     JsonBranch agent = new JsonBranch("Agent", "$.['agents']");
     agent.setCollection(true);
     addPath(agent);
-    JsonBranch agentIdentifier = new JsonBranch("Agent/rdf:about", agent, "$.['about']");
+    JsonBranch agentIdentifier = new JsonBranch("Agent/rdf:about", agent, ABOUT);
     addPath(agentIdentifier);
     agent.setIdentifier(agentIdentifier);
 
@@ -233,11 +235,11 @@ public class EdmFullBeanSchema extends EdmSchema implements Serializable {
     timespan.setCollection(true);
     addPath(timespan);
 
-    JsonBranch timespanIdentifier = new JsonBranch("Timespan/rdf:about", timespan, "$.['about']");
+    JsonBranch timespanIdentifier = new JsonBranch("Timespan/rdf:about", timespan, ABOUT);
     addPath(timespanIdentifier);
     timespan.setIdentifier(timespanIdentifier);
 
-    addPath(new JsonBranch("Timespan/rdf:about", timespan, "$.['about']"));
+    addPath(new JsonBranch("Timespan/rdf:about", timespan, ABOUT));
     addPath(new JsonBranch("Timespan/edm:begin", timespan, "$.['begin']"));
     addPath(new JsonBranch("Timespan/edm:end", timespan, "$.['end']"));
     addPath(new JsonBranch("Timespan/dcterms:isPartOf", timespan, "$.['isPartOf']"));
@@ -252,11 +254,11 @@ public class EdmFullBeanSchema extends EdmSchema implements Serializable {
     concept.setCollection(true);
     addPath(concept);
 
-    JsonBranch conceptIdentifier = new JsonBranch("Concept/rdf:about", concept, "$.['about']");
+    JsonBranch conceptIdentifier = new JsonBranch("Concept/rdf:about", concept, ABOUT);
     addPath(conceptIdentifier);
     concept.setIdentifier(conceptIdentifier);
 
-    addPath(new JsonBranch("Concept/rdf:about", concept, "$.['about']"));
+    addPath(new JsonBranch("Concept/rdf:about", concept, ABOUT));
     addPath(new JsonBranch("Concept/skos:broader", concept, "$.['broader']"));
     addPath(new JsonBranch("Concept/skos:narrower", concept, "$.['narrower']"));
     addPath(new JsonBranch("Concept/skos:related", concept, "$.['related']"));
@@ -327,9 +329,9 @@ public class EdmFullBeanSchema extends EdmSchema implements Serializable {
     // extractableFields.put("country", "$.['europeanaAggregation'][0]['edmCountry'][0]");
     // extractableFields.put("language", "$.['europeanaAggregation'][0]['edmLanguage'][0]");
 
-    EMPTY_STRINGS.add("$.['proxies'][?(@['europeanaProxy'] == false)]['dcTitle']");
-    EMPTY_STRINGS.add("$.['proxies'][?(@['europeanaProxy'] == false)]['dcDescription']");
-    EMPTY_STRINGS.add("$.['proxies'][?(@['europeanaProxy'] == false)]['dcSubject']");
+    EMPTY_STRINGS.add(TITLE_PATH);
+    EMPTY_STRINGS.add(DESCRIPTION_PATH);
+    EMPTY_STRINGS.add(LONG_SUBJECT_PATH);
   }
 
   public EdmFullBeanSchema() {

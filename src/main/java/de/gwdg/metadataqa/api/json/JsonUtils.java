@@ -20,6 +20,9 @@ import net.minidev.json.JSONArray;
 public final class JsonUtils {
 
   private static final Logger LOGGER = Logger.getLogger(JsonUtils.class.getCanonicalName());
+  public static final String ABOUT = "@about";
+  public static final String RESOURCE = "@resource";
+  public static final String VALUE = "#value";
 
   private JsonUtils() {
     throw new AssertionError();
@@ -43,12 +46,12 @@ public final class JsonUtils {
               extracted.add((String) array2.get(j));
             } else if (array2.get(j).getClass() == LinkedHashMap.class) {
               Map<String, String> map = (LinkedHashMap<String, String>) array2.get(j);
-              if (map.containsKey("@about")) {
-                extracted.add(map.get("@about"));
-              } else if (map.containsKey("@resource")) {
-                extracted.add(map.get("@resource"));
-              } else if (map.containsKey("#value")) {
-                extracted.add(map.get("#value"));
+              if (map.containsKey(ABOUT)) {
+                extracted.add(map.get(ABOUT));
+              } else if (map.containsKey(RESOURCE)) {
+                extracted.add(map.get(RESOURCE));
+              } else if (map.containsKey(VALUE)) {
+                extracted.add(map.get(VALUE));
               } else {
                 LOGGER.severe("Other type of map*: " + map.keySet());
               }
@@ -162,11 +165,11 @@ public final class JsonUtils {
     var instance = new EdmFieldInstance();
     for (Map.Entry<String, Object> entry : map.entrySet()) {
       Object value = entry.getValue();
-      if (entry.getKey().equals("@about")) {
+      if (entry.getKey().equals(ABOUT)) {
         instance.setResource((String) value);
-      } else if (entry.getKey().equals("@resource")) {
+      } else if (entry.getKey().equals(RESOURCE)) {
         instance.setResource((String) value);
-      } else if (entry.getKey().equals("#value")) {
+      } else if (entry.getKey().equals(VALUE)) {
         instance.setValue((String) value);
       } else if (entry.getKey().equals("def")) {
         if (value instanceof JSONArray) {

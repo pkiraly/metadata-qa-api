@@ -90,6 +90,6 @@ public final class EnhancementIdExtractor implements Serializable {
 
   private static boolean isEnrichmentField(String fieldName) {
     return !TECHNICAL_PROPERTIES.contains(fieldName)
-         & !TECHNICAL_PROPERTIES_LABELS.contains(fieldName);
+        && !TECHNICAL_PROPERTIES_LABELS.contains(fieldName);
   }
 }

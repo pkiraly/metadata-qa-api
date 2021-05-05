@@ -40,16 +40,14 @@ public class EdmFullBeanLimitedSchema extends EdmSchema implements Serializable 
     addPath(new JsonBranch("edm:ProvidedCHO/@about",
       "$.['providedCHOs'][0]['about']")
       .setCategories(Category.MANDATORY));
-    addPath(new JsonBranch("Proxy/dc:title",
-      "$.['proxies'][?(@['europeanaProxy'] == false)]['dcTitle']")
+    addPath(new JsonBranch("Proxy/dc:title", TITLE_PATH)
       .setCategories(Category.DESCRIPTIVENESS, Category.SEARCHABILITY,
       Category.IDENTIFICATION, Category.MULTILINGUALITY));
     addPath(new JsonBranch("Proxy/dcterms:alternative",
       "$.['proxies'][?(@['europeanaProxy'] == false)]['dctermsAlternative']")
       .setCategories(Category.DESCRIPTIVENESS, Category.SEARCHABILITY,
       Category.IDENTIFICATION, Category.MULTILINGUALITY));
-    addPath(new JsonBranch("Proxy/dc:description",
-      "$.['proxies'][?(@['europeanaProxy'] == false)]['dcDescription']")
+    addPath(new JsonBranch("Proxy/dc:description", DESCRIPTION_PATH)
       .setCategories(Category.DESCRIPTIVENESS, Category.SEARCHABILITY,
       Category.CONTEXTUALIZATION, Category.IDENTIFICATION,
       Category.MULTILINGUALITY));
@@ -86,7 +84,7 @@ public class EdmFullBeanLimitedSchema extends EdmSchema implements Serializable 
       .setCategories(Category.SEARCHABILITY, Category.CONTEXTUALIZATION,
       Category.BROWSING));
     addPath(new JsonBranch("Proxy/dc:subject",
-      "$.['proxies'][?(@['europeanaProxy'] == false)]['dcSubject']")
+      LONG_SUBJECT_PATH)
       .setCategories(Category.DESCRIPTIVENESS, Category.SEARCHABILITY,
       Category.CONTEXTUALIZATION, Category.MULTILINGUALITY));
     addPath(new JsonBranch("Proxy/dc:date",
@@ -194,9 +192,9 @@ public class EdmFullBeanLimitedSchema extends EdmSchema implements Serializable 
     extractableFields.put("dataset", "$.sets[0]");
     extractableFields.put("dataProvider", "$.['aggregations'][0]['edmDataProvider'][0]");
 
-    EMPTY_STRINGS.add("$.['proxies'][?(@['europeanaProxy'] == false)]['dcTitle']");
-    EMPTY_STRINGS.add("$.['proxies'][?(@['europeanaProxy'] == false)]['dcDescription']");
-    EMPTY_STRINGS.add("$.['proxies'][?(@['europeanaProxy'] == false)]['dcSubject']");
+    EMPTY_STRINGS.add(TITLE_PATH);
+    EMPTY_STRINGS.add(DESCRIPTION_PATH);
+    EMPTY_STRINGS.add(LONG_SUBJECT_PATH);
   }
 
   private static void addPath(JsonBranch branch) {
