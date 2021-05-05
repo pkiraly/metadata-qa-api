@@ -5,6 +5,7 @@ import de.gwdg.metadataqa.api.rule.RuleChecker;
 
 public abstract class PropertyPairChecker implements RuleChecker {
 
+  private static final long serialVersionUID = -6579708841667005135L;
   protected JsonBranch field1;
   protected JsonBranch field2;
   protected String header;

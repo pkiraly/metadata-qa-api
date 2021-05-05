@@ -10,6 +10,7 @@ import java.util.List;
 
 public class MaxLengthChecker extends SingleFieldChecker {
 
+  private static final long serialVersionUID = -3991731520985560338L;
   public static final String PREFIX = "maxLength";
   protected Integer maxLength;
 

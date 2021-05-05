@@ -21,6 +21,7 @@ import java.io.ByteArrayInputStream;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
@@ -28,7 +29,9 @@ import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-public class OaiPmhXPath {
+public class OaiPmhXPath implements Serializable {
+  private static final long serialVersionUID = 3040547541095974755L;
+
   private static final Logger LOGGER = Logger.getLogger(OaiPmhXPath.class.getCanonicalName());
 
   private static final Map<String, String> prefixMap = new LinkedHashMap<>();

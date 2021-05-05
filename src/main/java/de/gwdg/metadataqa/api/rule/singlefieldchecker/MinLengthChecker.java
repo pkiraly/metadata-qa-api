@@ -10,6 +10,7 @@ import java.util.List;
 
 public class MinLengthChecker extends SingleFieldChecker {
 
+  private static final long serialVersionUID = -1842497411816592850L;
   public static final String PREFIX = "minLength";
   protected Integer minLength;
 

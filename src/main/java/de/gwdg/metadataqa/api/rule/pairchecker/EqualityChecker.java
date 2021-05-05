@@ -10,6 +10,7 @@ import java.util.List;
 
 public class EqualityChecker extends PropertyPairChecker {
 
+  private static final long serialVersionUID = -5363342097255677979L;
   public static final String PREFIX = "equals";
   protected String fixedValue;
 

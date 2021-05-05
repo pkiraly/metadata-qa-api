@@ -1,11 +1,15 @@
 package de.gwdg.metadataqa.api.uniqueness;
 
+import java.io.Serializable;
+
 /**
  * A value object holding information about TF-IDF elements.
  *
  * @author Péter Király <peter.kiraly at gwdg.de>
  */
-public class TfIdf {
+public class TfIdf implements Serializable {
+
+  private static final long serialVersionUID = 729655831135477777L;
 
   /**
    * The indexed term.

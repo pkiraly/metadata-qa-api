@@ -1,10 +1,14 @@
 package de.gwdg.metadataqa.api.counter;
 
+import java.io.Serializable;
+
 /**
  *
  * @author Péter Király <peter.kiraly at gwdg.de>
  */
-public class BasicCounter {
+public class BasicCounter implements Serializable {
+
+  private static final long serialVersionUID = 5660662598713202430L;
 
   private double total = 0.0;
   private double instance = 0.0;

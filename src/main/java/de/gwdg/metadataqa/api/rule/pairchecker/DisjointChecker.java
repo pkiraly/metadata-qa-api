@@ -10,6 +10,7 @@ import java.util.List;
 
 public class DisjointChecker extends PropertyPairChecker {
 
+  private static final long serialVersionUID = -2921501305139849002L;
   public static final String PREFIX = "disjoint";
 
   public DisjointChecker(JsonBranch field1, JsonBranch field2) {

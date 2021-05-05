@@ -11,6 +11,8 @@ import java.util.regex.Pattern;
 
 public class LessThanPairChecker extends PropertyPairChecker {
 
+  private static final long serialVersionUID = 2271685635591166409L;
+
   public enum TYPE {
     LESS_THAN("lessThan"),
     LESS_THAN_OR_EQUALS("lessThanOrEquals")

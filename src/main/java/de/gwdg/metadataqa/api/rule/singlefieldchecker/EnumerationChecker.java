@@ -10,6 +10,7 @@ import java.util.List;
 
 public class EnumerationChecker extends SingleFieldChecker {
 
+  private static final long serialVersionUID = 5185953247558241405L;
   public static final String PREFIX = "in";
   protected List<String> fixedValues;
 

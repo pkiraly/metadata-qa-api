@@ -3,12 +3,14 @@ package de.gwdg.metadataqa.api.rule;
 import de.gwdg.metadataqa.api.counter.FieldCounter;
 import de.gwdg.metadataqa.api.model.pathcache.PathCache;
 
+import java.io.Serializable;
+
 /**
  * Implementation of the Observer design pattern
  * (<a href="https://en.wikipedia.org/wiki/Observer_pattern">https://en.wikipedia.org/wiki/Observer_pattern</a>).
  * @author Péter Király <peter.kiraly at gwdg.de>
  */
-public interface RuleChecker {
+public interface RuleChecker extends Serializable {
 
   /**
    * A push method which is called by the subject, and which transport

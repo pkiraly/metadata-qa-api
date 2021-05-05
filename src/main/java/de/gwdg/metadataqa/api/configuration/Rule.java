@@ -1,8 +1,11 @@
 package de.gwdg.metadataqa.api.configuration;
 
+import java.io.Serializable;
 import java.util.List;
 
-public class Rule {
+public class Rule implements Serializable {
+
+  private static final long serialVersionUID = 4101184421853217836L;
 
   private String pattern;
   private String equals;

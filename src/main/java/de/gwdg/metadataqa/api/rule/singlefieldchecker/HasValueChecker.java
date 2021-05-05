@@ -10,6 +10,7 @@ import java.util.List;
 
 public class HasValueChecker extends SingleFieldChecker {
 
+  private static final long serialVersionUID = 1114999259831619599L;
   public static final String PREFIX = "hasValue";
   protected String fixedValue;
 

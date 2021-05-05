@@ -27,12 +27,11 @@ public class SkippedEntitySelector<T extends XmlFieldInstance> implements Serial
     this.skippedEntryChecker = skippedEntryChecker;
   }
 
-  public boolean isCollectionSkippable(
-      List<String> skippableIds,
-      JsonBranch collection,
-      int i,
-      PathCache cache,
-      Object jsonFragment) {
+  public boolean isCollectionSkippable(List<String> skippableIds,
+                                       JsonBranch collection,
+                                       int i,
+                                       PathCache cache,
+                                       Object jsonFragment) {
     var skippable = false;
     JsonBranch identifierPath = collection.getIdentifier();
     if (!skippableIds.isEmpty() && identifierPath != null) {

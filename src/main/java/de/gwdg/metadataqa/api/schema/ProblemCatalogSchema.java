@@ -1,5 +1,6 @@
 package de.gwdg.metadataqa.api.schema;
 
+import java.io.Serializable;
 import java.util.List;
 
 /**
@@ -7,7 +8,7 @@ import java.util.List;
  *
  * @author Péter Király <peter.kiraly at gwdg.de>
  */
-public interface ProblemCatalogSchema {
+public interface ProblemCatalogSchema extends Serializable {
 
   /**
    * Get path of empty strings.

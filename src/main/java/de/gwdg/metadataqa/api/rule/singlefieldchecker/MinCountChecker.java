@@ -10,6 +10,7 @@ import java.util.List;
 
 public class MinCountChecker extends SingleFieldChecker {
 
+  private static final long serialVersionUID = 2298498693779624776L;
   public static final String PREFIX = "minCount";
   protected Integer minCount;
 

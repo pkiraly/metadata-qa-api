@@ -10,6 +10,7 @@ import java.util.List;
 
 public class MaxCountChecker extends SingleFieldChecker {
 
+  private static final long serialVersionUID = 3259638493041988749L;
   public static final String PREFIX = "maxCount";
   protected Integer maxCount;
 

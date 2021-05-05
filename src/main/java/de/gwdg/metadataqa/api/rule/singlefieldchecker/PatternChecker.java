@@ -11,6 +11,7 @@ import java.util.regex.Pattern;
 
 public class PatternChecker extends SingleFieldChecker {
 
+  private static final long serialVersionUID = -1432138574479246596L;
   public static final String PREFIX = "pattern";
   protected Pattern pattern;
 

@@ -11,6 +11,7 @@ import java.util.logging.Logger;
 
 public class NumericValueChecker extends SingleFieldChecker {
 
+  private static final long serialVersionUID = 6281320551990118341L;
   private static final Logger LOGGER = Logger.getLogger(NumericValueChecker.class.getCanonicalName());
 
   public enum TYPE {
