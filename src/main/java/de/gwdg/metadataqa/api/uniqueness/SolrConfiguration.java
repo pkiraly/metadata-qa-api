@@ -1,11 +1,15 @@
 package de.gwdg.metadataqa.api.uniqueness;
 
+import java.io.Serializable;
+
 /**
  * Data object for Solr configuration.
  *
  * @author Péter Király <peter.kiraly at gwdg.de>
  */
-public class SolrConfiguration {
+public class SolrConfiguration implements Serializable {
+  private static final long serialVersionUID = -4274994415740745591L;
+
   private static final String DEFAULT_SOLR_HOST = "localhost";
   private static final String DEFAULT_SOLR_PORT = "8983";
   private static final String DEFAULT_SOLR_PATH = "solr/europeana";
