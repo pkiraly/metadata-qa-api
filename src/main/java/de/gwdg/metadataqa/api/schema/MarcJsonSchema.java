@@ -21,6 +21,7 @@ public class MarcJsonSchema implements Schema, ProblemCatalogSchema, Serializabl
   private static final Map<String, JsonBranch> PATHS = new LinkedHashMap<>();
   private static final Map<String, JsonBranch> COLLECTION_PATHS = new LinkedHashMap<>();
   private static final Map<String, JsonBranch> DIRECT_CHILDREN = new LinkedHashMap<>();
+  public static final String NOT_SUPPORTED_YET = "Not supported yet.";
   private static Map<String, String> extractableFields = new LinkedHashMap<>();
   private static List<String> categories = null;
   private static List<RuleChecker> ruleCheckers = null;
@@ -414,12 +415,12 @@ public class MarcJsonSchema implements Schema, ProblemCatalogSchema, Serializabl
 
   @Override
   public List<String> getNoLanguageFields() {
-    throw new UnsupportedOperationException("Not supported yet.");
+    throw new UnsupportedOperationException(NOT_SUPPORTED_YET);
   }
 
   @Override
   public Map<String, String> getSolrFields() {
-    throw new UnsupportedOperationException("Not supported yet.");
+    throw new UnsupportedOperationException(NOT_SUPPORTED_YET);
   }
 
   @Override
@@ -449,22 +450,22 @@ public class MarcJsonSchema implements Schema, ProblemCatalogSchema, Serializabl
 
   @Override
   public List<String> getEmptyStringPaths() {
-    throw new UnsupportedOperationException("Not supported yet.");
+    throw new UnsupportedOperationException(NOT_SUPPORTED_YET);
   }
 
   @Override
   public String getSubjectPath() {
-    throw new UnsupportedOperationException("Not supported yet.");
+    throw new UnsupportedOperationException(NOT_SUPPORTED_YET);
   }
 
   @Override
   public String getTitlePath() {
-    throw new UnsupportedOperationException("Not supported yet.");
+    throw new UnsupportedOperationException(NOT_SUPPORTED_YET);
   }
 
   @Override
   public String getDescriptionPath() {
-    throw new UnsupportedOperationException("Not supported yet.");
+    throw new UnsupportedOperationException(NOT_SUPPORTED_YET);
   }
 
   @Override

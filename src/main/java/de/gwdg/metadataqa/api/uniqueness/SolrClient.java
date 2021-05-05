@@ -1,5 +1,7 @@
 package de.gwdg.metadataqa.api.uniqueness;
 
-public interface SolrClient {
+import java.io.Serializable;
+
+public interface SolrClient extends Serializable {
   String getSolrSearchResponse(String solrField, String value);
 }
