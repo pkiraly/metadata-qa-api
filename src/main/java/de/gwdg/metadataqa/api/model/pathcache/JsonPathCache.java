@@ -28,6 +28,7 @@ public class JsonPathCache<T extends XmlFieldInstance> implements PathCache {
   private static final Logger LOGGER = Logger.getLogger(
     JsonPathCache.class.getCanonicalName()
   );
+  private static final long serialVersionUID = -7087854432160794878L;
 
   private final Object document;
   private String recordId;

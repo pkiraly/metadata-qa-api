@@ -24,6 +24,7 @@ public class XmlPathCache<T extends XmlFieldInstance> implements PathCache {
   private static final Logger LOGGER = Logger.getLogger(
     XmlPathCache.class.getCanonicalName()
   );
+  private static final long serialVersionUID = 3351744750302199667L;
 
   private String recordId;
   private String content;

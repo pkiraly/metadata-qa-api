@@ -23,6 +23,7 @@ public class CsvPathCache<T extends XmlFieldInstance> implements PathCache {
   private static final Logger LOGGER = Logger.getLogger(
     CsvPathCache.class.getCanonicalName()
   );
+  private static final long serialVersionUID = -545628995288633641L;
 
   private String content;
   private String recordId;

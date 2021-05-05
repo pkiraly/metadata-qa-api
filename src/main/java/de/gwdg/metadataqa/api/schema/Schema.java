@@ -4,6 +4,7 @@ import de.gwdg.metadataqa.api.json.FieldGroup;
 import de.gwdg.metadataqa.api.json.JsonBranch;
 import de.gwdg.metadataqa.api.rule.RuleChecker;
 
+import java.io.Serializable;
 import java.util.List;
 import java.util.Map;
 
@@ -15,7 +16,7 @@ import java.util.Map;
  *
  * @author Péter Király <peter.kiraly at gwdg.de>
  */
-public interface Schema {
+public interface Schema extends Serializable {
 
   Format getFormat();
 
