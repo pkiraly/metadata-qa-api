@@ -29,7 +29,7 @@ import org.apache.commons.io.IOUtils;
  *
  * @author Péter Király <peter.kiraly at gwdg.de>
  */
-public class TfIdfCalculator implements Calculator, Serializable {
+public class TfIdfCalculator extends BaseCalculator implements Calculator, Serializable {
 
   public static final String CALCULATOR_NAME = "uniqueness";
   private static final int MEGABYTE = 1024 * 1024;
@@ -140,11 +140,6 @@ public class TfIdfCalculator implements Calculator, Serializable {
   @Override
   public String getCsv(boolean withLabel, CompressionLevel compressionLevel) {
     return resultMap.getCsv(withLabel, compressionLevel);
-  }
-
-  @Override
-  public List<Object> getCsv() {
-    return resultMap.getCsv();
   }
 
   @Override

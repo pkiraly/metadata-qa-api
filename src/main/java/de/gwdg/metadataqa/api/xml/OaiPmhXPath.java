@@ -58,7 +58,7 @@ public class OaiPmhXPath implements Serializable {
     prefixMap.put("oai", "http://www.openarchives.org/OAI/2.0/");
   }
 
-  private final XPath xpathEngine = initializeEngine();
+  private final transient XPath xpathEngine = initializeEngine();
   private static final DocumentBuilder builder = initializeDocumentBuilder();
 
   private static XPath initializeEngine() {

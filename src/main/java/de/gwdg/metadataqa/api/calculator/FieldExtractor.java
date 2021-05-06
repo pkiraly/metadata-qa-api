@@ -18,7 +18,7 @@ import java.util.logging.Logger;
  *
  * @author Péter Király <peter.kiraly at gwdg.de>
  */
-public class FieldExtractor implements Calculator, Serializable {
+public class FieldExtractor extends BaseCalculator implements Calculator, Serializable {
 
   private static final Logger LOGGER = Logger.getLogger(FieldExtractor.class.getCanonicalName());
 
@@ -30,6 +30,7 @@ public class FieldExtractor implements Calculator, Serializable {
   protected Schema schema;
 
   public FieldExtractor() {
+    // FieldCounter<String> resultMap;
   }
 
   public FieldExtractor(Schema schema) {
@@ -109,10 +110,6 @@ public class FieldExtractor implements Calculator, Serializable {
     return resultMap.getCsv(withLabel, CompressionLevel.ZERO); // the extracted fields should never be compressed!
   }
 
-  @Override
-  public List<Object> getCsv() {
-    return resultMap.getCsv();
-  }
 
   @Override
   public List<String> getList(boolean withLabel, CompressionLevel compressionLevel) {
@@ -125,5 +122,4 @@ public class FieldExtractor implements Calculator, Serializable {
     headers.add(FIELD_NAME);
     return headers;
   }
-
 }
