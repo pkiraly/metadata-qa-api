@@ -19,7 +19,7 @@ import java.util.logging.Logger;
  * @param <T> the type of elements held in this object. It should be the
  *           extension of XmlFieldInstance class.
  */
-public class XmlPathCache<T extends XmlFieldInstance> implements PathCache {
+public class XmlPathCache<T extends XmlFieldInstance> extends BasePathCache<T> {
 
   private static final Logger LOGGER = Logger.getLogger(
     XmlPathCache.class.getCanonicalName()
@@ -28,8 +28,8 @@ public class XmlPathCache<T extends XmlFieldInstance> implements PathCache {
 
   private String recordId;
   private String content;
-  private final Map<String, List<T>> cache = new HashMap<>();
-  private final Map<String, Object> typedCache = new HashMap<>();
+  // private final Map<String, List<T>> cache = new HashMap<>();
+  // private final Map<String, Object> typedCache = new HashMap<>();
   private final Map<String, Object> fragmentCache = new HashMap<>();
   OaiPmhXPath oaiPmhXPath;
 
@@ -38,7 +38,7 @@ public class XmlPathCache<T extends XmlFieldInstance> implements PathCache {
     oaiPmhXPath = new OaiPmhXPath(content);
   }
 
-  private void set(String address, String jsonPath, Object jsonFragment, Class clazz) {
+  protected void set(String address, String jsonPath, Object jsonFragment, Class clazz) {
     List<T> instances = read(jsonPath, jsonFragment);
     cache.put(address, instances);
   }
@@ -59,33 +59,6 @@ public class XmlPathCache<T extends XmlFieldInstance> implements PathCache {
       });
     }
     return value;
-  }
-
-  public List<T> get(String jsonPath) {
-    return get(jsonPath, jsonPath, null, null);
-  }
-
-  // @Override
-  // public Object get(String path, Class clazz) {
-  //   return null;
-  // }
-
-  public <E> E get(String jsonPath, Class<E> clazz) {
-    if (!typedCache.containsKey(jsonPath)) {
-      set(jsonPath, jsonPath, null, clazz);
-    }
-    return (E) typedCache.get(jsonPath);
-  }
-
-  public List<T> get(String address, String jsonPath, Object jsonFragment) {
-    return get(address, jsonPath, jsonFragment, null);
-  }
-
-  public List<T> get(String address, String jsonPath, Object jsonFragment, Class clazz) {
-    if (!cache.containsKey(address)) {
-      set(address, jsonPath, jsonFragment, clazz);
-    }
-    return cache.get(address);
   }
 
   public Object getFragment(String path) {

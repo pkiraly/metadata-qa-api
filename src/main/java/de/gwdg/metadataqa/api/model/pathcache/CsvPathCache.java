@@ -18,7 +18,7 @@ import java.util.logging.Logger;
  * @param <T> the type of elements held in this object. It should be the
  *           extension of XmlFieldInstance class.
  */
-public class CsvPathCache<T extends XmlFieldInstance> implements PathCache {
+public class CsvPathCache<T extends XmlFieldInstance> extends BasePathCache<T> {
 
   private static final Logger LOGGER = Logger.getLogger(
     CsvPathCache.class.getCanonicalName()
@@ -27,8 +27,6 @@ public class CsvPathCache<T extends XmlFieldInstance> implements PathCache {
 
   private String content;
   private String recordId;
-  private final Map<String, List<T>> cache = new HashMap<>();
-  private final Map<String, Object> typedCache = new HashMap<>();
   private final Map<String, Object> fragmentCache = new HashMap<>();
   private Map<String, String> record;
 
@@ -44,7 +42,8 @@ public class CsvPathCache<T extends XmlFieldInstance> implements PathCache {
     record = csvReader.createMap(input);
   }
 
-  private void set(String address, String jsonPath, Object jsonFragment, Class clazz) {
+  @Override
+  protected void set(String address, String jsonPath, Object jsonFragment, Class clazz) {
     List<T> instances = read(jsonPath, jsonFragment);
     cache.put(address, instances);
   }
@@ -57,28 +56,6 @@ public class CsvPathCache<T extends XmlFieldInstance> implements PathCache {
     //   LOGGER.severe("PathNotFound: " + path);
 
     return list;
-  }
-
-  public List<T> get(String jsonPath) {
-    return get(jsonPath, jsonPath, null, null);
-  }
-
-  public <E> E get(String jsonPath, Class<E> clazz) {
-    if (!typedCache.containsKey(jsonPath)) {
-      set(jsonPath, jsonPath, null, clazz);
-    }
-    return (E) typedCache.get(jsonPath);
-  }
-
-  public List<T> get(String address, String jsonPath, Object jsonFragment) {
-    return get(address, jsonPath, jsonFragment, null);
-  }
-
-  public List<T> get(String address, String jsonPath, Object jsonFragment, Class clazz) {
-    if (!cache.containsKey(address)) {
-      set(address, jsonPath, jsonFragment, clazz);
-    }
-    return cache.get(address);
   }
 
   public Object getFragment(String path) {

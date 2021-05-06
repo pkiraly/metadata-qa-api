@@ -22,8 +22,8 @@ import static org.junit.Assert.*;
  */
 public class JsonPathCacheTest {
 
-  Object jsonDoc;
-  String jsonString;
+  private Object jsonDoc;
+  private String jsonString;
 
   public JsonPathCacheTest() throws IOException, URISyntaxException {
     String fileName = "problem-catalog/long-subject.json";
@@ -33,27 +33,11 @@ public class JsonPathCacheTest {
     // jsonDoc = Configuration.defaultConfiguration().jsonProvider().parse(jsonString);
   }
 
-  @BeforeClass
-  public static void setUpClass() {
-  }
-
-  @AfterClass
-  public static void tearDownClass() {
-  }
-
-  @Before
-  public void setUp() {
-  }
-
-  @After
-  public void tearDown() {
-  }
-
   @Test
   public void testSimpleValue() throws IOException, URISyntaxException {
     String jsonPath = "$.['ore:Proxy'][?(@['edm:europeanaProxy'][0] == 'false')]['dc:title']";
 
-    JsonPathCache cache = new JsonPathCache(jsonString);
+    JsonPathCache cache = new JsonPathCache<EdmFieldInstance>(jsonString);
     List<EdmFieldInstance> instances = cache.get(jsonPath);
 
     assertNotNull(instances);

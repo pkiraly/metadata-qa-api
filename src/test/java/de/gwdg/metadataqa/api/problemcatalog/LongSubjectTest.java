@@ -20,25 +20,6 @@ import static org.junit.Assert.*;
  */
 public class LongSubjectTest {
 
-  public LongSubjectTest() {
-  }
-
-  @BeforeClass
-  public static void setUpClass() {
-  }
-
-  @AfterClass
-  public static void tearDownClass() {
-  }
-
-  @Before
-  public void setUp() {
-  }
-
-  @After
-  public void tearDown() {
-  }
-
   @Test
   public void test() throws IOException, URISyntaxException {
     JsonPathCache cache = new JsonPathCache(FileUtils.readFirstLineFromResource("problem-catalog/long-subject.json"));
