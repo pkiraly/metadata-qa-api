@@ -28,7 +28,7 @@ import java.util.logging.Logger;
  *
  * @author Péter Király <peter.kiraly at gwdg.de>
  */
-public class MultilingualitySaturationCalculator implements Calculator, Serializable {
+public class MultilingualitySaturationCalculator extends BaseLanguageCalculator {
 
   public static final String CALCULATOR_NAME = "multilingualitySaturation";
 
@@ -243,26 +243,6 @@ public class MultilingualitySaturationCalculator implements Calculator, Serializ
     } else {
       languages.get(key).increaseTotal();
     }
-  }
-
-  private String extractLanguagesFromRaw(Map<String, Integer> languages) {
-    var result = new StringBuilder();
-    for (Map.Entry<String, Integer> lang : languages.entrySet()) {
-      if (result.length() > 0)
-        result.append(";");
-      result.append(lang.getKey() + ":" + lang.getValue());
-    }
-    return result.toString();
-  }
-
-  private String extractLanguages(Map<String, BasicCounter> languages) {
-    var result = new StringBuilder();
-    for (Map.Entry<String, BasicCounter> lang : languages.entrySet()) {
-      if (result.length() > 0)
-        result.append(";");
-      result.append(lang.getKey() + ":" + lang.getValue().getTotalAsInt());
-    }
-    return result.toString();
   }
 
   private SortedMap<LanguageSaturationType, Double> transformLanguages(

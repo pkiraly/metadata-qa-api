@@ -54,20 +54,7 @@ public class LessThanPairChecker extends PropertyPairChecker {
           for (XmlFieldInstance instance2 : instances2) {
             if (instance2.hasValue()) {
               isNA = false;
-            // } instance1.getValue().equals(instance2.getValue())) {
-              // allPassed = false;
-              // break;
-
               allPassed = checkValues(instance1.getValue(), instance2.getValue());
-
-              /*
-              try {
-                double value = Double.parseDouble(stringValue);
-                allPassed = checkValue(value);
-              } catch (NumberFormatException e) {
-                allPassed = false;
-              }
-               */
               if (!allPassed)
                 break;
             }
@@ -80,10 +67,10 @@ public class LessThanPairChecker extends PropertyPairChecker {
 
   private boolean checkValues(String value1, String value2) {
     var allPassed = false;
-    switch (type) {
-      case LESS_THAN:           allPassed = lessThan(value1, value2);         break;
-      case LESS_THAN_OR_EQUALS: allPassed = lessThanOrEquals(value1, value2); break;
-      default: break;
+    if (type == TYPE.LESS_THAN) {
+      allPassed = lessThan(value1, value2);
+    } else if (type == TYPE.LESS_THAN_OR_EQUALS) {
+      allPassed = lessThanOrEquals(value1, value2);
     }
     return allPassed;
   }
