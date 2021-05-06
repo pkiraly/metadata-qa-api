@@ -29,7 +29,7 @@ import org.apache.commons.io.IOUtils;
  *
  * @author Péter Király <peter.kiraly at gwdg.de>
  */
-public class TfIdfCalculator extends BaseCalculator implements Calculator, Serializable {
+public class TfIdfCalculator extends BaseCalculator<Double> implements Calculator, Serializable {
 
   public static final String CALCULATOR_NAME = "uniqueness";
   private static final int MEGABYTE = 1024 * 1024;
@@ -56,7 +56,6 @@ public class TfIdfCalculator extends BaseCalculator implements Calculator, Seria
 
   private Map<String, List<TfIdf>> termsCollection;
   private boolean termCollectionEnabled = false;
-  private FieldCounter<Double> resultMap;
   private Schema schema;
 
   public TfIdfCalculator() {
@@ -123,18 +122,6 @@ public class TfIdfCalculator extends BaseCalculator implements Calculator, Seria
 
   public boolean isTermCollectionEnabled() {
     return termCollectionEnabled;
-  }
-
-  @Override
-  public Map<String, ? extends Object> getResultMap() {
-    return resultMap.getMap();
-  }
-
-  @Override
-  public Map<String, Map<String, ? extends Object>> getLabelledResultMap() {
-    Map<String, Map<String, ? extends Object>> labelledResultMap = new LinkedHashMap<>();
-    labelledResultMap.put(getCalculatorName(), resultMap.getMap());
-    return labelledResultMap;
   }
 
   @Override

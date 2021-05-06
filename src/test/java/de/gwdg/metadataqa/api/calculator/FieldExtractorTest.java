@@ -6,10 +6,7 @@ import java.io.IOException;
 import java.net.URISyntaxException;
 import java.util.Arrays;
 import java.util.List;
-import org.junit.After;
-import org.junit.AfterClass;
 import org.junit.Before;
-import org.junit.BeforeClass;
 import org.junit.Test;
 import static org.junit.Assert.*;
 
@@ -22,25 +19,10 @@ public class FieldExtractorTest {
   FieldExtractor calculator;
   JsonPathCache cache;
 
-  public FieldExtractorTest() {
-  }
-
-  @BeforeClass
-  public static void setUpClass() {
-  }
-
-  @AfterClass
-  public static void tearDownClass() {
-  }
-
   @Before
   public void setUp() throws URISyntaxException, IOException {
     calculator = new FieldExtractor("$.identifier");
     cache = new JsonPathCache(FileUtils.readFirstLineFromResource("general/test.json"));
-  }
-
-  @After
-  public void tearDown() {
   }
 
   @Test

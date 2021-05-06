@@ -18,7 +18,7 @@ import java.util.logging.Logger;
  *
  * @author Péter Király <peter.kiraly at gwdg.de>
  */
-public class FieldExtractor extends BaseCalculator implements Calculator, Serializable {
+public class FieldExtractor extends BaseCalculator<String> implements Calculator, Serializable {
 
   private static final Logger LOGGER = Logger.getLogger(FieldExtractor.class.getCanonicalName());
 
@@ -26,11 +26,9 @@ public class FieldExtractor extends BaseCalculator implements Calculator, Serial
   public static final String FIELD_NAME = "recordId";
 
   private String idPath;
-  protected FieldCounter<String> resultMap;
   protected Schema schema;
 
   public FieldExtractor() {
-    // FieldCounter<String> resultMap;
   }
 
   public FieldExtractor(Schema schema) {
@@ -56,7 +54,7 @@ public class FieldExtractor extends BaseCalculator implements Calculator, Serial
   @Override
   public void measure(PathCache cache)
       throws InvalidJsonException {
-    resultMap = new FieldCounter<>();
+    resultMap = new FieldCounter<String>();
     List<XmlFieldInstance> instances = cache.get(getIdPath());
     if (instances == null || instances.isEmpty()) {
       LOGGER.severe("No record ID in " + cache.getContent());
@@ -94,22 +92,9 @@ public class FieldExtractor extends BaseCalculator implements Calculator, Serial
   }
 
   @Override
-  public Map<String, ? extends Object> getResultMap() {
-    return resultMap.getMap();
-  }
-
-  @Override
-  public Map<String, Map<String, ? extends Object>> getLabelledResultMap() {
-    Map<String, Map<String, ? extends Object>> labelledResultMap = new LinkedHashMap<>();
-    labelledResultMap.put(getCalculatorName(), resultMap.getMap());
-    return labelledResultMap;
-  }
-
-  @Override
   public String getCsv(boolean withLabel, CompressionLevel compressionLevel) {
     return resultMap.getCsv(withLabel, CompressionLevel.ZERO); // the extracted fields should never be compressed!
   }
-
 
   @Override
   public List<String> getList(boolean withLabel, CompressionLevel compressionLevel) {
