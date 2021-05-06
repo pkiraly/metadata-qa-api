@@ -5,6 +5,7 @@ import de.gwdg.metadataqa.api.json.JsonBranch;
 import de.gwdg.metadataqa.api.model.XmlFieldInstance;
 import de.gwdg.metadataqa.api.model.pathcache.PathCache;
 import de.gwdg.metadataqa.api.rule.RuleCheckingOutput;
+import de.gwdg.metadataqa.api.util.InstanceCounter;
 
 import java.util.List;
 
@@ -26,18 +27,9 @@ public class MinCountChecker extends SingleFieldChecker {
   @Override
   public void update(PathCache cache, FieldCounter<RuleCheckingOutput> results) {
     var allPassed = true;
-    var isNA = true;
-    List<XmlFieldInstance> instances = cache.get(field.getJsonPath());
-    var count = 0;
-    if (instances != null && !instances.isEmpty())
-      for (XmlFieldInstance instance : instances)
-        if (instance.hasValue()) {
-          count++;
-          isNA = false;
-        }
-    if (count >= minCount)
+    var counter = new InstanceCounter(cache, field);
+    if (counter.getCount() >= minCount)
       allPassed = true;
-    results.put(header, RuleCheckingOutput.create(isNA, allPassed));
+    results.put(header, RuleCheckingOutput.create(counter.isNA(), allPassed));
   }
-
 }

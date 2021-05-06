@@ -5,6 +5,7 @@ import de.gwdg.metadataqa.api.json.JsonBranch;
 import de.gwdg.metadataqa.api.model.XmlFieldInstance;
 import de.gwdg.metadataqa.api.model.pathcache.PathCache;
 import de.gwdg.metadataqa.api.rule.RuleCheckingOutput;
+import de.gwdg.metadataqa.api.util.InstanceCounter;
 
 import java.util.List;
 
@@ -26,20 +27,10 @@ public class MaxCountChecker extends SingleFieldChecker {
   @Override
   public void update(PathCache cache, FieldCounter<RuleCheckingOutput> results) {
     var allPassed = true;
-    var isNA = true;
-    List<XmlFieldInstance> instances = cache.get(field.getJsonPath());
-    var count = 0;
-    if (instances != null && !instances.isEmpty()) {
-      for (XmlFieldInstance instance : instances) {
-        if (instance.hasValue()) {
-          count++;
-          isNA = false;
-        }
-      }
-    }
-    if (count <= maxCount)
+    var counter = new InstanceCounter(cache, field);
+    if (counter.getCount() <= maxCount)
       allPassed = true;
-    results.put(header, RuleCheckingOutput.create(isNA, allPassed));
+    results.put(header, RuleCheckingOutput.create(counter.isNA(), allPassed));
   }
 
 }
