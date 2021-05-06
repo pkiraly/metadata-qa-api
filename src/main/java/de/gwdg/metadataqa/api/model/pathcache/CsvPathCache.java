@@ -7,7 +7,6 @@ import org.apache.commons.lang3.StringUtils;
 
 import java.io.IOException;
 import java.util.Arrays;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.logging.Logger;
@@ -25,9 +24,6 @@ public class CsvPathCache<T extends XmlFieldInstance> extends BasePathCache<T> {
   );
   private static final long serialVersionUID = -545628995288633641L;
 
-  private String content;
-  private String recordId;
-  private final Map<String, Object> fragmentCache = new HashMap<>();
   private Map<String, String> record;
 
   public CsvPathCache(String content) throws InvalidJsonException {
@@ -73,32 +69,6 @@ public class CsvPathCache<T extends XmlFieldInstance> extends BasePathCache<T> {
    *   The JSON fragment
    */
   public Object getFragment(String address, String jsonPath, Object jsonFragment) {
-    return content;
-  }
-
-  /**
-   * Gets the record identifier.
-   *
-   * @return
-   *   The record identifier
-   */
-  public String getRecordId() {
-    return recordId;
-  }
-
-  public void setRecordId(String recordId) {
-    this.recordId = recordId;
-  }
-
-  public Map<String, List<T>> getCache() {
-    return cache;
-  }
-
-  public Map<String, Object> getFragmentCache() {
-    return fragmentCache;
-  }
-
-  public String getContent() {
     return content;
   }
 

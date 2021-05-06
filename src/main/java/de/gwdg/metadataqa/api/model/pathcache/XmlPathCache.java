@@ -7,9 +7,7 @@ import de.gwdg.metadataqa.api.model.XmlFieldInstance;
 import de.gwdg.metadataqa.api.util.ExceptionUtils;
 import de.gwdg.metadataqa.api.xml.OaiPmhXPath;
 
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -26,11 +24,6 @@ public class XmlPathCache<T extends XmlFieldInstance> extends BasePathCache<T> {
   );
   private static final long serialVersionUID = 3351744750302199667L;
 
-  private String recordId;
-  private String content;
-  // private final Map<String, List<T>> cache = new HashMap<>();
-  // private final Map<String, Object> typedCache = new HashMap<>();
-  private final Map<String, Object> fragmentCache = new HashMap<>();
   OaiPmhXPath oaiPmhXPath;
 
   public XmlPathCache(String content) throws InvalidJsonException {
@@ -70,52 +63,5 @@ public class XmlPathCache<T extends XmlFieldInstance> extends BasePathCache<T> {
       jsonFragment = fragmentCache.get(path);
     }
     return jsonFragment;
-  }
-
-  /**
-   * Get a JSON fragment from cache.
-   *
-   * @param address - a unique address for cache
-   * @param jsonPath - a JSON path expression
-   * @param jsonFragment - a JSON fragment in which the path should be searched for
-   *
-   * @return
-   *   The JSON fragment
-   */
-  public Object getFragment(String address, String jsonPath, Object jsonFragment) {
-    Object jsonFragment2 = null;
-    if (!fragmentCache.containsKey(address)) {
-      jsonFragment2 = read(jsonPath, jsonFragment);
-      fragmentCache.put(address, jsonFragment2);
-    } else {
-      jsonFragment2 = fragmentCache.get(address);
-    }
-    return jsonFragment2;
-  }
-
-  /**
-   * Gets the record identifier.
-   *
-   * @return
-   *   The record identifier
-   */
-  public String getRecordId() {
-    return recordId;
-  }
-
-  public void setRecordId(String recordId) {
-    this.recordId = recordId;
-  }
-
-  public Map<String, List<T>> getCache() {
-    return cache;
-  }
-
-  public Map<String, Object> getFragmentCache() {
-    return fragmentCache;
-  }
-
-  public String getContent() {
-    return content;
   }
 }
