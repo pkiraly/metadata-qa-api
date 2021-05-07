@@ -14,9 +14,9 @@ import java.util.Map;
 public class BaseSchema implements Schema, CsvAwareSchema, Serializable {
 
   private static final long serialVersionUID = 6775942932769040511L;
-  private final Map<String, JsonBranch> PATHS = new LinkedHashMap<>();
-  private final Map<String, JsonBranch> COLLECTION_PATHS = new LinkedHashMap<>();
-  private final Map<String, JsonBranch> DIRECT_CHILDREN = new LinkedHashMap<>();
+  private final Map<String, JsonBranch> paths = new LinkedHashMap<>();
+  private final Map<String, JsonBranch> collectionPaths = new LinkedHashMap<>();
+  private final Map<String, JsonBranch> directChildren = new LinkedHashMap<>();
   private Map<String, String> extractableFields = new LinkedHashMap<>();
   private List<String> categories = null;
   private List<RuleChecker> ruleCheckers;
@@ -28,13 +28,13 @@ public class BaseSchema implements Schema, CsvAwareSchema, Serializable {
 
   public BaseSchema addField(JsonBranch branch) {
     branch.setSchema(this);
-    PATHS.put(branch.getLabel(), branch);
+    paths.put(branch.getLabel(), branch);
 
     if (branch.getParent() == null)
-      DIRECT_CHILDREN.put(branch.getLabel(), branch);
+      directChildren.put(branch.getLabel(), branch);
 
     if (branch.isCollection())
-      COLLECTION_PATHS.put(branch.getLabel(), branch);
+      collectionPaths.put(branch.getLabel(), branch);
 
     if (branch.isExtractable())
       extractableFields.put(branch.getLabel(), branch.getJsonPath());
@@ -66,22 +66,22 @@ public class BaseSchema implements Schema, CsvAwareSchema, Serializable {
 
   @Override
   public List<JsonBranch> getCollectionPaths() {
-    return new ArrayList(COLLECTION_PATHS.values());
+    return new ArrayList(collectionPaths.values());
   }
 
   @Override
   public List<JsonBranch> getRootChildrenPaths() {
-    return new ArrayList(DIRECT_CHILDREN.values());
+    return new ArrayList(directChildren.values());
   }
 
   @Override
   public List<JsonBranch> getPaths() {
-    return new ArrayList(PATHS.values());
+    return new ArrayList(paths.values());
   }
 
   @Override
   public JsonBranch getPathByLabel(String label) {
-    return PATHS.get(label);
+    return paths.get(label);
   }
 
   @Override
@@ -117,7 +117,7 @@ public class BaseSchema implements Schema, CsvAwareSchema, Serializable {
   @Override
   public List<String> getCategories() {
     if (categories == null) {
-      categories = Category.extractCategories(PATHS.values());
+      categories = Category.extractCategories(paths.values());
     }
     return categories;
   }
@@ -133,7 +133,7 @@ public class BaseSchema implements Schema, CsvAwareSchema, Serializable {
   @Override
   public List<String> getHeader() {
     List<String> headers = new ArrayList<>();
-    for (JsonBranch branch : PATHS.values()) {
+    for (JsonBranch branch : paths.values()) {
       headers.add(branch.getJsonPath());
     }
     return headers;

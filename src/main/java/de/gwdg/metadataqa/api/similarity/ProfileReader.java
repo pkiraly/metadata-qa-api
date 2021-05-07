@@ -3,7 +3,6 @@ package de.gwdg.metadataqa.api.similarity;
 import de.gwdg.metadataqa.api.util.FileUtils;
 
 import java.io.IOException;
-import java.net.URISyntaxException;
 import java.nio.charset.Charset;
 import java.nio.file.Files;
 import java.nio.file.Paths;

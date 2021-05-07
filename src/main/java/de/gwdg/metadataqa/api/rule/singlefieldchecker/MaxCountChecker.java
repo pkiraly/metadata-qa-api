@@ -2,12 +2,9 @@ package de.gwdg.metadataqa.api.rule.singlefieldchecker;
 
 import de.gwdg.metadataqa.api.counter.FieldCounter;
 import de.gwdg.metadataqa.api.json.JsonBranch;
-import de.gwdg.metadataqa.api.model.XmlFieldInstance;
 import de.gwdg.metadataqa.api.model.pathcache.PathCache;
 import de.gwdg.metadataqa.api.rule.RuleCheckingOutput;
 import de.gwdg.metadataqa.api.util.InstanceCounter;
-
-import java.util.List;
 
 public class MaxCountChecker extends SingleFieldChecker {
 
