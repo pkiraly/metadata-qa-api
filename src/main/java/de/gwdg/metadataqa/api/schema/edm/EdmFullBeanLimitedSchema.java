@@ -195,6 +195,6 @@ public class EdmFullBeanLimitedSchema extends EdmSchema implements Serializable 
 
   @Override
   public List<JsonBranch> getCollectionPaths() {
-    return new ArrayList();
+    return new ArrayList<>();
   }
 }

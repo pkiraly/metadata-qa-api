@@ -197,7 +197,7 @@ public class EdmOaiPmLimitedJsonSchema extends EdmSchema implements Serializable
 
   @Override
   public List<JsonBranch> getCollectionPaths() {
-    return new ArrayList();
+    return new ArrayList<>();
   }
 
   @Override

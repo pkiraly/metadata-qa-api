@@ -2,7 +2,6 @@ package de.gwdg.metadataqa.api.problemcatalog;
 
 import de.gwdg.metadataqa.api.counter.FieldCounter;
 import de.gwdg.metadataqa.api.interfaces.Calculator;
-import de.gwdg.metadataqa.api.rule.RuleCheckingOutput;
 import de.gwdg.metadataqa.api.util.CompressionLevel;
 
 import java.util.LinkedHashMap;

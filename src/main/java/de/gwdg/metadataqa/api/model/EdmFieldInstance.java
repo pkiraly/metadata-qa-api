@@ -40,6 +40,7 @@ public class EdmFieldInstance extends XmlFieldInstance {
     return StringUtils.isNotBlank(resource);
   }
 
+  @Override
   public boolean isEmpty() {
     return !hasValue() && !hasLanguage() && !hasResource();
   }
