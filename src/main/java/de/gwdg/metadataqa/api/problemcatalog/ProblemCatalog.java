@@ -3,22 +3,18 @@ package de.gwdg.metadataqa.api.problemcatalog;
 import de.gwdg.metadataqa.api.interfaces.Observer;
 import de.gwdg.metadataqa.api.interfaces.Observable;
 import de.gwdg.metadataqa.api.counter.FieldCounter;
-import de.gwdg.metadataqa.api.interfaces.Calculator;
 import de.gwdg.metadataqa.api.model.pathcache.PathCache;
 import de.gwdg.metadataqa.api.schema.ProblemCatalogSchema;
-import de.gwdg.metadataqa.api.util.CompressionLevel;
 import java.io.Serializable;
 import java.util.ArrayList;
-import java.util.LinkedHashMap;
 import java.util.List;
-import java.util.Map;
 import java.util.logging.Logger;
 
 /**
  *
  * @author Péter Király <peter.kiraly at gwdg.de>
  */
-public class ProblemCatalog implements Calculator, Serializable, Observable {
+public class ProblemCatalog extends BaseProblemCatalog<Double> implements Serializable, Observable {
 
   private static final long serialVersionUID = -8099737126539035900L;
   private static final Logger LOGGER = Logger.getLogger(ProblemCatalog.class.getCanonicalName());
@@ -29,7 +25,6 @@ public class ProblemCatalog implements Calculator, Serializable, Observable {
   private String jsonString;
   private Object jsonDocument;
   private PathCache cache;
-  private FieldCounter<Double> fieldCounter;
   private ProblemCatalogSchema schema;
 
   public ProblemCatalog(ProblemCatalogSchema schema) {
@@ -73,33 +68,6 @@ public class ProblemCatalog implements Calculator, Serializable, Observable {
     this.cache = cache;
     this.fieldCounter = new FieldCounter<>();
     notifyObservers();
-  }
-
-  @Override
-  public Map<String, ? extends Object> getResultMap() {
-    return fieldCounter.getMap();
-  }
-
-  @Override
-  public Map<String, Map<String, ? extends Object>> getLabelledResultMap() {
-    Map<String, Map<String, ? extends Object>> labelledResultMap = new LinkedHashMap<>();
-    labelledResultMap.put(getCalculatorName(), fieldCounter.getMap());
-    return labelledResultMap;
-  }
-
-  @Override
-  public String getCsv(boolean withLabels, CompressionLevel compressionLevel) {
-    return fieldCounter.getCsv(withLabels, compressionLevel);
-  }
-
-  @Override
-  public List<String> getList(boolean withLabels, CompressionLevel compressionLevel) {
-    return fieldCounter.getList(withLabels, compressionLevel);
-  }
-
-  @Override
-  public List<Object> getCsv() {
-    return fieldCounter.getCsv();
   }
 
   @Override

@@ -1,24 +1,20 @@
 package de.gwdg.metadataqa.api.rule;
 
 import de.gwdg.metadataqa.api.counter.FieldCounter;
-import de.gwdg.metadataqa.api.interfaces.Calculator;
 import de.gwdg.metadataqa.api.model.pathcache.PathCache;
+import de.gwdg.metadataqa.api.problemcatalog.BaseProblemCatalog;
 import de.gwdg.metadataqa.api.schema.Schema;
-import de.gwdg.metadataqa.api.util.CompressionLevel;
 
 import java.io.Serializable;
 import java.util.ArrayList;
-import java.util.LinkedHashMap;
 import java.util.List;
-import java.util.Map;
 import java.util.logging.Logger;
 
-public class RuleCatalog implements Calculator, Serializable {
+public class RuleCatalog extends BaseProblemCatalog<RuleCheckingOutput> implements Serializable {
 
   private static final Logger LOGGER = Logger.getLogger(RuleCatalog.class.getCanonicalName());
 
   private final List<RuleChecker> ruleCheckers = new ArrayList<>();
-  private FieldCounter<RuleCheckingOutput> fieldCounter;
   private static final String CALCULATOR_NAME = "ruleCatalog";
   private Schema schema;
 
@@ -36,33 +32,6 @@ public class RuleCatalog implements Calculator, Serializable {
     for (RuleChecker ruleChecker : schema.getRuleCheckers()) {
       ruleChecker.update(cache, fieldCounter);
     }
-  }
-
-  @Override
-  public Map<String, ? extends Object> getResultMap() {
-    return fieldCounter.getMap();
-  }
-
-  @Override
-  public Map<String, Map<String, ? extends Object>> getLabelledResultMap() {
-    Map<String, Map<String, ? extends Object>> labelledResultMap = new LinkedHashMap<>();
-    labelledResultMap.put(getCalculatorName(), fieldCounter.getMap());
-    return labelledResultMap;
-  }
-
-  @Override
-  public String getCsv(boolean withLabels, CompressionLevel compressionLevel) {
-    return fieldCounter.getCsv(withLabels, compressionLevel);
-  }
-
-  @Override
-  public List<Object> getCsv() {
-    return fieldCounter.getCsv();
-  }
-
-  @Override
-  public List<String> getList(boolean withLabels, CompressionLevel compressionLevel) {
-    return fieldCounter.getList(withLabels, compressionLevel);
   }
 
   @Override
