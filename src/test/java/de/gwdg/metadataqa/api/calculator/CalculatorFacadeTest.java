@@ -6,6 +6,7 @@ import com.opencsv.exceptions.CsvValidationException;
 import de.gwdg.metadataqa.api.json.JsonBranch;
 import de.gwdg.metadataqa.api.model.Category;
 import de.gwdg.metadataqa.api.schema.*;
+import de.gwdg.metadataqa.api.schema.edm.EdmOaiPmhJsonSchema;
 import de.gwdg.metadataqa.api.util.CsvReader;
 import de.gwdg.metadataqa.api.util.FileUtils;
 import de.gwdg.metadataqa.api.interfaces.Calculator;

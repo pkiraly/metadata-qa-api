@@ -3,8 +3,8 @@ package de.gwdg.metadataqa.api.problemcatalog;
 import de.gwdg.metadataqa.api.counter.FieldCounter;
 import de.gwdg.metadataqa.api.util.FileUtils;
 import de.gwdg.metadataqa.api.model.pathcache.JsonPathCache;
-import de.gwdg.metadataqa.api.schema.EdmOaiPmhJsonSchema;
-import de.gwdg.metadataqa.api.schema.EdmSchema;
+import de.gwdg.metadataqa.api.schema.edm.EdmOaiPmhJsonSchema;
+import de.gwdg.metadataqa.api.schema.edm.EdmSchema;
 
 import java.io.IOException;
 import java.net.URISyntaxException;

@@ -6,7 +6,7 @@ import de.gwdg.metadataqa.api.json.FieldGroup;
 import de.gwdg.metadataqa.api.json.JsonBranch;
 import de.gwdg.metadataqa.api.model.Category;
 import de.gwdg.metadataqa.api.model.pathcache.JsonPathCache;
-import de.gwdg.metadataqa.api.schema.EdmOaiPmLimitedJsonSchema;
+import de.gwdg.metadataqa.api.schema.edm.EdmOaiPmLimitedJsonSchema;
 import de.gwdg.metadataqa.api.schema.Schema;
 import de.gwdg.metadataqa.api.util.CompressionLevel;
 import de.gwdg.metadataqa.api.util.FileUtils;
@@ -16,8 +16,6 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
-import java.util.stream.Collector;
-import java.util.stream.Collectors;
 
 import org.apache.commons.lang3.BooleanUtils;
 import org.apache.commons.lang3.StringUtils;
@@ -67,7 +65,7 @@ public class CompletenessCalculatorLimitedTest {
   @Test
   public void testCompleteness() throws URISyntaxException, IOException {
 
-    assertEquals("de.gwdg.metadataqa.api.schema.EdmOaiPmLimitedJsonSchema",
+    assertEquals("de.gwdg.metadataqa.api.schema.edm.EdmOaiPmLimitedJsonSchema",
       calculator.getSchema().getClass().getName());
     assertEquals(0, calculator.getSchema().getCollectionPaths().size());
     assertEquals(35, calculator.getSchema().getPaths().size());

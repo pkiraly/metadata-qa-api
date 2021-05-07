@@ -3,7 +3,7 @@ package de.gwdg.metadataqa.api.calculator;
 import de.bechte.junit.runners.context.HierarchicalContextRunner;
 import de.gwdg.metadataqa.api.model.pathcache.JsonPathCache;
 import de.gwdg.metadataqa.api.model.pathcache.PathCache;
-import de.gwdg.metadataqa.api.schema.EdmOaiPmhJsonSchema;
+import de.gwdg.metadataqa.api.schema.edm.EdmOaiPmhJsonSchema;
 import de.gwdg.metadataqa.api.schema.Schema;
 import de.gwdg.metadataqa.api.uniqueness.SolrClient;
 import de.gwdg.metadataqa.api.uniqueness.SolrClientMock;
@@ -88,6 +88,7 @@ public class UniquenessCalculatorTest {
 
     @Before
     public void setUp() {
+      System.err.println("TESTINSIDEFACADE::" + schema.getClass());
       facade = new CalculatorFacade()
         .setSchema(schema)
         .setSolrClient(solrClient)

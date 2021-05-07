@@ -2,8 +2,8 @@ package de.gwdg.metadataqa.api.problemcatalog;
 
 import de.gwdg.metadataqa.api.counter.FieldCounter;
 import de.gwdg.metadataqa.api.model.pathcache.JsonPathCache;
-import de.gwdg.metadataqa.api.schema.EdmOaiPmhJsonSchema;
-import de.gwdg.metadataqa.api.schema.EdmSchema;
+import de.gwdg.metadataqa.api.schema.edm.EdmOaiPmhJsonSchema;
+import de.gwdg.metadataqa.api.schema.edm.EdmSchema;
 import de.gwdg.metadataqa.api.util.FileUtils;
 import java.io.IOException;
 import java.net.URISyntaxException;
@@ -24,17 +24,6 @@ public class DuplicatedStringsTest {
   private DuplicatedStrings detector;
   private JsonPathCache cache;
 
-  public DuplicatedStringsTest() {
-  }
-
-  @BeforeClass
-  public static void setUpClass() {
-  }
-
-  @AfterClass
-  public static void tearDownClass() {
-  }
-
   @Before
   public void setUp() throws URISyntaxException, IOException {
     EdmSchema schema = new EdmOaiPmhJsonSchema();
@@ -44,18 +33,13 @@ public class DuplicatedStringsTest {
     cache = new JsonPathCache(FileUtils.readFirstLineFromResource(problemFileName));
   }
 
-  @After
-  public void tearDown() {
-  }
-
   // <edm:provider>Europeana Food and DrinkEuropeana Food and Drink</edm:provider>
   // <dc:date>1890 ; 1890</dc:date>
   @Test
   public void test() throws IOException, URISyntaxException {
-
+    System.err.println("DuplicatedStringsTest::test()");
     try {
       FieldCounter<Double> results = new FieldCounter<>();
-
       detector.update(cache, results);
       assertEquals((Double) 8.0, results.get(detector.getHeader()));
     } catch (Exception e) {

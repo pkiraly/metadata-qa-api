@@ -1,6 +1,9 @@
 package de.gwdg.metadataqa.api.json;
 
 import de.gwdg.metadataqa.api.schema.*;
+import de.gwdg.metadataqa.api.schema.edm.EdmFullBeanSchema;
+import de.gwdg.metadataqa.api.schema.edm.EdmOaiPmhJsonSchema;
+import de.gwdg.metadataqa.api.schema.edm.EdmOaiPmhXmlSchema;
 import org.junit.Test;
 
 import java.util.Arrays;

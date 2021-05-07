@@ -4,7 +4,7 @@ import com.jayway.jsonpath.Configuration;
 import com.jayway.jsonpath.JsonPath;
 import com.jayway.jsonpath.PathNotFoundException;
 import de.gwdg.metadataqa.api.json.JsonBranch;
-import de.gwdg.metadataqa.api.schema.EdmOaiPmhJsonSchema;
+import de.gwdg.metadataqa.api.schema.edm.EdmOaiPmhJsonSchema;
 import de.gwdg.metadataqa.api.schema.Schema;
 import de.gwdg.metadataqa.api.util.FileUtils;
 import java.io.IOException;
@@ -23,19 +23,8 @@ public class NodeEnabledCalculatorTest {
 
   Schema schema = new EdmOaiPmhJsonSchema();
 
-  public NodeEnabledCalculatorTest() {
-  }
-
-  @BeforeClass
-  public static void setUpClass() {
-  }
-
-  @Before
-  public void setUp() {
-  }
-
   @Test
-  public void hello() throws URISyntaxException, IOException {
+  public void test() throws URISyntaxException, IOException {
     String jsonString = FileUtils.readFirstLineFromResource("general/test.json");
 
     Object jsonDocument = Configuration.defaultConfiguration().jsonProvider().parse(jsonString);

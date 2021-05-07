@@ -6,7 +6,7 @@ import de.gwdg.metadataqa.api.calculator.CompletenessCalculator;
 import de.gwdg.metadataqa.api.model.EdmFieldInstance;
 import de.gwdg.metadataqa.api.model.XmlFieldInstance;
 import de.gwdg.metadataqa.api.model.pathcache.JsonPathCache;
-import de.gwdg.metadataqa.api.schema.EdmFullBeanSchema;
+import de.gwdg.metadataqa.api.schema.edm.EdmFullBeanSchema;
 import de.gwdg.metadataqa.api.util.CompressionLevel;
 import de.gwdg.metadataqa.api.util.FileUtils;
 import net.minidev.json.JSONArray;

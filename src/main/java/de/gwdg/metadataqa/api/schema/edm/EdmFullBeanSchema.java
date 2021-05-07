@@ -1,9 +1,9 @@
-package de.gwdg.metadataqa.api.schema;
+package de.gwdg.metadataqa.api.schema.edm;
 
 import de.gwdg.metadataqa.api.json.FieldGroup;
 import de.gwdg.metadataqa.api.json.JsonBranch;
 import de.gwdg.metadataqa.api.model.Category;
-import de.gwdg.metadataqa.api.rule.RuleChecker;
+import de.gwdg.metadataqa.api.schema.Format;
 
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -20,16 +20,11 @@ import java.util.Map;
 public class EdmFullBeanSchema extends EdmSchema implements Serializable {
 
   private static final long serialVersionUID = 3673596446212645981L;
-  // private final static List<JsonBranch> paths = new ArrayList<>();
-  private static final List<FieldGroup> FIELD_GROUPS = new ArrayList<>();
-  private static final List<String> NO_LANGUAGE_FIELDS = new ArrayList<>();
-  private static final Map<String, String> SOLR_FIELDS = new LinkedHashMap<>();
-  private Map<String, String> extractableFields = new LinkedHashMap<>();
-  private static final List<String> EMPTY_STRINGS = new ArrayList<>();
-  private static final Map<String, JsonBranch> PATHS = new LinkedHashMap<>();
-  private static final Map<String, JsonBranch> COLLECTION_PATHS = new LinkedHashMap<>();
-  private static List<String> categories = null;
-  private static List<RuleChecker> ruleCheckers;
+
+  private final List<FieldGroup> FIELD_GROUPS = new ArrayList<>();
+  private final List<String> NO_LANGUAGE_FIELDS = new ArrayList<>();
+  private final Map<String, String> SOLR_FIELDS = new LinkedHashMap<>();
+  private final List<String> EMPTY_STRINGS = new ArrayList<>();
 
   public static final String ABOUT = "$.['about']";
   private static final String LONG_SUBJECT_PATH =
@@ -39,8 +34,11 @@ public class EdmFullBeanSchema extends EdmSchema implements Serializable {
   private static final String DESCRIPTION_PATH =
     "$.['proxies'][?(@['europeanaProxy'] == false)]['dcDescription']";
 
+  public EdmFullBeanSchema() {
+    initialize();
+  }
 
-  static {
+  private void initialize() {
     JsonBranch providedCHO = new JsonBranch("ProvidedCHO", "$.['providedCHOs'][0]");
     providedCHO.setCollection(true);
     addPath(providedCHO);
@@ -326,18 +324,15 @@ public class EdmFullBeanSchema extends EdmSchema implements Serializable {
     SOLR_FIELDS.put("Proxy/dcterms:alternative", "dcterms_alternative_txt");
     SOLR_FIELDS.put("Proxy/dc:description", "dc_description_txt");
 
-    // extractableFields.put("country", "$.['europeanaAggregation'][0]['edmCountry'][0]");
-    // extractableFields.put("language", "$.['europeanaAggregation'][0]['edmLanguage'][0]");
-
     EMPTY_STRINGS.add(TITLE_PATH);
     EMPTY_STRINGS.add(DESCRIPTION_PATH);
     EMPTY_STRINGS.add(LONG_SUBJECT_PATH);
-  }
 
-  public EdmFullBeanSchema() {
     extractableFields.put("recordId", "$.identifier");
     extractableFields.put("dataset", "$.sets[0]");
     extractableFields.put("dataProvider", "$.['aggregations'][0]['edmDataProvider'][0]");
+    // extractableFields.put("country", "$.['europeanaAggregation'][0]['edmCountry'][0]");
+    // extractableFields.put("language", "$.['europeanaAggregation'][0]['edmLanguage'][0]");
   }
 
   @Override
@@ -353,21 +348,6 @@ public class EdmFullBeanSchema extends EdmSchema implements Serializable {
   @Override
   public Map<String, String> getSolrFields() {
     return SOLR_FIELDS;
-  }
-
-  @Override
-  public Map<String, String> getExtractableFields() {
-    return extractableFields;
-  }
-
-  @Override
-  public void setExtractableFields(Map<String, String> extractableFields) {
-    this.extractableFields = extractableFields;
-  }
-
-  @Override
-  public void addExtractableField(String label, String jsonPath) {
-    extractableFields.put(label, jsonPath);
   }
 
   @Override
@@ -398,43 +378,6 @@ public class EdmFullBeanSchema extends EdmSchema implements Serializable {
   @Override
   public List<JsonBranch> getCollectionPaths() {
     return new ArrayList(COLLECTION_PATHS.values());
-  }
-
-  private static void addPath(JsonBranch branch) {
-    PATHS.put(branch.getLabel(), branch);
-    if (branch.isCollection())
-      COLLECTION_PATHS.put(branch.getLabel(), branch);
-  }
-
-  @Override
-  public List<JsonBranch> getPaths() {
-    return new ArrayList(PATHS.values());
-  }
-
-  @Override
-  public List<JsonBranch> getRootChildrenPaths() {
-    throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-  }
-
-  @Override
-  public JsonBranch getPathByLabel(String label) {
-    return PATHS.get(label);
-  }
-
-  @Override
-  public List<String> getCategories() {
-    if (categories == null) {
-      categories = Category.extractCategories(PATHS.values(), true);
-    }
-    return categories;
-  }
-
-  @Override
-  public List<RuleChecker> getRuleCheckers() {
-    if (ruleCheckers == null) {
-      ruleCheckers = SchemaUtils.getRuleCheckers(this);
-    }
-    return ruleCheckers;
   }
 
 }

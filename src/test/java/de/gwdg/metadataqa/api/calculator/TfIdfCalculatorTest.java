@@ -1,7 +1,7 @@
 package de.gwdg.metadataqa.api.calculator;
 
-import de.gwdg.metadataqa.api.schema.EdmFullBeanSchema;
-import de.gwdg.metadataqa.api.schema.EdmOaiPmhJsonSchema;
+import de.gwdg.metadataqa.api.schema.edm.EdmFullBeanSchema;
+import de.gwdg.metadataqa.api.schema.edm.EdmOaiPmhJsonSchema;
 import java.util.Arrays;
 import java.util.List;
 import org.junit.Test;
