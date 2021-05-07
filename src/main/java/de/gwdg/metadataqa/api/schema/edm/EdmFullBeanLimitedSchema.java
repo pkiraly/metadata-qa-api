@@ -8,9 +8,7 @@ import de.gwdg.metadataqa.api.schema.Format;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.LinkedHashMap;
 import java.util.List;
-import java.util.Map;
 
 /**
  * The Europeana Data Model (EDM) representation of the metadata schema interface.
@@ -21,34 +19,26 @@ public class EdmFullBeanLimitedSchema extends EdmSchema implements Serializable 
 
   private static final long serialVersionUID = 5248200128650498403L;
 
-  private final List<FieldGroup> FIELD_GROUPS = new ArrayList<>();
-  private final List<String> NO_LANGUAGE_FIELDS = new ArrayList<>();
-  private final Map<String, String> SOLR_FIELDS = new LinkedHashMap<>();
-  private final List<String> EMPTY_STRINGS = new ArrayList<>();
-
-  private static final String LONG_SUBJECT_PATH =
-    "$.['proxies'][?(@['europeanaProxy'] == false)]['dcSubject']";
-  private static final String TITLE_PATH =
-    "$.['proxies'][?(@['europeanaProxy'] == false)]['dcTitle']";
-  private static final String DESCRIPTION_PATH =
-    "$.['proxies'][?(@['europeanaProxy'] == false)]['dcDescription']";
-
   public EdmFullBeanLimitedSchema() {
     initialize();
   }
 
   private void initialize() {
+    longSubjectPath = "$.['proxies'][?(@['europeanaProxy'] == false)]['dcSubject']";
+    titlePath = "$.['proxies'][?(@['europeanaProxy'] == false)]['dcTitle']";
+    descriptionPath = "$.['proxies'][?(@['europeanaProxy'] == false)]['dcDescription']";
+
     addPath(new JsonBranch("edm:ProvidedCHO/@about",
       "$.['providedCHOs'][0]['about']")
       .setCategories(Category.MANDATORY));
-    addPath(new JsonBranch("Proxy/dc:title", TITLE_PATH)
+    addPath(new JsonBranch("Proxy/dc:title", titlePath)
       .setCategories(Category.DESCRIPTIVENESS, Category.SEARCHABILITY,
         Category.IDENTIFICATION, Category.MULTILINGUALITY));
     addPath(new JsonBranch("Proxy/dcterms:alternative",
       "$.['proxies'][?(@['europeanaProxy'] == false)]['dctermsAlternative']")
       .setCategories(Category.DESCRIPTIVENESS, Category.SEARCHABILITY,
         Category.IDENTIFICATION, Category.MULTILINGUALITY));
-    addPath(new JsonBranch("Proxy/dc:description", DESCRIPTION_PATH)
+    addPath(new JsonBranch("Proxy/dc:description", descriptionPath)
       .setCategories(Category.DESCRIPTIVENESS, Category.SEARCHABILITY,
         Category.CONTEXTUALIZATION, Category.IDENTIFICATION,
         Category.MULTILINGUALITY));
@@ -85,7 +75,7 @@ public class EdmFullBeanLimitedSchema extends EdmSchema implements Serializable 
       .setCategories(Category.SEARCHABILITY, Category.CONTEXTUALIZATION,
         Category.BROWSING));
     addPath(new JsonBranch("Proxy/dc:subject",
-      LONG_SUBJECT_PATH)
+      longSubjectPath)
       .setCategories(Category.DESCRIPTIVENESS, Category.SEARCHABILITY,
         Category.CONTEXTUALIZATION, Category.MULTILINGUALITY));
     addPath(new JsonBranch("Proxy/dc:date",
@@ -165,72 +155,37 @@ public class EdmFullBeanLimitedSchema extends EdmSchema implements Serializable 
       "$.['aggregations'][0]['hasView']")
       .setCategories(Category.BROWSING, Category.VIEWING));
 
-    FIELD_GROUPS.add(
+    fieldGroups.add(
       new FieldGroup(
         Category.MANDATORY,
         "Proxy/dc:title", "Proxy/dc:description"));
-    FIELD_GROUPS.add(
+    fieldGroups.add(
       new FieldGroup(
         Category.MANDATORY,
         "Proxy/dc:type", "Proxy/dc:subject", "Proxy/dc:coverage",
         "Proxy/dcterms:temporal", "Proxy/dcterms:spatial"));
-    FIELD_GROUPS.add(
+    fieldGroups.add(
       new FieldGroup(
         Category.MANDATORY,
         "Aggregation/edm:isShownAt", "Aggregation/edm:isShownBy"));
 
-    NO_LANGUAGE_FIELDS.addAll(Arrays.asList(
+    noLanguageFields.addAll(Arrays.asList(
       "edm:ProvidedCHO/@about", "Proxy/edm:isNextInSequence",
       "Proxy/edm:type", "Aggregation/edm:isShownAt",
       "Aggregation/edm:isShownBy", "Aggregation/edm:object",
       "Aggregation/edm:hasView"));
 
-    SOLR_FIELDS.put("dc:title", "dc_title_txt");
-    SOLR_FIELDS.put("dcterms:alternative", "dcterms_alternative_txt");
-    SOLR_FIELDS.put("dc:description", "dc_description_txt");
+    solrFields.put("dc:title", "dc_title_txt");
+    solrFields.put("dcterms:alternative", "dcterms_alternative_txt");
+    solrFields.put("dc:description", "dc_description_txt");
 
     extractableFields.put("recordId", "$.identifier");
     extractableFields.put("dataset", "$.sets[0]");
     extractableFields.put("dataProvider", "$.['aggregations'][0]['edmDataProvider'][0]");
 
-    EMPTY_STRINGS.add(TITLE_PATH);
-    EMPTY_STRINGS.add(DESCRIPTION_PATH);
-    EMPTY_STRINGS.add(LONG_SUBJECT_PATH);
-  }
-
-  @Override
-  public List<FieldGroup> getFieldGroups() {
-    return FIELD_GROUPS;
-  }
-
-  @Override
-  public List<String> getNoLanguageFields() {
-    return NO_LANGUAGE_FIELDS;
-  }
-
-  @Override
-  public Map<String, String> getSolrFields() {
-    return SOLR_FIELDS;
-  }
-
-  @Override
-  public List<String> getEmptyStringPaths() {
-    return EMPTY_STRINGS;
-  }
-
-  @Override
-  public String getSubjectPath() {
-    return LONG_SUBJECT_PATH;
-  }
-
-  @Override
-  public String getTitlePath() {
-    return TITLE_PATH;
-  }
-
-  @Override
-  public String getDescriptionPath() {
-    return DESCRIPTION_PATH;
+    emptyStrings.add(titlePath);
+    emptyStrings.add(descriptionPath);
+    emptyStrings.add(longSubjectPath);
   }
 
   @Override

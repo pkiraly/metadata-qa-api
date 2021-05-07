@@ -8,9 +8,7 @@ import de.gwdg.metadataqa.api.schema.Format;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.LinkedHashMap;
 import java.util.List;
-import java.util.Map;
 
 /**
  * The Europeana Data Model (EDM) representation of the metadata schema interface.
@@ -21,39 +19,32 @@ public class EdmFullBeanSchema extends EdmSchema implements Serializable {
 
   private static final long serialVersionUID = 3673596446212645981L;
 
-  private final List<FieldGroup> FIELD_GROUPS = new ArrayList<>();
-  private final List<String> NO_LANGUAGE_FIELDS = new ArrayList<>();
-  private final Map<String, String> SOLR_FIELDS = new LinkedHashMap<>();
-  private final List<String> EMPTY_STRINGS = new ArrayList<>();
-
   public static final String ABOUT = "$.['about']";
-  private static final String LONG_SUBJECT_PATH =
-    "$.['proxies'][?(@['europeanaProxy'] == false)]['dcSubject']";
-  private static final String TITLE_PATH =
-    "$.['proxies'][?(@['europeanaProxy'] == false)]['dcTitle']";
-  private static final String DESCRIPTION_PATH =
-    "$.['proxies'][?(@['europeanaProxy'] == false)]['dcDescription']";
 
   public EdmFullBeanSchema() {
     initialize();
   }
 
   private void initialize() {
-    JsonBranch providedCHO = new JsonBranch("ProvidedCHO", "$.['providedCHOs'][0]");
+    longSubjectPath = "$.['proxies'][?(@['europeanaProxy'] == false)]['dcSubject']";
+    titlePath = "$.['proxies'][?(@['europeanaProxy'] == false)]['dcTitle']";
+    descriptionPath = "$.['proxies'][?(@['europeanaProxy'] == false)]['dcDescription']";
+
+    var providedCHO = new JsonBranch("ProvidedCHO", "$.['providedCHOs'][0]");
     providedCHO.setCollection(true);
     addPath(providedCHO);
 
-    JsonBranch providedCHOIdentifier = new JsonBranch("ProvidedCHO/rdf:about",
+    var providedCHOIdentifier = new JsonBranch("ProvidedCHO/rdf:about",
       providedCHO, ABOUT)
       .setCategories(Category.MANDATORY);
     providedCHO.setIdentifier(providedCHOIdentifier);
     addPath(providedCHOIdentifier);
 
-    JsonBranch proxy = new JsonBranch("Proxy", "$.['proxies'][?(@['europeanaProxy'] == false)]");
+    var proxy = new JsonBranch("Proxy", "$.['proxies'][?(@['europeanaProxy'] == false)]");
     proxy.setCollection(true);
     addPath(proxy);
 
-    JsonBranch proxyIdentifier = new JsonBranch("Proxy/rdf:about", proxy, ABOUT);
+    var proxyIdentifier = new JsonBranch("Proxy/rdf:about", proxy, ABOUT);
     proxy.setIdentifier(proxyIdentifier);
     addPath(proxyIdentifier);
 
@@ -153,10 +144,10 @@ public class EdmFullBeanSchema extends EdmSchema implements Serializable {
     addPath(new JsonBranch("Proxy/edm:realizes", proxy, "$.['edmRealizes']"));
     addPath(new JsonBranch("Proxy/edm:wasPresentAt", proxy, "$.['edmWasPresentAt']"));
 
-    JsonBranch aggregation = new JsonBranch("Aggregation", "$.['aggregations'][0]");
+    var aggregation = new JsonBranch("Aggregation", "$.['aggregations'][0]");
     aggregation.setCollection(true);
     addPath(aggregation);
-    JsonBranch aggregationIdentifier = new JsonBranch("Aggregation/rdf:about", aggregation, ABOUT);
+    var aggregationIdentifier = new JsonBranch("Aggregation/rdf:about", aggregation, ABOUT);
     addPath(aggregationIdentifier);
     aggregation.setIdentifier(aggregationIdentifier);
 
@@ -182,10 +173,10 @@ public class EdmFullBeanSchema extends EdmSchema implements Serializable {
     addPath(new JsonBranch("Aggregation/edm:aggregatedCHO", aggregation, "$.['aggregatedCHO']"));
     addPath(new JsonBranch("Aggregation/edm:intermediateProvider", aggregation, "$.['edmIntermediateProvider']"));
 
-    JsonBranch place = new JsonBranch("Place", "$.['places']");
+    var place = new JsonBranch("Place", "$.['places']");
     place.setCollection(true);
     addPath(place);
-    JsonBranch placeIdentifier = new JsonBranch("Place/rdf:about", place, ABOUT);
+    var placeIdentifier = new JsonBranch("Place/rdf:about", place, ABOUT);
     addPath(placeIdentifier);
     place.setIdentifier(placeIdentifier);
 
@@ -201,10 +192,10 @@ public class EdmFullBeanSchema extends EdmSchema implements Serializable {
     addPath(new JsonBranch("Place/skos:altLabel", place, "$.['altLabel']"));
     addPath(new JsonBranch("Place/skos:note", place, "$.['note']"));
 
-    JsonBranch agent = new JsonBranch("Agent", "$.['agents']");
+    var agent = new JsonBranch("Agent", "$.['agents']");
     agent.setCollection(true);
     addPath(agent);
-    JsonBranch agentIdentifier = new JsonBranch("Agent/rdf:about", agent, ABOUT);
+    var agentIdentifier = new JsonBranch("Agent/rdf:about", agent, ABOUT);
     addPath(agentIdentifier);
     agent.setIdentifier(agentIdentifier);
 
@@ -229,11 +220,11 @@ public class EdmFullBeanSchema extends EdmSchema implements Serializable {
     addPath(new JsonBranch("Agent/skos:altLabel", agent, "$.['altLabel']"));
     addPath(new JsonBranch("Agent/skos:note", agent, "$.['note']"));
 
-    JsonBranch timespan = new JsonBranch("Timespan", "$.['timespans']");
+    var timespan = new JsonBranch("Timespan", "$.['timespans']");
     timespan.setCollection(true);
     addPath(timespan);
 
-    JsonBranch timespanIdentifier = new JsonBranch("Timespan/rdf:about", timespan, ABOUT);
+    var timespanIdentifier = new JsonBranch("Timespan/rdf:about", timespan, ABOUT);
     addPath(timespanIdentifier);
     timespan.setIdentifier(timespanIdentifier);
 
@@ -248,11 +239,11 @@ public class EdmFullBeanSchema extends EdmSchema implements Serializable {
     addPath(new JsonBranch("Timespan/skos:altLabel", timespan, "$.['altLabel']"));
     addPath(new JsonBranch("Timespan/skos:note", timespan, "$.['note']"));
 
-    JsonBranch concept = new JsonBranch("Concept", "$.['concepts']");
+    var concept = new JsonBranch("Concept", "$.['concepts']");
     concept.setCollection(true);
     addPath(concept);
 
-    JsonBranch conceptIdentifier = new JsonBranch("Concept/rdf:about", concept, ABOUT);
+    var conceptIdentifier = new JsonBranch("Concept/rdf:about", concept, ABOUT);
     addPath(conceptIdentifier);
     concept.setIdentifier(conceptIdentifier);
 
@@ -271,7 +262,7 @@ public class EdmFullBeanSchema extends EdmSchema implements Serializable {
     addPath(new JsonBranch("Concept/skos:altLabel", concept, "$.['altLabel']"));
     addPath(new JsonBranch("Concept/skos:note", concept, "$.['note']"));
 
-    JsonBranch europeanaAggregation = new JsonBranch("EuropeanaAggregation", "$.['europeanaAggregation']")
+    var europeanaAggregation = new JsonBranch("EuropeanaAggregation", "$.['europeanaAggregation']")
       .setActive(false);
     europeanaAggregation.setCollection(true);
     addPath(europeanaAggregation);
@@ -280,21 +271,21 @@ public class EdmFullBeanSchema extends EdmSchema implements Serializable {
     addPath(new JsonBranch("EuropeanaAggregation/edm:language", europeanaAggregation, "$.['edmLanguage']")
       .setActive(false));
 
-    FIELD_GROUPS.add(
+    fieldGroups.add(
       new FieldGroup(
         Category.MANDATORY,
         "Proxy/dc:title", "Proxy/dc:description"));
-    FIELD_GROUPS.add(
+    fieldGroups.add(
       new FieldGroup(
         Category.MANDATORY,
         "Proxy/dc:type", "Proxy/dc:subject", "Proxy/dc:coverage",
         "Proxy/dcterms:temporal", "Proxy/dcterms:spatial"));
-    FIELD_GROUPS.add(
+    fieldGroups.add(
       new FieldGroup(
         Category.MANDATORY,
         "Aggregation/edm:isShownAt", "Aggregation/edm:isShownBy"));
 
-    NO_LANGUAGE_FIELDS.addAll(Arrays.asList(
+    noLanguageFields.addAll(Arrays.asList(
       "ProvidedCHO", "ProvidedCHO/rdf:about",
       "Proxy",
         "Proxy/rdf:about", "Proxy/edm:isNextInSequence", "Proxy/edm:type",
@@ -320,13 +311,13 @@ public class EdmFullBeanSchema extends EdmSchema implements Serializable {
         "Timespan/rdf:about", "Timespan/owl:sameAs"
     ));
 
-    SOLR_FIELDS.put("Proxy/dc:title", "dc_title_txt");
-    SOLR_FIELDS.put("Proxy/dcterms:alternative", "dcterms_alternative_txt");
-    SOLR_FIELDS.put("Proxy/dc:description", "dc_description_txt");
+    solrFields.put("Proxy/dc:title", "dc_title_txt");
+    solrFields.put("Proxy/dcterms:alternative", "dcterms_alternative_txt");
+    solrFields.put("Proxy/dc:description", "dc_description_txt");
 
-    EMPTY_STRINGS.add(TITLE_PATH);
-    EMPTY_STRINGS.add(DESCRIPTION_PATH);
-    EMPTY_STRINGS.add(LONG_SUBJECT_PATH);
+    emptyStrings.add(titlePath);
+    emptyStrings.add(descriptionPath);
+    emptyStrings.add(longSubjectPath);
 
     extractableFields.put("recordId", "$.identifier");
     extractableFields.put("dataset", "$.sets[0]");
@@ -336,48 +327,13 @@ public class EdmFullBeanSchema extends EdmSchema implements Serializable {
   }
 
   @Override
-  public List<FieldGroup> getFieldGroups() {
-    return FIELD_GROUPS;
-  }
-
-  @Override
-  public List<String> getNoLanguageFields() {
-    return NO_LANGUAGE_FIELDS;
-  }
-
-  @Override
-  public Map<String, String> getSolrFields() {
-    return SOLR_FIELDS;
-  }
-
-  @Override
-  public List<String> getEmptyStringPaths() {
-    return EMPTY_STRINGS;
-  }
-
-  @Override
-  public String getSubjectPath() {
-    return LONG_SUBJECT_PATH;
-  }
-
-  @Override
-  public String getTitlePath() {
-    return TITLE_PATH;
-  }
-
-  @Override
-  public String getDescriptionPath() {
-    return DESCRIPTION_PATH;
-  }
-
-  @Override
   public Format getFormat() {
     return Format.JSON;
   }
 
   @Override
   public List<JsonBranch> getCollectionPaths() {
-    return new ArrayList(COLLECTION_PATHS.values());
+    return new ArrayList(collectionPaths.values());
   }
 
 }

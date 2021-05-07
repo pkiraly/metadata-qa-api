@@ -8,9 +8,7 @@ import de.gwdg.metadataqa.api.schema.Format;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.LinkedHashMap;
 import java.util.List;
-import java.util.Map;
 
 /**
  * The Europeana Data Model (EDM) representation of the metadata schema interface.
@@ -21,23 +19,15 @@ public class EdmOaiPmLimitedJsonSchema extends EdmSchema implements Serializable
 
   private static final long serialVersionUID = -9205604492275740771L;
 
-  private final List<FieldGroup> FIELD_GROUPS = new ArrayList<>();
-  private final List<String> NO_LANGUAGE_FIELDS = new ArrayList<>();
-  private final Map<String, String> SOLR_FIELDS = new LinkedHashMap<>();
-  private final List<String> EMPTY_STRINGS = new ArrayList<>();
-
-  private static final String LONG_SUBJECT_PATH =
-    "$.['ore:Proxy'][?(@['edm:europeanaProxy'][0] == 'false')]['dc:subject']";
-  private static final String TITLE_PATH =
-    "$.['ore:Proxy'][?(@['edm:europeanaProxy'][0] == 'false')]['dc:title']";
-  private static final String DESCRIPTION_PATH =
-    "$.['ore:Proxy'][?(@['edm:europeanaProxy'][0] == 'false')]['dc:description']";
-
   public EdmOaiPmLimitedJsonSchema() {
     initialize();
   }
 
   private void initialize() {
+    longSubjectPath = "$.['ore:Proxy'][?(@['edm:europeanaProxy'][0] == 'false')]['dc:subject']";
+    titlePath = "$.['ore:Proxy'][?(@['edm:europeanaProxy'][0] == 'false')]['dc:title']";
+    descriptionPath = "$.['ore:Proxy'][?(@['edm:europeanaProxy'][0] == 'false')]['dc:description']";
+
     addPath(new JsonBranch("edm:ProvidedCHO/@about",
       "$.['edm:ProvidedCHO'][0]['@about']")
       .setCategories(Category.MANDATORY));
@@ -166,73 +156,38 @@ public class EdmOaiPmLimitedJsonSchema extends EdmSchema implements Serializable
       "$.['ore:Aggregation'][0]['edm:hasView']")
       .setCategories(Category.BROWSING, Category.VIEWING));
 
-    FIELD_GROUPS.add(
+    fieldGroups.add(
       new FieldGroup(
         Category.MANDATORY,
         "Proxy/dc:title", "Proxy/dc:description"));
-    FIELD_GROUPS.add(
+    fieldGroups.add(
       new FieldGroup(
         Category.MANDATORY,
         "Proxy/dc:type", "Proxy/dc:subject", "Proxy/dc:coverage",
         "Proxy/dcterms:temporal", "Proxy/dcterms:spatial"));
-    FIELD_GROUPS.add(
+    fieldGroups.add(
       new FieldGroup(
         Category.MANDATORY,
         "Aggregation/edm:isShownAt", "Aggregation/edm:isShownBy"));
 
-    NO_LANGUAGE_FIELDS.addAll(Arrays.asList(
+    noLanguageFields.addAll(Arrays.asList(
       "edm:ProvidedCHO/@about", "Proxy/edm:isNextInSequence",
       "Proxy/edm:type", "Aggregation/edm:isShownAt",
       "Aggregation/edm:isShownBy", "Aggregation/edm:object",
       "Aggregation/edm:hasView"));
 
-    SOLR_FIELDS.put("dc:title", "dc_title_txt");
-    SOLR_FIELDS.put("dcterms:alternative", "dcterms_alternative_txt");
-    SOLR_FIELDS.put("dc:description", "dc_description_txt");
+    solrFields.put("dc:title", "dc_title_txt");
+    solrFields.put("dcterms:alternative", "dcterms_alternative_txt");
+    solrFields.put("dc:description", "dc_description_txt");
 
     extractableFields.put("recordId", "$.identifier");
     extractableFields.put("dataset", "$.sets[0]");
     extractableFields.put("dataProvider", "$.['ore:Aggregation'][0]['edm:dataProvider'][0]");
 
-    EMPTY_STRINGS.add("$.['ore:Proxy'][?(@['edm:europeanaProxy'][0] == 'false')]['dc:title']");
-    EMPTY_STRINGS.add("$.['ore:Proxy'][?(@['edm:europeanaProxy'][0] == 'false')]['dc:description']");
-    EMPTY_STRINGS.add("$.['ore:Proxy'][?(@['edm:europeanaProxy'][0] == 'false')]['dc:subject']");
+    emptyStrings.add("$.['ore:Proxy'][?(@['edm:europeanaProxy'][0] == 'false')]['dc:title']");
+    emptyStrings.add("$.['ore:Proxy'][?(@['edm:europeanaProxy'][0] == 'false')]['dc:description']");
+    emptyStrings.add("$.['ore:Proxy'][?(@['edm:europeanaProxy'][0] == 'false')]['dc:subject']");
 
-  }
-
-  @Override
-  public List<FieldGroup> getFieldGroups() {
-    return FIELD_GROUPS;
-  }
-
-  @Override
-  public List<String> getNoLanguageFields() {
-    return NO_LANGUAGE_FIELDS;
-  }
-
-  @Override
-  public Map<String, String> getSolrFields() {
-    return SOLR_FIELDS;
-  }
-
-  @Override
-  public List<String> getEmptyStringPaths() {
-    return EMPTY_STRINGS;
-  }
-
-  @Override
-  public String getSubjectPath() {
-    return LONG_SUBJECT_PATH;
-  }
-
-  @Override
-  public String getTitlePath() {
-    return TITLE_PATH;
-  }
-
-  @Override
-  public String getDescriptionPath() {
-    return DESCRIPTION_PATH;
   }
 
   @Override

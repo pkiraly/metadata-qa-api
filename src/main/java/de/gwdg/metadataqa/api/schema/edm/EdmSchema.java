@@ -1,5 +1,6 @@
 package de.gwdg.metadataqa.api.schema.edm;
 
+import de.gwdg.metadataqa.api.json.FieldGroup;
 import de.gwdg.metadataqa.api.json.JsonBranch;
 import de.gwdg.metadataqa.api.model.Category;
 import de.gwdg.metadataqa.api.rule.RuleChecker;
@@ -18,22 +19,30 @@ import java.util.Map;
  */
 public abstract class EdmSchema implements Schema, ProblemCatalogSchema {
 
-  protected final Map<String, JsonBranch> PATHS = new LinkedHashMap<>();
-  protected final Map<String, JsonBranch> COLLECTION_PATHS = new LinkedHashMap<>();
+  protected final Map<String, JsonBranch> paths = new LinkedHashMap<>();
+  protected final Map<String, JsonBranch> collectionPaths = new LinkedHashMap<>();
+  protected final List<FieldGroup> fieldGroups = new ArrayList<>();
+  protected final List<String> noLanguageFields = new ArrayList<>();
+  protected final Map<String, String> solrFields = new LinkedHashMap<>();
+  protected final List<String> emptyStrings = new ArrayList<>();
+  protected String longSubjectPath;
+  protected String titlePath;
+  protected String descriptionPath;
+
   protected List<String> categories = null;
   protected List<RuleChecker> ruleCheckers;
 
   protected Map<String, String> extractableFields = new LinkedHashMap<>();
 
   protected void addPath(JsonBranch branch) {
-    PATHS.put(branch.getLabel(), branch);
+    paths.put(branch.getLabel(), branch);
     if (branch.isCollection())
-      COLLECTION_PATHS.put(branch.getLabel(), branch);
+      collectionPaths.put(branch.getLabel(), branch);
   }
 
   @Override
   public List<JsonBranch> getPaths() {
-    return new ArrayList(PATHS.values());
+    return new ArrayList(paths.values());
   }
 
   @Override
@@ -43,13 +52,13 @@ public abstract class EdmSchema implements Schema, ProblemCatalogSchema {
 
   @Override
   public JsonBranch getPathByLabel(String label) {
-    return PATHS.get(label);
+    return paths.get(label);
   }
 
   @Override
   public List<String> getCategories() {
     if (categories == null) {
-      categories = Category.extractCategories(PATHS.values(), true);
+      categories = Category.extractCategories(paths.values(), true);
     }
     return categories;
   }
@@ -60,6 +69,41 @@ public abstract class EdmSchema implements Schema, ProblemCatalogSchema {
       ruleCheckers = SchemaUtils.getRuleCheckers(this);
     }
     return ruleCheckers;
+  }
+
+  @Override
+  public List<FieldGroup> getFieldGroups() {
+    return fieldGroups;
+  }
+
+  @Override
+  public List<String> getNoLanguageFields() {
+    return noLanguageFields;
+  }
+
+  @Override
+  public Map<String, String> getSolrFields() {
+    return solrFields;
+  }
+
+  @Override
+  public List<String> getEmptyStringPaths() {
+    return emptyStrings;
+  }
+
+  @Override
+  public String getSubjectPath() {
+    return longSubjectPath;
+  }
+
+  @Override
+  public String getTitlePath() {
+    return titlePath;
+  }
+
+  @Override
+  public String getDescriptionPath() {
+    return descriptionPath;
   }
 
   @Override

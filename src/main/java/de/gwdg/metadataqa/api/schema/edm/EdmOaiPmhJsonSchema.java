@@ -8,10 +8,7 @@ import de.gwdg.metadataqa.api.schema.Format;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.LinkedHashMap;
 import java.util.List;
-import java.util.Map;
-import java.util.logging.Logger;
 
 /**
  * The Europeana Data Model (EDM) representation of the metadata schema interface.
@@ -22,37 +19,29 @@ public class EdmOaiPmhJsonSchema extends EdmSchema implements Serializable {
 
   private static final long serialVersionUID = 5281918481768643599L;
 
-  private final List<FieldGroup> FIELD_GROUPS = new ArrayList<>();
-  private final List<String> NO_LANGUAGE_FIELDS = new ArrayList<>();
-  private final Map<String, String> SOLR_FIELDS = new LinkedHashMap<>();
-  private final List<String> EMPTY_STRINGS = new ArrayList<>();
-
-  private static final String LONG_SUBJECT_PATH =
-    "$.['ore:Proxy'][?(@['edm:europeanaProxy'][0] == 'false')]['dc:subject']";
-  private static final String TITLE_PATH =
-    "$.['ore:Proxy'][?(@['edm:europeanaProxy'][0] == 'false')]['dc:title']";
-  private static final String DESCRIPTION_PATH =
-    "$.['ore:Proxy'][?(@['edm:europeanaProxy'][0] == 'false')]['dc:description']";
-
   public EdmOaiPmhJsonSchema() {
     initialize();
   }
 
   private void initialize() {
-    JsonBranch providedCHO = new JsonBranch("ProvidedCHO", "$.['edm:ProvidedCHO'][0]");
+    longSubjectPath = "$.['ore:Proxy'][?(@['edm:europeanaProxy'][0] == 'false')]['dc:subject']";
+    titlePath = "$.['ore:Proxy'][?(@['edm:europeanaProxy'][0] == 'false')]['dc:title']";
+    descriptionPath = "$.['ore:Proxy'][?(@['edm:europeanaProxy'][0] == 'false')]['dc:description']";
+
+    var providedCHO = new JsonBranch("ProvidedCHO", "$.['edm:ProvidedCHO'][0]");
     providedCHO.setCollection(true);
     addPath(providedCHO);
-    JsonBranch providedCHOIdentifier = new JsonBranch("ProvidedCHO/rdf:about",
+    var providedCHOIdentifier = new JsonBranch("ProvidedCHO/rdf:about",
       providedCHO, "$.['@about']")
       .setCategories(Category.MANDATORY);
     providedCHO.setIdentifier(providedCHOIdentifier);
     addPath(providedCHOIdentifier);
 
-    JsonBranch proxy = new JsonBranch("Proxy",
+    var proxy = new JsonBranch("Proxy",
       "$.['ore:Proxy'][?(@['edm:europeanaProxy'][0] == 'false')]");
     proxy.setCollection(true);
     addPath(proxy);
-    JsonBranch proxyIdentifier = new JsonBranch("Proxy/rdf:about", proxy, "$.['@about']");
+    var proxyIdentifier = new JsonBranch("Proxy/rdf:about", proxy, "$.['@about']");
     proxy.setIdentifier(proxyIdentifier);
     addPath(proxyIdentifier);
 
@@ -154,10 +143,10 @@ public class EdmOaiPmhJsonSchema extends EdmSchema implements Serializable {
     addPath(new JsonBranch("Proxy/edm:realizes", proxy, "$.['edm:realizes']"));
     addPath(new JsonBranch("Proxy/edm:wasPresentAt", proxy, "$.['edm:wasPresentAt']"));
 
-    JsonBranch aggregation = new JsonBranch("Aggregation", "$.['ore:Aggregation']");
+    var aggregation = new JsonBranch("Aggregation", "$.['ore:Aggregation']");
     aggregation.setCollection(true);
     addPath(aggregation);
-    JsonBranch aggregationIdentifier = new JsonBranch("Aggregation/rdf:about", aggregation, "$.['@about']");
+    var aggregationIdentifier = new JsonBranch("Aggregation/rdf:about", aggregation, "$.['@about']");
     addPath(aggregationIdentifier);
     aggregation.setIdentifier(aggregationIdentifier);
 
@@ -183,10 +172,10 @@ public class EdmOaiPmhJsonSchema extends EdmSchema implements Serializable {
     addPath(new JsonBranch("Aggregation/edm:aggregatedCHO", aggregation, "$.['edm:aggregatedCHO']"));
     addPath(new JsonBranch("Aggregation/edm:intermediateProvider", aggregation, "$.['edm:intermediateProvider']"));
 
-    JsonBranch place = new JsonBranch("Place", "$.['edm:Place']");
+    var place = new JsonBranch("Place", "$.['edm:Place']");
     place.setCollection(true);
     addPath(place);
-    JsonBranch placeIdentifier = new JsonBranch("Place/rdf:about", place, "$.['@about']");
+    var placeIdentifier = new JsonBranch("Place/rdf:about", place, "$.['@about']");
     addPath(placeIdentifier);
     place.setIdentifier(placeIdentifier);
 
@@ -201,11 +190,11 @@ public class EdmOaiPmhJsonSchema extends EdmSchema implements Serializable {
     addPath(new JsonBranch("Place/skos:altLabel", place, "$.['skos:altLabel']"));
     addPath(new JsonBranch("Place/skos:note", place, "$.['skos:note']"));
 
-    JsonBranch agent = new JsonBranch("Agent", "$.['edm:Agent']");
+    var agent = new JsonBranch("Agent", "$.['edm:Agent']");
     agent.setCollection(true);
     addPath(agent);
 
-    JsonBranch agentIdentifier = new JsonBranch("Agent/rdf:about", agent, "$.['@about']");
+    var agentIdentifier = new JsonBranch("Agent/rdf:about", agent, "$.['@about']");
     addPath(agentIdentifier);
     agent.setIdentifier(agentIdentifier);
     addPath(new JsonBranch("Agent/edm:begin", agent, "$.['edm:begin']"));
@@ -229,11 +218,11 @@ public class EdmOaiPmhJsonSchema extends EdmSchema implements Serializable {
     addPath(new JsonBranch("Agent/skos:altLabel", agent, "$.['skos:altLabel']"));
     addPath(new JsonBranch("Agent/skos:note", agent, "$.['skos:note']"));
 
-    JsonBranch timespan = new JsonBranch("Timespan", "$.['edm:TimeSpan']");
+    var timespan = new JsonBranch("Timespan", "$.['edm:TimeSpan']");
     timespan.setCollection(true);
     addPath(timespan);
 
-    JsonBranch timespanIdentifier = new JsonBranch("Timespan/rdf:about", timespan, "$.['@about']");
+    var timespanIdentifier = new JsonBranch("Timespan/rdf:about", timespan, "$.['@about']");
     addPath(timespanIdentifier);
     timespan.setIdentifier(timespanIdentifier);
     addPath(new JsonBranch("Timespan/edm:begin", timespan, "$.['edm:begin']"));
@@ -246,11 +235,11 @@ public class EdmOaiPmhJsonSchema extends EdmSchema implements Serializable {
     addPath(new JsonBranch("Timespan/skos:altLabel", timespan, "$.['skos:altLabel']"));
     addPath(new JsonBranch("Timespan/skos:note", timespan, "$.['skos:note']"));
 
-    JsonBranch concept = new JsonBranch("Concept", "$.['skos:Concept']");
+    var concept = new JsonBranch("Concept", "$.['skos:Concept']");
     concept.setCollection(true);
     addPath(concept);
 
-    JsonBranch conceptIdentifier = new JsonBranch("Concept/rdf:about", concept, "$.['@about']");
+    var conceptIdentifier = new JsonBranch("Concept/rdf:about", concept, "$.['@about']");
     addPath(conceptIdentifier);
     concept.setIdentifier(conceptIdentifier);
     addPath(new JsonBranch("Concept/skos:broader", concept, "$.['skos:broader']"));
@@ -267,7 +256,7 @@ public class EdmOaiPmhJsonSchema extends EdmSchema implements Serializable {
     addPath(new JsonBranch("Concept/skos:altLabel", concept, "$.['skos:altLabel']"));
     addPath(new JsonBranch("Concept/skos:note", concept, "$.['skos:note']"));
 
-    JsonBranch europeanaAggregation = new JsonBranch("EuropeanaAggregation", "$.['edm:EuropeanaAggregation']")
+    var europeanaAggregation = new JsonBranch("EuropeanaAggregation", "$.['edm:EuropeanaAggregation']")
       .setActive(false);
     europeanaAggregation.setCollection(true);
     addPath(europeanaAggregation);
@@ -279,21 +268,21 @@ public class EdmOaiPmhJsonSchema extends EdmSchema implements Serializable {
     // extractableFields.put("country", "$.['edm:EuropeanaAggregation'][0]['edm:country'][0]");
     // extractableFields.put("language", "$.['edm:EuropeanaAggregation'][0]['edm:language'][0]");
 
-    FIELD_GROUPS.add(
+    fieldGroups.add(
       new FieldGroup(
         Category.MANDATORY,
         "Proxy/dc:title", "Proxy/dc:description"));
-    FIELD_GROUPS.add(
+    fieldGroups.add(
       new FieldGroup(
         Category.MANDATORY,
         "Proxy/dc:type", "Proxy/dc:subject", "Proxy/dc:coverage",
         "Proxy/dcterms:temporal", "Proxy/dcterms:spatial"));
-    FIELD_GROUPS.add(
+    fieldGroups.add(
       new FieldGroup(
         Category.MANDATORY,
         "Aggregation/edm:isShownAt", "Aggregation/edm:isShownBy"));
 
-    NO_LANGUAGE_FIELDS.addAll(Arrays.asList(
+    noLanguageFields.addAll(Arrays.asList(
       "ProvidedCHO", "ProvidedCHO/rdf:about",
       "Proxy",
       "Proxy/rdf:about", "Proxy/edm:isNextInSequence", "Proxy/edm:type",
@@ -310,13 +299,13 @@ public class EdmOaiPmhJsonSchema extends EdmSchema implements Serializable {
       "Concept", "Concept/rdf:about"
     ));
 
-    SOLR_FIELDS.put("Proxy/dc:title", "dc_title_txt");
-    SOLR_FIELDS.put("Proxy/dcterms:alternative", "dcterms_alternative_txt");
-    SOLR_FIELDS.put("Proxy/dc:description", "dc_description_txt");
+    solrFields.put("Proxy/dc:title", "dc_title_txt");
+    solrFields.put("Proxy/dcterms:alternative", "dcterms_alternative_txt");
+    solrFields.put("Proxy/dc:description", "dc_description_txt");
 
-    EMPTY_STRINGS.add("$.['ore:Proxy'][?(@['edm:europeanaProxy'][0] == 'false')]['dc:title']");
-    EMPTY_STRINGS.add("$.['ore:Proxy'][?(@['edm:europeanaProxy'][0] == 'false')]['dc:description']");
-    EMPTY_STRINGS.add("$.['ore:Proxy'][?(@['edm:europeanaProxy'][0] == 'false')]['dc:subject']");
+    emptyStrings.add("$.['ore:Proxy'][?(@['edm:europeanaProxy'][0] == 'false')]['dc:title']");
+    emptyStrings.add("$.['ore:Proxy'][?(@['edm:europeanaProxy'][0] == 'false')]['dc:description']");
+    emptyStrings.add("$.['ore:Proxy'][?(@['edm:europeanaProxy'][0] == 'false')]['dc:subject']");
 
     extractableFields.put("recordId", "$.identifier");
     extractableFields.put("dataset", "$.sets[0]");
@@ -326,47 +315,12 @@ public class EdmOaiPmhJsonSchema extends EdmSchema implements Serializable {
   }
 
   @Override
-  public List<FieldGroup> getFieldGroups() {
-    return FIELD_GROUPS;
-  }
-
-  @Override
-  public List<String> getNoLanguageFields() {
-    return NO_LANGUAGE_FIELDS;
-  }
-
-  @Override
-  public Map<String, String> getSolrFields() {
-    return SOLR_FIELDS;
-  }
-
-  @Override
-  public List<String> getEmptyStringPaths() {
-    return EMPTY_STRINGS;
-  }
-
-  @Override
-  public String getSubjectPath() {
-    return LONG_SUBJECT_PATH;
-  }
-
-  @Override
-  public String getTitlePath() {
-    return TITLE_PATH;
-  }
-
-  @Override
-  public String getDescriptionPath() {
-    return DESCRIPTION_PATH;
-  }
-
-  @Override
   public Format getFormat() {
     return Format.JSON;
   }
 
   @Override
   public List<JsonBranch> getCollectionPaths() {
-    return new ArrayList(COLLECTION_PATHS.values());
+    return new ArrayList(collectionPaths.values());
   }
 }
