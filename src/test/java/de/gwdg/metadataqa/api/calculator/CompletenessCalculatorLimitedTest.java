@@ -129,8 +129,6 @@ public class CompletenessCalculatorLimitedTest {
     FieldCounter<Integer> cardinalityCounter = calculator.getCardinalityCounter();
 
     List<String> fields = getFieldsByCategory(category, schema);
-    System.err.println(category + ": " + StringUtils.join(fields, ", "));
-    System.err.println(calculator.getCompletenessCounter().get(category.name()).toString());
     var i = 0;
     for (String field : fields) {
       System.err.println(

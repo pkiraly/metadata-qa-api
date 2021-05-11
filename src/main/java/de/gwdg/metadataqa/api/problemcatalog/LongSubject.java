@@ -37,16 +37,11 @@ public class LongSubject extends ProblemDetector implements Serializable {
   public void update(PathCache cache, FieldCounter<Double> results) {
     double value = 0;
     List<EdmFieldInstance> subjects = cache.get(schema.getSubjectPath());
-    if (subjects != null && !subjects.isEmpty()) {
-      if (!subjects.isEmpty()) {
-        for (EdmFieldInstance subject : subjects) {
-          if (StringUtils.isNotBlank(subject.getValue())
-              && subject.getValue().length() > MAX_LENGTH) {
-            value += 1;
-          }
-        }
-      }
-    }
+    if (subjects != null && !subjects.isEmpty())
+      for (EdmFieldInstance subject : subjects)
+        if (StringUtils.isNotBlank(subject.getValue())
+            && subject.getValue().length() > MAX_LENGTH)
+          value += 1;
     results.put(NAME, value);
   }
 
