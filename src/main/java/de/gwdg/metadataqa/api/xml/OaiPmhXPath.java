@@ -65,8 +65,8 @@ public class OaiPmhXPath implements Serializable {
     var xPathfactory = XPathFactory.newInstance();
     var xpathEngine = xPathfactory.newXPath();
     var nsContext = new NamespaceContextImpl();
-    for (String prefix : prefixMap.keySet())
-      nsContext.startPrefixMapping(prefix, prefixMap.get(prefix));
+    for (Map.Entry<String, String> entry : prefixMap.entrySet())
+      nsContext.startPrefixMapping(entry.getKey(), entry.getValue());
     xpathEngine.setNamespaceContext(nsContext);
     return xpathEngine;
   }

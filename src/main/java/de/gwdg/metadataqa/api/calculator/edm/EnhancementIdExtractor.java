@@ -74,12 +74,10 @@ public final class EnhancementIdExtractor implements Serializable {
 
   public static void processJson(List<String> enhancementIds, List<Object> jsonFragments) {
     Map<String, Object> jsonFragment = (Map<String, Object>) jsonFragments.get(0);
-    for (String fieldName : jsonFragment.keySet()) {
-      if (isEnrichmentField(fieldName)) {
+    for (Map.Entry<String, Object> entry : jsonFragment.entrySet()) {
+      if (isEnrichmentField(entry.getKey())) {
         List<EdmFieldInstance> fieldInstances =
-          (List<EdmFieldInstance>) JsonUtils.extractFieldInstanceList(
-            jsonFragment.get(fieldName), null, null
-          );
+          (List<EdmFieldInstance>) JsonUtils.extractFieldInstanceList(entry.getValue(), null, null);
         if (fieldInstances != null)
           for (EdmFieldInstance fieldInstance : fieldInstances)
             if (fieldInstance.isUrl())

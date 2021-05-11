@@ -41,9 +41,9 @@ public class Term {
 
   public String formatDistances() {
     List<String> formattedDistances = new ArrayList<>();
-    for (String t : distances.keySet()) {
-      formattedDistances.add(String.format("%s=%f", t, distances.get(t)));
-    }
+    for (Map.Entry<String, Double> distance : distances.entrySet())
+      formattedDistances.add(String.format("%s=%f", distance.getKey(), distance.getValue()));
+
     return "{" + StringUtils.join(formattedDistances, ", ") + "}";
   }
 
