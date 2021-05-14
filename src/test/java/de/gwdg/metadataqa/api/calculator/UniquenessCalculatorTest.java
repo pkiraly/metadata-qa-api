@@ -16,6 +16,8 @@ import org.junit.runner.RunWith;
 
 import java.io.IOException;
 import java.net.URISyntaxException;
+import java.util.Arrays;
+import java.util.LinkedHashMap;
 import java.util.Map;
 
 import static org.junit.Assert.*;
@@ -58,22 +60,54 @@ public class UniquenessCalculatorTest {
 
   @Test
   public void getTotals() throws Exception {
+    calculator.measure(cache);
+    assertEquals("4000,1000,2000", calculator.getTotals());
   }
 
   @Test
   public void getResultMap() throws Exception {
+    calculator.measure(cache);
+    Map<String, Object> map = new LinkedHashMap<>();
+    map.put("dc_title_ss/count", 3.0);
+    map.put("dc_title_ss/score", 0.7111542257564604);
+    map.put("dcterms_alternative_ss/count", 0.0);
+    map.put("dcterms_alternative_ss/score", 0.0);
+    map.put("dc_description_ss/count", 0.0);
+    map.put("dc_description_ss/score", 0.0);
+    assertEquals(map, calculator.getResultMap());
   }
 
   @Test
   public void getLabelledResultMap() throws Exception {
+    calculator.measure(cache);
+    Map<String, Object> uniqueness = new LinkedHashMap<>();
+    uniqueness.put("dc_title_ss/count", 3.0);
+    uniqueness.put("dc_title_ss/score", 0.7111542257564604);
+    uniqueness.put("dcterms_alternative_ss/count", 0.0);
+    uniqueness.put("dcterms_alternative_ss/score", 0.0);
+    uniqueness.put("dc_description_ss/count", 0.0);
+    uniqueness.put("dc_description_ss/score", 0.0);
+    Map<String, Map<String, Object>> map = new LinkedHashMap<>();
+    map.put("uniqueness", uniqueness);
+    assertEquals(map, calculator.getLabelledResultMap());
   }
 
   @Test
   public void getCsv() throws Exception {
+    calculator.measure(cache);
+    assertEquals(Arrays.asList(3.0, 0.7111542257564604, 0.0, 0.0, 0.0, 0.0), calculator.getCsv());
   }
 
   @Test
   public void getHeader() throws Exception {
+    calculator.measure(cache);
+    assertEquals(
+      Arrays.asList(
+        "dc_title_ss/count", "dc_title_ss/score", "dcterms_alternative_ss/count", "dcterms_alternative_ss/score",
+        "dc_description_ss/count", "dc_description_ss/score"
+      ),
+      calculator.getHeader()
+    );
   }
 
   @Test
@@ -88,7 +122,6 @@ public class UniquenessCalculatorTest {
 
     @Before
     public void setUp() {
-      System.err.println("TESTINSIDEFACADE::" + schema.getClass());
       facade = new CalculatorFacade()
         .setSchema(schema)
         .setSolrClient(solrClient)
