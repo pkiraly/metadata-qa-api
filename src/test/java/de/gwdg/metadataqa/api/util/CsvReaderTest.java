@@ -151,13 +151,14 @@ public class CsvReaderTest {
   public void testFromFile() {
     String fileName = "src/test/resources/csv/dataset_metadata_2020_08_17-head.csv";
 
+    StringBuilder sb = new StringBuilder();
     try {
       CSVReaderHeaderAware reader = new CSVReaderHeaderAware(new FileReader(fileName));
       Map<String,String> record = null;
       do {
         record = reader.readMap();
         if (record != null) {
-          // System.err.println(record.get("url"));
+          sb.append(record.get("url")).append("\n");
         }
       } while (record != null);
     } catch (IOException e) {
@@ -165,6 +166,16 @@ public class CsvReaderTest {
     } catch (CsvValidationException e) {
       e.printStackTrace();
     }
+    assertEquals("https://neurovault.org/images/384958/\n" +
+      "https://neurovault.org/images/93390/\n" +
+      "https://neurovault.org/images/70883/\n" +
+      "https://neurovault.org/images/396131/\n" +
+      "https://neurovault.org/images/370058/\n" +
+      "https://explore.openaire.eu/search/publication?articleId=dedup_wf_001::0e01a7dd17cbf5aff52a35a64470a50c\n" +
+      "https://scicrunch.org/resources/Any/record/nlx_144509-1/SCR_013051/resolver?q=*&l=\n" +
+      "https://neurovault.org/images/4380/\n" +
+      "https://www.neurovault.org/images/18442/\n",
+      sb.toString());
   }
 
   @Test
