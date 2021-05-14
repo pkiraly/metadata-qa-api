@@ -210,59 +210,17 @@ public class CalculatorFacade implements Serializable {
     LOGGER.info("configure()");
     calculators = new ArrayList<>();
 
-    if (fieldExtractorEnabled) {
-      fieldExtractor = new FieldExtractor(schema);
-      calculators.add(fieldExtractor);
-    }
+    addExtractor();
+    addCompleteness();
+    addTfIdfMeasurement();
+    addProblemCatalogMeasurement();
+    addRuleCatalogMeasurement();
+    addLanguageMeasurement();
+    addMultilingualSaturationMeasurement();
+    addUniquenessMeasurement();
+  }
 
-    if (completenessMeasurementEnabled) {
-      completenessCalculator = new CompletenessCalculator(schema);
-      completenessCalculator.collectFields(completenessCollectFields);
-      completenessCalculator.setExistence(fieldExistenceMeasurementEnabled);
-      completenessCalculator.setCardinality(fieldCardinalityMeasurementEnabled);
-      calculators.add(completenessCalculator);
-    }
-
-    if (tfIdfMeasurementEnabled) {
-      tfidfCalculator = new TfIdfCalculator(schema);
-      if (solrConfiguration != null) {
-        tfidfCalculator.setSolrConfiguration(solrConfiguration);
-      } else {
-        throw new IllegalArgumentException("If TF-IDF measurement is enabled, Solr configuration should not be null.");
-      }
-      tfidfCalculator.enableTermCollection(collectTfIdfTerms);
-      calculators.add(tfidfCalculator);
-    }
-
-    // TODO: move it into europeana lib
-    if (problemCatalogMeasurementEnabled && schema instanceof EdmSchema) {
-      var problemCatalog = new ProblemCatalog((EdmSchema) schema);
-      new LongSubject(problemCatalog);
-      new TitleAndDescriptionAreSame(problemCatalog);
-      new EmptyStrings(problemCatalog);
-      calculators.add(problemCatalog);
-    }
-
-    if (ruleCatalogMeasurementEnabled) {
-      calculators.add(new RuleCatalog(schema));
-    }
-
-    if (languageMeasurementEnabled) {
-      languageCalculator = new LanguageCalculator(schema);
-      calculators.add(languageCalculator);
-    }
-
-    if (multilingualSaturationMeasurementEnabled) {
-      multilingualSaturationCalculator =
-          new MultilingualitySaturationCalculator(schema);
-      if (saturationExtendedResult) {
-        multilingualSaturationCalculator
-          .setResultType(
-              MultilingualitySaturationCalculator.ResultTypes.EXTENDED);
-      }
-      calculators.add(multilingualSaturationCalculator);
-    }
-
+  private void addUniquenessMeasurement() {
     if (uniquenessMeasurementEnabled) {
       if (solrClient == null && solrConfiguration == null) {
         throw new IllegalArgumentException(
@@ -273,6 +231,73 @@ public class CalculatorFacade implements Serializable {
         solrClient = new DefaultSolrClient(solrConfiguration);
       }
       calculators.add(new UniquenessCalculator(solrClient, schema));
+    }
+  }
+
+  private void addMultilingualSaturationMeasurement() {
+    if (multilingualSaturationMeasurementEnabled) {
+      multilingualSaturationCalculator =
+          new MultilingualitySaturationCalculator(schema);
+      if (saturationExtendedResult) {
+        multilingualSaturationCalculator
+          .setResultType(
+              MultilingualitySaturationCalculator.ResultTypes.EXTENDED);
+      }
+      calculators.add(multilingualSaturationCalculator);
+    }
+  }
+
+  private void addLanguageMeasurement() {
+    if (languageMeasurementEnabled) {
+      languageCalculator = new LanguageCalculator(schema);
+      calculators.add(languageCalculator);
+    }
+  }
+
+  private void addRuleCatalogMeasurement() {
+    if (ruleCatalogMeasurementEnabled) {
+      calculators.add(new RuleCatalog(schema));
+    }
+  }
+
+  private void addProblemCatalogMeasurement() {
+    // TODO: move it into europeana lib
+    if (problemCatalogMeasurementEnabled && schema instanceof EdmSchema) {
+      var problemCatalog = new ProblemCatalog((EdmSchema) schema);
+      new LongSubject(problemCatalog);
+      new TitleAndDescriptionAreSame(problemCatalog);
+      new EmptyStrings(problemCatalog);
+      calculators.add(problemCatalog);
+    }
+  }
+
+  private void addTfIdfMeasurement() {
+    if (tfIdfMeasurementEnabled) {
+      tfidfCalculator = new TfIdfCalculator(schema);
+      if (solrConfiguration != null) {
+        tfidfCalculator.setSolrConfiguration(solrConfiguration);
+      } else {
+        throw new IllegalArgumentException("If TF-IDF measurement is enabled, Solr configuration should not be null.");
+      }
+      tfidfCalculator.enableTermCollection(collectTfIdfTerms);
+      calculators.add(tfidfCalculator);
+    }
+  }
+
+  private void addCompleteness() {
+    if (completenessMeasurementEnabled) {
+      completenessCalculator = new CompletenessCalculator(schema);
+      completenessCalculator.collectFields(completenessCollectFields);
+      completenessCalculator.setExistence(fieldExistenceMeasurementEnabled);
+      completenessCalculator.setCardinality(fieldCardinalityMeasurementEnabled);
+      calculators.add(completenessCalculator);
+    }
+  }
+
+  private void addExtractor() {
+    if (fieldExtractorEnabled) {
+      fieldExtractor = new FieldExtractor(schema);
+      calculators.add(fieldExtractor);
     }
   }
 
