@@ -45,7 +45,6 @@ public class CompletenessCalculator<T extends XmlFieldInstance>
   private FieldCounter<Boolean> existenceCounter;
   private FieldCounter<Integer> cardinalityCounter;
 
-  // private Counters counters;
   private List<String> missingFields;
   private List<String> emptyFields;
   private List<String> existingFields;

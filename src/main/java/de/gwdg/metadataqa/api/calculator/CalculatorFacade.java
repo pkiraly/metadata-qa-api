@@ -3,7 +3,6 @@ package de.gwdg.metadataqa.api.calculator;
 import com.jayway.jsonpath.InvalidJsonException;
 import de.gwdg.metadataqa.api.calculator.output.OutputCollector;
 import de.gwdg.metadataqa.api.calculator.output.OutputFactory;
-import de.gwdg.metadataqa.api.counter.Counters;
 import de.gwdg.metadataqa.api.interfaces.Calculator;
 import de.gwdg.metadataqa.api.model.pathcache.CsvPathCache;
 import de.gwdg.metadataqa.api.model.pathcache.PathCache;
@@ -802,8 +801,6 @@ public class CalculatorFacade implements Serializable {
    *
    * @return
    *   The result map
-   * @see
-   *   Counters#getResults()
    */
   public Map<String, Object> getResults() {
     Map<String, Object> results = new LinkedHashMap<>();

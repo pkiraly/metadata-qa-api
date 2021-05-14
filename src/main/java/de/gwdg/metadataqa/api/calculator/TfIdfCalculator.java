@@ -78,7 +78,6 @@ public class TfIdfCalculator extends BaseCalculator<Double> implements Calculato
     String solrJsonResponse = getSolrResponse(recordId);
     var extractor = new TfIdfExtractor(schema);
     resultMap = extractor.extract(solrJsonResponse, recordId, termCollectionEnabled);
-    // counters.setTfIdfList(resultMap);
     termsCollection = extractor.getTermsCollection();
   }
 
