@@ -29,6 +29,7 @@ public class Counters {
   private boolean returnLanguage = false;
 
   public Counters() {
+    // Do nothing
   }
 
   public void addResult(Map<String, String> result) {
