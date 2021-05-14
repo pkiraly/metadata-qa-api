@@ -19,7 +19,7 @@ public class JsonBranchTest {
 
     JsonBranch europeanaProxy = null;
     try {
-      europeanaProxy = (JsonBranch) providerProxy.clone();
+      europeanaProxy = JsonBranch.copy(providerProxy);
     } catch (CloneNotSupportedException e) {
       e.printStackTrace();
     }
