@@ -37,12 +37,10 @@ public class SkippedEntitySelectorTest {
 
     List<String> skippableIds = Arrays.asList("/proxy/provider/2064125/Museu_ProvidedCHO_museum_digital_96__technical_number_");
     var i = 0;
-    JsonBranch providerProxyBranch = schema.getCollectionPaths().get(1); // path for
-    System.err.println(providerProxyBranch);
+    JsonBranch providerProxyBranch = schema.getCollectionPaths().get(1);
     Object rawJsonFragment = cache.getFragment(providerProxyBranch.getJsonPath());
     List<Object> jsonFragments = Converter.jsonObjectToList(rawJsonFragment, schema);
     Object jsonFragment = jsonFragments.get(i);
-    System.err.println(jsonFragment);
     assertTrue(selector.isCollectionSkippable(skippableIds, providerProxyBranch, i, cache, jsonFragment));
   }
 
@@ -51,6 +49,12 @@ public class SkippedEntitySelectorTest {
     SkippedEntitySelector selector = new SkippedEntitySelector();
     assertNull(selector.getSkippedEntryChecker());
     selector.setSkippedEntryChecker(new SkippedEntryCheckerImpl());
+    assertNotNull(selector.getSkippedEntryChecker());
+  }
+
+  @Test
+  public void constructor_withCHecker() {
+    SkippedEntitySelector selector = new SkippedEntitySelector(new SkippedEntryCheckerImpl());
     assertNotNull(selector.getSkippedEntryChecker());
   }
 

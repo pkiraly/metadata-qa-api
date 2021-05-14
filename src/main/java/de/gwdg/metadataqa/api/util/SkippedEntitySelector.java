@@ -30,7 +30,7 @@ public class SkippedEntitySelector<T extends XmlFieldInstance> implements Serial
   public boolean isCollectionSkippable(List<String> skippableIds,
                                        JsonBranch collectionBranch,
                                        int i,
-                                       PathCache cache,
+                                       PathCache<T> cache,
                                        Object jsonFragment) {
     var skippable = false;
     JsonBranch identifierPath = collectionBranch.getIdentifier();
@@ -40,7 +40,6 @@ public class SkippedEntitySelector<T extends XmlFieldInstance> implements Serial
       var id = (skippedEntryChecker != null)
             ? skippedEntryChecker.extractId(values.get(0))
             : values.get(0).getValue();
-      System.err.println(id);
       skippable = skippableIds.contains(id);
     }
     return skippable;
