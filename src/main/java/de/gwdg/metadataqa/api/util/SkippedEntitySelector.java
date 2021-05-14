@@ -49,4 +49,8 @@ public class SkippedEntitySelector<T extends XmlFieldInstance> implements Serial
   public void setSkippedEntryChecker(SkippedEntryChecker skippedEntryChecker) {
     this.skippedEntryChecker = skippedEntryChecker;
   }
+
+  public SkippedEntryChecker getSkippedEntryChecker() {
+    return skippedEntryChecker;
+  }
 }
