@@ -5,6 +5,7 @@ import de.gwdg.metadataqa.api.configuration.Rule;
 import de.gwdg.metadataqa.api.model.Category;
 import de.gwdg.metadataqa.api.schema.Format;
 import de.gwdg.metadataqa.api.schema.Schema;
+import org.apache.commons.lang3.SerializationUtils;
 
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -244,7 +245,7 @@ public class JsonBranch implements Cloneable, Serializable {
 
   @Override
   public Object clone() throws CloneNotSupportedException {
-    JsonBranch cloned = (JsonBranch) super.clone();
+    JsonBranch cloned = (JsonBranch) SerializationUtils.clone(this);
 
     if (children != null && !children.isEmpty()) {
       List<JsonBranch> clonedChildren = new ArrayList<>();
