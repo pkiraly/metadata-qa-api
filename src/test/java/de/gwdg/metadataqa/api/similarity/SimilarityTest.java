@@ -47,6 +47,7 @@ public class SimilarityTest {
     List<String> patterns = Arrays.asList("0001", "0011", "0000", "1001");
     Map<List<String>, Double> atomicDistance = new HashMap<>();
     List<Cluster> clusters = new ArrayList<>();
+    StringBuilder sb = new StringBuilder();
     for (var i = 0; i < patterns.size(); i++) {
       String a = patterns.get(i);
       Term at = new Term(a);
@@ -58,8 +59,8 @@ public class SimilarityTest {
         atomicDistance.put(Arrays.asList(a, b), distance);
         at.setDistance(bt, distance);
         bt.setDistance(at, distance);
-        System.err.println(String.format(
-          "%s vs %s: Jaro-Winkler: %f, Jaccard: %f, levenshtein: %d, levenshtein2: %s",
+        sb.append(String.format(
+          "%s vs %s: Jaro-Winkler: %f, Jaccard: %f, levenshtein: %d, levenshtein2: %s%n",
           a, b,
           jaroWinkler.apply(a, b),
           jaccard.apply(a, b),
@@ -68,5 +69,13 @@ public class SimilarityTest {
         ));
       }
     }
+    assertEquals(
+      "0001 vs 0011: Jaro-Winkler: 0.866667, Jaccard: 0.000000, levenshtein: 1, levenshtein2: 1\n" +
+      "0001 vs 0000: Jaro-Winkler: 0.883333, Jaccard: 0.500000, levenshtein: 1, levenshtein2: 1\n" +
+      "0001 vs 1001: Jaro-Winkler: 0.833333, Jaccard: 0.000000, levenshtein: 1, levenshtein2: 1\n" +
+      "0011 vs 0000: Jaro-Winkler: 0.666667, Jaccard: 0.500000, levenshtein: 2, levenshtein2: 2\n" +
+      "0011 vs 1001: Jaro-Winkler: 0.833333, Jaccard: 0.000000, levenshtein: 2, levenshtein2: 2\n" +
+      "0000 vs 1001: Jaro-Winkler: 0.666667, Jaccard: 0.500000, levenshtein: 2, levenshtein2: 2\n",
+      sb.toString());
   }
 }
