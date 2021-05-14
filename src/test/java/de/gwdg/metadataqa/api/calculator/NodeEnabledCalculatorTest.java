@@ -15,6 +15,8 @@ import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
+import static org.junit.Assert.assertTrue;
+
 /**
  *
  * @author Péter Király <peter.kiraly at gwdg.de>
@@ -33,13 +35,12 @@ public class NodeEnabledCalculatorTest {
       try {
         rawCollection = JsonPath.read(jsonDocument, collectionBranch.getJsonPath());
       } catch (PathNotFoundException e) {}
+
       if (rawCollection != null) {
         if (rawCollection instanceof JSONArray) {
           JSONArray collection = (JSONArray)rawCollection;
           collection.forEach(
-            node -> {
-              processNode(node, collectionBranch.getChildren());
-            }
+            node -> processNode(node, collectionBranch.getChildren())
           );
         } else {
           processNode(rawCollection, collectionBranch.getChildren());
@@ -53,6 +54,10 @@ public class NodeEnabledCalculatorTest {
       try {
         Object val = JsonPath.read(node, fieldBranch.getJsonPath());
         if (val != null) {
+          if ("ProvidedCHO/rdf:about".equals(fieldBranch.getLabel()))
+            assertTrue(val instanceof String);
+          if ("Proxy/dc:title".equals(fieldBranch.getLabel()))
+            assertTrue(val instanceof JSONArray);
         }
       } catch (PathNotFoundException e) {}
     }
