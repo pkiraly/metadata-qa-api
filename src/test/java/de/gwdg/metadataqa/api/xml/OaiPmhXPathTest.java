@@ -188,4 +188,51 @@ public class OaiPmhXPathTest {
     assertEquals(1, attr.size());
     assertEquals("http://data.europeana.eu/concept/base/106", attr.get(0).getNodeValue());
   }
+
+  @Test
+  public void testNamespaces_withCustomNS() {
+    Map<String, String> namespaces = new LinkedHashMap<>();
+    namespaces.put("xoai", "http://www.lyncode.com/xoai");
+    namespaces.put("foaf", "http://xmlns.com/foaf/0.1/");
+
+    OaiPmhXPath.setXpathEngine(XpathEngineFactory.initializeEngine(namespaces));
+
+    OaiPmhXPath oaiPmhXPath = new OaiPmhXPath(new File(inputFile));
+    XPath xpathEngine = oaiPmhXPath.getXpathEngine();
+
+    for (String prefix : prefixMap.keySet()) {
+      String uri = prefixMap.get(prefix);
+      assertEquals(prefix, xpathEngine.getNamespaceContext().getPrefix(uri));
+      assertEquals(uri, xpathEngine.getNamespaceContext().getNamespaceURI(prefix));
+    }
+
+    for (Map.Entry<String, String> entry : namespaces.entrySet()) {
+      assertEquals(entry.getKey(), xpathEngine.getNamespaceContext().getPrefix(entry.getValue()));
+      assertEquals(entry.getValue(), xpathEngine.getNamespaceContext().getNamespaceURI(entry.getKey()));
+    }
+  }
+
+  @Test
+  public void testNamespaces_withCustomNS_setXpathEngine() {
+    Map<String, String> namespaces = new LinkedHashMap<>();
+    namespaces.put("xoai", "http://www.lyncode.com/xoai");
+    namespaces.put("foaf", "http://xmlns.com/foaf/0.1/");
+
+    OaiPmhXPath.setXpathEngine(namespaces);
+
+    OaiPmhXPath oaiPmhXPath = new OaiPmhXPath(new File(inputFile));
+    XPath xpathEngine = oaiPmhXPath.getXpathEngine();
+
+    for (String prefix : prefixMap.keySet()) {
+      String uri = prefixMap.get(prefix);
+      assertEquals(prefix, xpathEngine.getNamespaceContext().getPrefix(uri));
+      assertEquals(uri, xpathEngine.getNamespaceContext().getNamespaceURI(prefix));
+    }
+
+    for (Map.Entry<String, String> entry : namespaces.entrySet()) {
+      assertEquals(entry.getKey(), xpathEngine.getNamespaceContext().getPrefix(entry.getValue()));
+      assertEquals(entry.getValue(), xpathEngine.getNamespaceContext().getNamespaceURI(entry.getKey()));
+    }
+  }
+
 }

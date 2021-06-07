@@ -4,12 +4,14 @@ import de.gwdg.metadataqa.api.schema.Schema;
 import de.gwdg.metadataqa.api.util.SchemaFactory;
 
 import java.util.List;
+import java.util.Map;
 
 public class Configuration {
   private String format;
   private List<Field> fields;
   private List<Group> groups;
   private List<String> categories;
+  private Map<String, String> namespaces;
 
   public String getFormat() {
     return format;
@@ -43,12 +45,19 @@ public class Configuration {
     return categories != null && !categories.isEmpty();
   }
 
-
   public void setCategories(List<String> categories) {
     this.categories = categories;
   }
 
   public Schema asSchema() {
     return SchemaFactory.fromConfig(this);
+  }
+
+  public Map<String, String> getNamespaces() {
+    return namespaces;
+  }
+
+  public void setNamespaces(Map<String, String> namespaces) {
+    this.namespaces = namespaces;
   }
 }

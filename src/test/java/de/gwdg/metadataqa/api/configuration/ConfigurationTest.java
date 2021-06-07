@@ -116,4 +116,25 @@ public class ConfigurationTest {
     assertEquals("bb", rule.getAnd().get(1).getIn().get(1));
   }
 
+  @Test
+  public void testReading_xml_as_config() throws FileNotFoundException {
+    Configuration configuration = ConfigurationReader
+      .readYaml("src/test/resources/configuration/xmlsample.yaml");
+
+    assertEquals(2, configuration.getNamespaces().size());
+    assertEquals("http://www.lyncode.com/xoai", configuration.getNamespaces().get("xoai"));
+    assertEquals("http://xmlns.com/foaf/0.1/", configuration.getNamespaces().get("foaf"));
+  }
+
+  @Test
+  public void testReading_xml_as_schema() throws FileNotFoundException {
+    Schema schema = ConfigurationReader
+      .readYaml("src/test/resources/configuration/xmlsample.yaml")
+      .asSchema();
+
+    assertEquals(2, schema.getNamespaces().size());
+    assertEquals("http://www.lyncode.com/xoai", schema.getNamespaces().get("xoai"));
+    assertEquals("http://xmlns.com/foaf/0.1/", schema.getNamespaces().get("foaf"));
+  }
+
 }

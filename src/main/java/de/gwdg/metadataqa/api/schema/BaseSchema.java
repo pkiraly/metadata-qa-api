@@ -22,6 +22,7 @@ public class BaseSchema implements Schema, CsvAwareSchema, Serializable {
   private List<RuleChecker> ruleCheckers;
 
   private Format format;
+  private Map<String, String> namespaces;
 
   public BaseSchema() {
   }
@@ -149,5 +150,14 @@ public class BaseSchema implements Schema, CsvAwareSchema, Serializable {
 
   public void setCategories(List<String> categories) {
     this.categories = categories;
+  }
+
+  public void setNamespaces(Map<String, String> namespaces) {
+    this.namespaces = namespaces;
+  }
+
+  @Override
+  public Map<String, String> getNamespaces() {
+    return namespaces;
   }
 }

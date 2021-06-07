@@ -97,4 +97,8 @@ public interface Schema extends Serializable {
   List<String> getCategories();
 
   List<RuleChecker> getRuleCheckers();
+
+  default Map<String, String> getNamespaces() {
+    return null;
+  }
 }

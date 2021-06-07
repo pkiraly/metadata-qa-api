@@ -1,7 +1,6 @@
 package de.gwdg.metadataqa.api.xml;
 
 import de.gwdg.metadataqa.api.model.EdmFieldInstance;
-import org.apache.ws.commons.util.NamespaceContextImpl;
 import org.w3c.dom.Document;
 import org.w3c.dom.NamedNodeMap;
 import org.w3c.dom.Node;
@@ -14,7 +13,6 @@ import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.xpath.XPath;
 import javax.xml.xpath.XPathConstants;
 import javax.xml.xpath.XPathExpression;
-import javax.xml.xpath.XPathFactory;
 import javax.xml.xpath.XPathExpressionException;
 
 import java.io.ByteArrayInputStream;
@@ -23,7 +21,6 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.Serializable;
 import java.util.ArrayList;
-import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.logging.Level;
@@ -34,42 +31,8 @@ public class OaiPmhXPath implements Serializable {
 
   private static final Logger LOGGER = Logger.getLogger(OaiPmhXPath.class.getCanonicalName());
 
-  private static final Map<String, String> prefixMap = new LinkedHashMap<>();
-  static {
-    prefixMap.put("xsi", "http://www.w3.org/2001/XMLSchema-instance");
-    prefixMap.put("rdf", "http://www.w3.org/1999/02/22-rdf-syntax-ns#");
-    prefixMap.put("dc", "http://purl.org/dc/elements/1.1/");
-    prefixMap.put("dcterms", "http://purl.org/dc/terms/");
-    prefixMap.put("edm", "http://www.europeana.eu/schemas/edm/");
-    prefixMap.put("owl", "http://www.w3.org/2002/07/owl#");
-    prefixMap.put("wgs84_pos", "http://www.w3.org/2003/01/geo/wgs84_pos#");
-    prefixMap.put("skos", "http://www.w3.org/2004/02/skos/core#");
-    prefixMap.put("rdaGr2", "http://rdvocab.info/ElementsGr2/");
-    prefixMap.put("foaf", "http://xmlns.com/foaf/0.1/");
-    prefixMap.put("ebucore", "http://www.ebu.ch/metadata/ontologies/ebucore/ebucore#");
-    prefixMap.put("doap", "http://usefulinc.com/ns/doap#");
-    prefixMap.put("odrl", "http://www.w3.org/ns/odrl/2/");
-    prefixMap.put("cc", "http://creativecommons.org/ns#");
-    prefixMap.put("ore", "http://www.openarchives.org/ore/terms/");
-    prefixMap.put("svcs", "http://rdfs.org/sioc/services#");
-    prefixMap.put("oa", "http://www.w3.org/ns/oa#");
-    prefixMap.put("dqv", "http://www.w3.org/ns/dqv#");
-    prefixMap.put("xml", "http://www.w3.org/XML/1998/namespace");
-    prefixMap.put("oai", "http://www.openarchives.org/OAI/2.0/");
-  }
-
-  private final transient XPath xpathEngine = initializeEngine();
+  private static transient XPath xpathEngine;
   private static final DocumentBuilder builder = initializeDocumentBuilder();
-
-  private static XPath initializeEngine() {
-    var xPathfactory = XPathFactory.newInstance();
-    var xpathEngine = xPathfactory.newXPath();
-    var nsContext = new NamespaceContextImpl();
-    for (Map.Entry<String, String> entry : prefixMap.entrySet())
-      nsContext.startPrefixMapping(entry.getKey(), entry.getValue());
-    xpathEngine.setNamespaceContext(nsContext);
-    return xpathEngine;
-  }
 
   private static DocumentBuilder initializeDocumentBuilder() {
     DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
@@ -93,6 +56,11 @@ public class OaiPmhXPath implements Serializable {
     parseFile(input.getPath());
   }
 
+  private void initialize() {
+    if (xpathEngine == null)
+      xpathEngine = XpathEngineFactory.initializeEngine();
+  }
+
   public OaiPmhXPath(String input, boolean fromString) {
     if (fromString) {
       parseContent(input);
@@ -102,6 +70,7 @@ public class OaiPmhXPath implements Serializable {
   }
 
   private void parseFile(String path) {
+    initialize();
     try {
       document = builder.parse(path);
     } catch (SAXException e) {
@@ -112,6 +81,7 @@ public class OaiPmhXPath implements Serializable {
   }
 
   public void parseContent(String content) {
+    initialize();
     parseContent(new ByteArrayInputStream(content.getBytes()));
   }
 
@@ -181,7 +151,7 @@ public class OaiPmhXPath implements Serializable {
   }
 
   public String getAttribute(NamedNodeMap attributes, String prefix, String name) {
-    Node attribute = attributes.getNamedItemNS(prefixMap.get(prefix), name);
+    Node attribute = attributes.getNamedItemNS(xpathEngine.getNamespaceContext().getNamespaceURI(prefix), name);
     String value = null;
     if (attribute != null) {
       value = attribute.getNodeValue();
@@ -195,5 +165,15 @@ public class OaiPmhXPath implements Serializable {
 
   public Document getDocument() {
     return document;
+  }
+
+  public static void setXpathEngine(XPath _xpathEngine) {
+    System.err.println("setXpathEngine");
+    // xpathEngine = XpathEngineFactory.initializeEngine();
+    xpathEngine = _xpathEngine;
+  }
+
+  public static void setXpathEngine(Map<String, String> namespaces) {
+    xpathEngine = XpathEngineFactory.initializeEngine(namespaces);
   }
 }

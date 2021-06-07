@@ -1,0 +1,35 @@
+format: xml
+fields:
+  - name: dc:identifier
+    path: //oai:metadata/oai:record/dc:identifier
+  - name: dc:type
+    path: //oai:metadata/oai:record/dc:type
+  - name: dc:date
+    path: //oai:metadata/oai:record/dc:date
+  - name: dc:title
+    path: //oai:metadata/oai:record/dc:title
+  - name: dc:identifier
+    path: //oai:metadata/oai:record/dc:identifier
+  - name: dc:rights
+    path: //oai:metadata/oai:record/dc:rights
+  - name: dc:identifier
+    path: //oai:metadata/oai:record/dc:identifier
+  - name: dc:contributor
+    path: //oai:metadata/oai:record/dc:contributor
+  - name: dc:creator
+    path: //oai:metadata/oai:record/dc:creator
+  - name: dc:relation
+    path: //oai:metadata/oai:record/dc:relation
+  - name: dc:language
+    path: //oai:metadata/oai:record/dc:language
+  - name: dcterms:created
+    path: //oai:metadata/oai:record/dcterms:created
+  - name: dcterms:location
+    path: //oai:metadata/oai:record/dcterms:location
+  - name: dcterms:extent
+    path: //oai:metadata/oai:record/dcterms:extent
+  - name: dcterms:medium
+    path: //oai:metadata/oai:record/dcterms:medium
+namespaces:
+  xoai: http://www.lyncode.com/xoai
+  foaf: http://xmlns.com/foaf/0.1/

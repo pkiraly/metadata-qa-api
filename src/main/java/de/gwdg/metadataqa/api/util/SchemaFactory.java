@@ -79,6 +79,9 @@ public class SchemaFactory {
       schema.addField(branch);
     }
 
+    if (config.getNamespaces() != null)
+      schema.setNamespaces(config.getNamespaces());
+
     return schema;
   }
 }
