@@ -22,7 +22,7 @@ public class CheckerTestBase {
     ;
 
     cache = (CsvPathCache) PathCacheFactory.getInstance(schema.getFormat(), "a");
-    cache.setCsvReader(new CsvReader().setHeader(((CsvAwareSchema) schema).getHeader()));
+    cache.setCsvReader(new CsvReader().setHeader( ((CsvAwareSchema) schema).getHeader() ));
   }
 
 }

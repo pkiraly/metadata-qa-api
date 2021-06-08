@@ -28,4 +28,12 @@ public interface RuleChecker extends Serializable {
    * @return The header (name of metric).
    */
   String getHeader();
+
+  Integer getFailureScore();
+
+  void setFailureScore(Integer failureScore);
+
+  Integer getSuccessScore();
+
+  void setSuccessScore(Integer successScore);
 }

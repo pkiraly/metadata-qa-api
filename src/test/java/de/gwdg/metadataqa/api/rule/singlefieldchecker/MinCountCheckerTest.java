@@ -16,7 +16,7 @@ public class MinCountCheckerTest extends CheckerTestBase {
   }
 
   @Test
-  public void success() {
+  public void success1() {
     MinCountChecker checker = new MinCountChecker(schema.getPathByLabel("name"), 1);
 
     FieldCounter fieldCounter = new FieldCounter<>();
@@ -28,7 +28,7 @@ public class MinCountCheckerTest extends CheckerTestBase {
   }
 
   @Test
-  public void failure() {
+  public void success_with_0() {
     MinCountChecker checker = new MinCountChecker(schema.getPathByLabel("name"), 0);
 
     FieldCounter fieldCounter = new FieldCounter<>();
@@ -37,5 +37,17 @@ public class MinCountCheckerTest extends CheckerTestBase {
     assertEquals(1, fieldCounter.size());
     assertEquals("minCount:name", checker.getHeader());
     assertEquals(RuleCheckingOutput.PASSED, fieldCounter.get(checker.getHeader()));
+  }
+
+  @Test
+  public void failure() {
+    MinCountChecker checker = new MinCountChecker(schema.getPathByLabel("name"), 2);
+
+    FieldCounter fieldCounter = new FieldCounter<>();
+    checker.update(cache, fieldCounter);
+
+    assertEquals(1, fieldCounter.size());
+    assertEquals("minCount:name", checker.getHeader());
+    assertEquals(RuleCheckingOutput.FAILED, fieldCounter.get(checker.getHeader()));
   }
 }

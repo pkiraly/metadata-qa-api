@@ -1,9 +1,9 @@
 package de.gwdg.metadataqa.api.rule.pairchecker;
 
 import de.gwdg.metadataqa.api.json.JsonBranch;
-import de.gwdg.metadataqa.api.rule.RuleChecker;
+import de.gwdg.metadataqa.api.rule.BaseRuleChecker;
 
-public abstract class PropertyPairChecker implements RuleChecker {
+public abstract class PropertyPairChecker extends BaseRuleChecker {
 
   private static final long serialVersionUID = -6579708841667005135L;
   protected JsonBranch field1;
@@ -25,5 +25,4 @@ public abstract class PropertyPairChecker implements RuleChecker {
   public String getHeader() {
     return header;
   }
-
 }

@@ -215,8 +215,8 @@ public class JsonBranch implements Cloneable, Serializable {
     return this;
   }
 
-  public JsonBranch setRule(Rule rule) {
-    this.rules = Arrays.asList(rule);
+  public JsonBranch setRule(List<Rule> rules) {
+    this.rules = rules;
     return this;
   }
 

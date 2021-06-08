@@ -30,11 +30,14 @@ public class SchemaUtils {
    */
   public static List<RuleChecker> getRuleCheckers(Schema schema) {
     setSchemaForFields(schema);
-    List<RuleChecker> ruleCheckers = new ArrayList<>();
+    List<RuleChecker> allRuleCheckers = new ArrayList<>();
     for (JsonBranch branch : schema.getPaths()) {
       if (branch.getRules() != null) {
         List<Rule> rules = branch.getRules();
         for (Rule rule : rules) {
+
+          List<RuleChecker> ruleCheckers = new ArrayList<>();
+
           if (StringUtils.isNotBlank(rule.getPattern()))
             ruleCheckers.add(new PatternChecker(branch, rule.getPattern()));
 
@@ -47,8 +50,10 @@ public class SchemaUtils {
           if (rule.getIn() != null && !rule.getIn().isEmpty())
             ruleCheckers.add(new EnumerationChecker(branch, rule.getIn()));
 
-          if (rule.getMinCount() != null)
-            ruleCheckers.add(new MinCountChecker(branch, rule.getMinCount()));
+          if (rule.getMinCount() != null) {
+            MinCountChecker checker = new MinCountChecker(branch, rule.getMinCount());
+            ruleCheckers.add(checker);
+          }
 
           if (rule.getMaxCount() != null)
             ruleCheckers.add(new MaxCountChecker(branch, rule.getMaxCount()));
@@ -83,10 +88,19 @@ public class SchemaUtils {
 
           if (rule.getLessThanOrEquals() != null)
             pair(schema, ruleCheckers, branch, rule.getLessThan(), "lessThanOrEquals");
+
+          if (!ruleCheckers.isEmpty()) {
+            for (RuleChecker ruleChecker : ruleCheckers) {
+              ruleChecker.setFailureScore(rule.getFailureScore());
+              ruleChecker.setSuccessScore(rule.getSuccessScore());
+            }
+            allRuleCheckers.addAll(ruleCheckers);
+          }
+
         }
       }
     }
-    return ruleCheckers;
+    return allRuleCheckers;
   }
 
   private static void pair(Schema schema,
@@ -106,6 +120,7 @@ public class SchemaUtils {
       } else if ("lessThanOrEquals".equals(type)) {
         ruleChecker = new LessThanPairChecker(branch, field2, LessThanPairChecker.TYPE.LESS_THAN_OR_EQUALS);
       }
+
       if (ruleChecker != null)
         ruleCheckers.add(ruleChecker);
     } else

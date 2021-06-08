@@ -23,11 +23,10 @@ public class MaxCountChecker extends SingleFieldChecker {
 
   @Override
   public void update(PathCache cache, FieldCounter<RuleCheckingOutput> results) {
-    var allPassed = true;
+    var allPassed = false;
     var counter = new InstanceCounter(cache, field);
     if (counter.getCount() <= maxCount)
       allPassed = true;
     results.put(header, RuleCheckingOutput.create(counter.isNA(), allPassed));
   }
-
 }

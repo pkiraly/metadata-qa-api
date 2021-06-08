@@ -16,7 +16,7 @@ public class MaxCountCheckerTest extends CheckerTestBase {
   }
 
   @Test
-  public void name() {
+  public void success() {
     MaxCountChecker checker = new MaxCountChecker(schema.getPathByLabel("name"), 1);
 
     FieldCounter fieldCounter = new FieldCounter<>();
@@ -25,5 +25,17 @@ public class MaxCountCheckerTest extends CheckerTestBase {
     assertEquals(1, fieldCounter.size());
     assertEquals("maxCount:name", checker.getHeader());
     Assert.assertEquals(RuleCheckingOutput.PASSED, fieldCounter.get(checker.getHeader()));
+  }
+
+  @Test
+  public void failure() {
+    MaxCountChecker checker = new MaxCountChecker(schema.getPathByLabel("name"), 0);
+
+    FieldCounter fieldCounter = new FieldCounter<>();
+    checker.update(cache, fieldCounter);
+
+    assertEquals(1, fieldCounter.size());
+    assertEquals("maxCount:name", checker.getHeader());
+    Assert.assertEquals(RuleCheckingOutput.FAILED, fieldCounter.get(checker.getHeader()));
   }
 }

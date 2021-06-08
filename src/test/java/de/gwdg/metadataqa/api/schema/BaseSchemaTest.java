@@ -694,7 +694,7 @@ public class BaseSchemaTest {
 
     Schema schema = new BaseSchema()
       .setFormat(Format.CSV)
-      .addField(new JsonBranch("url", "url").setRule(rule))
+      .addField(new JsonBranch("url", "url").setRule(Arrays.asList(rule)))
       .addField(new JsonBranch("uri", "uri"))
     ;
 

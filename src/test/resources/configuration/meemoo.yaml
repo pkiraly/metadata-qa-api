@@ -4,8 +4,8 @@ fields:
     categories: [MANDATORY]
     extractable: true
     rules:
-      pattern: ^https?://.*$
-      minCount: 1
+      - pattern: ^https?://.*$
+      - minCount: 1
   - name: name
   - name: alternateName
   - name: description

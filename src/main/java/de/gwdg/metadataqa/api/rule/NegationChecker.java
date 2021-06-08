@@ -3,7 +3,7 @@ package de.gwdg.metadataqa.api.rule;
 import de.gwdg.metadataqa.api.counter.FieldCounter;
 import de.gwdg.metadataqa.api.model.pathcache.PathCache;
 
-public class NegationChecker implements RuleChecker {
+public class NegationChecker extends BaseRuleChecker {
 
   public static final String PREFIX = "not";
 

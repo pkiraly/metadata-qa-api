@@ -29,7 +29,6 @@ public class LessThanPairChecker extends PropertyPairChecker {
     }
   }
 
-
   private final TYPE type;
   private static final Pattern isNumericPattern = Pattern.compile("^\\d+(\\.\\d+)?$");
 

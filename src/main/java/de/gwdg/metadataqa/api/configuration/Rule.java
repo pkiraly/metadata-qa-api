@@ -24,6 +24,8 @@ public class Rule implements Serializable {
   private String lessThan;
   private String lessThanOrEquals;
   private String hasValue;
+  private Integer failureScore;
+  private Integer successScore;
 
   public String getPattern() {
     return pattern;
@@ -275,6 +277,32 @@ public class Rule implements Serializable {
 
   public Rule withHasValue(String hasValue) {
     setHasValue(hasValue);
+    return this;
+  }
+
+  public Integer getFailureScore() {
+    return failureScore;
+  }
+
+  public void setFailureScore(Integer failureScore) {
+    this.failureScore = failureScore;
+  }
+
+  public Rule withFailureScore(Integer failureScore) {
+    setFailureScore(failureScore);
+    return this;
+  }
+
+  public Integer getSuccessScore() {
+    return successScore;
+  }
+
+  public void setSuccessScore(Integer successScore) {
+    this.successScore = successScore;
+  }
+
+  public Rule withSuccessScore(Integer successScore) {
+    setSuccessScore(successScore);
     return this;
   }
 }

@@ -1,9 +1,10 @@
 package de.gwdg.metadataqa.api.rule.singlefieldchecker;
 
 import de.gwdg.metadataqa.api.json.JsonBranch;
+import de.gwdg.metadataqa.api.rule.BaseRuleChecker;
 import de.gwdg.metadataqa.api.rule.RuleChecker;
 
-public abstract class SingleFieldChecker implements RuleChecker {
+public abstract class SingleFieldChecker extends BaseRuleChecker {
 
   protected JsonBranch field;
   protected String header;
@@ -17,5 +18,4 @@ public abstract class SingleFieldChecker implements RuleChecker {
   public String getHeader() {
     return header;
   }
-
 }
