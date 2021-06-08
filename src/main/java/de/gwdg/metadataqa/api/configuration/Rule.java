@@ -107,6 +107,10 @@ public class Rule implements Serializable {
     return minCount;
   }
 
+  public void setMinCount(Integer minCount) {
+    this.minCount = minCount;
+  }
+
   public void setMinCount(int minCount) {
     this.minCount = minCount;
   }
@@ -118,6 +122,10 @@ public class Rule implements Serializable {
 
   public Integer getMaxCount() {
     return maxCount;
+  }
+
+  public void setMaxCount(Integer maxCount) {
+    this.maxCount = maxCount;
   }
 
   public void setMaxCount(int maxCount) {
@@ -133,6 +141,10 @@ public class Rule implements Serializable {
     return minExclusive;
   }
 
+  public void setMinExclusive(Integer minExclusive) {
+    this.minExclusive = minExclusive;
+  }
+
   public void setMinExclusive(int minExclusive) {
     this.minExclusive = minExclusive;
   }
@@ -144,6 +156,10 @@ public class Rule implements Serializable {
 
   public Integer getMinInclusive() {
     return minInclusive;
+  }
+
+  public void setMinInclusive(Integer minInclusive) {
+    this.minInclusive = minInclusive;
   }
 
   public void setMinInclusive(int minInclusive) {
@@ -159,6 +175,10 @@ public class Rule implements Serializable {
     return maxExclusive;
   }
 
+  public void setMaxExclusive(Integer maxExclusive) {
+    this.maxExclusive = maxExclusive;
+  }
+
   public void setMaxExclusive(int maxExclusive) {
     this.maxExclusive = maxExclusive;
   }
@@ -170,6 +190,10 @@ public class Rule implements Serializable {
 
   public Integer getMaxInclusive() {
     return maxInclusive;
+  }
+
+  public void setMaxInclusive(Integer maxInclusive) {
+    this.maxInclusive = maxInclusive;
   }
 
   public void setMaxInclusive(int maxInclusive) {
@@ -185,6 +209,10 @@ public class Rule implements Serializable {
     return minLength;
   }
 
+  public void setMinLength(Integer minLength) {
+    this.minLength = minLength;
+  }
+
   public void setMinLength(int minLength) {
     this.minLength = minLength;
   }
@@ -196,6 +224,10 @@ public class Rule implements Serializable {
 
   public Integer getMaxLength() {
     return maxLength;
+  }
+
+  public void setMaxLength(Integer maxLength) {
+    this.maxLength = maxLength;
   }
 
   public void setMaxLength(int maxLength) {

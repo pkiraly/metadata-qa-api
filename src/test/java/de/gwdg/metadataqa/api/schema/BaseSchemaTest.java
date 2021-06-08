@@ -457,7 +457,7 @@ public class BaseSchemaTest {
       .asSchema();
 
     assertNotNull(schema.getRuleCheckers());
-    assertEquals(1, schema.getRuleCheckers().size());
+    assertEquals(2, schema.getRuleCheckers().size());
 
     CalculatorFacade facade = new CalculatorFacade()
       .setSchema(schema)
@@ -524,7 +524,7 @@ public class BaseSchemaTest {
       .asSchema();
 
     assertNotNull(schema.getRuleCheckers());
-    assertEquals(1, schema.getRuleCheckers().size());
+    assertEquals(2, schema.getRuleCheckers().size());
 
     CalculatorFacade facade = new CalculatorFacade()
       .setSchema(schema)
@@ -561,7 +561,7 @@ public class BaseSchemaTest {
         "cardinality:identifier", "cardinality:author", "cardinality:isAccessibleForFree",
         "cardinality:dateModified", "cardinality:distribution", "cardinality:spatialCoverage",
         "cardinality:provider", "cardinality:funder", "cardinality:temporalCoverage",
-        "pattern:url"
+        "pattern:url", "minCount:url"
       ),
       outputHeader
     );
@@ -574,15 +574,15 @@ public class BaseSchemaTest {
         String metrics = facade.measure(line);
         result.append(metrics + "\n");
       }
-      String expected = "0.352941,1.0,1,1,0,1,0,0,0,0,1,0,0,1,1,0,0,0,0,1,1,0,1,0,0,0,0,1,0,0,1,1,0,0,0,0,1\n"
-        + "0.352941,1.0,1,1,0,1,0,0,0,0,1,0,0,1,1,0,0,0,0,1,1,0,1,0,0,0,0,1,0,0,1,1,0,0,0,0,1\n"
-        + "0.352941,1.0,1,1,0,1,0,0,0,0,1,0,0,1,1,0,0,0,0,1,1,0,1,0,0,0,0,1,0,0,1,1,0,0,0,0,1\n"
-        + "0.352941,1.0,1,1,0,1,0,0,0,0,1,0,0,1,1,0,0,0,0,1,1,0,1,0,0,0,0,1,0,0,1,1,0,0,0,0,1\n"
-        + "0.352941,1.0,1,1,0,1,0,0,0,0,1,0,0,1,1,0,0,0,0,1,1,0,1,0,0,0,0,1,0,0,1,1,0,0,0,0,1\n"
-        + "0.411765,1.0,1,1,0,1,0,0,1,0,1,1,0,1,0,0,0,0,0,1,1,0,1,0,0,1,0,1,1,0,1,0,0,0,0,0,1\n"
-        + "0.352941,1.0,1,1,1,1,0,0,0,0,1,0,0,1,0,0,0,0,0,1,1,1,1,0,0,0,0,1,0,0,1,0,0,0,0,0,1\n"
-        + "0.352941,1.0,1,1,0,1,0,0,0,0,1,0,0,1,1,0,0,0,0,1,1,0,1,0,0,0,0,1,0,0,1,1,0,0,0,0,1\n"
-        + "0.294118,1.0,1,1,0,1,0,0,0,0,1,0,0,1,0,0,0,0,0,1,1,0,1,0,0,0,0,1,0,0,1,0,0,0,0,0,1\n";
+      String expected = "0.352941,1.0,1,1,0,1,0,0,0,0,1,0,0,1,1,0,0,0,0,1,1,0,1,0,0,0,0,1,0,0,1,1,0,0,0,0,1,1\n"
+        + "0.352941,1.0,1,1,0,1,0,0,0,0,1,0,0,1,1,0,0,0,0,1,1,0,1,0,0,0,0,1,0,0,1,1,0,0,0,0,1,1\n"
+        + "0.352941,1.0,1,1,0,1,0,0,0,0,1,0,0,1,1,0,0,0,0,1,1,0,1,0,0,0,0,1,0,0,1,1,0,0,0,0,1,1\n"
+        + "0.352941,1.0,1,1,0,1,0,0,0,0,1,0,0,1,1,0,0,0,0,1,1,0,1,0,0,0,0,1,0,0,1,1,0,0,0,0,1,1\n"
+        + "0.352941,1.0,1,1,0,1,0,0,0,0,1,0,0,1,1,0,0,0,0,1,1,0,1,0,0,0,0,1,0,0,1,1,0,0,0,0,1,1\n"
+        + "0.411765,1.0,1,1,0,1,0,0,1,0,1,1,0,1,0,0,0,0,0,1,1,0,1,0,0,1,0,1,1,0,1,0,0,0,0,0,1,1\n"
+        + "0.352941,1.0,1,1,1,1,0,0,0,0,1,0,0,1,0,0,0,0,0,1,1,1,1,0,0,0,0,1,0,0,1,0,0,0,0,0,1,1\n"
+        + "0.352941,1.0,1,1,0,1,0,0,0,0,1,0,0,1,1,0,0,0,0,1,1,0,1,0,0,0,0,1,0,0,1,1,0,0,0,0,1,1\n"
+        + "0.294118,1.0,1,1,0,1,0,0,0,0,1,0,0,1,0,0,0,0,0,1,1,0,1,0,0,0,0,1,0,0,1,0,0,0,0,0,1,1\n";
       assertEquals(expected, result.toString());
     } catch (IOException e) {
       e.printStackTrace();
