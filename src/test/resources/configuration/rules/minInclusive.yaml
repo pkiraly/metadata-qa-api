@@ -1,0 +1,6 @@
+format: json
+fields:
+  - name: about
+    path:  $.['about']
+    rules:
+      - minInclusive: 1

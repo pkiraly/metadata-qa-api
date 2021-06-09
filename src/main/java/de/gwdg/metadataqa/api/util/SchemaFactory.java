@@ -2,6 +2,7 @@ package de.gwdg.metadataqa.api.util;
 
 import de.gwdg.metadataqa.api.configuration.Configuration;
 import de.gwdg.metadataqa.api.configuration.Field;
+import de.gwdg.metadataqa.api.configuration.Rule;
 import de.gwdg.metadataqa.api.json.JsonBranch;
 import de.gwdg.metadataqa.api.schema.BaseSchema;
 import de.gwdg.metadataqa.api.schema.Format;
@@ -82,6 +83,7 @@ public class SchemaFactory {
     if (config.getNamespaces() != null)
       schema.setNamespaces(config.getNamespaces());
 
+    schema.checkConsistency();
     return schema;
   }
 }

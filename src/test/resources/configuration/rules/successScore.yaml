@@ -1,0 +1,7 @@
+format: json
+fields:
+  - name: about
+    path:  $.['about']
+    rules:
+      - minCount: 1
+        successScore: 1

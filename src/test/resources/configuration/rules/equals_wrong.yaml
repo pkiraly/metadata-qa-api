@@ -1,0 +1,7 @@
+format: json
+fields:
+  - name: about
+    path:  $.['about']
+    rules:
+      - equals: title
+  - name: description

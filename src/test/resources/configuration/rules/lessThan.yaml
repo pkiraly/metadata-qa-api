@@ -1,0 +1,7 @@
+format: json
+fields:
+  - name: about
+    path:  $.['about']
+    rules:
+      - lessThan: description
+  - name: description

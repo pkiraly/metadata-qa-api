@@ -1,5 +1,6 @@
 package de.gwdg.metadataqa.api.schema;
 
+import de.gwdg.metadataqa.api.configuration.Rule;
 import de.gwdg.metadataqa.api.json.FieldGroup;
 import de.gwdg.metadataqa.api.json.JsonBranch;
 import de.gwdg.metadataqa.api.rule.RuleChecker;
@@ -100,5 +101,23 @@ public interface Schema extends Serializable {
 
   default Map<String, String> getNamespaces() {
     return null;
+  }
+
+  default void checkConsistency() {
+    for (JsonBranch path : getPaths()) {
+      List<Rule> rules = path.getRules();
+      if (rules != null && !rules.isEmpty()) {
+        for (Rule rule : rules) {
+          if (rule.getEquals() != null && getPathByLabel(rule.getEquals()) == null)
+            throw new IllegalArgumentException(String.format("%s refers to a nonexistent field in 'equals: %s'", path.getLabel(), rule.getEquals()));
+          if (rule.getDisjoint() != null && getPathByLabel(rule.getDisjoint()) == null)
+            throw new IllegalArgumentException(String.format("%s refers to a nonexistent field in 'disjoint: %s'", path.getLabel(), rule.getDisjoint()));
+          if (rule.getLessThan() != null && getPathByLabel(rule.getLessThan()) == null)
+            throw new IllegalArgumentException(String.format("%s refers to a nonexistent field in 'lessThan: %s'", path.getLabel(), rule.getLessThan()));
+          if (rule.getLessThanOrEquals() != null && getPathByLabel(rule.getLessThanOrEquals()) == null)
+            throw new IllegalArgumentException(String.format("%s refers to a nonexistent field in 'lessThanOrEquals: %s'", path.getLabel(), rule.getLessThanOrEquals()));
+        }
+      }
+    }
   }
 }
