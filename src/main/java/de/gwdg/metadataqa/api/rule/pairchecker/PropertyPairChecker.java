@@ -10,7 +10,7 @@ public abstract class PropertyPairChecker extends BaseRuleChecker {
   protected JsonBranch field2;
   protected String header;
 
-  public PropertyPairChecker(JsonBranch field1, JsonBranch field2, String header) {
+  protected PropertyPairChecker(JsonBranch field1, JsonBranch field2, String header) {
     if (field1 == null)
       throw new IllegalArgumentException("field1 should not be null");
     if (field2 == null)

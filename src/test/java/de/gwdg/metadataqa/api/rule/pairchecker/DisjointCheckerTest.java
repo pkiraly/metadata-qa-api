@@ -64,4 +64,20 @@ public class DisjointCheckerTest {
     assertEquals("disjoint:name-alt", checker.getHeader());
     assertEquals(RuleCheckingOutputType.FAILED, fieldCounter.get(checker.getHeader()).getType());
   }
+
+  @Test(expected = NullPointerException.class)
+  public void failure_constructor1() {
+    DisjointChecker checker = new DisjointChecker(schema.getPathByLabel("nameX"), schema.getPathByLabel("altX"));
+  }
+
+  @Test(expected = IllegalArgumentException.class)
+  public void failure_constructor2() {
+    DisjointChecker checker = new DisjointChecker(schema.getPathByLabel("nameX"), schema.getPathByLabel("altX"), "fake");
+  }
+
+  @Test(expected = IllegalArgumentException.class)
+  public void failure_constructor3() {
+    DisjointChecker checker = new DisjointChecker(schema.getPathByLabel("name"), schema.getPathByLabel("altX"), "fake");
+  }
+
 }

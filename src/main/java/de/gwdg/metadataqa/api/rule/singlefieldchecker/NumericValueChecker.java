@@ -5,7 +5,6 @@ import de.gwdg.metadataqa.api.json.JsonBranch;
 import de.gwdg.metadataqa.api.model.XmlFieldInstance;
 import de.gwdg.metadataqa.api.model.pathcache.PathCache;
 import de.gwdg.metadataqa.api.rule.RuleCheckerOutput;
-import de.gwdg.metadataqa.api.rule.RuleCheckingOutputType;
 
 import java.util.List;
 import java.util.logging.Logger;

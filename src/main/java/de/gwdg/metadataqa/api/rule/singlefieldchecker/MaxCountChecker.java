@@ -4,7 +4,6 @@ import de.gwdg.metadataqa.api.counter.FieldCounter;
 import de.gwdg.metadataqa.api.json.JsonBranch;
 import de.gwdg.metadataqa.api.model.pathcache.PathCache;
 import de.gwdg.metadataqa.api.rule.RuleCheckerOutput;
-import de.gwdg.metadataqa.api.rule.RuleCheckingOutputType;
 import de.gwdg.metadataqa.api.util.InstanceCounter;
 
 public class MaxCountChecker extends SingleFieldChecker {
