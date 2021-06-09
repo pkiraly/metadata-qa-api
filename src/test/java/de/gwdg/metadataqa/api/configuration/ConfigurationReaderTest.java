@@ -19,11 +19,23 @@ public class ConfigurationReaderTest {
   }
 
   @Test
+  public void readMeasurementJson() throws FileNotFoundException {
+    MeasurementConfiguration configuration = ConfigurationReader
+      .readMeasurementJson("src/test/resources/configuration/measurement/configuration.json");
+
+    checkMeasurementConfiguration(configuration);
+  }
+
+  @Test
   public void readMeasurementYaml() throws FileNotFoundException {
     MeasurementConfiguration configuration = ConfigurationReader
       .readMeasurementYaml("src/test/resources/configuration/measurement/configuration.yaml");
-    assertNotNull(configuration);
 
+    checkMeasurementConfiguration(configuration);
+  }
+
+  private void checkMeasurementConfiguration(MeasurementConfiguration configuration) {
+    assertNotNull(configuration);
     assertFalse(configuration.isFieldExtractorEnabled());
     assertTrue(configuration.isFieldExistenceMeasurementEnabled());
     assertTrue(configuration.isFieldCardinalityMeasurementEnabled());
