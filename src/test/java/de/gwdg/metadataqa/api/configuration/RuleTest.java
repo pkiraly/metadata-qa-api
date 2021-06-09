@@ -82,4 +82,170 @@ public class RuleTest {
     assertEquals(1, (int) rule.getMinLength());
     assertEquals(2, (int) rule.getMaxLength());
   }
+
+  @Test
+  public void minCount() {
+    Rule rule;
+    rule = new Rule().withMinCount(3);
+    assertEquals(3, rule.getMinCount().intValue());
+
+    rule = new Rule().withMinCount(Integer.valueOf(3));
+    assertEquals(3, rule.getMinCount().intValue());
+
+    rule = new Rule();
+    rule.setMinCount(3);
+    assertEquals(3, rule.getMinCount().intValue());
+
+    rule = new Rule();
+    rule.setMinCount(Integer.valueOf(3));
+    assertEquals(3, rule.getMinCount().intValue());
+  }
+
+  @Test
+  public void maxCount() {
+    Rule rule;
+    rule = new Rule().withMaxCount(3);
+    assertEquals(3, rule.getMaxCount().intValue());
+
+    rule = new Rule().withMaxCount(Integer.valueOf(3));
+    assertEquals(3, rule.getMaxCount().intValue());
+
+    rule = new Rule();
+    rule.setMaxCount(3);
+    assertEquals(3, rule.getMaxCount().intValue());
+
+    rule = new Rule();
+    rule.setMaxCount(Integer.valueOf(3));
+    assertEquals(3, rule.getMaxCount().intValue());
+  }
+
+  @Test
+  public void minExclusive() {
+    Rule rule;
+    rule = new Rule().withMinExclusive(3);
+    assertEquals(3, rule.getMinExclusive().intValue());
+
+    rule = new Rule().withMinExclusive(Integer.valueOf(3));
+    assertEquals(3, rule.getMinExclusive().intValue());
+
+    rule = new Rule();
+    rule.setMinExclusive(3);
+    assertEquals(3, rule.getMinExclusive().intValue());
+
+    rule = new Rule();
+    rule.setMinExclusive(Integer.valueOf(3));
+    assertEquals(3, rule.getMinExclusive().intValue());
+  }
+
+  @Test
+  public void maxExclusive() {
+    Rule rule;
+    rule = new Rule().withMaxExclusive(3);
+    assertEquals(3, rule.getMaxExclusive().intValue());
+
+    rule = new Rule().withMaxExclusive(Integer.valueOf(3));
+    assertEquals(3, rule.getMaxExclusive().intValue());
+
+    rule = new Rule();
+    rule.setMaxExclusive(3);
+    assertEquals(3, rule.getMaxExclusive().intValue());
+
+    rule = new Rule();
+    rule.setMaxExclusive(Integer.valueOf(3));
+    assertEquals(3, rule.getMaxExclusive().intValue());
+  }
+
+  @Test
+  public void minInclusive() {
+    Rule rule;
+    rule = new Rule().withMinInclusive(3);
+    assertEquals(3, rule.getMinInclusive().intValue());
+
+    rule = new Rule().withMinInclusive(Integer.valueOf(3));
+    assertEquals(3, rule.getMinInclusive().intValue());
+
+    rule = new Rule();
+    rule.setMinInclusive(3);
+    assertEquals(3, rule.getMinInclusive().intValue());
+
+    rule = new Rule();
+    rule.setMinInclusive(Integer.valueOf(3));
+    assertEquals(3, rule.getMinInclusive().intValue());
+  }
+
+  @Test
+  public void maxInclusive() {
+    Rule rule;
+    rule = new Rule().withMaxInclusive(3);
+    assertEquals(3, rule.getMaxInclusive().intValue());
+
+    rule = new Rule().withMaxInclusive(Integer.valueOf(3));
+    assertEquals(3, rule.getMaxInclusive().intValue());
+
+    rule = new Rule();
+    rule.setMaxInclusive(3);
+    assertEquals(3, rule.getMaxInclusive().intValue());
+
+    rule = new Rule();
+    rule.setMaxInclusive(Integer.valueOf(3));
+    assertEquals(3, rule.getMaxInclusive().intValue());
+  }
+
+  @Test
+  public void minLength() {
+    Rule rule;
+    rule = new Rule().withMinLength(3);
+    assertEquals(3, rule.getMinLength().intValue());
+
+    rule = new Rule().withMinLength(Integer.valueOf(3));
+    assertEquals(3, rule.getMinLength().intValue());
+
+    rule = new Rule();
+    rule.setMinLength(3);
+    assertEquals(3, rule.getMinLength().intValue());
+
+    rule = new Rule();
+    rule.setMinLength(Integer.valueOf(3));
+    assertEquals(3, rule.getMinLength().intValue());
+  }
+
+  @Test
+  public void maxLength() {
+    Rule rule;
+    rule = new Rule().withMaxLength(3);
+    assertEquals(3, rule.getMaxLength().intValue());
+
+    rule = new Rule().withMaxLength(Integer.valueOf(3));
+    assertEquals(3, rule.getMaxLength().intValue());
+
+    rule = new Rule();
+    rule.setMaxLength(3);
+    assertEquals(3, rule.getMaxLength().intValue());
+
+    rule = new Rule();
+    rule.setMaxLength(Integer.valueOf(3));
+    assertEquals(3, rule.getMaxLength().intValue());
+  }
+
+  @Test
+  public void failureScore() {
+    Rule rule;
+    rule = new Rule().withFailureScore(3);
+    assertEquals(3, rule.getFailureScore().intValue());
+
+    rule = new Rule();
+    rule.setFailureScore(3);
+    assertEquals(3, rule.getFailureScore().intValue());
+  }
+
+  @Test
+  public void successScore() {
+    Rule rule;
+    rule = new Rule().withSuccessScore(3);
+    assertEquals(3, rule.getSuccessScore().intValue());
+
+    rule = new Rule();
+    rule.setSuccessScore(3);
+    assertEquals(3, rule.getSuccessScore().intValue());
+  }
 }
