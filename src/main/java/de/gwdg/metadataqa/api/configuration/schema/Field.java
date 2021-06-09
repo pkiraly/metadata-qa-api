@@ -1,4 +1,4 @@
-package de.gwdg.metadataqa.api.configuration;
+package de.gwdg.metadataqa.api.configuration.schema;
 
 import java.util.List;
 

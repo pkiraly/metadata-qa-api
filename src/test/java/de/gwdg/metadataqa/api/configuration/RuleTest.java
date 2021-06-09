@@ -1,5 +1,6 @@
 package de.gwdg.metadataqa.api.configuration;
 
+import de.gwdg.metadataqa.api.configuration.schema.Rule;
 import org.junit.Test;
 
 import java.util.Arrays;

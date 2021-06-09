@@ -6,6 +6,7 @@ import com.opencsv.CSVReaderHeaderAware;
 import com.opencsv.exceptions.CsvValidationException;
 import de.gwdg.metadataqa.api.calculator.CalculatorFacade;
 import de.gwdg.metadataqa.api.configuration.*;
+import de.gwdg.metadataqa.api.configuration.schema.Rule;
 import de.gwdg.metadataqa.api.json.JsonBranch;
 import de.gwdg.metadataqa.api.model.Category;
 import de.gwdg.metadataqa.api.rule.singlefieldchecker.HasValueChecker;
@@ -85,13 +86,14 @@ public class BaseSchemaTest {
       .addField(new JsonBranch("funder"))
       .addField(new JsonBranch("temporalCoverage"));
 
-    CalculatorFacade facade = new CalculatorFacade()
+    MeasurementConfiguration config = new MeasurementConfiguration()
+      .enableCompletenessMeasurement()
+      .enableFieldCardinalityMeasurement();
+    CalculatorFacade facade = new CalculatorFacade(config)
       .setSchema(schema)
       .setCsvReader(
         new CsvReader()
-          .setHeader(((CsvAwareSchema) schema).getHeader()))
-      .enableCompletenessMeasurement()
-      .enableFieldCardinalityMeasurement();
+          .setHeader(((CsvAwareSchema) schema).getHeader()));
     // facade.configure();
 
     String fileName = "src/test/resources/csv/dataset_metadata_2020_08_17-head.csv";
@@ -163,13 +165,14 @@ public class BaseSchemaTest {
       .addField(new JsonBranch("funder"))
       .addField(new JsonBranch("temporalCoverageX"));
 
-    CalculatorFacade facade = new CalculatorFacade()
+    CalculatorFacade facade = new CalculatorFacade(new MeasurementConfiguration()
+        .enableCompletenessMeasurement()
+        .enableFieldCardinalityMeasurement()
+      )
       .setSchema(schema)
       .setCsvReader(
         new CsvReader()
-          .setHeader(((CsvAwareSchema) schema).getHeader()))
-      .enableCompletenessMeasurement()
-      .enableFieldCardinalityMeasurement();
+          .setHeader(((CsvAwareSchema) schema).getHeader()));
     // facade.configure();
 
     String fileName = "src/test/resources/csv/dataset_metadata_2020_08_17-head.csv";
@@ -241,11 +244,13 @@ public class BaseSchemaTest {
       .addField(new JsonBranch("funder"))
       .addField(new JsonBranch("temporalCoverage"));
 
-    CalculatorFacade facade = new CalculatorFacade()
+    CalculatorFacade facade = new CalculatorFacade(
+        new MeasurementConfiguration()
+          .enableCompletenessMeasurement()
+          .enableFieldCardinalityMeasurement()
+      )
       .setSchema(schema)
-      .setCsvReader(true)
-      .enableCompletenessMeasurement()
-      .enableFieldCardinalityMeasurement();
+      .setCsvReader(true);
 
     String fileName = "src/test/resources/csv/dataset_metadata_2020_08_17-head.csv";
 
@@ -303,11 +308,12 @@ public class BaseSchemaTest {
       .addField(new JsonBranch("alternateName"))
     ;
 
-    CalculatorFacade facade = new CalculatorFacade()
+    CalculatorFacade facade = new CalculatorFacade(new MeasurementConfiguration()
+        .enableCompletenessMeasurement()
+        .enableFieldCardinalityMeasurement()
+      )
       .setSchema(schema)
-      .setCsvReader(true)
-      .enableCompletenessMeasurement()
-      .enableFieldCardinalityMeasurement();
+      .setCsvReader(true);
 
     String fileName = "src/test/resources/csv/dataset_metadata_2020_08_17-head.csv";
 
@@ -356,11 +362,13 @@ public class BaseSchemaTest {
       .addField(new JsonBranch("nonexistent"))
     ;
 
-    CalculatorFacade facade = new CalculatorFacade()
+    CalculatorFacade facade = new CalculatorFacade(
+        new MeasurementConfiguration()
+          .enableCompletenessMeasurement()
+          .enableFieldCardinalityMeasurement()
+      )
       .setSchema(schema)
-      .setCsvReader(true)
-      .enableCompletenessMeasurement()
-      .enableFieldCardinalityMeasurement();
+      .setCsvReader(true);
 
     String fileName = "src/test/resources/csv/dataset_metadata_2020_08_17-head.csv";
 
@@ -403,9 +411,7 @@ public class BaseSchemaTest {
   @Test
   public void config2Schema() throws FileNotFoundException {
     Schema schema = ConfigurationReader
-      .readYaml(
-      "src/test/resources/configuration/configuration.yaml"
-      )
+      .readSchemaYaml("src/test/resources/configuration/schema/configuration.yaml")
       .asSchema();
 
     assertEquals(Format.JSON, schema.getFormat());
@@ -415,7 +421,7 @@ public class BaseSchemaTest {
   @Test
   public void config2Schema_categories() throws FileNotFoundException {
     Schema schema = ConfigurationReader
-      .readYaml("src/test/resources/configuration/configuration_categories.yaml")
+      .readSchemaYaml("src/test/resources/configuration/schema/configuration_categories.yaml")
       .asSchema();
 
     assertEquals(Format.JSON, schema.getFormat());
@@ -431,7 +437,7 @@ public class BaseSchemaTest {
   @Test
   public void config2Schema_conflicting_categories() throws FileNotFoundException {
     Schema schema = ConfigurationReader
-      .readYaml("src/test/resources/configuration/configuration_conflicting_categories.yaml")
+      .readSchemaYaml("src/test/resources/configuration/schema/configuration_conflicting_categories.yaml")
       .asSchema();
 
     assertEquals(Format.JSON, schema.getFormat());
@@ -451,21 +457,23 @@ public class BaseSchemaTest {
   @Test
   public void fromConfigFile() throws FileNotFoundException {
     Schema schema = ConfigurationReader
-      .readYaml(
-        "src/test/resources/configuration/meemoo.yaml"
+      .readSchemaYaml(
+        "src/test/resources/configuration/schema/meemoo.yaml"
       )
       .asSchema();
 
     assertNotNull(schema.getRuleCheckers());
     assertEquals(3, schema.getRuleCheckers().size());
 
-    CalculatorFacade facade = new CalculatorFacade()
+    CalculatorFacade facade = new CalculatorFacade(
+        new MeasurementConfiguration()
+          .enableCompletenessMeasurement()
+          .enableFieldCardinalityMeasurement()
+      )
       .setSchema(schema)
       .setCsvReader(
         new CsvReader()
-          .setHeader(((CsvAwareSchema) schema).getHeader()))
-      .enableCompletenessMeasurement()
-      .enableFieldCardinalityMeasurement();
+          .setHeader(((CsvAwareSchema) schema).getHeader()));
     // facade.configure();
 
     String fileName = "src/test/resources/csv/dataset_metadata_2020_08_17-head.csv";
@@ -518,22 +526,24 @@ public class BaseSchemaTest {
   @Test
   public void runRuleCatalog() throws FileNotFoundException {
     Schema schema = ConfigurationReader
-      .readYaml(
-        "src/test/resources/configuration/meemoo.yaml"
+      .readSchemaYaml(
+        "src/test/resources/configuration/schema/meemoo.yaml"
       )
       .asSchema();
 
     assertNotNull(schema.getRuleCheckers());
     assertEquals(3, schema.getRuleCheckers().size());
 
-    CalculatorFacade facade = new CalculatorFacade()
+    CalculatorFacade facade = new CalculatorFacade(
+      new MeasurementConfiguration()
+        .enableCompletenessMeasurement()
+        .enableFieldCardinalityMeasurement()
+        .enableRuleCatalogMeasurement()
+      )
       .setSchema(schema)
       .setCsvReader(
         new CsvReader()
-          .setHeader(((CsvAwareSchema) schema).getHeader()))
-      .enableCompletenessMeasurement()
-      .enableFieldCardinalityMeasurement()
-      .enableRuleCatalogMeasurement();
+          .setHeader(((CsvAwareSchema) schema).getHeader()));
     facade.configure();
 
     assertEquals(RuleCatalog.class, facade.getCalculators().get(1).getClass());

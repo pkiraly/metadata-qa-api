@@ -3,6 +3,7 @@ package de.gwdg.metadataqa.api.util;
 import com.opencsv.*;
 import com.opencsv.exceptions.CsvValidationException;
 import de.gwdg.metadataqa.api.calculator.CalculatorFacade;
+import de.gwdg.metadataqa.api.configuration.MeasurementConfiguration;
 import de.gwdg.metadataqa.api.schema.GoogleDatasetSchema;
 import org.apache.commons.lang3.StringUtils;
 import org.junit.Test;
@@ -182,10 +183,12 @@ public class CsvReaderTest {
   public void testCalculator() {
     GoogleDatasetSchema schema = new GoogleDatasetSchema();
 
-    CalculatorFacade facade = new CalculatorFacade()
+    CalculatorFacade facade = new CalculatorFacade(
+        new MeasurementConfiguration()
+          .enableCompletenessMeasurement()
+      )
       .setSchema(schema)
-      .setCsvReader(new CsvReader().setHeader(schema.getHeader()))
-      .enableCompletenessMeasurement();
+      .setCsvReader(new CsvReader().setHeader(schema.getHeader()));
 
     String fileName = "src/test/resources/csv/dataset_metadata_2020_08_17-head.csv";
     File file = new File(fileName);

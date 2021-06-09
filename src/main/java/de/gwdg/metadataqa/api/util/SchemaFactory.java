@@ -1,8 +1,7 @@
 package de.gwdg.metadataqa.api.util;
 
-import de.gwdg.metadataqa.api.configuration.Configuration;
-import de.gwdg.metadataqa.api.configuration.Field;
-import de.gwdg.metadataqa.api.configuration.Rule;
+import de.gwdg.metadataqa.api.configuration.SchemaConfiguration;
+import de.gwdg.metadataqa.api.configuration.schema.Field;
 import de.gwdg.metadataqa.api.json.JsonBranch;
 import de.gwdg.metadataqa.api.schema.BaseSchema;
 import de.gwdg.metadataqa.api.schema.Format;
@@ -17,7 +16,9 @@ public class SchemaFactory {
 
   private static final Logger LOGGER = Logger.getLogger(SchemaFactory.class.getCanonicalName());
 
-  public static Schema fromConfig(Configuration config) {
+  private SchemaFactory() {}
+
+  public static Schema fromConfig(SchemaConfiguration config) {
     BaseSchema schema = new BaseSchema()
       .setFormat(Format.valueOf(config.getFormat().toUpperCase()));
 

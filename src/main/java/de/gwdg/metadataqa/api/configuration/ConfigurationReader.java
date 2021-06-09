@@ -12,20 +12,26 @@ import java.io.FileInputStream;
 
 public class ConfigurationReader {
 
-  public static Configuration readJson(String fileName) throws FileNotFoundException {
+  public static SchemaConfiguration readSchemaJson(String fileName) throws FileNotFoundException {
     var objectMapper = new ObjectMapper();
     var file = new File(fileName);
-    Configuration config;
+    SchemaConfiguration config;
     try {
-      config = objectMapper.readValue(file, Configuration.class);
+      config = objectMapper.readValue(file, SchemaConfiguration.class);
     } catch (IOException e) {
       throw new FileNotFoundException(e.getMessage());
     }
     return config;
   }
 
-  public static Configuration readYaml(String fileName) throws FileNotFoundException {
-    var yaml = new Yaml(new Constructor(Configuration.class));
+  public static SchemaConfiguration readSchemaYaml(String fileName) throws FileNotFoundException {
+    var yaml = new Yaml(new Constructor(SchemaConfiguration.class));
+    InputStream inputStream = new FileInputStream(new File(fileName));
+    return yaml.load(inputStream);
+  }
+
+  public static MeasurementConfiguration readMeasurementYaml(String fileName) throws FileNotFoundException {
+    var yaml = new Yaml(new Constructor(MeasurementConfiguration.class));
     InputStream inputStream = new FileInputStream(new File(fileName));
     return yaml.load(inputStream);
   }

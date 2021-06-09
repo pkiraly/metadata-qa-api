@@ -1,0 +1,14 @@
+fieldExtractorEnabled: false
+fieldExistenceMeasurementEnabled: true
+fieldCardinalityMeasurementEnabled: true
+completenessMeasurementEnabled: true
+tfIdfMeasurementEnabled: false
+problemCatalogMeasurementEnabled: false
+ruleCatalogMeasurementEnabled: false
+languageMeasurementEnabled: false
+multilingualSaturationMeasurementEnabled: false
+collectTfIdfTerms: false
+uniquenessMeasurementEnabled: false
+completenessCollectFields: false
+saturationExtendedResult: false
+checkSkippableCollections: false

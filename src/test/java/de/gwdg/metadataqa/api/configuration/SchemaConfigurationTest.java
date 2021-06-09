@@ -1,5 +1,7 @@
 package de.gwdg.metadataqa.api.configuration;
 
+import de.gwdg.metadataqa.api.configuration.schema.Field;
+import de.gwdg.metadataqa.api.configuration.schema.Group;
 import de.gwdg.metadataqa.api.schema.Format;
 import de.gwdg.metadataqa.api.schema.Schema;
 import org.junit.Test;
@@ -13,44 +15,42 @@ import java.io.InputStream;
 
 import static org.junit.Assert.*;
 
-public class ConfigurationTest {
+public class SchemaConfigurationTest {
 
   @Test
   public void testReading_fromResource() {
-    Yaml yaml = new Yaml(new Constructor(Configuration.class));
+    Yaml yaml = new Yaml(new Constructor(SchemaConfiguration.class));
     InputStream inputStream = this.getClass()
       .getClassLoader()
-      .getResourceAsStream("configuration/configuration.yaml");
-    Configuration config = (Configuration) yaml.load(inputStream);
+      .getResourceAsStream("configuration/schema/configuration.yaml");
+    SchemaConfiguration config = (SchemaConfiguration) yaml.load(inputStream);
     testConfiguration(config);
   }
 
   @Test
   public void testReading_fromFile() throws FileNotFoundException {
-    Yaml yaml = new Yaml(new Constructor(Configuration.class));
-    InputStream inputStream = new FileInputStream(new File("src/test/resources/configuration/configuration.yaml"));
-    Configuration config = (Configuration) yaml.load(inputStream);
+    Yaml yaml = new Yaml(new Constructor(SchemaConfiguration.class));
+    InputStream inputStream = new FileInputStream(new File("src/test/resources/configuration/schema/configuration.yaml"));
+    SchemaConfiguration config = (SchemaConfiguration) yaml.load(inputStream);
     testConfiguration(config);
   }
 
   @Test
   public void testReading_fromConfigurationReader_yaml() throws FileNotFoundException {
-    Configuration config = ConfigurationReader.readYaml("src/test/resources/configuration/configuration.yaml");
+    SchemaConfiguration config = ConfigurationReader.readSchemaYaml("src/test/resources/configuration/schema/configuration.yaml");
     testConfiguration(config);
   }
 
   @Test
   public void testReading_fromConfigurationReader_json() throws FileNotFoundException {
-    Configuration config = ConfigurationReader.readJson("src/test/resources/configuration/configuration.json");
+    SchemaConfiguration config = ConfigurationReader.readSchemaJson("src/test/resources/configuration/schema/configuration.json");
     testConfiguration(config);
   }
 
   @Test
   public void test_asSchema() throws FileNotFoundException {
     Schema schema = ConfigurationReader
-      .readYaml(
-        "src/test/resources/configuration/configuration.yaml"
-      )
+      .readSchemaYaml("src/test/resources/configuration/schema/configuration.yaml")
       .asSchema();
 
     assertEquals(Format.JSON, schema.getFormat());
@@ -60,9 +60,7 @@ public class ConfigurationTest {
   @Test
   public void test_asSchema_withMeemoo() throws FileNotFoundException {
     Schema schema = ConfigurationReader
-      .readYaml(
-        "src/test/resources/configuration/meemoo.yaml"
-      )
+      .readSchemaYaml("src/test/resources/configuration/schema/meemoo.yaml")
       .asSchema();
 
     assertEquals(Format.CSV, schema.getFormat());
@@ -75,7 +73,7 @@ public class ConfigurationTest {
     assertEquals(0, schema.getPaths().get(1).getCategories().size());
   }
 
-  public void testConfiguration(Configuration config) {
+  public void testConfiguration(SchemaConfiguration config) {
     assertNotNull(config);
     assertNotNull(config.getFormat());
     assertNotNull(config.getFields());
@@ -104,7 +102,7 @@ public class ConfigurationTest {
     Yaml yaml = new Yaml(new Constructor(Rulex.class));
     InputStream inputStream = this.getClass()
       .getClassLoader()
-      .getResourceAsStream("configuration/rules.yaml");
+      .getResourceAsStream("configuration/schema/rules.yaml");
     Rulex rule = (Rulex) yaml.load(inputStream);
     assertNotNull(rule.getAnd());
     assertEquals(2, rule.getAnd().size());
@@ -118,8 +116,8 @@ public class ConfigurationTest {
 
   @Test
   public void testReading_xml_as_config() throws FileNotFoundException {
-    Configuration configuration = ConfigurationReader
-      .readYaml("src/test/resources/configuration/xmlsample.yaml");
+    SchemaConfiguration configuration = ConfigurationReader
+      .readSchemaYaml("src/test/resources/configuration/schema/xmlsample.yaml");
 
     assertEquals(2, configuration.getNamespaces().size());
     assertEquals("http://www.lyncode.com/xoai", configuration.getNamespaces().get("xoai"));
@@ -129,7 +127,7 @@ public class ConfigurationTest {
   @Test
   public void testReading_xml_as_schema() throws FileNotFoundException {
     Schema schema = ConfigurationReader
-      .readYaml("src/test/resources/configuration/xmlsample.yaml")
+      .readSchemaYaml("src/test/resources/configuration/schema/xmlsample.yaml")
       .asSchema();
 
     assertEquals(2, schema.getNamespaces().size());
@@ -139,109 +137,109 @@ public class ConfigurationTest {
 
   @Test
   public void yaml_minCount() throws FileNotFoundException {
-    Schema schema = ConfigurationReader.readYaml("src/test/resources/configuration/rules/minCount.yaml").asSchema();
+    Schema schema = ConfigurationReader.readSchemaYaml("src/test/resources/configuration/schema/rules/minCount.yaml").asSchema();
     assertEquals(1, schema.getPathByLabel("about").getRules().get(0).getMinCount().intValue());
   }
 
   @Test
   public void yaml_maxCount() throws FileNotFoundException {
-    Schema schema = ConfigurationReader.readYaml("src/test/resources/configuration/rules/maxCount.yaml").asSchema();
+    Schema schema = ConfigurationReader.readSchemaYaml("src/test/resources/configuration/schema/rules/maxCount.yaml").asSchema();
     assertEquals(1, schema.getPathByLabel("about").getRules().get(0).getMaxCount().intValue());
   }
 
   @Test
   public void yaml_minLength() throws FileNotFoundException {
-    Schema schema = ConfigurationReader.readYaml("src/test/resources/configuration/rules/minLength.yaml").asSchema();
+    Schema schema = ConfigurationReader.readSchemaYaml("src/test/resources/configuration/schema/rules/minLength.yaml").asSchema();
     assertEquals(1, schema.getPathByLabel("about").getRules().get(0).getMinLength().intValue());
   }
 
   @Test
   public void yaml_maxLength() throws FileNotFoundException {
-    Schema schema = ConfigurationReader.readYaml("src/test/resources/configuration/rules/maxLength.yaml").asSchema();
+    Schema schema = ConfigurationReader.readSchemaYaml("src/test/resources/configuration/schema/rules/maxLength.yaml").asSchema();
     assertEquals(1, schema.getPathByLabel("about").getRules().get(0).getMaxLength().intValue());
   }
 
   @Test
   public void yaml_minExclusive() throws FileNotFoundException {
-    Schema schema = ConfigurationReader.readYaml("src/test/resources/configuration/rules/minExclusive.yaml").asSchema();
+    Schema schema = ConfigurationReader.readSchemaYaml("src/test/resources/configuration/schema/rules/minExclusive.yaml").asSchema();
     assertEquals(1, schema.getPathByLabel("about").getRules().get(0).getMinExclusive().intValue());
   }
 
   @Test
   public void yaml_maxExclusive() throws FileNotFoundException {
-    Schema schema = ConfigurationReader.readYaml("src/test/resources/configuration/rules/maxExclusive.yaml").asSchema();
+    Schema schema = ConfigurationReader.readSchemaYaml("src/test/resources/configuration/schema/rules/maxExclusive.yaml").asSchema();
     assertEquals(1, schema.getPathByLabel("about").getRules().get(0).getMaxExclusive().intValue());
   }
 
   @Test
   public void yaml_minInclusive() throws FileNotFoundException {
-    Schema schema = ConfigurationReader.readYaml("src/test/resources/configuration/rules/minInclusive.yaml").asSchema();
+    Schema schema = ConfigurationReader.readSchemaYaml("src/test/resources/configuration/schema/rules/minInclusive.yaml").asSchema();
     assertEquals(1, schema.getPathByLabel("about").getRules().get(0).getMinInclusive().intValue());
   }
 
   @Test
   public void yaml_maxInclusive() throws FileNotFoundException {
-    Schema schema = ConfigurationReader.readYaml("src/test/resources/configuration/rules/maxInclusive.yaml").asSchema();
+    Schema schema = ConfigurationReader.readSchemaYaml("src/test/resources/configuration/schema/rules/maxInclusive.yaml").asSchema();
     assertEquals(1, schema.getPathByLabel("about").getRules().get(0).getMaxInclusive().intValue());
   }
 
   @Test
   public void yaml_failureScore() throws FileNotFoundException {
-    Schema schema = ConfigurationReader.readYaml("src/test/resources/configuration/rules/failureScore.yaml").asSchema();
+    Schema schema = ConfigurationReader.readSchemaYaml("src/test/resources/configuration/schema/rules/failureScore.yaml").asSchema();
     assertEquals(-1, schema.getPathByLabel("about").getRules().get(0).getFailureScore().intValue());
   }
 
   @Test
   public void yaml_successScore() throws FileNotFoundException {
-    Schema schema = ConfigurationReader.readYaml("src/test/resources/configuration/rules/successScore.yaml").asSchema();
+    Schema schema = ConfigurationReader.readSchemaYaml("src/test/resources/configuration/schema/rules/successScore.yaml").asSchema();
     assertEquals(1, schema.getPathByLabel("about").getRules().get(0).getSuccessScore().intValue());
   }
 
   @Test
   public void yaml_pattern() throws FileNotFoundException {
-    Schema schema = ConfigurationReader.readYaml("src/test/resources/configuration/rules/pattern.yaml").asSchema();
+    Schema schema = ConfigurationReader.readSchemaYaml("src/test/resources/configuration/schema/rules/pattern.yaml").asSchema();
     assertEquals("^.+$", schema.getPathByLabel("about").getRules().get(0).getPattern());
   }
 
   @Test
   public void yaml_hasValue() throws FileNotFoundException {
-    Schema schema = ConfigurationReader.readYaml("src/test/resources/configuration/rules/hasValue.yaml").asSchema();
+    Schema schema = ConfigurationReader.readSchemaYaml("src/test/resources/configuration/schema/rules/hasValue.yaml").asSchema();
     assertEquals("test", schema.getPathByLabel("about").getRules().get(0).getHasValue());
   }
 
   @Test
   public void yaml_equals() throws FileNotFoundException {
-    Schema schema = ConfigurationReader.readYaml("src/test/resources/configuration/rules/equals.yaml").asSchema();
+    Schema schema = ConfigurationReader.readSchemaYaml("src/test/resources/configuration/schema/rules/equals.yaml").asSchema();
     assertEquals("description", schema.getPathByLabel("about").getRules().get(0).getEquals());
   }
 
   @Test(expected = IllegalArgumentException.class)
   public void yaml_equals_wrong() throws FileNotFoundException {
-    Schema schema = ConfigurationReader.readYaml("src/test/resources/configuration/rules/equals_wrong.yaml").asSchema();
+    Schema schema = ConfigurationReader.readSchemaYaml("src/test/resources/configuration/schema/rules/equals_wrong.yaml").asSchema();
     assertEquals("description", schema.getPathByLabel("about").getRules().get(0).getEquals());
   }
 
   @Test
   public void yaml_lessThan() throws FileNotFoundException {
-    Schema schema = ConfigurationReader.readYaml("src/test/resources/configuration/rules/lessThan.yaml").asSchema();
+    Schema schema = ConfigurationReader.readSchemaYaml("src/test/resources/configuration/schema/rules/lessThan.yaml").asSchema();
     assertEquals("description", schema.getPathByLabel("about").getRules().get(0).getLessThan());
   }
 
   @Test(expected = IllegalArgumentException.class)
   public void yaml_lessThan_wrong() throws FileNotFoundException {
-    Schema schema = ConfigurationReader.readYaml("src/test/resources/configuration/rules/lessThan_wrong.yaml").asSchema();
+    Schema schema = ConfigurationReader.readSchemaYaml("src/test/resources/configuration/schema/rules/lessThan_wrong.yaml").asSchema();
     assertEquals("description", schema.getPathByLabel("about").getRules().get(0).getLessThan());
   }
 
   @Test
   public void yaml_lessThanOrEquals() throws FileNotFoundException {
-    Schema schema = ConfigurationReader.readYaml("src/test/resources/configuration/rules/lessThanOrEquals.yaml").asSchema();
+    Schema schema = ConfigurationReader.readSchemaYaml("src/test/resources/configuration/schema/rules/lessThanOrEquals.yaml").asSchema();
     assertEquals("description", schema.getPathByLabel("about").getRules().get(0).getLessThanOrEquals());
   }
 
   @Test(expected = IllegalArgumentException.class)
   public void yaml_lessThanOrEquals_wrong() throws FileNotFoundException {
-    Schema schema = ConfigurationReader.readYaml("src/test/resources/configuration/rules/lessThanOrEquals_wrong.yaml").asSchema();
+    Schema schema = ConfigurationReader.readSchemaYaml("src/test/resources/configuration/schema/rules/lessThanOrEquals_wrong.yaml").asSchema();
     assertEquals("description", schema.getPathByLabel("about").getRules().get(0).getLessThanOrEquals());
   }
 }

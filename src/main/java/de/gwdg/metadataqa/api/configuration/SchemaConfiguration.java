@@ -1,12 +1,14 @@
 package de.gwdg.metadataqa.api.configuration;
 
+import de.gwdg.metadataqa.api.configuration.schema.Field;
+import de.gwdg.metadataqa.api.configuration.schema.Group;
 import de.gwdg.metadataqa.api.schema.Schema;
 import de.gwdg.metadataqa.api.util.SchemaFactory;
 
 import java.util.List;
 import java.util.Map;
 
-public class Configuration {
+public class SchemaConfiguration {
   private String format;
   private List<Field> fields;
   private List<Group> groups;

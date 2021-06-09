@@ -1,6 +1,6 @@
 package de.gwdg.metadataqa.api.schema;
 
-import de.gwdg.metadataqa.api.configuration.Rule;
+import de.gwdg.metadataqa.api.configuration.schema.Rule;
 import de.gwdg.metadataqa.api.json.JsonBranch;
 import de.gwdg.metadataqa.api.rule.pairchecker.DisjointChecker;
 import de.gwdg.metadataqa.api.rule.pairchecker.LessThanPairChecker;

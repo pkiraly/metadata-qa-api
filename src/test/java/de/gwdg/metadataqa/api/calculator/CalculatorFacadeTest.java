@@ -3,6 +3,7 @@ package de.gwdg.metadataqa.api.calculator;
 import com.opencsv.CSVIterator;
 import com.opencsv.CSVReaderHeaderAware;
 import com.opencsv.exceptions.CsvValidationException;
+import de.gwdg.metadataqa.api.configuration.MeasurementConfiguration;
 import de.gwdg.metadataqa.api.json.JsonBranch;
 import de.gwdg.metadataqa.api.model.Category;
 import de.gwdg.metadataqa.api.schema.*;
@@ -54,7 +55,8 @@ public class CalculatorFacadeTest {
 
   @Test
   public void testNoAbbreviate() throws URISyntaxException, IOException {
-    CalculatorFacade calculatorFacade = new CalculatorFacade(true, true, true, false, true);
+    MeasurementConfiguration configuration = new MeasurementConfiguration(true, true, true, false, true);
+    CalculatorFacade calculatorFacade = new CalculatorFacade(configuration);
     calculatorFacade.setSchema(new EdmOaiPmhJsonSchema());
     calculatorFacade.configure();
     String expected = "0.184,1.0,0.181818,0.388889,0.272727,0.5,0.357143,0.75,0.363636,0.4,1,1,1,0,0,0,0,0,1,1,0,0,0,0,1,0,0,0,0,0,0,0,1,0,0,1,0,0,1,1,0,0,1,1,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,1,1,1,1,1,1,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,1,0,0,1,1,1,0,0,0,0,0,1,1,0,0,0,0,5,0,0,0,0,0,0,0,1,0,0,1,0,0,1,1,0,0,1,1,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,1,1,1,1,1,1,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,12,0,0,0.0,0.0,0.0";
@@ -63,7 +65,8 @@ public class CalculatorFacadeTest {
 
   @Test
   public void testNoAbbreviate_map() throws URISyntaxException, IOException {
-    CalculatorFacade calculatorFacade = new CalculatorFacade(true, true, true, false, true);
+    MeasurementConfiguration configuration = new MeasurementConfiguration(true, true, true, false, true);
+    CalculatorFacade calculatorFacade = new CalculatorFacade(configuration);
     calculatorFacade.setSchema(new EdmOaiPmhJsonSchema());
     calculatorFacade.configure();
     Map<String, Object> result = calculatorFacade.measureAsMap(
@@ -76,7 +79,7 @@ public class CalculatorFacadeTest {
 
   @Test
   public void testNoAbbreviate_list() throws URISyntaxException, IOException {
-    CalculatorFacade calculatorFacade = new CalculatorFacade(true, true, true, false, true);
+    CalculatorFacade calculatorFacade = new CalculatorFacade(new MeasurementConfiguration(true, true, true, false, true));
     calculatorFacade.setSchema(new EdmOaiPmhJsonSchema());
     calculatorFacade.configure();
 
@@ -90,7 +93,7 @@ public class CalculatorFacadeTest {
 
   @Test
   public void testNoAbbreviate_listOfObject() throws URISyntaxException, IOException {
-    CalculatorFacade calculatorFacade = new CalculatorFacade(true, true, true, false, true);
+    CalculatorFacade calculatorFacade = new CalculatorFacade(new MeasurementConfiguration(true, true, true, false, true));
     calculatorFacade.setSchema(new EdmOaiPmhJsonSchema());
     calculatorFacade.configure();
 
@@ -104,7 +107,7 @@ public class CalculatorFacadeTest {
 
   @Test
   public void testWithAbbreviate() throws URISyntaxException, IOException {
-    CalculatorFacade calculatorFacade = new CalculatorFacade(true, true, true, false, true);
+    CalculatorFacade calculatorFacade = new CalculatorFacade(new MeasurementConfiguration(true, true, true, false, true));
     calculatorFacade.setSchema(new EdmOaiPmhJsonSchema());
     calculatorFacade.configure();
     String expected = "0.184,1.0,0.181818,0.388889,0.272727,0.5,0.357143,0.75,0.363636,0.4,1,1,1,0,0,0,0,0,1,1,0,0,0,0,1,0,0,0,0,0,0,0,1,0,0,1,0,0,1,1,0,0,1,1,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,1,1,1,1,1,1,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,1,0,0,1,1,1,0,0,0,0,0,1,1,0,0,0,0,5,0,0,0,0,0,0,0,1,0,0,1,0,0,1,1,0,0,1,1,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,1,1,1,1,1,1,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,12,0,0,0.0,0.0,0.0";
@@ -112,45 +115,37 @@ public class CalculatorFacadeTest {
   }
 
   @Test
-  public void emptyConstructor() {
-    CalculatorFacade calculator = new CalculatorFacade();
-    assertTrue(calculator.isFieldExistenceMeasurementEnabled());
-    assertTrue(calculator.isFieldCardinalityMeasurementEnabled());
-    assertTrue(calculator.isCompletenessMeasurementEnabled());
-    assertFalse(calculator.isTfIdfMeasurementEnabled());
-    assertFalse(calculator.isProblemCatalogMeasurementEnabled());
-    assertFalse(calculator.isLanguageMeasurementEnabled());
-    assertFalse(calculator.collectTfIdfTerms());
-    assertFalse(calculator.completenessCollectFields());
-  }
-
-  @Test
   public void testChanged() {
-    CalculatorFacade calculator = new CalculatorFacade()
-      .setSchema(new EdmOaiPmhJsonSchema())
-      .disableFieldExtractor();
+    MeasurementConfiguration configuration = new MeasurementConfiguration()
+      .disableFieldExtractor()
+      .disableTfIdfMeasurement();
+    ;
 
-    assertFalse(calculator.isTfIdfMeasurementEnabled());
+    CalculatorFacade calculator = new CalculatorFacade(configuration)
+      .setSchema(new EdmOaiPmhJsonSchema())
+      // .disableFieldExtractor()
+    ;
+
+    assertFalse(configuration.isTfIdfMeasurementEnabled());
     calculator.configure();
     List<Calculator> calculators = calculator.getCalculators();
     assertEquals(1, calculators.size());
 
-    calculator.enableTfIdfMeasurement();
     calculator.configureSolr("localhost", "8983", "solr/europeana");
     calculator.conditionalConfiguration();
     calculators = calculator.getCalculators();
-    assertEquals(2, calculators.size());
+    assertEquals(1, calculators.size());
 
     calculator.conditionalConfiguration();
     calculators = calculator.getCalculators();
-    assertEquals(2, calculators.size());
+    assertEquals(1, calculators.size());
   }
 
   @Test(expected = IllegalArgumentException.class)
   public void testTfIdfWithWrongConfiguration() {
-    CalculatorFacade calculator = new CalculatorFacade()
-      .setSchema(new EdmOaiPmhJsonSchema())
-      .enableTfIdfMeasurement();
+    MeasurementConfiguration configuration = new MeasurementConfiguration().enableTfIdfMeasurement();
+    CalculatorFacade calculator = new CalculatorFacade(configuration)
+      .setSchema(new EdmOaiPmhJsonSchema());
     calculator.conditionalConfiguration();
 
     List<Calculator> calculators = calculator.getCalculators();
@@ -272,15 +267,17 @@ public class CalculatorFacadeTest {
       .addField(new JsonBranch("funder"))
       .addField(new JsonBranch("temporalCoverage"));
 
-    CalculatorFacade facade = new CalculatorFacade()
-      .setSchema(schema)
-      .setCsvReader(
-        new CsvReader()
-          .setHeader(((CsvAwareSchema) schema).getHeader()))
+    MeasurementConfiguration config = new MeasurementConfiguration()
       .enableCompletenessMeasurement()
       .enableFieldCardinalityMeasurement();
 
-    CalculatorFacade calculatorFacade = new CalculatorFacade(true, true, true, false, true);
+    CalculatorFacade facade = new CalculatorFacade(config)
+      .setSchema(schema)
+      .setCsvReader(
+        new CsvReader()
+          .setHeader(((CsvAwareSchema) schema).getHeader()));
+
+    CalculatorFacade calculatorFacade = new CalculatorFacade(new MeasurementConfiguration(true, true, true, false, true));
     calculatorFacade.setSchema(new EdmOaiPmhJsonSchema());
     calculatorFacade.configure();
     return facade;

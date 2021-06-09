@@ -1,6 +1,7 @@
 package de.gwdg.metadataqa.api.calculator;
 
 import de.bechte.junit.runners.context.HierarchicalContextRunner;
+import de.gwdg.metadataqa.api.configuration.MeasurementConfiguration;
 import de.gwdg.metadataqa.api.model.pathcache.JsonPathCache;
 import de.gwdg.metadataqa.api.model.pathcache.PathCache;
 import de.gwdg.metadataqa.api.schema.edm.EdmOaiPmhJsonSchema;
@@ -122,14 +123,17 @@ public class UniquenessCalculatorTest {
 
     @Before
     public void setUp() {
-      facade = new CalculatorFacade()
-        .setSchema(schema)
-        .setSolrClient(solrClient)
+      MeasurementConfiguration configuration = new MeasurementConfiguration()
         .enableFieldExtractor()
         .disableFieldExistenceMeasurement()
         .disableCompletenessMeasurement()
         .disableFieldCardinalityMeasurement()
-        .enableUniquenessMeasurement();
+        .enableUniquenessMeasurement()
+      ;
+
+      facade = new CalculatorFacade(configuration)
+        .setSchema(schema)
+        .setSolrClient(solrClient);
 
       facade.configure();
     }

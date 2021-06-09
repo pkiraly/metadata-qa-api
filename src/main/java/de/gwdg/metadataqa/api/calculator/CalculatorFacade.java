@@ -3,6 +3,7 @@ package de.gwdg.metadataqa.api.calculator;
 import com.jayway.jsonpath.InvalidJsonException;
 import de.gwdg.metadataqa.api.calculator.output.OutputCollector;
 import de.gwdg.metadataqa.api.calculator.output.OutputFactory;
+import de.gwdg.metadataqa.api.configuration.MeasurementConfiguration;
 import de.gwdg.metadataqa.api.interfaces.Calculator;
 import de.gwdg.metadataqa.api.model.pathcache.CsvPathCache;
 import de.gwdg.metadataqa.api.model.pathcache.PathCache;
@@ -46,79 +47,12 @@ public class CalculatorFacade implements Serializable {
   );
   private static final long serialVersionUID = -5956665711362465908L;
 
+  private MeasurementConfiguration configuration;
+
   /**
    * Is it the first record?
    */
   protected boolean isFirstRecord = true;
-
-  /**
-   * Flag whether or not the field extractor is enabled (default: false).
-   */
-  protected boolean fieldExtractorEnabled = false;
-
-  /**
-   * Flag whether or not run the field existence measurement
-   * (default: true).
-   */
-  protected boolean fieldExistenceMeasurementEnabled = true;
-
-  /**
-   * Flag whether or not run the field cardinality measurement
-   * (default: true).
-   */
-  protected boolean fieldCardinalityMeasurementEnabled = true;
-
-  /**
-   * Flag whether or not run the completeness measurement
-   * (default: true).
-   */
-  protected boolean completenessMeasurementEnabled = true;
-
-  /**
-   * Flag whether or not run the uniqueness measurement
-   * (default: false).
-   */
-  protected boolean tfIdfMeasurementEnabled = false;
-
-  /**
-   * Flag whether or not run the problem catalog
-   * (default: false).
-   */
-  protected boolean problemCatalogMeasurementEnabled = false;
-
-  /**
-   * Flag whether or not run the rule catalog
-   * (default: false).
-   */
-  protected boolean ruleCatalogMeasurementEnabled = false;
-
-  /**
-   * Flag whether or not run the language detector
-   * (default: false).
-   */
-  protected boolean languageMeasurementEnabled = false;
-
-  /**
-   * Flag whether or not run the multilingual saturation measurement
-   * (default: false).
-   */
-  protected boolean multilingualSaturationMeasurementEnabled = false;
-
-  /**
-   * Flag whether or not collect TF-IDF terms in uniqueness measurement
-   * (default: false).
-   */
-  protected boolean collectTfIdfTerms = false;
-
-  /**
-   * Flag whether or not run missing/empty/existing field collection in
-   * completeness (default: false).
-   */
-  protected boolean completenessCollectFields = false;
-  protected boolean saturationExtendedResult = false;
-  protected boolean checkSkippableCollections = false;
-
-  protected boolean uniquenessMeasurementEnabled = false;
 
   protected CompressionLevel compressionLevel = CompressionLevel.NORMAL;
 
@@ -169,31 +103,11 @@ public class CalculatorFacade implements Serializable {
    * Create calculator facade with the default configuration.
    */
   public CalculatorFacade() {
+    this.configuration = new MeasurementConfiguration();
   }
 
-  /**
-   * Create calculator facade with configuration.
-   * @param runFieldExistence
-   *   Flag whether or not run the field existence measurement
-   * @param runFieldCardinality
-   *   Flag whether or not run the field cardinality measurement
-   * @param runCompleteness
-   *   Flag whether or not run the completeness measurement
-   * @param runTfIdf
-   *   Flag whether or not run the uniqueness measurement
-   * @param runProblemCatalog
-   *   Flag whether or not run the problem catalog
-   */
-  public CalculatorFacade(final boolean runFieldExistence,
-                          final boolean runFieldCardinality,
-                          final boolean runCompleteness,
-                          final boolean runTfIdf,
-                          final boolean runProblemCatalog) {
-    this.fieldExistenceMeasurementEnabled = runFieldExistence;
-    this.fieldCardinalityMeasurementEnabled = runFieldCardinality;
-    this.completenessMeasurementEnabled = runCompleteness;
-    this.tfIdfMeasurementEnabled = runTfIdf;
-    this.problemCatalogMeasurementEnabled = runProblemCatalog;
+  public CalculatorFacade(MeasurementConfiguration configuration) {
+    this.configuration = configuration;
   }
 
   protected void conditionalConfiguration() {
@@ -221,7 +135,7 @@ public class CalculatorFacade implements Serializable {
   }
 
   private void addUniquenessMeasurement() {
-    if (uniquenessMeasurementEnabled) {
+    if (configuration.isUniquenessMeasurementEnabled()) {
       if (solrClient == null && solrConfiguration == null) {
         throw new IllegalArgumentException(
           "If Uniqueness measurement is enabled, Solr configuration should not be null."
@@ -235,10 +149,10 @@ public class CalculatorFacade implements Serializable {
   }
 
   private void addMultilingualSaturationMeasurement() {
-    if (multilingualSaturationMeasurementEnabled) {
+    if (configuration.isMultilingualSaturationMeasurementEnabled()) {
       multilingualSaturationCalculator =
           new MultilingualitySaturationCalculator(schema);
-      if (saturationExtendedResult) {
+      if (configuration.isSaturationExtendedResult()) {
         multilingualSaturationCalculator
           .setResultType(
               MultilingualitySaturationCalculator.ResultTypes.EXTENDED);
@@ -248,21 +162,21 @@ public class CalculatorFacade implements Serializable {
   }
 
   private void addLanguageMeasurement() {
-    if (languageMeasurementEnabled) {
+    if (configuration.isLanguageMeasurementEnabled()) {
       languageCalculator = new LanguageCalculator(schema);
       calculators.add(languageCalculator);
     }
   }
 
   private void addRuleCatalogMeasurement() {
-    if (ruleCatalogMeasurementEnabled) {
+    if (configuration.isRuleCatalogMeasurementEnabled()) {
       calculators.add(new RuleCatalog(schema));
     }
   }
 
   private void addProblemCatalogMeasurement() {
     // TODO: move it into europeana lib
-    if (problemCatalogMeasurementEnabled && schema instanceof EdmSchema) {
+    if (configuration.isProblemCatalogMeasurementEnabled() && schema instanceof EdmSchema) {
       var problemCatalog = new ProblemCatalog((EdmSchema) schema);
       new LongSubject(problemCatalog);
       new TitleAndDescriptionAreSame(problemCatalog);
@@ -272,30 +186,30 @@ public class CalculatorFacade implements Serializable {
   }
 
   private void addTfIdfMeasurement() {
-    if (tfIdfMeasurementEnabled) {
+    if (configuration.isTfIdfMeasurementEnabled()) {
       tfidfCalculator = new TfIdfCalculator(schema);
       if (solrConfiguration != null) {
         tfidfCalculator.setSolrConfiguration(solrConfiguration);
       } else {
         throw new IllegalArgumentException("If TF-IDF measurement is enabled, Solr configuration should not be null.");
       }
-      tfidfCalculator.enableTermCollection(collectTfIdfTerms);
+      tfidfCalculator.enableTermCollection(configuration.collectTfIdfTerms());
       calculators.add(tfidfCalculator);
     }
   }
 
   private void addCompleteness() {
-    if (completenessMeasurementEnabled) {
+    if (configuration.isCompletenessMeasurementEnabled()) {
       completenessCalculator = new CompletenessCalculator(schema);
-      completenessCalculator.collectFields(completenessCollectFields);
-      completenessCalculator.setExistence(fieldExistenceMeasurementEnabled);
-      completenessCalculator.setCardinality(fieldCardinalityMeasurementEnabled);
+      completenessCalculator.collectFields(configuration.completenessCollectFields());
+      completenessCalculator.setExistence(configuration.isFieldExistenceMeasurementEnabled());
+      completenessCalculator.setCardinality(configuration.isFieldCardinalityMeasurementEnabled());
       calculators.add(completenessCalculator);
     }
   }
 
   private void addExtractor() {
-    if (fieldExtractorEnabled) {
+    if (configuration.isFieldExtractorEnabled()) {
       fieldExtractor = new FieldExtractor(schema);
       calculators.add(fieldExtractor);
     }
@@ -439,286 +353,6 @@ public class CalculatorFacade implements Serializable {
     }
   }
 
-  public CalculatorFacade enableFieldExtractor() {
-    return enableFieldExtractor(true);
-  }
-
-  public CalculatorFacade disableFieldExtractor() {
-    return enableFieldExtractor(false);
-  }
-
-  public CalculatorFacade enableFieldExtractor(boolean flag) {
-    this.fieldExtractorEnabled = flag;
-    changed = true;
-    return this;
-  }
-
-  public boolean isFieldExtractorEnabled() {
-    return fieldExtractorEnabled;
-  }
-
-  /**
-   * Returns whether or not to run the field existence measurement.
-   * @return
-   *   field existence measurement flag
-   */
-  public boolean isFieldExistenceMeasurementEnabled() {
-    return fieldExistenceMeasurementEnabled;
-  }
-
-  public CalculatorFacade enableFieldExistenceMeasurement() {
-    return enableFieldExistenceMeasurement(true);
-  }
-
-  public CalculatorFacade disableFieldExistenceMeasurement() {
-    return enableFieldExistenceMeasurement(false);
-  }
-
-  /**
-   * Sets whether or not to run the field existence measurement.
-   * @param runFieldExistence
-   *    field existence measurement flag
-   * @return
-   */
-  public CalculatorFacade enableFieldExistenceMeasurement(boolean runFieldExistence) {
-    this.fieldExistenceMeasurementEnabled = runFieldExistence;
-    changed = true;
-    return this;
-  }
-
-  /**
-   * Returns whether or not to run cardinality measurement.
-   * @return
-   *   Flag to run cardinality measurement
-   */
-  public boolean isFieldCardinalityMeasurementEnabled() {
-    return fieldCardinalityMeasurementEnabled;
-  }
-
-  public CalculatorFacade enableFieldCardinalityMeasurement() {
-    return enableFieldCardinalityMeasurement(true);
-  }
-
-  public CalculatorFacade disableFieldCardinalityMeasurement() {
-    return enableFieldCardinalityMeasurement(false);
-  }
-
-  /**
-   * configure to run the cardinality measurement.
-   * @param runFieldCardinality
-   *    cardinality measurement flag
-   * @return
-   */
-  public CalculatorFacade enableFieldCardinalityMeasurement(boolean runFieldCardinality) {
-    this.fieldCardinalityMeasurementEnabled = runFieldCardinality;
-    changed = true;
-    return this;
-  }
-
-  /**
-   * Returns the flag whether or not run the completeness measurement.
-   * @return
-   *   Flag whether or not run the completeness measurement
-   */
-  public boolean isCompletenessMeasurementEnabled() {
-    return completenessMeasurementEnabled;
-  }
-
-  public CalculatorFacade enableCompletenessMeasurement() {
-    return enableCompletenessMeasurement(true);
-  }
-
-  public CalculatorFacade disableCompletenessMeasurement() {
-    return enableCompletenessMeasurement(false);
-  }
-
-  /**
-   * Sets the flag whether or not run the completeness measurement.
-   * @param runCompleteness
-   *    flag whether or not run the completeness measurement
-   * @return
-   */
-  public CalculatorFacade enableCompletenessMeasurement(boolean runCompleteness) {
-    this.completenessMeasurementEnabled = runCompleteness;
-    changed = true;
-    return this;
-  }
-
-  /**
-   * Returns the flag whether or not run the language detector.
-   *
-   * @return
-   *   language detector flag
-   */
-  public boolean isLanguageMeasurementEnabled() {
-    return languageMeasurementEnabled;
-  }
-
-  public CalculatorFacade enableLanguageMeasurement() {
-    return enableLanguageMeasurement(true);
-  }
-
-  public CalculatorFacade disableLanguageMeasurement() {
-    return enableLanguageMeasurement(false);
-  }
-
-  /**
-   * Configure whether or not run the language detector.
-   *
-   * @param runLanguage
-   * @return
-   */
-  public CalculatorFacade enableLanguageMeasurement(boolean runLanguage) {
-    this.languageMeasurementEnabled = runLanguage;
-    changed = true;
-    return this;
-  }
-
-  /**
-   * Returns the flag whether or not run the language detector.
-   *
-   * @return
-   *   language detector flag
-   */
-  public boolean isMultilingualSaturationMeasurementEnabled() {
-    return multilingualSaturationMeasurementEnabled;
-  }
-
-  public CalculatorFacade enableMultilingualSaturationMeasurement() {
-    return enableMultilingualSaturationMeasurement(true);
-  }
-
-  public CalculatorFacade disableMultilingualSaturationMeasurement() {
-    return enableMultilingualSaturationMeasurement(false);
-  }
-
-  /**
-   * Configure whether or not run the language detector.
-   *
-   * @param runMultilingualSaturation
-   * @return
-   */
-  public CalculatorFacade enableMultilingualSaturationMeasurement(boolean runMultilingualSaturation) {
-    this.multilingualSaturationMeasurementEnabled = runMultilingualSaturation;
-    changed = true;
-    return this;
-  }
-
-  /**
-   * Returns whether or not run the uniqueness measurement.
-   *
-   * @return
-   *   uniqueness measurement flag
-   */
-  public boolean isTfIdfMeasurementEnabled() {
-    return tfIdfMeasurementEnabled;
-  }
-
-  public CalculatorFacade enableTfIdfMeasurement() {
-    return enableTfIdfMeasurement(true);
-  }
-
-  public CalculatorFacade disableTfIdfMeasurement() {
-    return enableTfIdfMeasurement(false);
-  }
-
-  /**
-   * Configure whether or not run the uniqueness measurement.
-   * @param runTfIdf
-   *   uniqueness measurement flag
-   * @return
-   */
-  public CalculatorFacade enableTfIdfMeasurement(boolean runTfIdf) {
-    this.tfIdfMeasurementEnabled = runTfIdf;
-    changed = true;
-    return this;
-  }
-
-  /**
-   * Gets flag whether to run the problem catalog measurement.
-   * @return
-   *   problem catalog measurement flag
-   */
-  public boolean isProblemCatalogMeasurementEnabled() {
-    return problemCatalogMeasurementEnabled;
-  }
-
-  public CalculatorFacade enableProblemCatalogMeasurement() {
-    return enableProblemCatalogMeasurement(true);
-  }
-
-  public CalculatorFacade disableProblemCatalogMeasurement() {
-    return enableProblemCatalogMeasurement(false);
-  }
-
-  /**
-   * Configure to run the problem catalog measurement.
-   * @param runProblemCatalog
-   *   problem catalog measurement flag
-   * @return
-   */
-  public CalculatorFacade enableProblemCatalogMeasurement(boolean runProblemCatalog) {
-    this.problemCatalogMeasurementEnabled = runProblemCatalog;
-    changed = true;
-    return this;
-  }
-
-  /**
-   * Gets flag whether to run the rule catalog measurement.
-   * @return
-   *   problem catalog measurement flag
-   */
-  public boolean isRuleCatalogMeasurementEnabled() {
-    return ruleCatalogMeasurementEnabled;
-  }
-
-  public CalculatorFacade enableRuleCatalogMeasurement() {
-    return enableRuleCatalogMeasurement(true);
-  }
-
-  public CalculatorFacade disableRuleCatalogMeasurement() {
-    return enableRuleCatalogMeasurement(false);
-  }
-
-  /**
-   * Configure to run the problem catalog measurement.
-   * @param run
-   *   problem catalog measurement flag
-   * @return
-   */
-  public CalculatorFacade enableRuleCatalogMeasurement(boolean run) {
-    this.ruleCatalogMeasurementEnabled = run;
-    changed = true;
-    return this;
-  }
-
-  /**
-   * Is uniqueness measurement enabled?
-   * @return uniqueness measurement flag
-   */
-  public boolean isUniquenessMeasurementEnabled() {
-    return uniquenessMeasurementEnabled;
-  }
-
-  public CalculatorFacade enableUniquenessMeasurement() {
-    return enableUniquenessMeasurement(true);
-  }
-
-  public CalculatorFacade disableUniquenessMeasurement() {
-    return enableUniquenessMeasurement(false);
-  }
-
-  /**
-   * Flag to enable uniqueness measurement.
-   * @param uniquenessMeasurementEnabled The flag
-   * @return
-   */
-  public CalculatorFacade enableUniquenessMeasurement(boolean uniquenessMeasurementEnabled) {
-    this.uniquenessMeasurementEnabled = uniquenessMeasurementEnabled;
-    changed = true;
-    return this;
-  }
-
   /**
    * Return the list of all registered calculators.
    *
@@ -727,57 +361,6 @@ public class CalculatorFacade implements Serializable {
    */
   public List<Calculator> getCalculators() {
     return calculators;
-  }
-
-  /**
-   * Returns the flag whether the measurement should collect each individual
-   * terms with their Term Ferquency and Invers Document Frequency scores.
-   *
-   * @return
-   *   The TF-IDF collector flag
-   */
-  public boolean collectTfIdfTerms() {
-    return collectTfIdfTerms;
-  }
-
-  /**
-   * Sets the flag whether the measurement should collect each individual
-   * terms with their Term Ferquency and Invers Document Frequency scores.
-   *
-   * @param collectTfIdfTerms
-   *   The TF-IDF collector flag
-   * @return
-   */
-  public CalculatorFacade collectTfIdfTerms(boolean collectTfIdfTerms) {
-    this.collectTfIdfTerms = collectTfIdfTerms;
-    if (tfidfCalculator != null) {
-      tfidfCalculator.enableTermCollection(collectTfIdfTerms);
-    }
-    changed = true;
-    return this;
-  }
-
-  /**
-   * Get the completenessCollectFields flag.
-   *
-   * @return
-   *   completenessCollectFields flag
-   */
-  public boolean completenessCollectFields() {
-    return completenessCollectFields;
-  }
-
-  /**
-   * The completeness calculation will collect empty, existent and missing fields.
-   *
-   * @param completenessCollectFields
-   *   The completenessCollectFields flag
-   * @return
-   */
-  public CalculatorFacade completenessCollectFields(boolean completenessCollectFields) {
-    this.completenessCollectFields = completenessCollectFields;
-    changed = true;
-    return this;
   }
 
   /**
@@ -872,16 +455,6 @@ public class CalculatorFacade implements Serializable {
     return header;
   }
 
-  public boolean isSaturationExtendedResult() {
-    return saturationExtendedResult;
-  }
-
-  public CalculatorFacade setSaturationExtendedResult(boolean saturationExtendedResult) {
-    this.saturationExtendedResult = saturationExtendedResult;
-    changed = true;
-    return this;
-  }
-
   public CompressionLevel getCompressionLevel() {
     return compressionLevel;
   }
@@ -894,16 +467,6 @@ public class CalculatorFacade implements Serializable {
 
   public PathCache<? extends XmlFieldInstance> getCache() {
     return cache;
-  }
-
-  public boolean isCheckSkippableCollections() {
-    return checkSkippableCollections;
-  }
-
-  public CalculatorFacade setCheckSkippableCollections(boolean checkSkippableCollections) {
-    this.checkSkippableCollections = checkSkippableCollections;
-    changed = true;
-    return this;
   }
 
   public Schema getSchema() {
