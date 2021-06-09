@@ -3,14 +3,14 @@ package de.gwdg.metadataqa.api.rule;
 /**
  * Enumeration represents possible output of a rule checker: NA, PASSED, FAILED
  */
-public enum RuleCheckingOutput {
+public enum RuleCheckingOutputType {
   NA(-1),
   FAILED(0),
   PASSED(1);
 
   private final int numeric;
 
-  RuleCheckingOutput(int value) {
+  RuleCheckingOutputType(int value) {
     this.numeric = value;
   }
 
@@ -41,12 +41,16 @@ public enum RuleCheckingOutput {
    * @param passed Is rule passed?
    * @return
    */
-  public static RuleCheckingOutput create(boolean isNA, boolean passed) {
+  public static RuleCheckingOutputType create(boolean isNA, boolean passed) {
     if (isNA)
       return NA;
     else if (passed)
       return PASSED;
     else
       return FAILED;
+  }
+
+  public RuleCheckingOutputType negate() {
+    return this.equals(FAILED) ? PASSED : FAILED;
   }
 }

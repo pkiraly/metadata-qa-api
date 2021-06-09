@@ -3,7 +3,8 @@ package de.gwdg.metadataqa.api.rule.pairchecker;
 import de.gwdg.metadataqa.api.counter.FieldCounter;
 import de.gwdg.metadataqa.api.model.PathCacheFactory;
 import de.gwdg.metadataqa.api.model.pathcache.CsvPathCache;
-import de.gwdg.metadataqa.api.rule.RuleCheckingOutput;
+import de.gwdg.metadataqa.api.rule.RuleCheckerOutput;
+import de.gwdg.metadataqa.api.rule.RuleCheckingOutputType;
 import de.gwdg.metadataqa.api.schema.BaseSchema;
 import de.gwdg.metadataqa.api.schema.CsvAwareSchema;
 import de.gwdg.metadataqa.api.schema.Format;
@@ -36,22 +37,22 @@ public class LessThanPairCheckerTest {
 
   @Test
   public void lessThan_success() {
-    Assert.assertEquals(RuleCheckingOutput.PASSED, run("title", "name", TYPE.LESS_THAN));
+    Assert.assertEquals(RuleCheckingOutputType.PASSED, run("title", "name", TYPE.LESS_THAN).getType());
   }
 
   @Test
   public void lessThan_failure() {
-    Assert.assertEquals(RuleCheckingOutput.FAILED, run("name", "title", TYPE.LESS_THAN));
+    Assert.assertEquals(RuleCheckingOutputType.FAILED, run("name", "title", TYPE.LESS_THAN).getType());
   }
 
   @Test
   public void lessThanOrEquals_success() {
-    Assert.assertEquals(RuleCheckingOutput.PASSED, run("title", "alt", TYPE.LESS_THAN_OR_EQUALS));
+    Assert.assertEquals(RuleCheckingOutputType.PASSED, run("title", "alt", TYPE.LESS_THAN_OR_EQUALS).getType());
   }
 
   @Test
   public void lessThanOrEquals_failure() {
-    Assert.assertEquals(RuleCheckingOutput.FAILED, run("name", "alt", TYPE.LESS_THAN_OR_EQUALS));
+    Assert.assertEquals(RuleCheckingOutputType.FAILED, run("name", "alt", TYPE.LESS_THAN_OR_EQUALS).getType());
   }
 
   @Test
@@ -82,11 +83,11 @@ public class LessThanPairCheckerTest {
     assertTrue(LessThanPairChecker.isNumeric("2.0"));
   }
 
-  public RuleCheckingOutput run(String field1, String field2, TYPE type) {
+  public RuleCheckerOutput run(String field1, String field2, TYPE type) {
     LessThanPairChecker checker = new LessThanPairChecker(
       schema.getPathByLabel(field1), schema.getPathByLabel(field2), type);
 
-    FieldCounter<RuleCheckingOutput> fieldCounter = new FieldCounter<>();
+    FieldCounter<RuleCheckerOutput> fieldCounter = new FieldCounter<>();
     checker.update(cache, fieldCounter);
 
     assertEquals(1, fieldCounter.size());

@@ -12,7 +12,7 @@ import static org.junit.Assert.*;
  * @author Péter Király <peter.kiraly at gwdg.de>
  */
 public class TfIdfCalculatorTest {
-  
+
   @Test
   public void testGetHeaders() {
     TfIdfCalculator calculator = new TfIdfCalculator(new EdmOaiPmhJsonSchema());

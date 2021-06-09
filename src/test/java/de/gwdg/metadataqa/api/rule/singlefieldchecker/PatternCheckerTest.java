@@ -2,7 +2,8 @@ package de.gwdg.metadataqa.api.rule.singlefieldchecker;
 
 import de.gwdg.metadataqa.api.counter.FieldCounter;
 import de.gwdg.metadataqa.api.rule.CheckerTestBase;
-import de.gwdg.metadataqa.api.rule.RuleCheckingOutput;
+import de.gwdg.metadataqa.api.rule.RuleCheckerOutput;
+import de.gwdg.metadataqa.api.rule.RuleCheckingOutputType;
 import org.junit.Assert;
 import org.junit.Test;
 
@@ -19,23 +20,23 @@ public class PatternCheckerTest extends CheckerTestBase {
   public void success() {
     PatternChecker checker = new PatternChecker(schema.getPathByLabel("name"), "^a$");
 
-    FieldCounter fieldCounter = new FieldCounter<>();
+    FieldCounter<RuleCheckerOutput> fieldCounter = new FieldCounter<>();
     checker.update(cache, fieldCounter);
 
     assertEquals(1, fieldCounter.size());
     assertEquals("pattern:name", checker.getHeader());
-    Assert.assertEquals(RuleCheckingOutput.PASSED, fieldCounter.get(checker.getHeader()));
+    Assert.assertEquals(RuleCheckingOutputType.PASSED, fieldCounter.get(checker.getHeader()).getType());
   }
 
   @Test
   public void failure() {
     PatternChecker checker = new PatternChecker(schema.getPathByLabel("name"), "^b$");
 
-    FieldCounter fieldCounter = new FieldCounter<>();
+    FieldCounter<RuleCheckerOutput> fieldCounter = new FieldCounter<>();
     checker.update(cache, fieldCounter);
 
     assertEquals(1, fieldCounter.size());
     assertEquals("pattern:name", checker.getHeader());
-    assertEquals(RuleCheckingOutput.FAILED, fieldCounter.get(checker.getHeader()));
+    assertEquals(RuleCheckingOutputType.FAILED, fieldCounter.get(checker.getHeader()).getType());
   }
 }

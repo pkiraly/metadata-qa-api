@@ -15,13 +15,11 @@ public interface RuleChecker extends Serializable {
   /**
    * A push method which is called by the subject, and which transport
    * information to the Observer objects.
-   *
-   * @param cache
+   *  @param cache
    *   The JSON cache object
    * @param results
-   *   The result map
    */
-  void update(PathCache cache, FieldCounter<RuleCheckingOutput> results);
+  void update(PathCache cache, FieldCounter<RuleCheckerOutput> results);
 
   /**
    * Get a header, which is the name of metric, the observer measures.

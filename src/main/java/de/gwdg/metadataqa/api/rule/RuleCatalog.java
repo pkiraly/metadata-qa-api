@@ -10,7 +10,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Logger;
 
-public class RuleCatalog extends BaseProblemCatalog<RuleCheckingOutput> implements Serializable {
+public class RuleCatalog extends BaseProblemCatalog<RuleCheckerOutput> implements Serializable {
 
   private static final Logger LOGGER = Logger.getLogger(RuleCatalog.class.getCanonicalName());
 
@@ -29,9 +29,14 @@ public class RuleCatalog extends BaseProblemCatalog<RuleCheckingOutput> implemen
   @Override
   public void measure(PathCache cache) {
     this.fieldCounter = new FieldCounter<>();
+    int totalScore = 0;
     for (RuleChecker ruleChecker : schema.getRuleCheckers()) {
       ruleChecker.update(cache, fieldCounter);
+      Integer score = fieldCounter.get(ruleChecker.getHeader()).getScore();
+      if (score != null)
+        totalScore += score.intValue();
     }
+    fieldCounter.put(CALCULATOR_NAME + ":score", new RuleCheckerOutput(RuleCheckingOutputType.NA, totalScore));
   }
 
   @Override
@@ -40,6 +45,7 @@ public class RuleCatalog extends BaseProblemCatalog<RuleCheckingOutput> implemen
     for (RuleChecker ruleChecker : schema.getRuleCheckers()) {
       headers.add(ruleChecker.getHeader());
     }
+    headers.add(CALCULATOR_NAME + ":score");
     return headers;
   }
 

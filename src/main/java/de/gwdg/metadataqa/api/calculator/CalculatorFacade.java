@@ -387,7 +387,9 @@ public class CalculatorFacade implements Serializable {
         if (schema.getFormat().equals(Format.CSV))
           initializeCsvCache(content);
 
-        if (!(isFirstRecord && schema.getFormat().equals(Format.CSV) && csvReader.isHeaderAware()))
+        if (!(isFirstRecord
+            && schema.getFormat().equals(Format.CSV)
+            && csvReader.isHeaderAware()))
           runMeasurements(collector);
 
         isFirstRecord = false;

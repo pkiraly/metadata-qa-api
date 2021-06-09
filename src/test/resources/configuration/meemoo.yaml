@@ -5,9 +5,14 @@ fields:
     extractable: true
     rules:
       - pattern: ^https?://.*$
+        failureScore: -2
       - minCount: 1
+        failureScore: -3
   - name: name
   - name: alternateName
+    rules:
+      - pattern: ^.+$
+        successScore: 2
   - name: description
   - name: variablesMeasured
   - name: measurementTechnique

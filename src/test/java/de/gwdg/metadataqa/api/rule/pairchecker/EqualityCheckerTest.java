@@ -3,7 +3,8 @@ package de.gwdg.metadataqa.api.rule.pairchecker;
 import de.gwdg.metadataqa.api.counter.FieldCounter;
 import de.gwdg.metadataqa.api.model.PathCacheFactory;
 import de.gwdg.metadataqa.api.model.pathcache.CsvPathCache;
-import de.gwdg.metadataqa.api.rule.RuleCheckingOutput;
+import de.gwdg.metadataqa.api.rule.RuleCheckerOutput;
+import de.gwdg.metadataqa.api.rule.RuleCheckingOutputType;
 import de.gwdg.metadataqa.api.schema.BaseSchema;
 import de.gwdg.metadataqa.api.schema.CsvAwareSchema;
 import de.gwdg.metadataqa.api.schema.Format;
@@ -43,12 +44,12 @@ public class EqualityCheckerTest {
     EqualityChecker checker = new EqualityChecker(
       schema.getPathByLabel("name"), schema.getPathByLabel("alt"));
 
-    FieldCounter fieldCounter = new FieldCounter<>();
+    FieldCounter<RuleCheckerOutput> fieldCounter = new FieldCounter<>();
     checker.update(cache, fieldCounter);
 
     assertEquals(1, fieldCounter.size());
     assertEquals("equals:name-alt", checker.getHeader());
-    Assert.assertEquals(RuleCheckingOutput.PASSED, fieldCounter.get(checker.getHeader()));
+    Assert.assertEquals(RuleCheckingOutputType.PASSED, fieldCounter.get(checker.getHeader()).getType());
   }
 
   @Test
@@ -56,11 +57,11 @@ public class EqualityCheckerTest {
     EqualityChecker checker = new EqualityChecker(
       schema.getPathByLabel("name"), schema.getPathByLabel("title"));
 
-    FieldCounter fieldCounter = new FieldCounter<>();
+    FieldCounter<RuleCheckerOutput> fieldCounter = new FieldCounter<>();
     checker.update(cache, fieldCounter);
 
     assertEquals(1, fieldCounter.size());
     assertEquals("equals:name-title", checker.getHeader());
-    assertEquals(RuleCheckingOutput.FAILED, fieldCounter.get(checker.getHeader()));
+    assertEquals(RuleCheckingOutputType.FAILED, fieldCounter.get(checker.getHeader()).getType());
   }
 }

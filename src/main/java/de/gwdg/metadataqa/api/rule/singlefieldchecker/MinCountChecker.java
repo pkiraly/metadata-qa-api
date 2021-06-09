@@ -3,7 +3,8 @@ package de.gwdg.metadataqa.api.rule.singlefieldchecker;
 import de.gwdg.metadataqa.api.counter.FieldCounter;
 import de.gwdg.metadataqa.api.json.JsonBranch;
 import de.gwdg.metadataqa.api.model.pathcache.PathCache;
-import de.gwdg.metadataqa.api.rule.RuleCheckingOutput;
+import de.gwdg.metadataqa.api.rule.RuleCheckerOutput;
+import de.gwdg.metadataqa.api.rule.RuleCheckingOutputType;
 import de.gwdg.metadataqa.api.util.InstanceCounter;
 
 public class MinCountChecker extends SingleFieldChecker {
@@ -22,11 +23,11 @@ public class MinCountChecker extends SingleFieldChecker {
   }
 
   @Override
-  public void update(PathCache cache, FieldCounter<RuleCheckingOutput> results) {
+  public void update(PathCache cache, FieldCounter<RuleCheckerOutput> results) {
     var allPassed = false;
     var counter = new InstanceCounter(cache, field);
     if (counter.getCount() >= minCount)
       allPassed = true;
-    results.put(header, RuleCheckingOutput.create(counter.isNA(), allPassed));
+    results.put(header, new RuleCheckerOutput(this, counter.isNA(), allPassed));
   }
 }

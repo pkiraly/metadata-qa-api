@@ -21,15 +21,12 @@ public class NegationChecker extends BaseRuleChecker {
   }
 
   @Override
-  public void update(PathCache cache, FieldCounter<RuleCheckingOutput> results) {
-    FieldCounter<RuleCheckingOutput> fieldCounter = new FieldCounter<>();
+  public void update(PathCache cache, FieldCounter<RuleCheckerOutput> results) {
+    FieldCounter<RuleCheckerOutput> fieldCounter = new FieldCounter<>();
     ruleChecker.update(cache, fieldCounter);
 
-    RuleCheckingOutput result = fieldCounter.get(ruleChecker.getHeader());
-    // negate
-    result = result.equals(RuleCheckingOutput.FAILED)
-      ? RuleCheckingOutput.PASSED : RuleCheckingOutput.FAILED;
+    RuleCheckerOutput atomicResult = fieldCounter.get(ruleChecker.getHeader());
 
-    results.put(header, result);
+    results.put(header, new RuleCheckerOutput(this, atomicResult.getType().negate()));
   }
 }

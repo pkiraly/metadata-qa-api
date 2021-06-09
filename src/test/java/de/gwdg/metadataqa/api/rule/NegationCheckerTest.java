@@ -42,12 +42,12 @@ public class NegationCheckerTest {
     NegationChecker checker = new NegationChecker(
       new DisjointChecker(schema.getPathByLabel("name"), schema.getPathByLabel("title")));
 
-    FieldCounter fieldCounter = new FieldCounter<>();
+    FieldCounter<RuleCheckerOutput> fieldCounter = new FieldCounter<>();
     checker.update(cache, fieldCounter);
 
     assertEquals(1, fieldCounter.size());
     assertEquals("not:disjoint:name-title", checker.getHeader());
-    assertEquals(RuleCheckingOutput.FAILED, fieldCounter.get(checker.getHeader()));
+    assertEquals(RuleCheckingOutputType.FAILED, fieldCounter.get(checker.getHeader()).getType());
   }
 
   @Test
@@ -55,11 +55,11 @@ public class NegationCheckerTest {
     NegationChecker checker = new NegationChecker(
       new DisjointChecker(schema.getPathByLabel("name"), schema.getPathByLabel("alt")));
 
-    FieldCounter fieldCounter = new FieldCounter<>();
+    FieldCounter<RuleCheckerOutput> fieldCounter = new FieldCounter<>();
     checker.update(cache, fieldCounter);
 
     assertEquals(1, fieldCounter.size());
     assertEquals("not:disjoint:name-alt", checker.getHeader());
-    assertEquals(RuleCheckingOutput.PASSED, fieldCounter.get(checker.getHeader()));
+    assertEquals(RuleCheckingOutputType.PASSED, fieldCounter.get(checker.getHeader()).getType());
   }
 }

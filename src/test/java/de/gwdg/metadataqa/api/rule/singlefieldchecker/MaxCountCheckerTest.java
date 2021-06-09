@@ -2,7 +2,8 @@ package de.gwdg.metadataqa.api.rule.singlefieldchecker;
 
 import de.gwdg.metadataqa.api.counter.FieldCounter;
 import de.gwdg.metadataqa.api.rule.CheckerTestBase;
-import de.gwdg.metadataqa.api.rule.RuleCheckingOutput;
+import de.gwdg.metadataqa.api.rule.RuleCheckerOutput;
+import de.gwdg.metadataqa.api.rule.RuleCheckingOutputType;
 import org.junit.Assert;
 import org.junit.Test;
 
@@ -19,23 +20,23 @@ public class MaxCountCheckerTest extends CheckerTestBase {
   public void success() {
     MaxCountChecker checker = new MaxCountChecker(schema.getPathByLabel("name"), 1);
 
-    FieldCounter fieldCounter = new FieldCounter<>();
+    FieldCounter<RuleCheckerOutput> fieldCounter = new FieldCounter<>();
     checker.update(cache, fieldCounter);
 
     assertEquals(1, fieldCounter.size());
     assertEquals("maxCount:name", checker.getHeader());
-    Assert.assertEquals(RuleCheckingOutput.PASSED, fieldCounter.get(checker.getHeader()));
+    Assert.assertEquals(RuleCheckingOutputType.PASSED, fieldCounter.get(checker.getHeader()).getType());
   }
 
   @Test
   public void failure() {
     MaxCountChecker checker = new MaxCountChecker(schema.getPathByLabel("name"), 0);
 
-    FieldCounter fieldCounter = new FieldCounter<>();
+    FieldCounter<RuleCheckerOutput> fieldCounter = new FieldCounter<>();
     checker.update(cache, fieldCounter);
 
     assertEquals(1, fieldCounter.size());
     assertEquals("maxCount:name", checker.getHeader());
-    Assert.assertEquals(RuleCheckingOutput.FAILED, fieldCounter.get(checker.getHeader()));
+    Assert.assertEquals(RuleCheckingOutputType.FAILED, fieldCounter.get(checker.getHeader()).getType());
   }
 }

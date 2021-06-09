@@ -4,7 +4,8 @@ import de.gwdg.metadataqa.api.counter.FieldCounter;
 import de.gwdg.metadataqa.api.json.JsonBranch;
 import de.gwdg.metadataqa.api.model.XmlFieldInstance;
 import de.gwdg.metadataqa.api.model.pathcache.PathCache;
-import de.gwdg.metadataqa.api.rule.RuleCheckingOutput;
+import de.gwdg.metadataqa.api.rule.RuleCheckerOutput;
+import de.gwdg.metadataqa.api.rule.RuleCheckingOutputType;
 
 import java.util.List;
 import java.util.logging.Logger;
@@ -41,7 +42,7 @@ public class NumericValueChecker extends SingleFieldChecker {
   }
 
   @Override
-  public void update(PathCache cache, FieldCounter<RuleCheckingOutput> results) {
+  public void update(PathCache cache, FieldCounter<RuleCheckerOutput> results) {
     var allPassed = true;
     var isNA = true;
     List<XmlFieldInstance> instances = cache.get(field.getJsonPath());
@@ -62,7 +63,7 @@ public class NumericValueChecker extends SingleFieldChecker {
       }
     }
 
-    results.put(header, RuleCheckingOutput.create(isNA, allPassed));
+    results.put(header, new RuleCheckerOutput(this, isNA, allPassed));
   }
 
   private boolean checkValue(double value) {
