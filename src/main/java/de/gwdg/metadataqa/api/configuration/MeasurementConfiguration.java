@@ -445,7 +445,7 @@ public class MeasurementConfiguration {
    * @return
    *   completenessCollectFields flag
    */
-  public boolean completenessCollectFields() {
+  public boolean isCompletenessFieldCollectingEnabled() {
     return completenessCollectFields;
   }
 
@@ -460,7 +460,7 @@ public class MeasurementConfiguration {
    *   The completenessCollectFields flag
    * @return
    */
-  public MeasurementConfiguration completenessCollectFields(boolean completenessCollectFields) {
+  public MeasurementConfiguration enableCompletenessFieldCollecting(boolean completenessCollectFields) {
     this.completenessCollectFields = completenessCollectFields;
     return this;
   }

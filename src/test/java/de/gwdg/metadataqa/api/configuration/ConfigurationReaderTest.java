@@ -23,6 +23,7 @@ public class ConfigurationReaderTest {
     MeasurementConfiguration configuration = ConfigurationReader
       .readMeasurementYaml("src/test/resources/configuration/measurement/configuration.yaml");
     assertNotNull(configuration);
+
     assertFalse(configuration.isFieldExtractorEnabled());
     assertTrue(configuration.isFieldExistenceMeasurementEnabled());
     assertTrue(configuration.isFieldCardinalityMeasurementEnabled());
@@ -34,7 +35,7 @@ public class ConfigurationReaderTest {
     assertFalse(configuration.isMultilingualSaturationMeasurementEnabled());
     assertFalse(configuration.collectTfIdfTerms());
     assertFalse(configuration.isUniquenessMeasurementEnabled());
-    assertFalse(configuration.completenessCollectFields());
+    assertFalse(configuration.isCompletenessFieldCollectingEnabled());
     assertFalse(configuration.isSaturationExtendedResult());
     assertFalse(configuration.isCheckSkippableCollections());
   }

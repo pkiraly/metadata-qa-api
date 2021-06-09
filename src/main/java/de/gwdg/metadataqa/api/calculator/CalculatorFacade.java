@@ -201,7 +201,7 @@ public class CalculatorFacade implements Serializable {
   private void addCompleteness() {
     if (configuration.isCompletenessMeasurementEnabled()) {
       completenessCalculator = new CompletenessCalculator(schema);
-      completenessCalculator.collectFields(configuration.completenessCollectFields());
+      completenessCalculator.collectFields(configuration.isCompletenessFieldCollectingEnabled());
       completenessCalculator.setExistence(configuration.isFieldExistenceMeasurementEnabled());
       completenessCalculator.setCardinality(configuration.isFieldCardinalityMeasurementEnabled());
       calculators.add(completenessCalculator);
