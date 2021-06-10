@@ -9,6 +9,7 @@ import de.gwdg.metadataqa.api.rule.RuleCheckerOutput;
 import de.gwdg.metadataqa.api.rule.RuleCheckingOutputType;
 import de.gwdg.metadataqa.api.rule.singlefieldchecker.MaxCountChecker;
 import de.gwdg.metadataqa.api.rule.singlefieldchecker.MinCountChecker;
+import de.gwdg.metadataqa.api.rule.singlefieldchecker.MinLengthChecker;
 import de.gwdg.metadataqa.api.schema.BaseSchema;
 import de.gwdg.metadataqa.api.schema.CsvAwareSchema;
 import de.gwdg.metadataqa.api.schema.Format;
@@ -58,5 +59,25 @@ public class AndCheckerTest {
     andChecker.update(cache, fieldCounter);
 
     assertEquals(RuleCheckingOutputType.PASSED, fieldCounter.get("and:name").getType());
+  }
+
+  @Test
+  public void failure() {
+    schema.getPathByLabel("name").setRule(Arrays.asList(new Rule().withAnd(Arrays.asList(new Rule().withMinCount(1), new Rule().withMinLength(10)))));
+
+    List<RuleChecker> checkers = schema.getRuleCheckers();
+    AndChecker andChecker = (AndChecker) checkers.get(0);
+    assertEquals(2, andChecker.getCheckers().size());
+
+    assertEquals(MinCountChecker.class, andChecker.getCheckers().get(0).getClass());
+    MinCountChecker minCountChecker = (MinCountChecker) andChecker.getCheckers().get(0);
+
+    assertEquals(MinLengthChecker.class, andChecker.getCheckers().get(1).getClass());
+    MinLengthChecker maxCountChecker = (MinLengthChecker) andChecker.getCheckers().get(1);
+
+    FieldCounter<RuleCheckerOutput> fieldCounter = new FieldCounter<>();
+    andChecker.update(cache, fieldCounter);
+
+    assertEquals(RuleCheckingOutputType.FAILED, fieldCounter.get("and:name").getType());
   }
 }

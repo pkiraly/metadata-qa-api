@@ -9,6 +9,7 @@ import de.gwdg.metadataqa.api.rule.RuleCheckerOutput;
 import de.gwdg.metadataqa.api.rule.RuleCheckingOutputType;
 import de.gwdg.metadataqa.api.rule.singlefieldchecker.MaxCountChecker;
 import de.gwdg.metadataqa.api.rule.singlefieldchecker.MinCountChecker;
+import de.gwdg.metadataqa.api.rule.singlefieldchecker.MinLengthChecker;
 import de.gwdg.metadataqa.api.schema.BaseSchema;
 import de.gwdg.metadataqa.api.schema.CsvAwareSchema;
 import de.gwdg.metadataqa.api.schema.Format;
@@ -42,7 +43,7 @@ public class OrCheckerTest {
   }
 
   @Test
-  public void update() {
+  public void success() {
     List<RuleChecker> checkers = schema.getRuleCheckers();
     OrChecker orChecker = (OrChecker) checkers.get(0);
     assertEquals(2, orChecker.getCheckers().size());
@@ -57,5 +58,25 @@ public class OrCheckerTest {
     orChecker.update(cache, fieldCounter);
 
     assertEquals(RuleCheckingOutputType.PASSED, fieldCounter.get("or:name").getType());
+  }
+
+  @Test
+  public void failure() {
+    schema.getPathByLabel("name").setRule(Arrays.asList(new Rule().withOr(Arrays.asList(new Rule().withMinCount(2), new Rule().withMinLength(10)))));
+
+    List<RuleChecker> checkers = schema.getRuleCheckers();
+    OrChecker orChecker = (OrChecker) checkers.get(0);
+    assertEquals(2, orChecker.getCheckers().size());
+
+    assertEquals(MinCountChecker.class, orChecker.getCheckers().get(0).getClass());
+    MinCountChecker minCountChecker = (MinCountChecker) orChecker.getCheckers().get(0);
+
+    assertEquals(MinLengthChecker.class, orChecker.getCheckers().get(1).getClass());
+    MinLengthChecker minLengthChecker = (MinLengthChecker) orChecker.getCheckers().get(1);
+
+    FieldCounter<RuleCheckerOutput> fieldCounter = new FieldCounter<>();
+    orChecker.update(cache, fieldCounter);
+
+    assertEquals(RuleCheckingOutputType.FAILED, fieldCounter.get("or:name").getType());
   }
 }
