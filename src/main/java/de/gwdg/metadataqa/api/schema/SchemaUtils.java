@@ -2,6 +2,8 @@ package de.gwdg.metadataqa.api.schema;
 
 import de.gwdg.metadataqa.api.configuration.schema.Rule;
 import de.gwdg.metadataqa.api.json.JsonBranch;
+import de.gwdg.metadataqa.api.rule.logical.AndChecker;
+import de.gwdg.metadataqa.api.rule.logical.OrChecker;
 import de.gwdg.metadataqa.api.rule.pairchecker.DisjointChecker;
 import de.gwdg.metadataqa.api.rule.pairchecker.LessThanPairChecker;
 import de.gwdg.metadataqa.api.rule.singlefieldchecker.EnumerationChecker;
@@ -35,72 +37,96 @@ public class SchemaUtils {
       if (branch.getRules() != null) {
         List<Rule> rules = branch.getRules();
         for (Rule rule : rules) {
-
-          List<RuleChecker> ruleCheckers = new ArrayList<>();
-
-          if (StringUtils.isNotBlank(rule.getPattern()))
-            ruleCheckers.add(new PatternChecker(branch, rule.getPattern()));
-
-          if (StringUtils.isNotBlank(rule.getEquals()))
-            pair(schema, ruleCheckers, branch, rule.getEquals(), "equals");
-
-          if (StringUtils.isNotBlank(rule.getDisjoint()))
-            pair(schema, ruleCheckers, branch, rule.getDisjoint(), "disjoint");
-
-          if (rule.getIn() != null && !rule.getIn().isEmpty())
-            ruleCheckers.add(new EnumerationChecker(branch, rule.getIn()));
-
-          if (rule.getMinCount() != null) {
-            MinCountChecker checker = new MinCountChecker(branch, rule.getMinCount());
-            ruleCheckers.add(checker);
-          }
-
-          if (rule.getMaxCount() != null)
-            ruleCheckers.add(new MaxCountChecker(branch, rule.getMaxCount()));
-
-          if (rule.getMinLength() != null)
-            ruleCheckers.add(new MinLengthChecker(branch, rule.getMinLength()));
-
-          if (rule.getMaxLength() != null)
-            ruleCheckers.add(new MaxLengthChecker(branch, rule.getMaxLength()));
-
-          if (StringUtils.isNotBlank(rule.getHasValue()))
-            ruleCheckers.add(new HasValueChecker(branch, rule.getHasValue()));
-
-          if (rule.getMinInclusive() != null)
-            ruleCheckers.add(new NumericValueChecker(branch, rule.getMinInclusive(),
-              NumericValueChecker.TYPE.MIN_INCLUSIVE));
-
-          if (rule.getMaxInclusive() != null)
-            ruleCheckers.add(new NumericValueChecker(branch, rule.getMinInclusive(),
-              NumericValueChecker.TYPE.MAX_INCLUSIVE));
-
-          if (rule.getMinExclusive() != null)
-            ruleCheckers.add(new NumericValueChecker(branch, rule.getMinInclusive(),
-              NumericValueChecker.TYPE.MIN_EXCLUSIVE));
-
-          if (rule.getMaxExclusive() != null)
-            ruleCheckers.add(new NumericValueChecker(branch, rule.getMinInclusive(),
-              NumericValueChecker.TYPE.MAX_EXCLUSIVE));
-
-          if (rule.getLessThan() != null)
-            pair(schema, ruleCheckers, branch, rule.getLessThan(), "LessThan");
-
-          if (rule.getLessThanOrEquals() != null)
-            pair(schema, ruleCheckers, branch, rule.getLessThan(), "lessThanOrEquals");
-
-          if (!ruleCheckers.isEmpty()) {
-            for (RuleChecker ruleChecker : ruleCheckers) {
-              ruleChecker.setFailureScore(rule.getFailureScore());
-              ruleChecker.setSuccessScore(rule.getSuccessScore());
-            }
+          List<RuleChecker> ruleCheckers = processRule(schema, branch, rule);
+          if (!ruleCheckers.isEmpty())
             allRuleCheckers.addAll(ruleCheckers);
-          }
-
         }
       }
     }
     return allRuleCheckers;
+  }
+
+  private static List<RuleChecker> processRule(Schema schema, JsonBranch branch, Rule rule) {
+    List<RuleChecker> ruleCheckers = new ArrayList<>();
+
+    if (StringUtils.isNotBlank(rule.getPattern()))
+      ruleCheckers.add(new PatternChecker(branch, rule.getPattern()));
+
+    if (StringUtils.isNotBlank(rule.getEquals()))
+      pair(schema, ruleCheckers, branch, rule.getEquals(), "equals");
+
+    if (StringUtils.isNotBlank(rule.getDisjoint()))
+      pair(schema, ruleCheckers, branch, rule.getDisjoint(), "disjoint");
+
+    if (rule.getIn() != null && !rule.getIn().isEmpty())
+      ruleCheckers.add(new EnumerationChecker(branch, rule.getIn()));
+
+    if (rule.getMinCount() != null) {
+      MinCountChecker checker = new MinCountChecker(branch, rule.getMinCount());
+      ruleCheckers.add(checker);
+    }
+
+    if (rule.getMaxCount() != null)
+      ruleCheckers.add(new MaxCountChecker(branch, rule.getMaxCount()));
+
+    if (rule.getMinLength() != null)
+      ruleCheckers.add(new MinLengthChecker(branch, rule.getMinLength()));
+
+    if (rule.getMaxLength() != null)
+      ruleCheckers.add(new MaxLengthChecker(branch, rule.getMaxLength()));
+
+    if (StringUtils.isNotBlank(rule.getHasValue()))
+      ruleCheckers.add(new HasValueChecker(branch, rule.getHasValue()));
+
+    if (rule.getMinInclusive() != null)
+      ruleCheckers.add(new NumericValueChecker(branch, rule.getMinInclusive(),
+        NumericValueChecker.TYPE.MIN_INCLUSIVE));
+
+    if (rule.getMaxInclusive() != null)
+      ruleCheckers.add(new NumericValueChecker(branch, rule.getMinInclusive(),
+        NumericValueChecker.TYPE.MAX_INCLUSIVE));
+
+    if (rule.getMinExclusive() != null)
+      ruleCheckers.add(new NumericValueChecker(branch, rule.getMinInclusive(),
+        NumericValueChecker.TYPE.MIN_EXCLUSIVE));
+
+    if (rule.getMaxExclusive() != null)
+      ruleCheckers.add(new NumericValueChecker(branch, rule.getMinInclusive(),
+        NumericValueChecker.TYPE.MAX_EXCLUSIVE));
+
+    if (rule.getLessThan() != null)
+      pair(schema, ruleCheckers, branch, rule.getLessThan(), "LessThan");
+
+    if (rule.getLessThanOrEquals() != null)
+      pair(schema, ruleCheckers, branch, rule.getLessThan(), "lessThanOrEquals");
+
+    if (rule.getAnd() != null) {
+      List<RuleChecker> childRuleCheckers = getChildRuleCheckers(schema, branch, rule.getAnd());
+      ruleCheckers.add(new AndChecker(branch, childRuleCheckers));
+    }
+
+    if (rule.getOr() != null) {
+      List<RuleChecker> childRuleCheckers = getChildRuleCheckers(schema, branch, rule.getOr());
+      ruleCheckers.add(new OrChecker(branch, childRuleCheckers));
+    }
+
+    if (!ruleCheckers.isEmpty())
+      for (RuleChecker ruleChecker : ruleCheckers) {
+        ruleChecker.setFailureScore(rule.getFailureScore());
+        ruleChecker.setSuccessScore(rule.getSuccessScore());
+      }
+
+    return ruleCheckers;
+  }
+
+  private static List<RuleChecker> getChildRuleCheckers(Schema schema, JsonBranch branch, List<Rule> rules) {
+    List<RuleChecker> andRuleCheckers = new ArrayList<>();
+    for (Rule andRule : rules) {
+      List<RuleChecker> localAndRuleCheckers = processRule(schema, branch, andRule);
+      if (!localAndRuleCheckers.isEmpty())
+        andRuleCheckers.addAll(localAndRuleCheckers);
+    }
+    return andRuleCheckers;
   }
 
   private static void pair(Schema schema,

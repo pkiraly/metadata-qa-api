@@ -2,6 +2,10 @@ package de.gwdg.metadataqa.api.configuration;
 
 import de.gwdg.metadataqa.api.configuration.schema.Field;
 import de.gwdg.metadataqa.api.configuration.schema.Group;
+import de.gwdg.metadataqa.api.configuration.schema.Rule;
+import de.gwdg.metadataqa.api.rule.logical.AndChecker;
+import de.gwdg.metadataqa.api.rule.singlefieldchecker.MaxCountChecker;
+import de.gwdg.metadataqa.api.rule.singlefieldchecker.MinCountChecker;
 import de.gwdg.metadataqa.api.schema.Format;
 import de.gwdg.metadataqa.api.schema.Schema;
 import org.junit.Test;
@@ -12,6 +16,7 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.InputStream;
+import java.util.List;
 
 import static org.junit.Assert.*;
 
@@ -242,4 +247,36 @@ public class SchemaConfigurationTest {
     Schema schema = ConfigurationReader.readSchemaYaml("src/test/resources/configuration/schema/rules/lessThanOrEquals_wrong.yaml").asSchema();
     assertEquals("description", schema.getPathByLabel("about").getRules().get(0).getLessThanOrEquals());
   }
+
+  @Test
+  public void yaml_and() throws FileNotFoundException {
+    Schema schema = ConfigurationReader.readSchemaYaml("src/test/resources/configuration/schema/rules/logical/and.yaml").asSchema();
+    List<Rule> andRule = schema.getPathByLabel("about").getRules().get(0).getAnd();
+    assertEquals(2, schema.getPathByLabel("about").getRules().get(0).getSuccessScore().intValue());
+    assertEquals(2, andRule.size());
+    assertEquals(1, andRule.get(0).getMinCount().intValue());
+    assertEquals(1, andRule.get(1).getMaxCount().intValue());
+  }
+
+  @Test
+  public void yaml_and_rule() throws FileNotFoundException {
+    Schema schema = ConfigurationReader.readSchemaYaml("src/test/resources/configuration/schema/rules/logical/and.yaml").asSchema();
+    assertEquals(1, schema.getRuleCheckers().size());
+    assertEquals(AndChecker.class, schema.getRuleCheckers().get(0).getClass());
+    AndChecker checker = (AndChecker) schema.getRuleCheckers().get(0);
+    assertEquals(2, checker.getCheckers().size());
+    assertEquals(MinCountChecker.class, checker.getCheckers().get(0).getClass());
+    assertEquals(MaxCountChecker.class, checker.getCheckers().get(1).getClass());
+  }
+
+  @Test
+  public void yaml_or() throws FileNotFoundException {
+    Schema schema = ConfigurationReader.readSchemaYaml("src/test/resources/configuration/schema/rules/logical/or.yaml").asSchema();
+    List<Rule> andRule = schema.getPathByLabel("about").getRules().get(0).getOr();
+    assertEquals(2, schema.getPathByLabel("about").getRules().get(0).getSuccessScore().intValue());
+    assertEquals(2, andRule.size());
+    assertEquals(1, andRule.get(0).getMinCount().intValue());
+    assertEquals(1, andRule.get(1).getMaxCount().intValue());
+  }
+
 }
