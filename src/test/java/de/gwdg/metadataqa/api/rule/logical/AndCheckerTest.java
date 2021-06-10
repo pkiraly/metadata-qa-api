@@ -44,6 +44,11 @@ public class AndCheckerTest {
   }
 
   @Test
+  public void header() {
+    assertEquals("and:name", schema.getRuleCheckers().get(0).getHeader());
+  }
+
+  @Test
   public void update() {
     List<RuleChecker> checkers = schema.getRuleCheckers();
     AndChecker andChecker = (AndChecker) checkers.get(0);

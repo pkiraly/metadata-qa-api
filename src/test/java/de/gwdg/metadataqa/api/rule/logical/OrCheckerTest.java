@@ -43,6 +43,11 @@ public class OrCheckerTest {
   }
 
   @Test
+  public void header() {
+    assertEquals("or:name", schema.getRuleCheckers().get(0).getHeader());
+  }
+
+  @Test
   public void success() {
     List<RuleChecker> checkers = schema.getRuleCheckers();
     OrChecker orChecker = (OrChecker) checkers.get(0);
