@@ -30,7 +30,7 @@ public class AndChecker extends LogicalChecker {
 
   @Override
   public void update(PathCache cache, FieldCounter<RuleCheckerOutput> results) {
-    var allPassed = false;
+    var allPassed = true;
     var isNA = false;
     FieldCounter<RuleCheckerOutput> localResults = new FieldCounter<>();
     for (RuleChecker checker : checkers) {
