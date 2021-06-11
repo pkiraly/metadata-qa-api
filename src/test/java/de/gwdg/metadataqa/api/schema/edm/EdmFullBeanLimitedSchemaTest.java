@@ -19,4 +19,8 @@ public class EdmFullBeanLimitedSchemaTest {
     assertEquals(3, schema.getIndexFields().size());
   }
 
+  @Test(expected = UnsupportedOperationException.class)
+  public void getRootChildrenPaths() {
+    assertEquals(3, schema.getRootChildrenPaths().size());
+  }
 }

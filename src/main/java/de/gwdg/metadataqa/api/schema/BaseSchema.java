@@ -79,7 +79,7 @@ public class BaseSchema implements Schema, CsvAwareSchema, Serializable {
 
   @Override
   public List<JsonBranch> getPaths() {
-    return new ArrayList(paths.values());
+    return new ArrayList<>(paths.values());
   }
 
   @Override
