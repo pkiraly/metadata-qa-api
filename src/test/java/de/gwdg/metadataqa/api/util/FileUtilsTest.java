@@ -61,7 +61,7 @@ public class FileUtilsTest {
   @Test
   public void readFromUrl() throws IOException {
     String content = FileUtils.readFromUrl("https://github.com/pkiraly/metadata-qa-api");
-    assertTrue(content.contains("Metadata Quality Assurance Framework API"));
+    assertTrue(content.contains("Metadata Quality Assessment Framework API"));
   }
 
   @Test
