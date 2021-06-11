@@ -110,6 +110,15 @@ format: json
 fields:
   - name: edm:ProvidedCHO/@about
     path:  $.['providedCHOs'][0]['about']
+    indexField: id
+    extractable: true
+    rules:
+      - and:
+        - minCount: 1 
+        - maxCount: 1
+        failureScore: -10
+      - pattern: ^https?://.*$
+        successScore: 3
     categories:
       - MANDATORY
   - name: Proxy/dc:title
@@ -143,6 +152,21 @@ The same in JSON:
     {
       "name": "edm:ProvidedCHO/@about",
       "path":  "$.['providedCHOs'][0]['about']",
+      "indexField": "id",
+      "extractable": true,
+      "rules": [
+        {
+          "and": [
+            {"minCount": 1},
+            {"maxCount": 1}
+          ],
+          "failureScore": -10
+        },
+        {
+          "pattern": "^https?://.*$",
+          "successScore": 3
+        }
+      ],
       "categories": ["MANDATORY"]
     },
     {
@@ -180,6 +204,13 @@ The same in JSON:
 }
 ```
 
+The central piece is the `fields` array. Each item represents the properties of a signgle data elements (a JsonBranch in the API). Its properties are:
+* `name` (String): the name or label of the data element
+* `path` (String): a address of the data element. If the format is XML, ir should be an XPath expression. If format is JSON, it should be a JSONPath expression. If the format is CSV, it should be the name of the column. 
+* `categories` (List<String>): a list of categories this field belongs to. Categories can be anything, in Europeana's use case these are the core functionalities the field supports
+* `extractable` (boolean): whether the field can be extracted if field etraction is turned on
+* `rules` (List<Rule>): a set of rules or constraints which will be checked against
+* `indexField` (String): the name which can be used in a search engine connected to the application (at the time of writing Apache Solr is supported)
 
 Optionaly you can set the "canonical list" of categories. It provides
 two additional functionalities 
@@ -234,6 +265,16 @@ the tool will check. In this version the tool mimin SHACL constraints.
   (API: `setLessThan(String)` or `withLessThan(String)`)
  * `lessThanOrEquals <field label>` - Each values of a field is smaller than or equals to each values of another field
   (API: `setLessThanOrEquals(String)` or `withLessThanOrEquals(String)`)
+
+### Logical functions
+
+* `and [<rule1>, ..., <ruleN>]` - Passes if all the rules in the set passed.
+  (API: `setAnd(List<Rule>)` or `withAnd(List<Rule>)`)
+* `or [<rule1>, ..., <ruleN>]` - Passes if at least one of the rules in the set passed.
+  (API: `setOr(List<Rule>)` or `withOr(List<Rule>)`)
+* `not [<rule1>, ..., <ruleN>]` - Passes if all the rules in the set failed.
+  (API: `setNot(List<Rule>)` or `withNot(List<Rule>)`)
+
 
 ### Set rules
 
