@@ -369,20 +369,35 @@ An example JSON file:
 ```
 
 * `fieldExtractorEnabled`: Flag whether or not the field extractor is enabled (default: false).
-  (API: `enableFieldExtractor(), disableFieldExtractor(), enableFieldExtractor(boolean)`)
+  (API calls:
+  setters: `enableFieldExtractor()`, `disableFieldExtractor()`, `enableFieldExtractor(boolean)`, `setFieldExtractorEnabled(boolean)`,
+  getter: `isFieldExtractorEnabled()`)
 * `fieldExistenceMeasurementEnabled`: Flag whether or not run the field existence measurement (default: true).
+  (API calls: `enableFieldExtractor()`, `disableFieldExtractor()`, `enableFieldExtractor(boolean)`)
 * `fieldCardinalityMeasurementEnabled`: Flag whether or not run the field cardinality measurement (default: true).
+  (API calls: `enableFieldExtractor()`, `disableFieldExtractor()`, `enableFieldExtractor(boolean)`)
 * `completenessMeasurementEnabled`: Flag whether or not run the completeness measurement (default: true).
+  (API calls: `enableFieldExtractor()`, `disableFieldExtractor()`, `enableFieldExtractor(boolean)`)
 * `tfIdfMeasurementEnabled`: Flag whether or not run the uniqueness measurement (default: false).
+  (API calls: `enableFieldExtractor()`, `disableFieldExtractor()`, `enableFieldExtractor(boolean)`)
 * `problemCatalogMeasurementEnabled`: Flag whether or not run the problem catalog (default: false).
+  (API calls: `enableFieldExtractor()`, `disableFieldExtractor()`, `enableFieldExtractor(boolean)`)
 * `ruleCatalogMeasurementEnabled`: Flag whether or not run the rule catalog (default: false).
+  (API calls: `enableFieldExtractor()`, `disableFieldExtractor()`, `enableFieldExtractor(boolean)`)
 * `languageMeasurementEnabled`: Flag whether or not run the language detector (default: false).
+  (API calls: `enableFieldExtractor()`, `disableFieldExtractor()`, `enableFieldExtractor(boolean)`)
 * `multilingualSaturationMeasurementEnabled`: Flag whether or not run the multilingual saturation measurement (default: false).
+  (API calls: `enableFieldExtractor()`, `disableFieldExtractor()`, `enableFieldExtractor(boolean)`)
 * `collectTfIdfTerms`: Flag whether or not collect TF-IDF terms in uniqueness measurement (default: false).
+  (API calls: `enableFieldExtractor()`, `disableFieldExtractor()`, `enableFieldExtractor(boolean)`)
 * `uniquenessMeasurementEnabled`: Flag whether or not to run in uniqueness measurement (default: false).
+  (API calls: `enableFieldExtractor()`, `disableFieldExtractor()`, `enableFieldExtractor(boolean)`)
 * `completenessCollectFields`: Flag whether or not run missing/empty/existing field collection in completeness (default: false).
+  (API calls: `enableFieldExtractor()`, `disableFieldExtractor()`, `enableFieldExtractor(boolean)`)
 * `saturationExtendedResult`: Flag whether or not to create extended result in multilingual saturation calculation (default: false).
+  (API calls: `enableFieldExtractor()`, `disableFieldExtractor()`, `enableFieldExtractor(boolean)`)
 * `checkSkippableCollections`: Flag whether or not to check skipable collections (default: false).
+  (API calls: `enableFieldExtractor()`, `disableFieldExtractor()`, `enableFieldExtractor(boolean)`)
 
 ## More info
 
