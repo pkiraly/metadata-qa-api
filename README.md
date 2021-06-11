@@ -12,6 +12,7 @@ configure the basic facade, which will run the calculation.
 Define a configuration:
 ```Java
 MeasurementConfiguration config = new MeasurementConfiguration()
+  // we will measure completeness now
   .enableCompletenessMeasurement();
 ```
 
@@ -42,7 +43,6 @@ CalculatorFacade facade = new CalculatorFacade(config)
   .setCsvReader(
     new CsvReader()
       .setHeader(((CsvAwareSchema) schema).getHeader()))
-  // we will measure completeness now
 ```
 
 These are the two important requirements for the start of the measuring. The measuring is simple:
@@ -105,7 +105,7 @@ configuration file.
 
 ```
 Schema schema = ConfigurationReader
-  .readYaml("path/to/some/configuration.yaml")
+  .readSchemaYaml("path/to/some/configuration.yaml")
   .asSchema();
 ```
 
@@ -333,6 +333,56 @@ As you can see there are two types of setters in the API: setSomething and withS
 difference is that setSomething returs with void, but withSomething returns with the Rule object,
 so you can use it in a chain such as `new Rule().withMinCount(1).withMaxCount(3)` 
 (while `new Rule().setMinCount(1).setMaxCount(3)` doesn't work).
+
+## Defining MeasurementConfiguration with a configuration file
+
+MeasurementConfiguration can be created from JSON or YAML configuration files with the following methods:
+
+* `ConfigurationReader.readMeasurementJson(String filePath)`: reading configuration from JSON
+* `ConfigurationReader.readMeasurementYaml(String filePath)`: reading configuration from YAML
+
+an example:
+
+```Java
+MeasurementConfiguration configuration = ConfigurationReader.readMeasurementJson("path/to/some/configuration.json");
+```
+
+An example JSON file:
+
+```JSON
+{
+  "fieldExtractorEnabled": false,
+  "fieldExistenceMeasurementEnabled": true,
+  "fieldCardinalityMeasurementEnabled": true,
+  "completenessMeasurementEnabled": true,
+  "tfIdfMeasurementEnabled": false,
+  "problemCatalogMeasurementEnabled": false,
+  "ruleCatalogMeasurementEnabled": false,
+  "languageMeasurementEnabled": false,
+  "multilingualSaturationMeasurementEnabled": false,
+  "collectTfIdfTerms": false,
+  "uniquenessMeasurementEnabled": false,
+  "completenessCollectFields": false,
+  "saturationExtendedResult": false,
+  "checkSkippableCollections": false
+}
+```
+
+* `fieldExtractorEnabled`: Flag whether or not the field extractor is enabled (default: false).
+  (API: `enableFieldExtractor(), disableFieldExtractor(), enableFieldExtractor(boolean)`)
+* `fieldExistenceMeasurementEnabled`: Flag whether or not run the field existence measurement (default: true).
+* `fieldCardinalityMeasurementEnabled`: Flag whether or not run the field cardinality measurement (default: true).
+* `completenessMeasurementEnabled`: Flag whether or not run the completeness measurement (default: true).
+* `tfIdfMeasurementEnabled`: Flag whether or not run the uniqueness measurement (default: false).
+* `problemCatalogMeasurementEnabled`: Flag whether or not run the problem catalog (default: false).
+* `ruleCatalogMeasurementEnabled`: Flag whether or not run the rule catalog (default: false).
+* `languageMeasurementEnabled`: Flag whether or not run the language detector (default: false).
+* `multilingualSaturationMeasurementEnabled`: Flag whether or not run the multilingual saturation measurement (default: false).
+* `collectTfIdfTerms`: Flag whether or not collect TF-IDF terms in uniqueness measurement (default: false).
+* `uniquenessMeasurementEnabled`: Flag whether or not to run in uniqueness measurement (default: false).
+* `completenessCollectFields`: Flag whether or not run missing/empty/existing field collection in completeness (default: false).
+* `saturationExtendedResult`: Flag whether or not to create extended result in multilingual saturation calculation (default: false).
+* `checkSkippableCollections`: Flag whether or not to check skipable collections (default: false).
 
 ## More info
 

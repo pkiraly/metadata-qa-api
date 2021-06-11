@@ -61,14 +61,25 @@ public class MeasurementConfiguration {
    */
   protected boolean collectTfIdfTerms = false;
 
+  /**
+   * Flag whether or not to run in uniqueness measurement (default: false).
+   */
   protected boolean uniquenessMeasurementEnabled = false;
 
   /**
-   * Flag whether or not run missing/empty/existing field collection in
+   * Flag whether or not to run missing/empty/existing field collection in
    * completeness (default: false).
    */
   protected boolean completenessCollectFields = false;
+
+  /**
+   * Flag whether or not to create extended result in multilingual saturation calculation (default: false).
+   */
   protected boolean saturationExtendedResult = false;
+
+  /**
+   * Flag whether or not to check skipable collections (default: false).
+   */
   protected boolean checkSkippableCollections = false;
 
   public MeasurementConfiguration() {}
