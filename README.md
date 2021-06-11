@@ -284,7 +284,7 @@ the tool will check. In this version the tool mimin SHACL constraints.
 * `not [<rule1>, ..., <ruleN>]` - Passes if all the rules in the set failed.
   (API: `setNot(List<Rule>)` or `withNot(List<Rule>)`)
 
-## Set via API 
+Set rules via Java API 
 
 ```java
 Schema schema = new BaseSchema()
