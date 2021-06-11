@@ -377,25 +377,25 @@ An example JSON file:
 * `completenessMeasurementEnabled`: Flag whether or not run the completeness measurement (default: true).
   (API calls: setters: `enableCompletenessMeasurement()`, `disableCompletenessMeasurement()`, getter: `isCompletenessMeasurementEnabled()`)
 * `tfIdfMeasurementEnabled`: Flag whether or not run the uniqueness measurement (default: false).
-  (API calls: setters: `enableFieldExtractor()`, `disableFieldExtractor()`, getter: `isFieldExtractorEnabled()`)
+  (API calls: setters: `enableTfIdfMeasurement()`, `disableTfIdfMeasurement()`, getter: `isTfIdfMeasurementEnabled()`)
 * `problemCatalogMeasurementEnabled`: Flag whether or not run the problem catalog (default: false).
-  (API calls: setters: `enableFieldExtractor()`, `disableFieldExtractor()`, getter: `isFieldExtractorEnabled()`)
+  (API calls: setters: `enableProblemCatalogMeasurement()`, `disableProblemCatalogMeasurement()`, getter: `isProblemCatalogMeasurementEnabled()`)
 * `ruleCatalogMeasurementEnabled`: Flag whether or not run the rule catalog (default: false).
-  (API calls: setters: `enableFieldExtractor()`, `disableFieldExtractor()`, getter: `isFieldExtractorEnabled()`)
+  (API calls: setters: `enableRuleCatalogMeasurement()`, `disableRuleCatalogMeasurement()`, getter: `isRuleCatalogMeasurementEnabled()`)
 * `languageMeasurementEnabled`: Flag whether or not run the language detector (default: false).
-  (API calls: setters: `enableFieldExtractor()`, `disableFieldExtractor()`, getter: `isFieldExtractorEnabled()`)
+  (API calls: setters: `enableLanguageMeasurement()`, `disableLanguageMeasurement()`, getter: `isLanguageMeasurementEnabled()`)
 * `multilingualSaturationMeasurementEnabled`: Flag whether or not run the multilingual saturation measurement (default: false).
-  (API calls: setters: `enableFieldExtractor()`, `disableFieldExtractor()`, getter: `isFieldExtractorEnabled()`)
+  (API calls: setters: `enableMultilingualSaturationMeasurement()`, `disableMultilingualSaturationMeasurement()`, getter: `isMultilingualSaturationMeasurementEnabled()`)
 * `collectTfIdfTerms`: Flag whether or not collect TF-IDF terms in uniqueness measurement (default: false).
-  (API calls: setters: `enableFieldExtractor()`, `disableFieldExtractor()`, getter: `isFieldExtractorEnabled()`)
+  (API calls: setters: `collectTfIdfTerms(boolean)`, getter: `collectTfIdfTerms()`)
 * `uniquenessMeasurementEnabled`: Flag whether or not to run in uniqueness measurement (default: false).
-  (API calls: setters: `enableFieldExtractor()`, `disableFieldExtractor()`, getter: `isFieldExtractorEnabled()`)
+  (API calls: setters: `enableUniquenessMeasurement()`, `disableUniquenessMeasurement()`, getter: `isUniquenessMeasurementEnabled()`)
 * `completenessCollectFields`: Flag whether or not run missing/empty/existing field collection in completeness (default: false).
-  (API calls: setters: `enableFieldExtractor()`, `disableFieldExtractor()`, getter: `isFieldExtractorEnabled()`)
+  (API calls: setters: `enableCompletenessFieldCollecting(boolean)`, getter: `isCompletenessFieldCollectingEnabled()`)
 * `saturationExtendedResult`: Flag whether or not to create extended result in multilingual saturation calculation (default: false).
-  (API calls: setters: `enableFieldExtractor()`, `disableFieldExtractor()`, getter: `isFieldExtractorEnabled()`)
+  (API calls: setters: `enableSaturationExtendedResult(boolean)`, getter: `isSaturationExtendedResult()`)
 * `checkSkippableCollections`: Flag whether or not to check skipable collections (default: false).
-  (API calls: setters: `enableFieldExtractor()`, `disableFieldExtractor()`, getter: `isFieldExtractorEnabled()`)
+  (API calls: setters: `enableCheckSkippableCollections(boolean)`, getter: `isCheckSkippableCollections()`)
 
 ## More info
 
