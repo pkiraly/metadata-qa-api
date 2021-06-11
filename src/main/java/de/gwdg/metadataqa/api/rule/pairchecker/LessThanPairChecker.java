@@ -33,11 +33,7 @@ public class LessThanPairChecker extends PropertyPairChecker {
   private static final Pattern isNumericPattern = Pattern.compile("^\\d+(\\.\\d+)?$");
 
   public LessThanPairChecker(JsonBranch field1, JsonBranch field2, TYPE type) {
-    this(field1, field2, field1.getLabel() + "-" + field2.getLabel(), type);
-  }
-
-  public LessThanPairChecker(JsonBranch field1, JsonBranch field2, String header, TYPE type) {
-    super(field1, field2, type.prefix + ":" + header);
+    super(field1, field2, type.prefix);
     this.type = type;
   }
 
@@ -61,7 +57,7 @@ public class LessThanPairChecker extends PropertyPairChecker {
         }
       }
     }
-    results.put(header, new RuleCheckerOutput(this, isNA, allPassed));
+    results.put(getHeader(), new RuleCheckerOutput(this, isNA, allPassed));
   }
 
   private boolean checkValues(String value1, String value2) {

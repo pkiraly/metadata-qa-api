@@ -168,8 +168,6 @@ public class OaiPmhXPath implements Serializable {
   }
 
   public static void setXpathEngine(XPath _xpathEngine) {
-    System.err.println("setXpathEngine");
-    // xpathEngine = XpathEngineFactory.initializeEngine();
     xpathEngine = _xpathEngine;
   }
 

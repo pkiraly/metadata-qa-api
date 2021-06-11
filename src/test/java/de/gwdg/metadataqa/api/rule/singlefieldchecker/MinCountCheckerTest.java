@@ -24,7 +24,7 @@ public class MinCountCheckerTest extends CheckerTestBase {
     checker.update(cache, fieldCounter);
 
     assertEquals(1, fieldCounter.size());
-    assertEquals("minCount:name", checker.getHeader());
+    assertEquals("name:minCount", checker.getHeaderWithoutId());
     Assert.assertEquals(RuleCheckingOutputType.PASSED, fieldCounter.get(checker.getHeader()).getType());
   }
 
@@ -36,7 +36,7 @@ public class MinCountCheckerTest extends CheckerTestBase {
     checker.update(cache, fieldCounter);
 
     assertEquals(1, fieldCounter.size());
-    assertEquals("minCount:name", checker.getHeader());
+    assertEquals("name:minCount", checker.getHeaderWithoutId());
     assertEquals(RuleCheckingOutputType.PASSED, fieldCounter.get(checker.getHeader()).getType());
   }
 
@@ -48,7 +48,7 @@ public class MinCountCheckerTest extends CheckerTestBase {
     checker.update(cache, fieldCounter);
 
     assertEquals(1, fieldCounter.size());
-    assertEquals("minCount:name", checker.getHeader());
+    assertEquals("name:minCount", checker.getHeaderWithoutId());
     assertEquals(RuleCheckingOutputType.FAILED, fieldCounter.get(checker.getHeader()).getType());
   }
 }

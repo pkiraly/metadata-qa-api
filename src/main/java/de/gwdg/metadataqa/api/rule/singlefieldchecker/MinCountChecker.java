@@ -17,7 +17,7 @@ public class MinCountChecker extends SingleFieldChecker {
   }
 
   public MinCountChecker(JsonBranch field, String header, Integer minCount) {
-    super(field, PREFIX + ":" + header);
+    super(field, header + ":" + PREFIX);
     this.minCount = minCount;
   }
 
@@ -27,6 +27,6 @@ public class MinCountChecker extends SingleFieldChecker {
     var counter = new InstanceCounter(cache, field);
     if (counter.getCount() >= minCount)
       allPassed = true;
-    results.put(header, new RuleCheckerOutput(this, counter.isNA(), allPassed));
+    results.put(getHeader(), new RuleCheckerOutput(this, counter.isNA(), allPassed));
   }
 }

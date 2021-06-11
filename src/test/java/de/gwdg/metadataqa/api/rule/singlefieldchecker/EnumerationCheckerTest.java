@@ -27,7 +27,7 @@ public class EnumerationCheckerTest extends CheckerTestBase {
     checker.update(cache, fieldCounter);
 
     assertEquals(1, fieldCounter.size());
-    assertEquals("in:name", checker.getHeader());
+    assertEquals("name:in", checker.getHeaderWithoutId());
     Assert.assertEquals(RuleCheckingOutputType.PASSED, fieldCounter.get(checker.getHeader()).getType());
   }
 
@@ -40,7 +40,7 @@ public class EnumerationCheckerTest extends CheckerTestBase {
     checker.update(cache, fieldCounter);
 
     assertEquals(1, fieldCounter.size());
-    assertEquals("in:name", checker.getHeader());
+    assertEquals("name:in", checker.getHeaderWithoutId());
     assertEquals(RuleCheckingOutputType.FAILED, fieldCounter.get(checker.getHeader()).getType());
   }
 }

@@ -24,8 +24,8 @@ public class HasValueCheckerTest extends CheckerTestBase {
     checker.update(cache, fieldCounter);
 
     assertEquals(1, fieldCounter.size());
-    assertEquals("hasValue:name", checker.getHeader());
-    Assert.assertEquals(RuleCheckingOutputType.PASSED, fieldCounter.get("hasValue:name").getType());
+    assertEquals("name:hasValue", checker.getHeaderWithoutId());
+    Assert.assertEquals(RuleCheckingOutputType.PASSED, fieldCounter.get(checker.getHeader()).getType());
   }
 
   @Test
@@ -36,7 +36,7 @@ public class HasValueCheckerTest extends CheckerTestBase {
     checker.update(cache, fieldCounter);
 
     assertEquals(1, fieldCounter.size());
-    assertEquals("hasValue:name", checker.getHeader());
-    assertEquals(RuleCheckingOutputType.FAILED, fieldCounter.get("hasValue:name").getType());
+    assertEquals("name:hasValue", checker.getHeaderWithoutId());
+    assertEquals(RuleCheckingOutputType.FAILED, fieldCounter.get(checker.getHeader()).getType());
   }
 }

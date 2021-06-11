@@ -10,27 +10,27 @@ import de.gwdg.metadataqa.api.rule.RuleCheckingOutputType;
 import java.util.List;
 import java.util.Map;
 
-public class OrChecker extends LogicalChecker {
+public class NotChecker extends LogicalChecker {
 
-  private static final long serialVersionUID = 1114999259831619599L;
-  public static final String PREFIX = "or";
+  private static final long serialVersionUID = -1304107444331551638L;
+  public static final String PREFIX = "not";
 
   /**
    * @param field The field
    * @param checkers The list of checkers
    */
-  public OrChecker(JsonBranch field, List<RuleChecker> checkers) {
+  public NotChecker(JsonBranch field, List<RuleChecker> checkers) {
     this(field, field.getLabel(), checkers);
   }
 
-  public OrChecker(JsonBranch field, String header, List<RuleChecker> checkers) {
-    super(field, header + ":" + PREFIX + ":" + getChildrenHeader(checkers));
+  public NotChecker(JsonBranch field, String header, List<RuleChecker> checkers) {
+    super(field,header + ":" + PREFIX + ":" + getChildrenHeader(checkers));
     this.checkers = checkers;
   }
 
   @Override
   public void update(PathCache cache, FieldCounter<RuleCheckerOutput> results) {
-    var allPassed = false;
+    var allPassed = true;
     var isNA = false;
     FieldCounter<RuleCheckerOutput> localResults = new FieldCounter<>();
     for (RuleChecker checker : checkers) {
@@ -38,10 +38,11 @@ public class OrChecker extends LogicalChecker {
     }
     for (Map.Entry<String, RuleCheckerOutput> entry : localResults.getMap().entrySet()) {
       if (entry.getValue().getType().equals(RuleCheckingOutputType.PASSED)) {
-        allPassed = true;
+        allPassed = false;
         break;
       }
     }
+
     results.put(getHeader(), new RuleCheckerOutput(this, isNA, allPassed));
   }
 }

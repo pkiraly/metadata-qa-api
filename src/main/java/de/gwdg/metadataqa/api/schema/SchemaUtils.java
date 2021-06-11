@@ -3,6 +3,7 @@ package de.gwdg.metadataqa.api.schema;
 import de.gwdg.metadataqa.api.configuration.schema.Rule;
 import de.gwdg.metadataqa.api.json.JsonBranch;
 import de.gwdg.metadataqa.api.rule.logical.AndChecker;
+import de.gwdg.metadataqa.api.rule.logical.NotChecker;
 import de.gwdg.metadataqa.api.rule.logical.OrChecker;
 import de.gwdg.metadataqa.api.rule.pairchecker.DisjointChecker;
 import de.gwdg.metadataqa.api.rule.pairchecker.LessThanPairChecker;
@@ -25,6 +26,7 @@ import java.util.logging.Logger;
 public class SchemaUtils {
 
   private static final Logger LOGGER = Logger.getLogger(SchemaUtils.class.getCanonicalName());
+  static int id = 0;
 
   /**
    * @param schema
@@ -32,6 +34,7 @@ public class SchemaUtils {
    */
   public static List<RuleChecker> getRuleCheckers(Schema schema) {
     setSchemaForFields(schema);
+    id = 0;
     List<RuleChecker> allRuleCheckers = new ArrayList<>();
     for (JsonBranch branch : schema.getPaths()) {
       if (branch.getRules() != null) {
@@ -110,10 +113,16 @@ public class SchemaUtils {
       ruleCheckers.add(new OrChecker(branch, childRuleCheckers));
     }
 
+    if (rule.getNot() != null) {
+      List<RuleChecker> childRuleCheckers = getChildRuleCheckers(schema, branch, rule.getNot());
+      ruleCheckers.add(new NotChecker(branch, childRuleCheckers));
+    }
+
     if (!ruleCheckers.isEmpty())
       for (RuleChecker ruleChecker : ruleCheckers) {
         ruleChecker.setFailureScore(rule.getFailureScore());
         ruleChecker.setSuccessScore(rule.getSuccessScore());
+        ruleChecker.setId(++id);
       }
 
     return ruleCheckers;

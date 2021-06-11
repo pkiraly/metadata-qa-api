@@ -15,11 +15,7 @@ public class EqualityChecker extends PropertyPairChecker {
   protected String fixedValue;
 
   public EqualityChecker(JsonBranch field1, JsonBranch field2) {
-    this(field1, field2, field1.getLabel() + "-" + field2.getLabel());
-  }
-
-  public EqualityChecker(JsonBranch field1, JsonBranch field2, String header) {
-    super(field1, field2, PREFIX + ":" + header);
+    super(field1, field2, PREFIX);
   }
 
   @Override
@@ -41,7 +37,7 @@ public class EqualityChecker extends PropertyPairChecker {
         }
       }
     }
-    results.put(header, new RuleCheckerOutput(this, isNA, allPassed));
+    results.put(getHeader(), new RuleCheckerOutput(this, isNA, allPassed));
   }
 
 }

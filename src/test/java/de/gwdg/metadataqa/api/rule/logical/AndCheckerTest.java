@@ -45,7 +45,7 @@ public class AndCheckerTest {
 
   @Test
   public void header() {
-    assertEquals("and:name", schema.getRuleCheckers().get(0).getHeader());
+    assertEquals("name:and:name:minCount:name:maxCount", schema.getRuleCheckers().get(0).getHeaderWithoutId());
   }
 
   @Test
@@ -63,7 +63,7 @@ public class AndCheckerTest {
     FieldCounter<RuleCheckerOutput> fieldCounter = new FieldCounter<>();
     andChecker.update(cache, fieldCounter);
 
-    assertEquals(RuleCheckingOutputType.PASSED, fieldCounter.get("and:name").getType());
+    assertEquals(RuleCheckingOutputType.PASSED, fieldCounter.get(andChecker.getHeader()).getType());
   }
 
   @Test
@@ -83,6 +83,6 @@ public class AndCheckerTest {
     FieldCounter<RuleCheckerOutput> fieldCounter = new FieldCounter<>();
     andChecker.update(cache, fieldCounter);
 
-    assertEquals(RuleCheckingOutputType.FAILED, fieldCounter.get("and:name").getType());
+    assertEquals(RuleCheckingOutputType.FAILED, fieldCounter.get(andChecker.getHeader()).getType());
   }
 }

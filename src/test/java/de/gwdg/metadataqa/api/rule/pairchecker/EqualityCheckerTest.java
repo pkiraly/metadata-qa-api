@@ -48,7 +48,7 @@ public class EqualityCheckerTest {
     checker.update(cache, fieldCounter);
 
     assertEquals(1, fieldCounter.size());
-    assertEquals("equals:name-alt", checker.getHeader());
+    assertEquals("name:equals:alt", checker.getHeaderWithoutId());
     Assert.assertEquals(RuleCheckingOutputType.PASSED, fieldCounter.get(checker.getHeader()).getType());
   }
 
@@ -61,7 +61,7 @@ public class EqualityCheckerTest {
     checker.update(cache, fieldCounter);
 
     assertEquals(1, fieldCounter.size());
-    assertEquals("equals:name-title", checker.getHeader());
+    assertEquals("name:equals:title", checker.getHeaderWithoutId());
     assertEquals(RuleCheckingOutputType.FAILED, fieldCounter.get(checker.getHeader()).getType());
   }
 }

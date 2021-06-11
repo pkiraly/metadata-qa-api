@@ -321,7 +321,7 @@ public class MarcJsonSchema implements Schema, ProblemCatalogSchema, Serializabl
 
     extractableFields.put("leader", "$.leader");
     extractableFields.put("recordId", "$.controlfield[?(@.tag == '001')].content");
-    extractableFields.put("001",  PATHS.get("001").getJsonPath());
+    extractableFields.put("001", PATHS.get("001").getJsonPath());
     extractableFields.put("007", "$.controlfield[?(@.tag == '007')].content");
     extractableFields.put("008", "$.controlfield[?(@.tag == '008')].content");
     extractableFields.put("020$a", createDatafieldPath("020", "a"));

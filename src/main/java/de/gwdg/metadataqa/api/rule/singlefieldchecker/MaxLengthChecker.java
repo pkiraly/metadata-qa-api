@@ -19,7 +19,7 @@ public class MaxLengthChecker extends SingleFieldChecker {
   }
 
   public MaxLengthChecker(JsonBranch field, String header, Integer maxLength) {
-    super(field, PREFIX + ":" + header);
+    super(field, header + ":" + PREFIX);
     this.maxLength = maxLength;
   }
 
@@ -39,7 +39,7 @@ public class MaxLengthChecker extends SingleFieldChecker {
         }
       }
     }
-    results.put(header, new RuleCheckerOutput(this, isNA, allPassed));
+    results.put(getHeader(), new RuleCheckerOutput(this, isNA, allPassed));
   }
 
 }

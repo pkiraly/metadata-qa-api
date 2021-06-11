@@ -7,7 +7,10 @@ import de.gwdg.metadataqa.api.rule.RuleCheckingOutputType;
 import org.junit.Assert;
 import org.junit.Test;
 
+import java.util.regex.Pattern;
+
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 
 public class PatternCheckerTest extends CheckerTestBase {
 
@@ -24,7 +27,8 @@ public class PatternCheckerTest extends CheckerTestBase {
     checker.update(cache, fieldCounter);
 
     assertEquals(1, fieldCounter.size());
-    assertEquals("pattern:name", checker.getHeader());
+    assertEquals("name:pattern", checker.getHeaderWithoutId());
+    assertTrue(Pattern.compile("^rule:name:pattern:\\d+$").matcher(checker.getHeader()).matches());
     Assert.assertEquals(RuleCheckingOutputType.PASSED, fieldCounter.get(checker.getHeader()).getType());
   }
 
@@ -36,7 +40,8 @@ public class PatternCheckerTest extends CheckerTestBase {
     checker.update(cache, fieldCounter);
 
     assertEquals(1, fieldCounter.size());
-    assertEquals("pattern:name", checker.getHeader());
+    assertEquals("name:pattern", checker.getHeaderWithoutId());
+    assertTrue(Pattern.compile("^rule:name:pattern:\\d+$").matcher(checker.getHeader()).matches());
     assertEquals(RuleCheckingOutputType.FAILED, fieldCounter.get(checker.getHeader()).getType());
   }
 }

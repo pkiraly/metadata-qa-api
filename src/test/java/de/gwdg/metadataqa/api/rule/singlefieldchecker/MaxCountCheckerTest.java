@@ -24,7 +24,7 @@ public class MaxCountCheckerTest extends CheckerTestBase {
     checker.update(cache, fieldCounter);
 
     assertEquals(1, fieldCounter.size());
-    assertEquals("maxCount:name", checker.getHeader());
+    assertEquals("name:maxCount", checker.getHeaderWithoutId());
     Assert.assertEquals(RuleCheckingOutputType.PASSED, fieldCounter.get(checker.getHeader()).getType());
   }
 
@@ -36,7 +36,7 @@ public class MaxCountCheckerTest extends CheckerTestBase {
     checker.update(cache, fieldCounter);
 
     assertEquals(1, fieldCounter.size());
-    assertEquals("maxCount:name", checker.getHeader());
+    assertEquals("name:maxCount", checker.getHeaderWithoutId());
     Assert.assertEquals(RuleCheckingOutputType.FAILED, fieldCounter.get(checker.getHeader()).getType());
   }
 }

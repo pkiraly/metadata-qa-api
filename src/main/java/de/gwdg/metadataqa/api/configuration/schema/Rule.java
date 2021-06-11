@@ -13,6 +13,7 @@ public class Rule implements Serializable {
   private List<String> in;
   private List<Rule> and;
   private List<Rule> or;
+  private List<Rule> not;
   private Integer minCount;
   private Integer maxCount;
   private Integer minExclusive;
@@ -102,6 +103,19 @@ public class Rule implements Serializable {
 
   public Rule withOr(List<Rule> or) {
     setOr(or);
+    return this;
+  }
+
+  public List<Rule> getNot() {
+    return not;
+  }
+
+  public void setNot(List<Rule> not) {
+    this.not = not;
+  }
+
+  public Rule withNot(List<Rule> not) {
+    setNot(not);
     return this;
   }
 

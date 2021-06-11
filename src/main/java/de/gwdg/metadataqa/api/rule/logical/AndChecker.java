@@ -24,7 +24,7 @@ public class AndChecker extends LogicalChecker {
   }
 
   public AndChecker(JsonBranch field, String header, List<RuleChecker> checkers) {
-    super(field, PREFIX + ":" + header);
+    super(field,header + ":" + PREFIX + ":" + getChildrenHeader(checkers));
     this.checkers = checkers;
   }
 
@@ -42,7 +42,7 @@ public class AndChecker extends LogicalChecker {
         break;
       }
     }
-    results.put(header, new RuleCheckerOutput(this, isNA, allPassed));
+    results.put(getHeader(), new RuleCheckerOutput(this, isNA, allPassed));
   }
 
 }

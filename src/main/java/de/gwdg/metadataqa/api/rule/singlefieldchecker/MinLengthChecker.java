@@ -19,7 +19,7 @@ public class MinLengthChecker extends SingleFieldChecker {
   }
 
   public MinLengthChecker(JsonBranch field, String header, Integer minLength) {
-    super(field, PREFIX + ":" + header);
+    super(field, header + ":" + PREFIX);
     this.minLength = minLength;
   }
 
@@ -39,7 +39,7 @@ public class MinLengthChecker extends SingleFieldChecker {
         }
       }
     }
-    results.put(header, new RuleCheckerOutput(this, isNA, allPassed));
+    results.put(getHeader(), new RuleCheckerOutput(this, isNA, allPassed));
   }
 
 }

@@ -12,7 +12,6 @@ import de.gwdg.metadataqa.api.schema.Format;
 import de.gwdg.metadataqa.api.schema.Schema;
 import de.gwdg.metadataqa.api.util.CsvReader;
 import de.gwdg.metadataqa.api.rule.singlefieldchecker.NumericValueChecker.TYPE;
-import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 

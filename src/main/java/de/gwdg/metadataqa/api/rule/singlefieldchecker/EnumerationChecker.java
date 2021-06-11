@@ -19,7 +19,7 @@ public class EnumerationChecker extends SingleFieldChecker {
   }
 
   public EnumerationChecker(JsonBranch field, String header, List<String> fixedValues) {
-    super(field, PREFIX + ":" + header);
+    super(field, header + ":" + PREFIX);
     this.fixedValues = fixedValues;
   }
 
@@ -39,7 +39,7 @@ public class EnumerationChecker extends SingleFieldChecker {
         }
       }
     }
-    results.put(header, new RuleCheckerOutput(this, isNA, allPassed));
+    results.put(getHeader(), new RuleCheckerOutput(this, isNA, allPassed));
   }
 
 }

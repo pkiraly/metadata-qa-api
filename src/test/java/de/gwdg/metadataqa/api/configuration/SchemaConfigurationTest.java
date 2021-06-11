@@ -4,7 +4,9 @@ import de.gwdg.metadataqa.api.configuration.schema.Field;
 import de.gwdg.metadataqa.api.configuration.schema.Group;
 import de.gwdg.metadataqa.api.configuration.schema.Rule;
 import de.gwdg.metadataqa.api.rule.logical.AndChecker;
+import de.gwdg.metadataqa.api.rule.logical.NotChecker;
 import de.gwdg.metadataqa.api.rule.singlefieldchecker.MaxCountChecker;
+import de.gwdg.metadataqa.api.rule.singlefieldchecker.MaxLengthChecker;
 import de.gwdg.metadataqa.api.rule.singlefieldchecker.MinCountChecker;
 import de.gwdg.metadataqa.api.schema.Format;
 import de.gwdg.metadataqa.api.schema.Schema;
@@ -279,4 +281,24 @@ public class SchemaConfigurationTest {
     assertEquals(1, andRule.get(1).getMaxCount().intValue());
   }
 
+  @Test
+  public void yaml_not() throws FileNotFoundException {
+    Schema schema = ConfigurationReader.readSchemaYaml("src/test/resources/configuration/schema/rules/logical/not.yaml").asSchema();
+    List<Rule> andRule = schema.getPathByLabel("about").getRules().get(0).getNot();
+    assertEquals(2, schema.getPathByLabel("about").getRules().get(0).getSuccessScore().intValue());
+    assertEquals(2, andRule.size());
+    assertEquals(2, andRule.get(0).getMinCount().intValue());
+    assertEquals(10, andRule.get(1).getMaxLength().intValue());
+  }
+
+  @Test
+  public void yaml_not_rule() throws FileNotFoundException {
+    Schema schema = ConfigurationReader.readSchemaYaml("src/test/resources/configuration/schema/rules/logical/not.yaml").asSchema();
+    assertEquals(1, schema.getRuleCheckers().size());
+    assertEquals(NotChecker.class, schema.getRuleCheckers().get(0).getClass());
+    NotChecker checker = (NotChecker) schema.getRuleCheckers().get(0);
+    assertEquals(2, checker.getCheckers().size());
+    assertEquals(MinCountChecker.class, checker.getCheckers().get(0).getClass());
+    assertEquals(MaxLengthChecker.class, checker.getCheckers().get(1).getClass());
+  }
 }

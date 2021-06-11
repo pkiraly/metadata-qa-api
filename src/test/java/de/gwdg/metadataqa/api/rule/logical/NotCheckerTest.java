@@ -1,20 +1,27 @@
-package de.gwdg.metadataqa.api.rule;
+package de.gwdg.metadataqa.api.rule.logical;
 
 import de.gwdg.metadataqa.api.counter.FieldCounter;
 import de.gwdg.metadataqa.api.model.PathCacheFactory;
 import de.gwdg.metadataqa.api.model.pathcache.CsvPathCache;
+import de.gwdg.metadataqa.api.rule.RuleCheckerOutput;
+import de.gwdg.metadataqa.api.rule.RuleCheckingOutputType;
 import de.gwdg.metadataqa.api.rule.pairchecker.DisjointChecker;
 import de.gwdg.metadataqa.api.schema.BaseSchema;
 import de.gwdg.metadataqa.api.schema.CsvAwareSchema;
 import de.gwdg.metadataqa.api.schema.Format;
 import de.gwdg.metadataqa.api.schema.Schema;
 import de.gwdg.metadataqa.api.util.CsvReader;
+import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 
-import static org.junit.Assert.assertEquals;
+import java.util.List;
+import java.util.regex.Pattern;
 
-public class NegationCheckerTest {
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
+
+public class NotCheckerTest {
 
   protected Schema schema;
   protected CsvPathCache cache;
@@ -34,32 +41,36 @@ public class NegationCheckerTest {
 
   @Test
   public void prefix() {
-    assertEquals("not", NegationChecker.PREFIX);
+    assertEquals("not", NotChecker.PREFIX);
   }
 
   @Test
   public void success() {
-    NegationChecker checker = new NegationChecker(
-      new DisjointChecker(schema.getPathByLabel("name"), schema.getPathByLabel("title")));
+    NotChecker checker = new NotChecker(
+      schema.getPathByLabel("name"),
+      List.of(new DisjointChecker(schema.getPathByLabel("name"), schema.getPathByLabel("title"))));
 
     FieldCounter<RuleCheckerOutput> fieldCounter = new FieldCounter<>();
     checker.update(cache, fieldCounter);
 
     assertEquals(1, fieldCounter.size());
-    assertEquals("not:disjoint:name-title", checker.getHeader());
-    assertEquals(RuleCheckingOutputType.FAILED, fieldCounter.get(checker.getHeader()).getType());
+    assertEquals("name:not:name:disjoint:title", checker.getHeaderWithoutId());
+    assertTrue(Pattern.compile("^rule:name:not:name:disjoint:title:\\d+$").matcher(checker.getHeader()).matches());
+    Assert.assertEquals(RuleCheckingOutputType.FAILED, fieldCounter.get(checker.getHeader()).getType());
   }
 
   @Test
   public void failure() {
-    NegationChecker checker = new NegationChecker(
-      new DisjointChecker(schema.getPathByLabel("name"), schema.getPathByLabel("alt")));
+    NotChecker checker = new NotChecker(
+      schema.getPathByLabel("name"),
+      List.of(new DisjointChecker(schema.getPathByLabel("name"), schema.getPathByLabel("alt"))));
 
     FieldCounter<RuleCheckerOutput> fieldCounter = new FieldCounter<>();
     checker.update(cache, fieldCounter);
 
     assertEquals(1, fieldCounter.size());
-    assertEquals("not:disjoint:name-alt", checker.getHeader());
+    assertEquals("name:not:name:disjoint:alt", checker.getHeaderWithoutId());
+    assertTrue(Pattern.compile("^rule:name:not:name:disjoint:alt:\\d+$").matcher(checker.getHeader()).matches());
     assertEquals(RuleCheckingOutputType.PASSED, fieldCounter.get(checker.getHeader()).getType());
   }
 }

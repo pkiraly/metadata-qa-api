@@ -23,7 +23,7 @@ public class HasValueChecker extends SingleFieldChecker {
   }
 
   public HasValueChecker(JsonBranch field, String header, String fixedValue) {
-    super(field, PREFIX + ":" + header);
+    super(field, header + ":" + PREFIX);
     this.fixedValue = fixedValue;
   }
 
@@ -43,7 +43,7 @@ public class HasValueChecker extends SingleFieldChecker {
         }
       }
     }
-    results.put(header, new RuleCheckerOutput(this, isNA, allPassed));
+    results.put(getHeader(), new RuleCheckerOutput(this, isNA, allPassed));
   }
 
 }

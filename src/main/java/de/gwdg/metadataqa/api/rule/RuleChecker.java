@@ -25,6 +25,8 @@ public interface RuleChecker extends Serializable {
    * Get a header, which is the name of metric, the observer measures.
    * @return The header (name of metric).
    */
+  String getHeaderWithoutId();
+
   String getHeader();
 
   Integer getFailureScore();
@@ -34,4 +36,8 @@ public interface RuleChecker extends Serializable {
   Integer getSuccessScore();
 
   void setSuccessScore(Integer successScore);
+
+  int getId();
+
+  void setId(int id);
 }

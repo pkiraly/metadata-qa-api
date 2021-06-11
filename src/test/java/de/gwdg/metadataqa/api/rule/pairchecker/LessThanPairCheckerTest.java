@@ -91,7 +91,7 @@ public class LessThanPairCheckerTest {
     checker.update(cache, fieldCounter);
 
     assertEquals(1, fieldCounter.size());
-    assertEquals(String.format("%s:%s-%s", type.getPrefix(), field1, field2), checker.getHeader());
+    assertEquals(String.format("%s:%s:%s", field1, type.getPrefix(), field2), checker.getHeaderWithoutId());
     return fieldCounter.get(checker.getHeader());
   }
 

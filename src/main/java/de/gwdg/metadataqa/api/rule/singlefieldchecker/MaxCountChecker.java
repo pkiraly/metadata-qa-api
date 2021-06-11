@@ -17,7 +17,7 @@ public class MaxCountChecker extends SingleFieldChecker {
   }
 
   public MaxCountChecker(JsonBranch field, String header, int maxCount) {
-    super(field, PREFIX + ":" + header);
+    super(field, header + ":" + PREFIX);
     this.maxCount = maxCount;
   }
 
@@ -27,6 +27,6 @@ public class MaxCountChecker extends SingleFieldChecker {
     var counter = new InstanceCounter(cache, field);
     if (counter.getCount() <= maxCount)
       allPassed = true;
-    results.put(header, new RuleCheckerOutput(this, counter.isNA(), allPassed));
+    results.put(getHeader(), new RuleCheckerOutput(this, counter.isNA(), allPassed));
   }
 }

@@ -35,7 +35,7 @@ public class NumericValueChecker extends SingleFieldChecker {
   }
 
   public NumericValueChecker(JsonBranch field, double limit, TYPE type) {
-    super(field, type.prefix + ":" + field.getLabel());
+    super(field, field.getLabel() + ":" + type.prefix);
     this.type = type;
     this.limit = limit;
   }
@@ -62,7 +62,7 @@ public class NumericValueChecker extends SingleFieldChecker {
       }
     }
 
-    results.put(header, new RuleCheckerOutput(this, isNA, allPassed));
+    results.put(getHeader(), new RuleCheckerOutput(this, isNA, allPassed));
   }
 
   private boolean checkValue(double value) {

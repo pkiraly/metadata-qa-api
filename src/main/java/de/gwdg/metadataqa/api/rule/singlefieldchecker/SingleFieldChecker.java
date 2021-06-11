@@ -6,15 +6,9 @@ import de.gwdg.metadataqa.api.rule.BaseRuleChecker;
 public abstract class SingleFieldChecker extends BaseRuleChecker {
 
   protected JsonBranch field;
-  protected String header;
 
   public SingleFieldChecker(JsonBranch field, String header) {
     this.field = field;
     this.header = header;
-  }
-
-  @Override
-  public String getHeader() {
-    return header;
   }
 }

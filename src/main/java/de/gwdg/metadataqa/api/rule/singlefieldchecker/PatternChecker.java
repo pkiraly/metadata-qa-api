@@ -20,7 +20,7 @@ public class PatternChecker extends SingleFieldChecker {
   }
 
   public PatternChecker(JsonBranch field, String header, String pattern) {
-    super(field, PREFIX + ":" + header);
+    super(field, header + ":" + PREFIX);
     this.pattern = Pattern.compile(pattern);
   }
 
@@ -40,7 +40,7 @@ public class PatternChecker extends SingleFieldChecker {
         }
       }
     }
-    results.put(header, new RuleCheckerOutput(this, isNA, allPassed));
+    results.put(getHeader(), new RuleCheckerOutput(this, isNA, allPassed));
   }
 
 }

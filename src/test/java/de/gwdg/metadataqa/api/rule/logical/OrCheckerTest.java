@@ -44,7 +44,7 @@ public class OrCheckerTest {
 
   @Test
   public void header() {
-    assertEquals("or:name", schema.getRuleCheckers().get(0).getHeader());
+    assertEquals("name:or:name:minCount:name:maxCount", schema.getRuleCheckers().get(0).getHeaderWithoutId());
   }
 
   @Test
@@ -62,7 +62,7 @@ public class OrCheckerTest {
     FieldCounter<RuleCheckerOutput> fieldCounter = new FieldCounter<>();
     orChecker.update(cache, fieldCounter);
 
-    assertEquals(RuleCheckingOutputType.PASSED, fieldCounter.get("or:name").getType());
+    assertEquals(RuleCheckingOutputType.PASSED, fieldCounter.get(orChecker.getHeader()).getType());
   }
 
   @Test
@@ -82,6 +82,6 @@ public class OrCheckerTest {
     FieldCounter<RuleCheckerOutput> fieldCounter = new FieldCounter<>();
     orChecker.update(cache, fieldCounter);
 
-    assertEquals(RuleCheckingOutputType.FAILED, fieldCounter.get("or:name").getType());
+    assertEquals(RuleCheckingOutputType.FAILED, fieldCounter.get(orChecker.getHeader()).getType());
   }
 }

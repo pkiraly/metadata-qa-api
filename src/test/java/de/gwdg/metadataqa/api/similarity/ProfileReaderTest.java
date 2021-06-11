@@ -93,7 +93,7 @@ public class ProfileReaderTest {
     String fieldsFile = "profiles/d-989.profile-field-counts.csv";
     assertEquals(
       Arrays.asList("dc:description", "dc:creator", "dc:contributor", "dc:type",
-        "dc:identifier",  "dc:language", "dc:coverage", "dc:subject", "dc:date",
+        "dc:identifier", "dc:language", "dc:coverage", "dc:subject", "dc:date",
         "dcterms:extent", "dcterms:medium", "dcterms:isPartOf", "dc:format",
         "edm:type", "dc:title"
       ),

@@ -48,7 +48,7 @@ public class DisjointCheckerTest {
     checker.update(cache, fieldCounter);
 
     assertEquals(1, fieldCounter.size());
-    assertEquals("disjoint:name-title", checker.getHeader());
+    assertEquals("name:disjoint:title", checker.getHeaderWithoutId());
     Assert.assertEquals(RuleCheckingOutputType.PASSED, fieldCounter.get(checker.getHeader()).getType());
   }
 
@@ -61,23 +61,23 @@ public class DisjointCheckerTest {
     checker.update(cache, fieldCounter);
 
     assertEquals(1, fieldCounter.size());
-    assertEquals("disjoint:name-alt", checker.getHeader());
+    assertEquals("name:disjoint:alt", checker.getHeaderWithoutId());
     assertEquals(RuleCheckingOutputType.FAILED, fieldCounter.get(checker.getHeader()).getType());
   }
 
-  @Test(expected = NullPointerException.class)
+  @Test(expected = IllegalArgumentException.class)
   public void failure_constructor1() {
     DisjointChecker checker = new DisjointChecker(schema.getPathByLabel("nameX"), schema.getPathByLabel("altX"));
   }
 
   @Test(expected = IllegalArgumentException.class)
   public void failure_constructor2() {
-    DisjointChecker checker = new DisjointChecker(schema.getPathByLabel("nameX"), schema.getPathByLabel("altX"), "fake");
+    DisjointChecker checker = new DisjointChecker(schema.getPathByLabel("nameX"), schema.getPathByLabel("altX"));
   }
 
   @Test(expected = IllegalArgumentException.class)
   public void failure_constructor3() {
-    DisjointChecker checker = new DisjointChecker(schema.getPathByLabel("name"), schema.getPathByLabel("altX"), "fake");
+    DisjointChecker checker = new DisjointChecker(schema.getPathByLabel("name"), schema.getPathByLabel("altX"));
   }
 
 }
