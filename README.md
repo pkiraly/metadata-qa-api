@@ -1,4 +1,4 @@
-# Metadata Quality Assurance Framework API
+# Metadata Quality Assessment Framework API
 
 This project is the central piece of the Metadata Quality Assurance
 Framework, every other project is built on top of it. It provides
@@ -15,6 +15,8 @@ MeasurementConfiguration config = new MeasurementConfiguration()
   // we will measure completeness now
   .enableCompletenessMeasurement();
 ```
+
+You can create a <a href="#defining-measurementconfiguration-with-a-configuration-file">configuration file</a>.
 
 Define a schema:
 ```Java
@@ -344,7 +346,8 @@ MeasurementConfiguration can be created from JSON or YAML configuration files wi
 an example:
 
 ```Java
-MeasurementConfiguration configuration = ConfigurationReader.readMeasurementJson("path/to/some/configuration.json");
+MeasurementConfiguration configuration = ConfigurationReader
+  .readMeasurementJson("path/to/some/configuration.json");
 ```
 
 An example JSON file:
