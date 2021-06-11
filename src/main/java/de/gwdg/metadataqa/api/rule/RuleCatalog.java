@@ -14,7 +14,6 @@ public class RuleCatalog extends BaseProblemCatalog<RuleCheckerOutput> implement
 
   private static final Logger LOGGER = Logger.getLogger(RuleCatalog.class.getCanonicalName());
 
-  private final List<RuleChecker> ruleCheckers = new ArrayList<>();
   private static final String CALCULATOR_NAME = "ruleCatalog";
   private Schema schema;
 
@@ -22,14 +21,10 @@ public class RuleCatalog extends BaseProblemCatalog<RuleCheckerOutput> implement
     this.schema = schema;
   }
 
-  public void addRuleChecker(RuleChecker ruleChecker) {
-    ruleCheckers.add(ruleChecker);
-  }
-
   @Override
   public void measure(PathCache cache) {
     this.fieldCounter = new FieldCounter<>();
-    int totalScore = 0;
+    var totalScore = 0;
     for (RuleChecker ruleChecker : schema.getRuleCheckers()) {
       ruleChecker.update(cache, fieldCounter);
       Integer score = fieldCounter.get(ruleChecker.getHeader()).getScore();

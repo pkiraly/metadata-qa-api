@@ -27,4 +27,25 @@ public class RuleCheckingOutputTypeTest {
     assertEquals(RuleCheckingOutputType.PASSED, RuleCheckingOutputType.create(false, true));
     assertEquals(RuleCheckingOutputType.FAILED, RuleCheckingOutputType.create(false, false));
   }
+
+  @Test
+  public void negate_passed() {
+    RuleCheckingOutputType type = RuleCheckingOutputType.create(false, true);
+    assertEquals(RuleCheckingOutputType.PASSED, type);
+    assertEquals(RuleCheckingOutputType.FAILED, type.negate());
+  }
+
+  @Test
+  public void negate_failed() {
+    RuleCheckingOutputType type = RuleCheckingOutputType.create(false, false);
+    assertEquals(RuleCheckingOutputType.FAILED, type);
+    assertEquals(RuleCheckingOutputType.PASSED, type.negate());
+  }
+
+  @Test
+  public void negate_NA() {
+    RuleCheckingOutputType type = RuleCheckingOutputType.create(true, false);
+    assertEquals(RuleCheckingOutputType.NA, type);
+    assertEquals(RuleCheckingOutputType.FAILED, type.negate());
+  }
 }
