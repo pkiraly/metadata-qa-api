@@ -77,7 +77,7 @@ public class TfIdfExtractor {
           if (doCollectTerms) {
             int tf = Converter.asInteger(termInfo.get("tf"));
             int df = Converter.asInteger(termInfo.get("df"));
-            termsCollection.get(jsonBranch).add(new TfIdf(term, tf, df, tfIdf));
+            termsCollection.get(jsonBranch.getLabel()).add(new TfIdf(term, tf, df, tfIdf));
           }
           sum += tfIdf;
           count++;

@@ -5,9 +5,9 @@ import org.junit.Test;
 
 import static org.junit.Assert.assertEquals;
 
-public class EdmOaiPmhJsonSchemaTest  {
+public class EdmFullBeanLimitedSchemaTest {
 
-  Schema schema = new EdmOaiPmhJsonSchema();
+  Schema schema = new EdmFullBeanLimitedSchema();
 
   @Test
   public void testGetExtractableFields() {

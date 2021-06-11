@@ -1,11 +1,21 @@
 package de.gwdg.metadataqa.api.schema.edm;
 
-import junit.framework.TestCase;
+import org.junit.Test;
 
-public class EdmOaiPmLimitedJsonSchemaTest extends TestCase {
+import static org.junit.Assert.assertEquals;
 
-  public void testGetPaths() {
-    EdmSchema schema = new EdmOaiPmLimitedJsonSchema();
+public class EdmOaiPmLimitedJsonSchemaTest {
+
+  EdmSchema schema = new EdmOaiPmLimitedJsonSchema();
+
+  @Test
+  public void getPaths() {
     assertEquals(35, schema.getPaths().size());
   }
+
+  @Test
+  public void getIndexFields() {
+    assertEquals(3, schema.getIndexFields().size());
+  }
+
 }
