@@ -34,16 +34,22 @@ public class EdmOaiPmLimitedJsonSchema extends EdmSchema implements Serializable
     addPath(new JsonBranch("Proxy/dc:title",
       "$.['ore:Proxy'][?(@['edm:europeanaProxy'][0] == 'false')]['dc:title']")
       .setCategories(Category.DESCRIPTIVENESS, Category.SEARCHABILITY,
-        Category.IDENTIFICATION, Category.MULTILINGUALITY));
+        Category.IDENTIFICATION, Category.MULTILINGUALITY)
+      .setIndexField("dc_title_txt")
+    );
     addPath(new JsonBranch("Proxy/dcterms:alternative",
       "$.['ore:Proxy'][?(@['edm:europeanaProxy'][0] == 'false')]['dcterms:alternative']")
       .setCategories(Category.DESCRIPTIVENESS, Category.SEARCHABILITY,
-        Category.IDENTIFICATION, Category.MULTILINGUALITY));
+        Category.IDENTIFICATION, Category.MULTILINGUALITY)
+      .setIndexField("dcterms_alternative_txt")
+    );
     addPath(new JsonBranch("Proxy/dc:description",
       "$.['ore:Proxy'][?(@['edm:europeanaProxy'][0] == 'false')]['dc:description']")
       .setCategories(Category.DESCRIPTIVENESS, Category.SEARCHABILITY,
         Category.CONTEXTUALIZATION, Category.IDENTIFICATION,
-        Category.MULTILINGUALITY));
+        Category.MULTILINGUALITY)
+      .setIndexField("dc_description_txt")
+    );
     addPath(new JsonBranch("Proxy/dc:creator",
       "$.['ore:Proxy'][?(@['edm:europeanaProxy'][0] == 'false')]['dc:creator']")
       .setCategories(Category.DESCRIPTIVENESS, Category.SEARCHABILITY,
@@ -176,9 +182,9 @@ public class EdmOaiPmLimitedJsonSchema extends EdmSchema implements Serializable
       "Aggregation/edm:isShownBy", "Aggregation/edm:object",
       "Aggregation/edm:hasView"));
 
-    solrFields.put("dc:title", "dc_title_txt");
-    solrFields.put("dcterms:alternative", "dcterms_alternative_txt");
-    solrFields.put("dc:description", "dc_description_txt");
+    // solrFields.put("dc:title", "dc_title_txt");
+    // solrFields.put("dcterms:alternative", "dcterms_alternative_txt");
+    // solrFields.put("dc:description", "dc_description_txt");
 
     extractableFields.put("recordId", "$.identifier");
     extractableFields.put("dataset", "$.sets[0]");

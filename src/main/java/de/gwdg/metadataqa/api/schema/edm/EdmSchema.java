@@ -7,6 +7,7 @@ import de.gwdg.metadataqa.api.rule.RuleChecker;
 import de.gwdg.metadataqa.api.schema.ProblemCatalogSchema;
 import de.gwdg.metadataqa.api.schema.Schema;
 import de.gwdg.metadataqa.api.schema.SchemaUtils;
+import org.apache.commons.lang3.StringUtils;
 
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
@@ -23,7 +24,7 @@ public abstract class EdmSchema implements Schema, ProblemCatalogSchema {
   protected final Map<String, JsonBranch> collectionPaths = new LinkedHashMap<>();
   protected final List<FieldGroup> fieldGroups = new ArrayList<>();
   protected final List<String> noLanguageFields = new ArrayList<>();
-  protected final Map<String, String> solrFields = new LinkedHashMap<>();
+  protected List<JsonBranch> indexFields;
   protected final List<String> emptyStrings = new ArrayList<>();
   protected String longSubjectPath;
   protected String titlePath;
@@ -82,8 +83,15 @@ public abstract class EdmSchema implements Schema, ProblemCatalogSchema {
   }
 
   @Override
-  public Map<String, String> getSolrFields() {
-    return solrFields;
+  public List<JsonBranch> getIndexFields() {
+    if (indexFields == null) {
+      indexFields = new ArrayList<>();
+      for (JsonBranch jsonBranch : getPaths())
+        if (StringUtils.isNotBlank(jsonBranch.getIndexField()))
+          indexFields.add(jsonBranch);
+    }
+    return indexFields;
+
   }
 
   @Override

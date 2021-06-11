@@ -1,7 +1,7 @@
 package de.gwdg.metadataqa.api.calculator;
 
 import de.gwdg.metadataqa.api.interfaces.Calculator;
-import de.gwdg.metadataqa.api.model.XmlFieldInstance;
+import de.gwdg.metadataqa.api.json.JsonBranch;
 import de.gwdg.metadataqa.api.model.pathcache.PathCache;
 import de.gwdg.metadataqa.api.schema.Schema;
 import de.gwdg.metadataqa.api.uniqueness.SolrConfiguration;
@@ -135,9 +135,9 @@ public class TfIdfCalculator extends BaseCalculator<Double> implements Calculato
   @Override
   public List<String> getHeader() {
     List<String> headers = new ArrayList<>();
-    for (String field : schema.getSolrFields().keySet()) {
-      headers.add(field + ":sum");
-      headers.add(field + ":avg");
+    for (JsonBranch jsonBranch : schema.getIndexFields()) {
+      headers.add(jsonBranch.getLabel() + ":sum");
+      headers.add(jsonBranch.getLabel() + ":avg");
     }
     return headers;
   }

@@ -8,6 +8,7 @@ public class Field {
   private List<String> categories;
   private boolean extractable;
   private List<Rule> rules;
+  private String indexField;
 
   public String getName() {
     return name;
@@ -47,5 +48,13 @@ public class Field {
 
   public void setRules(List<Rule> rules) {
     this.rules = rules;
+  }
+
+  public String getIndexField() {
+    return indexField;
+  }
+
+  public void setIndexField(String indexField) {
+    this.indexField = indexField;
   }
 }

@@ -1,0 +1,8 @@
+format: csv
+fields:
+  - name: url
+    indexField: url
+  - name: name
+  - name: alternateName
+  - name: description
+    indexField: description

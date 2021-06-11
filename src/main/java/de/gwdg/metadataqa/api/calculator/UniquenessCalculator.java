@@ -1,5 +1,6 @@
 package de.gwdg.metadataqa.api.calculator;
 
+import de.gwdg.metadataqa.api.json.JsonBranch;
 import de.gwdg.metadataqa.api.model.pathcache.PathCache;
 import de.gwdg.metadataqa.api.counter.FieldCounter;
 import de.gwdg.metadataqa.api.interfaces.Calculator;
@@ -47,12 +48,12 @@ public class UniquenessCalculator implements Calculator, Serializable {
 
   private void initialize(Schema schema) {
     solrFields = new ArrayList<>();
-    for (String label : schema.getSolrFields().keySet()) {
-      var field = new UniquenessField(label);
+    for (JsonBranch jsonBranch : schema.getIndexFields()) {
+      var field = new UniquenessField(jsonBranch.getLabel());
       field.setJsonPath(
-          schema.getPathByLabel(label).getAbsoluteJsonPath().replace("[*]", "")
+        jsonBranch.getAbsoluteJsonPath().replace("[*]", "")
       );
-      var solrField = schema.getSolrFields().get(label);
+      var solrField = jsonBranch.getIndexField();
       if (solrField.endsWith(SUFFIX)) {
         solrField = solrField.substring(0, solrField.length() - SUFFIX_LENGTH) + "_ss";
       }

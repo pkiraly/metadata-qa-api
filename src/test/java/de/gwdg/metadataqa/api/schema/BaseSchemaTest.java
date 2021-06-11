@@ -457,9 +457,7 @@ public class BaseSchemaTest {
   @Test
   public void fromConfigFile() throws FileNotFoundException {
     Schema schema = ConfigurationReader
-      .readSchemaYaml(
-        "src/test/resources/configuration/schema/meemoo.yaml"
-      )
+      .readSchemaYaml("src/test/resources/configuration/schema/meemoo.yaml")
       .asSchema();
 
     assertNotNull(schema.getRuleCheckers());
@@ -652,13 +650,30 @@ public class BaseSchemaTest {
     schema.getNoLanguageFields();
   }
 
-  @Test(expected = UnsupportedOperationException.class)
-  public void testGetSolrFields() {
+  @Test
+  public void getIndexFields_empty() {
     Schema schema = new BaseSchema()
       .setFormat(Format.CSV)
       .addFields("url", "name");
 
-    schema.getSolrFields();
+    List<JsonBranch> indexFields = schema.getIndexFields();
+    assertNotNull(indexFields);
+    assertTrue(indexFields.isEmpty());
+  }
+
+  @Test
+  public void getIndexFields_nonempty() {
+    Schema schema = new BaseSchema()
+      .setFormat(Format.CSV)
+      .addFields("url", "name");
+    schema.getPathByLabel("url").setIndexField("url");
+
+    List<JsonBranch> indexFields = schema.getIndexFields();
+    assertNotNull(indexFields);
+    assertFalse(indexFields.isEmpty());
+    assertEquals(1, indexFields.size());
+    assertEquals("url", indexFields.get(0).getLabel());
+    assertEquals("url", indexFields.get(0).getIndexField());
   }
 
   @Test
@@ -758,5 +773,24 @@ public class BaseSchemaTest {
     assertNotNull(checkers);
     assertEquals(1, checkers.size());
     assertEquals(HasValueChecker.class, checkers.get(0).getClass());
+  }
+
+  @Test
+  public void withIndexFields() throws FileNotFoundException {
+    Schema schema = ConfigurationReader
+      .readSchemaYaml("src/test/resources/configuration/schema/with-index-fields.yaml")
+      .asSchema();
+
+    assertNotNull(schema);
+    assertNotNull(schema.getPathByLabel("url"));
+    JsonBranch branch = schema.getPathByLabel("url");
+    assertEquals("url", branch.getLabel());
+    assertEquals("url", branch.getIndexField());
+    assertNotNull(schema.getIndexFields());
+    assertEquals(2, schema.getIndexFields().size());
+    assertEquals("url", schema.getIndexFields().get(0).getLabel());
+    assertEquals("description", schema.getIndexFields().get(1).getLabel());
+
+
   }
 }

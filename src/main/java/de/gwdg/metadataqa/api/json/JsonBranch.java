@@ -31,6 +31,7 @@ public class JsonBranch implements Cloneable, Serializable {
   private boolean isMandatory = false;
   private List<Rule> rules;
   private Schema schema;
+  private String indexField;
 
   public JsonBranch(String label, String jsonPath, String solrFieldName) {
     this.label = label;
@@ -265,5 +266,14 @@ public class JsonBranch implements Cloneable, Serializable {
 
   public Schema getSchema() {
     return schema;
+  }
+
+  public String getIndexField() {
+    return indexField;
+  }
+
+  public JsonBranch setIndexField(String indexField) {
+    this.indexField = indexField;
+    return this;
   }
 }

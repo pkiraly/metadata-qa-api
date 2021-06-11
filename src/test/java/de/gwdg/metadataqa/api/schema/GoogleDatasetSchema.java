@@ -78,7 +78,7 @@ public class GoogleDatasetSchema implements Schema, CsvAwareSchema {
   }
 
   @Override
-  public Map<String, String> getSolrFields() {
+  public List<JsonBranch> getIndexFields() {
     throw new UnsupportedOperationException("Not supported yet.");
   }
 

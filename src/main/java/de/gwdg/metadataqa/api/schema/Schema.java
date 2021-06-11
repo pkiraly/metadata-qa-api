@@ -72,7 +72,7 @@ public interface Schema extends Serializable {
    * @return
    *    The map of fields
    */
-  Map<String, String> getSolrFields();
+  List<JsonBranch> getIndexFields();
 
   /**
    * Get fields for which the values should be extracted from the records.

@@ -4,6 +4,7 @@ import de.gwdg.metadataqa.api.json.FieldGroup;
 import de.gwdg.metadataqa.api.json.JsonBranch;
 import de.gwdg.metadataqa.api.model.Category;
 import de.gwdg.metadataqa.api.rule.RuleChecker;
+import org.apache.commons.lang3.StringUtils;
 
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -20,6 +21,7 @@ public class BaseSchema implements Schema, CsvAwareSchema, Serializable {
   private Map<String, String> extractableFields = new LinkedHashMap<>();
   private List<String> categories = null;
   private List<RuleChecker> ruleCheckers;
+  private List<JsonBranch> indexFields;
 
   private Format format;
   private Map<String, String> namespaces;
@@ -96,8 +98,14 @@ public class BaseSchema implements Schema, CsvAwareSchema, Serializable {
   }
 
   @Override
-  public Map<String, String> getSolrFields() {
-    throw new UnsupportedOperationException("Not supported yet.");
+  public List<JsonBranch> getIndexFields() {
+    if (indexFields == null) {
+      indexFields = new ArrayList<>();
+      for (JsonBranch jsonBranch : getPaths())
+        if (StringUtils.isNotBlank(jsonBranch.getIndexField()))
+          indexFields.add(jsonBranch);
+    }
+    return indexFields;
   }
 
   @Override

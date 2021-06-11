@@ -419,7 +419,7 @@ public class MarcJsonSchema implements Schema, ProblemCatalogSchema, Serializabl
   }
 
   @Override
-  public Map<String, String> getSolrFields() {
+  public List<JsonBranch> getIndexFields() {
     throw new UnsupportedOperationException(NOT_SUPPORTED_YET);
   }
 

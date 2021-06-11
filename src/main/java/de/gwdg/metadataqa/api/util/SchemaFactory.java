@@ -42,13 +42,6 @@ public class SchemaFactory {
               LOGGER.warning(String.format("Invalid category for field '%s': '%s'",
                 field.getName(), category));
           } else {
-            /*
-            try {
-              Category c = Category.valueOf(category);
-            } catch (IllegalArgumentException e) {
-              LOGGER.warning("Invalid category: " + category);
-            }
-             */
             categories.add(category);
           }
         }
@@ -60,23 +53,9 @@ public class SchemaFactory {
 
       if (field.getRules() != null)
         branch.setRule(field.getRules());
-      /*
-        if (StringUtils.isNotBlank(field.getRules().getPattern()))
-          branch.setPattern(field.getRules().getPattern());
 
-      if (StringUtils.isNotBlank(field.getRules().getEquals()))
-        branch.setEquals(field.getRules().getEquals());
-
-      if (StringUtils.isNotBlank(field.getRules().getDisjoint()))
-        branch.setDisjoint(field.getRules().getDisjoint());
-
-      if (field.getRules().getIn() != null &&
-          !field.getRules().getIn().isEmpty())
-        branch.setIn(field.getRules().getIn());
-
-      if (field.getRules().getMinCount() != null)
-        branch.setM(field.getRules().getDisjoint());
-       */
+      if (StringUtils.isNotBlank(field.getIndexField()))
+        branch.setIndexField(field.getIndexField());
 
       schema.addField(branch);
     }
