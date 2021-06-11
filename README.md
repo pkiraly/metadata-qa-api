@@ -152,6 +152,7 @@ groups:
 ```
 
 The same in JSON:
+
 ```json
 {
   "format": "json",
@@ -240,29 +241,30 @@ categories:
   - MULTILINGUALITY
 
 ```
-## Constraints
+### Rules
 
 One can add constraints to the fields. There are content rules, which
 the tool will check. In this version the tool mimin SHACL constraints.
 
-### Cardinality
+#### Cardinality
+
  * `minCount <number>` - specifies the minimum number of field occurence (API: `setMinCount()` or `withMinCount()`)
  * `maxCount <number>` - specifies the maximum number of field occurence (API: `setMaxCount()` or `withMaxCount()`)
 
-### Value Range
+#### Value Range
 
  * `minExclusive <number>` - The minimum exclusive value ([field value] > limit, API: `setMinExclusive(Double)` or `withMinExclusive(Double)`)
  * `minInclusive <number>` - The minimum inclusive value ([field value] >= limit, API: `setMinInclusive(Double)` or `withMinExclusive(Double)`)
  * `maxExclusive <number>` - The maximum exclusive value ([field value] < limit, API: `setMaxExclusive(Double)` or `withMaxExclusive(Double)`)
  * `maxInclusive <number>` - The maximum inclusive value ([field value] <= limit, API: `setMaxInclusive(Double)` or `withMaxInclusive(Double)`)
 
-### String constraints
+#### String constraints
 
  * `minLength <number>` - The minimum string length of each field value (API: `setMinLength(Integer)` or `withMinLength(Integer)`)
  * `maxLength <number>` - The maximum string length of each field value (API: `setMinLength(Integer)` or `withMaxLength(Integer)`)
  * `pattern <regular expression>` - A regular expression that each field value matches to satisfy the condition (API: `setPattern(String)` or `withPattern(String)`)
 
-### Property pair
+#### Property pair
 
  * `equals <field label>` - The set of all values of a field is equal to the set of all values of another field 
  (API: `setEquals(String)` or `withEquals(String)`)
@@ -273,7 +275,7 @@ the tool will check. In this version the tool mimin SHACL constraints.
  * `lessThanOrEquals <field label>` - Each values of a field is smaller than or equals to each values of another field
   (API: `setLessThanOrEquals(String)` or `withLessThanOrEquals(String)`)
 
-### Logical functions
+#### Logical functions
 
 * `and [<rule1>, ..., <ruleN>]` - Passes if all the rules in the set passed.
   (API: `setAnd(List<Rule>)` or `withAnd(List<Rule>)`)
@@ -282,10 +284,8 @@ the tool will check. In this version the tool mimin SHACL constraints.
 * `not [<rule1>, ..., <ruleN>]` - Passes if all the rules in the set failed.
   (API: `setNot(List<Rule>)` or `withNot(List<Rule>)`)
 
+## Set via API 
 
-### Set rules
-
-Via API 
 ```java
 Schema schema = new BaseSchema()
   .setFormat(Format.CSV)
