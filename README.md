@@ -9,6 +9,12 @@ If you want to implement it to your collection you have to define
 a schema, which presentats an existing metadata schema, and
 configure the basic facade, which will run the calculation.
 
+Define a configuration:
+```Java
+MeasurementConfiguration config = new MeasurementConfiguration()
+  .enableCompletenessMeasurement();
+```
+
 Define a schema:
 ```Java
 Schema schema = new BaseSchema()
@@ -26,10 +32,10 @@ Schema schema = new BaseSchema()
   .addField(new JsonBranch("temporalCoverage"));
 ```
 
-Define what to measure via a `CalculatorFacade` object:
+Build a `CalculatorFacade` object:
 
 ```Java
-CalculatorFacade facade = new CalculatorFacade()
+CalculatorFacade facade = new CalculatorFacade(config)
   // set the schema which describes the source
   .setSchema(schema)
   // right now it is a CSV source, so we set how to parse it
@@ -37,7 +43,6 @@ CalculatorFacade facade = new CalculatorFacade()
     new CsvReader()
       .setHeader(((CsvAwareSchema) schema).getHeader()))
   // we will measure completeness now
- .enableCompletenessMeasurement();
 ```
 
 These are the two important requirements for the start of the measuring. The measuring is simple:

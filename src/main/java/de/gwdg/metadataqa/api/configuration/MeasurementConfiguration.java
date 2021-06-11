@@ -433,9 +433,6 @@ public class MeasurementConfiguration {
    */
   public MeasurementConfiguration collectTfIdfTerms(boolean collectTfIdfTerms) {
     this.collectTfIdfTerms = collectTfIdfTerms;
-    // if (tfidfCalculator != null) {
-    //  tfidfCalculator.enableTermCollection(collectTfIdfTerms);
-    //}
     return this;
   }
 
