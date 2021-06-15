@@ -82,5 +82,4 @@ public class CompletenessCounter implements Serializable {
   public BasicCounter getStatComponent(Category category) {
     return basicCounters.get(category.name());
   }
-
 }

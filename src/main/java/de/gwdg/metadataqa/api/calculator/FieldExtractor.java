@@ -3,10 +3,11 @@ package de.gwdg.metadataqa.api.calculator;
 import com.jayway.jsonpath.InvalidJsonException;
 import de.gwdg.metadataqa.api.counter.FieldCounter;
 import de.gwdg.metadataqa.api.interfaces.Calculator;
+import de.gwdg.metadataqa.api.interfaces.MetricResult;
 import de.gwdg.metadataqa.api.model.pathcache.PathCache;
 import de.gwdg.metadataqa.api.model.XmlFieldInstance;
+import de.gwdg.metadataqa.api.problemcatalog.FieldCounterBasedResult;
 import de.gwdg.metadataqa.api.schema.Schema;
-import de.gwdg.metadataqa.api.util.CompressionLevel;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
@@ -16,7 +17,7 @@ import java.util.logging.Logger;
  *
  * @author Péter Király <peter.kiraly at gwdg.de>
  */
-public class FieldExtractor extends BaseCalculator<String> implements Calculator, Serializable {
+public class FieldExtractor implements Calculator, Serializable {
 
   private static final Logger LOGGER = Logger.getLogger(FieldExtractor.class.getCanonicalName());
 
@@ -50,14 +51,15 @@ public class FieldExtractor extends BaseCalculator<String> implements Calculator
   }
 
   @Override
-  public void measure(PathCache cache)
+  public List<MetricResult> measure(PathCache cache)
       throws InvalidJsonException {
-    resultMap = new FieldCounter<String>();
+    // FieldCounter<T> resultMap;
+    FieldCounter<String> resultMap = new FieldCounter<>();
     List<XmlFieldInstance> instances = cache.get(getIdPath());
     if (instances == null || instances.isEmpty()) {
       LOGGER.severe("No record ID in " + cache.getContent());
       resultMap.put(FIELD_NAME, "");
-      return;
+      return null;
     }
     String recordId = instances.get(0).getValue().trim();
     cache.setRecordId(recordId);
@@ -79,6 +81,7 @@ public class FieldExtractor extends BaseCalculator<String> implements Calculator
         }
       }
     }
+    return List.of(new FieldCounterBasedResult<>(getCalculatorName(), resultMap).withNoCompression());
   }
 
   public String getIdPath() {
@@ -87,16 +90,6 @@ public class FieldExtractor extends BaseCalculator<String> implements Calculator
 
   public void setIdPath(String idPath) {
     this.idPath = idPath;
-  }
-
-  @Override
-  public String getCsv(boolean withLabel, CompressionLevel compressionLevel) {
-    return resultMap.getCsv(withLabel, CompressionLevel.ZERO); // the extracted fields should never be compressed!
-  }
-
-  @Override
-  public List<String> getList(boolean withLabel, CompressionLevel compressionLevel) {
-    return resultMap.getList(withLabel, CompressionLevel.ZERO); // the extracted fields should never be compressed!
   }
 
   @Override

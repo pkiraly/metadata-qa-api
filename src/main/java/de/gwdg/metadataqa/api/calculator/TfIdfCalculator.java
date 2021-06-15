@@ -1,13 +1,16 @@
 package de.gwdg.metadataqa.api.calculator;
 
+import de.gwdg.metadataqa.api.counter.FieldCounter;
 import de.gwdg.metadataqa.api.interfaces.Calculator;
+import de.gwdg.metadataqa.api.interfaces.MetricResult;
 import de.gwdg.metadataqa.api.json.JsonBranch;
 import de.gwdg.metadataqa.api.model.pathcache.PathCache;
+import de.gwdg.metadataqa.api.problemcatalog.FieldCounterBasedResult;
 import de.gwdg.metadataqa.api.schema.Schema;
 import de.gwdg.metadataqa.api.uniqueness.SolrConfiguration;
 import de.gwdg.metadataqa.api.uniqueness.TfIdf;
 import de.gwdg.metadataqa.api.uniqueness.TfIdfExtractor;
-import de.gwdg.metadataqa.api.util.CompressionLevel;
+
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.Serializable;
@@ -28,7 +31,7 @@ import org.apache.commons.io.IOUtils;
  *
  * @author Péter Király <peter.kiraly at gwdg.de>
  */
-public class TfIdfCalculator extends BaseCalculator<Double> implements Calculator, Serializable {
+public class TfIdfCalculator implements Calculator, Serializable {
 
   public static final String CALCULATOR_NAME = "uniqueness";
   private static final int MEGABYTE = 1024 * 1024;
@@ -70,7 +73,7 @@ public class TfIdfCalculator extends BaseCalculator<Double> implements Calculato
   }
 
   @Override
-  public void measure(PathCache cache) {
+  public List<MetricResult> measure(PathCache cache) {
     String recordId = cache.getRecordId();
     if (recordId.startsWith("/")) {
       recordId = recordId.substring(1);
@@ -78,8 +81,9 @@ public class TfIdfCalculator extends BaseCalculator<Double> implements Calculato
 
     String solrJsonResponse = getSolrResponse(recordId);
     var extractor = new TfIdfExtractor(schema);
-    resultMap = extractor.extract(solrJsonResponse, recordId, termCollectionEnabled);
+    FieldCounter<Double> resultMap = extractor.extract(solrJsonResponse, recordId, termCollectionEnabled);
     termsCollection = extractor.getTermsCollection();
+    return List.of(new FieldCounterBasedResult<>(getCalculatorName(), resultMap));
   }
 
   private String getSolrResponse(String recordId) {
@@ -120,16 +124,6 @@ public class TfIdfCalculator extends BaseCalculator<Double> implements Calculato
 
   public boolean isTermCollectionEnabled() {
     return termCollectionEnabled;
-  }
-
-  @Override
-  public String getCsv(boolean withLabel, CompressionLevel compressionLevel) {
-    return resultMap.getCsv(withLabel, compressionLevel);
-  }
-
-  @Override
-  public List<String> getList(boolean withLabel, CompressionLevel compressionLevel) {
-    return resultMap.getList(withLabel, compressionLevel);
   }
 
   @Override

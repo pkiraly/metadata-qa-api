@@ -193,10 +193,8 @@ public class MarcJsonTest {
     }
     assertEquals("net.minidev.json.JSONArray", fragments.get(0).getClass().getCanonicalName());
     Map first = (Map)((JSONArray)fragments.get(0)).get(0);
-    // System.err.printf("values: '%s'\n", first);
 
     JsonBranch branch = schema.getPathByLabel("924");
-    // System.err.printf("path: '%s'\n", branch.getJsonPath());
 
     rawFragment = cache.getFragment(branch.getJsonPath());
     assertNotNull(rawFragment);
@@ -204,22 +202,17 @@ public class MarcJsonTest {
     assertEquals(12, fragments.size());
     for (var i = 0; i < fieldInstances.size(); i++) {
       Object fieldInstance = fieldInstances.get(i);
-      // System.err.printf("fieldInstance: '%s'\n", fieldInstance);
       List<Object> subfieldInstances = null;
       for (JsonBranch child : branch.getChildren()) {
         List<XmlFieldInstance> values = null;
         if (child.getJsonPath().startsWith("$.subfield")) {
           if (subfieldInstances == null)
             subfieldInstances = readSubfieldInstances(fieldInstance, branch.getJsonPath() + i);
-          // System.err.printf("subfieldInstances: %d\n", subfieldInstances.size());
           for (int j = 0; j < subfieldInstances.size(); j++) {
             String address = child.getAbsoluteJsonPath((i * 100) + j);
-            // System.err.printf("address: %s\n", address);
-            // System.err.printf("subfieldInstance: %s\n", subfieldInstances.get(j));
             String path = child.getJsonPath().replace("subfield", "");
             List<XmlFieldInstance> partValues = cache.get(address,
                 path, subfieldInstances.get(j));
-            // System.err.printf("# %s: %b\n", path, (partValues == null));
             if (partValues != null)
               if (values == null)
                 values = partValues;
@@ -237,11 +230,8 @@ public class MarcJsonTest {
   }
 
   private List<Object> readSubfieldInstances(Object fieldInstance, String address) {
-    // System.err.printf("fieldInstance: %s\n", fieldInstance);
-    // System.err.printf("address: %s\n", address);
     String subfieldPath = "$.subfield";
     Object rawJsonFragment = cache.getFragment(address, subfieldPath, fieldInstance);
-    // System.err.printf("rawJsonFragment: %s\n", rawJsonFragment);
     List<Object> jsonFragments = new ArrayList<>();
     if (rawJsonFragment != null)
       jsonFragments = Converter.jsonObjectToList(rawJsonFragment, schema);
@@ -275,28 +265,19 @@ public class MarcJsonTest {
     String subfieldPath = "$.subfield";
 
     for (JsonBranch branch : schema.getRootChildrenPaths()) {
-      // System.err.println(branch.getLabel() + ": " + cache.read(branch.getJsonPath(), null).getClass());
       if (branch.isCollection()) {
-        // System.err.printf("collection branch: label: %s, path: %s\n", branch.getLabel(), branch.getJsonPath());
         Object rawJsonFragment = cache.getFragment(branch.getJsonPath());
         if (rawJsonFragment != null) {
           List<Object> jsonFragments = Converter.jsonObjectToList(rawJsonFragment, schema);
           for (int i = 0, len = jsonFragments.size(); i < len; i++) {
             Object jsonFragment = jsonFragments.get(i);
-            // System.err.printf("jsonFragment: %s\n", jsonFragment);
             for (JsonBranch child : branch.getChildren()) {
-              // System.err.printf("Address: %s\n", child.getJsonPath());
-              // System.err.printf("Child: %s\n", child);
               if (child.getJsonPath().startsWith("$.subfield")) {
-                // System.err.printf("SUBFIELD\n");
-                // System.err.printf("SUBFIELD %s\n", child.getAbsoluteJsonPath(i));
                 Object rawSubfieldFragment = cache.getFragment(subfieldPath);
                 if (rawSubfieldFragment != null) {
-                  System.err.printf("not null\n");
                   List<Object> subfieldFragment = Converter.jsonObjectToList(rawSubfieldFragment);
                   for (int j = 0, subfieldLen = subfieldFragment.size(); j < subfieldLen; j++) {
                     values = cache.get(child.getJsonPath(), child.getJsonPath(), subfieldFragment.get(j));
-                    // System.err.printf("values: %s\n", values);
                   }
                 }
               } else {
@@ -485,8 +466,6 @@ public class MarcJsonTest {
         )
       )
     );
-
-    // System.err.println("fixedValues.size: " + fixedValues.size());
   }
 
   private Map<String, List<String>> asMap(List<String>... values) {

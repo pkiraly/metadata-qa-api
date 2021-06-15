@@ -1,6 +1,7 @@
 package de.gwdg.metadataqa.api.rule;
 
 import de.gwdg.metadataqa.api.configuration.schema.Rule;
+import de.gwdg.metadataqa.api.interfaces.MetricResult;
 import de.gwdg.metadataqa.api.model.PathCacheFactory;
 import de.gwdg.metadataqa.api.model.pathcache.CsvPathCache;
 import de.gwdg.metadataqa.api.schema.BaseSchema;
@@ -38,8 +39,8 @@ public class RuleCatalogTest {
     cache.setCsvReader(new CsvReader().setHeader( ((CsvAwareSchema) schema).getHeader() ));
 
     RuleCatalog catalog = new RuleCatalog(schema);
-    catalog.measure(cache);
-    assertEquals("1,0", catalog.getCsv(false, CompressionLevel.ZERO));
+    List<MetricResult> results = catalog.measure(cache);
+    assertEquals("1,0", results.get(0).getCsv(false, CompressionLevel.ZERO));
   }
 
   @Test

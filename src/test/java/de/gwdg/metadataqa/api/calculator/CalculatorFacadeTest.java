@@ -74,7 +74,7 @@ public class CalculatorFacadeTest {
     );
     assertTrue(result instanceof Map);
     assertEquals(263, result.size());
-    assertEquals(0.184, result.get("TOTAL"));
+    assertEquals(0.184, result.get("completeness:TOTAL"));
   }
 
   @Test
@@ -89,6 +89,53 @@ public class CalculatorFacadeTest {
     assertTrue(result instanceof List);
     assertEquals(263, result.size());
     assertEquals("0.184", result.get(0));
+  }
+
+  @Test
+  public void testNoAbbreviate_list2() throws URISyntaxException, IOException {
+    CalculatorFacade calculatorFacade = new CalculatorFacade(new MeasurementConfiguration(true, true, true, false, true));
+    calculatorFacade.setSchema(new EdmOaiPmhJsonSchema());
+    calculatorFacade.configure();
+
+    String result = calculatorFacade.measureAsJson(
+      FileUtils.readFirstLineFromResource("general/test.json")
+    );
+    assertTrue(result instanceof String);
+    assertEquals(3344, result.length());
+    assertEquals(
+      "{\"completeness\":{\"ProvidedCHO/rdf:about\":1,\"Proxy/rdf:about\":1,\"Proxy/dc:title\":1,\"Proxy/dcterms:alternative\":0," +
+        "\"Proxy/dc:description\":0,\"Proxy/dc:creator\":0,\"Proxy/dc:publisher\":0,\"Proxy/dc:contributor\":0,\"Proxy/dc:type\":1," +
+        "\"Proxy/dc:identifier\":1,\"Proxy/dc:language\":0,\"Proxy/dc:coverage\":0,\"Proxy/dcterms:temporal\":0,\"Proxy/dcterms:spatial\":0," +
+        "\"Proxy/dc:subject\":5,\"Proxy/dc:date\":0,\"Proxy/dcterms:created\":0,\"Proxy/dcterms:issued\":0,\"Proxy/dcterms:extent\":0," +
+        "\"Proxy/dcterms:medium\":0,\"Proxy/dcterms:provenance\":0,\"Proxy/dcterms:hasPart\":0,\"Proxy/dcterms:isPartOf\":1," +
+        "\"Proxy/dc:format\":0,\"Proxy/dc:source\":0,\"Proxy/dc:rights\":1,\"Proxy/dc:relation\":0,\"Proxy/edm:isNextInSequence\":0," +
+        "\"Proxy/edm:type\":1,\"Proxy/edm:europeanaProxy\":1,\"Proxy/edm:year\":0,\"Proxy/edm:userTag\":0,\"Proxy/ore:proxyIn\":1," +
+        "\"Proxy/ore:proxyFor\":1,\"Proxy/dcterms:conformsTo\":0,\"Proxy/dcterms:hasFormat\":1,\"Proxy/dcterms:hasVersion\":0," +
+        "\"Proxy/dcterms:isFormatOf\":0,\"Proxy/dcterms:isReferencedBy\":0,\"Proxy/dcterms:isReplacedBy\":0,\"Proxy/dcterms:isRequiredBy\":0," +
+        "\"Proxy/dcterms:isVersionOf\":0,\"Proxy/dcterms:references\":0,\"Proxy/dcterms:replaces\":0,\"Proxy/dcterms:requires\":0," +
+        "\"Proxy/dcterms:tableOfContents\":0,\"Proxy/edm:currentLocation\":0,\"Proxy/edm:hasMet\":0,\"Proxy/edm:hasType\":0," +
+        "\"Proxy/edm:incorporates\":0,\"Proxy/edm:isDerivativeOf\":0,\"Proxy/edm:isRelatedTo\":0,\"Proxy/edm:isRepresentationOf\":0," +
+        "\"Proxy/edm:isSimilarTo\":0,\"Proxy/edm:isSuccessorOf\":0,\"Proxy/edm:realizes\":0,\"Proxy/edm:wasPresentAt\":0," +
+        "\"Aggregation/rdf:about\":1,\"Aggregation/edm:rights\":1,\"Aggregation/edm:provider\":1,\"Aggregation/edm:dataProvider\":1," +
+        "\"Aggregation/edm:isShownAt\":1,\"Aggregation/edm:isShownBy\":1,\"Aggregation/edm:object\":1,\"Aggregation/edm:hasView\":0," +
+        "\"Aggregation/dc:rights\":0,\"Aggregation/edm:ugc\":0,\"Aggregation/edm:aggregatedCHO\":1,\"Aggregation/edm:intermediateProvider\":0," +
+        "\"Place/rdf:about\":0,\"Place/wgs84:lat\":0,\"Place/wgs84:long\":0,\"Place/wgs84:alt\":0,\"Place/dcterms:isPartOf\":0," +
+        "\"Place/wgs84_pos:lat_long\":0,\"Place/dcterms:hasPart\":0,\"Place/owl:sameAs\":0,\"Place/skos:prefLabel\":0," +
+        "\"Place/skos:altLabel\":0,\"Place/skos:note\":0,\"Agent/rdf:about\":0,\"Agent/edm:begin\":0,\"Agent/edm:end\":0," +
+        "\"Agent/edm:hasMet\":0,\"Agent/edm:isRelatedTo\":0,\"Agent/owl:sameAs\":0,\"Agent/foaf:name\":0,\"Agent/dc:date\":0," +
+        "\"Agent/dc:identifier\":0,\"Agent/rdaGr2:dateOfBirth\":0,\"Agent/rdaGr2:placeOfBirth\":0,\"Agent/rdaGr2:dateOfDeath\":0," +
+        "\"Agent/rdaGr2:placeOfDeath\":0,\"Agent/rdaGr2:dateOfEstablishment\":0,\"Agent/rdaGr2:dateOfTermination\":0," +
+        "\"Agent/rdaGr2:gender\":0,\"Agent/rdaGr2:professionOrOccupation\":0,\"Agent/rdaGr2:biographicalInformation\":0," +
+        "\"Agent/skos:prefLabel\":0,\"Agent/skos:altLabel\":0,\"Agent/skos:note\":0,\"Timespan/rdf:about\":0,\"Timespan/edm:begin\":0," +
+        "\"Timespan/edm:end\":0,\"Timespan/dcterms:isPartOf\":0,\"Timespan/dcterms:hasPart\":0,\"Timespan/edm:isNextInSequence\":0," +
+        "\"Timespan/owl:sameAs\":0,\"Timespan/skos:prefLabel\":0,\"Timespan/skos:altLabel\":0,\"Timespan/skos:note\":0," +
+        "\"Concept/rdf:about\":1,\"Concept/skos:broader\":0,\"Concept/skos:narrower\":0,\"Concept/skos:related\":0," +
+        "\"Concept/skos:broadMatch\":0,\"Concept/skos:narrowMatch\":0,\"Concept/skos:relatedMatch\":0,\"Concept/skos:exactMatch\":0," +
+        "\"Concept/skos:closeMatch\":0,\"Concept/skos:notation\":0,\"Concept/skos:inScheme\":0,\"Concept/skos:prefLabel\":12," +
+        "\"Concept/skos:altLabel\":0,\"Concept/skos:note\":0}," +
+        "\"problemCatalog\":{\"LongSubject\":0.0,\"TitleAndDescriptionAreSame\":0.0,\"EmptyStrings\":0.0}}",
+      result
+    );
   }
 
   @Test
@@ -187,7 +234,7 @@ public class CalculatorFacadeTest {
     CSVIterator iterator = createCsvIterator();
 
     List<Object> result = facade.measureAsListOfObjects(Arrays.asList(iterator.next()));
-    List<Object> expected = Arrays.asList(0.35294117647058826, 1.0, 1, 1, 0, 1, 0, 0, 0, 0, 1, 0, 0, 1, 1, 0, 0, 0, 0, 1, 1, 0, 1, 0, 0, 0, 0, 1, 0, 0, 1, 1, 0, 0, 0, 0);
+    List<Object> expected = Arrays.asList(0.35294117647058826, 1.0, true, true, false, true, false, false, false, false, true, false, false, true, true, false, false, false, false, 1, 1, 0, 1, 0, 0, 0, 0, 1, 0, 0, 1, 1, 0, 0, 0, 0);
     assertEquals(expected, result);
 
     assertTrue(result instanceof List);
@@ -202,25 +249,25 @@ public class CalculatorFacadeTest {
 
     Map<String, Object> result = facade.measureAsMap(Arrays.asList(iterator.next()));
     Map<String, Object> expected = new LinkedHashMap<>();
-    expected.put("TOTAL", 0.35294117647058826);
-    expected.put("MANDATORY", 1.0);
-    expected.put("existence:url", 1);
-    expected.put("existence:name", 1);
-    expected.put("existence:alternateName", 0);
-    expected.put("existence:description", 1);
-    expected.put("existence:variablesMeasured", 0);
-    expected.put("existence:measurementTechnique", 0);
-    expected.put("existence:sameAs", 0);
-    expected.put("existence:doi", 0);
-    expected.put("existence:identifier", 1);
-    expected.put("existence:author", 0);
-    expected.put("existence:isAccessibleForFree", 0);
-    expected.put("existence:dateModified", 1);
-    expected.put("existence:distribution", 1);
-    expected.put("existence:spatialCoverage", 0);
-    expected.put("existence:provider", 0);
-    expected.put("existence:funder", 0);
-    expected.put("existence:temporalCoverage", 0);
+    expected.put("completeness:TOTAL", 0.35294117647058826);
+    expected.put("completeness:MANDATORY", 1.0);
+    expected.put("existence:url", true);
+    expected.put("existence:name", true);
+    expected.put("existence:alternateName", false);
+    expected.put("existence:description", true);
+    expected.put("existence:variablesMeasured", false);
+    expected.put("existence:measurementTechnique", false);
+    expected.put("existence:sameAs", false);
+    expected.put("existence:doi", false);
+    expected.put("existence:identifier", true);
+    expected.put("existence:author", false);
+    expected.put("existence:isAccessibleForFree", false);
+    expected.put("existence:dateModified", true);
+    expected.put("existence:distribution", true);
+    expected.put("existence:spatialCoverage", false);
+    expected.put("existence:provider", false);
+    expected.put("existence:funder", false);
+    expected.put("existence:temporalCoverage", false);
     expected.put("cardinality:url", 1);
     expected.put("cardinality:name", 1);
     expected.put("cardinality:alternateName", 0);
@@ -243,7 +290,7 @@ public class CalculatorFacadeTest {
 
     assertTrue(result instanceof Map);
     assertEquals(36, result.size());
-    assertEquals(0.35294117647058826, result.get("TOTAL"));
+    assertEquals(0.35294117647058826, result.get("completeness:TOTAL"));
   }
 
   private CalculatorFacade createCalculatorFacadeForCsv() {
@@ -277,7 +324,10 @@ public class CalculatorFacadeTest {
         new CsvReader()
           .setHeader(((CsvAwareSchema) schema).getHeader()));
 
-    CalculatorFacade calculatorFacade = new CalculatorFacade(new MeasurementConfiguration(true, true, true, false, true));
+    MeasurementConfiguration measurementConfiguration = new MeasurementConfiguration(true, true, true, false, true);
+    assertTrue((measurementConfiguration.isFieldExistenceMeasurementEnabled()));
+    CalculatorFacade calculatorFacade = new CalculatorFacade(measurementConfiguration);
+
     calculatorFacade.setSchema(new EdmOaiPmhJsonSchema());
     calculatorFacade.configure();
     return facade;

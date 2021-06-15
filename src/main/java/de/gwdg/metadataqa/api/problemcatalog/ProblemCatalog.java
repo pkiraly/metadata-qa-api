@@ -1,5 +1,6 @@
 package de.gwdg.metadataqa.api.problemcatalog;
 
+import de.gwdg.metadataqa.api.interfaces.MetricResult;
 import de.gwdg.metadataqa.api.interfaces.Observer;
 import de.gwdg.metadataqa.api.interfaces.Observable;
 import de.gwdg.metadataqa.api.counter.FieldCounter;
@@ -57,17 +58,18 @@ public class ProblemCatalog extends BaseProblemCatalog<Double> implements Serial
   }
 
   @Override
-  public void notifyObservers() {
+  public void notifyObservers(FieldCounter<Double> fieldCounter) {
     for (Observer observer : problems) {
       observer.update(cache, fieldCounter);
     }
   }
 
   @Override
-  public void measure(PathCache cache) {
+  public List<MetricResult> measure(PathCache cache) {
     this.cache = cache;
-    this.fieldCounter = new FieldCounter<>();
-    notifyObservers();
+    FieldCounter<Double> fieldCounter = new FieldCounter<>();
+    notifyObservers(fieldCounter);
+    return List.of(new FieldCounterBasedResult<>(getCalculatorName(), fieldCounter));
   }
 
   @Override
@@ -82,5 +84,4 @@ public class ProblemCatalog extends BaseProblemCatalog<Double> implements Serial
   public ProblemCatalogSchema getSchema() {
     return schema;
   }
-
 }

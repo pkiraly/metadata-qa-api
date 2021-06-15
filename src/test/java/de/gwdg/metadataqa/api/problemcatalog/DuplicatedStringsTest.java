@@ -37,7 +37,6 @@ public class DuplicatedStringsTest {
   // <dc:date>1890 ; 1890</dc:date>
   @Test
   public void test() throws IOException, URISyntaxException {
-    System.err.println("DuplicatedStringsTest::test()");
     try {
       FieldCounter<Double> results = new FieldCounter<>();
       detector.update(cache, results);

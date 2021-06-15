@@ -1,8 +1,10 @@
 package de.gwdg.metadataqa.api.rule;
 
 import de.gwdg.metadataqa.api.counter.FieldCounter;
+import de.gwdg.metadataqa.api.interfaces.Calculator;
+import de.gwdg.metadataqa.api.interfaces.MetricResult;
 import de.gwdg.metadataqa.api.model.pathcache.PathCache;
-import de.gwdg.metadataqa.api.problemcatalog.BaseProblemCatalog;
+import de.gwdg.metadataqa.api.problemcatalog.FieldCounterBasedResult;
 import de.gwdg.metadataqa.api.schema.Schema;
 
 import java.io.Serializable;
@@ -10,7 +12,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Logger;
 
-public class RuleCatalog extends BaseProblemCatalog<RuleCheckerOutput> implements Serializable {
+public class RuleCatalog implements Calculator, Serializable {
 
   private static final Logger LOGGER = Logger.getLogger(RuleCatalog.class.getCanonicalName());
 
@@ -22,8 +24,8 @@ public class RuleCatalog extends BaseProblemCatalog<RuleCheckerOutput> implement
   }
 
   @Override
-  public void measure(PathCache cache) {
-    this.fieldCounter = new FieldCounter<>();
+  public List<MetricResult> measure(PathCache cache) {
+    FieldCounter<RuleCheckerOutput> fieldCounter = new FieldCounter<>();
     var totalScore = 0;
     for (RuleChecker ruleChecker : schema.getRuleCheckers()) {
       ruleChecker.update(cache, fieldCounter);
@@ -32,6 +34,7 @@ public class RuleCatalog extends BaseProblemCatalog<RuleCheckerOutput> implement
         totalScore += score.intValue();
     }
     fieldCounter.put(CALCULATOR_NAME + ":score", new RuleCheckerOutput(RuleCheckingOutputType.NA, totalScore));
+    return List.of(new FieldCounterBasedResult<>(getCalculatorName(), fieldCounter));
   }
 
   @Override

@@ -1,22 +1,21 @@
 package de.gwdg.metadataqa.api.calculator;
 
+import de.gwdg.metadataqa.api.interfaces.MetricResult;
 import de.gwdg.metadataqa.api.json.JsonBranch;
 import de.gwdg.metadataqa.api.model.pathcache.PathCache;
 import de.gwdg.metadataqa.api.counter.FieldCounter;
 import de.gwdg.metadataqa.api.interfaces.Calculator;
+import de.gwdg.metadataqa.api.problemcatalog.FieldCounterBasedResult;
 import de.gwdg.metadataqa.api.schema.Schema;
 import de.gwdg.metadataqa.api.uniqueness.SolrClient;
 import de.gwdg.metadataqa.api.uniqueness.UniquenessExtractor;
 import de.gwdg.metadataqa.api.uniqueness.UniquenessField;
 import de.gwdg.metadataqa.api.uniqueness.UniquenessFieldCalculator;
-import de.gwdg.metadataqa.api.util.CompressionLevel;
 import org.apache.commons.lang3.StringUtils;
 
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
-import java.util.LinkedHashMap;
 
 /**
  *
@@ -76,7 +75,7 @@ public class UniquenessCalculator implements Calculator, Serializable {
   }
 
   @Override
-  public void measure(PathCache cache) {
+  public List<MetricResult> measure(PathCache cache) {
     String recordId = cache.getRecordId();
     if (StringUtils.isNotBlank(recordId) && recordId.startsWith("/")) {
       recordId = recordId.substring(1);
@@ -97,6 +96,7 @@ public class UniquenessCalculator implements Calculator, Serializable {
           fieldCalculator.getAverageScore()
       );
     }
+    return List.of(new FieldCounterBasedResult<Double>(getCalculatorName(), resultMap));
   }
 
   public String getTotals() {
@@ -105,33 +105,6 @@ public class UniquenessCalculator implements Calculator, Serializable {
       totals.add(field.getTotal());
     }
     return StringUtils.join(totals, ",");
-  }
-
-  @Override
-  public Map<String, ?> getResultMap() {
-    return resultMap.getMap();
-  }
-
-  @Override
-  public Map<String, Map<String, ?>> getLabelledResultMap() {
-    Map<String, Map<String, ?>> labelledResultMap = new LinkedHashMap<>();
-    labelledResultMap.put(getCalculatorName(), resultMap.getMap());
-    return labelledResultMap;
-  }
-
-  @Override
-  public String getCsv(boolean withLabel, CompressionLevel compressionLevel) {
-    return resultMap.getCsv(withLabel, compressionLevel);
-  }
-
-  @Override
-  public List<Object> getCsv() {
-    return resultMap.getCsv();
-  }
-
-  @Override
-  public List<String> getList(boolean withLabel, CompressionLevel compressionLevel) {
-    return resultMap.getList(withLabel, compressionLevel);
   }
 
   @Override

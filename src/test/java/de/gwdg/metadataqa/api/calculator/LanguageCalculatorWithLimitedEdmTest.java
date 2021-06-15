@@ -1,5 +1,6 @@
 package de.gwdg.metadataqa.api.calculator;
 
+import de.gwdg.metadataqa.api.interfaces.MetricResult;
 import de.gwdg.metadataqa.api.model.pathcache.JsonPathCache;
 import de.gwdg.metadataqa.api.schema.edm.EdmOaiPmLimitedJsonSchema;
 import de.gwdg.metadataqa.api.util.CompressionLevel;
@@ -28,17 +29,18 @@ public class LanguageCalculatorWithLimitedEdmTest {
   public void testMeasure() throws URISyntaxException, IOException {
     LanguageCalculator calculator = new LanguageCalculator(new EdmOaiPmLimitedJsonSchema());
     JsonPathCache cache = new JsonPathCache(FileUtils.readFirstLineFromResource("general/test.json"));
-    calculator.measure(cache);
-    assertNotNull(calculator.getCsv(false, CompressionLevel.NORMAL));
-    assertEquals("de:1,_1:1,_1:1,_1:1,_1:1,_1:1,_0:1,_0:1,_1:1,_1:1,_1:1,_1:1,de:4;en:1,_1:1,_1:1,_1:1,_1:1,_1:1,_1:1,_1:1,_2:1,_1:1,_1:1,_0:1,_1:1,_2:1,en:1,_0:1", calculator.getCsv(false, CompressionLevel.NORMAL));
+    List<MetricResult> results = calculator.measure(cache);
+    assertNotNull(results.get(0).getCsv(false, CompressionLevel.NORMAL));
+    assertEquals("de:1,_1:1,_1:1,_1:1,_1:1,_1:1,_0:1,_0:1,_1:1,_1:1,_1:1,_1:1,de:4;en:1,_1:1,_1:1,_1:1,_1:1,_1:1,_1:1,_1:1,_2:1,_1:1,_1:1,_0:1,_1:1,_2:1,en:1,_0:1",
+      results.get(0).getCsv(false, CompressionLevel.NORMAL));
   }
 
   @Test
   public void testCountersGetLanguageMap() throws URISyntaxException, IOException {
     LanguageCalculator calculator = new LanguageCalculator(new EdmOaiPmLimitedJsonSchema());
     JsonPathCache cache = new JsonPathCache(FileUtils.readFirstLineFromResource("general/test.json"));
-    calculator.measure(cache);
-    String languages = calculator.getCsv(true, CompressionLevel.NORMAL);
+    List<MetricResult> results = calculator.measure(cache);
+    String languages = results.get(0).getCsv(true, CompressionLevel.NORMAL);
     assertNotNull(languages);
     assertEquals("\"Proxy/dc:title\":de:1,\"Proxy/dcterms:alternative\":_1:1,\"Proxy/dc:description\":_1:1,\"Proxy/dc:creator\":_1:1,\"Proxy/dc:publisher\":_1:1,\"Proxy/dc:contributor\":_1:1,\"Proxy/dc:type\":_0:1,\"Proxy/dc:identifier\":_0:1,\"Proxy/dc:language\":_1:1,\"Proxy/dc:coverage\":_1:1,\"Proxy/dcterms:temporal\":_1:1,\"Proxy/dcterms:spatial\":_1:1,\"Proxy/dc:subject\":de:4;en:1,\"Proxy/dc:date\":_1:1,\"Proxy/dcterms:created\":_1:1,\"Proxy/dcterms:issued\":_1:1,\"Proxy/dcterms:extent\":_1:1,\"Proxy/dcterms:medium\":_1:1,\"Proxy/dcterms:provenance\":_1:1,\"Proxy/dcterms:hasPart\":_1:1,\"Proxy/dcterms:isPartOf\":_2:1,\"Proxy/dc:format\":_1:1,\"Proxy/dc:source\":_1:1,\"Proxy/dc:rights\":_0:1,\"Proxy/dc:relation\":_1:1,\"Aggregation/edm:rights\":_2:1,\"Aggregation/edm:provider\":en:1,\"Aggregation/edm:dataProvider\":_0:1", languages);
   }
@@ -47,9 +49,10 @@ public class LanguageCalculatorWithLimitedEdmTest {
   public void testGetLanguageMap() throws URISyntaxException, IOException {
     LanguageCalculator calculator = new LanguageCalculator(new EdmOaiPmLimitedJsonSchema());
     JsonPathCache cache = new JsonPathCache(FileUtils.readFirstLineFromResource("general/test.json"));
-    calculator.measure(cache);
+    List<MetricResult> results = calculator.measure(cache);
 
-    Map<String, String> languages = calculator.getLanguageMap();
+    // Map<String, String> languages = results.get(0).getLanguageMap();
+    Map<String, String> languages = (Map<String, String>) results.get(0).getResultMap();
     assertNotNull(languages);
     assertEquals(28, languages.size());
     assertEquals("de:1", languages.get("Proxy/dc:title"));

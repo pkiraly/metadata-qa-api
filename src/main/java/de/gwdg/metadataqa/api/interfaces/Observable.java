@@ -1,5 +1,7 @@
 package de.gwdg.metadataqa.api.interfaces;
 
+import de.gwdg.metadataqa.api.counter.FieldCounter;
+
 /**
  * Implementation of the Observer design pattern
  * (https://en.wikipedia.org/wiki/Observer_pattern).
@@ -12,7 +14,7 @@ public interface Observable {
   /**
    * Notify observers about a change.
    */
-  void notifyObservers();
+  void notifyObservers(FieldCounter<Double> fieldCounter);
 
   /**
    * Add an observer object to the subject.
@@ -29,5 +31,4 @@ public interface Observable {
    *   An observer object
    */
   void deleteObserver(Observer observer);
-
 }

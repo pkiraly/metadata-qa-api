@@ -1,25 +1,16 @@
 package de.gwdg.metadataqa.api.calculator;
 
 import com.jayway.jsonpath.InvalidJsonException;
-import de.gwdg.metadataqa.api.counter.BasicCounter;
+import de.gwdg.metadataqa.api.calculator.language.Multilinguality;
 import de.gwdg.metadataqa.api.counter.FieldCounter;
+import de.gwdg.metadataqa.api.interfaces.MetricResult;
 import de.gwdg.metadataqa.api.json.JsonBranch;
-import de.gwdg.metadataqa.api.model.EdmFieldInstance;
-import de.gwdg.metadataqa.api.model.LanguageSaturationType;
 import de.gwdg.metadataqa.api.model.pathcache.PathCache;
+import de.gwdg.metadataqa.api.problemcatalog.FieldCounterBasedResult;
 import de.gwdg.metadataqa.api.schema.Schema;
-import de.gwdg.metadataqa.api.util.CompressionLevel;
-import de.gwdg.metadataqa.api.util.Converter;
 import de.gwdg.metadataqa.api.util.SkippedEntitySelector;
 import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.LinkedHashMap;
-import java.util.LinkedList;
 import java.util.List;
-import java.util.Map;
-import java.util.Set;
-import java.util.SortedMap;
-import java.util.TreeMap;
 import java.util.logging.Logger;
 
 /**
@@ -30,20 +21,7 @@ public class MultilingualitySaturationCalculator extends BaseLanguageCalculator 
 
   public static final String CALCULATOR_NAME = "multilingualitySaturation";
 
-  private static final Logger LOGGER = Logger.getLogger(
-    MultilingualitySaturationCalculator.class.getCanonicalName());
-  private static final String NA = "n.a.";
-  public static final double NORMALIZED_LOW = 0.0;
-  public static final double NORMALIZED_MIDDLE = 0.3;
-  public static final double NORMALIZED_HIGH = 0.6;
-  public static final int MIDDLE_FROM = 4;
-  public static final int MIDDLE_TO = 9;
-  public static final int LOW_FROM = 2;
-  public static final int LOW_TO = 3;
-  public static final double TRANSLATION_MODIFIER = -0.2;
-  public static final String SUM = CALCULATOR_NAME + ":sum";
-  public static final String AVERAGE = CALCULATOR_NAME + ":average";
-  public static final String NORMALIZED = CALCULATOR_NAME + ":normalized";
+  private static final Logger LOGGER = Logger.getLogger(MultilingualitySaturationCalculator.class.getCanonicalName());
 
   /**
    * The result type of multilinguality.
@@ -68,9 +46,6 @@ public class MultilingualitySaturationCalculator extends BaseLanguageCalculator 
 
   private ResultTypes resultType = ResultTypes.NORMAL;
   private String inputFileName;
-  private FieldCounter<Double> saturationMap;
-  private Map<String, Map<String, Double>> rawScoreMap = new LinkedHashMap<>();
-  private Map<String, List<SortedMap<LanguageSaturationType, Double>>> rawLanguageMap;
 
   private Schema schema;
   private SkippedEntryChecker skippedEntryChecker = null;
@@ -91,7 +66,6 @@ public class MultilingualitySaturationCalculator extends BaseLanguageCalculator 
 
   @Override
   public List<String> getHeader() {
-
     List<String> headers = new ArrayList<>();
     for (JsonBranch jsonBranch : schema.getPaths()) {
       if (jsonBranch.isActive() && !schema.getNoLanguageFields().contains(jsonBranch.getLabel())) {
@@ -109,183 +83,30 @@ public class MultilingualitySaturationCalculator extends BaseLanguageCalculator 
       }
     }
     if (resultType.equals(ResultTypes.EXTENDED)) {
-      headers.add(SUM);
-      headers.add(AVERAGE);
+      headers.add(Multilinguality.SUM);
+      headers.add(Multilinguality.AVERAGE);
     }
-    headers.add(NORMALIZED);
+    headers.add(Multilinguality.NORMALIZED);
 
     return headers;
   }
 
   @Override
-  public void measure(PathCache cache)
+  public List<MetricResult> measure(PathCache cache)
       throws InvalidJsonException {
 
-    rawLanguageMap = new LinkedHashMap<>();
-    if (schema.getCollectionPaths().isEmpty()) {
-      measureFlatSchema(cache);
-    } else {
-      measureHierarchicalSchema(cache);
-    }
-    saturationMap = calculateScore(rawLanguageMap);
+    Multilinguality multilinguality = new Multilinguality(schema, cache, resultType, skippedEntryChecker, skippedEntitySelector);
+    FieldCounter<Double> saturationMap = multilinguality.measure();
+
+    return List.of(new FieldCounterBasedResult<>(getCalculatorName(), saturationMap));
   }
 
-  private void measureFlatSchema(PathCache cache) {
-    for (JsonBranch jsonBranch : schema.getPaths()) {
-      if (jsonBranch.isActive()
-        && !schema.getNoLanguageFields().contains(jsonBranch.getLabel())) {
-        extractLanguageTags(null, jsonBranch, jsonBranch.getJsonPath(), cache, rawLanguageMap);
-      }
-    }
-  }
-
-  private void measureHierarchicalSchema(PathCache cache) {
-    List<String> skippableIds = getSkippableIds(cache);
-    for (JsonBranch collection : schema.getCollectionPaths()) {
-      if (!collection.isActive()) {
-        continue;
-      }
-      Object rawJsonFragment = cache.getFragment(collection.getJsonPath());
-      if (rawJsonFragment == null) {
-        measureMissingCollection(collection);
-      } else {
-        measureExistingCollection(rawJsonFragment, collection, cache, skippableIds);
-      }
-    }
-  }
-
-  private List<String> getSkippableIds(PathCache cache) {
-    return skippedEntryChecker != null
-          ? skippedEntryChecker.getSkippableCollectionIds(cache)
-          : new ArrayList<>();
-  }
-
-  private void measureMissingCollection(JsonBranch collection) {
-    for (JsonBranch child : collection.getChildren()) {
-      if (child.isActive() && !schema.getNoLanguageFields().contains(child.getLabel())) {
-        Map<LanguageSaturationType, BasicCounter> languages = new TreeMap<>();
-        increase(languages, LanguageSaturationType.NA);
-        updateMaps(child.getLabel(), transformLanguages(languages, 0));
-      }
-    }
-  }
-
-  private void measureExistingCollection(Object rawJsonFragment,
-        JsonBranch collection, PathCache cache, List<String> skippableIds) {
-    List<Object> jsonFragments = Converter.jsonObjectToList(rawJsonFragment, schema);
-    if (jsonFragments.isEmpty()) {
-      measureMissingCollection(collection);
-    } else {
-      for (int i = 0, len = jsonFragments.size(); i < len; i++) {
-        Object jsonFragment = jsonFragments.get(i);
-        boolean skip = skippedEntitySelector.isCollectionSkippable(
-          skippableIds, collection, i, cache, jsonFragment
-        );
-        if (skip) {
-          // LOGGER.info(String.format("skip %s (%s)", collection.getLabel(), ((LinkedHashMap)jsonFragment).get("@about")));
-          measureMissingCollection(collection);
-          // TODO???
-        } else {
-          for (JsonBranch child : collection.getChildren()) {
-            if (child.isActive()
-              && !schema.getNoLanguageFields().contains(child.getLabel())) {
-              var address = String.format(
-                "%s/%d/%s",
-                collection.getJsonPath(), i, child.getJsonPath()
-              );
-              extractLanguageTags(jsonFragment, child, address, cache, rawLanguageMap);
-            }
-          }
-        }
-      }
-    }
-  }
-
-  private void extractLanguageTags(
-      Object jsonFragment,
-      JsonBranch jsonBranch,
-      String address,
-      PathCache cache,
-      Map<String, List<SortedMap<LanguageSaturationType, Double>>> rawLanguageMap) {
-    List<EdmFieldInstance> values = cache.get(address, jsonBranch.getJsonPath(), jsonFragment);
-    Map<LanguageSaturationType, BasicCounter> languages = new TreeMap<>();
-    Set<String> individualLanguages = new HashSet<>();
-    if (values != null && !values.isEmpty()) {
-      for (EdmFieldInstance field : values) {
-        if (field.hasValue()) {
-          if (field.hasLanguage()) {
-            individualLanguages.add(field.getLanguage());
-            increase(languages, LanguageSaturationType.LANGUAGE);
-          } else {
-            increase(languages, LanguageSaturationType.STRING);
-          }
-        } else {
-          increase(languages, LanguageSaturationType.LINK);
-        }
-      }
-    } else {
-      increase(languages, LanguageSaturationType.NA);
-    }
-
-    updateMaps(jsonBranch.getLabel(), transformLanguages(languages, individualLanguages.size()));
-  }
-
-  private void updateMaps(String label, SortedMap<LanguageSaturationType, Double> instance) {
-    rawLanguageMap.computeIfAbsent(label, s -> new ArrayList<>());
-    rawLanguageMap.get(label).add(instance);
-  }
-
-  private void increase(Map<LanguageSaturationType, BasicCounter> languages, LanguageSaturationType key) {
-    if (!languages.containsKey(key)) {
-      languages.put(key, new BasicCounter(1));
-    } else {
-      languages.get(key).increaseTotal();
-    }
-  }
-
-  private SortedMap<LanguageSaturationType, Double> transformLanguages(
-      Map<LanguageSaturationType, BasicCounter> languages, int languageCount) {
-    SortedMap<LanguageSaturationType, Double> result = new TreeMap<>();
-    for (Map.Entry<LanguageSaturationType, BasicCounter> lang : languages.entrySet())
-      result.put(lang.getKey(), lang.getValue().getTotal());
-
-    if (result.containsKey(LanguageSaturationType.LANGUAGE)
-        && result.get(LanguageSaturationType.LANGUAGE) > 1
-        && languageCount > 1) {
-      result.remove(LanguageSaturationType.LANGUAGE);
-      result.put(LanguageSaturationType.TRANSLATION, normalizeTranslationCount(languageCount));
-    }
-    if (languageCount > 1) {
-      result = keepOnlyTheBest(result);
-    }
-    return result;
-  }
-
-  private double normalizeTranslationCount(double count) {
-    var normalized = 0.0;
-    if (isLow(count)) {
-      normalized = NORMALIZED_LOW;
-    } else if (isMiddle(count)) {
-      normalized = NORMALIZED_MIDDLE;
-    } else {
-      normalized = NORMALIZED_HIGH;
-    }
-    return normalized;
-  }
-
-  private boolean isMiddle(double count) {
-    return MIDDLE_FROM <= count && count <= MIDDLE_TO;
-  }
-
-  private boolean isLow(double count) {
-    return LOW_FROM <= count && count <= LOW_TO;
-  }
-
+  /*
   public Map<String, Double> getSaturationMap() {
     return saturationMap.getMap();
   }
 
-  @Override
+  // @Override
   public Map<String, Map<String, ? extends Object>> getLabelledResultMap() {
     Map<String, Map<String, ? extends Object>> labelledResultMap = new LinkedHashMap<>();
 //     labelledResultMap.put(getCalculatorName(), rawLanguageMap);
@@ -293,147 +114,7 @@ public class MultilingualitySaturationCalculator extends BaseLanguageCalculator 
     labelledResultMap.put(getCalculatorName(), mergeMaps());
     return labelledResultMap;
   }
-
-  private Map<String, Map<String, Object>> mergeMaps() {
-    Map<String, Map<String, Object>> map = new LinkedHashMap<>();
-    for (Map.Entry<String, List<SortedMap<LanguageSaturationType, Double>>> rawEntry : rawLanguageMap.entrySet()) {
-      Map<String, Object> entry = new LinkedHashMap<>();
-      entry.put("instances", normalizeRawValue(rawEntry.getValue()));
-      entry.put("score", rawScoreMap.get(rawEntry.getKey()));
-      map.put(rawEntry.getKey(), entry);
-    }
-    return map;
-  }
-
-  @Override
-  public Map<String, ? extends Object> getResultMap() {
-    return saturationMap.getMap();
-  }
-
-  @Override
-  public String getCsv(boolean withLabel, CompressionLevel compressionLevel) {
-    return saturationMap.getCsv(withLabel, compressionLevel);
-  }
-
-  @Override
-  public List<Object> getCsv() {
-    return saturationMap.getCsv();
-  }
-
-  @Override
-  public List<String> getList(boolean withLabel, CompressionLevel compressionLevel) {
-    return saturationMap.getList(withLabel, compressionLevel);
-  }
-
-  private SortedMap<LanguageSaturationType, Double> keepOnlyTheBest(SortedMap<LanguageSaturationType, Double> result) {
-    if (result.size() > 1) {
-      LanguageSaturationType best = LanguageSaturationType.NA;
-      for (LanguageSaturationType key : result.keySet()) {
-        if (key.value() > best.value()) {
-          best = key;
-        }
-      }
-
-      if (best != LanguageSaturationType.NA) {
-        var modifier = 0.0;
-        if (best == LanguageSaturationType.TRANSLATION
-            && result.containsKey(LanguageSaturationType.STRING)) {
-          modifier = TRANSLATION_MODIFIER;
-        }
-        SortedMap<LanguageSaturationType, Double> replacement = new TreeMap<>();
-        replacement.put(best, result.get(best) + modifier);
-        result = replacement;
-      }
-    }
-    return result;
-  }
-
-  private FieldCounter<Double> calculateScore(Map<String,
-      List<SortedMap<LanguageSaturationType, Double>>> rawLanguageMap) {
-    double sum;
-    double average;
-    double normalized;
-    List<Double> sums = new ArrayList<>();
-    FieldCounter<Double> languageMap = new FieldCounter<>();
-    for (Map.Entry<String, List<SortedMap<LanguageSaturationType, Double>>> field : rawLanguageMap.entrySet()) {
-      Map<String, Double> fieldMap = new LinkedHashMap<>();
-      List<SortedMap<LanguageSaturationType, Double>> values = field.getValue();
-      sum = 0.0;
-      var isSet = false;
-      for (SortedMap<LanguageSaturationType, Double> value : values) {
-        double saturation = value.firstKey().value();
-        if (saturation == -1.0) {
-          continue;
-        }
-        double weight = value.get(value.firstKey());
-        if (value.firstKey() == LanguageSaturationType.TRANSLATION) {
-          saturation += weight;
-        }
-        sum += saturation;
-        isSet = true;
-      }
-      if (!isSet) {
-        average = LanguageSaturationType.NA.value();
-        normalized = LanguageSaturationType.NA.value();
-        sum = LanguageSaturationType.NA.value();
-      } else {
-        average = sum / (double) values.size();
-        normalized = normalize(average);
-        sums.add(sum);
-      }
-
-      fieldMap.put("sum", sum);
-      fieldMap.put("average", average);
-      fieldMap.put("normalized", normalized);
-      rawScoreMap.put(field.getKey(), fieldMap);
-
-      if (resultType.equals(ResultTypes.NORMAL)) {
-        languageMap.put(field.getKey(), normalized);
-      } else {
-        languageMap.put(field.getKey() + ":sum", sum);
-        languageMap.put(field.getKey() + ":average", average);
-        languageMap.put(field.getKey() + ":normalized", normalized);
-      }
-    }
-    sum = summarize(sums);
-    average = sum / (double) sums.size();
-    normalized = normalize(average);
-    if (resultType.equals(ResultTypes.EXTENDED)) {
-      languageMap.put(SUM, sum);
-      languageMap.put(AVERAGE, average);
-    }
-    languageMap.put(NORMALIZED, normalized);
-
-    return languageMap;
-  }
-
-  private double summarize(List<Double> sums) {
-    double sum;
-    sum = 0.0;
-    for (Double item : sums) {
-      sum += item;
-    }
-    return sum;
-  }
-
-  private static double normalize(double average) {
-    return 1.0 - (1.0 / (average + 1.0));
-  }
-
-  private Object normalizeRawValue(List<SortedMap<LanguageSaturationType, Double>> values) {
-    List<SortedMap<LanguageSaturationType, Double>> normalized = new LinkedList<>();
-    for (SortedMap<LanguageSaturationType, Double> value : values) {
-      SortedMap<LanguageSaturationType, Double> norm = new TreeMap<>();
-      double saturation = value.firstKey().value();
-      double weight = value.get(value.firstKey());
-      if (value.firstKey() == LanguageSaturationType.TRANSLATION) {
-        saturation += weight;
-      }
-      norm.put(value.firstKey(), saturation);
-      normalized.add(norm);
-    }
-    return normalized;
-  }
+  */
 
   public ResultTypes getResultType() {
     return resultType;
@@ -451,5 +132,4 @@ public class MultilingualitySaturationCalculator extends BaseLanguageCalculator 
     this.skippedEntryChecker = skippedEntryChecker;
     skippedEntitySelector.setSkippedEntryChecker(skippedEntryChecker);
   }
-
 }

@@ -5,6 +5,7 @@ import de.gwdg.metadataqa.api.calculator.output.OutputCollector;
 import de.gwdg.metadataqa.api.calculator.output.OutputFactory;
 import de.gwdg.metadataqa.api.configuration.MeasurementConfiguration;
 import de.gwdg.metadataqa.api.interfaces.Calculator;
+import de.gwdg.metadataqa.api.interfaces.MetricResult;
 import de.gwdg.metadataqa.api.model.pathcache.CsvPathCache;
 import de.gwdg.metadataqa.api.model.pathcache.PathCache;
 import de.gwdg.metadataqa.api.model.PathCacheFactory;
@@ -233,6 +234,16 @@ public class CalculatorFacade implements Serializable {
       inputRecord, OutputCollector.TYPE.STRING);
   }
 
+  public String measureAsJson(String inputRecord) throws InvalidJsonException {
+    return (String) this.<XmlFieldInstance>measureWithGenerics(
+      inputRecord, OutputCollector.TYPE.JSON);
+  }
+
+  public Map<String, List<MetricResult>> measureAsMetricResult(String inputRecord) throws InvalidJsonException {
+    return (Map<String, List<MetricResult>>) this.<XmlFieldInstance>measureWithGenerics(
+      inputRecord, OutputCollector.TYPE.METRIC);
+  }
+
   public List<String> measureAsList(String inputRecord) throws InvalidJsonException {
     return (List<String>) this.<XmlFieldInstance>measureWithGenerics(
       inputRecord, OutputCollector.TYPE.STRING_LIST);
@@ -283,7 +294,6 @@ public class CalculatorFacade implements Serializable {
     throws InvalidJsonException {
     return measureWithGenerics(content, OutputCollector.TYPE.STRING);
   }
-
 
   protected <T extends XmlFieldInstance> Object measureWithGenerics(String content,
                                                                     OutputCollector.TYPE type)
@@ -348,8 +358,8 @@ public class CalculatorFacade implements Serializable {
 
   private void runMeasurements(OutputCollector collector) {
     for (Calculator calculator : getCalculators()) {
-      calculator.measure(cache);
-      collector.addResult(calculator, compressionLevel);
+      List<MetricResult> result = calculator.measure(cache);
+      collector.addResult(calculator, result, compressionLevel);
     }
   }
 
@@ -412,6 +422,7 @@ public class CalculatorFacade implements Serializable {
    * @return
    *   The result map
    */
+  /*
   public Map<String, Object> getResults() {
     Map<String, Object> results = new LinkedHashMap<>();
     for (Calculator calculator : calculators) {
@@ -419,7 +430,9 @@ public class CalculatorFacade implements Serializable {
     }
     return results;
   }
+  */
 
+  /*
   public Map<String, Map<String, ? extends Object>> getLabelledResults() {
     Map<String, Map<String, ? extends Object>> results = new LinkedHashMap<>();
     for (Calculator calculator : calculators) {
@@ -427,7 +440,9 @@ public class CalculatorFacade implements Serializable {
     }
     return results;
   }
+  */
 
+  /*
   public String getCsv(boolean withLabels, CompressionLevel compressionLevel) {
     List<String> results = new ArrayList<>();
     for (Calculator calculator : calculators) {
@@ -435,6 +450,7 @@ public class CalculatorFacade implements Serializable {
     }
     return StringUtils.join(results, ",");
   }
+  */
 
   public CalculatorFacade configureSolr(String solrHost, String solrPort, String solrPath) {
     solrConfiguration = new SolrConfiguration(solrHost, solrPort, solrPath);

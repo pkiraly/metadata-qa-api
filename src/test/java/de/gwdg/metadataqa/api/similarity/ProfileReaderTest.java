@@ -70,13 +70,11 @@ public class ProfileReaderTest {
     sortedClusters.entrySet().stream().forEach((pCluster) -> {
       int i = profileReader.getNext();
       int sum = profileReader.count(pCluster.getKey());
-      // System.err.printf("#%d=%d\n", i, sum);
       pCluster.
           getKey().
           forEach((pRow) -> {
             // System.err.printf("%d,%s\n", i, pRow.asCsv());
           });
-        // System.err.printf("=%.2f%%\n", cluster.getValue());
       });
   }
 

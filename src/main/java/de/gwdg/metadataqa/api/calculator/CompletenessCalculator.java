@@ -4,10 +4,12 @@ import com.jayway.jsonpath.InvalidJsonException;
 import de.gwdg.metadataqa.api.counter.CompletenessCounter;
 import de.gwdg.metadataqa.api.counter.FieldCounter;
 import de.gwdg.metadataqa.api.interfaces.Calculator;
+import de.gwdg.metadataqa.api.interfaces.MetricResult;
 import de.gwdg.metadataqa.api.json.FieldGroup;
 import de.gwdg.metadataqa.api.json.JsonBranch;
 import de.gwdg.metadataqa.api.model.pathcache.PathCache;
 import de.gwdg.metadataqa.api.model.XmlFieldInstance;
+import de.gwdg.metadataqa.api.problemcatalog.FieldCounterBasedResult;
 import de.gwdg.metadataqa.api.schema.Schema;
 import de.gwdg.metadataqa.api.util.CompressionLevel;
 import de.gwdg.metadataqa.api.util.Converter;
@@ -71,7 +73,7 @@ public class CompletenessCalculator<T extends XmlFieldInstance>
   }
 
   @Override
-  public void measure(PathCache cache)
+  public List<MetricResult> measure(PathCache cache)
       throws InvalidJsonException {
     initializeCounters();
 
@@ -84,8 +86,7 @@ public class CompletenessCalculator<T extends XmlFieldInstance>
         if (!jsonBranch.isActive()) {
           continue;
         }
-        evaluateJsonBranch(jsonBranch, cache, completenessCounter,
-              jsonBranch.getLabel(), null);
+        evaluateJsonBranch(jsonBranch, cache, completenessCounter, jsonBranch.getLabel(), null);
       }
     } else {
       for (JsonBranch collection : schema.getCollectionPaths()) {
@@ -127,6 +128,18 @@ public class CompletenessCalculator<T extends XmlFieldInstance>
         completenessCounter.increaseInstance(fieldGroup.getCategory(), existing);
       }
     }
+
+    List<MetricResult> list = new ArrayList<>();
+    list.add(new FieldCounterBasedResult("completeness", completenessCounter.getFieldCounter()));
+    list.add(new FieldCounterBasedResult("existence", existenceCounter));
+    list.add(new FieldCounterBasedResult("cardinality", cardinalityCounter));
+    if (collectFields) {
+      // list.add(new FieldCounterBasedResult("missingFields", missingFields));
+      // list.add(new FieldCounterBasedResult("emptyFields", emptyFields));
+      // list.add(new FieldCounterBasedResult("existingFields", existingFields));
+    }
+
+    return list;
   }
 
   public void initializeCounters() {
@@ -256,7 +269,7 @@ public class CompletenessCalculator<T extends XmlFieldInstance>
     return inputFileName;
   }
 
-  @Override
+  // @Override
   public Map<String, ? extends Object> getResultMap() {
     Map<String, Object> resultMap = new LinkedHashMap<>();
 
@@ -281,7 +294,7 @@ public class CompletenessCalculator<T extends XmlFieldInstance>
     return resultMap;
   }
 
-  @Override
+  //  @Override
   public Map<String, Map<String, ? extends Object>> getLabelledResultMap() {
     Map<String, Map<String, ? extends Object>> resultMap = new LinkedHashMap<>();
     if (completeness) {
@@ -296,13 +309,13 @@ public class CompletenessCalculator<T extends XmlFieldInstance>
     return resultMap;
   }
 
-  @Override
+  // @Override
   public String getCsv(boolean withLabel, CompressionLevel compressionLevel) {
     List<String> csvs = getList(withLabel, compressionLevel);
     return StringUtils.join(csvs, ",");
   }
 
-  @Override
+  // @Override
   public List<Object> getCsv() {
     List<Object> csvs = new ArrayList<>();
     if (completeness) {
@@ -322,8 +335,7 @@ public class CompletenessCalculator<T extends XmlFieldInstance>
     return csvs;
   }
 
-
-  @Override
+  // @Override
   public List<String> getList(boolean withLabel, CompressionLevel compressionLevel) {
     List<String> csvs = new ArrayList<>();
     if (completeness) {

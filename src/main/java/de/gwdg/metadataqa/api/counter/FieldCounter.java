@@ -83,5 +83,4 @@ public class FieldCounter<T> implements Serializable {
     }
     return values;
   }
-
 }

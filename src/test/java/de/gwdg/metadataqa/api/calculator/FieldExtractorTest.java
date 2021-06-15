@@ -1,5 +1,6 @@
 package de.gwdg.metadataqa.api.calculator;
 
+import de.gwdg.metadataqa.api.interfaces.MetricResult;
 import de.gwdg.metadataqa.api.model.pathcache.JsonPathCache;
 import de.gwdg.metadataqa.api.util.FileUtils;
 import java.io.IOException;
@@ -27,8 +28,8 @@ public class FieldExtractorTest {
 
   @Test
   public void testId() throws URISyntaxException, IOException {
-    calculator.measure(cache);
-    assertEquals("92062/BibliographicResource_1000126015451", calculator.getResultMap().get(calculator.FIELD_NAME));
+    List<MetricResult> results = calculator.measure(cache);
+    assertEquals("92062/BibliographicResource_1000126015451", results.get(0).getResultMap().get(calculator.FIELD_NAME));
   }
 
   @Test

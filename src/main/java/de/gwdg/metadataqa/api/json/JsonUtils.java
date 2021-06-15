@@ -1,5 +1,7 @@
 package de.gwdg.metadataqa.api.json;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import de.gwdg.metadataqa.api.model.EdmFieldInstance;
 import com.jayway.jsonpath.JsonPath;
 import de.gwdg.metadataqa.api.model.XmlFieldInstance;
@@ -23,6 +25,7 @@ public final class JsonUtils {
   public static final String ABOUT = "@about";
   public static final String RESOURCE = "@resource";
   public static final String VALUE = "#value";
+  public static ObjectMapper jsonMapper;
 
   private JsonUtils() {
     throw new AssertionError();
@@ -220,5 +223,12 @@ public final class JsonUtils {
 
   public static String getType(Object obj) {
     return obj.getClass().getCanonicalName();
+  }
+
+  public static String toJson(Object object) throws JsonProcessingException {
+    if (jsonMapper == null) {
+      jsonMapper = new ObjectMapper();
+    }
+    return jsonMapper.writeValueAsString(object);
   }
 }
