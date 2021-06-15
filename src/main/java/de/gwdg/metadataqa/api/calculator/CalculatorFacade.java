@@ -230,48 +230,47 @@ public class CalculatorFacade implements Serializable {
   }
 
   public String measure(List<String> inputRecord) throws InvalidJsonException {
-    return (String) this.<XmlFieldInstance>measureCsvWithGenerics(
-      inputRecord, OutputCollector.TYPE.STRING);
-  }
-
-  public String measureAsJson(String inputRecord) throws InvalidJsonException {
-    return (String) this.<XmlFieldInstance>measureWithGenerics(
-      inputRecord, OutputCollector.TYPE.JSON);
-  }
-
-  public Map<String, List<MetricResult>> measureAsMetricResult(String inputRecord) throws InvalidJsonException {
-    return (Map<String, List<MetricResult>>) this.<XmlFieldInstance>measureWithGenerics(
-      inputRecord, OutputCollector.TYPE.METRIC);
+    return (String) this.<XmlFieldInstance>measureCsvWithGenerics(inputRecord, OutputCollector.TYPE.STRING);
   }
 
   public List<String> measureAsList(String inputRecord) throws InvalidJsonException {
-    return (List<String>) this.<XmlFieldInstance>measureWithGenerics(
-      inputRecord, OutputCollector.TYPE.STRING_LIST);
+    return (List<String>) this.<XmlFieldInstance>measureWithGenerics(inputRecord, OutputCollector.TYPE.STRING_LIST);
   }
 
   public List<String> measureAsList(List<String> inputRecord) throws InvalidJsonException {
-    return (List<String>) this.<XmlFieldInstance>measureCsvWithGenerics(
-      inputRecord, OutputCollector.TYPE.STRING_LIST);
+    return (List<String>) this.<XmlFieldInstance>measureCsvWithGenerics(inputRecord, OutputCollector.TYPE.STRING_LIST);
   }
 
   public List<Object> measureAsListOfObjects(String inputRecord) throws InvalidJsonException {
-    return (List<Object>) this.<XmlFieldInstance>measureWithGenerics(
-      inputRecord, OutputCollector.TYPE.OBJECT_LIST);
+    return (List<Object>) this.<XmlFieldInstance>measureWithGenerics(inputRecord, OutputCollector.TYPE.OBJECT_LIST);
   }
 
   public List<Object> measureAsListOfObjects(List<String> inputRecord) throws InvalidJsonException {
-    return (List<Object>) this.<XmlFieldInstance>measureCsvWithGenerics(
-      inputRecord, OutputCollector.TYPE.OBJECT_LIST);
+    return (List<Object>) this.<XmlFieldInstance>measureCsvWithGenerics(inputRecord, OutputCollector.TYPE.OBJECT_LIST);
   }
 
   public Map<String, Object> measureAsMap(String inputRecord) throws InvalidJsonException {
-    return (Map<String, Object>) this.<XmlFieldInstance>measureWithGenerics(
-      inputRecord, OutputCollector.TYPE.MAP);
+    return (Map<String, Object>) this.<XmlFieldInstance>measureWithGenerics(inputRecord, OutputCollector.TYPE.MAP);
   }
 
   public Map<String, Object> measureAsMap(List<String> inputRecord) throws InvalidJsonException {
-    return (Map<String, Object>) this.<XmlFieldInstance>measureCsvWithGenerics(
-      inputRecord, OutputCollector.TYPE.MAP);
+    return (Map<String, Object>) this.<XmlFieldInstance>measureCsvWithGenerics(inputRecord, OutputCollector.TYPE.MAP);
+  }
+
+  public String measureAsJson(String inputRecord) throws InvalidJsonException {
+    return (String) this.<XmlFieldInstance>measureWithGenerics(inputRecord, OutputCollector.TYPE.JSON);
+  }
+
+  public String measureAsJson(List<String> inputRecord) throws InvalidJsonException {
+    return (String) this.<XmlFieldInstance>measureCsvWithGenerics(inputRecord, OutputCollector.TYPE.JSON);
+  }
+
+  public Map<String, List<MetricResult>> measureAsMetricResult(String inputRecord) throws InvalidJsonException {
+    return (Map<String, List<MetricResult>>) this.<XmlFieldInstance>measureWithGenerics(inputRecord, OutputCollector.TYPE.METRIC);
+  }
+
+  public Map<String, List<MetricResult>> measureAsMetricResult(List<String> inputRecord) throws InvalidJsonException {
+    return (Map<String, List<MetricResult>>) this.<XmlFieldInstance>measureCsvWithGenerics(inputRecord, OutputCollector.TYPE.METRIC);
   }
 
   /**

@@ -64,6 +64,8 @@ List or a Map:
 * `List<String> measureAsList(String record) throws InvalidJsonException`
 * `List<Object> measureAsListOfObjects(String record) throws InvalidJsonException`
 * `Map<String, Object> measureAsMap(String record) throws InvalidJsonException`
+* `String measureAsJson(String inputRecord) throws InvalidJsonException`
+* `Map<String, List<MetricResult>> measureAsMetricResult(String inputRecord) throws InvalidJsonException`
 
 If your input is a CSV file, and you already processed the lines 
 into list of cells, you could use the same methods:
@@ -72,6 +74,8 @@ into list of cells, you could use the same methods:
 * `List<String> measureAsList(List<String> record) throws InvalidJsonException`
 * `List<Object> measureAsListOfObjects(List<String> record) throws InvalidJsonException`
 * `Map<String, Object> measureAsMap(List<String> record) throws InvalidJsonException`
+* `String measureAsJson(List<String> inputRecord) throws InvalidJsonException`
+* `Map<String, List<MetricResult>> measureAsMetricResult(List<String> inputRecord) throws InvalidJsonException`
 
 An example which collects output into a StringBuffer (you can persist lines into a CSV file or into a database):
 
