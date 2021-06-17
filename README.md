@@ -9,6 +9,46 @@ If you want to implement it to your collection you have to define
 a schema, which presentats an existing metadata schema, and
 configure the basic facade, which will run the calculation.
 
+First, add the library into your project's `pom.xml` file:
+
+```xml
+<dependencies>
+  ...
+  <dependency>
+    <grroupId>de.gwdg.metadata</grroupId>
+    <artifactId>metadata-qa-api</artifactId>
+    <version>0.7</version>
+  </dependency>
+</dependencies>
+```
+
+If you want to try an experimental version (which has `SNAPSHOT` in its version name), you have to enable the retrieve of those versions in the `pom.xml` file:
+```xml
+<repositories>
+  <repository>
+    <id>sonatypeSnapshots</id>
+    <name>Sonatype Snapshots</name>
+    <url>https://oss.sonatype.org/content/repositories/snapshots</url>
+    <releases>
+     <enabled>false</enabled>
+    </releases>
+    <snapshots>
+      <enabled>true</enabled>
+    </snapshots>
+  </repository>
+</repositories>
+
+<dependencies>
+  ...
+  <dependency>
+    <grroupId>de.gwdg.metadata</grroupId>
+    <artifactId>metadata-qa-api</artifactId>
+    <version>0.8-SNAPSHOT</version>
+  </dependency>
+</dependencies>
+
+```
+
 Define a configuration:
 ```Java
 MeasurementConfiguration config = new MeasurementConfiguration()
