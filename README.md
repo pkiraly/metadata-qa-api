@@ -443,8 +443,9 @@ If you want to try an experimental version (which has `SNAPSHOT` in its version 
     <version>0.8-SNAPSHOT</version>
   </dependency>
 </dependencies>
-
 ```
+
+Thanks Miel Vander Sande ([@mielvds](https://github.com/mielvds)) for the hint!
 
 ## More info
 
