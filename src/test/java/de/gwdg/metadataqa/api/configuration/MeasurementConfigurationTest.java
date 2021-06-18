@@ -1,8 +1,13 @@
 package de.gwdg.metadataqa.api.configuration;
 
+import de.gwdg.metadataqa.api.uniqueness.SolrClient;
+import de.gwdg.metadataqa.api.uniqueness.SolrClientMock;
+import de.gwdg.metadataqa.api.uniqueness.SolrConfiguration;
 import org.junit.Test;
 
+import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 
 public class MeasurementConfigurationTest {
@@ -116,4 +121,22 @@ public class MeasurementConfigurationTest {
     MeasurementConfiguration conf = new MeasurementConfiguration().enableCheckSkippableCollections(true);
     assertTrue(conf.isCheckSkippableCollections());
   }
+
+  @Test
+  public void withSolrConfiguration() {
+    MeasurementConfiguration conf = new MeasurementConfiguration().withSolrConfiguration("localhost", "8983", "solr");
+    assertEquals("localhost", conf.getSolrHost());
+    assertEquals("8983", conf.getSolrPort());
+    assertEquals("solr", conf.getSolrPath());
+  }
+
+  @Test
+  public void withSolrClient() {
+    SolrClient solrClient = new SolrClientMock(
+      new SolrConfiguration("localhost", "8983", "solr")
+    );
+    MeasurementConfiguration conf = new MeasurementConfiguration().withSolrClient(solrClient);
+    assertNotNull(conf.getSolrClient());
+  }
+
 }

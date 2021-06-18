@@ -167,6 +167,8 @@ public class CalculatorFacadeTest {
       .disableFieldExtractor()
       .disableTfIdfMeasurement();
     ;
+    configuration.withSolrConfiguration("localhost", "8983", "solr/europeana");
+
 
     CalculatorFacade calculator = new CalculatorFacade(configuration)
       .setSchema(new EdmOaiPmhJsonSchema())
@@ -178,7 +180,6 @@ public class CalculatorFacadeTest {
     List<Calculator> calculators = calculator.getCalculators();
     assertEquals(1, calculators.size());
 
-    calculator.configureSolr("localhost", "8983", "solr/europeana");
     calculator.conditionalConfiguration();
     calculators = calculator.getCalculators();
     assertEquals(1, calculators.size());

@@ -10,15 +10,8 @@ import de.gwdg.metadataqa.api.model.pathcache.CsvPathCache;
 import de.gwdg.metadataqa.api.model.pathcache.PathCache;
 import de.gwdg.metadataqa.api.model.PathCacheFactory;
 import de.gwdg.metadataqa.api.model.XmlFieldInstance;
-import de.gwdg.metadataqa.api.problemcatalog.EmptyStrings;
-import de.gwdg.metadataqa.api.problemcatalog.LongSubject;
-import de.gwdg.metadataqa.api.problemcatalog.ProblemCatalog;
-import de.gwdg.metadataqa.api.problemcatalog.TitleAndDescriptionAreSame;
-import de.gwdg.metadataqa.api.rule.RuleCatalog;
-import de.gwdg.metadataqa.api.schema.edm.EdmSchema;
 import de.gwdg.metadataqa.api.schema.Format;
 import de.gwdg.metadataqa.api.schema.Schema;
-import de.gwdg.metadataqa.api.uniqueness.DefaultSolrClient;
 import de.gwdg.metadataqa.api.uniqueness.SolrClient;
 import de.gwdg.metadataqa.api.uniqueness.SolrConfiguration;
 import de.gwdg.metadataqa.api.uniqueness.TfIdf;
@@ -26,7 +19,6 @@ import de.gwdg.metadataqa.api.util.CompressionLevel;
 
 import java.io.IOException;
 import java.io.Serializable;
-import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.List;
 import java.util.ArrayList;
@@ -34,7 +26,6 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import de.gwdg.metadataqa.api.util.CsvReader;
-import org.apache.commons.lang3.StringUtils;
 
 /**
  * The central entry point of the application. It provides a facade to the
@@ -57,9 +48,6 @@ public class CalculatorFacade implements Serializable {
 
   protected CompressionLevel compressionLevel = CompressionLevel.NORMAL;
 
-  protected SolrClient solrClient;
-  protected SolrConfiguration solrConfiguration = null;
-
   /**
    * Flag to detect status changes (default: false).
    */
@@ -71,11 +59,6 @@ public class CalculatorFacade implements Serializable {
   protected List<Calculator> calculators = new ArrayList<>();
 
   /**
-   * The field extractor object.
-   */
-  protected FieldExtractor fieldExtractor;
-
-  /**
    * The completeness calculator.
    */
   protected CompletenessCalculator completenessCalculator;
@@ -84,16 +67,6 @@ public class CalculatorFacade implements Serializable {
    * The TF-IDF calculator.
    */
   protected TfIdfCalculator tfidfCalculator;
-
-  /**
-   * The language detector.
-   */
-  protected LanguageCalculator languageCalculator;
-
-  /**
-   * The language detector.
-   */
-  protected MultilingualitySaturationCalculator multilingualSaturationCalculator;
 
   // protected Format format = Format.JSON;
   protected PathCache<? extends XmlFieldInstance> cache;
@@ -123,97 +96,7 @@ public class CalculatorFacade implements Serializable {
    */
   public void configure() {
     LOGGER.info("configure()");
-    calculators = new ArrayList<>();
-
-    addExtractor();
-    addCompleteness();
-    addTfIdfMeasurement();
-    addProblemCatalogMeasurement();
-    addRuleCatalogMeasurement();
-    addLanguageMeasurement();
-    addMultilingualSaturationMeasurement();
-    addUniquenessMeasurement();
-  }
-
-  private void addUniquenessMeasurement() {
-    if (configuration.isUniquenessMeasurementEnabled()) {
-      if (solrClient == null && solrConfiguration == null) {
-        throw new IllegalArgumentException(
-          "If Uniqueness measurement is enabled, Solr configuration should not be null."
-        );
-      }
-      if (solrClient == null) {
-        solrClient = new DefaultSolrClient(solrConfiguration);
-      }
-      calculators.add(new UniquenessCalculator(solrClient, schema));
-    }
-  }
-
-  private void addMultilingualSaturationMeasurement() {
-    if (configuration.isMultilingualSaturationMeasurementEnabled()) {
-      multilingualSaturationCalculator =
-          new MultilingualitySaturationCalculator(schema);
-      if (configuration.isSaturationExtendedResult()) {
-        multilingualSaturationCalculator
-          .setResultType(
-              MultilingualitySaturationCalculator.ResultTypes.EXTENDED);
-      }
-      calculators.add(multilingualSaturationCalculator);
-    }
-  }
-
-  private void addLanguageMeasurement() {
-    if (configuration.isLanguageMeasurementEnabled()) {
-      languageCalculator = new LanguageCalculator(schema);
-      calculators.add(languageCalculator);
-    }
-  }
-
-  private void addRuleCatalogMeasurement() {
-    if (configuration.isRuleCatalogMeasurementEnabled()) {
-      calculators.add(new RuleCatalog(schema));
-    }
-  }
-
-  private void addProblemCatalogMeasurement() {
-    // TODO: move it into europeana lib
-    if (configuration.isProblemCatalogMeasurementEnabled() && schema instanceof EdmSchema) {
-      var problemCatalog = new ProblemCatalog((EdmSchema) schema);
-      new LongSubject(problemCatalog);
-      new TitleAndDescriptionAreSame(problemCatalog);
-      new EmptyStrings(problemCatalog);
-      calculators.add(problemCatalog);
-    }
-  }
-
-  private void addTfIdfMeasurement() {
-    if (configuration.isTfIdfMeasurementEnabled()) {
-      tfidfCalculator = new TfIdfCalculator(schema);
-      if (solrConfiguration != null) {
-        tfidfCalculator.setSolrConfiguration(solrConfiguration);
-      } else {
-        throw new IllegalArgumentException("If TF-IDF measurement is enabled, Solr configuration should not be null.");
-      }
-      tfidfCalculator.enableTermCollection(configuration.collectTfIdfTerms());
-      calculators.add(tfidfCalculator);
-    }
-  }
-
-  private void addCompleteness() {
-    if (configuration.isCompletenessMeasurementEnabled()) {
-      completenessCalculator = new CompletenessCalculator(schema);
-      completenessCalculator.collectFields(configuration.isCompletenessFieldCollectingEnabled());
-      completenessCalculator.setExistence(configuration.isFieldExistenceMeasurementEnabled());
-      completenessCalculator.setCardinality(configuration.isFieldCardinalityMeasurementEnabled());
-      calculators.add(completenessCalculator);
-    }
-  }
-
-  private void addExtractor() {
-    if (configuration.isFieldExtractorEnabled()) {
-      fieldExtractor = new FieldExtractor(schema);
-      calculators.add(fieldExtractor);
-    }
+    calculators = CalculatorFactory.create(configuration, schema);
   }
 
   /**
@@ -451,15 +334,6 @@ public class CalculatorFacade implements Serializable {
   }
   */
 
-  public CalculatorFacade configureSolr(String solrHost, String solrPort, String solrPath) {
-    solrConfiguration = new SolrConfiguration(solrHost, solrPort, solrPath);
-    if (this.tfidfCalculator != null) {
-      this.tfidfCalculator.setSolrConfiguration(solrConfiguration);
-    }
-    changed = true;
-    return this;
-  }
-
   public List<String> getHeader() {
     conditionalConfiguration();
     List<String> header = new ArrayList<>();
@@ -490,12 +364,6 @@ public class CalculatorFacade implements Serializable {
 
   public CalculatorFacade setSchema(Schema schema) {
     this.schema = schema;
-    changed = true;
-    return this;
-  }
-
-  public CalculatorFacade setSolrClient(SolrClient solrClient) {
-    this.solrClient = solrClient;
     changed = true;
     return this;
   }

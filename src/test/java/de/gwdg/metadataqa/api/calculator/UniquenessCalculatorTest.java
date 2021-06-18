@@ -131,11 +131,11 @@ public class UniquenessCalculatorTest {
         .disableCompletenessMeasurement()
         .disableFieldCardinalityMeasurement()
         .enableUniquenessMeasurement()
+        .withSolrClient(solrClient)
       ;
 
       facade = new CalculatorFacade(configuration)
-        .setSchema(schema)
-        .setSolrClient(solrClient);
+        .setSchema(schema);
 
       facade.configure();
     }

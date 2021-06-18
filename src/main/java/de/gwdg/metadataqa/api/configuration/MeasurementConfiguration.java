@@ -1,5 +1,9 @@
 package de.gwdg.metadataqa.api.configuration;
 
+import de.gwdg.metadataqa.api.uniqueness.SolrClient;
+import de.gwdg.metadataqa.api.uniqueness.SolrConfiguration;
+import org.apache.commons.lang3.StringUtils;
+
 public class MeasurementConfiguration {
 
   /**
@@ -81,6 +85,26 @@ public class MeasurementConfiguration {
    * Flag whether or not to check skipable collections (default: false).
    */
   protected boolean checkSkippableCollections = false;
+
+  /**
+   * Solr host name
+   */
+  protected String solrHost;
+
+  /**
+   * Solr port
+   */
+  protected String solrPort;
+
+  /**
+   * Solr URL path
+   */
+  protected String solrPath;
+
+  /**
+   * A SolrClient
+   */
+  protected SolrClient solrClient;
 
   public MeasurementConfiguration() {}
 
@@ -496,6 +520,72 @@ public class MeasurementConfiguration {
 
   public MeasurementConfiguration enableCheckSkippableCollections(boolean checkSkippableCollections) {
     this.checkSkippableCollections = checkSkippableCollections;
+    return this;
+  }
+
+  public String getSolrHost() {
+    return solrHost;
+  }
+
+  public void setSolrHost(String solrHost) {
+    this.solrHost = solrHost;
+  }
+
+  public MeasurementConfiguration withSolrHost(String solrHost) {
+    this.solrHost = solrHost;
+    return this;
+  }
+
+  public String getSolrPort() {
+    return solrPort;
+  }
+
+  public void setSolrPort(String solrPort) {
+    this.solrPort = solrPort;
+  }
+
+  public MeasurementConfiguration withSolrPort(String solrPort) {
+    this.solrPort = solrPort;
+    return this;
+  }
+
+  public String getSolrPath() {
+    return solrPath;
+  }
+
+  public void setSolrPath(String solrPath) {
+    this.solrPath = solrPath;
+  }
+
+  public MeasurementConfiguration withSolrPath(String solrPath) {
+    this.solrPath = solrPath;
+    return this;
+  }
+
+  public SolrConfiguration getSolrConfiguration() {
+    if (StringUtils.isNotBlank(solrHost) && StringUtils.isNotBlank(solrPort) && StringUtils.isNotBlank(solrPath))
+      return new SolrConfiguration(solrHost, solrPort, solrPath);
+    else
+      return null;
+  }
+
+  public SolrClient getSolrClient() {
+    return solrClient;
+  }
+
+  public void setSolrClient(SolrClient solrClient) {
+    this.solrClient = solrClient;
+  }
+
+  public MeasurementConfiguration withSolrClient(SolrClient solrClient) {
+    this.solrClient = solrClient;
+    return this;
+  }
+
+  public MeasurementConfiguration withSolrConfiguration(String solrHost, String solrPort, String solrPath) {
+    this.solrHost = solrHost;
+    this.solrPort = solrPort;
+    this.solrPath = solrPath;
     return this;
   }
 }

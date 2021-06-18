@@ -416,6 +416,12 @@ An example JSON file:
   (API calls: setters: `enableSaturationExtendedResult(boolean)`, getter: `isSaturationExtendedResult()`)
 * `checkSkippableCollections`: Flag whether or not to check skipable collections (default: false).
   (API calls: setters: `enableCheckSkippableCollections(boolean)`, getter: `isCheckSkippableCollections()`)
+* `String solrHost`: The hostname of the Solr server.
+  (API calls: setters: `setSolrHost(String)`, `withSolrHost(String):MeasurementConfiguration`, getter: `getSolrHost()`)
+* `String solrPort`: The port of the Solr server.
+  (API calls: setters: `setSolrPort(String)`, `withSolrPort(String):MeasurementConfiguration`, getter: `getSolrPort()`)
+* `String solrPath`: The path part of of the Solr server URL.
+  (API calls: setters: `setSolrPath(String)`, `withSolrPath(String):MeasurementConfiguration`, getter: `getSolrPath()`)
 
 ## Using an experimental version
   
