@@ -29,6 +29,7 @@ public class Rule implements Serializable {
   private String lessThan;
   private String lessThanOrEquals;
   private String hasValue;
+  private Boolean unique;
 
   public String getId() {
     return id;
@@ -327,6 +328,19 @@ public class Rule implements Serializable {
 
   public Rule withSuccessScore(Integer successScore) {
     setSuccessScore(successScore);
+    return this;
+  }
+
+  public Boolean getUnique() {
+    return unique;
+  }
+
+  public void setUnique(Boolean unique) {
+    this.unique = unique;
+  }
+
+  public Rule withUnique(Boolean unique) {
+    setUnique(unique);
     return this;
   }
 }

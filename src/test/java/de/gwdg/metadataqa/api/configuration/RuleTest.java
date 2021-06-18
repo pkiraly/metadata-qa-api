@@ -6,6 +6,9 @@ import org.junit.Test;
 import java.util.Arrays;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNull;
+import static org.junit.Assert.assertTrue;
 
 public class RuleTest {
 
@@ -248,5 +251,28 @@ public class RuleTest {
     rule = new Rule();
     rule.setSuccessScore(3);
     assertEquals(3, rule.getSuccessScore().intValue());
+  }
+
+  @Test
+  public void unique() {
+    Rule rule;
+
+    // not set
+    rule = new Rule();
+    assertNull(rule.getUnique());
+
+    // set true
+    rule = new Rule().withUnique(true);
+    assertTrue(rule.getUnique());
+
+    rule = new Rule().withUnique(Boolean.TRUE);
+    assertTrue(rule.getUnique());
+
+    // set false
+    rule = new Rule().withUnique(false);
+    assertFalse(rule.getUnique());
+
+    rule = new Rule().withUnique(Boolean.FALSE);
+    assertFalse(rule.getUnique());
   }
 }
