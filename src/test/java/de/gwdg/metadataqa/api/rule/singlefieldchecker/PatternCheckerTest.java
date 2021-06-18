@@ -28,7 +28,7 @@ public class PatternCheckerTest extends CheckerTestBase {
 
     assertEquals(1, fieldCounter.size());
     assertEquals("name:pattern", checker.getHeaderWithoutId());
-    assertTrue(Pattern.compile("^rule:name:pattern:\\d+$").matcher(checker.getHeader()).matches());
+    assertTrue(Pattern.compile("^name:pattern:\\d+$").matcher(checker.getHeader()).matches());
     Assert.assertEquals(RuleCheckingOutputType.PASSED, fieldCounter.get(checker.getHeader()).getType());
   }
 
@@ -41,7 +41,7 @@ public class PatternCheckerTest extends CheckerTestBase {
 
     assertEquals(1, fieldCounter.size());
     assertEquals("name:pattern", checker.getHeaderWithoutId());
-    assertTrue(Pattern.compile("^rule:name:pattern:\\d+$").matcher(checker.getHeader()).matches());
+    assertTrue(Pattern.compile("^name:pattern:\\d+$").matcher(checker.getHeader()).matches());
     assertEquals(RuleCheckingOutputType.FAILED, fieldCounter.get(checker.getHeader()).getType());
   }
 }

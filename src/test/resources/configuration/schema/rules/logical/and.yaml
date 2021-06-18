@@ -7,3 +7,4 @@ fields:
         - minCount: 1
         - maxCount: 1
         successScore: 2
+        id: 1.1

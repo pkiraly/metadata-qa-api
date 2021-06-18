@@ -55,7 +55,7 @@ public class NotCheckerTest {
 
     assertEquals(1, fieldCounter.size());
     assertEquals("name:not:name:disjoint:title", checker.getHeaderWithoutId());
-    assertTrue(Pattern.compile("^rule:name:not:name:disjoint:title:\\d+$").matcher(checker.getHeader()).matches());
+    assertTrue(Pattern.compile("^name:not:name:disjoint:title:\\d+$").matcher(checker.getHeader()).matches());
     Assert.assertEquals(RuleCheckingOutputType.FAILED, fieldCounter.get(checker.getHeader()).getType());
   }
 
@@ -70,7 +70,7 @@ public class NotCheckerTest {
 
     assertEquals(1, fieldCounter.size());
     assertEquals("name:not:name:disjoint:alt", checker.getHeaderWithoutId());
-    assertTrue(Pattern.compile("^rule:name:not:name:disjoint:alt:\\d+$").matcher(checker.getHeader()).matches());
+    assertTrue(Pattern.compile("^name:not:name:disjoint:alt:\\d+$").matcher(checker.getHeader()).matches());
     assertEquals(RuleCheckingOutputType.PASSED, fieldCounter.get(checker.getHeader()).getType());
   }
 }

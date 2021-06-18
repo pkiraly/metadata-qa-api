@@ -569,7 +569,7 @@ public class BaseSchemaTest {
         "cardinality:identifier", "cardinality:author", "cardinality:isAccessibleForFree",
         "cardinality:dateModified", "cardinality:distribution", "cardinality:spatialCoverage",
         "cardinality:provider", "cardinality:funder", "cardinality:temporalCoverage",
-        "rule:url:pattern:1", "rule:url:minCount:2", "rule:alternateName:pattern:3", "ruleCatalog:score"
+        "url:pattern:1", "url:minCount:2", "alternateName:pattern:3", "ruleCatalog:score"
       ),
       outputHeader
     );

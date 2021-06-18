@@ -46,7 +46,7 @@ public class RuleCatalogTest {
   @Test
   public void getHeader() {
     RuleCatalog catalog = new RuleCatalog(schema);
-    assertEquals(List.of("rule:name:and:name:minCount:name:maxCount:3", "ruleCatalog:score"), catalog.getHeader());
+    assertEquals(List.of("name:and:name:minCount:name:maxCount:3", "ruleCatalog:score"), catalog.getHeader());
   }
 
   @Test

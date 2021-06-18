@@ -7,6 +7,10 @@ public class Rule implements Serializable {
 
   private static final long serialVersionUID = 4101184421853217836L;
 
+  private String id;
+  private Integer failureScore;
+  private Integer successScore;
+
   private String pattern;
   private String equals;
   private String disjoint;
@@ -25,8 +29,14 @@ public class Rule implements Serializable {
   private String lessThan;
   private String lessThanOrEquals;
   private String hasValue;
-  private Integer failureScore;
-  private Integer successScore;
+
+  public String getId() {
+    return id;
+  }
+
+  public void setId(String id) {
+    this.id = id;
+  }
 
   public String getPattern() {
     return pattern;

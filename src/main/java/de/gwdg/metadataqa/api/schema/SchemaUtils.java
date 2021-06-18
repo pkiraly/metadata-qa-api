@@ -122,7 +122,8 @@ public class SchemaUtils {
       for (RuleChecker ruleChecker : ruleCheckers) {
         ruleChecker.setFailureScore(rule.getFailureScore());
         ruleChecker.setSuccessScore(rule.getSuccessScore());
-        ruleChecker.setId(++id);
+        String idValue = StringUtils.isNotBlank(rule.getId()) ? rule.getId() : String.valueOf(++id);
+        ruleChecker.setId(idValue);
       }
 
     return ruleCheckers;

@@ -253,6 +253,7 @@ public class SchemaConfigurationTest {
   @Test
   public void yaml_and() throws FileNotFoundException {
     Schema schema = ConfigurationReader.readSchemaYaml("src/test/resources/configuration/schema/rules/logical/and.yaml").asSchema();
+    assertEquals("1.1", schema.getPathByLabel("about").getRules().get(0).getId());
     List<Rule> andRule = schema.getPathByLabel("about").getRules().get(0).getAnd();
     assertEquals(2, schema.getPathByLabel("about").getRules().get(0).getSuccessScore().intValue());
     assertEquals(2, andRule.size());

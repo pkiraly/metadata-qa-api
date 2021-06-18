@@ -37,7 +37,7 @@ public interface RuleChecker extends Serializable {
 
   void setSuccessScore(Integer successScore);
 
-  int getId();
+  String getId();
 
-  void setId(int id);
+  void setId(String id);
 }

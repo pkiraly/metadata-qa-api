@@ -1,18 +1,18 @@
 package de.gwdg.metadataqa.api.rule;
 
 public abstract class BaseRuleChecker implements RuleChecker {
-  protected int id;
+  protected String id;
   protected Integer failureScore;
   protected Integer successScore;
   protected String header;
 
   @Override
-  public int getId() {
-    return id;
+  public String getId() {
+    return id == null ? String.valueOf(0) : id;
   }
 
   @Override
-  public void setId(int id) {
+  public void setId(String id) {
     this.id = id;
   }
 
@@ -42,6 +42,6 @@ public abstract class BaseRuleChecker implements RuleChecker {
   }
 
   public String getHeader() {
-    return "rule:" + header + ":" + getId();
+    return header + ":" + getId();
   }
 }
