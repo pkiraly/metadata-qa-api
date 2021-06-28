@@ -12,6 +12,11 @@ public class MeasurementConfiguration {
   private boolean fieldExtractorEnabled = false;
 
   /**
+   * Flag whether or not field echo is enabled (default: false).
+   */
+  private boolean fieldEchoEnabled = false;
+
+  /**
    * Flag whether or not run the field existence measurement
    * (default: true).
    */
@@ -122,11 +127,13 @@ public class MeasurementConfiguration {
    *   Flag whether or not run the problem catalog
    */
   public MeasurementConfiguration(final boolean runFieldExistence,
+                          final boolean runFieldEcho,
                           final boolean runFieldCardinality,
                           final boolean runCompleteness,
                           final boolean runTfIdf,
                           final boolean runProblemCatalog) {
     this.fieldExistenceMeasurementEnabled = runFieldExistence;
+    this.fieldEchoEnabled = runFieldEcho;
     this.fieldCardinalityMeasurementEnabled = runFieldCardinality;
     this.completenessMeasurementEnabled = runCompleteness;
     this.tfIdfMeasurementEnabled = runTfIdf;
@@ -152,6 +159,23 @@ public class MeasurementConfiguration {
 
   public boolean isFieldExtractorEnabled() {
     return fieldExtractorEnabled;
+  }
+
+  public MeasurementConfiguration enableEcho() {
+    return enableEcho(true);
+  }
+
+  public MeasurementConfiguration disableEcho() {
+    return enableEcho(false);
+  }
+
+  public MeasurementConfiguration enableEcho(boolean flag) {
+    this.echoEnabled = flag;
+    return this;
+  }
+
+  public boolean isEchoEnabled() {
+    return echoEnabled;
   }
 
   /**

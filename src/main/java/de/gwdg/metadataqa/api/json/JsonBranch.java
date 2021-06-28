@@ -28,6 +28,7 @@ public class JsonBranch implements Cloneable, Serializable {
   private boolean collection = false;
   private boolean isActive = true;
   private boolean isExtractable = false;
+  private boolean isEcho = false;
   private boolean isMandatory = false;
   private List<Rule> rules;
   private Schema schema;
@@ -202,6 +203,20 @@ public class JsonBranch implements Cloneable, Serializable {
 
   public JsonBranch setExtractable(boolean extractable) {
     isExtractable = extractable;
+    return this;
+  }
+
+  public boolean isEcho() {
+    return isEcho;
+  }
+
+  public JsonBranch setEcho() {
+    isEcho = true;
+    return this;
+  }
+
+  public JsonBranch setEcho(boolean echo) {
+    isEcho = echo;
     return this;
   }
 

@@ -7,6 +7,7 @@ public class Field {
   private String path;
   private List<String> categories;
   private boolean extractable;
+  private boolean echo;
   private List<Rule> rules;
   private String indexField;
 
@@ -41,6 +42,15 @@ public class Field {
   public void setExtractable(boolean extractable) {
     this.extractable = extractable;
   }
+
+  public boolean isEcho() {
+    return echo;
+  }
+
+  public void setEcho(boolean echo) {
+    this.echo= echo;
+  }
+
 
   public List<Rule> getRules() {
     return rules;

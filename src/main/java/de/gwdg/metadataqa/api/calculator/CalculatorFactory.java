@@ -44,11 +44,17 @@ public class CalculatorFactory {
     addLanguageMeasurement();
     addMultilingualSaturationMeasurement();
     addUniquenessMeasurement();
+    addEcho();
   }
 
   private void addExtractor() {
     if (configuration.isFieldExtractorEnabled())
       calculators.add(new FieldExtractor(schema));
+  }
+
+  private void addEcho() {
+    if (configuration.isEchoEnabled())
+      calculators.add(new EchoField(schema));
   }
 
   private void addCompleteness() {
