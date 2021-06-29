@@ -34,6 +34,7 @@ public abstract class EdmSchema implements Schema, ProblemCatalogSchema {
   protected List<RuleChecker> ruleCheckers;
 
   protected Map<String, String> extractableFields = new LinkedHashMap<>();
+  protected Map<String, String> echoFields = new LinkedHashMap<>();
 
   protected void addPath(JsonBranch branch) {
     paths.put(branch.getLabel(), branch);
@@ -127,5 +128,20 @@ public abstract class EdmSchema implements Schema, ProblemCatalogSchema {
   @Override
   public void addExtractableField(String label, String jsonPath) {
     extractableFields.put(label, jsonPath);
+  }
+
+  @Override
+  public Map<String, String> getEchoFields() {
+    return echoFields;
+  }
+
+  @Override
+  public void setEchoFields(Map<String, String> echoFields) {
+    this.echoFields = echoFields;
+  }
+
+  @Override
+  public void addEchoField(String label, String jsonPath) {
+    echoFields.put(label, jsonPath);
   }
 }

@@ -23,6 +23,7 @@ public class MarcJsonSchema implements Schema, ProblemCatalogSchema, Serializabl
   private static final Map<String, JsonBranch> DIRECT_CHILDREN = new LinkedHashMap<>();
   public static final String NOT_SUPPORTED_YET = "Not supported yet.";
   private static Map<String, String> extractableFields = new LinkedHashMap<>();
+  private static Map<String, String> echoFields = new LinkedHashMap<>();
   private static List<String> categories = null;
   private static List<RuleChecker> ruleCheckers = null;
 
@@ -436,6 +437,21 @@ public class MarcJsonSchema implements Schema, ProblemCatalogSchema, Serializabl
   @Override
   public void addExtractableField(String label, String jsonPath) {
     extractableFields.put(label, jsonPath);
+  }
+
+  @Override
+  public Map<String, String> getEchoFields() {
+    return echoFields;
+  }
+
+  @Override
+  public void setEchoFields(Map<String, String> echoFields) {
+    this.echoFields = echoFields;
+  }
+
+  @Override
+  public void addEchoField(String label, String jsonPath) {
+    echoFields.put(label, jsonPath);
   }
 
   private static void addPath(JsonBranch branch) {

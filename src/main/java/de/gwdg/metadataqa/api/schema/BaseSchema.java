@@ -19,6 +19,7 @@ public class BaseSchema implements Schema, CsvAwareSchema, Serializable {
   private final Map<String, JsonBranch> collectionPaths = new LinkedHashMap<>();
   private final Map<String, JsonBranch> directChildren = new LinkedHashMap<>();
   private Map<String, String> extractableFields = new LinkedHashMap<>();
+  private Map<String, String> echoFields = new LinkedHashMap<>();
   private List<String> categories = null;
   private List<RuleChecker> ruleCheckers;
   private List<JsonBranch> indexFields;
@@ -41,6 +42,9 @@ public class BaseSchema implements Schema, CsvAwareSchema, Serializable {
 
     if (branch.isExtractable())
       extractableFields.put(branch.getLabel(), branch.getJsonPath());
+
+    if (branch.isEcho())
+      echoFields.put(branch.getLabel(), branch.getJsonPath());
 
     return this;
   }
@@ -121,6 +125,21 @@ public class BaseSchema implements Schema, CsvAwareSchema, Serializable {
   @Override
   public void addExtractableField(String label, String jsonPath) {
     extractableFields.put(label, jsonPath);
+  }
+
+  @Override
+  public Map<String, String> getEchoFields() {
+    return echoFields;
+  }
+
+  @Override
+  public void setEchoFields(Map<String, String> echoFields) {
+    this.echoFields = echoFields;
+  }
+
+  @Override
+  public void addEchoField(String label, String jsonPath) {
+    echoFields.put(label, jsonPath);
   }
 
   @Override

@@ -95,6 +95,27 @@ public interface Schema extends Serializable {
    */
   void addExtractableField(String label, String jsonPath);
 
+  /**
+   * Get fields for which the values should be echoed from the records.
+   * @return The map of echoed fields. The key is the label of a field,
+   *   the value is a JSON path expression.
+   */
+  Map<String, String> getEchoFields();
+
+  /**
+   * Set the echo fields.
+   * @see #getEchoFields
+   * @param echoFields The extractable fields.
+   */
+  void setEchoFields(Map<String, String> echoFields);
+
+  /**
+   * Add a single field to the map of echo fields.
+   * @param label The label of the field.
+   * @param jsonPath JSON path expression.
+   */
+  void addEchoField(String label, String jsonPath);
+
   List<String> getCategories();
 
   List<RuleChecker> getRuleCheckers();
