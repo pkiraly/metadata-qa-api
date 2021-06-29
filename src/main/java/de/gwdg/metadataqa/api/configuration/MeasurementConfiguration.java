@@ -170,12 +170,12 @@ public class MeasurementConfiguration {
   }
 
   public MeasurementConfiguration enableEcho(boolean flag) {
-    this.echoEnabled = flag;
+    this.fieldEchoEnabled = flag;
     return this;
   }
 
   public boolean isEchoEnabled() {
-    return echoEnabled;
+    return fieldEchoEnabled;
   }
 
   /**
