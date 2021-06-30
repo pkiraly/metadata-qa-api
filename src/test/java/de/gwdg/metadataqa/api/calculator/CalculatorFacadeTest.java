@@ -55,7 +55,7 @@ public class CalculatorFacadeTest {
 
   @Test
   public void testNoAbbreviate() throws URISyntaxException, IOException {
-    MeasurementConfiguration configuration = new MeasurementConfiguration(true, true, true, false, true);
+    MeasurementConfiguration configuration = new MeasurementConfiguration(true, false, true, true, false, true);
     CalculatorFacade calculatorFacade = new CalculatorFacade(configuration);
     calculatorFacade.setSchema(new EdmOaiPmhJsonSchema());
     calculatorFacade.configure();
@@ -65,7 +65,7 @@ public class CalculatorFacadeTest {
 
   @Test
   public void testNoAbbreviate_map() throws URISyntaxException, IOException {
-    MeasurementConfiguration configuration = new MeasurementConfiguration(true, true, true, false, true);
+    MeasurementConfiguration configuration = new MeasurementConfiguration(true, false, true, true, false, true);
     CalculatorFacade calculatorFacade = new CalculatorFacade(configuration);
     calculatorFacade.setSchema(new EdmOaiPmhJsonSchema());
     calculatorFacade.configure();
@@ -79,7 +79,7 @@ public class CalculatorFacadeTest {
 
   @Test
   public void testNoAbbreviate_list() throws URISyntaxException, IOException {
-    CalculatorFacade calculatorFacade = new CalculatorFacade(new MeasurementConfiguration(true, true, true, false, true));
+    CalculatorFacade calculatorFacade = new CalculatorFacade(new MeasurementConfiguration(true, false, true, true, false, true));
     calculatorFacade.setSchema(new EdmOaiPmhJsonSchema());
     calculatorFacade.configure();
 
@@ -93,7 +93,7 @@ public class CalculatorFacadeTest {
 
   @Test
   public void testNoAbbreviate_list2() throws URISyntaxException, IOException {
-    CalculatorFacade calculatorFacade = new CalculatorFacade(new MeasurementConfiguration(true, true, true, false, true));
+    CalculatorFacade calculatorFacade = new CalculatorFacade(new MeasurementConfiguration(true, false, true, true, false, true));
     calculatorFacade.setSchema(new EdmOaiPmhJsonSchema());
     calculatorFacade.configure();
 
@@ -140,7 +140,7 @@ public class CalculatorFacadeTest {
 
   @Test
   public void testNoAbbreviate_listOfObject() throws URISyntaxException, IOException {
-    CalculatorFacade calculatorFacade = new CalculatorFacade(new MeasurementConfiguration(true, true, true, false, true));
+    CalculatorFacade calculatorFacade = new CalculatorFacade(new MeasurementConfiguration(true, false, true, true, false, true));
     calculatorFacade.setSchema(new EdmOaiPmhJsonSchema());
     calculatorFacade.configure();
 
@@ -154,7 +154,7 @@ public class CalculatorFacadeTest {
 
   @Test
   public void testWithAbbreviate() throws URISyntaxException, IOException {
-    CalculatorFacade calculatorFacade = new CalculatorFacade(new MeasurementConfiguration(true, true, true, false, true));
+    CalculatorFacade calculatorFacade = new CalculatorFacade(new MeasurementConfiguration(true, false, true, true, false, true));
     calculatorFacade.setSchema(new EdmOaiPmhJsonSchema());
     calculatorFacade.configure();
     String expected = "0.184,1.0,0.181818,0.388889,0.272727,0.5,0.357143,0.75,0.363636,0.4,1,1,1,0,0,0,0,0,1,1,0,0,0,0,1,0,0,0,0,0,0,0,1,0,0,1,0,0,1,1,0,0,1,1,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,1,1,1,1,1,1,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,1,0,0,1,1,1,0,0,0,0,0,1,1,0,0,0,0,5,0,0,0,0,0,0,0,1,0,0,1,0,0,1,1,0,0,1,1,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,1,1,1,1,1,1,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,12,0,0,0.0,0.0,0.0";
@@ -325,7 +325,7 @@ public class CalculatorFacadeTest {
         new CsvReader()
           .setHeader(((CsvAwareSchema) schema).getHeader()));
 
-    MeasurementConfiguration measurementConfiguration = new MeasurementConfiguration(true, true, true, false, true);
+    MeasurementConfiguration measurementConfiguration = new MeasurementConfiguration(true, false, true, true, false, true);
     assertTrue((measurementConfiguration.isFieldExistenceMeasurementEnabled()));
     CalculatorFacade calculatorFacade = new CalculatorFacade(measurementConfiguration);
 
