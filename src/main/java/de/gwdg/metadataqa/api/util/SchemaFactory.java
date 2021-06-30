@@ -51,6 +51,9 @@ public class SchemaFactory {
       if (field.isExtractable())
         branch.setExtractable();
 
+      if (field.isInactive())
+        branch.setActive(false);
+
       if (field.getRules() != null)
         branch.setRule(field.getRules());
 
