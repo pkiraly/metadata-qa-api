@@ -7,6 +7,7 @@ public class Field {
   private String path;
   private List<String> categories;
   private boolean extractable;
+  private boolean inactive;
   private List<Rule> rules;
   private String indexField;
 
@@ -40,6 +41,14 @@ public class Field {
 
   public void setExtractable(boolean extractable) {
     this.extractable = extractable;
+  }
+
+  public boolean isInactive() {
+    return inactive;
+  }
+
+  public void setInactive(boolean inactive) {
+    this.inactive = inactive;
   }
 
   public List<Rule> getRules() {
