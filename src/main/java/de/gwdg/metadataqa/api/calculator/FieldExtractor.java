@@ -84,7 +84,13 @@ public class FieldExtractor implements Calculator, Serializable {
   @Override
   public List<String> getHeader() {
     List<String> headers = new ArrayList<>();
-    headers.add(FIELD_NAME);
+    if (idPath != null)
+      headers.add(FIELD_NAME);
+
+    if (schema != null)
+      for (String fieldName : schema.getExtractableFields().keySet())
+        headers.add(fieldName);
+
     return headers;
   }
 }

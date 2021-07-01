@@ -54,18 +54,8 @@ public class FieldExtractorTest {
 
   @Test
   public void noId() throws URISyntaxException, IOException, CsvValidationException {
-    Schema schema = new BaseSchema()
-      .setFormat(Format.CSV)
-      .addField(new JsonBranch("url").setExtractable())
-      .addField(new JsonBranch("name"));
-
-    MeasurementConfiguration config = new MeasurementConfiguration()
-      .enableFieldExtractor()
-      .disableCompletenessMeasurement();
-
-    CalculatorFacade facade = new CalculatorFacade(config)
-      .setSchema(schema)
-      .setCsvReader(new CsvReader().setHeader(((CsvAwareSchema) schema).getHeader()));
+    CalculatorFacade facade = configureTest();
+    assertEquals(List.of("url"), facade.getHeader());
 
     String fileName = "src/test/resources/csv/meemoo-simple.csv";
 
@@ -78,5 +68,21 @@ public class FieldExtractorTest {
     assertEquals(2, result.size());
     assertEquals(List.of("https://neurovault.org/images/384958/"), result.get(0));
     assertEquals(List.of("https://neurovault.org/images/93390/"), result.get(1));
+  }
+
+  private CalculatorFacade configureTest() {
+    Schema schema = new BaseSchema()
+      .setFormat(Format.CSV)
+      .addField(new JsonBranch("url").setExtractable())
+      .addField(new JsonBranch("name"));
+
+    MeasurementConfiguration config = new MeasurementConfiguration()
+      .enableFieldExtractor()
+      .disableCompletenessMeasurement();
+
+    CalculatorFacade facade = new CalculatorFacade(config)
+      .setSchema(schema)
+      .setCsvReader(new CsvReader().setHeader(((CsvAwareSchema) schema).getHeader()));
+    return facade;
   }
 }
