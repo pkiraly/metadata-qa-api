@@ -8,6 +8,7 @@ import de.gwdg.metadataqa.api.model.pathcache.PathCache;
 import de.gwdg.metadataqa.api.model.XmlFieldInstance;
 import de.gwdg.metadataqa.api.problemcatalog.FieldCounterBasedResult;
 import de.gwdg.metadataqa.api.schema.Schema;
+
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
@@ -25,6 +26,7 @@ public class FieldExtractor implements Calculator, Serializable {
   public static final String FIELD_NAME = "recordId";
 
   private String idPath;
+  protected String nullValue = "";
   protected Schema schema;
 
   public FieldExtractor() {
@@ -66,7 +68,7 @@ public class FieldExtractor implements Calculator, Serializable {
     List<XmlFieldInstance> values = cache.get(path);
     String value = null;
     if (values == null || values.isEmpty() || values.get(0) == null || values.get(0).getValue() == null) {
-      value = null;
+      value = nullValue;
     } else {
       value = values.get(0).getValue();
     }
@@ -89,8 +91,12 @@ public class FieldExtractor implements Calculator, Serializable {
 
     if (schema != null)
       for (String fieldName : schema.getExtractableFields().keySet())
-        headers.add(fieldName);
+        headers.add(escape(fieldName));
 
     return headers;
+  }
+
+  private String escape(String fieldName) {
+    return fieldName.contains(",") ? String.format("\"%s\"", fieldName) : fieldName;
   }
 }

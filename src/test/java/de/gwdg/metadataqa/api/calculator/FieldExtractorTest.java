@@ -53,6 +53,30 @@ public class FieldExtractorTest {
   }
 
   @Test
+  public void testHeader() throws URISyntaxException, IOException, CsvValidationException {
+    CalculatorFacade facade = configureTest();
+    assertEquals(List.of("url"), facade.getHeader());
+  }
+
+  @Test
+  public void testHeaderWithComma() throws URISyntaxException, IOException, CsvValidationException {
+    Schema schema = new BaseSchema()
+      .setFormat(Format.CSV)
+      .addField(new JsonBranch("url"))
+      .addField(new JsonBranch("name,with,comma").setExtractable());
+
+    MeasurementConfiguration config = new MeasurementConfiguration()
+      .enableFieldExtractor()
+      .disableCompletenessMeasurement();
+
+    CalculatorFacade facade = new CalculatorFacade(config)
+      .setSchema(schema)
+      .setCsvReader(new CsvReader().setHeader(((CsvAwareSchema) schema).getHeader()));
+
+    assertEquals(List.of("\"name,with,comma\""), facade.getHeader());
+  }
+
+  @Test
   public void noId() throws URISyntaxException, IOException, CsvValidationException {
     CalculatorFacade facade = configureTest();
     assertEquals(List.of("url"), facade.getHeader());
@@ -83,6 +107,7 @@ public class FieldExtractorTest {
     CalculatorFacade facade = new CalculatorFacade(config)
       .setSchema(schema)
       .setCsvReader(new CsvReader().setHeader(((CsvAwareSchema) schema).getHeader()));
+
     return facade;
   }
 }
