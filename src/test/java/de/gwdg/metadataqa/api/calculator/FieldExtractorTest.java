@@ -66,7 +66,6 @@ public class FieldExtractorTest {
     CalculatorFacade facade = new CalculatorFacade(config)
       .setSchema(schema)
       .setCsvReader(new CsvReader().setHeader(((CsvAwareSchema) schema).getHeader()));
-    // facade.configure();
 
     String fileName = "src/test/resources/csv/meemoo-simple.csv";
 
