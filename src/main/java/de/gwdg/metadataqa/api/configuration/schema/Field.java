@@ -43,14 +43,6 @@ public class Field {
     this.extractable = extractable;
   }
 
-  public boolean isInactive() {
-    return inactive;
-  }
-
-  public void setInactive(boolean inactive) {
-    this.inactive = inactive;
-  }
-
   public List<Rule> getRules() {
     return rules;
   }
@@ -65,5 +57,13 @@ public class Field {
 
   public void setIndexField(String indexField) {
     this.indexField = indexField;
+  }
+
+  public boolean isInactive() {
+    return inactive;
+  }
+
+  public void setInactive(boolean inactive) {
+    this.inactive = inactive;
   }
 }

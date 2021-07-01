@@ -42,7 +42,8 @@ public class EdmOaiPmhJsonSchema extends EdmSchema implements Serializable {
     addPath(providedCHO);
     var providedCHOIdentifier = new JsonBranch("ProvidedCHO/rdf:about",
       providedCHO, "$.['@about']")
-      .setCategories(MANDATORY);
+      .setCategories(MANDATORY)
+      .setExtractable();
     providedCHO.setIdentifier(providedCHOIdentifier);
     addPath(providedCHOIdentifier);
 

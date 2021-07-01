@@ -32,13 +32,8 @@ public class FieldExtractor implements Calculator, Serializable {
 
   public FieldExtractor(Schema schema) {
     this.schema = schema;
-    if (schema.getExtractableFields() == null
-       || schema.getExtractableFields().isEmpty()
-       || !schema.getExtractableFields().containsKey(FIELD_NAME)) {
-      throw new IllegalArgumentException(String.format(
-          "Schema should contain '%s' among the extractable fields", FIELD_NAME));
-    }
-    setIdPath(schema.getExtractableFields().get(FIELD_NAME));
+    if (schema.getExtractableFields().get(FIELD_NAME) != null)
+      setIdPath(schema.getExtractableFields().get(FIELD_NAME));
   }
 
   public FieldExtractor(String idPath) {
@@ -53,35 +48,29 @@ public class FieldExtractor implements Calculator, Serializable {
   @Override
   public List<MetricResult> measure(PathCache cache)
       throws InvalidJsonException {
-    // FieldCounter<T> resultMap;
     FieldCounter<String> resultMap = new FieldCounter<>();
-    List<XmlFieldInstance> instances = cache.get(getIdPath());
-    if (instances == null || instances.isEmpty()) {
-      LOGGER.severe("No record ID in " + cache.getContent());
-      resultMap.put(FIELD_NAME, "");
-      return null;
-    }
-    String recordId = instances.get(0).getValue().trim();
-    cache.setRecordId(recordId);
-    resultMap.put(FIELD_NAME, recordId);
+    if (idPath != null)
+      extractSingleField(cache, resultMap, idPath, FIELD_NAME);
+
     if (schema != null) {
       String path;
       for (String fieldName : schema.getExtractableFields().keySet()) {
-        if (!fieldName.equals(FIELD_NAME)) {
           path = schema.getExtractableFields().get(fieldName);
-          List<XmlFieldInstance> values = cache.get(path);
-          String value = null;
-          if (values == null || values.isEmpty() || values.get(0) == null || values.get(0).getValue() == null) {
-            // logger.warning("Null value in field: " + fieldName + " (" + path + ")");
-            value = null;
-          } else {
-            value = values.get(0).getValue();
-          }
-          resultMap.put(fieldName, value);
-        }
+        extractSingleField(cache, resultMap, path, fieldName);
       }
     }
     return List.of(new FieldCounterBasedResult<>(getCalculatorName(), resultMap).withNoCompression());
+  }
+
+  private void extractSingleField(PathCache cache, FieldCounter<String> resultMap, String path, String fieldName) {
+    List<XmlFieldInstance> values = cache.get(path);
+    String value = null;
+    if (values == null || values.isEmpty() || values.get(0) == null || values.get(0).getValue() == null) {
+      value = null;
+    } else {
+      value = values.get(0).getValue();
+    }
+    resultMap.put(fieldName, value);
   }
 
   public String getIdPath() {
