@@ -5,3 +5,4 @@ fields:
     rules:
       - equals: description
   - name: description
+    path:  $.['description']

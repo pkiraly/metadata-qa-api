@@ -342,7 +342,7 @@ Example: the value should be 3, 4, or 5 character long.
  * `pattern <regular expression>` - A regular expression that each field value matches to satisfy the condition. The expression should cover
 the whole string, not only a part of it (API: `setPattern(String)` or `withPattern(String)`)
 
-Example: the field value should start with http:// or https:// and ends with .jpg, .jpeg, .jpe, .jfif, .png, .tiff, .tif, .gif, .svg, .svgz, or .pdf.
+Example: the field value should start with http:// or https:// and end with .jpg, .jpeg, .jpe, .jfif, .png, .tiff, .tif, .gif, .svg, .svgz, or .pdf.
 
 ```yaml
   - name: thumbnail
@@ -351,25 +351,69 @@ Example: the field value should start with http:// or https:// and ends with .jp
       - pattern: ^https?://.*\.(jpg|jpeg|jpe|jfif|png|tiff|tif|gif|svg|svgz|pdf)$
 ```
 
-#### Property pair
+#### Comparision of properties
 
  * `equals <field label>` - The set of all values of a field is equal to the set of all values of another field 
  (API: `setEquals(String)` or `withEquals(String)`)
+```yaml
+fields:
+  - name: about
+    path:  $.['about']
+    rules:
+    - equals: description
+  - name: description
+    path:  $.['description']
+```
+
  * `disjoint <field label>` - The set of values of a field is disjoint (not equal) with the set of all values of another field 
  (API: `setDisjoint(String)` or `withDisjoint(String)`)
+Example:
+```yaml
+```
  * `lessThan <field label>` - Each values of a field is smaller than each values of another field
   (API: `setLessThan(String)` or `withLessThan(String)`)
+   Example:
+```yaml
+```
  * `lessThanOrEquals <field label>` - Each values of a field is smaller than or equals to each values of another field
   (API: `setLessThanOrEquals(String)` or `withLessThanOrEquals(String)`)
+   Example:
+```yaml
+```
 
-#### Logical functions
+#### Logical operators
 
 * `and [<rule1>, ..., <ruleN>]` - Passes if all the rules in the set passed.
   (API: `setAnd(List<Rule>)` or `withAnd(List<Rule>)`)
+  Example:
+```yaml
+```
 * `or [<rule1>, ..., <ruleN>]` - Passes if at least one of the rules in the set passed.
   (API: `setOr(List<Rule>)` or `withOr(List<Rule>)`)
+  Example:
+```yaml
+```
 * `not [<rule1>, ..., <ruleN>]` - Passes if all the rules in the set failed.
   (API: `setNot(List<Rule>)` or `withNot(List<Rule>)`)
+
+Example:
+```yaml
+```
+
+#### Other constraints
+These rules don't have paralel in SHACL.
+
+* `contentType [type1, ..., typeN]` - This rule interprets the value as a URL, fetches it and extracts the HTTP header's
+content type, then checks if it is one of those allowed.
+
+Example: The HTTP content type should be image/jpeg, image/png, image/tiff, image/tiff-fx, image/gif, image/svg+xml, or application/pdf.
+```yaml
+  - name: thumbnail
+    path: oai:record/dc:identifier[@type='binary']
+    rules:
+      - contentType: [image/jpeg, image/png, image/tiff, image/tiff-fx, image/gif, image/svg+xml, application/pdf]
+```
+
 
 Set rules via Java API 
 
