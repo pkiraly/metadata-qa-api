@@ -346,6 +346,17 @@ Example: the value should be 3, 4, or 5 character long.
       - maxLength: 5
 ```
 
+* `hasValue value` - The value should be equal to the provided value (API: `setHasValue(String)` or `withHasValue(String)`)
+
+Example: the status should be "published".
+
+```yaml
+- name: status
+  path:  $.['status']
+  rules:
+    - hasValue: published
+```
+
 * `in [value1, ..., valueN]` - The string value should be one of the listed values (API: `setIn(List<String>)` or `withIn(List<String>)`)
 
 Example: the value should be either "dataverse", "dataset" or "file".
@@ -463,14 +474,15 @@ Example: The thumbnail should either end with a known image extension or its con
 Example: make sure that the title and the description is different.
 
 ```yaml
-  - name: title
-    path:  $.['title']
-    rules:
-      - not:
-        - equals: description
+- name: title
+  path:  $.['title']
+  rules:
+    - not:
+      - equals: description
 ```
 
 #### Other constraints
+
 These rules don't have paralel in SHACL.
 
 * `contentType [type1, ..., typeN]` - This rule interprets the value as a URL, fetches it and extracts the HTTP header's
@@ -485,7 +497,44 @@ Example: The HTTP content type should be image/jpeg, image/png, image/tiff, imag
     - contentType: [image/jpeg, image/png, image/tiff, image/tiff-fx, image/gif, image/svg+xml]
 ```
 
-Set rules via Java API 
+#### General properties
+
+* `id value` - you can define an identifier to the rule, which will be reflected in the output. If you miss it, the
+system will assign a count number. ID might also help if you transform a human readable document such as cataloguing 
+rules into a configuration file, and you want to keep linkage between them. (API `setId(String)` or `withId(String)`)
+
+* `failureScore score` - a score which will be calculated if the validation fails. The score should be a negative o positive integer (including zero). 
+(API `setFailureScore(nteger)` or `withFailureScore(Integer)`)
+
+* `successScore score` - a score which will be calculated if the validation passes. The score should be a negative o positive integer (including zero).
+ (API `setSuccessScore(nteger)` or `withSuccessScore(Integer)`)
+
+Example: set of rules with IDs and scores.
+
+```yaml
+  - name: providerid
+    path: oai:record/dc:identifier[@type='providerid']
+    rules:
+    - and:
+      - minCount: 1
+      - minLength: 1
+        failureScore: -6
+        id: 2.1
+    - pattern: ^(DE-\d+|DE-MUS-\d+|http://id.zdb-services.de\w+|\d{8}|oai\d{13}|http://d-nb.info/gnd/\w+)$
+      failureScore: -3
+      id: 2.2
+    - pattern: ^(DE-\d+|DE-MUS-\d+|http://id.zdb-services.de\w+)$
+      successScore: 6
+      id: 2.4
+    - pattern: ^http://id.zdb-services.de\w+$
+      successScore: 3
+      id: 2.5
+    - pattern: ^http://d-nb.info/gnd/\w+$
+      successScore: 3
+      id: 2.6
+```
+
+#### Set rules via Java API 
 
 ```Java
 Schema schema = new BaseSchema()
