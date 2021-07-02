@@ -5,13 +5,13 @@ import de.gwdg.metadataqa.api.json.JsonBranch;
 import de.gwdg.metadataqa.api.model.XmlFieldInstance;
 import de.gwdg.metadataqa.api.model.pathcache.PathCache;
 import de.gwdg.metadataqa.api.rule.RuleCheckerOutput;
+import org.apache.commons.lang3.StringUtils;
 
 import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLConnection;
 import java.util.List;
-import java.util.logging.Level;
 import java.util.logging.Logger;
 
 public class ContentTypeChecker extends SingleFieldChecker {
@@ -44,6 +44,11 @@ public class ContentTypeChecker extends SingleFieldChecker {
             URLConnection u = url.openConnection();
             String contentType = u.getHeaderField("Content-Type").replaceAll("; ?charset.*$", "");
             // System.err.println(contentType);
+            if (contentType == null || StringUtils.isBlank(contentType)) {
+              LOGGER.warning(String.format("undetectable content type", contentType));
+              allPassed = false;
+              break;
+            }
             if (!fixedValues.contains(contentType)) {
               LOGGER.warning(String.format("content type '%s' did not match expectation (rule id: %s)", contentType, getId()));
               allPassed = false;

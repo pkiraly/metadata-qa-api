@@ -264,9 +264,24 @@ One can add constraints to the fields. There are content rules, which
 the tool will check. In this version the tool mimin SHACL constraints.
 
 #### Cardinality
+One can specify with this properties how many occurences of a data elemens a record can have.
 
  * `minCount <number>` - specifies the minimum number of field occurence (API: `setMinCount()` or `withMinCount()`)
+```yaml
+- name: about
+  path:  $.['about']
+  rules:
+  - minCount: 1
+```
+ 
  * `maxCount <number>` - specifies the maximum number of field occurence (API: `setMaxCount()` or `withMaxCount()`)
+
+```yaml
+- name: about
+  path:  $.['about']
+  rules:
+  - maxCount: 1
+```
 
 #### Value Range
 

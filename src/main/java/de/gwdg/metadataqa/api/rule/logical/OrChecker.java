@@ -9,8 +9,11 @@ import de.gwdg.metadataqa.api.rule.RuleCheckingOutputType;
 
 import java.util.List;
 import java.util.Map;
+import java.util.logging.Logger;
 
 public class OrChecker extends LogicalChecker {
+
+  private static final Logger LOGGER = Logger.getLogger(OrChecker.class.getCanonicalName());
 
   private static final long serialVersionUID = 1114999259831619599L;
   public static final String PREFIX = "or";
@@ -35,9 +38,7 @@ public class OrChecker extends LogicalChecker {
     FieldCounter<RuleCheckerOutput> localResults = new FieldCounter<>();
     for (RuleChecker checker : checkers) {
       checker.update(cache, localResults);
-    }
-    for (Map.Entry<String, RuleCheckerOutput> entry : localResults.getMap().entrySet()) {
-      if (entry.getValue().getType().equals(RuleCheckingOutputType.PASSED)) {
+      if (localResults.get(checker.getHeader()).getType().equals(RuleCheckingOutputType.PASSED)) {
         allPassed = true;
         break;
       }
