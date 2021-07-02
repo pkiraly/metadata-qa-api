@@ -355,20 +355,30 @@ Example: the field value should start with http:// or https:// and end with .jpg
 
  * `equals <field label>` - The set of all values of a field is equal to the set of all values of another field 
  (API: `setEquals(String)` or `withEquals(String)`)
+
+Example: The ID should be equal to the ISBN number.
 ```yaml
 fields:
-  - name: about
-    path:  $.['about']
+  - name: id
+    path:  $.['id']
     rules:
-    - equals: description
-  - name: description
-    path:  $.['description']
+      - equals: isbn
+  - name: isbn
+    path:  $.['isbn']
 ```
 
  * `disjoint <field label>` - The set of values of a field is disjoint (not equal) with the set of all values of another field 
  (API: `setDisjoint(String)` or `withDisjoint(String)`)
-Example:
+
+Example: The title should be different than description.
 ```yaml
+fields:
+  - name: title
+    path:  $.['title']
+    rules:
+      - equals: description
+  - name: description
+    path:  $.['description']
 ```
  * `lessThan <field label>` - Each values of a field is smaller than each values of another field
   (API: `setLessThan(String)` or `withLessThan(String)`)
@@ -385,8 +395,16 @@ Example:
 
 * `and [<rule1>, ..., <ruleN>]` - Passes if all the rules in the set passed.
   (API: `setAnd(List<Rule>)` or `withAnd(List<Rule>)`)
-  Example:
+
+Example: The ID should have one and only one occurrence, and is should not be an empty string.
 ```yaml
+  - name: id
+    path: oai:record/dc:identifier[@type='providerItemId']
+    rules:
+      - and:
+        - minCount: 1
+        - maxCount: 1
+        - minLength: 1
 ```
 * `or [<rule1>, ..., <ruleN>]` - Passes if at least one of the rules in the set passed.
   (API: `setOr(List<Rule>)` or `withOr(List<Rule>)`)
@@ -398,6 +416,13 @@ Example:
 
 Example:
 ```yaml
+  - name: about
+    path:  $.['about']
+    rules:
+      - not:
+        - minCount: 2
+        - maxLength: 10
+        successScore: 2
 ```
 
 #### Other constraints
@@ -406,12 +431,12 @@ These rules don't have paralel in SHACL.
 * `contentType [type1, ..., typeN]` - This rule interprets the value as a URL, fetches it and extracts the HTTP header's
 content type, then checks if it is one of those allowed.
 
-Example: The HTTP content type should be image/jpeg, image/png, image/tiff, image/tiff-fx, image/gif, image/svg+xml, or application/pdf.
+Example: The HTTP content type should be image/jpeg, image/png, image/tiff, image/tiff-fx, image/gif, or image/svg+xml.
 ```yaml
-  - name: thumbnail
-    path: oai:record/dc:identifier[@type='binary']
-    rules:
-      - contentType: [image/jpeg, image/png, image/tiff, image/tiff-fx, image/gif, image/svg+xml, application/pdf]
+- name: thumbnail
+  path: oai:record/dc:identifier[@type='binary']
+  rules:
+    - contentType: [image/jpeg, image/png, image/tiff, image/tiff-fx, image/gif, image/svg+xml]
 ```
 
 
