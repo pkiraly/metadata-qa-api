@@ -512,26 +512,26 @@ rules into a configuration file, and you want to keep linkage between them. (API
 Example: set of rules with IDs and scores.
 
 ```yaml
-  - name: providerid
-    path: oai:record/dc:identifier[@type='providerid']
-    rules:
-    - and:
-      - minCount: 1
-      - minLength: 1
-        failureScore: -6
-        id: 2.1
-    - pattern: ^(DE-\d+|DE-MUS-\d+|http://id.zdb-services.de\w+|\d{8}|oai\d{13}|http://d-nb.info/gnd/\w+)$
-      failureScore: -3
-      id: 2.2
-    - pattern: ^(DE-\d+|DE-MUS-\d+|http://id.zdb-services.de\w+)$
-      successScore: 6
-      id: 2.4
-    - pattern: ^http://id.zdb-services.de\w+$
-      successScore: 3
-      id: 2.5
-    - pattern: ^http://d-nb.info/gnd/\w+$
-      successScore: 3
-      id: 2.6
+- name: providerid
+  path: oai:record/dc:identifier[@type='providerid']
+  rules:
+  - and:
+    - minCount: 1
+    - minLength: 1
+      failureScore: -6
+      id: 2.1
+  - pattern: ^(DE-\d+|DE-MUS-\d+|http://id.zdb-services.de\w+|\d{8}|oai\d{13})$
+    failureScore: -3
+    id: 2.2
+  - pattern: ^(DE-\d+|DE-MUS-\d+|http://id.zdb-services.de\w+)$
+    successScore: 6
+    id: 2.4
+  - pattern: ^http://id.zdb-services.de\w+$
+    successScore: 3
+    id: 2.5
+  - pattern: ^http://d-nb.info/gnd/\w+$
+    successScore: 3
+    id: 2.6
 ```
 
 #### Set rules via Java API 
