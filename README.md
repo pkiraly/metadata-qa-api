@@ -382,47 +382,68 @@ fields:
 ```
  * `lessThan <field label>` - Each values of a field is smaller than each values of another field
   (API: `setLessThan(String)` or `withLessThan(String)`)
-   Example:
+
+Example: the date of birth is less than the date of deatch
 ```yaml
+- name: birthDate
+  path: oai:record/dc:date[@type='birth']
+  rules:
+    - lessThan: deathDate
 ```
+ * 
  * `lessThanOrEquals <field label>` - Each values of a field is smaller than or equals to each values of another field
   (API: `setLessThanOrEquals(String)` or `withLessThanOrEquals(String)`)
-   Example:
+
+Example: the starting page of the article should be less than or equal to the ending page
 ```yaml
+- name: startingPage
+  path: startingPage
+  rules:
+    - lessThan: endingPage
 ```
 
 #### Logical operators
+
+With logical operators you can build complex rules. Each component should fit to its own rules. 
 
 * `and [<rule1>, ..., <ruleN>]` - Passes if all the rules in the set passed.
   (API: `setAnd(List<Rule>)` or `withAnd(List<Rule>)`)
 
 Example: The ID should have one and only one occurrence, and is should not be an empty string.
+
 ```yaml
-  - name: id
-    path: oai:record/dc:identifier[@type='providerItemId']
-    rules:
-      - and:
-        - minCount: 1
-        - maxCount: 1
-        - minLength: 1
+- name: id
+  path: oai:record/dc:identifier[@type='providerItemId']
+  rules:
+    - and:
+      - minCount: 1
+      - maxCount: 1
+      - minLength: 1
 ```
+
 * `or [<rule1>, ..., <ruleN>]` - Passes if at least one of the rules in the set passed.
   (API: `setOr(List<Rule>)` or `withOr(List<Rule>)`)
-  Example:
+
+Example: The thumbnail should either ends with a known image extension or its content type should be a MIME image type.
 ```yaml
+- name: thumbnail
+  path: oai:record/dc:identifier[@type='binary']
+  rules:
+    - or:
+      - pattern: ^.*\.(jpg|jpeg|jpe|jfif|png|tiff|tif|gif|svg|svgz)$
+      - contentType: [image/jpeg, image/png, image/tiff, image/tiff-fx, image/gif, image/svg+xml]
 ```
-* `not [<rule1>, ..., <ruleN>]` - Passes if all the rules in the set failed.
+* `not [<rule1>, ..., <ruleN>]` - Passes if none of the rules in the set passed.
   (API: `setNot(List<Rule>)` or `withNot(List<Rule>)`)
 
-Example:
+Example: make sure that the title and the description is different.
+
 ```yaml
-  - name: about
-    path:  $.['about']
+  - name: title
+    path:  $.['title']
     rules:
       - not:
-        - minCount: 2
-        - maxLength: 10
-        successScore: 2
+        - equals: description
 ```
 
 #### Other constraints
@@ -438,7 +459,6 @@ Example: The HTTP content type should be image/jpeg, image/png, image/tiff, imag
   rules:
     - contentType: [image/jpeg, image/png, image/tiff, image/tiff-fx, image/gif, image/svg+xml]
 ```
-
 
 Set rules via Java API 
 

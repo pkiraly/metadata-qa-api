@@ -35,14 +35,11 @@ public class AndChecker extends LogicalChecker {
     FieldCounter<RuleCheckerOutput> localResults = new FieldCounter<>();
     for (RuleChecker checker : checkers) {
       checker.update(cache, localResults);
-    }
-    for (Map.Entry<String, RuleCheckerOutput> entry : localResults.getMap().entrySet()) {
-      if (!entry.getValue().getType().equals(RuleCheckingOutputType.PASSED)) {
+      if (!localResults.get(checker.getHeader()).getType().equals(RuleCheckingOutputType.PASSED)) {
         allPassed = false;
         break;
       }
     }
     results.put(getHeader(), new RuleCheckerOutput(this, isNA, allPassed));
   }
-
 }
