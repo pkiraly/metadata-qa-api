@@ -264,9 +264,12 @@ One can add constraints to the fields. There are content rules, which
 the tool will check. In this version the tool mimin SHACL constraints.
 
 #### Cardinality
-One can specify with this properties how many occurences of a data elemens a record can have.
+One can specify with this properties how many occurrences of a data elemens a record can have.
 
  * `minCount <number>` - specifies the minimum number of field occurence (API: `setMinCount()` or `withMinCount()`)
+
+Example: the field should have at least one occurrence
+
 ```yaml
 - name: about
   path:  $.['about']
@@ -275,6 +278,8 @@ One can specify with this properties how many occurences of a data elemens a rec
 ```
  
  * `maxCount <number>` - specifies the maximum number of field occurence (API: `setMaxCount()` or `withMaxCount()`)
+
+Example: the field might have maximum one occurrence
 
 ```yaml
 - name: about
@@ -293,7 +298,7 @@ operators. You can specify either integers or floating point numbers.
  * `maxExclusive <number>` - The maximum exclusive value ([field value] < limit, API: `setMaxExclusive(Double)` or `withMaxExclusive(Double)`)
  * `maxInclusive <number>` - The maximum inclusive value ([field value] <= limit, API: `setMaxInclusive(Double)` or `withMaxInclusive(Double)`)
 
-Example: 1.0 <= value <= 2.0
+Example: 1.0 <= price <= 2.0
 
 ```yaml
 - name: price
@@ -304,7 +309,7 @@ Example: 1.0 <= value <= 2.0
       - maxInclusive: 2.0
 ```
 
-Example: 1.0 < value < 2.0
+Example: 1.0 < price < 2.0
 
 ```yaml
 - name: price
@@ -319,11 +324,13 @@ Note: integers will be interpreted as floating point numbers.
 #### String constraints
 
  * `minLength <number>` - The minimum string length of each field value (API: `setMinLength(Integer)` or `withMinLength(Integer)`)
+
+Example: the field value should not be empty
 ```yaml
-  - name: about
-    path:  $.['about']
-    rules:
-      - minLength: 1
+- name: about
+  path:  $.['about']
+  rules:
+    - minLength: 1
 ```
 
  * `maxLength <number>` - The maximum string length of each field value (API: `setMinLength(Integer)` or `withMaxLength(Integer)`)
@@ -331,12 +338,23 @@ Note: integers will be interpreted as floating point numbers.
 Example: the value should be 3, 4, or 5 character long.
 
 ```yaml
-  - name: about
-    path:  $.['about']
-    rules:
-      - and:
-        - minLength: 3
-        - maxLength: 5
+- name: about
+  path:  $.['about']
+  rules:
+    - and:
+      - minLength: 3
+      - maxLength: 5
+```
+
+* `in [value1, ..., valueN]` - The string value should be one of the listed values (API: `setIn(List<String>)` or `withIn(List<String>)`)
+
+Example: the value should be either "dataverse", "dataset" or "file".
+
+```yaml
+- name: type
+  path:  $.['type']
+  rules:
+    - in: [dataverse, dataset, file]
 ```
 
  * `pattern <regular expression>` - A regular expression that each field value matches to satisfy the condition. The expression should cover
@@ -345,10 +363,10 @@ the whole string, not only a part of it (API: `setPattern(String)` or `withPatte
 Example: the field value should start with http:// or https:// and end with .jpg, .jpeg, .jpe, .jfif, .png, .tiff, .tif, .gif, .svg, .svgz, or .pdf.
 
 ```yaml
-  - name: thumbnail
-    path: oai:record/dc:identifier[@type='binary']
-    rules:
-      - pattern: ^https?://.*\.(jpg|jpeg|jpe|jfif|png|tiff|tif|gif|svg|svgz|pdf)$
+- name: thumbnail
+  path: oai:record/dc:identifier[@type='binary']
+  rules:
+    - pattern: ^https?://.*\.(jpg|jpeg|jpe|jfif|png|tiff|tif|gif|svg|svgz|pdf)$
 ```
 
 #### Comparision of properties
@@ -357,6 +375,7 @@ Example: the field value should start with http:// or https:// and end with .jpg
  (API: `setEquals(String)` or `withEquals(String)`)
 
 Example: The ID should be equal to the ISBN number.
+
 ```yaml
 fields:
   - name: id
@@ -370,7 +389,8 @@ fields:
  * `disjoint <field label>` - The set of values of a field is disjoint (not equal) with the set of all values of another field 
  (API: `setDisjoint(String)` or `withDisjoint(String)`)
 
-Example: The title should be different than description.
+Example: The title should be different then description.
+
 ```yaml
 fields:
   - name: title
@@ -383,18 +403,20 @@ fields:
  * `lessThan <field label>` - Each values of a field is smaller than each values of another field
   (API: `setLessThan(String)` or `withLessThan(String)`)
 
-Example: the date of birth is less than the date of deatch
+Example: the date of birth is less than the date of death
+
 ```yaml
 - name: birthDate
   path: oai:record/dc:date[@type='birth']
   rules:
     - lessThan: deathDate
 ```
- * 
+
  * `lessThanOrEquals <field label>` - Each values of a field is smaller than or equals to each values of another field
   (API: `setLessThanOrEquals(String)` or `withLessThanOrEquals(String)`)
 
 Example: the starting page of the article should be less than or equal to the ending page
+
 ```yaml
 - name: startingPage
   path: startingPage
@@ -424,7 +446,8 @@ Example: The ID should have one and only one occurrence, and is should not be an
 * `or [<rule1>, ..., <ruleN>]` - Passes if at least one of the rules in the set passed.
   (API: `setOr(List<Rule>)` or `withOr(List<Rule>)`)
 
-Example: The thumbnail should either ends with a known image extension or its content type should be a MIME image type.
+Example: The thumbnail should either end with a known image extension or its content type should be one of the provided MIME image types.
+
 ```yaml
 - name: thumbnail
   path: oai:record/dc:identifier[@type='binary']
@@ -433,6 +456,7 @@ Example: The thumbnail should either ends with a known image extension or its co
       - pattern: ^.*\.(jpg|jpeg|jpe|jfif|png|tiff|tif|gif|svg|svgz)$
       - contentType: [image/jpeg, image/png, image/tiff, image/tiff-fx, image/gif, image/svg+xml]
 ```
+
 * `not [<rule1>, ..., <ruleN>]` - Passes if none of the rules in the set passed.
   (API: `setNot(List<Rule>)` or `withNot(List<Rule>)`)
 
@@ -453,6 +477,7 @@ These rules don't have paralel in SHACL.
 content type, then checks if it is one of those allowed.
 
 Example: The HTTP content type should be image/jpeg, image/png, image/tiff, image/tiff-fx, image/gif, or image/svg+xml.
+
 ```yaml
 - name: thumbnail
   path: oai:record/dc:identifier[@type='binary']
@@ -462,7 +487,7 @@ Example: The HTTP content type should be image/jpeg, image/png, image/tiff, imag
 
 Set rules via Java API 
 
-```java
+```Java
 Schema schema = new BaseSchema()
   .setFormat(Format.CSV)
   .addField(
