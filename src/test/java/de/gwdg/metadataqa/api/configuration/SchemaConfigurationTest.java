@@ -302,4 +302,17 @@ public class SchemaConfigurationTest {
     assertEquals(MinCountChecker.class, checker.getCheckers().get(0).getClass());
     assertEquals(MaxLengthChecker.class, checker.getCheckers().get(1).getClass());
   }
+
+  @Test
+  public void yaml_contentType() throws FileNotFoundException {
+    Schema schema = ConfigurationReader.readSchemaYaml("src/test/resources/configuration/schema/rules/contentType.yaml").asSchema();
+    Rule contentTypeRule = schema.getPathByLabel("about").getRules().get(0);
+    assertEquals("1.1", contentTypeRule.getId());
+    assertEquals(2, contentTypeRule.getSuccessScore().intValue());
+    assertNotNull(contentTypeRule.getContentType());
+    assertFalse(contentTypeRule.getContentType().isEmpty());
+    assertEquals(7, contentTypeRule.getContentType().size());
+    assertEquals(List.of("image/jpeg", "image/png", "image/tiff", "image/tiff-fx", "image/gif", "image/svg+xml", "application/pdf"),
+      contentTypeRule.getContentType());
+  }
 }

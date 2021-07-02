@@ -30,6 +30,7 @@ public class Rule implements Serializable {
   private String lessThanOrEquals;
   private String hasValue;
   private Boolean unique;
+  private List<String> contentType;
 
   public String getId() {
     return id;
@@ -341,6 +342,19 @@ public class Rule implements Serializable {
 
   public Rule withUnique(Boolean unique) {
     setUnique(unique);
+    return this;
+  }
+
+  public List<String> getContentType() {
+    return contentType;
+  }
+
+  public void setContentType(List<String> contentType) {
+    this.contentType = contentType;
+  }
+
+  public Rule withContentType(List<String> contentType) {
+    this.contentType = contentType;
     return this;
   }
 }

@@ -27,6 +27,7 @@ public class BaseSchema implements Schema, CsvAwareSchema, Serializable {
   private Map<String, String> namespaces;
 
   public BaseSchema() {
+    // initialize without parameters
   }
 
   public BaseSchema addField(JsonBranch branch) {

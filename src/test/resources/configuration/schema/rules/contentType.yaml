@@ -1,0 +1,9 @@
+format: json
+fields:
+  - name: about
+    path:  $.['about']
+    rules:
+      - contentType: [image/jpeg, image/png, image/tiff, image/tiff-fx, image/gif, image/svg+xml, application/pdf]
+        id: 1.1
+        successScore: 2
+  - name: description

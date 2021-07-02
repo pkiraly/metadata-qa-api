@@ -7,6 +7,7 @@ import de.gwdg.metadataqa.api.rule.logical.NotChecker;
 import de.gwdg.metadataqa.api.rule.logical.OrChecker;
 import de.gwdg.metadataqa.api.rule.pairchecker.DisjointChecker;
 import de.gwdg.metadataqa.api.rule.pairchecker.LessThanPairChecker;
+import de.gwdg.metadataqa.api.rule.singlefieldchecker.ContentTypeChecker;
 import de.gwdg.metadataqa.api.rule.singlefieldchecker.EnumerationChecker;
 import de.gwdg.metadataqa.api.rule.pairchecker.EqualityChecker;
 import de.gwdg.metadataqa.api.rule.singlefieldchecker.HasValueChecker;
@@ -96,6 +97,9 @@ public class SchemaUtils {
     if (rule.getMaxExclusive() != null)
       ruleCheckers.add(new NumericValueChecker(branch, rule.getMinInclusive(),
         NumericValueChecker.TYPE.MAX_EXCLUSIVE));
+
+    if (rule.getContentType() != null && !rule.getContentType().isEmpty())
+      ruleCheckers.add(new ContentTypeChecker(branch, rule.getContentType()));
 
     if (rule.getLessThan() != null)
       pair(schema, ruleCheckers, branch, rule.getLessThan(), "LessThan");
