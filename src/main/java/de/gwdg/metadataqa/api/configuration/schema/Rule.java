@@ -20,10 +20,10 @@ public class Rule implements Serializable {
   private List<Rule> not;
   private Integer minCount;
   private Integer maxCount;
-  private Integer minExclusive;
-  private Integer minInclusive;
-  private Integer maxExclusive;
-  private Integer maxInclusive;
+  private Double minExclusive;
+  private Double minInclusive;
+  private Double maxExclusive;
+  private Double maxInclusive;
   private Integer minLength;
   private Integer maxLength;
   private String lessThan;
@@ -165,71 +165,75 @@ public class Rule implements Serializable {
     return this;
   }
 
-  public Integer getMinExclusive() {
+  public Double getMinExclusive() {
     return minExclusive;
   }
 
-  public void setMinExclusive(Integer minExclusive) {
+  public void setMinExclusive(Double minExclusive) {
     this.minExclusive = minExclusive;
   }
 
-  public void setMinExclusive(int minExclusive) {
-    this.minExclusive = minExclusive;
-  }
-
-  public Rule withMinExclusive(int minExclusive) {
+  public Rule withMinExclusive(Double minExclusive) {
     setMinExclusive(minExclusive);
     return this;
   }
 
-  public Integer getMinInclusive() {
+  public Rule withMinExclusive(Integer minExclusive) {
+    setMinExclusive(Double.valueOf(minExclusive));
+    return this;
+  }
+
+  public Double getMinInclusive() {
     return minInclusive;
   }
 
-  public void setMinInclusive(Integer minInclusive) {
+  public void setMinInclusive(Double minInclusive) {
     this.minInclusive = minInclusive;
   }
 
-  public void setMinInclusive(int minInclusive) {
-    this.minInclusive = minInclusive;
-  }
-
-  public Rule withMinInclusive(int minInclusive) {
+  public Rule withMinInclusive(Double minInclusive) {
     setMinInclusive(minInclusive);
     return this;
   }
 
-  public Integer getMaxExclusive() {
+  public Rule withMinInclusive(Integer minInclusive) {
+    setMinInclusive(Double.valueOf(minInclusive));
+    return this;
+  }
+
+  public Double getMaxExclusive() {
     return maxExclusive;
   }
 
-  public void setMaxExclusive(Integer maxExclusive) {
+  public void setMaxExclusive(Double maxExclusive) {
     this.maxExclusive = maxExclusive;
   }
 
-  public void setMaxExclusive(int maxExclusive) {
-    this.maxExclusive = maxExclusive;
-  }
-
-  public Rule withMaxExclusive(int maxExclusive) {
+  public Rule withMaxExclusive(Double maxExclusive) {
     setMaxExclusive(maxExclusive);
     return this;
   }
 
-  public Integer getMaxInclusive() {
+  public Rule withMaxExclusive(Integer maxExclusive) {
+    setMaxExclusive(Double.valueOf(maxExclusive));
+    return this;
+  }
+
+  public Double getMaxInclusive() {
     return maxInclusive;
   }
 
-  public void setMaxInclusive(Integer maxInclusive) {
+  public void setMaxInclusive(Double maxInclusive) {
     this.maxInclusive = maxInclusive;
   }
 
-  public void setMaxInclusive(int maxInclusive) {
-    this.maxInclusive = maxInclusive;
-  }
-
-  public Rule withMaxInclusive(int maxInclusive) {
+  public Rule withMaxInclusive(Double maxInclusive) {
     setMaxInclusive(maxInclusive);
+    return this;
+  }
+
+  public Rule withMaxInclusive(Integer maxInclusive) {
+    setMaxInclusive(Double.valueOf(maxInclusive));
     return this;
   }
 

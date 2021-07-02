@@ -169,25 +169,25 @@ public class SchemaConfigurationTest {
   @Test
   public void yaml_minExclusive() throws FileNotFoundException {
     Schema schema = ConfigurationReader.readSchemaYaml("src/test/resources/configuration/schema/rules/minExclusive.yaml").asSchema();
-    assertEquals(1, schema.getPathByLabel("about").getRules().get(0).getMinExclusive().intValue());
+    assertEquals(10.3, schema.getPathByLabel("price").getRules().get(0).getMinExclusive().doubleValue(), 0.0001);
   }
 
   @Test
   public void yaml_maxExclusive() throws FileNotFoundException {
     Schema schema = ConfigurationReader.readSchemaYaml("src/test/resources/configuration/schema/rules/maxExclusive.yaml").asSchema();
-    assertEquals(1, schema.getPathByLabel("about").getRules().get(0).getMaxExclusive().intValue());
+    assertEquals(1, schema.getPathByLabel("price").getRules().get(0).getMaxExclusive().intValue());
   }
 
   @Test
   public void yaml_minInclusive() throws FileNotFoundException {
     Schema schema = ConfigurationReader.readSchemaYaml("src/test/resources/configuration/schema/rules/minInclusive.yaml").asSchema();
-    assertEquals(1, schema.getPathByLabel("about").getRules().get(0).getMinInclusive().intValue());
+    assertEquals(1, schema.getPathByLabel("price").getRules().get(0).getMinInclusive().intValue());
   }
 
   @Test
   public void yaml_maxInclusive() throws FileNotFoundException {
     Schema schema = ConfigurationReader.readSchemaYaml("src/test/resources/configuration/schema/rules/maxInclusive.yaml").asSchema();
-    assertEquals(1, schema.getPathByLabel("about").getRules().get(0).getMaxInclusive().intValue());
+    assertEquals(1, schema.getPathByLabel("price").getRules().get(0).getMaxInclusive().intValue());
   }
 
   @Test

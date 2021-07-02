@@ -24,6 +24,11 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Logger;
 
+import static de.gwdg.metadataqa.api.rule.singlefieldchecker.NumericValueChecker.TYPE.MAX_EXCLUSIVE;
+import static de.gwdg.metadataqa.api.rule.singlefieldchecker.NumericValueChecker.TYPE.MAX_INCLUSIVE;
+import static de.gwdg.metadataqa.api.rule.singlefieldchecker.NumericValueChecker.TYPE.MIN_EXCLUSIVE;
+import static de.gwdg.metadataqa.api.rule.singlefieldchecker.NumericValueChecker.TYPE.MIN_INCLUSIVE;
+
 public class SchemaUtils {
 
   private static final Logger LOGGER = Logger.getLogger(SchemaUtils.class.getCanonicalName());
@@ -83,20 +88,16 @@ public class SchemaUtils {
       ruleCheckers.add(new HasValueChecker(branch, rule.getHasValue()));
 
     if (rule.getMinInclusive() != null)
-      ruleCheckers.add(new NumericValueChecker(branch, rule.getMinInclusive(),
-        NumericValueChecker.TYPE.MIN_INCLUSIVE));
+      ruleCheckers.add(new NumericValueChecker(branch, rule.getMinInclusive(), MIN_INCLUSIVE));
 
     if (rule.getMaxInclusive() != null)
-      ruleCheckers.add(new NumericValueChecker(branch, rule.getMinInclusive(),
-        NumericValueChecker.TYPE.MAX_INCLUSIVE));
+      ruleCheckers.add(new NumericValueChecker(branch, rule.getMinInclusive(), MAX_INCLUSIVE));
 
     if (rule.getMinExclusive() != null)
-      ruleCheckers.add(new NumericValueChecker(branch, rule.getMinInclusive(),
-        NumericValueChecker.TYPE.MIN_EXCLUSIVE));
+      ruleCheckers.add(new NumericValueChecker(branch, rule.getMinInclusive(), MIN_EXCLUSIVE));
 
     if (rule.getMaxExclusive() != null)
-      ruleCheckers.add(new NumericValueChecker(branch, rule.getMinInclusive(),
-        NumericValueChecker.TYPE.MAX_EXCLUSIVE));
+      ruleCheckers.add(new NumericValueChecker(branch, rule.getMinInclusive(), MAX_EXCLUSIVE));
 
     if (rule.getContentType() != null && !rule.getContentType().isEmpty())
       ruleCheckers.add(new ContentTypeChecker(branch, rule.getContentType()));

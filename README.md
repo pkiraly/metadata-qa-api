@@ -285,10 +285,36 @@ One can specify with this properties how many occurences of a data elemens a rec
 
 #### Value Range
 
+You can set a range of value within the field's value should remain. You can set a lower and higher bound with boolean 
+operators. You can specify either integers or floating point numbers.
+
  * `minExclusive <number>` - The minimum exclusive value ([field value] > limit, API: `setMinExclusive(Double)` or `withMinExclusive(Double)`)
  * `minInclusive <number>` - The minimum inclusive value ([field value] >= limit, API: `setMinInclusive(Double)` or `withMinExclusive(Double)`)
  * `maxExclusive <number>` - The maximum exclusive value ([field value] < limit, API: `setMaxExclusive(Double)` or `withMaxExclusive(Double)`)
  * `maxInclusive <number>` - The maximum inclusive value ([field value] <= limit, API: `setMaxInclusive(Double)` or `withMaxInclusive(Double)`)
+
+Example: 1.0 <= value <= 2.0
+
+```yaml
+- name: price
+  path:  $.['price']
+  rules:
+    - and:
+      - minInclusive: 1.0
+      - maxInclusive: 2.0
+```
+
+Example: 1.0 < value < 2.0
+
+```yaml
+- name: price
+  path:  $.['price']
+  rules:
+    - and:
+      - minInclusive: 1
+      - maxInclusive: 2
+```
+Note: integers will be interpreted as floating point numbers.
 
 #### String constraints
 

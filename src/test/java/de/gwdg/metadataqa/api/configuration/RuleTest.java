@@ -61,10 +61,10 @@ public class RuleTest {
       .withEquals("http")
       .withDisjoint("http")
       .withIn(Arrays.asList("a", "b", "c"))
-      .withMinInclusive(1)
-      .withMaxInclusive(2)
-      .withMinExclusive(1)
-      .withMaxExclusive(2)
+      .withMinInclusive(1.0)
+      .withMaxInclusive(2.0)
+      .withMinExclusive(1.0)
+      .withMaxExclusive(2.0)
       .withLessThan("uri")
       .withLessThanOrEquals("uri")
       .withHasValue("a")
@@ -76,10 +76,10 @@ public class RuleTest {
     assertEquals("http", rule.getEquals());
     assertEquals("http", rule.getDisjoint());
     assertEquals(Arrays.asList("a", "b", "c"), rule.getIn());
-    assertEquals(1, (int) rule.getMinInclusive());
-    assertEquals(2, (int) rule.getMaxInclusive());
-    assertEquals(1, (int) rule.getMinExclusive());
-    assertEquals(2, (int) rule.getMaxExclusive());
+    assertEquals(1.0, rule.getMinInclusive(), 0.0001);
+    assertEquals(2, rule.getMaxInclusive(), 0.0001);
+    assertEquals(1, rule.getMinExclusive(), 0.0001);
+    assertEquals(2, rule.getMaxExclusive(), 0.0001);
     assertEquals("uri", rule.getLessThan());
     assertEquals("uri", rule.getLessThanOrEquals());
     assertEquals("a", rule.getHasValue());
@@ -126,72 +126,72 @@ public class RuleTest {
   @Test
   public void minExclusive() {
     Rule rule;
-    rule = new Rule().withMinExclusive(3);
+    rule = new Rule().withMinExclusive(3.0);
     assertEquals(3, rule.getMinExclusive().intValue());
 
-    rule = new Rule().withMinExclusive(Integer.valueOf(3));
-    assertEquals(3, rule.getMinExclusive().intValue());
-
-    rule = new Rule();
-    rule.setMinExclusive(3);
+    rule = new Rule().withMinExclusive(Double.valueOf(3.0));
     assertEquals(3, rule.getMinExclusive().intValue());
 
     rule = new Rule();
-    rule.setMinExclusive(Integer.valueOf(3));
+    rule.setMinExclusive(3.0);
+    assertEquals(3, rule.getMinExclusive().intValue());
+
+    rule = new Rule();
+    rule.setMinExclusive(Double.valueOf(3.0));
     assertEquals(3, rule.getMinExclusive().intValue());
   }
 
   @Test
   public void maxExclusive() {
     Rule rule;
-    rule = new Rule().withMaxExclusive(3);
+    rule = new Rule().withMaxExclusive(3.0);
     assertEquals(3, rule.getMaxExclusive().intValue());
 
-    rule = new Rule().withMaxExclusive(Integer.valueOf(3));
-    assertEquals(3, rule.getMaxExclusive().intValue());
-
-    rule = new Rule();
-    rule.setMaxExclusive(3);
+    rule = new Rule().withMaxExclusive(Double.valueOf(3.0));
     assertEquals(3, rule.getMaxExclusive().intValue());
 
     rule = new Rule();
-    rule.setMaxExclusive(Integer.valueOf(3));
+    rule.setMaxExclusive(3.0);
+    assertEquals(3, rule.getMaxExclusive().intValue());
+
+    rule = new Rule();
+    rule.setMaxExclusive(Double.valueOf(3.0));
     assertEquals(3, rule.getMaxExclusive().intValue());
   }
 
   @Test
   public void minInclusive() {
     Rule rule;
-    rule = new Rule().withMinInclusive(3);
+    rule = new Rule().withMinInclusive(3.0);
     assertEquals(3, rule.getMinInclusive().intValue());
 
-    rule = new Rule().withMinInclusive(Integer.valueOf(3));
-    assertEquals(3, rule.getMinInclusive().intValue());
-
-    rule = new Rule();
-    rule.setMinInclusive(3);
+    rule = new Rule().withMinInclusive(Double.valueOf(3.0));
     assertEquals(3, rule.getMinInclusive().intValue());
 
     rule = new Rule();
-    rule.setMinInclusive(Integer.valueOf(3));
+    rule.setMinInclusive(3.0);
+    assertEquals(3, rule.getMinInclusive().intValue());
+
+    rule = new Rule();
+    rule.setMinInclusive(Double.valueOf(3.0));
     assertEquals(3, rule.getMinInclusive().intValue());
   }
 
   @Test
   public void maxInclusive() {
     Rule rule;
-    rule = new Rule().withMaxInclusive(3);
+    rule = new Rule().withMaxInclusive(3.0);
     assertEquals(3, rule.getMaxInclusive().intValue());
 
-    rule = new Rule().withMaxInclusive(Integer.valueOf(3));
-    assertEquals(3, rule.getMaxInclusive().intValue());
-
-    rule = new Rule();
-    rule.setMaxInclusive(3);
+    rule = new Rule().withMaxInclusive(Double.valueOf(3.0));
     assertEquals(3, rule.getMaxInclusive().intValue());
 
     rule = new Rule();
-    rule.setMaxInclusive(Integer.valueOf(3));
+    rule.setMaxInclusive(3.0);
+    assertEquals(3, rule.getMaxInclusive().intValue());
+
+    rule = new Rule();
+    rule.setMaxInclusive(Double.valueOf(3.0));
     assertEquals(3, rule.getMaxInclusive().intValue());
   }
 

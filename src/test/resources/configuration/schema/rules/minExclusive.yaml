@@ -1,6 +1,6 @@
 format: json
 fields:
-  - name: about
-    path:  $.['about']
+  - name: price
+    path:  $.['price']
     rules:
-      - minExclusive: 1
+      - minExclusive: 10.3
