@@ -311,16 +311,45 @@ Example: 1.0 < value < 2.0
   path:  $.['price']
   rules:
     - and:
-      - minInclusive: 1
-      - maxInclusive: 2
+      - minExclusive: 1
+      - maxExclusive: 2
 ```
 Note: integers will be interpreted as floating point numbers.
 
 #### String constraints
 
  * `minLength <number>` - The minimum string length of each field value (API: `setMinLength(Integer)` or `withMinLength(Integer)`)
+```yaml
+  - name: about
+    path:  $.['about']
+    rules:
+      - minLength: 1
+```
+
  * `maxLength <number>` - The maximum string length of each field value (API: `setMinLength(Integer)` or `withMaxLength(Integer)`)
- * `pattern <regular expression>` - A regular expression that each field value matches to satisfy the condition (API: `setPattern(String)` or `withPattern(String)`)
+
+Example: the value should be 3, 4, or 5 character long.
+
+```yaml
+  - name: about
+    path:  $.['about']
+    rules:
+      - and:
+        - minLength: 3
+        - maxLength: 5
+```
+
+ * `pattern <regular expression>` - A regular expression that each field value matches to satisfy the condition. The expression should cover
+the whole string, not only a part of it (API: `setPattern(String)` or `withPattern(String)`)
+
+Example: the field value should start with http:// or https:// and ends with .jpg, .jpeg, .jpe, .jfif, .png, .tiff, .tif, .gif, .svg, .svgz, or .pdf.
+
+```yaml
+  - name: thumbnail
+    path: oai:record/dc:identifier[@type='binary']
+    rules:
+      - pattern: ^https?://.*\.(jpg|jpeg|jpe|jfif|png|tiff|tif|gif|svg|svgz|pdf)$
+```
 
 #### Property pair
 
