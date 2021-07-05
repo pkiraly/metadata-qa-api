@@ -296,42 +296,6 @@ public class CalculatorFacade implements Serializable {
     return tfidfCalculator.getTermsCollection();
   }
 
-  /**
-   * Returns the result map.
-   *
-   * @return
-   *   The result map
-   */
-  /*
-  public Map<String, Object> getResults() {
-    Map<String, Object> results = new LinkedHashMap<>();
-    for (Calculator calculator : calculators) {
-      results.putAll(calculator.getResultMap());
-    }
-    return results;
-  }
-  */
-
-  /*
-  public Map<String, Map<String, ? extends Object>> getLabelledResults() {
-    Map<String, Map<String, ? extends Object>> results = new LinkedHashMap<>();
-    for (Calculator calculator : calculators) {
-      results.putAll(calculator.getLabelledResultMap());
-    }
-    return results;
-  }
-  */
-
-  /*
-  public String getCsv(boolean withLabels, CompressionLevel compressionLevel) {
-    List<String> results = new ArrayList<>();
-    for (Calculator calculator : calculators) {
-      results.add(calculator.getCsv(withLabels, compressionLevel));
-    }
-    return StringUtils.join(results, ",");
-  }
-  */
-
   public List<String> getHeader() {
     conditionalConfiguration();
     List<String> header = new ArrayList<>();

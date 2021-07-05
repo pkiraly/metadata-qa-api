@@ -3,6 +3,7 @@ package de.gwdg.metadataqa.api.calculator;
 import com.opencsv.CSVIterator;
 import com.opencsv.CSVReaderHeaderAware;
 import com.opencsv.exceptions.CsvValidationException;
+import de.gwdg.metadataqa.api.configuration.ConfigurationReader;
 import de.gwdg.metadataqa.api.configuration.MeasurementConfiguration;
 import de.gwdg.metadataqa.api.interfaces.MetricResult;
 import de.gwdg.metadataqa.api.json.JsonBranch;
@@ -92,6 +93,25 @@ public class FieldExtractorTest {
     assertEquals(2, result.size());
     assertEquals(List.of("https://neurovault.org/images/384958/"), result.get(0));
     assertEquals(List.of("https://neurovault.org/images/93390/"), result.get(1));
+  }
+
+  @Test
+  public void vAndA() throws URISyntaxException, IOException, CsvValidationException {
+    String schemaFile = "src/test/resources/configuration/schema/v-and-a.schema.yaml";
+    Schema schema = ConfigurationReader.readSchemaYaml(schemaFile).asSchema();
+
+    CalculatorFacade facade = new CalculatorFacade(
+      new MeasurementConfiguration()
+        .enableCompletenessMeasurement()
+        .enableFieldCardinalityMeasurement()
+        .enableFieldExtractor()
+      )
+      .setSchema(schema);
+    facade.configure();
+
+    String content = FileUtils.readContentFromResource("general/v-and-a-sample-01.json");
+    assertEquals(Arrays.asList("\"Hurry, Leslie\"", "", "0.5", "1", "0", "1", "0", "1", "0", "1", "0"), facade.measureAsList(content));
+    assertEquals("\"Hurry, Leslie\",,0.5,1,0,1,0,1,0,1,0", facade.measure(content));
   }
 
   private CalculatorFacade configureTest() {

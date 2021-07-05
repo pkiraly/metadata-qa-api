@@ -9,6 +9,8 @@ import java.util.LinkedHashMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
+
+import de.gwdg.metadataqa.api.util.FileUtils;
 import org.apache.commons.lang3.StringUtils;
 
 /**
@@ -70,7 +72,7 @@ public class FieldCounter<T> implements Serializable {
           && compressionLevel != CompressionLevel.ZERO) {
         value = Converter.compressNumber(value, compressionLevel);
       }
-      item.append(value);
+      item.append(FileUtils.escape(value));
       items.add(item.toString());
     }
     return items;

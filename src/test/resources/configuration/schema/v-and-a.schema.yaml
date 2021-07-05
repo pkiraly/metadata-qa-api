@@ -1,0 +1,12 @@
+format: json
+fields:
+  - name: artistMakerPerson
+    path: $.['artistMakerPerson'][*].name.text
+    extractable: true
+  - name: artistMakerOrganisation
+    path: $.['artistMakerOrganisation'][*].name.text
+  - name: artistMakerPeople
+    path: $.['artistMakerPeople'][*].name.text
+  - name: title
+    path: $.['title'][*].title
+    extractable: true

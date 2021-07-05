@@ -82,4 +82,9 @@ public abstract class FileUtils {
     List<String> lines = FileUtils.readLinesFromFile(fileName);
     return lines.get(0);
   }
+
+  public static String escape(String value) {
+    return value.contains(",") ? String.format("\"%s\"", value) : value;
+  }
+
 }

@@ -8,6 +8,7 @@ import de.gwdg.metadataqa.api.model.pathcache.PathCache;
 import de.gwdg.metadataqa.api.model.XmlFieldInstance;
 import de.gwdg.metadataqa.api.problemcatalog.FieldCounterBasedResult;
 import de.gwdg.metadataqa.api.schema.Schema;
+import de.gwdg.metadataqa.api.util.FileUtils;
 
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -91,12 +92,8 @@ public class FieldExtractor implements Calculator, Serializable {
 
     if (schema != null)
       for (String fieldName : schema.getExtractableFields().keySet())
-        headers.add(escape(fieldName));
+        headers.add(FileUtils.escape(fieldName));
 
     return headers;
-  }
-
-  private String escape(String fieldName) {
-    return fieldName.contains(",") ? String.format("\"%s\"", fieldName) : fieldName;
   }
 }
