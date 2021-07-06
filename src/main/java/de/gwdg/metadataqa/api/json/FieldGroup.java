@@ -27,7 +27,7 @@ public class FieldGroup {
   /**
    * The sub dimension or category.
    */
-  private Category category;
+  private String category;
 
   /**
    * Construct a new FieldGroup object.
@@ -39,11 +39,15 @@ public class FieldGroup {
    *
    * @see JsonBranch
    */
-  public FieldGroup(Category pCategory, String... pFields) {
-    this.category = pCategory;
-    this.fields = Arrays.asList(pFields);
+  public FieldGroup(String sCategory, List<String> sFields) {
+    this.category = sCategory;
+    this.fields = sFields;
   }
 
+  public FieldGroup(Category pCategory, String... pFields) {
+    this.category = pCategory.toString();
+    this.fields = Arrays.asList(pFields);
+  }
   /**
    * Get the list of field names.
    * @return
@@ -58,7 +62,7 @@ public class FieldGroup {
    * @return
    *   The category
    */
-  public Category getCategory() {
+  public String getCategory() {
     return category;
   }
 

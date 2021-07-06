@@ -19,6 +19,7 @@ public class BaseSchema implements Schema, CsvAwareSchema, Serializable {
   private final Map<String, JsonBranch> collectionPaths = new LinkedHashMap<>();
   private final Map<String, JsonBranch> directChildren = new LinkedHashMap<>();
   private Map<String, String> extractableFields = new LinkedHashMap<>();
+  private List<FieldGroup> fieldGroups = new ArrayList<>();
   private List<String> categories = null;
   private List<RuleChecker> ruleCheckers;
   private List<JsonBranch> indexFields;
@@ -88,9 +89,14 @@ public class BaseSchema implements Schema, CsvAwareSchema, Serializable {
     return paths.get(label);
   }
 
+  public BaseSchema addFieldGroup(FieldGroup fieldgroup) {
+    fieldGroups.add(fieldgroup);
+	return this;
+  }
+
   @Override
   public List<FieldGroup> getFieldGroups() {
-    return new ArrayList<>();
+    return fieldGroups;
   }
 
   @Override
