@@ -1,16 +1,15 @@
 package de.gwdg.metadataqa.api.util;
 
-import com.google.common.base.Optional;
-import com.optimaize.langdetect.LanguageDetector;
-import com.optimaize.langdetect.LanguageDetectorBuilder;
-import com.optimaize.langdetect.i18n.LdLocale;
-import com.optimaize.langdetect.ngram.NgramExtractors;
-import com.optimaize.langdetect.profiles.LanguageProfile;
-import com.optimaize.langdetect.profiles.LanguageProfileReader;
-import com.optimaize.langdetect.text.CommonTextObjectFactories;
-import com.optimaize.langdetect.text.TextObjectFactory;
+import com.github.pemistahl.lingua.api.IsoCode639_1;
+import com.github.pemistahl.lingua.api.Language;
+import com.github.pemistahl.lingua.api.LanguageDetector;
+import com.github.pemistahl.lingua.api.LanguageDetectorBuilder;
+
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.SortedMap;
+import java.util.stream.Collectors;
 
 /**
  *
@@ -18,25 +17,21 @@ import java.util.List;
  */
 class QALanguageDetector {
 
-  private List<LanguageProfile> languageProfiles;
   private LanguageDetector languageDetector;
-  private TextObjectFactory textObjectFactory;
 
   QALanguageDetector() throws IOException {
-    languageProfiles = new LanguageProfileReader().readAllBuiltIn();
-
-    //build language detector:
     languageDetector = LanguageDetectorBuilder
-      .create(NgramExtractors.standard())
-      .withProfiles(languageProfiles)
-      .build();
-
-    //create a text object factory
-    textObjectFactory = CommonTextObjectFactories.forDetectingOnLargeText();
+            .fromAllSpokenLanguages()
+            .build();
   }
 
-  public Optional<LdLocale> detect(String text) {
-    var textObject = textObjectFactory.forText(text);
-    return languageDetector.detect(textObject);
+  public Language detect(String text) {
+    final Language detectedLanguage = languageDetector.detectLanguageOf(text);
+    return detectedLanguage;
+  }
+
+  public SortedMap<Language, Double> detectWithConfidence(String text) {
+    final SortedMap<Language, Double> detectedLanguages = languageDetector.computeLanguageConfidenceValues(text);
+    return detectedLanguages;
   }
 }

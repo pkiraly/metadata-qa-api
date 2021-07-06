@@ -1,8 +1,9 @@
 package de.gwdg.metadataqa.api.util;
 
-import com.google.common.base.Optional;
-import com.optimaize.langdetect.i18n.LdLocale;
+import com.github.pemistahl.lingua.api.Language;
 import java.io.IOException;
+import java.util.SortedMap;
+
 import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.Before;
@@ -38,24 +39,25 @@ public class QALanguageDetectorTest {
   @Test
   public void constructionTest() throws IOException {
     QALanguageDetector languageDetector = new QALanguageDetector();
-    Optional<LdLocale> langs = languageDetector.detect("There are no plans to deprecate this class in the foreseeable future.");
+    Language langs = languageDetector.detect("There are no plans to deprecate this class in the foreseeable future.");
     assertNotNull(langs);
-    assertTrue(langs.isPresent());
-    assertEquals("en", langs.get().getLanguage());
+    assertEquals("en", langs.getIsoCode639_1().toString());
 
     langs = languageDetector.detect("Der Literaturnobelpreis 2016 ging an den Musiker Bob Dylan. Mit dieser Entscheidung erkannte die Jury zum ersten Mal die literarische Qualität von Songtexten an. Nicht jeder fand das gut.");
     assertNotNull(langs);
-    assertTrue(langs.isPresent());
-    assertEquals("de", langs.get().getLanguage());
+    assertEquals("de", langs.getIsoCode639_1().toString());
 
     langs = languageDetector.detect("Ég a napmelegtől a kopár szík sarja.");
     assertNotNull(langs);
-    assertTrue(langs.isPresent());
-    assertEquals("hu", langs.get().getLanguage());
+    assertEquals("hu", langs.getIsoCode639_1().toString());
 
     langs = languageDetector.detect("1984.");
     assertNotNull(langs);
-    assertFalse(langs.isPresent());
+    //assertFalse(langs);
+
+    SortedMap<Language, Double> confidences = languageDetector.detectWithConfidence("Der Literaturnobelpreis 2016 ging an den Musiker Bob Dylan. Mit dieser Entscheidung erkannte die Jury zum ersten Mal die literarische Qualität von Songtexten an. Nicht jeder fand das gut.");
+    assertNotNull(confidences);
+    assertEquals("de", confidences.firstKey().getIsoCode639_1().toString());
 
   }
 }
