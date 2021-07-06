@@ -8,6 +8,7 @@ import com.github.pemistahl.lingua.api.LanguageDetectorBuilder;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.SortedMap;
 import java.util.stream.Collectors;
 
 /**
@@ -27,5 +28,10 @@ class QALanguageDetector {
   public Language detect(String text) {
     final Language detectedLanguage = languageDetector.detectLanguageOf(text);
     return detectedLanguage;
+  }
+
+  public SortedMap<Language, Double> detectWithConfidence(String text) {
+    final SortedMap<Language, Double> detectedLanguages = languageDetector.computeLanguageConfidenceValues(text);
+    return detectedLanguages;
   }
 }
