@@ -64,7 +64,7 @@ jobs:
           distribution: 'adopt'
           java-version: 11
 
-      - run: mvn -B verify -P coverage --no-transfer-progress
+      - run: mvn -B package -P travis --no-transfer-progress
 
       - uses: codecov/codecov-action@v1
         with:
