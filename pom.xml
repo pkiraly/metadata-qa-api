@@ -57,7 +57,6 @@
     <maven.compiler.target>11.0</maven.compiler.target>
     <skipSource>false</skipSource>
     <skipGpg>false</skipGpg>
-    <skipCobertura>false</skipCobertura>
     <skipStaging>true</skipStaging>
     <skipJavadoc>false</skipJavadoc>
     <project.timezone>UTC</project.timezone>
@@ -356,7 +355,6 @@
       <properties>
         <skipSource>true</skipSource>
         <skipGpg>true</skipGpg>
-        <skipCobertura>true</skipCobertura>
         <skipStaging>true</skipStaging>
         <skipJavadoc>true</skipJavadoc>
       </properties>
