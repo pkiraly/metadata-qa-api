@@ -47,7 +47,7 @@ public class CalculatorFactory {
   }
 
   private void addExtractor() {
-    if (configuration.isFieldExtractorEnabled())
+    if (configuration.isFieldExtractorEnabled() && !schema.getExtractableFields().isEmpty())
       calculators.add(new FieldExtractor(schema));
   }
 
