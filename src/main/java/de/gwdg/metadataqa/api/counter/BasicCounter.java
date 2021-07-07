@@ -29,6 +29,14 @@ public class BasicCounter implements Serializable {
     instance++;
   }
 
+  public void decreaseTotal(int decrease) {
+    total -= decrease;
+  }
+
+  public void decreaseInstance(int decrease) {
+    instance -= decrease;
+  }
+
   public void calculate() {
     result = (instance / total);
   }

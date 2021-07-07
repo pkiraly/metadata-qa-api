@@ -118,14 +118,14 @@ public class CompletenessCalculator<T extends XmlFieldInstance>
 
     if (schema.getFieldGroups() != null) {
       for (FieldGroup fieldGroup : schema.getFieldGroups()) {
-        var existing = false;
+        int existing = 0;
+        int field_count = fieldGroup.getFields().size();
         for (String field : fieldGroup.getFields()) {
           if (Boolean.TRUE.equals(existenceCounter.get(field))) {
-            existing = true;
-            break;
+            existing++;
           }
         }
-        completenessCounter.increaseInstance(fieldGroup.getCategory(), existing);
+        completenessCounter.increaseInstance(fieldGroup.getCategory(), existing, field_count);
       }
     }
 

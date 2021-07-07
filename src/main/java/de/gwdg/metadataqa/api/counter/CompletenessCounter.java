@@ -52,10 +52,19 @@ public class CompletenessCounter implements Serializable {
       basicCounters.get(category).increaseInstance();
   }
 
-  public void increaseInstance(String category, boolean increase) {
+  public void increaseInstance(String category, int increase, int field_count) {
+   // Don't increment total if already counted by field category
+   if(basicCounters.get(category).getTotal() == 0)
     basicCounters.get(category).increaseTotal();
-    if (increase) {
-      basicCounters.get(category).increaseInstance();
+
+   if (increase > 0) {
+	  // If count has already been set by fields, we reduce the count down based on fieldgroups
+	  if(basicCounters.get(category).getInstance() > 0) {
+        basicCounters.get(category).decreaseInstance(increase - 1);
+        basicCounters.get(category).decreaseTotal(field_count - 1);
+      } else {
+        basicCounters.get(category).increaseInstance();
+      }
     }
   }
 
