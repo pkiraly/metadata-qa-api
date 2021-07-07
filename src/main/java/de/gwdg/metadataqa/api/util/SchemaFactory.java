@@ -2,7 +2,10 @@ package de.gwdg.metadataqa.api.util;
 
 import de.gwdg.metadataqa.api.configuration.SchemaConfiguration;
 import de.gwdg.metadataqa.api.configuration.schema.Field;
+import de.gwdg.metadataqa.api.configuration.schema.Group;
+import de.gwdg.metadataqa.api.model.Category;
 import de.gwdg.metadataqa.api.json.JsonBranch;
+import de.gwdg.metadataqa.api.json.FieldGroup;
 import de.gwdg.metadataqa.api.schema.BaseSchema;
 import de.gwdg.metadataqa.api.schema.Format;
 import de.gwdg.metadataqa.api.schema.Schema;
@@ -62,6 +65,14 @@ public class SchemaFactory {
 
       schema.addField(branch);
     }
+
+    for (Group group : config.getGroups()) {
+		FieldGroup fieldgroup = new FieldGroup( 
+				group.getCategories().get(0),
+				group.getFields());
+
+		schema.addFieldGroup(fieldgroup);
+	}
 
     if (config.getNamespaces() != null)
       schema.setNamespaces(config.getNamespaces());

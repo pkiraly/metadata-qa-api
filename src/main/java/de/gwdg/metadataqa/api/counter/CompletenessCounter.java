@@ -2,6 +2,7 @@ package de.gwdg.metadataqa.api.counter;
 
 import de.gwdg.metadataqa.api.model.Category;
 import de.gwdg.metadataqa.api.schema.Schema;
+import de.gwdg.metadataqa.api.json.FieldGroup;
 
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -50,10 +51,10 @@ public class CompletenessCounter implements Serializable {
       basicCounters.get(category).increaseInstance();
   }
 
-  public void increaseInstance(Category category, boolean increase) {
-    basicCounters.get(category.name()).increaseTotal();
+  public void increaseInstance(String category, boolean increase) {
+    basicCounters.get(category).increaseTotal();
     if (increase) {
-      basicCounters.get(category.name()).increaseInstance();
+      basicCounters.get(category).increaseInstance();
     }
   }
 
@@ -75,6 +76,9 @@ public class CompletenessCounter implements Serializable {
     headers.add(TOTAL);
     for (String category : schema.getCategories()) {
       headers.add(category);
+    }
+    for (FieldGroup group: schema.getFieldGroups()) {
+      headers.add(group.getCategory());
     }
     return headers;
   }
