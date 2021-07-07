@@ -3,6 +3,7 @@ package de.gwdg.metadataqa.api.counter;
 import de.gwdg.metadataqa.api.model.Category;
 import de.gwdg.metadataqa.api.schema.Schema;
 import de.gwdg.metadataqa.api.json.FieldGroup;
+import org.apache.commons.lang3.StringUtils;
 
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -74,12 +75,14 @@ public class CompletenessCounter implements Serializable {
   public static List<String> getHeaders(Schema schema) {
     List<String> headers = new ArrayList<>();
     headers.add(TOTAL);
-    for (String category : schema.getCategories()) {
+
+    for (String category : schema.getCategories())
       headers.add(category);
-    }
-    for (FieldGroup group: schema.getFieldGroups()) {
-      headers.add(group.getCategory());
-    }
+
+    for (FieldGroup group: schema.getFieldGroups())
+      if (!headers.contains(group.getCategory()))
+        headers.add(group.getCategory());
+
     return headers;
   }
 

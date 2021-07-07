@@ -66,13 +66,10 @@ public class SchemaFactory {
       schema.addField(branch);
     }
 
-    for (Group group : config.getGroups()) {
-		FieldGroup fieldgroup = new FieldGroup( 
-				group.getCategories().get(0),
-				group.getFields());
-
-		schema.addFieldGroup(fieldgroup);
-	}
+    if (config.getGroups() != null)
+      for (Group group : config.getGroups())
+        for (String category : group.getCategories())
+          schema.addFieldGroup(new FieldGroup(category, group.getFields()));
 
     if (config.getNamespaces() != null)
       schema.setNamespaces(config.getNamespaces());

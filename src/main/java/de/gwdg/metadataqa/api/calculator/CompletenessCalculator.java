@@ -162,29 +162,6 @@ public class CompletenessCalculator<T extends XmlFieldInstance>
     }
   }
 
-  /*
-  private boolean isCollectionSkippable(
-      List<String> skippableIds,
-      JsonBranch collection,
-      int i,
-      JsonPathCache cache,
-      Object jsonFragment)
-  {
-    var skippable = false;
-    JsonBranch identifierPath = collection.getIdentifier();
-    if (!skippableIds.isEmpty() && identifierPath != null) {
-      String address = String.format("%s/%d/%s",
-        collection.getJsonPath(), i, identifierPath.getJsonPath());
-      List<T> values = cache.get(address, identifierPath.getJsonPath(), jsonFragment);
-      String id = (skippedEntryChecker != null)
-            ? skippedEntryChecker.extractId(values.get(0))
-            : values.get(0).getValue();
-      skippable = skippableIds.contains(id);
-    }
-    return skippable;
-  }
-  */
-
   public void evaluateJsonBranch(JsonBranch jsonBranch,
                                  PathCache cache,
                                  CompletenessCounter completenessCounter,

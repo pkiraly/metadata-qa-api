@@ -48,6 +48,7 @@ public class FieldGroup {
     this.category = pCategory.toString();
     this.fields = Arrays.asList(pFields);
   }
+
   /**
    * Get the list of field names.
    * @return
