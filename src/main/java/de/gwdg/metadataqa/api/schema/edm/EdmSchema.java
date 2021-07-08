@@ -58,9 +58,9 @@ public abstract class EdmSchema implements Schema, ProblemCatalogSchema {
 
   @Override
   public List<String> getCategories() {
-    if (categories == null) {
+    if (categories == null)
       categories = Category.extractCategories(paths.values(), true);
-    }
+
     return categories;
   }
 

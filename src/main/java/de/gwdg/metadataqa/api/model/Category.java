@@ -32,7 +32,7 @@ public enum Category {
   }
 
   public static List<String> extractCategories(Collection<JsonBranch> paths,
-                                                 boolean reorder) {
+                                               boolean reorder) {
     List<String> existingCategories = extractExistingCategories(paths);
 
     if (reorder)
@@ -44,9 +44,10 @@ public enum Category {
   private static List<String> extractExistingCategories(Collection<JsonBranch> paths) {
     List<String> existingCategories = new ArrayList<>();
     for (JsonBranch branch : paths)
-      for (String category : branch.getCategories())
-        if (!existingCategories.contains(category))
-          existingCategories.add(category);
+      if (branch.isActive())
+        for (String category : branch.getCategories())
+          if (!existingCategories.contains(category))
+            existingCategories.add(category);
 
     return existingCategories;
   }
