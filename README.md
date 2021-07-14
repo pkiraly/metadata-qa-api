@@ -192,12 +192,16 @@ rather difficult to illustrate, let me give you some assertions here:
 assertTrue(metrics instanceof Map);
 assertEquals(1, metrics.size());
 assertEquals("completeness", metrics.keySet().iterator().next());
+// the calculator produced three metrics
 assertEquals(3, metrics.get("completeness").size());
+
+// first: completeness
 assertEquals("completeness", metrics.get("completeness").get(0).getName());
 assertEquals(
   Map.of("TOTAL", 0.35294117647058826, "MANDATORY", 1.0),
   metrics.get("completeness").get(0).getResultMap());
 
+// second: existence
 assertEquals("existence", metrics.get("completeness").get(1).getName());
 assertEquals(
   Set.of("url", "name", "alternateName", "description", "variablesMeasured", "measurementTechnique",
@@ -209,6 +213,7 @@ assertEquals(
           false, false, false, false),
   new ArrayList(metrics.get("completeness").get(1).getResultMap().values()));
 
+// third: cardinality
 assertEquals("cardinality", metrics.get("completeness").get(2).getName());
 assertEquals(
   Set.of("url", "name", "alternateName", "description", "variablesMeasured", "measurementTechnique",
