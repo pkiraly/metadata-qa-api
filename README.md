@@ -194,23 +194,26 @@ assertEquals(1, metrics.size());
 assertEquals("completeness", metrics.keySet().iterator().next());
 assertEquals(3, metrics.get("completeness").size());
 assertEquals("completeness", metrics.get("completeness").get(0).getName());
-assertEquals(Map.of("TOTAL", 0.35294117647058826, "MANDATORY", 1.0), metrics.get("completeness").get(0).getResultMap());
+assertEquals(
+  Map.of("TOTAL", 0.35294117647058826, "MANDATORY", 1.0),
+  metrics.get("completeness").get(0).getResultMap());
 
 assertEquals("existence", metrics.get("completeness").get(1).getName());
 assertEquals(
-  Set.of("url", "name", "alternateName", "description", "variablesMeasured", "measurementTechnique", "sameAs", "doi",
-        "identifier", "author", "isAccessibleForFree", "dateModified", "distribution", "spatialCoverage", "provider",
-        "funder", "temporalCoverage"),
+        Set.of("url", "name", "alternateName", "description", "variablesMeasured", "measurementTechnique",
+        "sameAs", "doi", "identifier", "author", "isAccessibleForFree", "dateModified",
+        "distribution", "spatialCoverage", "provider", "funder", "temporalCoverage"),
   metrics.get("completeness").get(1).getResultMap().keySet());
 assertEquals(
-  List.of(true, true, false, true, false, false, false, false, true, false, false, true, true, false, false, false, false),
+  List.of(true, true, false, true, false, false, false, false, true, false, false, true, true, false,
+          false, false, false),
   new ArrayList(metrics.get("completeness").get(1).getResultMap().values()));
 
 assertEquals("cardinality", metrics.get("completeness").get(2).getName());
 assertEquals(
-  Set.of("url", "name", "alternateName", "description", "variablesMeasured", "measurementTechnique", "sameAs", "doi",
-        "identifier", "author", "isAccessibleForFree", "dateModified", "distribution", "spatialCoverage", "provider",
-        "funder", "temporalCoverage"),
+  Set.of("url", "name", "alternateName", "description", "variablesMeasured", "measurementTechnique",
+        "sameAs", "doi", "identifier", "author", "isAccessibleForFree", "dateModified",
+        "distribution", "spatialCoverage", "provider", "funder", "temporalCoverage"),
   metrics.get("completeness").get(2).getResultMap().keySet());
 assertEquals(
   List.of(1, 1, 0, 1, 0, 0, 0, 0, 1, 0, 0, 1, 1, 0, 0, 0, 0),
