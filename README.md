@@ -74,11 +74,117 @@ There are a couple of alternatives, if you would like to receive a
 List or a Map:
 
 * `String measure(String record) throws InvalidJsonException`
+Returns a CSV string
+```Java
+"0.352941,1.0,1,1,0,1,0,0,0,0,1,0,0,1,1,0,0,0,0,1,1,0,1,0,0,0,0,1,0,0,1,1,0,0,0,0"
+```
 * `List<String> measureAsList(String record) throws InvalidJsonException`
+Returns a list of strings. 
+```Java
+List.of("0.352941", "1.0", "1", "1", "0", "1", "0", "0", "0", "0", "1", "0", "0", "1", "1", "0", "0", "0", "0", "1",
+       "1", "0", "1", "0", "0", "0", "0", "1", "0", "0", "1", "1", "0", "0", "0", "0");
+```
 * `List<Object> measureAsListOfObjects(String record) throws InvalidJsonException`
+Returns a list of objects
+```Java
+List.of(0.35294117647058826, 1.0, true, true, false, true, false, false, false, false, true, false, false, true, true,
+        false, false, false, false, 1, 1, 0, 1, 0, 0, 0, 0, 1, 0, 0, 1, 1, 0, 0, 0, 0);
+```
 * `Map<String, Object> measureAsMap(String record) throws InvalidJsonException`
+Returns a map of objects. The key of the map are the
+```Java
+Map.of(
+  "completeness:TOTAL", 0.35294117647058826,
+  "completeness:MANDATORY", 1.0,
+  "existence:url", true,
+  "existence:name", true,
+  "existence:alternateName", false,
+  "existence:description", true,
+  "existence:variablesMeasured", false,
+  "existence:measurementTechnique", false,
+  "existence:sameAs", false,
+  "existence:doi", false,
+  "existence:identifier", true,
+  "existence:author", false,
+  "existence:isAccessibleForFree", false,
+  "existence:dateModified", true,
+  "existence:distribution", true,
+  "existence:spatialCoverage", false,
+  "existence:provider", false,
+  "existence:funder", false,
+  "existence:temporalCoverage", false,
+  "cardinality:url", 1.
+  "cardinality:name", 1,
+  "cardinality:alternateName", 0,
+  "cardinality:description", 1,
+  "cardinality:variablesMeasured", 0,
+  "cardinality:measurementTechnique", 0,
+  "cardinality:sameAs", 0,
+  "cardinality:doi", 0,
+  "cardinality:identifier", 1,
+  "cardinality:author", 0,
+  "cardinality:isAccessibleForFree", 0,
+  "cardinality:dateModified", 1,
+  "cardinality:distribution", 1,
+  "cardinality:spatialCoverage", 0,
+  "cardinality:provider", 0,
+  "cardinality:funder", 0,
+  "cardinality:temporalCoverage", 0
+)
+```
 * `String measureAsJson(String inputRecord) throws InvalidJsonException`
+```JSON
+{
+  "completeness":{
+    "completeness":{
+      "TOTAL":0.35294117647058826,
+      "MANDATORY":1.0
+    },
+    "existence":{
+      "url":true,
+      "name":true,
+      "alternateName":false,
+      "description":true,
+      "variablesMeasured":false,
+      "measurementTechnique":false,
+      "sameAs":false,
+      "doi":false,
+      "identifier":true,
+      "author":false,
+      "isAccessibleForFree":false,
+      "dateModified":true,
+      "distribution":true,
+      "spatialCoverage":false,
+      "provider":false,
+      "funder":false,
+      "temporalCoverage":false
+    },
+    "cardinality":{
+      "url":1,
+      "name":1,
+      "alternateName":0,
+      "description":1,
+      "variablesMeasured":0,
+      "measurementTechnique":0,
+      "sameAs":0,
+      "doi":0,
+      "identifier":1,
+      "author":0,
+      "isAccessibleForFree":0,
+      "dateModified":1,
+      "distribution":1,
+      "spatialCoverage":0,
+      "provider":0,
+      "funder":0,
+      "temporalCoverage":0
+    }
+  }
+}
+```
 * `Map<String, List<MetricResult>> measureAsMetricResult(String inputRecord) throws InvalidJsonException`
+```Java
+Map.of("completeness", List<MetricResult>);
+```
 
 If your input is a CSV file, and you already processed the lines 
 into list of cells, you could use the same methods:

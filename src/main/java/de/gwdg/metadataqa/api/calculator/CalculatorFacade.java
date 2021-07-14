@@ -180,7 +180,7 @@ public class CalculatorFacade implements Serializable {
       throws InvalidJsonException {
     conditionalConfiguration();
 
-    MetricCollector collector = new MetricCollector(); // OutputFactory.createOutput(type);
+    MetricCollector collector = new MetricCollector();
 
     if (schema == null) {
       throw new IllegalStateException("schema is missing");
@@ -226,7 +226,7 @@ public class CalculatorFacade implements Serializable {
       throw new IllegalStateException("Format is not CSV");
 
     conditionalConfiguration();
-    MetricCollector collector = new MetricCollector(); // OutputFactory.createOutput(type);
+    MetricCollector collector = new MetricCollector();
 
     if (content != null) {
       cache = new CsvPathCache<>(csvReader, content);
