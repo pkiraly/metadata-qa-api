@@ -200,7 +200,7 @@ assertEquals(
 
 assertEquals("existence", metrics.get("completeness").get(1).getName());
 assertEquals(
-        Set.of("url", "name", "alternateName", "description", "variablesMeasured", "measurementTechnique",
+  Set.of("url", "name", "alternateName", "description", "variablesMeasured", "measurementTechnique",
         "sameAs", "doi", "identifier", "author", "isAccessibleForFree", "dateModified",
         "distribution", "spatialCoverage", "provider", "funder", "temporalCoverage"),
   metrics.get("completeness").get(1).getResultMap().keySet());
