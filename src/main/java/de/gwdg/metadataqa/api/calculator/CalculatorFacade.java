@@ -1,8 +1,8 @@
 package de.gwdg.metadataqa.api.calculator;
 
 import com.jayway.jsonpath.InvalidJsonException;
+import de.gwdg.metadataqa.api.calculator.output.MetricCollector;
 import de.gwdg.metadataqa.api.calculator.output.OutputCollector;
-import de.gwdg.metadataqa.api.calculator.output.OutputFactory;
 import de.gwdg.metadataqa.api.configuration.MeasurementConfiguration;
 import de.gwdg.metadataqa.api.interfaces.Calculator;
 import de.gwdg.metadataqa.api.interfaces.MetricResult;
@@ -180,7 +180,7 @@ public class CalculatorFacade implements Serializable {
       throws InvalidJsonException {
     conditionalConfiguration();
 
-    OutputCollector collector = OutputFactory.createOutput(type);
+    MetricCollector collector = new MetricCollector(); // OutputFactory.createOutput(type);
 
     if (schema == null) {
       throw new IllegalStateException("schema is missing");
@@ -200,7 +200,7 @@ public class CalculatorFacade implements Serializable {
       }
     }
 
-    return collector.getResults();
+    return collector.createOutput(type, compressionLevel);
   }
 
   private void initializeCsvCache(String content) {
@@ -226,14 +226,14 @@ public class CalculatorFacade implements Serializable {
       throw new IllegalStateException("Format is not CSV");
 
     conditionalConfiguration();
-    OutputCollector collector = OutputFactory.createOutput(type);
+    MetricCollector collector = new MetricCollector(); // OutputFactory.createOutput(type);
 
     if (content != null) {
       cache = new CsvPathCache<>(csvReader, content);
       runMeasurements(collector);
     }
 
-    return collector.getResults();
+    return collector.createOutput(type, compressionLevel);
   }
 
   private void runMeasurements(OutputCollector collector) {
