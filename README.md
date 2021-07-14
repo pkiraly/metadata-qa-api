@@ -205,8 +205,8 @@ assertEquals(
         "distribution", "spatialCoverage", "provider", "funder", "temporalCoverage"),
   metrics.get("completeness").get(1).getResultMap().keySet());
 assertEquals(
-  List.of(true, true, false, true, false, false, false, false, true, false, false, true, true, false,
-          false, false, false),
+  List.of(true, true, false, true, false, false, false, false, true, false, false, true, true,
+          false, false, false, false),
   new ArrayList(metrics.get("completeness").get(1).getResultMap().values()));
 
 assertEquals("cardinality", metrics.get("completeness").get(2).getName());
