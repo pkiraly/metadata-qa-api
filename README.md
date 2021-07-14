@@ -81,14 +81,16 @@ Returns a CSV string
 * `List<String> measureAsList(String record) throws InvalidJsonException`
 Returns a list of strings. 
 ```Java
-List.of("0.352941", "1.0", "1", "1", "0", "1", "0", "0", "0", "0", "1", "0", "0", "1", "1", "0", "0", "0", "0", "1",
-       "1", "0", "1", "0", "0", "0", "0", "1", "0", "0", "1", "1", "0", "0", "0", "0");
+List.of("0.352941", "1.0", "1", "1", "0", "1", "0", "0", "0", "0", "1", "0", "0", "1", "1",
+        "0", "0", "0", "0", "1", "1", "0", "1", "0", "0", "0", "0", "1", "0", "0", "1", "1",
+        "0", "0", "0", "0");
 ```
 * `List<Object> measureAsListOfObjects(String record) throws InvalidJsonException`
 Returns a list of objects
 ```Java
-List.of(0.35294117647058826, 1.0, true, true, false, true, false, false, false, false, true, false, false, true, true,
-        false, false, false, false, 1, 1, 0, 1, 0, 0, 0, 0, 1, 0, 0, 1, 1, 0, 0, 0, 0);
+List.of(0.35294117647058826, 1.0, true, true, false, true, false, false, false, false, true,
+        false, false, true, true, false, false, false, false, 1, 1, 0, 1, 0, 0, 0, 0, 1, 0,
+        0, 1, 1, 0, 0, 0, 0);
 ```
 * `Map<String, Object> measureAsMap(String record) throws InvalidJsonException`
 Returns a map of objects. The key of the map are the
