@@ -93,7 +93,7 @@ List.of(0.35294117647058826, 1.0, true, true, false, true, false, false, false, 
         0, 1, 1, 0, 0, 0, 0);
 ```
 * `Map<String, Object> measureAsMap(String record) throws InvalidJsonException`
-Returns a map of objects. The key of the map are the
+Returns a map of objects. The keys of the map are the names of the metrics.
 ```Java
 Map.of(
   "completeness:TOTAL", 0.35294117647058826,
@@ -135,6 +135,7 @@ Map.of(
 )
 ```
 * `String measureAsJson(String inputRecord) throws InvalidJsonException`
+Returns a JSON representation
 ```JSON
 {
   "completeness":{
@@ -184,8 +185,36 @@ Map.of(
 }
 ```
 * `Map<String, List<MetricResult>> measureAsMetricResult(String inputRecord) throws InvalidJsonException`
+Returns a map with a "raw" format. The keys of the map are the individual calculators. The values are list of MetricResult
+objects. Each has a name (use `getName()` method), and a map of metrics (use `getResultMap()` method). Since it is
+rather difficult to illustrate, let me give you some assertions here: 
 ```Java
-Map.of("completeness", List<MetricResult>);
+assertTrue(metrics instanceof Map);
+assertEquals(1, metrics.size());
+assertEquals("completeness", metrics.keySet().iterator().next());
+assertEquals(3, metrics.get("completeness").size());
+assertEquals("completeness", metrics.get("completeness").get(0).getName());
+assertEquals(Map.of("TOTAL", 0.35294117647058826, "MANDATORY", 1.0), metrics.get("completeness").get(0).getResultMap());
+
+assertEquals("existence", metrics.get("completeness").get(1).getName());
+assertEquals(
+  Set.of("url", "name", "alternateName", "description", "variablesMeasured", "measurementTechnique", "sameAs", "doi",
+        "identifier", "author", "isAccessibleForFree", "dateModified", "distribution", "spatialCoverage", "provider",
+        "funder", "temporalCoverage"),
+  metrics.get("completeness").get(1).getResultMap().keySet());
+assertEquals(
+  List.of(true, true, false, true, false, false, false, false, true, false, false, true, true, false, false, false, false),
+  new ArrayList(metrics.get("completeness").get(1).getResultMap().values()));
+
+assertEquals("cardinality", metrics.get("completeness").get(2).getName());
+assertEquals(
+  Set.of("url", "name", "alternateName", "description", "variablesMeasured", "measurementTechnique", "sameAs", "doi",
+        "identifier", "author", "isAccessibleForFree", "dateModified", "distribution", "spatialCoverage", "provider",
+        "funder", "temporalCoverage"),
+  metrics.get("completeness").get(2).getResultMap().keySet());
+assertEquals(
+  List.of(1, 1, 0, 1, 0, 0, 0, 0, 1, 0, 0, 1, 1, 0, 0, 0, 0),
+  new ArrayList(metrics.get("completeness").get(2).getResultMap().values()));
 ```
 
 If your input is a CSV file, and you already processed the lines 

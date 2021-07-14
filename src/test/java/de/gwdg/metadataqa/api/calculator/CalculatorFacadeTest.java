@@ -16,6 +16,7 @@ import de.gwdg.metadataqa.api.interfaces.Calculator;
 import java.io.FileReader;
 import java.io.IOException;
 import java.net.URISyntaxException;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.LinkedHashMap;
@@ -363,6 +364,9 @@ public class CalculatorFacadeTest {
       "identifier", "author", "isAccessibleForFree", "dateModified", "distribution", "spatialCoverage", "provider",
       "funder", "temporalCoverage"),
       metrics.get("completeness").get(1).getResultMap().keySet());
+    assertEquals(
+      List.of(true, true, false, true, false, false, false, false, true, false, false, true, true, false, false, false, false),
+      new ArrayList(metrics.get("completeness").get(1).getResultMap().values()));
 
     assertEquals("cardinality", metrics.get("completeness").get(2).getName());
     assertEquals(
@@ -370,6 +374,9 @@ public class CalculatorFacadeTest {
         "identifier", "author", "isAccessibleForFree", "dateModified", "distribution", "spatialCoverage", "provider",
         "funder", "temporalCoverage"),
       metrics.get("completeness").get(2).getResultMap().keySet());
+    assertEquals(
+      List.of(1, 1, 0, 1, 0, 0, 0, 0, 1, 0, 0, 1, 1, 0, 0, 0, 0),
+      new ArrayList(metrics.get("completeness").get(2).getResultMap().values()));
   }
 
   private CalculatorFacade createCalculatorFacadeForCsv() {
