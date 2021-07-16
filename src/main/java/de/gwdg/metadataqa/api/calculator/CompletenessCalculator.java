@@ -178,11 +178,23 @@ public class CompletenessCalculator<T extends XmlFieldInstance>
       completenessCounter.increaseTotal(jsonBranch.getCategories());
     }
 
-    if (values != null && !values.isEmpty() && !values.get(0).getValue().isEmpty()) {
+    if (values != null && !values.isEmpty() && !isEmpty(values)) {
       handleNonNullValues(completenessCounter, jsonBranch, values);
     } else {
       handleNullValues(jsonBranch);
     }
+  }
+
+  private boolean isEmpty(List<T> values) {
+    boolean empty = true;
+    for (T value : values) {
+      if (!value.isEmpty()) {
+        empty = false;
+        break;
+      }
+    }
+
+    return empty;
   }
 
   private void handleNonNullValues(CompletenessCounter completenessCounter,
