@@ -178,7 +178,7 @@ public class CompletenessCalculator<T extends XmlFieldInstance>
       completenessCounter.increaseTotal(jsonBranch.getCategories());
     }
 
-    if (values != null && !values.isEmpty()) {
+    if (values != null && !values.isEmpty() && !values.get(0).getValue().isEmpty()) {
       handleNonNullValues(completenessCounter, jsonBranch, values);
     } else {
       handleNullValues(jsonBranch);
