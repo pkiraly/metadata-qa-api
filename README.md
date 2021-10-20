@@ -5,6 +5,12 @@ Framework, every other project is built on top of it. It provides
 a general framework for measuring metadata quality in different 
 digital collections.
 
+## Running as command-line application
+
+Go to the project https://github.com/viaacode/metadata-quality-assessment to run this framework as a CLI.
+
+## Using the library
+
 If you want to implement it to your collection you have to define
 a schema, which presentats an existing metadata schema, and
 configure the basic facade, which will run the calculation.
