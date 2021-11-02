@@ -37,7 +37,7 @@ public class CalculatorFacade implements Serializable {
   );
   private static final long serialVersionUID = -5956665711362465908L;
 
-  private MeasurementConfiguration configuration;
+  protected MeasurementConfiguration configuration;
 
   /**
    * Is it the first record?

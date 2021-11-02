@@ -86,6 +86,8 @@ public class MeasurementConfiguration {
    */
   protected boolean checkSkippableCollections = false;
 
+  protected boolean onlyIdInHeader = false;
+
   /**
    * Solr host name
    */
@@ -546,6 +548,19 @@ public class MeasurementConfiguration {
 
   public MeasurementConfiguration withSolrPort(String solrPort) {
     this.solrPort = solrPort;
+    return this;
+  }
+
+  public boolean isOnlyIdInHeader() {
+    return onlyIdInHeader;
+  }
+
+  public void setOnlyIdInHeader(boolean onlyIdInHeader) {
+    this.onlyIdInHeader = onlyIdInHeader;
+  }
+
+  public MeasurementConfiguration withOnlyIdInHeader(boolean onlyIdInHeader) {
+    this.onlyIdInHeader = onlyIdInHeader;
     return this;
   }
 

@@ -85,8 +85,6 @@ public class MetricCollector implements OutputCollector {
   private Object getJson(CompressionLevel compressionLevel) {
     Map<String, Object> result = new LinkedHashMap<>();
 
-    System.err.println(results.keySet());
-
     for (Map.Entry<String, List<MetricResult>> entry : results.entrySet()) {
       Map<String, Object> calcResult = new LinkedHashMap<>();
 
