@@ -80,6 +80,11 @@ public class FieldExtractorTest {
   @Test
   public void noId() throws URISyntaxException, IOException, CsvValidationException {
     CalculatorFacade facade = configureTest();
+
+    assertEquals(1, facade.getSchema().getExtractableFields().size());
+    assertTrue(facade.getSchema().getExtractableFields().containsKey("url"));
+    assertEquals("url", facade.getSchema().getExtractableFields().get("url"));
+
     assertEquals(List.of("url"), facade.getHeader());
 
     String fileName = "src/test/resources/csv/meemoo-simple.csv";
@@ -114,6 +119,29 @@ public class FieldExtractorTest {
     assertEquals("\"Hurry, Leslie\",,0.5,1,0,1,0,1,0,1,0", facade.measure(content));
   }
 
+  @Test
+  public void issue82() throws URISyntaxException, IOException, CsvValidationException {
+    String schemaFile = "src/test/resources/configuration/schema/issue82.yaml";
+    Schema schema = ConfigurationReader.readSchemaYaml(schemaFile).asSchema();
+
+    CalculatorFacade facade = new CalculatorFacade(
+      new MeasurementConfiguration()
+        .enableCompletenessMeasurement()
+        .enableFieldCardinalityMeasurement()
+        .enableFieldExtractor()
+      )
+      .setSchema(schema);
+    facade.configure();
+
+    String content = FileUtils.readContentFromResource("general/issue82-sample-input.json");
+    assertEquals(Arrays.asList("recordId", "completeness:TOTAL", "completeness:mandatory_if_present", "existence:recordId", "cardinality:recordId"), facade.getHeader());
+    assertEquals(
+      Arrays.asList("0000008c000a4b2cb90eefb7b131289d728fc57cc25946c2aca6ccb0820857da69f1ef620c2b4c99a668cb38062bf45c", "1.0", "1.0", "1", "1"),
+      facade.measureAsList(content));
+    assertEquals("0000008c000a4b2cb90eefb7b131289d728fc57cc25946c2aca6ccb0820857da69f1ef620c2b4c99a668cb38062bf45c,1.0,1.0,1,1",
+      facade.measure(content));
+  }
+
   private CalculatorFacade configureTest() {
     Schema schema = new BaseSchema()
       .setFormat(Format.CSV)
@@ -130,4 +158,6 @@ public class FieldExtractorTest {
 
     return facade;
   }
+
+
 }

@@ -58,8 +58,10 @@ public class FieldExtractor implements Calculator, Serializable {
     if (schema != null) {
       String path;
       for (String fieldName : schema.getExtractableFields().keySet()) {
+        if (idPath == null || !fieldName.equals(FIELD_NAME)) {
           path = schema.getExtractableFields().get(fieldName);
-        extractSingleField(cache, resultMap, path, fieldName);
+          extractSingleField(cache, resultMap, path, fieldName);
+        }
       }
     }
     return List.of(new FieldCounterBasedResult<>(getCalculatorName(), resultMap).withNoCompression());
@@ -92,7 +94,8 @@ public class FieldExtractor implements Calculator, Serializable {
 
     if (schema != null)
       for (String fieldName : schema.getExtractableFields().keySet())
-        headers.add(FileUtils.escape(fieldName));
+        if (idPath == null || !fieldName.equals(FIELD_NAME))
+          headers.add(FileUtils.escape(fieldName));
 
     return headers;
   }

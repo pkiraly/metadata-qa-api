@@ -42,7 +42,7 @@ public class BaseSchema implements Schema, CsvAwareSchema, Serializable {
       collectionPaths.put(branch.getLabel(), branch);
 
     if (branch.isExtractable())
-      extractableFields.put(branch.getLabel(), branch.getJsonPath());
+      addExtractableField(branch.getLabel(), branch.getJsonPath());
 
     return this;
   }
