@@ -484,7 +484,7 @@ Example: the field value should not be empty
     - minLength: 1
 ```
 
- * `maxLength <number>` - The maximum string length of each field value (API: `setMinLength(Integer)` or `withMaxLength(Integer)`)
+ * `maxLength <number>` - The maximum string length of each field value (API: `setMaxLength(Integer)` or `withMaxLength(Integer)`)
 
 Example: the value should be 3, 4, or 5 character long.
 
@@ -529,6 +529,30 @@ Example: the field value should start with http:// or https:// and end with .jpg
   path: oai:record/dc:identifier[@type='binary']
   rules:
     - pattern: ^https?://.*\.(jpg|jpeg|jpe|jfif|png|tiff|tif|gif|svg|svgz|pdf)$
+```
+
+* `minWords <number>` - The minimum word count of each field value (API: `setMinWords(Integer)` or `withMinWord(Integer)`)
+
+Example: the field value should have at least one words
+
+```yaml
+- name: about
+  path:  $.['about']
+  rules:
+    - minWords: 1
+```
+
+* `maxWords <number>` - The maximum string length of each field value (API: `setMaxWords(Integer)` or `withMaxWords(Integer)`)
+
+Example: the value should be at least 3 character long, but should not contain more than 2 words.
+
+```yaml
+- name: about
+  path:  $.['about']
+  rules:
+    - and:
+      - minLength: 3
+      - maxWords: 2
 ```
 
 #### Comparision of properties

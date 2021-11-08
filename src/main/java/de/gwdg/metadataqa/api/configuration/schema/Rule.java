@@ -31,6 +31,8 @@ public class Rule implements Serializable {
   private String hasValue;
   private Boolean unique;
   private List<String> contentType;
+  private Integer maxWords;
+  private Integer minWords;
 
   public String getId() {
     return id;
@@ -361,4 +363,39 @@ public class Rule implements Serializable {
     this.contentType = contentType;
     return this;
   }
+
+  public Integer getMaxWords() {
+    return maxWords;
+  }
+
+  public void setMaxWords(Integer maxWords) {
+    this.maxWords = maxWords;
+  }
+
+  public void setMaxWords(int maxWords) {
+    this.maxWords = maxWords;
+  }
+
+  public Rule withMaxWords(int maxWords) {
+    setMaxWords(maxWords);
+    return this;
+  }
+
+  public Integer getMinWords() {
+    return minWords;
+  }
+
+  public void setMinWords(Integer minWords) {
+    this.minWords = minWords;
+  }
+
+  public void setMinWords(int minWords) {
+    this.minWords = minWords;
+  }
+
+  public Rule withMinWords(int minWords) {
+    setMaxWords(minWords);
+    return this;
+  }
+
 }

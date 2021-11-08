@@ -13,8 +13,10 @@ import de.gwdg.metadataqa.api.rule.pairchecker.EqualityChecker;
 import de.gwdg.metadataqa.api.rule.singlefieldchecker.HasValueChecker;
 import de.gwdg.metadataqa.api.rule.singlefieldchecker.MaxCountChecker;
 import de.gwdg.metadataqa.api.rule.singlefieldchecker.MaxLengthChecker;
+import de.gwdg.metadataqa.api.rule.singlefieldchecker.MaxWordsChecker;
 import de.gwdg.metadataqa.api.rule.singlefieldchecker.MinCountChecker;
 import de.gwdg.metadataqa.api.rule.singlefieldchecker.MinLengthChecker;
+import de.gwdg.metadataqa.api.rule.singlefieldchecker.MinWordsChecker;
 import de.gwdg.metadataqa.api.rule.singlefieldchecker.NumericValueChecker;
 import de.gwdg.metadataqa.api.rule.singlefieldchecker.PatternChecker;
 import de.gwdg.metadataqa.api.rule.RuleChecker;
@@ -83,6 +85,12 @@ public class SchemaUtils {
 
     if (rule.getMaxLength() != null)
       ruleCheckers.add(new MaxLengthChecker(branch, rule.getMaxLength()));
+
+    if (rule.getMaxWords() != null)
+      ruleCheckers.add(new MaxWordsChecker(branch, rule.getMaxWords()));
+
+    if (rule.getMinWords() != null)
+      ruleCheckers.add(new MinWordsChecker(branch, rule.getMinWords()));
 
     if (StringUtils.isNotBlank(rule.getHasValue()))
       ruleCheckers.add(new HasValueChecker(branch, rule.getHasValue()));
