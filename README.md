@@ -474,7 +474,9 @@ Note: integers will be interpreted as floating point numbers.
 
 #### String constraints
 
- * `minLength <number>` - The minimum string length of each field value (API: `setMinLength(Integer)` or `withMinLength(Integer)`)
+##### `minLength <number>`
+
+The minimum string length of each field value (API: `setMinLength(Integer)` or `withMinLength(Integer)`)
 
 Example: the field value should not be empty
 ```yaml
