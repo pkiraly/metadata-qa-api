@@ -417,7 +417,8 @@ the tool will check. In this version the tool mimin SHACL constraints.
 #### Cardinality
 One can specify with this properties how many occurrences of a data elemens a record can have.
 
- * `minCount <number>` - specifies the minimum number of field occurence (API: `setMinCount()` or `withMinCount()`)
+##### `minCount <number>`
+Specifies the minimum number of field occurence (API: `setMinCount()` or `withMinCount()`)
 
 Example: the field should have at least one occurrence
 
@@ -427,8 +428,9 @@ Example: the field should have at least one occurrence
   rules:
   - minCount: 1
 ```
- 
- * `maxCount <number>` - specifies the maximum number of field occurence (API: `setMaxCount()` or `withMaxCount()`)
+
+##### `maxCount <number>`
+Specifies the maximum number of field occurence (API: `setMaxCount()` or `withMaxCount()`)
 
 Example: the field might have maximum one occurrence
 
@@ -444,10 +446,17 @@ Example: the field might have maximum one occurrence
 You can set a range of value within the field's value should remain. You can set a lower and higher bound with boolean 
 operators. You can specify either integers or floating point numbers.
 
- * `minExclusive <number>` - The minimum exclusive value ([field value] > limit, API: `setMinExclusive(Double)` or `withMinExclusive(Double)`)
- * `minInclusive <number>` - The minimum inclusive value ([field value] >= limit, API: `setMinInclusive(Double)` or `withMinExclusive(Double)`)
- * `maxExclusive <number>` - The maximum exclusive value ([field value] < limit, API: `setMaxExclusive(Double)` or `withMaxExclusive(Double)`)
- * `maxInclusive <number>` - The maximum inclusive value ([field value] <= limit, API: `setMaxInclusive(Double)` or `withMaxInclusive(Double)`)
+##### `minExclusive <number>`
+The minimum exclusive value ([field value] > limit, API: `setMinExclusive(Double)` or `withMinExclusive(Double)`)
+
+##### `minInclusive <number>`
+The minimum inclusive value ([field value] >= limit, API: `setMinInclusive(Double)` or `withMinExclusive(Double)`)
+
+##### `maxExclusive <number>`
+The maximum exclusive value ([field value] < limit, API: `setMaxExclusive(Double)` or `withMaxExclusive(Double)`)
+
+##### `maxInclusive <number>`
+The maximum inclusive value ([field value] <= limit, API: `setMaxInclusive(Double)` or `withMaxInclusive(Double)`)
 
 Example: 1.0 <= price <= 2.0
 
@@ -475,7 +484,6 @@ Note: integers will be interpreted as floating point numbers.
 #### String constraints
 
 ##### `minLength <number>`
-
 The minimum string length of each field value (API: `setMinLength(Integer)` or `withMinLength(Integer)`)
 
 Example: the field value should not be empty
@@ -486,7 +494,8 @@ Example: the field value should not be empty
     - minLength: 1
 ```
 
- * `maxLength <number>` - The maximum string length of each field value (API: `setMaxLength(Integer)` or `withMaxLength(Integer)`)
+##### `maxLength <number>`
+The maximum string length of each field value (API: `setMaxLength(Integer)` or `withMaxLength(Integer)`)
 
 Example: the value should be 3, 4, or 5 character long.
 
@@ -499,7 +508,8 @@ Example: the value should be 3, 4, or 5 character long.
       - maxLength: 5
 ```
 
-* `hasValue value` - The value should be equal to the provided value (API: `setHasValue(String)` or `withHasValue(String)`)
+##### `hasValue <String>`
+The value should be equal to the provided value (API: `setHasValue(String)` or `withHasValue(String)`)
 
 Example: the status should be "published".
 
@@ -510,7 +520,8 @@ Example: the status should be "published".
     - hasValue: published
 ```
 
-* `in [value1, ..., valueN]` - The string value should be one of the listed values (API: `setIn(List<String>)` or `withIn(List<String>)`)
+##### `in [String1, ..., StringN]`
+The string value should be one of the listed values (API: `setIn(List<String>)` or `withIn(List<String>)`)
 
 Example: the value should be either "dataverse", "dataset" or "file".
 
@@ -521,7 +532,8 @@ Example: the value should be either "dataverse", "dataset" or "file".
     - in: [dataverse, dataset, file]
 ```
 
- * `pattern <regular expression>` - A regular expression that each field value matches to satisfy the condition. The expression should cover
+##### `pattern <regular expression>`
+A regular expression that each field value matches to satisfy the condition. The expression should cover
 the whole string, not only a part of it (API: `setPattern(String)` or `withPattern(String)`)
 
 Example: the field value should start with http:// or https:// and end with .jpg, .jpeg, .jpe, .jfif, .png, .tiff, .tif, .gif, .svg, .svgz, or .pdf.
@@ -533,7 +545,8 @@ Example: the field value should start with http:// or https:// and end with .jpg
     - pattern: ^https?://.*\.(jpg|jpeg|jpe|jfif|png|tiff|tif|gif|svg|svgz|pdf)$
 ```
 
-* `minWords <number>` - The minimum word count of each field value (API: `setMinWords(Integer)` or `withMinWord(Integer)`)
+##### `minWords <number>`
+The minimum word count of each field value (API: `setMinWords(Integer)` or `withMinWord(Integer)`)
 
 Example: the field value should have at least one words
 
@@ -544,7 +557,8 @@ Example: the field value should have at least one words
     - minWords: 1
 ```
 
-* `maxWords <number>` - The maximum string length of each field value (API: `setMaxWords(Integer)` or `withMaxWords(Integer)`)
+##### `maxWords <number>`
+The maximum string length of each field value (API: `setMaxWords(Integer)` or `withMaxWords(Integer)`)
 
 Example: the value should be at least 3 character long, but should not contain more than 2 words.
 
@@ -559,8 +573,8 @@ Example: the value should be at least 3 character long, but should not contain m
 
 #### Comparision of properties
 
- * `equals <field label>` - The set of all values of a field is equal to the set of all values of another field 
- (API: `setEquals(String)` or `withEquals(String)`)
+##### `equals <field label>`
+The set of all values of a field is equal to the set of all values of another field (API: `setEquals(String)` or `withEquals(String)`)
 
 Example: The ID should be equal to the ISBN number.
 
@@ -574,7 +588,8 @@ fields:
     path:  $.['isbn']
 ```
 
- * `disjoint <field label>` - The set of values of a field is disjoint (not equal) with the set of all values of another field 
+##### `disjoint <field label>`
+The set of values of a field is disjoint (not equal) with the set of all values of another field 
  (API: `setDisjoint(String)` or `withDisjoint(String)`)
 
 Example: The title should be different then description.
@@ -588,7 +603,8 @@ fields:
   - name: description
     path:  $.['description']
 ```
- * `lessThan <field label>` - Each values of a field is smaller than each values of another field
+##### `lessThan <field label>`
+Each values of a field is smaller than each values of another field
   (API: `setLessThan(String)` or `withLessThan(String)`)
 
 Example: the date of birth is less than the date of death
@@ -600,7 +616,8 @@ Example: the date of birth is less than the date of death
     - lessThan: deathDate
 ```
 
- * `lessThanOrEquals <field label>` - Each values of a field is smaller than or equals to each values of another field
+##### `lessThanOrEquals <field label>`
+Each values of a field is smaller than or equals to each values of another field
   (API: `setLessThanOrEquals(String)` or `withLessThanOrEquals(String)`)
 
 Example: the starting page of the article should be less than or equal to the ending page
@@ -616,8 +633,8 @@ Example: the starting page of the article should be less than or equal to the en
 
 With logical operators you can build complex rules. Each component should fit to its own rules. 
 
-* `and [<rule1>, ..., <ruleN>]` - Passes if all the rules in the set passed.
-  (API: `setAnd(List<Rule>)` or `withAnd(List<Rule>)`)
+##### `and [<rule1>, ..., <ruleN>]`
+Passes if all the rules in the set passed. (API: `setAnd(List<Rule>)` or `withAnd(List<Rule>)`)
 
 Example: The ID should have one and only one occurrence, and is should not be an empty string.
 
@@ -631,8 +648,8 @@ Example: The ID should have one and only one occurrence, and is should not be an
       - minLength: 1
 ```
 
-* `or [<rule1>, ..., <ruleN>]` - Passes if at least one of the rules in the set passed.
-  (API: `setOr(List<Rule>)` or `withOr(List<Rule>)`)
+##### `or [<rule1>, ..., <ruleN>]`
+Passes if at least one of the rules in the set passed. (API: `setOr(List<Rule>)` or `withOr(List<Rule>)`)
 
 Example: The thumbnail should either end with a known image extension or its content type should be one of the provided MIME image types.
 
@@ -645,7 +662,8 @@ Example: The thumbnail should either end with a known image extension or its con
       - contentType: [image/jpeg, image/png, image/tiff, image/tiff-fx, image/gif, image/svg+xml]
 ```
 
-* `not [<rule1>, ..., <ruleN>]` - Passes if none of the rules in the set passed.
+##### `not [<rule1>, ..., <ruleN>]`
+Passes if none of the rules in the set passed.
   (API: `setNot(List<Rule>)` or `withNot(List<Rule>)`)
 
 Example: make sure that the title and the description is different.
@@ -662,7 +680,8 @@ Example: make sure that the title and the description is different.
 
 These rules don't have paralel in SHACL.
 
-* `contentType [type1, ..., typeN]` - This rule interprets the value as a URL, fetches it and extracts the HTTP header's
+##### `contentType [type1, ..., typeN]`
+This rule interprets the value as a URL, fetches it and extracts the HTTP header's
 content type, then checks if it is one of those allowed.
 
 Example: The HTTP content type should be image/jpeg, image/png, image/tiff, image/tiff-fx, image/gif, or image/svg+xml.
@@ -676,14 +695,17 @@ Example: The HTTP content type should be image/jpeg, image/png, image/tiff, imag
 
 #### General properties
 
-* `id value` - you can define an identifier to the rule, which will be reflected in the output. If you miss it, the
+##### `id <String>`
+You can define an identifier to the rule, which will be reflected in the output. If you miss it, the
 system will assign a count number. ID might also help if you transform a human readable document such as cataloguing 
 rules into a configuration file, and you want to keep linkage between them. (API `setId(String)` or `withId(String)`)
 
-* `failureScore score` - a score which will be calculated if the validation fails. The score should be a negative o positive integer (including zero). 
+##### `failureScore <integer>`
+A score which will be calculated if the validation fails. The score should be a negative o positive integer (including zero). 
 (API `setFailureScore(nteger)` or `withFailureScore(Integer)`)
 
-* `successScore score` - a score which will be calculated if the validation passes. The score should be a negative o positive integer (including zero).
+##### `successScore <integer>`
+A score which will be calculated if the validation passes. The score should be a negative o positive integer (including zero).
  (API `setSuccessScore(nteger)` or `withSuccessScore(Integer)`)
 
 Example: set of rules with IDs and scores.
