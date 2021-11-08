@@ -830,6 +830,8 @@ An example JSON file:
   (API calls: setters: `setSolrPort(String)`, `withSolrPort(String):MeasurementConfiguration`, getter: `getSolrPort()`)
 * `String solrPath`: The path part of of the Solr server URL.
   (API calls: setters: `setSolrPath(String)`, `withSolrPath(String):MeasurementConfiguration`, getter: `getSolrPath()`)
+* `String onlyIdInHeader`: the Rules should return the ID in the header instead of a generated value.
+  (API calls: setters: `setOnlyIdInHeader(boolean)`, `withOnlyIdInHeader(boolean):MeasurementConfiguration`, getter: `isOnlyIdInHeader()`)
 
 ## Using an experimental version
   
