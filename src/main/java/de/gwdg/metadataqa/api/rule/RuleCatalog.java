@@ -18,6 +18,7 @@ public class RuleCatalog implements Calculator, Serializable {
 
   private static final String CALCULATOR_NAME = "ruleCatalog";
   private Schema schema;
+  private boolean onlyIdInHeader = false;
 
   public RuleCatalog(Schema schema) {
     this.schema = schema;
@@ -41,7 +42,7 @@ public class RuleCatalog implements Calculator, Serializable {
   public List<String> getHeader() {
     List<String> headers = new ArrayList<>();
     for (RuleChecker ruleChecker : schema.getRuleCheckers()) {
-      headers.add(ruleChecker.getHeader());
+      headers.add(onlyIdInHeader ? ruleChecker.getId() : ruleChecker.getHeader());
     }
     headers.add(CALCULATOR_NAME + ":score");
     return headers;
@@ -51,4 +52,10 @@ public class RuleCatalog implements Calculator, Serializable {
   public String getCalculatorName() {
     return CALCULATOR_NAME;
   }
+
+  public RuleCatalog setOnlyIdInHeader(boolean onlyIdInHeader) {
+    this.onlyIdInHeader = onlyIdInHeader;
+    return this;
+  }
+
 }

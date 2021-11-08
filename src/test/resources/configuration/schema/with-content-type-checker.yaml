@@ -1,0 +1,8 @@
+format: csv
+fields:
+  - name: thumbnail
+    path: oai:record/dc:identifier[@type='binary']
+    rules:
+      - contentType: [image/jpeg, image/png, image/tiff, image/tiff-fx, image/gif, image/svg+xml, application/pdf]
+        failureScore: -9
+        id: 3.1

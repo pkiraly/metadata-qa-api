@@ -43,7 +43,6 @@ public class ContentTypeChecker extends SingleFieldChecker {
             URL url = new URL(instance.getValue());
             URLConnection u = url.openConnection();
             String contentType = u.getHeaderField("Content-Type").replaceAll("; ?charset.*$", "");
-            // System.err.println(contentType);
             if (contentType == null || StringUtils.isBlank(contentType)) {
               LOGGER.warning(String.format("undetectable content type", contentType));
               allPassed = false;

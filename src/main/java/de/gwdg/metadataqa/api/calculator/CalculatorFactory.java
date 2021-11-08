@@ -88,8 +88,9 @@ public class CalculatorFactory {
   }
 
   private void addRuleCatalogMeasurement() {
-    if (configuration.isRuleCatalogMeasurementEnabled())
-      calculators.add(new RuleCatalog(schema));
+    if (configuration.isRuleCatalogMeasurementEnabled()) {
+      calculators.add(new RuleCatalog(schema).setOnlyIdInHeader(configuration.isOnlyIdInHeader()));
+    }
   }
 
   private void addLanguageMeasurement() {
