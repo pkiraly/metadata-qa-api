@@ -1,4 +1,3 @@
-
 package de.gwdg.metadataqa.api.json;
 
 import de.gwdg.metadataqa.api.configuration.schema.Rule;
@@ -275,5 +274,9 @@ public class JsonBranch implements Cloneable, Serializable {
   public JsonBranch setIndexField(String indexField) {
     this.indexField = indexField;
     return this;
+  }
+
+  public String generateIndexField() {
+    return label.replaceAll("\\W", "_");
   }
 }

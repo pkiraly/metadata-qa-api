@@ -39,4 +39,8 @@ public class SolrConfiguration implements Serializable {
   public String getSolrPath() {
     return solrPath;
   }
+
+  public String getUrl() {
+    return String.format("http://%s:%s/%s", solrHost, solrPort, solrPath);
+  }
 }

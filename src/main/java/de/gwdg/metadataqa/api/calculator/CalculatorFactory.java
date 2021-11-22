@@ -44,6 +44,7 @@ public class CalculatorFactory {
     addLanguageMeasurement();
     addMultilingualSaturationMeasurement();
     addUniquenessMeasurement();
+    addIndexer();
   }
 
   private void addExtractor() {
@@ -119,6 +120,20 @@ public class CalculatorFactory {
         configuration.setSolrClient(new DefaultSolrClient(configuration.getSolrConfiguration()));
       }
       calculators.add(new UniquenessCalculator(configuration.getSolrClient(), schema));
+    }
+  }
+
+  private void addIndexer() {
+    if (configuration.isIndexingEnabled()) {
+      if (configuration.getSolrClient() == null && configuration.getSolrConfiguration() == null) {
+        throw new IllegalArgumentException(
+          "If indexer is enabled, Solr configuration should not be null."
+        );
+      }
+      if (configuration.getSolrClient() == null) {
+        configuration.setSolrClient(new DefaultSolrClient(configuration.getSolrConfiguration()));
+      }
+      calculators.add(new Indexer(configuration.getSolrClient(), schema));
     }
   }
 

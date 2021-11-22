@@ -45,8 +45,9 @@ public class MetricCollector implements OutputCollector {
     List<String> result = new ArrayList<>();
 
     for (Map.Entry<String, List<MetricResult>> entry : results.entrySet())
-      for (MetricResult metricResult : entry.getValue())
-        result.add(metricResult.getCsv(false, compressionLevel));
+      if (entry.getValue() != null)
+        for (MetricResult metricResult : entry.getValue())
+          result.add(metricResult.getCsv(false, compressionLevel));
 
     return StringUtils.join(result,",");
   }

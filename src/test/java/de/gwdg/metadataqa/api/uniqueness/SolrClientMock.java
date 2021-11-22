@@ -1,5 +1,11 @@
 package de.gwdg.metadataqa.api.uniqueness;
 
+import org.apache.solr.client.solrj.SolrServerException;
+
+import java.io.IOException;
+import java.util.List;
+import java.util.Map;
+
 public class SolrClientMock implements SolrClient {
 
   public SolrClientMock(SolrConfiguration configuration) {
@@ -25,5 +31,20 @@ public class SolrClientMock implements SolrClient {
       System.err.printf("solrField: %s, value: %s\n", solrField, value);
     }
     return null;
+  }
+
+  @Override
+  public void indexMap(String id, Map<String, List<String>> objectMap) throws IOException, SolrServerException {
+
+  }
+
+  @Override
+  public void commit() {
+
+  }
+
+  @Override
+  public void deleteAll() {
+
   }
 }

@@ -71,6 +71,11 @@ public class MeasurementConfiguration {
   protected boolean uniquenessMeasurementEnabled = false;
 
   /**
+   * Flag whether or not to run in uniqueness measurement (default: false).
+   */
+  protected boolean indexingEnabled = false;
+
+  /**
    * Flag whether or not to run missing/empty/existing field collection in
    * completeness (default: false).
    */
@@ -442,6 +447,33 @@ public class MeasurementConfiguration {
    */
   public MeasurementConfiguration enableUniquenessMeasurement(boolean uniquenessMeasurementEnabled) {
     this.uniquenessMeasurementEnabled = uniquenessMeasurementEnabled;
+    return this;
+  }
+
+
+  public boolean isIndexingEnabled() {
+    return indexingEnabled;
+  }
+
+  public void setIndexingEnabled(boolean indexingEnabled) {
+    this.indexingEnabled = indexingEnabled;
+  }
+
+  public MeasurementConfiguration enableIndexing() {
+    return enableIndexing(true);
+  }
+
+  public MeasurementConfiguration disableIndexing() {
+    return enableIndexing(false);
+  }
+
+  /**
+   * Flag to enable uniqueness measurement.
+   * @param indexingEnabled The flag
+   * @return
+   */
+  public MeasurementConfiguration enableIndexing(boolean indexingEnabled) {
+    this.indexingEnabled = indexingEnabled;
     return this;
   }
 

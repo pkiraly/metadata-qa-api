@@ -6,6 +6,7 @@ import de.gwdg.metadataqa.api.calculator.output.OutputCollector;
 import de.gwdg.metadataqa.api.configuration.MeasurementConfiguration;
 import de.gwdg.metadataqa.api.interfaces.Calculator;
 import de.gwdg.metadataqa.api.interfaces.MetricResult;
+import de.gwdg.metadataqa.api.interfaces.Shutdownable;
 import de.gwdg.metadataqa.api.model.pathcache.CsvPathCache;
 import de.gwdg.metadataqa.api.model.pathcache.PathCache;
 import de.gwdg.metadataqa.api.model.PathCacheFactory;
@@ -345,4 +346,14 @@ public class CalculatorFacade implements Serializable {
     changed = true;
     return this;
   }
+
+  /**
+   * Calls the shutDown() method on all calculator which implement Shutdownable interface
+   */
+  public void shutDown() {
+    for (Calculator calculator : getCalculators())
+      if (calculator instanceof Shutdownable)
+        ((Shutdownable)calculator).shutDown();
+  }
+
 }

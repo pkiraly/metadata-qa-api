@@ -129,4 +129,8 @@ public class GoogleDatasetSchema implements Schema, CsvAwareSchema {
     return headers;
   }
 
+  @Override
+  public JsonBranch getRecordId() {
+    return PATHS.get("url");
+  }
 }

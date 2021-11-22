@@ -10,6 +10,7 @@ public class Field {
   private boolean inactive;
   private List<Rule> rules;
   private String indexField;
+  private boolean identifierField;
 
   public String getName() {
     return name;
@@ -65,5 +66,13 @@ public class Field {
 
   public void setInactive(boolean inactive) {
     this.inactive = inactive;
+  }
+
+  public boolean isIdentifierField() {
+    return identifierField;
+  }
+
+  public void setIdentifierField(boolean isRecordId) {
+    this.identifierField = isRecordId;
   }
 }

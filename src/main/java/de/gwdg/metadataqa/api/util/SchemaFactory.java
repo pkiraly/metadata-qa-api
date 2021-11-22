@@ -3,7 +3,6 @@ package de.gwdg.metadataqa.api.util;
 import de.gwdg.metadataqa.api.configuration.SchemaConfiguration;
 import de.gwdg.metadataqa.api.configuration.schema.Field;
 import de.gwdg.metadataqa.api.configuration.schema.Group;
-import de.gwdg.metadataqa.api.model.Category;
 import de.gwdg.metadataqa.api.json.JsonBranch;
 import de.gwdg.metadataqa.api.json.FieldGroup;
 import de.gwdg.metadataqa.api.schema.BaseSchema;
@@ -64,6 +63,9 @@ public class SchemaFactory {
         branch.setIndexField(field.getIndexField());
 
       schema.addField(branch);
+
+      if (field.isIdentifierField())
+        schema.setRecordId(branch);
     }
 
     if (config.getGroups() != null)

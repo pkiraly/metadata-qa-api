@@ -48,6 +48,12 @@ public interface Schema extends Serializable {
   JsonBranch getPathByLabel(String label);
 
   /**
+   * Returns a path of the record id.
+   * @return The branch.
+   */
+  JsonBranch getRecordId();
+
+  /**
    * Field groups used in completeness sub-dimensions.
    * Groupped values are optional elements in a sub-dimension.
    * @return

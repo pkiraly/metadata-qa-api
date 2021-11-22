@@ -128,4 +128,9 @@ public abstract class EdmSchema implements Schema, ProblemCatalogSchema {
   public void addExtractableField(String label, String jsonPath) {
     extractableFields.put(label, jsonPath);
   }
+
+  @Override
+  public JsonBranch getRecordId() {
+    return null;
+  }
 }

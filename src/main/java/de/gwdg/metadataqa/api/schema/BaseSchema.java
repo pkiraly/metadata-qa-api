@@ -1,5 +1,6 @@
 package de.gwdg.metadataqa.api.schema;
 
+import de.gwdg.metadataqa.api.configuration.schema.Rule;
 import de.gwdg.metadataqa.api.json.FieldGroup;
 import de.gwdg.metadataqa.api.json.JsonBranch;
 import de.gwdg.metadataqa.api.model.Category;
@@ -11,10 +12,13 @@ import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.logging.Logger;
 
 public class BaseSchema implements Schema, CsvAwareSchema, Serializable {
 
   private static final long serialVersionUID = 6775942932769040511L;
+  private static final Logger LOGGER = Logger.getLogger(BaseSchema.class.getCanonicalName());
+
   private final Map<String, JsonBranch> paths = new LinkedHashMap<>();
   private final Map<String, JsonBranch> collectionPaths = new LinkedHashMap<>();
   private final Map<String, JsonBranch> directChildren = new LinkedHashMap<>();
@@ -23,6 +27,7 @@ public class BaseSchema implements Schema, CsvAwareSchema, Serializable {
   private List<String> categories = null;
   private List<RuleChecker> ruleCheckers;
   private List<JsonBranch> indexFields;
+  private JsonBranch recordId;
 
   private Format format;
   private Map<String, String> namespaces;
@@ -108,9 +113,18 @@ public class BaseSchema implements Schema, CsvAwareSchema, Serializable {
   public List<JsonBranch> getIndexFields() {
     if (indexFields == null) {
       indexFields = new ArrayList<>();
-      for (JsonBranch jsonBranch : getPaths())
-        if (StringUtils.isNotBlank(jsonBranch.getIndexField()))
+      for (JsonBranch jsonBranch : getPaths()) {
+        if (StringUtils.isNotBlank(jsonBranch.getIndexField())) {
           indexFields.add(jsonBranch);
+        } else if (jsonBranch.getRules() != null) {
+          for (Rule rule : jsonBranch.getRules()) {
+            if (rule.getUnique() != null && rule.getUnique().equals(Boolean.TRUE)) {
+              LOGGER.warning(jsonBranch + " does not have index field");
+              indexFields.add(jsonBranch);
+            }
+          }
+        }
+      }
     }
     return indexFields;
   }
@@ -174,5 +188,14 @@ public class BaseSchema implements Schema, CsvAwareSchema, Serializable {
   @Override
   public Map<String, String> getNamespaces() {
     return namespaces;
+  }
+
+  @Override
+  public JsonBranch getRecordId() {
+    return recordId;
+  }
+
+  public void setRecordId(JsonBranch recordId) {
+    this.recordId = recordId;
   }
 }

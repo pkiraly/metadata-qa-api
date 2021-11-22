@@ -474,6 +474,11 @@ public class MarcJsonSchema implements Schema, ProblemCatalogSchema, Serializabl
   }
 
   @Override
+  public JsonBranch getRecordId() {
+    return PATHS.get("001");
+  }
+
+  @Override
   public List<String> getCategories() {
     if (categories == null) {
       categories = Category.extractCategories(PATHS.values());
@@ -488,4 +493,6 @@ public class MarcJsonSchema implements Schema, ProblemCatalogSchema, Serializabl
     }
     return ruleCheckers;
   }
+
+
 }

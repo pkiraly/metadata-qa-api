@@ -215,4 +215,5 @@ public class EdmOaiPmLimitedJsonSchema extends EdmSchema implements Serializable
   public JsonBranch getPathByLabel(String label) {
     throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
   }
+
 }

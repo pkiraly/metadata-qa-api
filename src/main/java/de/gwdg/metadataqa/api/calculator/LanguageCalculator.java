@@ -2,21 +2,14 @@ package de.gwdg.metadataqa.api.calculator;
 
 import com.jayway.jsonpath.InvalidJsonException;
 import de.gwdg.metadataqa.api.calculator.language.Language;
-import de.gwdg.metadataqa.api.counter.BasicCounter;
 import de.gwdg.metadataqa.api.counter.FieldCounter;
 import de.gwdg.metadataqa.api.interfaces.MetricResult;
 import de.gwdg.metadataqa.api.json.JsonBranch;
-import de.gwdg.metadataqa.api.model.EdmFieldInstance;
 import de.gwdg.metadataqa.api.model.pathcache.PathCache;
 import de.gwdg.metadataqa.api.problemcatalog.FieldCounterBasedResult;
 import de.gwdg.metadataqa.api.schema.Schema;
-import de.gwdg.metadataqa.api.util.Converter;
 import java.util.ArrayList;
-import java.util.LinkedHashMap;
 import java.util.List;
-import java.util.Map;
-import java.util.SortedMap;
-import java.util.TreeMap;
 import java.util.logging.Logger;
 
 /**

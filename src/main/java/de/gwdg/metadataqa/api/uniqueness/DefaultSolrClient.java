@@ -1,5 +1,9 @@
 package de.gwdg.metadataqa.api.uniqueness;
 
+import org.apache.solr.client.solrj.SolrServerException;
+import org.apache.solr.client.solrj.impl.HttpSolrClient;
+import org.apache.solr.common.SolrInputDocument;
+
 import java.io.BufferedInputStream;
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -11,6 +15,8 @@ import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLEncoder;
+import java.util.List;
+import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -33,9 +39,12 @@ public class DefaultSolrClient implements SolrClient, Serializable {
   private String solrSearchPattern;
   private String solrSearchAllPattern;
   private SolrConfiguration solrConfiguration;
+  private HttpSolrClient solr;
+  boolean trimId = true;
 
   public DefaultSolrClient(SolrConfiguration solrConfiguration) {
     this.solrConfiguration = solrConfiguration;
+    solr = new HttpSolrClient.Builder(solrConfiguration.getUrl()).build();
   }
 
   public String getSolrSearchResponse(String solrField, String value) {
@@ -64,7 +73,6 @@ public class DefaultSolrClient implements SolrClient, Serializable {
   }
 
   private String connect(String url, String solrField, String value) {
-
     URL fragmentPostUrl = null;
     String record = null;
     try {
@@ -146,4 +154,50 @@ public class DefaultSolrClient implements SolrClient, Serializable {
     }
     return this.solrSearchAllPattern;
   }
+
+  public void indexMap(String id, Map<String, List<String>> objectMap) throws IOException, SolrServerException {
+    SolrInputDocument document = new SolrInputDocument();
+    document.addField("id", (trimId ? id.trim() : id));
+    for (Map.Entry<String, List<String>> entry : objectMap.entrySet()) {
+      String key = entry.getKey();
+      Object value = entry.getValue();
+      if (value != null) {
+        if (!key.endsWith("_sni") && !key.endsWith("_ss"))
+          key += "_ss";
+        document.addField(key, value);
+      }
+    }
+
+    try {
+      solr.add(document);
+    } catch (HttpSolrClient.RemoteSolrException ex) {
+      LOGGER.log(Level.WARNING, "document", document);
+      LOGGER.log(Level.WARNING, "Commit exception", ex);
+    }
+  }
+
+  @Override
+  public void commit() {
+    try {
+      solr.commit();
+    } catch (SolrServerException e) {
+      e.printStackTrace();
+    } catch (IOException e) {
+      e.printStackTrace();
+    }
+  }
+
+  @Override
+  public void deleteAll() {
+    try {
+      solr.deleteByQuery("*:*");
+    } catch (SolrServerException e) {
+      e.printStackTrace();
+    } catch (IOException e) {
+      e.printStackTrace();
+    }
+    commit();
+  }
+
+  // TODO create index programatically
 }

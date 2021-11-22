@@ -174,8 +174,7 @@ public class UniquenessCalculatorTest {
 
     @Test
     public void getSolrFields() throws Exception {
-      UniquenessCalculator uniquenessCalculator =
-          (UniquenessCalculator) facade.getCalculators().get(1);
+      UniquenessCalculator uniquenessCalculator = (UniquenessCalculator) facade.getCalculators().get(1);
       assertEquals(4000, uniquenessCalculator.getSolrFields().get(0).getTotal());
       assertEquals(1000, uniquenessCalculator.getSolrFields().get(1).getTotal());
       assertEquals(2000, uniquenessCalculator.getSolrFields().get(2).getTotal());
