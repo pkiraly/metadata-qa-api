@@ -37,6 +37,7 @@ public class CalculatorFactory {
 
   private void configure() {
     addExtractor();
+    addAnnotator();
     addCompleteness();
     addTfIdfMeasurement();
     addProblemCatalogMeasurement();
@@ -50,6 +51,11 @@ public class CalculatorFactory {
   private void addExtractor() {
     if (configuration.isFieldExtractorEnabled() && !schema.getExtractableFields().isEmpty())
       calculators.add(new FieldExtractor(schema));
+  }
+
+  private void addAnnotator() {
+    if (configuration.getAnnottaionColumns() != null && !configuration.getAnnottaionColumns().isEmpty())
+      calculators.add(new AnnotationCalculator(configuration.getAnnottaionColumns()));
   }
 
   private void addCompleteness() {
@@ -90,7 +96,10 @@ public class CalculatorFactory {
 
   private void addRuleCatalogMeasurement() {
     if (configuration.isRuleCatalogMeasurementEnabled()) {
-      calculators.add(new RuleCatalog(schema).setOnlyIdInHeader(configuration.isOnlyIdInHeader()));
+      Calculator caclulator = new RuleCatalog(schema)
+        .setOnlyIdInHeader(configuration.isOnlyIdInHeader())
+        .setOutputType(configuration.getRuleCheckingOutputType());
+      calculators.add(caclulator);
     }
   }
 

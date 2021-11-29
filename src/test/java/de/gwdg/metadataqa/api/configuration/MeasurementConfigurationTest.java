@@ -1,5 +1,6 @@
 package de.gwdg.metadataqa.api.configuration;
 
+import de.gwdg.metadataqa.api.rule.RuleCheckingOutputType;
 import de.gwdg.metadataqa.api.uniqueness.SolrClient;
 import de.gwdg.metadataqa.api.uniqueness.SolrClientMock;
 import de.gwdg.metadataqa.api.uniqueness.SolrConfiguration;
@@ -139,4 +140,37 @@ public class MeasurementConfigurationTest {
     assertNotNull(conf.getSolrClient());
   }
 
+  @Test
+  public void withRuleCheckingOutputType() {
+    MeasurementConfiguration conf = new MeasurementConfiguration().withRuleCheckingOutputType(RuleCheckingOutputType.BOTH);
+    assertNotNull(conf.getRuleCheckingOutputType());
+    assertEquals(RuleCheckingOutputType.BOTH, conf.getRuleCheckingOutputType());
+  }
+
+  @Test
+  public void withAnnotationColumns_string() {
+    MeasurementConfiguration conf = new MeasurementConfiguration().withAnnotationColumns("{\"file\":\"test\"}");
+    assertNotNull(conf.getAnnottaionColumns());
+    assertEquals(1, conf.getAnnottaionColumns().size());
+    assertEquals("file", conf.getAnnottaionColumns().keySet().toArray()[0]);
+    assertEquals("test", conf.getAnnottaionColumns().get("file"));
+  }
+
+  @Test
+  public void withAnnotationColumns_int() {
+    MeasurementConfiguration conf = new MeasurementConfiguration().withAnnotationColumns("{\"file\":1}");
+    assertNotNull(conf.getAnnottaionColumns());
+    assertEquals(1, conf.getAnnottaionColumns().size());
+    assertEquals("file", conf.getAnnottaionColumns().keySet().toArray()[0]);
+    assertEquals(1, conf.getAnnottaionColumns().get("file"));
+  }
+
+  @Test
+  public void withAnnotationColumns_float() {
+    MeasurementConfiguration conf = new MeasurementConfiguration().withAnnotationColumns("{\"file\":1.0}");
+    assertNotNull(conf.getAnnottaionColumns());
+    assertEquals(1, conf.getAnnottaionColumns().size());
+    assertEquals("file", conf.getAnnottaionColumns().keySet().toArray()[0]);
+    assertEquals(1.0, conf.getAnnottaionColumns().get("file"));
+  }
 }

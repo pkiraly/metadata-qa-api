@@ -1,8 +1,14 @@
 package de.gwdg.metadataqa.api.configuration;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import de.gwdg.metadataqa.api.rule.RuleCheckingOutputType;
 import de.gwdg.metadataqa.api.uniqueness.SolrClient;
 import de.gwdg.metadataqa.api.uniqueness.SolrConfiguration;
 import org.apache.commons.lang3.StringUtils;
+
+import java.util.LinkedHashMap;
+import java.util.Map;
 
 public class MeasurementConfiguration {
 
@@ -112,6 +118,9 @@ public class MeasurementConfiguration {
    * A SolrClient
    */
   protected SolrClient solrClient;
+
+  private RuleCheckingOutputType ruleCheckingOutputType = RuleCheckingOutputType.SCORE;
+  private Map<String, Object> annottaionColumns;
 
   public MeasurementConfiguration() {}
 
@@ -596,6 +605,19 @@ public class MeasurementConfiguration {
     return this;
   }
 
+  public RuleCheckingOutputType getRuleCheckingOutputType() {
+    return ruleCheckingOutputType;
+  }
+
+  public void setRuleCheckingOutputType(RuleCheckingOutputType ruleCheckingOutputType) {
+    this.ruleCheckingOutputType = ruleCheckingOutputType;
+  }
+
+  public MeasurementConfiguration withRuleCheckingOutputType(RuleCheckingOutputType ruleCheckingOutputType) {
+    this.ruleCheckingOutputType = ruleCheckingOutputType;
+    return this;
+  }
+
   public String getSolrPath() {
     return solrPath;
   }
@@ -634,5 +656,41 @@ public class MeasurementConfiguration {
     this.solrPort = solrPort;
     this.solrPath = solrPath;
     return this;
+  }
+
+  public void setAnnotationColumns(Map<String, Object> annotationColumns) {
+    this.annottaionColumns = annotationColumns;
+  }
+
+  public MeasurementConfiguration withAnnotationColumns(Map<String, Object> annotationColumns) {
+    this.annottaionColumns = annotationColumns;
+    return this;
+  }
+
+  public void setAnnotationColumns(String jsonString) {
+    withAnnotationColumns(jsonString);
+  }
+
+  public MeasurementConfiguration withAnnotationColumns(String jsonString) {
+    ObjectMapper mapper = new ObjectMapper();
+    annottaionColumns = new LinkedHashMap<>();
+    try {
+      Map<String, Object> map = (Map<String, Object>) mapper.readValue(jsonString, Map.class);
+      for (Map.Entry<String, Object> entry : map.entrySet()) {
+        Object value = entry.getValue();
+        if (value instanceof String || value instanceof Integer || value instanceof Double)
+          annottaionColumns.put(entry.getKey(), value);
+        else
+          System.err.println(String.format("The %s key has a value, which is a %s: %s", entry.getKey(), value.getClass(), value));
+      }
+      System.err.println(map.keySet());
+    } catch (JsonProcessingException e) {
+      e.printStackTrace();
+    }
+    return this;
+  }
+
+  public Map<String, Object> getAnnottaionColumns() {
+    return annottaionColumns;
   }
 }
