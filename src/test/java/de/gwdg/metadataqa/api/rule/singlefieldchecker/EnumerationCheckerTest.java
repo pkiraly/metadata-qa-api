@@ -3,6 +3,7 @@ package de.gwdg.metadataqa.api.rule.singlefieldchecker;
 import de.gwdg.metadataqa.api.counter.FieldCounter;
 import de.gwdg.metadataqa.api.rule.CheckerTestBase;
 import de.gwdg.metadataqa.api.rule.RuleCheckerOutput;
+import de.gwdg.metadataqa.api.rule.RuleCheckingOutputStatus;
 import de.gwdg.metadataqa.api.rule.RuleCheckingOutputType;
 import org.junit.Assert;
 import org.junit.Test;
@@ -24,11 +25,11 @@ public class EnumerationCheckerTest extends CheckerTestBase {
       Arrays.asList("a", "b"));
 
     FieldCounter<RuleCheckerOutput> fieldCounter = new FieldCounter<>();
-    checker.update(cache, fieldCounter);
+    checker.update(cache, fieldCounter, RuleCheckingOutputType.BOTH);
 
     assertEquals(1, fieldCounter.size());
     assertEquals("name:in", checker.getHeaderWithoutId());
-    Assert.assertEquals(RuleCheckingOutputType.PASSED, fieldCounter.get(checker.getHeader()).getType());
+    Assert.assertEquals(RuleCheckingOutputStatus.PASSED, fieldCounter.get(checker.getHeader()).getStatus());
   }
 
   @Test
@@ -37,10 +38,10 @@ public class EnumerationCheckerTest extends CheckerTestBase {
       Arrays.asList("c", "d"));
 
     FieldCounter<RuleCheckerOutput> fieldCounter = new FieldCounter<>();
-    checker.update(cache, fieldCounter);
+    checker.update(cache, fieldCounter, RuleCheckingOutputType.BOTH);
 
     assertEquals(1, fieldCounter.size());
     assertEquals("name:in", checker.getHeaderWithoutId());
-    assertEquals(RuleCheckingOutputType.FAILED, fieldCounter.get(checker.getHeader()).getType());
+    assertEquals(RuleCheckingOutputStatus.FAILED, fieldCounter.get(checker.getHeader()).getStatus());
   }
 }

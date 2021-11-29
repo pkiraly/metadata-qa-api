@@ -5,10 +5,10 @@ import de.gwdg.metadataqa.api.json.JsonBranch;
 import de.gwdg.metadataqa.api.model.pathcache.PathCache;
 import de.gwdg.metadataqa.api.rule.RuleChecker;
 import de.gwdg.metadataqa.api.rule.RuleCheckerOutput;
+import de.gwdg.metadataqa.api.rule.RuleCheckingOutputStatus;
 import de.gwdg.metadataqa.api.rule.RuleCheckingOutputType;
 
 import java.util.List;
-import java.util.Map;
 
 public class AndChecker extends LogicalChecker {
 
@@ -29,17 +29,17 @@ public class AndChecker extends LogicalChecker {
   }
 
   @Override
-  public void update(PathCache cache, FieldCounter<RuleCheckerOutput> results) {
+  public void update(PathCache cache, FieldCounter<RuleCheckerOutput> results, RuleCheckingOutputType outputType) {
     var allPassed = true;
     var isNA = false;
     FieldCounter<RuleCheckerOutput> localResults = new FieldCounter<>();
     for (RuleChecker checker : checkers) {
-      checker.update(cache, localResults);
-      if (!localResults.get(checker.getHeader()).getType().equals(RuleCheckingOutputType.PASSED)) {
+      checker.update(cache, localResults, outputType);
+      if (!localResults.get(checker.getHeader()).getStatus().equals(RuleCheckingOutputStatus.PASSED)) {
         allPassed = false;
         break;
       }
     }
-    results.put(getHeader(), new RuleCheckerOutput(this, isNA, allPassed));
+    results.put(getHeader(), new RuleCheckerOutput(this, isNA, allPassed).setOutputType(outputType));
   }
 }

@@ -3,6 +3,7 @@ package de.gwdg.metadataqa.api.rule.singlefieldchecker;
 import de.gwdg.metadataqa.api.counter.FieldCounter;
 import de.gwdg.metadataqa.api.rule.CheckerTestBase;
 import de.gwdg.metadataqa.api.rule.RuleCheckerOutput;
+import de.gwdg.metadataqa.api.rule.RuleCheckingOutputStatus;
 import de.gwdg.metadataqa.api.rule.RuleCheckingOutputType;
 import org.junit.Assert;
 import org.junit.Test;
@@ -24,12 +25,12 @@ public class PatternCheckerTest extends CheckerTestBase {
     PatternChecker checker = new PatternChecker(schema.getPathByLabel("name"), "^a$");
 
     FieldCounter<RuleCheckerOutput> fieldCounter = new FieldCounter<>();
-    checker.update(cache, fieldCounter);
+    checker.update(cache, fieldCounter, RuleCheckingOutputType.BOTH);
 
     assertEquals(1, fieldCounter.size());
     assertEquals("name:pattern", checker.getHeaderWithoutId());
     assertTrue(Pattern.compile("^name:pattern:\\d+$").matcher(checker.getHeader()).matches());
-    Assert.assertEquals(RuleCheckingOutputType.PASSED, fieldCounter.get(checker.getHeader()).getType());
+    Assert.assertEquals(RuleCheckingOutputStatus.PASSED, fieldCounter.get(checker.getHeader()).getStatus());
   }
 
   @Test
@@ -37,11 +38,11 @@ public class PatternCheckerTest extends CheckerTestBase {
     PatternChecker checker = new PatternChecker(schema.getPathByLabel("name"), "^b$");
 
     FieldCounter<RuleCheckerOutput> fieldCounter = new FieldCounter<>();
-    checker.update(cache, fieldCounter);
+    checker.update(cache, fieldCounter, RuleCheckingOutputType.BOTH);
 
     assertEquals(1, fieldCounter.size());
     assertEquals("name:pattern", checker.getHeaderWithoutId());
     assertTrue(Pattern.compile("^name:pattern:\\d+$").matcher(checker.getHeader()).matches());
-    assertEquals(RuleCheckingOutputType.FAILED, fieldCounter.get(checker.getHeader()).getType());
+    assertEquals(RuleCheckingOutputStatus.FAILED, fieldCounter.get(checker.getHeader()).getStatus());
   }
 }

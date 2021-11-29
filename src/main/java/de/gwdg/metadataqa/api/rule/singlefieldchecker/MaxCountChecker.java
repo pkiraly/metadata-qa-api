@@ -4,6 +4,7 @@ import de.gwdg.metadataqa.api.counter.FieldCounter;
 import de.gwdg.metadataqa.api.json.JsonBranch;
 import de.gwdg.metadataqa.api.model.pathcache.PathCache;
 import de.gwdg.metadataqa.api.rule.RuleCheckerOutput;
+import de.gwdg.metadataqa.api.rule.RuleCheckingOutputType;
 import de.gwdg.metadataqa.api.util.InstanceCounter;
 
 public class MaxCountChecker extends SingleFieldChecker {
@@ -22,11 +23,11 @@ public class MaxCountChecker extends SingleFieldChecker {
   }
 
   @Override
-  public void update(PathCache cache, FieldCounter<RuleCheckerOutput> results) {
+  public void update(PathCache cache, FieldCounter<RuleCheckerOutput> results, RuleCheckingOutputType outputType) {
     var allPassed = false;
     var counter = new InstanceCounter(cache, field);
     if (counter.getCount() <= maxCount)
       allPassed = true;
-    results.put(getHeader(), new RuleCheckerOutput(this, counter.isNA(), allPassed));
+    results.put(getHeader(), new RuleCheckerOutput(this, counter.isNA(), allPassed).setOutputType(outputType));
   }
 }

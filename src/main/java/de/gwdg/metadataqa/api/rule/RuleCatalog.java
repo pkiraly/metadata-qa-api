@@ -19,6 +19,7 @@ public class RuleCatalog implements Calculator, Serializable {
   private static final String CALCULATOR_NAME = "ruleCatalog";
   private Schema schema;
   private boolean onlyIdInHeader = false;
+  private RuleCheckingOutputType outputType = RuleCheckingOutputType.BOTH;
 
   public RuleCatalog(Schema schema) {
     this.schema = schema;
@@ -29,12 +30,15 @@ public class RuleCatalog implements Calculator, Serializable {
     FieldCounter<RuleCheckerOutput> fieldCounter = new FieldCounter<>();
     var totalScore = 0;
     for (RuleChecker ruleChecker : schema.getRuleCheckers()) {
-      ruleChecker.update(cache, fieldCounter);
-      Integer score = fieldCounter.get(ruleChecker.getHeader()).getScore();
-      if (score != null)
-        totalScore += score.intValue();
+      ruleChecker.update(cache, fieldCounter, outputType);
+      if (outputType != RuleCheckingOutputType.STATUS) {
+        Integer score = fieldCounter.get(ruleChecker.getHeader()).getScore();
+        if (score != null)
+          totalScore += score.intValue();
+      }
     }
-    fieldCounter.put(CALCULATOR_NAME + ":score", new RuleCheckerOutput(RuleCheckingOutputType.NA, totalScore));
+    if (outputType != RuleCheckingOutputType.STATUS)
+      fieldCounter.put(CALCULATOR_NAME + ":score", new RuleCheckerOutput(RuleCheckingOutputStatus.NA, totalScore).setOutputType(outputType));
     return List.of(new FieldCounterBasedResult<>(getCalculatorName(), fieldCounter));
   }
 
@@ -44,7 +48,8 @@ public class RuleCatalog implements Calculator, Serializable {
     for (RuleChecker ruleChecker : schema.getRuleCheckers()) {
       headers.add(onlyIdInHeader ? ruleChecker.getId() : ruleChecker.getHeader());
     }
-    headers.add(CALCULATOR_NAME + ":score");
+    if (outputType != RuleCheckingOutputType.STATUS)
+      headers.add(CALCULATOR_NAME + ":score");
     return headers;
   }
 
@@ -58,4 +63,8 @@ public class RuleCatalog implements Calculator, Serializable {
     return this;
   }
 
+  public RuleCatalog setOutputType(RuleCheckingOutputType outputType) {
+    this.outputType = outputType;
+    return this;
+  }
 }

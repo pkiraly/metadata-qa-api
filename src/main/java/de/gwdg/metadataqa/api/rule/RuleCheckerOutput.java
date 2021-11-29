@@ -1,28 +1,29 @@
 package de.gwdg.metadataqa.api.rule;
 
 public class RuleCheckerOutput {
-  private final RuleCheckingOutputType type;
+  private final RuleCheckingOutputStatus status;
+  private RuleCheckingOutputType outputType;
   private Integer score;
 
   public RuleCheckerOutput(RuleChecker ruleChecker, boolean isNA, boolean passed) {
-    this(ruleChecker, RuleCheckingOutputType.create(isNA, passed));
+    this(ruleChecker, RuleCheckingOutputStatus.create(isNA, passed));
   }
 
-  public RuleCheckerOutput(RuleChecker ruleChecker, RuleCheckingOutputType type) {
-    this.type = type;
-    if (type.equals(RuleCheckingOutputType.FAILED))
+  public RuleCheckerOutput(RuleChecker ruleChecker, RuleCheckingOutputStatus status) {
+    this.status = status;
+    if (status.equals(RuleCheckingOutputStatus.FAILED))
       score = ruleChecker.getFailureScore();
-    else if (type.equals(RuleCheckingOutputType.PASSED))
+    else if (status.equals(RuleCheckingOutputStatus.PASSED))
       score = ruleChecker.getSuccessScore();
   }
 
-  public RuleCheckerOutput(RuleCheckingOutputType type, Integer score) {
-    this.type = type;
+  public RuleCheckerOutput(RuleCheckingOutputStatus status, Integer score) {
+    this.status = status;
     this.score = score;
   }
 
-  public RuleCheckingOutputType getType() {
-    return type;
+  public RuleCheckingOutputStatus getStatus() {
+    return status;
   }
 
   public Integer getScore() {
@@ -30,6 +31,15 @@ public class RuleCheckerOutput {
   }
 
   public String toString() {
-    return score != null ? score.toString() : type.asString();
+    return outputType.equals(RuleCheckingOutputType.STATUS)
+      ? status.asString()
+      : score != null
+        ? score.toString()
+        : status.asString();
+  }
+
+  public RuleCheckerOutput setOutputType(RuleCheckingOutputType outputType) {
+    this.outputType = outputType;
+    return this;
   }
 }

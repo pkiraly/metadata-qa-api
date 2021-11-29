@@ -44,6 +44,16 @@ public class RuleCatalogTest {
   }
 
   @Test
+  public void measure_() {
+    CsvPathCache cache = (CsvPathCache) PathCacheFactory.getInstance(schema.getFormat(), "a,b,c");
+    cache.setCsvReader(new CsvReader().setHeader( ((CsvAwareSchema) schema).getHeader() ));
+
+    RuleCatalog catalog = new RuleCatalog(schema);
+    List<MetricResult> results = catalog.measure(cache);
+    assertEquals("1,0", results.get(0).getCsv(false, CompressionLevel.ZERO));
+  }
+
+  @Test
   public void getHeader() {
     RuleCatalog catalog = new RuleCatalog(schema);
     assertEquals(List.of("name:and:name:minCount:name:maxCount:3", "ruleCatalog:score"), catalog.getHeader());

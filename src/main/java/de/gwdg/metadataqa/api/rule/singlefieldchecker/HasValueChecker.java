@@ -5,6 +5,7 @@ import de.gwdg.metadataqa.api.json.JsonBranch;
 import de.gwdg.metadataqa.api.model.XmlFieldInstance;
 import de.gwdg.metadataqa.api.model.pathcache.PathCache;
 import de.gwdg.metadataqa.api.rule.RuleCheckerOutput;
+import de.gwdg.metadataqa.api.rule.RuleCheckingOutputType;
 
 import java.util.List;
 
@@ -28,7 +29,7 @@ public class HasValueChecker extends SingleFieldChecker {
   }
 
   @Override
-  public void update(PathCache cache, FieldCounter<RuleCheckerOutput> results) {
+  public void update(PathCache cache, FieldCounter<RuleCheckerOutput> results, RuleCheckingOutputType outputType) {
     var allPassed = false;
     var isNA = true;
     List<XmlFieldInstance> instances = cache.get(field.getJsonPath());
@@ -43,7 +44,7 @@ public class HasValueChecker extends SingleFieldChecker {
         }
       }
     }
-    results.put(getHeader(), new RuleCheckerOutput(this, isNA, allPassed));
+    results.put(getHeader(), new RuleCheckerOutput(this, isNA, allPassed).setOutputType(outputType));
   }
 
 }

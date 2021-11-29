@@ -4,6 +4,7 @@ import de.gwdg.metadataqa.api.counter.FieldCounter;
 import de.gwdg.metadataqa.api.model.PathCacheFactory;
 import de.gwdg.metadataqa.api.model.pathcache.CsvPathCache;
 import de.gwdg.metadataqa.api.rule.RuleCheckerOutput;
+import de.gwdg.metadataqa.api.rule.RuleCheckingOutputStatus;
 import de.gwdg.metadataqa.api.rule.RuleCheckingOutputType;
 import de.gwdg.metadataqa.api.rule.pairchecker.DisjointChecker;
 import de.gwdg.metadataqa.api.schema.BaseSchema;
@@ -51,12 +52,12 @@ public class NotCheckerTest {
       List.of(new DisjointChecker(schema.getPathByLabel("name"), schema.getPathByLabel("title"))));
 
     FieldCounter<RuleCheckerOutput> fieldCounter = new FieldCounter<>();
-    checker.update(cache, fieldCounter);
+    checker.update(cache, fieldCounter, RuleCheckingOutputType.BOTH);
 
     assertEquals(1, fieldCounter.size());
     assertEquals("name:not:name:disjoint:title", checker.getHeaderWithoutId());
     assertTrue(Pattern.compile("^name:not:name:disjoint:title:\\d+$").matcher(checker.getHeader()).matches());
-    Assert.assertEquals(RuleCheckingOutputType.FAILED, fieldCounter.get(checker.getHeader()).getType());
+    Assert.assertEquals(RuleCheckingOutputStatus.FAILED, fieldCounter.get(checker.getHeader()).getStatus());
   }
 
   @Test
@@ -66,11 +67,11 @@ public class NotCheckerTest {
       List.of(new DisjointChecker(schema.getPathByLabel("name"), schema.getPathByLabel("alt"))));
 
     FieldCounter<RuleCheckerOutput> fieldCounter = new FieldCounter<>();
-    checker.update(cache, fieldCounter);
+    checker.update(cache, fieldCounter, RuleCheckingOutputType.BOTH);
 
     assertEquals(1, fieldCounter.size());
     assertEquals("name:not:name:disjoint:alt", checker.getHeaderWithoutId());
     assertTrue(Pattern.compile("^name:not:name:disjoint:alt:\\d+$").matcher(checker.getHeader()).matches());
-    assertEquals(RuleCheckingOutputType.PASSED, fieldCounter.get(checker.getHeader()).getType());
+    assertEquals(RuleCheckingOutputStatus.PASSED, fieldCounter.get(checker.getHeader()).getStatus());
   }
 }

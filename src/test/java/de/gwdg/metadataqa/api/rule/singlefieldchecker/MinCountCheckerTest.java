@@ -3,6 +3,7 @@ package de.gwdg.metadataqa.api.rule.singlefieldchecker;
 import de.gwdg.metadataqa.api.counter.FieldCounter;
 import de.gwdg.metadataqa.api.rule.CheckerTestBase;
 import de.gwdg.metadataqa.api.rule.RuleCheckerOutput;
+import de.gwdg.metadataqa.api.rule.RuleCheckingOutputStatus;
 import de.gwdg.metadataqa.api.rule.RuleCheckingOutputType;
 import org.junit.Assert;
 import org.junit.Test;
@@ -21,11 +22,11 @@ public class MinCountCheckerTest extends CheckerTestBase {
     MinCountChecker checker = new MinCountChecker(schema.getPathByLabel("name"), 1);
 
     FieldCounter<RuleCheckerOutput> fieldCounter = new FieldCounter<>();
-    checker.update(cache, fieldCounter);
+    checker.update(cache, fieldCounter, RuleCheckingOutputType.BOTH);
 
     assertEquals(1, fieldCounter.size());
     assertEquals("name:minCount", checker.getHeaderWithoutId());
-    Assert.assertEquals(RuleCheckingOutputType.PASSED, fieldCounter.get(checker.getHeader()).getType());
+    Assert.assertEquals(RuleCheckingOutputStatus.PASSED, fieldCounter.get(checker.getHeader()).getStatus());
   }
 
   @Test
@@ -33,11 +34,11 @@ public class MinCountCheckerTest extends CheckerTestBase {
     MinCountChecker checker = new MinCountChecker(schema.getPathByLabel("name"), 0);
 
     FieldCounter<RuleCheckerOutput> fieldCounter = new FieldCounter<>();
-    checker.update(cache, fieldCounter);
+    checker.update(cache, fieldCounter, RuleCheckingOutputType.BOTH);
 
     assertEquals(1, fieldCounter.size());
     assertEquals("name:minCount", checker.getHeaderWithoutId());
-    assertEquals(RuleCheckingOutputType.PASSED, fieldCounter.get(checker.getHeader()).getType());
+    assertEquals(RuleCheckingOutputStatus.PASSED, fieldCounter.get(checker.getHeader()).getStatus());
   }
 
   @Test
@@ -45,10 +46,10 @@ public class MinCountCheckerTest extends CheckerTestBase {
     MinCountChecker checker = new MinCountChecker(schema.getPathByLabel("name"), 2);
 
     FieldCounter<RuleCheckerOutput> fieldCounter = new FieldCounter<>();
-    checker.update(cache, fieldCounter);
+    checker.update(cache, fieldCounter, RuleCheckingOutputType.BOTH);
 
     assertEquals(1, fieldCounter.size());
     assertEquals("name:minCount", checker.getHeaderWithoutId());
-    assertEquals(RuleCheckingOutputType.FAILED, fieldCounter.get(checker.getHeader()).getType());
+    assertEquals(RuleCheckingOutputStatus.FAILED, fieldCounter.get(checker.getHeader()).getStatus());
   }
 }

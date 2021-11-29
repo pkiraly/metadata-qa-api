@@ -7,23 +7,19 @@ import de.gwdg.metadataqa.api.calculator.CalculatorFacade;
 import de.gwdg.metadataqa.api.configuration.ConfigurationReader;
 import de.gwdg.metadataqa.api.configuration.MeasurementConfiguration;
 import de.gwdg.metadataqa.api.counter.FieldCounter;
-import de.gwdg.metadataqa.api.interfaces.Calculator;
 import de.gwdg.metadataqa.api.model.PathCacheFactory;
 import de.gwdg.metadataqa.api.model.pathcache.CsvPathCache;
 import de.gwdg.metadataqa.api.rule.CheckerTestBase;
 import de.gwdg.metadataqa.api.rule.RuleChecker;
 import de.gwdg.metadataqa.api.rule.RuleCheckerOutput;
+import de.gwdg.metadataqa.api.rule.RuleCheckingOutputStatus;
 import de.gwdg.metadataqa.api.rule.RuleCheckingOutputType;
-import de.gwdg.metadataqa.api.schema.BaseSchema;
 import de.gwdg.metadataqa.api.schema.CsvAwareSchema;
-import de.gwdg.metadataqa.api.schema.Format;
 import de.gwdg.metadataqa.api.schema.Schema;
 import de.gwdg.metadataqa.api.util.CsvReader;
 import org.junit.Assert;
-import org.junit.Before;
 import org.junit.Test;
 
-import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -48,11 +44,11 @@ public class ContentTypeCheckerTest extends CheckerTestBase {
       Arrays.asList("image/jpeg", "image/png", "image/tiff", "image/tiff-fx", "image/gif", "image/svg+xml", "application/pdf"));
 
     FieldCounter<RuleCheckerOutput> fieldCounter = new FieldCounter<>();
-    checker.update(cache, fieldCounter);
+    checker.update(cache, fieldCounter, RuleCheckingOutputType.BOTH);
 
     assertEquals(1, fieldCounter.size());
     assertEquals("name:contentType", checker.getHeaderWithoutId());
-    Assert.assertEquals(RuleCheckingOutputType.PASSED, fieldCounter.get(checker.getHeader()).getType());
+    Assert.assertEquals(RuleCheckingOutputStatus.PASSED, fieldCounter.get(checker.getHeader()).getStatus());
   }
 
   @Test
@@ -64,11 +60,11 @@ public class ContentTypeCheckerTest extends CheckerTestBase {
       Arrays.asList("c", "d"));
 
     FieldCounter<RuleCheckerOutput> fieldCounter = new FieldCounter<>();
-    checker.update(cache, fieldCounter);
+    checker.update(cache, fieldCounter, RuleCheckingOutputType.BOTH);
 
     assertEquals(1, fieldCounter.size());
     assertEquals("name:contentType", checker.getHeaderWithoutId());
-    assertEquals(RuleCheckingOutputType.FAILED, fieldCounter.get(checker.getHeader()).getType());
+    assertEquals(RuleCheckingOutputStatus.FAILED, fieldCounter.get(checker.getHeader()).getStatus());
   }
 
   @Test
@@ -112,9 +108,5 @@ public class ContentTypeCheckerTest extends CheckerTestBase {
     assertEquals(
       Arrays.asList("1.0", "1", "1", "-9", "-9"),
       result.get(1));
-
-
-
   }
-
 }

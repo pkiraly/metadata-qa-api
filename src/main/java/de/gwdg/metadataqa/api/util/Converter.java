@@ -7,7 +7,7 @@ import java.util.LinkedHashMap;
 import java.util.List;
 
 import de.gwdg.metadataqa.api.rule.RuleCheckerOutput;
-import de.gwdg.metadataqa.api.rule.RuleCheckingOutputType;
+import de.gwdg.metadataqa.api.rule.RuleCheckingOutputStatus;
 import de.gwdg.metadataqa.api.schema.Format;
 import de.gwdg.metadataqa.api.schema.Schema;
 import net.minidev.json.JSONArray;
@@ -99,8 +99,8 @@ public interface Converter {
       text = (String) value;
     } else if (value instanceof List) {
       text = StringUtils.join(((List) value), ", ");
-    } else if (value instanceof RuleCheckingOutputType) {
-      text = ((RuleCheckingOutputType)value).asString();
+    } else if (value instanceof RuleCheckingOutputStatus) {
+      text = ((RuleCheckingOutputStatus)value).asString();
     } else if (value instanceof RuleCheckerOutput) {
       // TODO: maybe from config
       text = ((RuleCheckerOutput) value).toString();

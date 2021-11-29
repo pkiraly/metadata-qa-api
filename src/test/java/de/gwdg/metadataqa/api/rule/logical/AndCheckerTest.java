@@ -6,6 +6,7 @@ import de.gwdg.metadataqa.api.model.PathCacheFactory;
 import de.gwdg.metadataqa.api.model.pathcache.CsvPathCache;
 import de.gwdg.metadataqa.api.rule.RuleChecker;
 import de.gwdg.metadataqa.api.rule.RuleCheckerOutput;
+import de.gwdg.metadataqa.api.rule.RuleCheckingOutputStatus;
 import de.gwdg.metadataqa.api.rule.RuleCheckingOutputType;
 import de.gwdg.metadataqa.api.rule.singlefieldchecker.MaxCountChecker;
 import de.gwdg.metadataqa.api.rule.singlefieldchecker.MinCountChecker;
@@ -61,9 +62,9 @@ public class AndCheckerTest {
     MaxCountChecker maxCountChecker = (MaxCountChecker) andChecker.getCheckers().get(1);
 
     FieldCounter<RuleCheckerOutput> fieldCounter = new FieldCounter<>();
-    andChecker.update(cache, fieldCounter);
+    andChecker.update(cache, fieldCounter, RuleCheckingOutputType.BOTH);
 
-    assertEquals(RuleCheckingOutputType.PASSED, fieldCounter.get(andChecker.getHeader()).getType());
+    assertEquals(RuleCheckingOutputStatus.PASSED, fieldCounter.get(andChecker.getHeader()).getStatus());
   }
 
   @Test
@@ -81,8 +82,8 @@ public class AndCheckerTest {
     MinLengthChecker maxCountChecker = (MinLengthChecker) andChecker.getCheckers().get(1);
 
     FieldCounter<RuleCheckerOutput> fieldCounter = new FieldCounter<>();
-    andChecker.update(cache, fieldCounter);
+    andChecker.update(cache, fieldCounter, RuleCheckingOutputType.BOTH);
 
-    assertEquals(RuleCheckingOutputType.FAILED, fieldCounter.get(andChecker.getHeader()).getType());
+    assertEquals(RuleCheckingOutputStatus.FAILED, fieldCounter.get(andChecker.getHeader()).getStatus());
   }
 }

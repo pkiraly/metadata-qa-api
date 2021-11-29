@@ -19,7 +19,7 @@ public interface RuleChecker extends Serializable {
    *   The JSON cache object
    * @param results
    */
-  void update(PathCache cache, FieldCounter<RuleCheckerOutput> results);
+  void update(PathCache cache, FieldCounter<RuleCheckerOutput> results, RuleCheckingOutputType outputType);
 
   /**
    * Get a header, which is the name of metric, the observer measures.

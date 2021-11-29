@@ -5,6 +5,7 @@ import de.gwdg.metadataqa.api.model.PathCacheFactory;
 import de.gwdg.metadataqa.api.model.pathcache.CsvPathCache;
 import de.gwdg.metadataqa.api.rule.RuleChecker;
 import de.gwdg.metadataqa.api.rule.RuleCheckerOutput;
+import de.gwdg.metadataqa.api.rule.RuleCheckingOutputStatus;
 import de.gwdg.metadataqa.api.rule.RuleCheckingOutputType;
 import de.gwdg.metadataqa.api.schema.BaseSchema;
 import de.gwdg.metadataqa.api.schema.CsvAwareSchema;
@@ -37,49 +38,49 @@ public class NumericCheckerTest {
 
   @Test
   public void minInclusive_passed() {
-    assertEquals(RuleCheckingOutputType.PASSED, run(0.9, TYPE.MIN_INCLUSIVE).getType());
-    assertEquals(RuleCheckingOutputType.PASSED, run(1, TYPE.MIN_INCLUSIVE).getType());
+    assertEquals(RuleCheckingOutputStatus.PASSED, run(0.9, TYPE.MIN_INCLUSIVE).getStatus());
+    assertEquals(RuleCheckingOutputStatus.PASSED, run(1, TYPE.MIN_INCLUSIVE).getStatus());
   }
 
   @Test
   public void minInclusive_failed() {
-    assertEquals(RuleCheckingOutputType.FAILED, run(1.1, TYPE.MIN_INCLUSIVE).getType());
+    assertEquals(RuleCheckingOutputStatus.FAILED, run(1.1, TYPE.MIN_INCLUSIVE).getStatus());
   }
 
   @Test
   public void maxInclusive_passed() {
-    assertEquals(RuleCheckingOutputType.PASSED, run(1, TYPE.MAX_INCLUSIVE).getType());
-    assertEquals(RuleCheckingOutputType.PASSED, run(1.1, TYPE.MAX_INCLUSIVE).getType());
+    assertEquals(RuleCheckingOutputStatus.PASSED, run(1, TYPE.MAX_INCLUSIVE).getStatus());
+    assertEquals(RuleCheckingOutputStatus.PASSED, run(1.1, TYPE.MAX_INCLUSIVE).getStatus());
   }
 
   @Test
   public void maxInclusive_failed() {
-    assertEquals(RuleCheckingOutputType.FAILED, run(0.9, TYPE.MAX_INCLUSIVE).getType());
+    assertEquals(RuleCheckingOutputStatus.FAILED, run(0.9, TYPE.MAX_INCLUSIVE).getStatus());
   }
 
   @Test
   public void minExclusive_passed() {
-    assertEquals(RuleCheckingOutputType.PASSED, run(0.9, TYPE.MIN_EXCLUSIVE).getType());
+    assertEquals(RuleCheckingOutputStatus.PASSED, run(0.9, TYPE.MIN_EXCLUSIVE).getStatus());
   }
 
   @Test
   public void minExclusive_failed() {
-    assertEquals(RuleCheckingOutputType.FAILED, run(1, TYPE.MIN_EXCLUSIVE).getType());
+    assertEquals(RuleCheckingOutputStatus.FAILED, run(1, TYPE.MIN_EXCLUSIVE).getStatus());
   }
 
   @Test
   public void maxExclusive_passed() {
-    assertEquals(RuleCheckingOutputType.PASSED, run(1.1, TYPE.MAX_EXCLUSIVE).getType());
+    assertEquals(RuleCheckingOutputStatus.PASSED, run(1.1, TYPE.MAX_EXCLUSIVE).getStatus());
   }
 
   @Test
   public void maxExclusive_failed() {
-    assertEquals(RuleCheckingOutputType.FAILED, run(1, TYPE.MAX_EXCLUSIVE).getType());
+    assertEquals(RuleCheckingOutputStatus.FAILED, run(1, TYPE.MAX_EXCLUSIVE).getStatus());
   }
 
   @Test
   public void nonnumeric() {
-    assertEquals(RuleCheckingOutputType.FAILED, run("alt", 1, TYPE.MAX_EXCLUSIVE).getType());
+    assertEquals(RuleCheckingOutputStatus.FAILED, run("alt", 1, TYPE.MAX_EXCLUSIVE).getStatus());
   }
 
   private RuleCheckerOutput run(double limit, NumericValueChecker.TYPE type) {
@@ -90,7 +91,7 @@ public class NumericCheckerTest {
     RuleChecker checker = new NumericValueChecker(schema.getPathByLabel(field), limit, type);
 
     FieldCounter<RuleCheckerOutput> fieldCounter = new FieldCounter<>();
-    checker.update(cache, fieldCounter);
+    checker.update(cache, fieldCounter, RuleCheckingOutputType.BOTH);
 
     return fieldCounter.get(checker.getHeader());
   }
