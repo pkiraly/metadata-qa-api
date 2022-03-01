@@ -38,11 +38,12 @@ public class OrChecker extends LogicalChecker {
     FieldCounter<RuleCheckerOutput> localResults = new FieldCounter<>();
     for (RuleChecker checker : checkers) {
       checker.update(cache, localResults, outputType);
-      if (localResults.get(checker.getHeader()).getStatus().equals(RuleCheckingOutputStatus.PASSED)) {
+      String key = outputType.equals(RuleCheckingOutputType.BOTH) ? checker.getHeader(RuleCheckingOutputType.SCORE) : checker.getHeader();
+      if (localResults.get(key).getStatus().equals(RuleCheckingOutputStatus.PASSED)) {
         allPassed = true;
         break;
       }
     }
-    results.put(getHeader(), new RuleCheckerOutput(this, isNA, allPassed).setOutputType(outputType));
+    addOutput(results, isNA, allPassed, outputType);
   }
 }

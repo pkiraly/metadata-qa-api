@@ -33,6 +33,8 @@ public class OaiPmhXPath implements Serializable {
 
   private static transient XPath xpathEngine;
   private static final DocumentBuilder builder = initializeDocumentBuilder();
+  private static transient Map<String, String> namespaces;
+  private boolean namespaceChanged = false;
 
   private static DocumentBuilder initializeDocumentBuilder() {
     DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
@@ -52,13 +54,37 @@ public class OaiPmhXPath implements Serializable {
     parseContent(input);
   }
 
+  public OaiPmhXPath(String input, Map<String, String> customNamespaces) {
+    if (this.namespaces != customNamespaces) {
+      namespaceChanged = true;
+      this.namespaces = customNamespaces;
+    }
+    parseContent(input);
+  }
+
   public OaiPmhXPath(File input) {
     parseFile(input.getPath());
   }
 
+  public OaiPmhXPath(File input, Map<String, String> customNamespaces) {
+    if (this.namespaces != customNamespaces) {
+      namespaceChanged = true;
+      this.namespaces = customNamespaces;
+    }
+    parseFile(input.getPath());
+  }
+
   private void initialize() {
-    if (xpathEngine == null)
-      xpathEngine = XpathEngineFactory.initializeEngine();
+    if (xpathEngine == null || namespaceChanged) {
+      LOGGER.info("initialize xpathEngine");
+      if (namespaces == null) {
+        LOGGER.info("initialize without namespaces");
+        xpathEngine = XpathEngineFactory.initializeEngine();
+      } else {
+        LOGGER.info("initialize with namespaces: " + namespaces);
+        xpathEngine = XpathEngineFactory.initializeEngine(namespaces);
+      }
+    }
   }
 
   public OaiPmhXPath(String input, boolean fromString) {

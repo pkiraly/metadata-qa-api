@@ -39,6 +39,10 @@ public class FieldCounter<T> implements Serializable {
     fieldMap.put(key, value);
   }
 
+  public void putAll(Map<String, T> map) {
+    fieldMap.putAll(map);
+  }
+
   public int size() {
     return fieldMap.size();
   }
@@ -84,5 +88,12 @@ public class FieldCounter<T> implements Serializable {
       values.add(value);
     }
     return values;
+  }
+
+  @Override
+  public String toString() {
+    return "FieldCounter{" +
+      "fieldMap=" + fieldMap +
+      '}';
   }
 }

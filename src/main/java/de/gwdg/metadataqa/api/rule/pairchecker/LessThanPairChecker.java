@@ -58,7 +58,7 @@ public class LessThanPairChecker extends PropertyPairChecker {
         }
       }
     }
-    results.put(getHeader(), new RuleCheckerOutput(this, isNA, allPassed).setOutputType(outputType));
+    addOutput(results, isNA, allPassed, outputType);
   }
 
   private boolean checkValues(String value1, String value2) {

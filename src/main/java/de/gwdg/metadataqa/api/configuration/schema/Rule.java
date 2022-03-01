@@ -8,6 +8,7 @@ public class Rule implements Serializable {
   private static final long serialVersionUID = 4101184421853217836L;
 
   private String id;
+  private String description;
   private Integer failureScore;
   private Integer successScore;
 
@@ -40,6 +41,19 @@ public class Rule implements Serializable {
 
   public void setId(String id) {
     this.id = id;
+  }
+
+  public String getDescription() {
+    return description;
+  }
+
+  public void setDescription(String description) {
+    this.description = description;
+  }
+
+  public Rule withDescription(String description) {
+    this.description = description;
+    return this;
   }
 
   public String getPattern() {

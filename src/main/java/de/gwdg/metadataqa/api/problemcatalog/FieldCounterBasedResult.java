@@ -58,4 +58,13 @@ public class FieldCounterBasedResult<T> implements MetricResult {
     noCompression = true;
     return this;
   }
+
+  @Override
+  public String toString() {
+    return "FieldCounterBasedResult{" +
+      "name='" + name + '\'' +
+      ", fieldCounter=" + fieldCounter +
+      ", noCompression=" + noCompression +
+      '}';
+  }
 }

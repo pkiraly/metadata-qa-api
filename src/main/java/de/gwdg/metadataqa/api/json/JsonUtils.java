@@ -226,9 +226,9 @@ public final class JsonUtils {
   }
 
   public static String toJson(Object object) throws JsonProcessingException {
-    if (jsonMapper == null) {
+    if (jsonMapper == null)
       jsonMapper = new ObjectMapper();
-    }
+
     return jsonMapper.writeValueAsString(object);
   }
 }

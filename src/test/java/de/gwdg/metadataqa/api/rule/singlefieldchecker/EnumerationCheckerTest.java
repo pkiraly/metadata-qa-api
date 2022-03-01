@@ -27,9 +27,9 @@ public class EnumerationCheckerTest extends CheckerTestBase {
     FieldCounter<RuleCheckerOutput> fieldCounter = new FieldCounter<>();
     checker.update(cache, fieldCounter, RuleCheckingOutputType.BOTH);
 
-    assertEquals(1, fieldCounter.size());
+    assertEquals(2, fieldCounter.size());
     assertEquals("name:in", checker.getHeaderWithoutId());
-    Assert.assertEquals(RuleCheckingOutputStatus.PASSED, fieldCounter.get(checker.getHeader()).getStatus());
+    Assert.assertEquals(RuleCheckingOutputStatus.PASSED, fieldCounter.get(checker.getHeader(RuleCheckingOutputType.STATUS)).getStatus());
   }
 
   @Test
@@ -40,8 +40,8 @@ public class EnumerationCheckerTest extends CheckerTestBase {
     FieldCounter<RuleCheckerOutput> fieldCounter = new FieldCounter<>();
     checker.update(cache, fieldCounter, RuleCheckingOutputType.BOTH);
 
-    assertEquals(1, fieldCounter.size());
+    assertEquals(2, fieldCounter.size());
     assertEquals("name:in", checker.getHeaderWithoutId());
-    assertEquals(RuleCheckingOutputStatus.FAILED, fieldCounter.get(checker.getHeader()).getStatus());
+    assertEquals(RuleCheckingOutputStatus.FAILED, fieldCounter.get(checker.getHeader(RuleCheckingOutputType.STATUS)).getStatus());
   }
 }

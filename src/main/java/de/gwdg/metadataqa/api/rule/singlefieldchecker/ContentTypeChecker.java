@@ -9,9 +9,10 @@ import de.gwdg.metadataqa.api.rule.RuleCheckingOutputType;
 import org.apache.commons.lang3.StringUtils;
 
 import java.io.IOException;
+import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
+import java.net.SocketTimeoutException;
 import java.net.URL;
-import java.net.URLConnection;
 import java.util.List;
 import java.util.logging.Logger;
 
@@ -19,6 +20,7 @@ public class ContentTypeChecker extends SingleFieldChecker {
 
   private static final Logger LOGGER = Logger.getLogger(ContentTypeChecker.class.getCanonicalName());
 
+  private int timeout = 1000;
   public static final String PREFIX = "contentType";
   protected List<String> fixedValues;
 
@@ -42,26 +44,48 @@ public class ContentTypeChecker extends SingleFieldChecker {
           isNA = false;
           try {
             URL url = new URL(instance.getValue());
-            URLConnection u = url.openConnection();
-            String contentType = u.getHeaderField("Content-Type").replaceAll("; ?charset.*$", "");
+            HttpURLConnection urlConnection = (HttpURLConnection) url.openConnection();
+
+            urlConnection.setConnectTimeout(timeout); // 15 sec
+            urlConnection.setReadTimeout(timeout);
+            urlConnection.connect();
+            if (urlConnection.getResponseCode() == 404) {
+              LOGGER.warning(String.format("%s: is inaccessible", instance.getValue()));
+              allPassed = false;
+              break;
+            }
+            String contentType = urlConnection.getHeaderField("Content-Type");
             if (contentType == null || StringUtils.isBlank(contentType)) {
-              LOGGER.warning(String.format("undetectable content type", contentType));
+              LOGGER.warning(String.format("%s: undetectable content type '%s'. Header: %s", instance.getValue(), contentType, urlConnection.getHeaderFields()));
               allPassed = false;
               break;
             }
+            contentType = contentType.replaceAll("; ?charset.*$", "");
             if (!fixedValues.contains(contentType)) {
-              LOGGER.warning(String.format("content type '%s' did not match expectation (rule id: %s)", contentType, getId()));
+              LOGGER.warning(String.format("%s: content type '%s' did not match expectation (rule id: %s)", instance.getValue(), contentType, getId()));
               allPassed = false;
               break;
             }
+          } catch (SocketTimeoutException e) {
+            LOGGER.warning(String.format("%s is not accessible (connection timeout)", instance.getValue()));
+            // e.printStackTrace();
+            allPassed = false;
+            break;
           } catch (MalformedURLException e) {
-            e.printStackTrace();
+            LOGGER.warning(String.format("%s is not accessible (Malformed URL)", instance.getValue()));
+            allPassed = false;
+            break;
+            // e.printStackTrace();
           } catch (IOException e) {
-            e.printStackTrace();
+            LOGGER.warning(String.format("%s is not accessible (%s)", instance.getValue(), e.getMessage()));
+            allPassed = false;
+            break;
+            // e.printStackTrace();
           }
         }
       }
     }
-    results.put(getHeader(), new RuleCheckerOutput(this, isNA, allPassed).setOutputType(outputType));
+
+    addOutput(results, isNA, allPassed, outputType);
   }
 }

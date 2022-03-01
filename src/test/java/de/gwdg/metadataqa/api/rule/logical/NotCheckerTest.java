@@ -54,10 +54,10 @@ public class NotCheckerTest {
     FieldCounter<RuleCheckerOutput> fieldCounter = new FieldCounter<>();
     checker.update(cache, fieldCounter, RuleCheckingOutputType.BOTH);
 
-    assertEquals(1, fieldCounter.size());
+    assertEquals(2, fieldCounter.size());
     assertEquals("name:not:name:disjoint:title", checker.getHeaderWithoutId());
     assertTrue(Pattern.compile("^name:not:name:disjoint:title:\\d+$").matcher(checker.getHeader()).matches());
-    Assert.assertEquals(RuleCheckingOutputStatus.FAILED, fieldCounter.get(checker.getHeader()).getStatus());
+    Assert.assertEquals(RuleCheckingOutputStatus.FAILED, fieldCounter.get(checker.getHeader(RuleCheckingOutputType.STATUS)).getStatus());
   }
 
   @Test
@@ -69,9 +69,9 @@ public class NotCheckerTest {
     FieldCounter<RuleCheckerOutput> fieldCounter = new FieldCounter<>();
     checker.update(cache, fieldCounter, RuleCheckingOutputType.BOTH);
 
-    assertEquals(1, fieldCounter.size());
+    assertEquals(2, fieldCounter.size());
     assertEquals("name:not:name:disjoint:alt", checker.getHeaderWithoutId());
     assertTrue(Pattern.compile("^name:not:name:disjoint:alt:\\d+$").matcher(checker.getHeader()).matches());
-    assertEquals(RuleCheckingOutputStatus.PASSED, fieldCounter.get(checker.getHeader()).getStatus());
+    assertEquals(RuleCheckingOutputStatus.PASSED, fieldCounter.get(checker.getHeader(RuleCheckingOutputType.STATUS)).getStatus());
   }
 }

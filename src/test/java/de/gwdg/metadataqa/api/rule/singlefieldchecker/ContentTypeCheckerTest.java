@@ -37,7 +37,8 @@ public class ContentTypeCheckerTest extends CheckerTestBase {
 
   @Test
   public void success() {
-    cache = (CsvPathCache) PathCacheFactory.getInstance(schema.getFormat(), "http://vb.uni-wuerzburg.de/ub/books/mchf91/folio-std/DE-20__M_ch_f_91__0003__0002r.jpg");
+    cache = (CsvPathCache) PathCacheFactory.getInstance(schema.getFormat(),
+      "\"https://iiif.deutsche-digitale-bibliothek.de/image/2/b152b0e5-55da-453a-8a53-6530189e98ac/full/!800,600/0/default.jpg\"");
     cache.setCsvReader(new CsvReader().setHeader( ((CsvAwareSchema) schema).getHeader() ));
 
     ContentTypeChecker checker = new ContentTypeChecker(schema.getPathByLabel("name"),
@@ -46,9 +47,9 @@ public class ContentTypeCheckerTest extends CheckerTestBase {
     FieldCounter<RuleCheckerOutput> fieldCounter = new FieldCounter<>();
     checker.update(cache, fieldCounter, RuleCheckingOutputType.BOTH);
 
-    assertEquals(1, fieldCounter.size());
+    assertEquals(2, fieldCounter.size());
     assertEquals("name:contentType", checker.getHeaderWithoutId());
-    Assert.assertEquals(RuleCheckingOutputStatus.PASSED, fieldCounter.get(checker.getHeader()).getStatus());
+    Assert.assertEquals(RuleCheckingOutputStatus.PASSED, fieldCounter.get(checker.getHeader(RuleCheckingOutputType.STATUS)).getStatus());
   }
 
   @Test
@@ -62,9 +63,9 @@ public class ContentTypeCheckerTest extends CheckerTestBase {
     FieldCounter<RuleCheckerOutput> fieldCounter = new FieldCounter<>();
     checker.update(cache, fieldCounter, RuleCheckingOutputType.BOTH);
 
-    assertEquals(1, fieldCounter.size());
+    assertEquals(2, fieldCounter.size());
     assertEquals("name:contentType", checker.getHeaderWithoutId());
-    assertEquals(RuleCheckingOutputStatus.FAILED, fieldCounter.get(checker.getHeader()).getStatus());
+    assertEquals(RuleCheckingOutputStatus.FAILED, fieldCounter.get(checker.getHeader(RuleCheckingOutputType.STATUS)).getStatus());
   }
 
   @Test
@@ -87,7 +88,6 @@ public class ContentTypeCheckerTest extends CheckerTestBase {
       System.err.println(ruleChecker.getClass());
     }
 
-    System.err.println("Calculators: " + facade.getCalculators().size());
     assertEquals(2, facade.getCalculators().size());
     assertEquals("RuleCatalog", facade.getCalculators().get(1).getClass().getSimpleName());
     assertEquals(
@@ -101,12 +101,29 @@ public class ContentTypeCheckerTest extends CheckerTestBase {
       String line = CsvReader.toCsv(iterator.next());
       result.add(facade.measureAsList(line));
     }
-    assertEquals(2, result.size());
+    assertEquals(3, result.size());
     assertEquals(
-      Arrays.asList("1.0", "1", "1", "1", "0"),
+      Arrays.asList("1.0", "1", "1", "0", "0"),
       result.get(0));
     assertEquals(
       Arrays.asList("1.0", "1", "1", "-9", "-9"),
       result.get(1));
+  }
+
+  @Test
+  public void unaccessible() {
+    cache = (CsvPathCache) PathCacheFactory.getInstance(schema.getFormat(),
+      "http://vb.uni-wuerzburg.de/ub/books/36z1197_57156733/folio-std/unexisting.jpg");
+    cache.setCsvReader(new CsvReader().setHeader( ((CsvAwareSchema) schema).getHeader() ));
+
+    ContentTypeChecker checker = new ContentTypeChecker(schema.getPathByLabel("name"),
+      Arrays.asList("image/jpeg", "image/png", "image/tiff", "image/tiff-fx", "image/gif", "image/svg+xml", "application/pdf"));
+
+    FieldCounter<RuleCheckerOutput> fieldCounter = new FieldCounter<>();
+    checker.update(cache, fieldCounter, RuleCheckingOutputType.BOTH);
+
+    assertEquals(2, fieldCounter.size());
+    assertEquals("name:contentType", checker.getHeaderWithoutId());
+    Assert.assertEquals(RuleCheckingOutputStatus.FAILED, fieldCounter.get(checker.getHeader(RuleCheckingOutputType.STATUS)).getStatus());
   }
 }

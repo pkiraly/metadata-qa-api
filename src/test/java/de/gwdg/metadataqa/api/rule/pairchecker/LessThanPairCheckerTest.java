@@ -91,8 +91,8 @@ public class LessThanPairCheckerTest {
     FieldCounter<RuleCheckerOutput> fieldCounter = new FieldCounter<>();
     checker.update(cache, fieldCounter, RuleCheckingOutputType.BOTH);
 
-    assertEquals(1, fieldCounter.size());
+    assertEquals(2, fieldCounter.size());
     assertEquals(String.format("%s:%s:%s", field1, type.getPrefix(), field2), checker.getHeaderWithoutId());
-    return fieldCounter.get(checker.getHeader());
+    return fieldCounter.get(checker.getHeader(RuleCheckingOutputType.STATUS));
   }
 }

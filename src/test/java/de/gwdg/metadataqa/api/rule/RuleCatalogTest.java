@@ -10,6 +10,7 @@ import de.gwdg.metadataqa.api.schema.Format;
 import de.gwdg.metadataqa.api.schema.Schema;
 import de.gwdg.metadataqa.api.util.CompressionLevel;
 import de.gwdg.metadataqa.api.util.CsvReader;
+import org.apache.commons.lang3.StringUtils;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -40,7 +41,7 @@ public class RuleCatalogTest {
 
     RuleCatalog catalog = new RuleCatalog(schema);
     List<MetricResult> results = catalog.measure(cache);
-    assertEquals("1,0", results.get(0).getCsv(false, CompressionLevel.ZERO));
+    assertEquals("1,0,0", results.get(0).getCsv(false, CompressionLevel.ZERO));
   }
 
   @Test
@@ -50,13 +51,15 @@ public class RuleCatalogTest {
 
     RuleCatalog catalog = new RuleCatalog(schema);
     List<MetricResult> results = catalog.measure(cache);
-    assertEquals("1,0", results.get(0).getCsv(false, CompressionLevel.ZERO));
+    assertEquals("1,0,0", results.get(0).getCsv(false, CompressionLevel.ZERO));
   }
 
   @Test
   public void getHeader() {
     RuleCatalog catalog = new RuleCatalog(schema);
-    assertEquals(List.of("name:and:name:minCount:name:maxCount:3", "ruleCatalog:score"), catalog.getHeader());
+    assertEquals(
+      List.of("name:and:name:minCount:name:maxCount:3:status", "name:and:name:minCount:name:maxCount:3:score", "ruleCatalog:score"),
+      catalog.getHeader());
   }
 
   @Test

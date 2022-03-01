@@ -1,5 +1,7 @@
 package de.gwdg.metadataqa.api.rule;
 
+import de.gwdg.metadataqa.api.counter.FieldCounter;
+
 public abstract class BaseRuleChecker implements RuleChecker {
   protected String id;
   protected Integer failureScore;
@@ -43,5 +45,24 @@ public abstract class BaseRuleChecker implements RuleChecker {
 
   public String getHeader() {
     return header + ":" + getId();
+  }
+
+  public String getHeader(RuleCheckingOutputType outputType) {
+    String suffix = "";
+    if (outputType.equals(RuleCheckingOutputType.STATUS))
+      suffix = ":status";
+    else if (outputType.equals(RuleCheckingOutputType.SCORE))
+      suffix = ":score";
+    return header + ":" + getId() + suffix;
+  }
+
+  protected void addOutput(FieldCounter<RuleCheckerOutput> results, boolean isNA, boolean allPassed, RuleCheckingOutputType outputType) {
+    if (outputType.equals(RuleCheckingOutputType.STATUS) || outputType.equals(RuleCheckingOutputType.SCORE)) {
+      results.put(getHeader(), new RuleCheckerOutput(this, isNA, allPassed).setOutputType(outputType));
+    } else {
+      results.put(getHeader(RuleCheckingOutputType.STATUS), new RuleCheckerOutput(this, isNA, allPassed).setOutputType(RuleCheckingOutputType.STATUS));
+      results.put(getHeader(RuleCheckingOutputType.SCORE), new RuleCheckerOutput(this, isNA, allPassed).setOutputType(RuleCheckingOutputType.SCORE));
+    }
+
   }
 }

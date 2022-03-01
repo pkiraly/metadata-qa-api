@@ -93,6 +93,6 @@ public class NumericCheckerTest {
     FieldCounter<RuleCheckerOutput> fieldCounter = new FieldCounter<>();
     checker.update(cache, fieldCounter, RuleCheckingOutputType.BOTH);
 
-    return fieldCounter.get(checker.getHeader());
+    return fieldCounter.get(checker.getHeader(RuleCheckingOutputType.STATUS));
   }
 }

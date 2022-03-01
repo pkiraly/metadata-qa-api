@@ -32,7 +32,8 @@ public class RuleCatalog implements Calculator, Serializable {
     for (RuleChecker ruleChecker : schema.getRuleCheckers()) {
       ruleChecker.update(cache, fieldCounter, outputType);
       if (outputType != RuleCheckingOutputType.STATUS) {
-        Integer score = fieldCounter.get(ruleChecker.getHeader()).getScore();
+        String key = outputType.equals(RuleCheckingOutputType.BOTH) ? ruleChecker.getHeader(RuleCheckingOutputType.SCORE) : ruleChecker.getHeader();
+        Integer score = fieldCounter.get(key).getScore();
         if (score != null)
           totalScore += score.intValue();
       }
@@ -46,7 +47,12 @@ public class RuleCatalog implements Calculator, Serializable {
   public List<String> getHeader() {
     List<String> headers = new ArrayList<>();
     for (RuleChecker ruleChecker : schema.getRuleCheckers()) {
-      headers.add(onlyIdInHeader ? ruleChecker.getId() : ruleChecker.getHeader());
+      if (outputType != RuleCheckingOutputType.BOTH)
+        headers.add(onlyIdInHeader ? ruleChecker.getId() : ruleChecker.getHeader());
+      else {
+        headers.add(onlyIdInHeader ? ruleChecker.getId() + ":status" : ruleChecker.getHeader(RuleCheckingOutputType.STATUS));
+        headers.add(onlyIdInHeader ? ruleChecker.getId() + ":score" : ruleChecker.getHeader(RuleCheckingOutputType.SCORE));
+      }
     }
     if (outputType != RuleCheckingOutputType.STATUS)
       headers.add(CALCULATOR_NAME + ":score");

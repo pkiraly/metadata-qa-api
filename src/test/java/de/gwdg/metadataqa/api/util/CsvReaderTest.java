@@ -55,7 +55,7 @@ public class CsvReaderTest {
     } catch (IOException e) {
       //
     } catch (IllegalArgumentException e) {
-      assertEquals("The size of columns are different than the size of headers", e.getMessage());
+      assertEquals("The size of columns (2) is different than the size of headers (0)", e.getMessage());
       throw e;
     }
     fail("This point should not be accessed");

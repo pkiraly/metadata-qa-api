@@ -36,6 +36,6 @@ public class DisjointChecker extends PropertyPairChecker {
         }
       }
     }
-    results.put(getHeader(), new RuleCheckerOutput(this, isNA, allPassed).setOutputType(outputType));
+    addOutput(results, isNA, allPassed, outputType);
   }
 }

@@ -28,6 +28,6 @@ public class MinCountChecker extends SingleFieldChecker {
     var counter = new InstanceCounter(cache, field);
     if (counter.getCount() >= minCount)
       allPassed = true;
-    results.put(getHeader(), new RuleCheckerOutput(this, counter.isNA(), allPassed).setOutputType(outputType));
+    addOutput(results, counter.isNA(), allPassed, outputType);
   }
 }

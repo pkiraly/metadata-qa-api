@@ -3,7 +3,7 @@ package de.gwdg.metadataqa.api.rule;
 public class RuleCheckerOutput {
   private final RuleCheckingOutputStatus status;
   private RuleCheckingOutputType outputType;
-  private Integer score;
+  private Integer score = 0;
 
   public RuleCheckerOutput(RuleChecker ruleChecker, boolean isNA, boolean passed) {
     this(ruleChecker, RuleCheckingOutputStatus.create(isNA, passed));
@@ -33,9 +33,8 @@ public class RuleCheckerOutput {
   public String toString() {
     return outputType.equals(RuleCheckingOutputType.STATUS)
       ? status.asString()
-      : score != null
-        ? score.toString()
-        : status.asString();
+      : score == null
+        ? "0" : score.toString();
   }
 
   public RuleCheckerOutput setOutputType(RuleCheckingOutputType outputType) {

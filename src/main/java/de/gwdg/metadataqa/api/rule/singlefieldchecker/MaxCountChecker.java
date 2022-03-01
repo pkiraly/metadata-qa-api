@@ -28,6 +28,7 @@ public class MaxCountChecker extends SingleFieldChecker {
     var counter = new InstanceCounter(cache, field);
     if (counter.getCount() <= maxCount)
       allPassed = true;
-    results.put(getHeader(), new RuleCheckerOutput(this, counter.isNA(), allPassed).setOutputType(outputType));
+
+    addOutput(results, counter.isNA(), allPassed, outputType);
   }
 }

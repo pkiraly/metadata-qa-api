@@ -268,7 +268,7 @@ public class JsonBranch implements Cloneable, Serializable {
   }
 
   public String getIndexField() {
-    return indexField;
+      return indexField;
   }
 
   public JsonBranch setIndexField(String indexField) {

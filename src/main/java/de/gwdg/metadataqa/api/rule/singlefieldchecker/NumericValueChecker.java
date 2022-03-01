@@ -63,7 +63,7 @@ public class NumericValueChecker extends SingleFieldChecker {
       }
     }
 
-    results.put(getHeader(), new RuleCheckerOutput(this, isNA, allPassed).setOutputType(outputType));
+    addOutput(results, isNA, allPassed, outputType);
   }
 
   private boolean checkValue(double value) {

@@ -42,7 +42,7 @@ public class MaxWordsChecker extends SingleFieldChecker {
         }
       }
     }
-    results.put(getHeader(), new RuleCheckerOutput(this, isNA, allPassed).setOutputType(outputType));
+    addOutput(results, isNA, allPassed, outputType);
   }
 
   private int countWords(String value) {

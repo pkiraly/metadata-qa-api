@@ -3,6 +3,7 @@ package de.gwdg.metadataqa.api.util;
 import com.opencsv.CSVParser;
 import com.opencsv.CSVWriter;
 import com.opencsv.ICSVParser;
+import org.apache.commons.lang3.StringUtils;
 
 import java.io.IOException;
 import java.io.Serializable;
@@ -62,7 +63,8 @@ public class CsvReader implements Serializable {
         record.put(header.get(i), columns[i]);
       }
     } else {
-      throw new IllegalArgumentException("The size of columns are different than the size of headers");
+      throw new IllegalArgumentException(String.format("The size of columns (%d) is different than the size of headers (%d)",
+        (columns == null ? 0 : columns.length), (header == null ? 0 : header.size())));
     }
     return record;
   }
