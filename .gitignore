@@ -1,2 +1,3 @@
 target/
-/nbproject/
+/nbproject/.idea/
+metadata-qa-api.iml
