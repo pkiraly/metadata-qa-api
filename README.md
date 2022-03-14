@@ -5,6 +5,7 @@ Framework, every other project is built on top of it. It provides
 a general framework for measuring metadata quality in different 
 digital collections.
 
+  * [Quality dimensions](#quality-dimensions)
   * [Running as command-line application](#running-as-command-line-application)
   * [Using the library](#using-the-library)
   * [Defining schema with a configuration file](#defining-schema-with-a-configuration-file)
@@ -44,6 +45,30 @@ digital collections.
   * [Defining MeasurementConfiguration with a configuration file](#defining-measurementconfiguration-with-a-configuration-file)
   * [Using an experimental version](#using-an-experimental-version)
   * [More info](#more-info)
+
+## Quality dimensions
+
+The framework measures the following features:
+
+* _completeness_: it says how complete your records, i.e. what ratio of data elements defined in the metadata schema 
+  is available in the records. It can also collect information about the extistence of the field, and their 
+  cardinality (how many times they occur in a record)
+* _uniqueness and TF-IDF score_: it calculates the TF-IDF scores for field values. It is useful to learn how unique 
+  or how frequent the data values.
+* _rule catalogue_: one can set different rules or constraints against the data values. It checks if these rules are 
+  followed. One can set scores for failure and success cases.
+* _multilingual saturation_: how multilingual your records. It requires XML or RDF based multilingual annotation. It 
+  reports the number of tagged literals, number of distinct language tags, number of tagged literals per language 
+  tag, average number of languages per property for which there is at least one language-tagged literal
+* _language extractor_: it extracts the language tag of data elements if any.
+
+above these there are some helper calculators:
+
+* _extractor_: extracts and outputs values from the record
+* _annotator_: injects metadata into the output (e.g. some values, which helps further processings, such as 
+  file name, date, identifier or other information about the measurement, which are not available within the records)
+* _indexer_: index particular data elements with Solr before measurement. It is a necessary step for measuring 
+  TF-IDF or uniqueness
 
 ## Running as command-line application
 
