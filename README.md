@@ -445,11 +445,11 @@ The same in JSON:
 }
 ```
 
-The central piece is the `fields` array. Each item represents the properties of a signgle data elements (a JsonBranch in the API). Its properties are:
+The central piece is the `fields` array. Each item represents the properties of a single data elements (a JsonBranch in the API). Its properties are:
 * `name` (String): the name or label of the data element
 * `path` (String): a address of the data element. If the format is XML, ir should be an XPath expression. If format is JSON, it should be a JSONPath expression. If the format is CSV, it should be the name of the column. 
 * `categories` (List<String>): a list of categories this field belongs to. Categories can be anything, in Europeana's use case these are the core functionalities the field supports
-* `extractable` (boolean): whether the field can be extracted if field etraction is turned on
+* `extractable` (boolean): whether the field can be extracted if field extraction is turned on
 * `rules` (List<Rule>): a set of rules or constraints which will be checked against
 * `indexField` (String): the name which can be used in a search engine connected to the application (at the time of writing Apache Solr is supported)
 
@@ -508,7 +508,7 @@ Example: the field might have maximum one occurrence
 
 #### Value Range
 
-You can set a range of value within the field's value should remain. You can set a lower and higher bound with boolean 
+You can set a range of value within which the field's value should remain. You can set a lower and higher bound with boolean 
 operators. You can specify either integers or floating point numbers.
 
 ##### `minExclusive <number>`
@@ -562,7 +562,7 @@ Example: the field value should not be empty
 ##### `maxLength <number>`
 The maximum string length of each field value (API: `setMaxLength(Integer)` or `withMaxLength(Integer)`)
 
-Example: the value should be 3, 4, or 5 character long.
+Example: the value should be 3, 4, or 5 characters long.
 
 ```yaml
 - name: about
@@ -657,7 +657,7 @@ fields:
 The set of values of a field is disjoint (not equal) with the set of all values of another field 
  (API: `setDisjoint(String)` or `withDisjoint(String)`)
 
-Example: The title should be different then description.
+Example: The title should be different from description.
 
 ```yaml
 fields:
@@ -743,7 +743,7 @@ Example: make sure that the title and the description is different.
 
 #### Other constraints
 
-These rules don't have paralel in SHACL.
+These rules don't have parallel in SHACL.
 
 ##### `contentType [type1, ..., typeN]`
 This rule interprets the value as a URL, fetches it and extracts the HTTP header's
