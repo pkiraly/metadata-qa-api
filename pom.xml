@@ -5,7 +5,7 @@
   <groupId>de.gwdg.metadataqa</groupId>
   <artifactId>metadata-qa-api</artifactId>
   <packaging>jar</packaging>
-  <version>0.8</version>
+  <version>0.9.1-SNAPSHOT</version>
   <name>Metadata Quality Assurance Framework API</name>
   <description>
     A metadata quality assurance framework. It checks some metrics of 
@@ -225,8 +225,16 @@
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-jar-plugin</artifactId>
-        <version>3.1.2</version>
+        <version>3.2.2</version>
         <configuration>
+          <archive>
+            <manifest>
+              <addDefaultEntries>true</addDefaultEntries>
+              <addDefaultImplementationEntries>true</addDefaultImplementationEntries>
+              <addDefaultSpecificationEntries>true</addDefaultSpecificationEntries>
+              <addBuildEnvironmentEntries>true</addBuildEnvironmentEntries>
+            </manifest>
+          </archive>
           <source>${maven.compiler.source}</source>
           <target>${maven.compiler.target}</target>
           <testSource>${maven.compiler.source}</testSource>
