@@ -9,6 +9,7 @@ import java.util.List;
 import org.apache.commons.lang3.StringUtils;
 
 /**
+ * Duplicated string detector
  *
  * @author Péter Király <peter.kiraly at gwdg.de>
  */

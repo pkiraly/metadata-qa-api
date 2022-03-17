@@ -13,6 +13,7 @@ import java.util.List;
 import java.util.logging.Logger;
 
 /**
+ * Language calculator
  *
  * @author Péter Király <peter.kiraly at gwdg.de>
  */

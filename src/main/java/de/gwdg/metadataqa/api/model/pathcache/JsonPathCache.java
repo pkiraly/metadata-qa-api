@@ -16,6 +16,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 /**
+ * Cache for reusing JSON paths
  *
  * @author Péter Király <peter.kiraly at gwdg.de>
  * @param <T> the type of elements held in this object. It should be the

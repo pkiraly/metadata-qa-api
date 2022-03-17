@@ -12,6 +12,7 @@ import java.util.Arrays;
 import java.util.List;
 
 /**
+ * JSON branch object
  *
  * @author Péter Király <peter.kiraly at gwdg.de>
  */

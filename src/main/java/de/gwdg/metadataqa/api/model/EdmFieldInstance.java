@@ -4,6 +4,7 @@ import java.util.Objects;
 import org.apache.commons.lang3.StringUtils;
 
 /**
+ * EDM field instance
  *
  * @author Péter Király <peter.kiraly at gwdg.de>
  */

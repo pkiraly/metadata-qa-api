@@ -1,6 +1,7 @@
 package de.gwdg.metadataqa.api.util;
 
 /**
+ * String duplication detector
  *
  * @author Péter Király <peter.kiraly at gwdg.de>
  */

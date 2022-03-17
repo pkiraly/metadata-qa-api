@@ -4,6 +4,7 @@ import de.gwdg.metadataqa.api.interfaces.Observer;
 import de.gwdg.metadataqa.api.schema.ProblemCatalogSchema;
 
 /**
+ * Abstract prolem detector
  *
  * @author Péter Király <peter.kiraly at gwdg.de>
  */

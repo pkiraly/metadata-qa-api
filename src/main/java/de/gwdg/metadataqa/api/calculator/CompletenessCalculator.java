@@ -28,6 +28,7 @@ import org.apache.commons.lang3.StringUtils;
 import static java.util.stream.Collectors.toList;
 
 /**
+ * Completeness calculator
  *
  * @author Péter Király <peter.kiraly at gwdg.de>
  * @param <T>

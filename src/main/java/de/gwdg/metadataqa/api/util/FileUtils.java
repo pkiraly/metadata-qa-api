@@ -19,6 +19,7 @@ import java.util.Scanner;
 import org.apache.commons.lang3.StringUtils;
 
 /**
+ * Utility methods for files
  *
  * @author Péter Király <peter.kiraly at gwdg.de>
  */

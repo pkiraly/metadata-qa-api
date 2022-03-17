@@ -12,6 +12,7 @@ import java.util.Map;
 import java.util.logging.Logger;
 
 /**
+ * A cache for reusing CSV paths (column names)
  *
  * @author Péter Király <peter.kiraly at gwdg.de>
  * @param <T> the type of elements held in this object. It should be the

@@ -16,6 +16,7 @@ import java.util.List;
 import java.util.logging.Logger;
 
 /**
+ * Field extractor
  *
  * @author Péter Király <peter.kiraly at gwdg.de>
  */

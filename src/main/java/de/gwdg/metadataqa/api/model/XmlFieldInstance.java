@@ -5,7 +5,7 @@ import java.util.Objects;
 import org.apache.commons.lang3.StringUtils;
 
 /**
- *
+ * Instance of an XML field
  * @author Péter Király <peter.kiraly at gwdg.de>
  */
 public class XmlFieldInstance implements Serializable {

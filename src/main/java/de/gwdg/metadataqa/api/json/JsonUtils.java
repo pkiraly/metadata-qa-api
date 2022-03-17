@@ -16,6 +16,7 @@ import java.util.logging.Logger;
 import net.minidev.json.JSONArray;
 
 /**
+ * JSON utility methods
  *
  * @author Péter Király <peter.kiraly at gwdg.de>
  */

@@ -10,6 +10,7 @@ import de.gwdg.metadataqa.api.model.pathcache.PathCache;
 import org.apache.commons.lang3.StringUtils;
 
 /**
+ * Empty string detector
  *
  * @author Péter Király <peter.kiraly at gwdg.de>
  */

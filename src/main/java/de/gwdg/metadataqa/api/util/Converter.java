@@ -14,6 +14,7 @@ import net.minidev.json.JSONArray;
 import org.apache.commons.lang3.StringUtils;
 
 /**
+ * Converter utility
  *
  * @author Péter Király <peter.kiraly at gwdg.de>
  */

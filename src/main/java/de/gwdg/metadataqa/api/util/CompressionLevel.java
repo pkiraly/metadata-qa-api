@@ -1,6 +1,7 @@
 package de.gwdg.metadataqa.api.util;
 
 /**
+ * Enumeration for compression of string representation of double values
  *
  * @author Péter Király <peter.kiraly at gwdg.de>
  */

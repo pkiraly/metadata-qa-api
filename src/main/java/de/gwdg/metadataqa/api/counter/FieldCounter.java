@@ -14,6 +14,7 @@ import de.gwdg.metadataqa.api.util.FileUtils;
 import org.apache.commons.lang3.StringUtils;
 
 /**
+ * Generic field counter
  *
  * @author Péter Király <peter.kiraly at gwdg.de>
  * @param <T> the type of elements held in this collection
