@@ -6,7 +6,6 @@ import de.gwdg.metadataqa.api.util.Converter;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
-import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
@@ -84,7 +83,7 @@ public class FieldCounter<T> implements Serializable {
   }
 
   public List<Object> getCsv() {
-    List<Object> values = new LinkedList<>();
+    List<Object> values = new ArrayList<>();
     for (T value : fieldMap.values()) {
       values.add(value);
     }

@@ -6,6 +6,7 @@ import java.io.BufferedWriter;
 import java.io.Closeable;
 import java.io.IOException;
 import java.io.OutputStreamWriter;
+import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -22,7 +23,7 @@ public abstract class ResultWriter implements Closeable {
   }
 
   public ResultWriter() {
-    this.outputWriter = new BufferedWriter(new OutputStreamWriter(System.out));
+    this.outputWriter = new BufferedWriter(new OutputStreamWriter(System.out, StandardCharsets.UTF_8));
   }
 
   @Override

@@ -15,6 +15,7 @@ import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLEncoder;
+import java.nio.charset.StandardCharsets;
 import java.util.List;
 import java.util.Map;
 import java.util.logging.Level;
@@ -113,7 +114,7 @@ public class DefaultSolrClient implements SolrClient, Serializable {
   }
 
   private String readStream(InputStream in) throws IOException {
-    var rd = new BufferedReader(new InputStreamReader(in));
+    var rd = new BufferedReader(new InputStreamReader(in, StandardCharsets.UTF_8));
     var result = new StringBuffer();
     var line = "";
     while ((line = rd.readLine()) != null) {

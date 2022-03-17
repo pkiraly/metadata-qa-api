@@ -176,8 +176,8 @@ public class AbbreviationManager implements Serializable {
 
   /**
    * Do not create new abbreviation, simply returns an existing or a default number
-   * @param key
-   * @param defaultValue
+   * @param key The abbreviation
+   * @param defaultValue A default value if the abbreviation is not found
    * @return the saved value, or if key doesn't exist a default value
    */
   public Integer getOrDefault(String key, Integer defaultValue) {

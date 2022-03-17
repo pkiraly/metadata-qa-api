@@ -30,7 +30,7 @@ import static java.util.stream.Collectors.toList;
  * Completeness calculator
  *
  * @author Péter Király <peter.kiraly at gwdg.de>
- * @param <T>
+ * @param <T> A field instance class
  */
 public class CompletenessCalculator<T extends XmlFieldInstance>
       implements Calculator, Serializable {

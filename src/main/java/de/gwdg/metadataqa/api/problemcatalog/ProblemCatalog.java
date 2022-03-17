@@ -11,6 +11,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
+ * Problem catalogue
  *
  * @author Péter Király <peter.kiraly at gwdg.de>
  */
