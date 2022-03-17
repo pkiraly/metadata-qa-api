@@ -7,6 +7,7 @@ import java.io.Serializable;
 import java.util.List;
 
 /**
+ * An interface to detect skippable entities
  *
  * @author Péter Király <peter.kiraly at gwdg.de>
  */

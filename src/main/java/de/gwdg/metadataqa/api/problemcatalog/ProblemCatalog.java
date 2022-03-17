@@ -9,7 +9,6 @@ import de.gwdg.metadataqa.api.schema.ProblemCatalogSchema;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.logging.Logger;
 
 /**
  *
@@ -18,13 +17,10 @@ import java.util.logging.Logger;
 public class ProblemCatalog extends BaseProblemCatalog<Double> implements Serializable, Observable {
 
   private static final long serialVersionUID = -8099737126539035900L;
-  private static final Logger LOGGER = Logger.getLogger(ProblemCatalog.class.getCanonicalName());
 
   private static final String CALCULATOR_NAME = "problemCatalog";
 
   private final List<Observer> problems = new ArrayList<>();
-  private String jsonString;
-  private Object jsonDocument;
   private PathCache cache;
   private ProblemCatalogSchema schema;
 
@@ -35,14 +31,6 @@ public class ProblemCatalog extends BaseProblemCatalog<Double> implements Serial
   @Override
   public String getCalculatorName() {
     return CALCULATOR_NAME;
-  }
-
-  public String getJsonString() {
-    return jsonString;
-  }
-
-  public Object getJsonDocument() {
-    return jsonDocument;
   }
 
   @Override

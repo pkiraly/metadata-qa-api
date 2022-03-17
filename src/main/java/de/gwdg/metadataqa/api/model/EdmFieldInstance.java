@@ -77,15 +77,13 @@ public class EdmFieldInstance extends XmlFieldInstance {
 
   @Override
   public boolean equals(Object obj) {
+    if (!(obj instanceof EdmFieldInstance))
+      return false;
+
     if (this == obj) {
       return true;
     }
-    if (obj == null) {
-      return false;
-    }
-    if (getClass() != obj.getClass()) {
-      return false;
-    }
+
     final EdmFieldInstance other = (EdmFieldInstance) obj;
     if (   !Objects.equals(this.getValue(), other.getValue())
         || !Objects.equals(this.getLanguage(), other.getLanguage())

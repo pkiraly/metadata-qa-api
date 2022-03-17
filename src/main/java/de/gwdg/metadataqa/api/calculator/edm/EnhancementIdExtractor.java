@@ -14,6 +14,7 @@ import java.util.List;
 import java.util.Map;
 
 /**
+ * Detects whether an EDM field is from the enhancement part of the record
  *
  * @author Péter Király <peter.kiraly at gwdg.de>
  */

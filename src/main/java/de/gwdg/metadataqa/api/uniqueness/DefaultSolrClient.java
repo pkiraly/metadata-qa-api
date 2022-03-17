@@ -48,11 +48,8 @@ public class DefaultSolrClient implements SolrClient, Serializable {
   }
 
   public String getSolrSearchResponse(String solrField, String value) {
-    String jsonString = null;
-
     String url = buildUrl(solrField, value);
-    jsonString = connect(url, solrField, value);
-    return jsonString;
+    return connect(url, solrField, value);
   }
 
   public String buildUrl(String solrField, String value) {

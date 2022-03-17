@@ -11,17 +11,15 @@ import de.gwdg.metadataqa.api.schema.Schema;
 import de.gwdg.metadataqa.api.util.SkippedEntitySelector;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.logging.Logger;
 
 /**
+ * Calculates multilinguality saturation
  *
  * @author Péter Király <peter.kiraly at gwdg.de>
  */
 public class MultilingualitySaturationCalculator extends BaseLanguageCalculator {
 
   public static final String CALCULATOR_NAME = "multilingualitySaturation";
-
-  private static final Logger LOGGER = Logger.getLogger(MultilingualitySaturationCalculator.class.getCanonicalName());
 
   /**
    * The result type of multilinguality.
@@ -45,7 +43,6 @@ public class MultilingualitySaturationCalculator extends BaseLanguageCalculator 
   }
 
   private ResultTypes resultType = ResultTypes.NORMAL;
-  private String inputFileName;
 
   private Schema schema;
   private SkippedEntryChecker skippedEntryChecker = null;

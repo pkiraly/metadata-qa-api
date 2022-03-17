@@ -32,9 +32,9 @@ public class FieldGroup {
   /**
    * Construct a new FieldGroup object.
    *
-   * @param pCategory
+   * @param sCategory
    *   A sub-dimension of completeness
-   * @param pFields
+   * @param sFields
    *   The field names as in the label of JsonBranch objects
    *
    * @see JsonBranch

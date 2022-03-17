@@ -4,7 +4,6 @@ import de.gwdg.metadataqa.api.counter.FieldCounter;
 import de.gwdg.metadataqa.api.model.EdmFieldInstance;
 import java.io.Serializable;
 import java.util.List;
-import java.util.logging.Logger;
 
 import de.gwdg.metadataqa.api.model.pathcache.PathCache;
 import org.apache.commons.lang3.StringUtils;
@@ -18,10 +17,6 @@ import org.apache.commons.lang3.StringUtils;
  * @author Péter Király <peter.kiraly at gwdg.de>
  */
 public class LongSubject extends ProblemDetector implements Serializable {
-
-  private static final Logger LOGGER = Logger.getLogger(
-      LongSubject.class.getCanonicalName()
-  );
 
   private static final String NAME = "LongSubject";
   private static final int MAX_LENGTH = 50;
