@@ -70,7 +70,7 @@ public class MarcJsonTest {
     fragment = cache.read("$.datafield[?(@.tag == '935')]", null);
     assertEquals(2, ((JSONArray) fragment).size());
 
-    path = "$..datafield[?(@.tag == '935')].size()";
+    path = "$.datafield[?(@.tag == '935')].size()";
     value = (Integer) cache.get(path, Integer.class);
     assertEquals(4, value);
 
