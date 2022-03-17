@@ -51,8 +51,8 @@ public class FieldGroup {
 
   /**
    * Get the list of field names.
-   * @return
-   *   List of field names
+   *
+   * @return List of field names
    */
   public List<String> getFields() {
     return fields;
@@ -60,8 +60,8 @@ public class FieldGroup {
 
   /**
    * Get the category.
-   * @return
-   *   The category
+   *
+   * @return The category
    */
   public String getCategory() {
     return category;

@@ -39,7 +39,7 @@ public enum RuleCheckingOutputStatus {
    *
    * @param isNA Is NA?
    * @param passed Is rule passed?
-   * @return
+   * @return the output status
    */
   public static RuleCheckingOutputStatus create(boolean isNA, boolean passed) {
     if (isNA)

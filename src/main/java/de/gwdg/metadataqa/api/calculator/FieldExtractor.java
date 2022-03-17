@@ -13,7 +13,6 @@ import de.gwdg.metadataqa.api.util.FileUtils;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.logging.Logger;
 
 /**
  * Field extractor
@@ -21,8 +20,6 @@ import java.util.logging.Logger;
  * @author Péter Király <peter.kiraly at gwdg.de>
  */
 public class FieldExtractor implements Calculator, Serializable {
-
-  private static final Logger LOGGER = Logger.getLogger(FieldExtractor.class.getCanonicalName());
 
   public static final String CALCULATOR_NAME = "fieldExtractor";
   public static final String FIELD_NAME = "recordId";

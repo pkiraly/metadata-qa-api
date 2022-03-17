@@ -37,8 +37,10 @@ public class SchemaUtils {
   static int id = 0;
 
   /**
+   * Create rule checkers based on the schema
+   *
    * @param schema
-   * @return
+   * @return The list of rule checkers
    */
   public static List<RuleChecker> getRuleCheckers(Schema schema) {
     setSchemaForFields(schema);
