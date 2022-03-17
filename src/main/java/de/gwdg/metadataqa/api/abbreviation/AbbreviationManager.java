@@ -121,8 +121,8 @@ public class AbbreviationManager implements Serializable {
    *
    * @param fileName The file name.
    *
-   * @throws FileNotFoundException
-   * @throws UnsupportedEncodingException
+   * @throws FileNotFoundException if the file is not existing
+   * @throws UnsupportedEncodingException If the encoding is not supported
    */
   public void save(String fileName)
       throws FileNotFoundException, UnsupportedEncodingException {
@@ -144,10 +144,11 @@ public class AbbreviationManager implements Serializable {
 
   /**
    * A get a java.nio.file.Path object from a file name.
+   *
    * @param fileName The file name
    * @return The Path object
-   * @throws IOException
-   * @throws URISyntaxException
+   * @throws IOException if general I/O problem happens
+   * @throws URISyntaxException if the URL syntax is not valid
    */
   private static Path getPath(String fileName)
       throws IOException, URISyntaxException {
