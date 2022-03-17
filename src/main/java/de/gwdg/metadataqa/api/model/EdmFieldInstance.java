@@ -80,9 +80,8 @@ public class EdmFieldInstance extends XmlFieldInstance {
     if (!(obj instanceof EdmFieldInstance))
       return false;
 
-    if (this == obj) {
+    if (this == obj)
       return true;
-    }
 
     final EdmFieldInstance other = (EdmFieldInstance) obj;
     if (   !Objects.equals(this.getValue(), other.getValue())

@@ -71,8 +71,9 @@ public class TfIdfExtractor {
       double count = 0;
       if (value.containsKey(solrField)) {
         Map terms = (LinkedHashMap) value.get(solrField);
-        for (String term : (Set<String>) terms.keySet()) {
-          Map termInfo = (LinkedHashMap) terms.get(term);
+        for (Map.Entry<String, Map> entry : ((Map<String, Map>) terms).entrySet()) {
+          String term = entry.getKey();
+          Map termInfo = entry.getValue();
           double tfIdf = Converter.asDouble(termInfo.get("tf-idf"));
           if (doCollectTerms) {
             int tf = Converter.asInteger(termInfo.get("tf"));

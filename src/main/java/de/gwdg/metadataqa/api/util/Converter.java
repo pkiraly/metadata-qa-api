@@ -94,7 +94,7 @@ public interface Converter {
     } else if (value instanceof Integer) {
       text = Integer.toString((Integer) value);
     } else if (value instanceof Double) {
-      text = String.format("%.6f", value);
+      text = String.format("%.6f", (Double) value);
     } else if (value instanceof String) {
       text = (String) value;
     } else if (value instanceof List) {

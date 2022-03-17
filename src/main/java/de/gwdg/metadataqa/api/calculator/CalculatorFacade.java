@@ -238,10 +238,11 @@ public class CalculatorFacade implements Serializable {
   }
 
   private void runMeasurements(OutputCollector collector) {
-    for (Calculator calculator : getCalculators()) {
-      List<MetricResult> result = calculator.measure(cache);
-      collector.addResult(calculator, result, compressionLevel);
-    }
+    if (calculators != null)
+      for (Calculator calculator : getCalculators()) {
+        List<MetricResult> result = calculator.measure(cache);
+        collector.addResult(calculator, result, compressionLevel);
+      }
   }
 
   /**
@@ -300,9 +301,9 @@ public class CalculatorFacade implements Serializable {
   public List<String> getHeader() {
     conditionalConfiguration();
     List<String> header = new ArrayList<>();
-    for (Calculator calculator : getCalculators()) {
-      header.addAll(calculator.getHeader());
-    }
+    if (calculators != null)
+      for (Calculator calculator : getCalculators())
+        header.addAll(calculator.getHeader());
 
     return header;
   }

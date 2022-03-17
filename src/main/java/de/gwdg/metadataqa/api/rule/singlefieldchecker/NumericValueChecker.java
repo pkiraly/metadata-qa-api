@@ -21,7 +21,7 @@ public class NumericValueChecker extends SingleFieldChecker {
     MIN_EXCLUSIVE("minExclusive"),
     MAX_EXCLUSIVE("maxExclusive");
 
-    private String prefix;
+    private final String prefix;
 
     TYPE(String prefix) {
       this.prefix = prefix;

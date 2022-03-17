@@ -159,7 +159,7 @@ public class AbbreviationManager implements Serializable {
     var uri = url.toURI();
     Map<String, String> env = new HashMap<>();
     if (uri.toString().contains("!")) {
-      String[] parts = uri.toString().split("!");
+      String[] parts = uri.toString().split("!", 2);
       if (fs == null)
         fs = FileSystems.newFileSystem(URI.create(parts[0]), env);
       path = fs.getPath(parts[1]);

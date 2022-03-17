@@ -146,8 +146,8 @@ public class ProfileReader {
     var matcher = Pattern.compile("^[^,]+,\"(.*)\"$").matcher(line);
     if (matcher.matches()) {
       String fieldsWithCount = matcher.group(1);
-      for (String fieldWithCount : fieldsWithCount.split(",")) {
-        String[] parts = fieldWithCount.split("=");
+      for (String fieldWithCount : fieldsWithCount.split(",", 0)) {
+        String[] parts = fieldWithCount.split("=", 2);
         fields.add(parts[0]);
       }
     }
