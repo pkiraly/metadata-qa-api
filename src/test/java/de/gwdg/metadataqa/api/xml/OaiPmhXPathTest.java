@@ -237,4 +237,14 @@ public class OaiPmhXPathTest {
     }
   }
 
+  @Test
+  public void testDisjunct() {
+    String xpath = "//edm:Agent/skos:prefLabel|//edm:Agent/skos:altLabel";
+    OaiPmhXPath oaiPmhXPath = new OaiPmhXPath(new File(inputFile));
+
+    List<EdmFieldInstance> list = oaiPmhXPath.extractFieldInstanceList(xpath);
+    list.stream().forEach(x -> System.err.printf("%s @%s\n", x.getValue(), x.getLanguage()));
+    System.err.println();
+  }
+
 }
