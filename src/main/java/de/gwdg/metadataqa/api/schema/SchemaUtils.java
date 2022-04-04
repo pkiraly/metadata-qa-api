@@ -11,6 +11,7 @@ import de.gwdg.metadataqa.api.rule.singlefieldchecker.ContentTypeChecker;
 import de.gwdg.metadataqa.api.rule.singlefieldchecker.EnumerationChecker;
 import de.gwdg.metadataqa.api.rule.pairchecker.EqualityChecker;
 import de.gwdg.metadataqa.api.rule.singlefieldchecker.HasValueChecker;
+import de.gwdg.metadataqa.api.rule.singlefieldchecker.ImageDimensionChecker;
 import de.gwdg.metadataqa.api.rule.singlefieldchecker.MaxCountChecker;
 import de.gwdg.metadataqa.api.rule.singlefieldchecker.MaxLengthChecker;
 import de.gwdg.metadataqa.api.rule.singlefieldchecker.MaxWordsChecker;
@@ -112,6 +113,9 @@ public class SchemaUtils {
     if (rule.getContentType() != null && !rule.getContentType().isEmpty())
       ruleCheckers.add(new ContentTypeChecker(branch, rule.getContentType()));
 
+    if (rule.getDimension() != null)
+      ruleCheckers.add(new ImageDimensionChecker(branch, rule.getDimension()));
+
     if (rule.getLessThan() != null)
       pair(schema, ruleCheckers, branch, rule.getLessThan(), "LessThan");
 
@@ -119,17 +123,17 @@ public class SchemaUtils {
       pair(schema, ruleCheckers, branch, rule.getLessThan(), "lessThanOrEquals");
 
     if (rule.getAnd() != null) {
-      List<RuleChecker> childRuleCheckers = getChildRuleCheckers(schema, branch, rule.getAnd());
+      List<RuleChecker> childRuleCheckers = getChildRuleCheckers(schema, branch, rule.getAnd(), rule.getId());
       ruleCheckers.add(new AndChecker(branch, childRuleCheckers));
     }
 
     if (rule.getOr() != null) {
-      List<RuleChecker> childRuleCheckers = getChildRuleCheckers(schema, branch, rule.getOr());
+      List<RuleChecker> childRuleCheckers = getChildRuleCheckers(schema, branch, rule.getOr(), rule.getId());
       ruleCheckers.add(new OrChecker(branch, childRuleCheckers));
     }
 
     if (rule.getNot() != null) {
-      List<RuleChecker> childRuleCheckers = getChildRuleCheckers(schema, branch, rule.getNot());
+      List<RuleChecker> childRuleCheckers = getChildRuleCheckers(schema, branch, rule.getNot(), rule.getId());
       ruleCheckers.add(new NotChecker(branch, childRuleCheckers));
     }
 
@@ -144,14 +148,16 @@ public class SchemaUtils {
     return ruleCheckers;
   }
 
-  private static List<RuleChecker> getChildRuleCheckers(Schema schema, JsonBranch branch, List<Rule> rules) {
-    List<RuleChecker> andRuleCheckers = new ArrayList<>();
-    for (Rule andRule : rules) {
-      List<RuleChecker> localAndRuleCheckers = processRule(schema, branch, andRule);
-      if (!localAndRuleCheckers.isEmpty())
-        andRuleCheckers.addAll(localAndRuleCheckers);
+  private static List<RuleChecker> getChildRuleCheckers(Schema schema, JsonBranch branch, List<Rule> rules, String id) {
+    List<RuleChecker> childRuleCheckers = new ArrayList<>();
+    for (Rule childRule : rules) {
+      if (StringUtils.isBlank(childRule.getId()))
+        childRule.setId(id);
+      List<RuleChecker> localChildRuleCheckers = processRule(schema, branch, childRule);
+      if (!localChildRuleCheckers.isEmpty())
+        childRuleCheckers.addAll(localChildRuleCheckers);
     }
-    return andRuleCheckers;
+    return childRuleCheckers;
   }
 
   private static void pair(Schema schema,

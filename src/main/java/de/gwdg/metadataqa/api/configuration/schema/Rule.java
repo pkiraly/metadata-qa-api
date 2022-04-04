@@ -1,5 +1,7 @@
 package de.gwdg.metadataqa.api.configuration.schema;
 
+import de.gwdg.metadataqa.api.util.Dimension;
+
 import java.io.Serializable;
 import java.util.List;
 
@@ -34,6 +36,7 @@ public class Rule implements Serializable {
   private List<String> contentType;
   private Integer maxWords;
   private Integer minWords;
+  private Dimension dimension;
 
   public String getId() {
     return id;
@@ -412,4 +415,16 @@ public class Rule implements Serializable {
     return this;
   }
 
+  public Dimension getDimension() {
+    return dimension;
+  }
+
+  public void setDimension(Dimension dimension) {
+    this.dimension = dimension;
+  }
+
+  public Rule withDimension(Dimension dimension) {
+    this.dimension = dimension;
+    return this;
+  }
 }
