@@ -37,6 +37,9 @@ public class Rule implements Serializable {
   private Integer maxWords;
   private Integer minWords;
   private Dimension dimension;
+  private Boolean hidden = Boolean.FALSE;
+  private List<String> dependencies;
+  private Boolean skip = Boolean.FALSE;
 
   public String getId() {
     return id;
@@ -425,6 +428,45 @@ public class Rule implements Serializable {
 
   public Rule withDimension(Dimension dimension) {
     this.dimension = dimension;
+    return this;
+  }
+
+  public Boolean getHidden() {
+    return hidden;
+  }
+
+  public void setHidden(Boolean hidden) {
+    this.hidden = hidden;
+  }
+
+  public Rule withHidden(Boolean hidden) {
+    this.hidden = hidden;
+    return this;
+  }
+
+  public List<String> getDependencies() {
+    return dependencies;
+  }
+
+  public void setDependencies(List<String> dependencies) {
+    this.dependencies = dependencies;
+  }
+
+  public Rule withRulesAlreadyPassed(List<String> dependencies) {
+    this.dependencies = dependencies;
+    return this;
+  }
+
+  public Boolean getSkip() {
+    return skip;
+  }
+
+  public void setSkip(Boolean skip) {
+    this.skip = skip;
+  }
+
+  public Rule withSkip(Boolean skip) {
+    this.skip = skip;
     return this;
   }
 }

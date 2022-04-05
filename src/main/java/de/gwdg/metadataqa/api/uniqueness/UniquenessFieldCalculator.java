@@ -50,7 +50,7 @@ public class UniquenessFieldCalculator {
           String solrResponse = solrClient.getSolrSearchResponse(
               uniquenessField.getSolrField(), value
           );
-          var count = extractor.extractNumFound(solrResponse, recordId);
+          var count = extractor.extractNumFound(solrResponse);
           if (count == 0)
             count = 1;
           double score = Math.pow(

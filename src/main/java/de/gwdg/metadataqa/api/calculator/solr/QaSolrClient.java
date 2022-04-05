@@ -37,16 +37,11 @@ public class QaSolrClient {
       if (schema.getRecordId() != null && jsonBranch.equals(schema.getRecordId()))
         continue;
 
-      String solrField = jsonBranch.getIndexField() != null ? jsonBranch.getIndexField() : jsonBranch.generateIndexField();
-      if (solrField.endsWith("_txt")) {
-        solrField = solrField.replaceAll("_txt$", "_ss");
-      } else if (!solrField.endsWith(SUFFIX)) {
-        solrField = solrField + SUFFIX;
-      }
+      String solrField = getSolrField(jsonBranch);
       field.setSolrField(solrField);
 
       var solrResponse = solrClient.getSolrSearchResponse(solrField, "*");
-      var numFound = extractor.extractNumFound(solrResponse, "total");
+      var numFound = extractor.extractNumFound(solrResponse);
       field.setTotal(numFound);
       field.setScoreForUniqueValue(
         UniquenessFieldCalculator.calculateScore(numFound, 1.0)
@@ -54,5 +49,15 @@ public class QaSolrClient {
 
       solrFields.add(field);
     }
+  }
+
+  public static String getSolrField(JsonBranch jsonBranch) {
+    String solrField = jsonBranch.getIndexField() != null ? jsonBranch.getIndexField() : jsonBranch.generateIndexField();
+    if (solrField.endsWith("_txt")) {
+      solrField = solrField.replaceAll("_txt$", "_ss");
+    } else if (!solrField.endsWith(SUFFIX)) {
+      solrField = solrField + SUFFIX;
+    }
+    return solrField;
   }
 }

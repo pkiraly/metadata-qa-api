@@ -19,7 +19,6 @@ public class ImageDimensionChecker extends SingleFieldChecker {
   private static final Logger LOGGER = Logger.getLogger(ImageDimensionChecker.class.getCanonicalName());
 
   public static final String PREFIX = "imageDimension";
-  protected List<String> fixedValues;
   protected Dimension dimensionRule;
 
   public ImageDimensionChecker(JsonBranch field, Dimension dimension) {

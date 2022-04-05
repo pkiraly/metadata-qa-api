@@ -7,6 +7,7 @@ public abstract class BaseRuleChecker implements RuleChecker {
   protected Integer failureScore;
   protected Integer successScore;
   protected String header;
+  protected Boolean hidden = false;
 
   @Override
   public String getId() {
@@ -63,6 +64,13 @@ public abstract class BaseRuleChecker implements RuleChecker {
       results.put(getHeader(RuleCheckingOutputType.STATUS), new RuleCheckerOutput(this, isNA, allPassed).setOutputType(RuleCheckingOutputType.STATUS));
       results.put(getHeader(RuleCheckingOutputType.SCORE), new RuleCheckerOutput(this, isNA, allPassed).setOutputType(RuleCheckingOutputType.SCORE));
     }
+  }
 
+  public void setHidden() {
+    this.hidden = true;
+  }
+
+  public boolean isHidden() {
+    return hidden;
   }
 }

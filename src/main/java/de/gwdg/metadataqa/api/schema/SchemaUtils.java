@@ -8,6 +8,7 @@ import de.gwdg.metadataqa.api.rule.logical.OrChecker;
 import de.gwdg.metadataqa.api.rule.pairchecker.DisjointChecker;
 import de.gwdg.metadataqa.api.rule.pairchecker.LessThanPairChecker;
 import de.gwdg.metadataqa.api.rule.singlefieldchecker.ContentTypeChecker;
+import de.gwdg.metadataqa.api.rule.singlefieldchecker.DependencyChecker;
 import de.gwdg.metadataqa.api.rule.singlefieldchecker.EnumerationChecker;
 import de.gwdg.metadataqa.api.rule.pairchecker.EqualityChecker;
 import de.gwdg.metadataqa.api.rule.singlefieldchecker.HasValueChecker;
@@ -21,6 +22,7 @@ import de.gwdg.metadataqa.api.rule.singlefieldchecker.MinWordsChecker;
 import de.gwdg.metadataqa.api.rule.singlefieldchecker.NumericValueChecker;
 import de.gwdg.metadataqa.api.rule.singlefieldchecker.PatternChecker;
 import de.gwdg.metadataqa.api.rule.RuleChecker;
+import de.gwdg.metadataqa.api.rule.singlefieldchecker.UniqunessChecker;
 import org.apache.commons.lang3.StringUtils;
 
 import java.util.ArrayList;
@@ -62,6 +64,8 @@ public class SchemaUtils {
 
   private static List<RuleChecker> processRule(Schema schema, JsonBranch branch, Rule rule) {
     List<RuleChecker> ruleCheckers = new ArrayList<>();
+    if (rule.getSkip().equals(Boolean.TRUE))
+      return ruleCheckers;
 
     if (StringUtils.isNotBlank(rule.getPattern()))
       ruleCheckers.add(new PatternChecker(branch, rule.getPattern()));
@@ -116,11 +120,20 @@ public class SchemaUtils {
     if (rule.getDimension() != null)
       ruleCheckers.add(new ImageDimensionChecker(branch, rule.getDimension()));
 
+    if (rule.getDependencies() != null && !rule.getDependencies().isEmpty())
+      ruleCheckers.add(new DependencyChecker(branch, rule.getDependencies()));
+
+    if (rule.getUnique() != null && rule.getUnique().equals(Boolean.TRUE))
+      ruleCheckers.add(new UniqunessChecker(branch));
+
     if (rule.getLessThan() != null)
       pair(schema, ruleCheckers, branch, rule.getLessThan(), "LessThan");
 
     if (rule.getLessThanOrEquals() != null)
       pair(schema, ruleCheckers, branch, rule.getLessThan(), "lessThanOrEquals");
+
+    if (rule.getLessThanOrEquals() != null)
+      ruleCheckers.add(new DependencyChecker(branch, rule.getDependencies()));
 
     if (rule.getAnd() != null) {
       List<RuleChecker> childRuleCheckers = getChildRuleCheckers(schema, branch, rule.getAnd(), rule.getId());
@@ -143,6 +156,8 @@ public class SchemaUtils {
         ruleChecker.setSuccessScore(rule.getSuccessScore());
         String idValue = StringUtils.isNotBlank(rule.getId()) ? rule.getId() : String.valueOf(++id);
         ruleChecker.setId(idValue);
+        if (rule.getHidden().equals(Boolean.TRUE))
+          ruleChecker.setHidden();
       }
 
     return ruleCheckers;

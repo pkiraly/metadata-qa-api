@@ -1,0 +1,15 @@
+format: csv
+fields:
+  - name: thumbnail
+    path: oai:record/dc:identifier[@type='binary']
+    rules:
+      - id: 3.0
+        pattern: ^http.*$
+        hidden: true
+      - id: 3.1
+        failureScore: -9
+        and:
+          - dependencies: [3.0]
+          - dimension:
+              minWidth: 200
+              minHeight: 200

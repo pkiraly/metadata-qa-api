@@ -39,6 +39,10 @@ public class FieldCounter<T> implements Serializable {
     fieldMap.put(key, value);
   }
 
+  public void remove(String key) {
+    fieldMap.remove(key);
+  }
+
   public void putAll(Map<String, T> map) {
     fieldMap.putAll(map);
   }

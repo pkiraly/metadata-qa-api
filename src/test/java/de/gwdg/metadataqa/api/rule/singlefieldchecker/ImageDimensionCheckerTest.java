@@ -86,7 +86,7 @@ public class ImageDimensionCheckerTest extends CheckerTestBase {
 
   @Test
   public void schema() throws IOException, CsvValidationException {
-    String schemaFile = "src/test/resources/configuration/schema/with-image-dimension-checker.yaml";
+    String schemaFile = "src/test/resources/configuration/schema/rules/extra/with-image-dimension-checker.yaml";
     Schema schema = ConfigurationReader.readSchemaYaml(schemaFile).asSchema();
 
     CalculatorFacade facade = new CalculatorFacade(

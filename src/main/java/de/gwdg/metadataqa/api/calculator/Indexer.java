@@ -39,7 +39,8 @@ public class Indexer extends QaSolrClient implements Calculator, Shutdownable, S
       Map<String, List<String>> resultMap = new HashMap<>();
       for (UniquenessField solrField : solrFields) {
         List<String> values = extractValue(cache, solrField.getJsonPath());
-        resultMap.put(solrField.getSolrField(), values);
+        if (!values.isEmpty())
+          resultMap.put(solrField.getSolrField(), values);
       }
       solrClient.indexMap(recordId, resultMap);
     } catch (IOException e) {

@@ -7,6 +7,9 @@ import de.gwdg.metadataqa.api.problemcatalog.LongSubject;
 import de.gwdg.metadataqa.api.problemcatalog.ProblemCatalog;
 import de.gwdg.metadataqa.api.problemcatalog.TitleAndDescriptionAreSame;
 import de.gwdg.metadataqa.api.rule.RuleCatalog;
+import de.gwdg.metadataqa.api.rule.RuleChecker;
+import de.gwdg.metadataqa.api.rule.logical.LogicalChecker;
+import de.gwdg.metadataqa.api.rule.singlefieldchecker.UniqunessChecker;
 import de.gwdg.metadataqa.api.schema.Schema;
 import de.gwdg.metadataqa.api.schema.edm.EdmSchema;
 import de.gwdg.metadataqa.api.uniqueness.DefaultSolrClient;
@@ -96,10 +99,22 @@ public class CalculatorFactory {
 
   private void addRuleCatalogMeasurement() {
     if (configuration.isRuleCatalogMeasurementEnabled()) {
-      Calculator caclulator = new RuleCatalog(schema)
+      RuleCatalog caclulator = new RuleCatalog(schema)
         .setOnlyIdInHeader(configuration.isOnlyIdInHeader())
         .setOutputType(configuration.getRuleCheckingOutputType());
+      injectSolr(schema.getRuleCheckers());
       calculators.add(caclulator);
+    }
+  }
+
+  private void injectSolr(List<RuleChecker> ruleCheckers) {
+    for (RuleChecker ruleChecker : ruleCheckers) {
+      if (ruleChecker instanceof UniqunessChecker) {
+        initializeSolrConfiguration();
+        ((UniqunessChecker)ruleChecker).setSolrClient(configuration.getSolrClient());
+      } else if (ruleChecker instanceof LogicalChecker) {
+        injectSolr(((LogicalChecker)ruleChecker).getCheckers());
+      }
     }
   }
 
@@ -120,16 +135,20 @@ public class CalculatorFactory {
 
   private void addUniquenessMeasurement() {
     if (configuration.isUniquenessMeasurementEnabled()) {
-      if (configuration.getSolrClient() == null && configuration.getSolrConfiguration() == null) {
-        throw new IllegalArgumentException(
-          "If Uniqueness measurement is enabled, Solr configuration should not be null."
-        );
-      }
-      if (configuration.getSolrClient() == null) {
-        if (configuration.getSolrConfiguration() != null)
-          configuration.setSolrClient(new DefaultSolrClient(configuration.getSolrConfiguration()));
-      }
+      initializeSolrConfiguration();
       calculators.add(new UniquenessCalculator(configuration.getSolrClient(), schema));
+    }
+  }
+
+  private void initializeSolrConfiguration() {
+    if (configuration.getSolrClient() == null && configuration.getSolrConfiguration() == null) {
+      throw new IllegalArgumentException(
+        "If Uniqueness measurement is enabled, Solr configuration should not be null."
+      );
+    }
+    if (configuration.getSolrClient() == null) {
+      if (configuration.getSolrConfiguration() != null)
+        configuration.setSolrClient(new DefaultSolrClient(configuration.getSolrConfiguration()));
     }
   }
 
