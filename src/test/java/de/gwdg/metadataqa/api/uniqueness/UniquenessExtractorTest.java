@@ -51,7 +51,7 @@ public class UniquenessExtractorTest {
     assertEquals("{", jsonString.substring(0,1));
 
     UniquenessExtractor extractor = new UniquenessExtractor();
-    int numFound = extractor.extractNumFound(jsonString, recordId);
+    int numFound = extractor.extractNumFound(jsonString);
     assertEquals(199, numFound);
   }
 

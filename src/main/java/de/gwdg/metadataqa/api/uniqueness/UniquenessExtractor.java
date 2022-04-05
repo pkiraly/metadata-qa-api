@@ -29,12 +29,10 @@ public class UniquenessExtractor implements Serializable {
    *
    * @param jsonString
    *    The JSON string
-   * @param recordId
-   *    The record identifier
    * @return
    *    Sums and average of TF-IDF value
    */
-  public Integer extractNumFound(String jsonString, String recordId) {
+  public static Integer extractNumFound(String jsonString) {
     var numFound = 1;
     if (StringUtils.isBlank(jsonString))
       return numFound;
@@ -49,8 +47,7 @@ public class UniquenessExtractor implements Serializable {
         LOGGER.severe("No 'response' part in Solr response: " + jsonString);
       }
     } else {
-      LOGGER.severe("Problem with parsing Solr response: >>" + document
-          + "<< class:" + document.getClass());
+      LOGGER.severe(String.format("Problem with parsing Solr response: >>%s<< class: %s", document, document.getClass()));
     }
 
     return numFound;

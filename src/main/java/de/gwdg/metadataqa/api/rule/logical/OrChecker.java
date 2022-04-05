@@ -7,6 +7,7 @@ import de.gwdg.metadataqa.api.rule.RuleChecker;
 import de.gwdg.metadataqa.api.rule.RuleCheckerOutput;
 import de.gwdg.metadataqa.api.rule.RuleCheckingOutputStatus;
 import de.gwdg.metadataqa.api.rule.RuleCheckingOutputType;
+import de.gwdg.metadataqa.api.rule.singlefieldchecker.DependencyChecker;
 
 import java.util.List;
 import java.util.logging.Logger;
@@ -37,7 +38,10 @@ public class OrChecker extends LogicalChecker {
     var isNA = false;
     FieldCounter<RuleCheckerOutput> localResults = new FieldCounter<>();
     for (RuleChecker checker : checkers) {
-      checker.update(cache, localResults, outputType);
+      if (checker instanceof DependencyChecker)
+        ((DependencyChecker)checker).update(cache, localResults, outputType, results);
+      else
+        checker.update(cache, localResults, outputType);
       String key = outputType.equals(RuleCheckingOutputType.BOTH) ? checker.getHeader(RuleCheckingOutputType.SCORE) : checker.getHeader();
       if (localResults.get(key).getStatus().equals(RuleCheckingOutputStatus.PASSED)) {
         allPassed = true;

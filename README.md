@@ -758,12 +758,56 @@ Example: The HTTP content type should be image/jpeg, image/png, image/tiff, imag
     - contentType: [image/jpeg, image/png, image/tiff, image/tiff-fx, image/gif, image/svg+xml]
 ```
 
+##### `unique <boolean>`
+
+This rule checks if the value of the field is unique. Prerequisite: index the content with Apache Solr.
+
+##### `dependencies [id1, id2, ..., idN]`
+
+This rule checks if other rules has already checked and passed. It passes if all dependent rules has passed or 
+resulted NA, otherwise fail. The ids should be valid.
+
+##### `dimension [criteria1, criteria2, ..., criteriaN]`
+
+This checks if a linked image fits to some dimension constraints (unit in pixel) - if the value is an URL for an 
+image. One can check the minimum and maximum size of width, height and shorter or longer sides (in case it is not 
+important if width or height is the shorter). The criteria:
+
+- `minWidth`: the minimum width
+- `maxWidth`: the maximum width
+- `minHeight`: minimum height
+- `maxHeight`: maximum height
+- `minShortside`: minimum length of the shorter side of the image
+- `maxShortside`: maximum length of the shorter side of the image
+- `minLongside`: minimum length of the longer side of the image
+- `maxLongside`: minimum length of the longer side of the image
+
+example:
+
+```ỳaml
+format: csv
+fields:
+- name: thumbnail
+  path: oai:record/dc:identifier[@type='binary']
+  rules:
+  - id: 3.1
+    failureScore: -9
+    dimension:
+      minWidth: 200
+      minHeight: 200
+```
+
 #### General properties
 
 ##### `id <String>`
 You can define an identifier to the rule, which will be reflected in the output. If you miss it, the
 system will assign a count number. ID might also help if you transform a human readable document such as cataloguing 
 rules into a configuration file, and you want to keep linkage between them. (API `setId(String)` or `withId(String)`)
+
+##### `description <String>`
+
+Provide a description to document what the particular rule is doing. It can be anything reasonable, it does not play 
+a role in the calculation.
 
 ##### `failureScore <integer>`
 A score which will be calculated if the validation fails. The score should be a negative o positive integer (including zero). 
@@ -797,6 +841,17 @@ Example: set of rules with IDs and scores.
     successScore: 3
     id: 2.6
 ```
+
+##### `hidden <boolean>`
+
+If the rule is hidden it will be calculated, but its output will not be present in the overall output. It can be 
+used together width dependencies to set up compound conditions.  
+
+##### `skip <boolean>`
+
+This rule prevents a particular rule to be part of calculation. This could be useful in development phase when you 
+started to create a complex rule but haven't yet finished, or when the execution of the rule takes long time (e.g. 
+checking content type or image dimension), and temporary you would like to turn it off.
 
 #### Set rules via Java API 
 

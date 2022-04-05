@@ -43,4 +43,8 @@ public interface RuleChecker extends Serializable {
   String getId();
 
   void setId(String id);
+
+  void setHidden();
+
+  boolean isHidden();
 }

@@ -70,7 +70,7 @@ public class ContentTypeCheckerTest extends CheckerTestBase {
 
   @Test
   public void schema() throws IOException, CsvValidationException {
-    String schemaFile = "src/test/resources/configuration/schema/with-content-type-checker.yaml";
+    String schemaFile = "src/test/resources/configuration/schema/rules/extra/with-content-type-checker.yaml";
     Schema schema = ConfigurationReader.readSchemaYaml(schemaFile).asSchema();
 
     CalculatorFacade facade = new CalculatorFacade(
