@@ -760,14 +760,22 @@ Example: The HTTP content type should be image/jpeg, image/png, image/tiff, imag
 
 ##### `unique <boolean>`
 
-This rule checks if the value of the field is unique. Prerequisite: index the content with Apache Solr.
+(since v0.9.0-SNAPSHOT)
+
+This rule checks if the value of the field is unique. Prerequisite: the field should have indexField property, and  
+the content should be indexed with Apache Solr.
 
 ##### `dependencies [id1, id2, ..., idN]`
 
+(since v0.9.0-SNAPSHOT)
+
 This rule checks if other rules has already checked and passed. It passes if all dependent rules has passed or 
-resulted NA, otherwise fail. The ids should be valid.
+resulted NA, otherwise fail. The ids should be valid, and the dependent rule should take place after the ones from
+which it depends.
 
 ##### `dimension [criteria1, criteria2, ..., criteriaN]`
+
+(since v0.9.0-SNAPSHOT)
 
 This checks if a linked image fits to some dimension constraints (unit in pixel) - if the value is an URL for an 
 image. One can check the minimum and maximum size of width, height and shorter or longer sides (in case it is not 
@@ -800,6 +808,7 @@ fields:
 #### General properties
 
 ##### `id <String>`
+
 You can define an identifier to the rule, which will be reflected in the output. If you miss it, the
 system will assign a count number. ID might also help if you transform a human readable document such as cataloguing 
 rules into a configuration file, and you want to keep linkage between them. (API `setId(String)` or `withId(String)`)
@@ -810,10 +819,12 @@ Provide a description to document what the particular rule is doing. It can be a
 a role in the calculation.
 
 ##### `failureScore <integer>`
+
 A score which will be calculated if the validation fails. The score should be a negative o positive integer (including zero). 
 (API `setFailureScore(nteger)` or `withFailureScore(Integer)`)
 
 ##### `successScore <integer>`
+
 A score which will be calculated if the validation passes. The score should be a negative o positive integer (including zero).
  (API `setSuccessScore(nteger)` or `withSuccessScore(Integer)`)
 
@@ -844,10 +855,14 @@ Example: set of rules with IDs and scores.
 
 ##### `hidden <boolean>`
 
+(since v0.9.0-SNAPSHOT)
+
 If the rule is hidden it will be calculated, but its output will not be present in the overall output. It can be 
 used together width dependencies to set up compound conditions.  
 
 ##### `skip <boolean>`
+
+(since v0.9.0-SNAPSHOT)
 
 This rule prevents a particular rule to be part of calculation. This could be useful in development phase when you 
 started to create a complex rule but haven't yet finished, or when the execution of the rule takes long time (e.g. 
