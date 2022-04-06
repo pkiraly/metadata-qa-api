@@ -4,6 +4,7 @@ import com.jayway.jsonpath.InvalidJsonException;
 import de.gwdg.metadataqa.api.counter.FieldCounter;
 import de.gwdg.metadataqa.api.interfaces.Calculator;
 import de.gwdg.metadataqa.api.interfaces.MetricResult;
+import de.gwdg.metadataqa.api.model.EdmFieldInstance;
 import de.gwdg.metadataqa.api.model.pathcache.PathCache;
 import de.gwdg.metadataqa.api.model.XmlFieldInstance;
 import de.gwdg.metadataqa.api.problemcatalog.FieldCounterBasedResult;
@@ -68,10 +69,16 @@ public class FieldExtractor implements Calculator, Serializable {
   private void extractSingleField(PathCache cache, FieldCounter<String> resultMap, String path, String fieldName) {
     List<XmlFieldInstance> values = cache.get(path);
     String value = null;
-    if (values == null || values.isEmpty() || values.get(0) == null || values.get(0).getValue() == null) {
+    if (values == null || values.isEmpty() || values.get(0) == null) {
       value = nullValue;
     } else {
-      value = values.get(0).getValue();
+      XmlFieldInstance instance = values.get(0);
+      boolean isEdm = instance instanceof EdmFieldInstance;
+      if (isEdm && ((EdmFieldInstance)instance).getResource() != null) {
+        value = ((EdmFieldInstance) instance).getResource();
+      } else if (instance.getValue() != null) {
+        value = instance.getValue();
+      }
     }
     resultMap.put(fieldName, value);
   }
