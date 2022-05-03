@@ -68,4 +68,18 @@ public class FieldCounterTest {
     assertEquals(Double.class, counter.getCsv().get(0).getClass());
     assertEquals(Arrays.asList(1.0), counter.getCsv());
   }
+
+  @Test
+  public void quote() {
+    String v = "Rio de Janeiro: See \"Lagoa de freitas\", Dois Irmãos (Zwei Brüder-Felsen)";
+    assertTrue(v.contains("\""));
+    assertEquals("Rio de Janeiro: See \"\"Lagoa de freitas\"\", Dois Irmãos (Zwei Brüder-Felsen)",
+      v.replaceAll("\"", "\"\""));
+
+    counter.put("x", v);
+    assertEquals("\"x\":\"Rio de Janeiro: See \"\"Lagoa de freitas\"\", Dois Irmãos (Zwei Brüder-Felsen)\"", counter.getCsv(true));
+
+    counter.put("x", "\"Matuto\" (Afrobrasilianer). Pernambuco");
+    assertEquals("\"x\":\"\"\"Matuto\"\" (Afrobrasilianer). Pernambuco\"", counter.getCsv(true));
+  }
 }

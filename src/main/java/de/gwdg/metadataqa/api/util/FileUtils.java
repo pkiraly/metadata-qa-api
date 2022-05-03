@@ -85,7 +85,13 @@ public abstract class FileUtils {
   }
 
   public static String escape(String value) {
-    return value.contains(",") ? String.format("\"%s\"", value) : value;
+    if (value.contains(",") || value.contains("\"")) {
+      if (value.contains("\"")) {
+        value = value.replaceAll("\"", "\"\"");
+      }
+      value = '"' + value + '"';
+    }
+    return value;
   }
 
 }
