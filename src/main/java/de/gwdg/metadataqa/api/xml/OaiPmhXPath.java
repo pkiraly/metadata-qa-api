@@ -82,7 +82,6 @@ public class OaiPmhXPath implements Serializable {
         LOGGER.info("initialize without namespaces");
         xpathEngine = XpathEngineFactory.initializeEngine();
       } else {
-        LOGGER.info("initialize with namespaces: " + namespaces);
         xpathEngine = XpathEngineFactory.initializeEngine(namespaces);
       }
     }
