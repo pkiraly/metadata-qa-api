@@ -38,6 +38,7 @@ public class DependencyChecker extends SingleFieldChecker {
     if (globalResults == null)
       globalResults = localResults;
 
+    // boolean debug = id.equals("Q-4.3");
     var allPassed = true;
     var isNA = true;
     List<XmlFieldInstance> instances = cache.get(field.getJsonPath());
@@ -45,10 +46,11 @@ public class DependencyChecker extends SingleFieldChecker {
       for (XmlFieldInstance instance : instances) {
         if (instance.hasValue()) {
           isNA = false;
-          for (String id : dependencies) {
+          for (String ruleId : dependencies) {
+            String keyEnd = outputType.equals(RuleCheckingOutputType.BOTH) ? ruleId + ":status" : ruleId;
             boolean found = false;
             for (Map.Entry<String, RuleCheckerOutput> entry : globalResults.getMap().entrySet()) {
-              if (entry.getKey().endsWith(id)) {
+              if (entry.getKey().endsWith(keyEnd)) {
                 found = true;
                 if (entry.getValue().getStatus().equals(RuleCheckingOutputStatus.FAILED)) {
                   allPassed = false;

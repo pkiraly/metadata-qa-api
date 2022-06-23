@@ -37,16 +37,12 @@ public class OrChecker extends LogicalChecker {
     var allPassed = false;
     var isNA = false;
     FieldCounter<RuleCheckerOutput> localResults = new FieldCounter<>();
-    boolean debug = id.equals("Q-4.x");
-    System.err.println(id);
     for (RuleChecker checker : checkers) {
       if (checker instanceof DependencyChecker)
         ((DependencyChecker)checker).update(cache, localResults, outputType, results);
       else
         checker.update(cache, localResults, outputType);
       String key = outputType.equals(RuleCheckingOutputType.BOTH) ? checker.getHeader(RuleCheckingOutputType.SCORE) : checker.getHeader();
-      if (debug)
-        System.err.println(key + ": " + localResults.get(key).getStatus());
       if (localResults.get(key).getStatus().equals(RuleCheckingOutputStatus.PASSED)) {
         allPassed = true;
         break;
