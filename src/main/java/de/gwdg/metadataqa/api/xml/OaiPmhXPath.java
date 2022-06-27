@@ -129,22 +129,27 @@ public class OaiPmhXPath implements Serializable {
     List<EdmFieldInstance> list = new ArrayList<>();
     try {
       XPathExpression expr = xpathEngine.compile(xpath);
-      NodeList nodes = (NodeList) expr.evaluate(context, XPathConstants.NODESET);
-      for (var i = 0; i < nodes.getLength(); i++) {
-        Node node = nodes.item(i);
-        if (node.getNodeType() == Node.ELEMENT_NODE) {
-          String value = node.getTextContent();
-          String lang = null;
-          String resource = null;
-          if (node.hasAttributes()) {
-            NamedNodeMap attributes = node.getAttributes();
-            lang = getAttribute(attributes, "xml", "lang");
-            resource = getAttribute(attributes, "rdf", "resource");
+      if (xpath.endsWith(")")) {
+        String value = String.valueOf(expr.evaluate(context, XPathConstants.STRING));
+        list.add(new EdmFieldInstance(value, null, null));
+      } else {
+        NodeList nodes = (NodeList) expr.evaluate(context, XPathConstants.NODESET);
+        for (var i = 0; i < nodes.getLength(); i++) {
+          Node node = nodes.item(i);
+          if (node.getNodeType() == Node.ELEMENT_NODE) {
+            String value = node.getTextContent();
+            String lang = null;
+            String resource = null;
+            if (node.hasAttributes()) {
+              NamedNodeMap attributes = node.getAttributes();
+              lang = getAttribute(attributes, "xml", "lang");
+              resource = getAttribute(attributes, "rdf", "resource");
+            }
+            list.add(new EdmFieldInstance(value, lang, resource));
+          } else if (node.getNodeType() == Node.ATTRIBUTE_NODE) {
+            String value = node.getNodeValue();
+            list.add(new EdmFieldInstance(value, null, null));
           }
-          list.add(new EdmFieldInstance(value, lang, resource));
-        } else if (node.getNodeType() == Node.ATTRIBUTE_NODE) {
-          String value = node.getNodeValue();
-          list.add(new EdmFieldInstance(value, null, null));
         }
       }
     } catch (XPathExpressionException e) {
