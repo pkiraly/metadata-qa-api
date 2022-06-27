@@ -131,7 +131,6 @@ public class OaiPmhXPath implements Serializable {
       XPathExpression expr = xpathEngine.compile(xpath);
       if (xpath.endsWith(")")) {
         String value = String.valueOf(expr.evaluate(context, XPathConstants.STRING));
-        LOGGER.info(value);
         list.add(new EdmFieldInstance(value, null, null));
       } else {
         NodeList nodes = (NodeList) expr.evaluate(context, XPathConstants.NODESET);
