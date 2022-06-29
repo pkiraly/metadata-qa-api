@@ -5,6 +5,7 @@ import de.gwdg.metadataqa.api.json.JsonBranch;
 import de.gwdg.metadataqa.api.model.XmlFieldInstance;
 import de.gwdg.metadataqa.api.model.pathcache.PathCache;
 import de.gwdg.metadataqa.api.rule.RuleCheckerOutput;
+import de.gwdg.metadataqa.api.rule.RuleCheckingOutputStatus;
 import de.gwdg.metadataqa.api.rule.RuleCheckingOutputType;
 import de.gwdg.metadataqa.api.util.Dimension;
 import de.gwdg.metadataqa.api.util.DimensionDao;
@@ -32,6 +33,9 @@ public class ImageDimensionChecker extends SingleFieldChecker {
 
   @Override
   public void update(PathCache cache, FieldCounter<RuleCheckerOutput> results, RuleCheckingOutputType outputType) {
+    if (isDebug())
+      LOGGER.info(this.getClass().getSimpleName() + " " + this.id);
+
     var allPassed = true;
     var isNA = true;
     List<XmlFieldInstance> instances = cache.get(field.getJsonPath());
@@ -40,6 +44,8 @@ public class ImageDimensionChecker extends SingleFieldChecker {
         if (instance.hasValue()) {
           isNA = false;
           try {
+            if (isDebug())
+              LOGGER.info("value: " + instance.getValue());
             DimensionDao dimension = ImageDimensionExtractor.extractRemote(instance.getValue());
             if (dimension == null
               || (dimensionRule.getMinWidth()  != null && dimension.getWidth()  < dimensionRule.getMinWidth())
@@ -63,5 +69,7 @@ public class ImageDimensionChecker extends SingleFieldChecker {
     }
 
     addOutput(results, isNA, allPassed, outputType);
+    if (isDebug())
+      LOGGER.info("result: " + RuleCheckingOutputStatus.create(isNA, allPassed));
   }
 }

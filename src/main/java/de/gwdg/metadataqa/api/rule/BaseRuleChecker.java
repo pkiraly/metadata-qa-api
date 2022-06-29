@@ -2,12 +2,18 @@ package de.gwdg.metadataqa.api.rule;
 
 import de.gwdg.metadataqa.api.counter.FieldCounter;
 
+import java.util.logging.Logger;
+
 public abstract class BaseRuleChecker implements RuleChecker {
+
+  protected static final Logger LOGGER = Logger.getLogger(BaseRuleChecker.class.getCanonicalName());
+
   protected String id;
   protected Integer failureScore;
   protected Integer successScore;
   protected String header;
   protected Boolean hidden = false;
+  private Boolean debug = false;
 
   @Override
   public String getId() {
@@ -73,4 +79,14 @@ public abstract class BaseRuleChecker implements RuleChecker {
   public boolean isHidden() {
     return hidden;
   }
+
+  public void setDebug() {
+    this.debug = true;
+  }
+
+  public boolean isDebug() {
+    return debug;
+  }
+
+
 }

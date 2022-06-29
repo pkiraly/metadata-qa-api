@@ -3,6 +3,7 @@ package de.gwdg.metadataqa.api.schema;
 import de.gwdg.metadataqa.api.configuration.schema.Rule;
 import de.gwdg.metadataqa.api.json.JsonBranch;
 import de.gwdg.metadataqa.api.rule.logical.AndChecker;
+import de.gwdg.metadataqa.api.rule.logical.LogicalChecker;
 import de.gwdg.metadataqa.api.rule.logical.NotChecker;
 import de.gwdg.metadataqa.api.rule.logical.OrChecker;
 import de.gwdg.metadataqa.api.rule.pairchecker.DisjointChecker;
@@ -158,6 +159,14 @@ public class SchemaUtils {
         ruleChecker.setId(idValue);
         if (rule.getHidden().equals(Boolean.TRUE))
           ruleChecker.setHidden();
+        if (rule.getDebug().equals(Boolean.TRUE)) {
+          ruleChecker.setDebug();
+          if (ruleChecker instanceof LogicalChecker) {
+            for (RuleChecker child : ((LogicalChecker) ruleChecker).getCheckers()) {
+              child.setDebug();
+            }
+          }
+        }
       }
 
     return ruleCheckers;

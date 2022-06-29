@@ -31,6 +31,9 @@ public class AndChecker extends LogicalChecker {
 
   @Override
   public void update(PathCache cache, FieldCounter<RuleCheckerOutput> results, RuleCheckingOutputType outputType) {
+    if (isDebug())
+      LOGGER.info(this.getClass().getSimpleName() + " " + this.id);
+
     var allPassed = true;
     var isNA = false;
     FieldCounter<RuleCheckerOutput> localResults = new FieldCounter<>();
@@ -46,5 +49,8 @@ public class AndChecker extends LogicalChecker {
       }
     }
     addOutput(results, isNA, allPassed, outputType);
+
+    if (isDebug())
+      LOGGER.info("result: " + RuleCheckingOutputStatus.create(isNA, allPassed));
   }
 }

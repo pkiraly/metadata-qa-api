@@ -47,4 +47,6 @@ public interface RuleChecker extends Serializable {
   void setHidden();
 
   boolean isHidden();
+
+  void setDebug();
 }

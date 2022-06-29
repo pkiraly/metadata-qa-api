@@ -40,6 +40,7 @@ public class Rule implements Serializable {
   private Boolean hidden = Boolean.FALSE;
   private List<String> dependencies;
   private Boolean skip = Boolean.FALSE;
+  private Boolean debug = Boolean.FALSE;
 
   public String getId() {
     return id;
@@ -467,6 +468,19 @@ public class Rule implements Serializable {
 
   public Rule withSkip(Boolean skip) {
     this.skip = skip;
+    return this;
+  }
+
+  public Boolean getDebug() {
+    return debug;
+  }
+
+  public void setDebug(Boolean debug) {
+    this.debug = debug;
+  }
+
+  public Rule withDebug(Boolean debug) {
+    this.debug = debug;
     return this;
   }
 }

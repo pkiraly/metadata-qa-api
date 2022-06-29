@@ -5,6 +5,7 @@ import de.gwdg.metadataqa.api.json.JsonBranch;
 import de.gwdg.metadataqa.api.model.XmlFieldInstance;
 import de.gwdg.metadataqa.api.model.pathcache.PathCache;
 import de.gwdg.metadataqa.api.rule.RuleCheckerOutput;
+import de.gwdg.metadataqa.api.rule.RuleCheckingOutputStatus;
 import de.gwdg.metadataqa.api.rule.RuleCheckingOutputType;
 
 import java.util.List;
@@ -27,6 +28,9 @@ public class PatternChecker extends SingleFieldChecker {
 
   @Override
   public void update(PathCache cache, FieldCounter<RuleCheckerOutput> results, RuleCheckingOutputType outputType) {
+    if (isDebug())
+      LOGGER.info(this.getClass().getSimpleName() + " " + this.id);
+
     var allPassed = true;
     var isNA = true;
     List<XmlFieldInstance> instances = cache.get(field.getJsonPath());
@@ -34,6 +38,8 @@ public class PatternChecker extends SingleFieldChecker {
       for (XmlFieldInstance instance : instances) {
         if (instance.hasValue()) {
           isNA = false;
+          if (isDebug())
+            LOGGER.info("value: " + instance.getValue());
           if (!pattern.matcher(instance.getValue()).matches()) {
             allPassed = false;
             break;
@@ -42,6 +48,8 @@ public class PatternChecker extends SingleFieldChecker {
       }
     }
     addOutput(results, isNA, allPassed, outputType);
+    if (isDebug())
+      LOGGER.info("result: " + RuleCheckingOutputStatus.create(isNA, allPassed));
   }
 
 }
