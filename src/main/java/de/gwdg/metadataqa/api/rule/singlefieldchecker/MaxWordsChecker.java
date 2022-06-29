@@ -27,6 +27,9 @@ public class MaxWordsChecker extends SingleFieldChecker {
 
   @Override
   public void update(PathCache cache, FieldCounter<RuleCheckerOutput> results, RuleCheckingOutputType outputType) {
+    if (isDebug())
+      LOGGER.info(this.getClass().getSimpleName() + " " + this.id);
+
     var allPassed = true;
     var isNA = true;
     List<XmlFieldInstance> instances = cache.get(field.getJsonPath());
@@ -35,6 +38,8 @@ public class MaxWordsChecker extends SingleFieldChecker {
         if (instance.hasValue()) {
 
           isNA = false;
+          if (isDebug())
+            LOGGER.info("value: " + instance.getValue());
           if (countWords(instance.getValue()) > maxWords) {
             allPassed = false;
             break;

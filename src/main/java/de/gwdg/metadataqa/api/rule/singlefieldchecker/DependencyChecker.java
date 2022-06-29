@@ -35,6 +35,9 @@ public class DependencyChecker extends SingleFieldChecker {
 
   public void update(PathCache cache, FieldCounter<RuleCheckerOutput> localResults, RuleCheckingOutputType outputType,
                      FieldCounter<RuleCheckerOutput> globalResults) {
+    if (isDebug())
+      LOGGER.info(this.getClass().getSimpleName() + " " + this.id);
+
     if (globalResults == null)
       globalResults = localResults;
 
@@ -68,5 +71,7 @@ public class DependencyChecker extends SingleFieldChecker {
     }
 
     addOutput(localResults, isNA, allPassed, outputType);
+    if (isDebug())
+      LOGGER.info("result: " + RuleCheckingOutputStatus.create(isNA, allPassed));
   }
 }

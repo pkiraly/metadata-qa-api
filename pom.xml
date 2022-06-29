@@ -55,10 +55,10 @@
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     <maven.compiler.source>11.0</maven.compiler.source>
     <maven.compiler.target>11.0</maven.compiler.target>
-    <skipSource>false</skipSource>
-    <skipGpg>false</skipGpg>
+    <skipSource>true</skipSource>
+    <skipGpg>true</skipGpg>
     <skipStaging>true</skipStaging>
-    <skipJavadoc>false</skipJavadoc>
+    <skipJavadoc>true</skipJavadoc>
     <project.timezone>UTC</project.timezone>
     <project.language>en</project.language>
     <project.region>US</project.region>
@@ -363,6 +363,18 @@
   </reporting>
 
   <profiles>
+    <profile>
+      <id>deploy</id>
+      <properties>
+        <skipSource>false</skipSource>
+        <skipGpg>false</skipGpg>
+        <skipStaging>false</skipStaging>
+        <skipJavadoc>false</skipJavadoc>
+      </properties>
+      <reporting>
+        <excludeDefaults>false</excludeDefaults>
+      </reporting>
+    </profile>
     <profile>
       <id>travis</id>
       <properties>
