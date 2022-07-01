@@ -50,7 +50,7 @@ public class MinWordsChecker extends SingleFieldChecker {
     }
     addOutput(results, isNA, allPassed, outputType);
     if (isDebug())
-      LOGGER.info("result: " + RuleCheckingOutputStatus.create(isNA, allPassed));
+      LOGGER.info(this.getClass().getSimpleName() + " " + this.id + ") result: " + RuleCheckingOutputStatus.create(isNA, allPassed));
   }
 
   private int countWords(String value) {

@@ -30,11 +30,13 @@ public class MaxCountChecker extends SingleFieldChecker {
 
     var allPassed = false;
     var counter = new InstanceCounter(cache, field);
+    if (isDebug())
+      LOGGER.info(this.getClass().getSimpleName() + " " + this.id + ") value: " + counter.getCount());
     if (counter.getCount() <= maxCount)
       allPassed = true;
 
     addOutput(results, counter.isNA(), allPassed, outputType);
     if (isDebug())
-      LOGGER.info("result: " + RuleCheckingOutputStatus.create(counter.isNA(), allPassed));
+      LOGGER.info(this.getClass().getSimpleName() + " " + this.id + ") result: " + RuleCheckingOutputStatus.create(counter.isNA(), allPassed));
   }
 }

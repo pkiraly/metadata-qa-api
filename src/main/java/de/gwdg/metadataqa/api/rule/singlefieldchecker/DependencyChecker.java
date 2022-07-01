@@ -72,6 +72,6 @@ public class DependencyChecker extends SingleFieldChecker {
 
     addOutput(localResults, isNA, allPassed, outputType);
     if (isDebug())
-      LOGGER.info("result: " + RuleCheckingOutputStatus.create(isNA, allPassed));
+      LOGGER.info(this.getClass().getSimpleName() + " " + this.id + ") result: " + RuleCheckingOutputStatus.create(isNA, allPassed));
   }
 }
