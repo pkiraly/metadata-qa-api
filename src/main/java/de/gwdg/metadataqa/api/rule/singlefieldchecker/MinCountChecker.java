@@ -31,12 +31,12 @@ public class MinCountChecker extends SingleFieldChecker {
     var allPassed = false;
     var counter = new InstanceCounter(cache, field);
     if (isDebug())
-      LOGGER.info("value: " + counter.getCount());
+      LOGGER.info(this.getClass().getSimpleName() + " " + this.id + ") value: " + counter.getCount());
     if (counter.getCount() >= minCount)
       allPassed = true;
 
     addOutput(results, counter.isNA(), allPassed, outputType);
     if (isDebug())
-      LOGGER.info("result: " + RuleCheckingOutputStatus.create(counter.isNA(), allPassed));
+      LOGGER.info(this.getClass().getSimpleName() + " " + this.id + ") result: " + RuleCheckingOutputStatus.create(counter.isNA(), allPassed));
   }
 }

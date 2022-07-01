@@ -35,4 +35,12 @@ public class InstanceCounter {
   public int getCount() {
     return count;
   }
+
+  @Override
+  public String toString() {
+    return "InstanceCounter{" +
+      "isNA=" + isNA +
+      ", count=" + count +
+      '}';
+  }
 }
