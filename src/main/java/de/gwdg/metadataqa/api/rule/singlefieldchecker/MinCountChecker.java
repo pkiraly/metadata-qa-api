@@ -13,9 +13,15 @@ public class MinCountChecker extends SingleFieldChecker {
   private static final long serialVersionUID = 2298498693779624776L;
   public static final String PREFIX = "minCount";
   protected Integer minCount;
+  protected boolean allowEmptyInstances = false;
 
   public MinCountChecker(JsonBranch field, Integer minCount) {
     this(field, field.getLabel(), minCount);
+  }
+
+  public MinCountChecker(JsonBranch field, Integer minCount, boolean allowEmptyInstances) {
+    this(field, field.getLabel(), minCount);
+    this.allowEmptyInstances = allowEmptyInstances;
   }
 
   public MinCountChecker(JsonBranch field, String header, Integer minCount) {
@@ -29,7 +35,7 @@ public class MinCountChecker extends SingleFieldChecker {
       LOGGER.info(this.getClass().getSimpleName() + " " + this.id);
 
     var allPassed = false;
-    var counter = new InstanceCounter(cache, field);
+    var counter = new InstanceCounter(cache, field, allowEmptyInstances);
     if (isDebug())
       LOGGER.info(this.getClass().getSimpleName() + " " + this.id + ") value: " + counter.getCount());
     if (counter.getCount() >= minCount)
@@ -38,5 +44,9 @@ public class MinCountChecker extends SingleFieldChecker {
     addOutput(results, counter.isNA(), allPassed, outputType);
     if (isDebug())
       LOGGER.info(this.getClass().getSimpleName() + " " + this.id + ") result: " + RuleCheckingOutputStatus.create(counter.isNA(), allPassed));
+  }
+
+  public void setAllowEmptyInstances(boolean allowEmptyInstances) {
+    this.allowEmptyInstances = allowEmptyInstances;
   }
 }

@@ -12,11 +12,18 @@ public class MaxCountChecker extends SingleFieldChecker {
 
   private static final long serialVersionUID = 3259638493041988749L;
   public static final String PREFIX = "maxCount";
+  private boolean allowEmptyInstances = false;
   protected Integer maxCount;
 
   public MaxCountChecker(JsonBranch field, int maxCount) {
     this(field, field.getLabel(), maxCount);
   }
+
+  public MaxCountChecker(JsonBranch field, int maxCount, boolean allowEmptyInstances) {
+    this(field, field.getLabel(), maxCount);
+    this.allowEmptyInstances = allowEmptyInstances;
+  }
+
 
   public MaxCountChecker(JsonBranch field, String header, int maxCount) {
     super(field, header + ":" + PREFIX);
@@ -29,7 +36,7 @@ public class MaxCountChecker extends SingleFieldChecker {
       LOGGER.info(this.getClass().getSimpleName() + " " + this.id);
 
     var allPassed = false;
-    var counter = new InstanceCounter(cache, field);
+    var counter = new InstanceCounter(cache, field, allowEmptyInstances);
     if (isDebug())
       LOGGER.info(this.getClass().getSimpleName() + " " + this.id + ") value: " + counter.getCount());
     if (counter.getCount() <= maxCount)

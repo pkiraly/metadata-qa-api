@@ -11,6 +11,7 @@ public class InstanceCounter {
   int count = 0;
   private final PathCache cache;
   private final JsonBranch field;
+  private boolean allowEmptyInstances = true;
 
   public InstanceCounter(PathCache cache, JsonBranch field) {
     this.cache = cache;
@@ -18,11 +19,18 @@ public class InstanceCounter {
     count();
   }
 
+  public InstanceCounter(PathCache cache, JsonBranch field, boolean allowEmptyInstances) {
+    this.cache = cache;
+    this.field = field;
+    this.allowEmptyInstances = allowEmptyInstances;
+    count();
+  }
+
   private void count() {
     List<XmlFieldInstance> instances = cache.get(field.getJsonPath());
     if (instances != null && !instances.isEmpty())
       for (XmlFieldInstance instance : instances)
-        if (instance.hasValue()) {
+        if (allowEmptyInstances || instance.hasValue()) {
           count++;
           isNA = false;
         }
