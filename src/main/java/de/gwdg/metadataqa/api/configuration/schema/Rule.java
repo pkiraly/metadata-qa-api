@@ -41,6 +41,7 @@ public class Rule implements Serializable {
   private List<String> dependencies;
   private Boolean skip = Boolean.FALSE;
   private Boolean debug = Boolean.FALSE;
+  private Boolean allowEmptyInstances = Boolean.FALSE;
 
   public String getId() {
     return id;
@@ -481,6 +482,19 @@ public class Rule implements Serializable {
 
   public Rule withDebug(Boolean debug) {
     this.debug = debug;
+    return this;
+  }
+
+  public Boolean getAllowEmptyInstances() {
+    return allowEmptyInstances;
+  }
+
+  public void setAllowEmptyInstances(Boolean allowEmptyInstances) {
+    this.allowEmptyInstances = allowEmptyInstances;
+  }
+
+  public Rule withAllowEmptyInstances(Boolean allowEmptyInstances) {
+    this.allowEmptyInstances = allowEmptyInstances;
     return this;
   }
 }

@@ -80,13 +80,11 @@ public class SchemaUtils {
     if (rule.getIn() != null && !rule.getIn().isEmpty())
       ruleCheckers.add(new EnumerationChecker(branch, rule.getIn()));
 
-    if (rule.getMinCount() != null) {
-      MinCountChecker checker = new MinCountChecker(branch, rule.getMinCount());
-      ruleCheckers.add(checker);
-    }
+    if (rule.getMinCount() != null)
+      ruleCheckers.add(new MinCountChecker(branch, rule.getMinCount(), rule.getAllowEmptyInstances()));
 
     if (rule.getMaxCount() != null)
-      ruleCheckers.add(new MaxCountChecker(branch, rule.getMaxCount()));
+      ruleCheckers.add(new MaxCountChecker(branch, rule.getMaxCount(), rule.getAllowEmptyInstances()));
 
     if (rule.getMinLength() != null)
       ruleCheckers.add(new MinLengthChecker(branch, rule.getMinLength()));
