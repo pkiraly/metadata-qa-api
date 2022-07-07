@@ -32,6 +32,8 @@ public class DisjointChecker extends PropertyPairChecker {
       for (XmlFieldInstance instance1 : instances1) {
         if (instance1.hasValue()) {
           for (XmlFieldInstance instance2 : instances2) {
+            if (isDebug())
+              LOGGER.info(String.format("%s %s values: '%s' vs '%s'", this.getClass().getSimpleName(), this.id, instance1.getValue(), instance2.getValue()));
             if (instance2.hasValue() && instance1.getValue().equals(instance2.getValue())) {
               allPassed = false;
               break;
