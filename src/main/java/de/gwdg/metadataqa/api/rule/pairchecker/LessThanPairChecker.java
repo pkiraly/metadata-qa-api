@@ -53,6 +53,8 @@ public class LessThanPairChecker extends PropertyPairChecker {
         if (instance1.hasValue()) {
           for (XmlFieldInstance instance2 : instances2) {
             if (instance2.hasValue()) {
+              if (isDebug())
+                LOGGER.info(String.format("%s %s values: '%s' vs '%s'", this.getClass().getSimpleName(), this.id, instance1.getValue(), instance2.getValue()));
               isNA = false;
               allPassed = checkValues(instance1.getValue(), instance2.getValue());
               if (!allPassed)

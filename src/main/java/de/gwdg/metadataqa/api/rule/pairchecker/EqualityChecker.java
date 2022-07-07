@@ -34,6 +34,8 @@ public class EqualityChecker extends PropertyPairChecker {
         if (instance1.hasValue()) {
           isNA = false;
           for (XmlFieldInstance instance2 : instances2) {
+            if (isDebug())
+              LOGGER.info(String.format("%s %s values: '%s' vs '%s'", this.getClass().getSimpleName(), this.id, instance1.getValue(), instance2.getValue()));
             if (instance2.hasValue() && !instance1.getValue().equals(instance2.getValue())) {
               allPassed = false;
               break;
