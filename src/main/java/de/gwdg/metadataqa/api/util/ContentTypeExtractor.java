@@ -25,8 +25,11 @@ public class ContentTypeExtractor {
       String rawContentType = urlConnection.getHeaderField("Content-Type");
       if (rawContentType != null && StringUtils.isNotBlank(rawContentType))
         contentType = rawContentType.replaceAll("; ?charset.*$", "");
+    } else if (responseCode == 301 || responseCode == 303) {
+      String location = urlConnection.getHeaderField("Location");
+      return getContentType(location);
     } else {
-      LOGGER.warning(String.format("Status code: %d.\n", responseCode));
+      LOGGER.warning(String.format("URL %s returns unhandled status code: %d.\n", url, responseCode));
     }
     return contentType;
   }
