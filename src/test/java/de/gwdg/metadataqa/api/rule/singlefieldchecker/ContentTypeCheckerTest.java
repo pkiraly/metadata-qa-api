@@ -128,4 +128,22 @@ public class ContentTypeCheckerTest extends CheckerTestBase {
     assertEquals("name:contentType", checker.getHeaderWithoutId());
     Assert.assertEquals(RuleCheckingOutputStatus.FAILED, fieldCounter.get(checker.getHeader(RuleCheckingOutputType.STATUS)).getStatus());
   }
+
+  @Test
+  public void t301() {
+    cache = (CsvPathCache) PathCacheFactory.getInstance(schema.getFormat(), "http://creativecommons.org/licenses/by-nc-sa/4.0/");
+    cache.setCsvReader(new CsvReader().setHeader( ((CsvAwareSchema) schema).getHeader() ));
+
+    ContentTypeChecker checker = new ContentTypeChecker(schema.getPathByLabel("name"),
+      Arrays.asList("text/html"));
+
+    FieldCounter<RuleCheckerOutput> fieldCounter = new FieldCounter<>();
+
+    checker.update(cache, fieldCounter, RuleCheckingOutputType.BOTH);
+
+    assertEquals(2, fieldCounter.size());
+    assertEquals("name:contentType", checker.getHeaderWithoutId());
+    assertEquals(RuleCheckingOutputStatus.PASSED, fieldCounter.get(checker.getHeader(RuleCheckingOutputType.STATUS)).getStatus());
+  }
+
 }

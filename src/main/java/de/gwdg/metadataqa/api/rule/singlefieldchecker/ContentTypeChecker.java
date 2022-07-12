@@ -42,11 +42,10 @@ public class ContentTypeChecker extends SingleFieldChecker {
         if (instance.hasValue()) {
           isNA = false;
           try {
-            if (isDebug())
-              LOGGER.info("value: " + instance.getValue());
             String contentType = ContentTypeExtractor.getContentType(instance.getValue());
+            if (isDebug())
+              LOGGER.info(String.format("value: '%s' -> '%s'", instance.getValue(), contentType));
             if (contentType == null || !fixedValues.contains(contentType)) {
-              LOGGER.warning(String.format("%s: content type '%s' did not match expectation (rule id: %s)", instance.getValue(), contentType, getId()));
               allPassed = false;
             }
           } catch (IOException e) {
