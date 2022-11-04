@@ -1,9 +1,16 @@
 package de.gwdg.metadataqa.api.similarity;
 
-import org.apache.commons.text.similarity.*;
+import org.apache.commons.text.similarity.JaccardDistance;
+import org.apache.commons.text.similarity.JaroWinklerSimilarity;
+import org.apache.commons.text.similarity.LevenshteinDetailedDistance;
+import org.apache.commons.text.similarity.LevenshteinDistance;
 import org.junit.Test;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 import static org.junit.Assert.assertEquals;
 
@@ -31,6 +38,7 @@ public class SimilarityTest {
     double treshold = 0.70;
     var clustering = new Clustering(patterns, treshold);
     List<List<String>> clusters = clustering.getClusters();
+    System.err.println(clusters);
 
     assertEquals(Arrays.asList("Shostakovic", "Sosztakovics"), clusters.get(0));
     assertEquals(Arrays.asList("Rubens"), clusters.get(1));
@@ -39,7 +47,7 @@ public class SimilarityTest {
 
   @Test
   public void JaroWinkler() {
-    JaroWinklerDistance jaroWinkler = new JaroWinklerDistance();
+    JaroWinklerSimilarity jaroWinkler = new JaroWinklerSimilarity();
     JaccardDistance jaccard = new JaccardDistance();
     LevenshteinDistance levenshtein = new LevenshteinDistance();
     LevenshteinDetailedDistance LevenshteinDetailed = new LevenshteinDetailedDistance();
