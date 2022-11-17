@@ -56,35 +56,41 @@ digital collections.
 
 The framework measures the following features:
 
-* _completeness_: it says how complete your records, i.e. what ratio of data elements defined in the metadata schema 
-  is available in the records. It can also collect information about the extistence of the field, and their 
+* _completeness_: it says how complete your records, i.e. what ratio of data
+  elements defined in the metadata schema is available in the records. It
+  can also collect information about the extistence of the field, and their 
   cardinality (how many times they occur in a record)
-* _uniqueness and TF-IDF score_: it calculates the TF-IDF scores for field values. It is useful to learn how unique 
-  or how frequent the data values.
-* _rule catalogue_: one can set different rules or constraints against the data values. It checks if these rules are 
-  followed. One can set scores for failure and success cases.
-* _multilingual saturation_: how multilingual your records. It requires XML or RDF based multilingual annotation. It 
-  reports the number of tagged literals, number of distinct language tags, number of tagged literals per language 
-  tag, average number of languages per property for which there is at least one language-tagged literal
+* _uniqueness and TF-IDF score_: it calculates the TF-IDF scores for field
+  values. It is useful to learn how unique or how frequent the data values.
+* _rule catalogue_: one can set different rules or constraints against the
+  data values. It checks if these rules are followed. One can set scores for
+  failure and success cases.
+* _multilingual saturation_: how multilingual your records. It requires XML
+  or RDF based multilingual annotation. It reports the number of tagged
+  literals, number of distinct language tags, number of tagged literals per
+  language tag, average number of languages per property for which there is
+  at least one language-tagged literal
 * _language extractor_: it extracts the language tag of data elements if any.
 
 above these there are some helper calculators:
 
 * _extractor_: extracts and outputs values from the record
-* _annotator_: injects metadata into the output (e.g. some values, which helps further processings, such as 
-  file name, date, identifier or other information about the measurement, which are not available within the records)
-* _indexer_: index particular data elements with Solr before measurement. It is a necessary step for measuring 
-  TF-IDF or uniqueness
+* _annotator_: injects metadata into the output (e.g. some values, which helps
+  further processings, such as file name, date, identifier or other information
+  about the measurement, which are not available within the records)
+* _indexer_: index particular data elements with Solr before measurement. It
+  is a necessary step for measuring TF-IDF or uniqueness
 
 ## Running as command-line application
 
-Go to the project https://github.com/viaacode/metadata-quality-assessment to run this framework as a CLI.
+Go to the project https://github.com/viaacode/metadata-quality-assessment to
+run this framework as a CLI.
 
 ## Using the library
 
-If you want to implement it to your collection you have to define
-a schema, which presentats an existing metadata schema, and
-configure the basic facade, which will run the calculation.
+If you want to implement it to your collection you have to define a schema,
+which presentats an existing metadata schema, and configure the basic facade,
+which will run the calculation.
 
 First, add the library into your project's `pom.xml` file:
 
@@ -137,26 +143,28 @@ CalculatorFacade facade = new CalculatorFacade(config)
       .setHeader(((CsvAwareSchema) schema).getHeader()))
 ```
 
-These are the two important requirements for the start of the measuring. The measuring is simple:
+These are the two important requirements for the start of the measuring.
+The measuring is simple:
 
 ```Java
 String csv = calculator.measure(input)
 ```
 
-The `input` should be a string formatted as JSON, XML or CSV. 
-The output is a comma separated line. The `calculator.getHeader()` 
-returns the list of the column names.
+The `input` should be a string formatted as JSON, XML or CSV. The output is a
+comma separated line. The `calculator.getHeader()` returns the list of the
+column names.
 
-There are a couple of alternatives, if you would like to receive a 
-List or a Map:
+There are a couple of alternatives, if you would like to receive a List or a Map:
 
 * `String measure(String record) throws InvalidJsonException`
 Returns a CSV string
+
 ```Java
 "0.352941,1.0,1,1,0,1,0,0,0,0,1,0,0,1,1,0,0,0,0,1,1,0,1,0,0,0,0,1,0,0,1,1,0,0,0,0"
 ```
 * `List<String> measureAsList(String record) throws InvalidJsonException`
 Returns a list of strings. 
+
 ```Java
 List.of("0.352941", "1.0", "1", "1", "0", "1", "0", "0", "0", "0", "1", "0", "0", "1", "1",
         "0", "0", "0", "0", "1", "1", "0", "1", "0", "0", "0", "0", "1", "0", "0", "1", "1",
@@ -164,6 +172,7 @@ List.of("0.352941", "1.0", "1", "1", "0", "1", "0", "0", "0", "0", "1", "0", "0"
 ```
 * `List<Object> measureAsListOfObjects(String record) throws InvalidJsonException`
 Returns a list of objects
+
 ```Java
 List.of(0.35294117647058826, 1.0, true, true, false, true, false, false, false, false, true,
         false, false, true, true, false, false, false, false, 1, 1, 0, 1, 0, 0, 0, 0, 1, 0,
@@ -171,6 +180,7 @@ List.of(0.35294117647058826, 1.0, true, true, false, true, false, false, false, 
 ```
 * `Map<String, Object> measureAsMap(String record) throws InvalidJsonException`
 Returns a map of objects. The keys of the map are the names of the metrics.
+
 ```Java
 Map.of(
   "completeness:TOTAL", 0.35294117647058826,
@@ -211,8 +221,10 @@ Map.of(
   "cardinality:temporalCoverage", 0
 )
 ```
+
 * `String measureAsJson(String inputRecord) throws InvalidJsonException`
 Returns a JSON representation
+
 ```JSON
 {
   "completeness":{
@@ -261,10 +273,13 @@ Returns a JSON representation
   }
 }
 ```
+
 * `Map<String, List<MetricResult>> measureAsMetricResult(String inputRecord) throws InvalidJsonException`
-Returns a map with a "raw" format. The keys of the map are the individual calculators. The values are list of MetricResult
-objects. Each has a name (use `getName()` method), and a map of metrics (use `getResultMap()` method). Since it is
-rather difficult to illustrate, let me give you some assertions here: 
+Returns a map with a "raw" format. The keys of the map are the individual
+calculators. The values are list of MetricResult objects. Each has a name
+(use `getName()` method), and a map of metrics (use `getResultMap()` method).
+Since it is rather difficult to illustrate, let me give you some assertions here:
+
 ```Java
 assertTrue(metrics instanceof Map);
 assertEquals(1, metrics.size());
@@ -312,7 +327,8 @@ into list of cells, you could use the same methods:
 * `String measureAsJson(List<String> inputRecord) throws InvalidJsonException`
 * `Map<String, List<MetricResult>> measureAsMetricResult(List<String> inputRecord) throws InvalidJsonException`
 
-An example which collects output into a StringBuffer (you can persist lines into a CSV file or into a database):
+An example which collects output into a StringBuffer (you can persist lines
+into a CSV file or into a database):
 
 ```Java
 // collect the output into a container. The output is a CSV file
@@ -341,8 +357,7 @@ String metrics = output.toString();
 
 ## Defining schema with a configuration file
 
-It is possible to define the schema with a YAML or JSON 
-configuration file.
+It is possible to define the schema with a YAML or JSON configuration file.
 
 ```
 Schema schema = ConfigurationReader
@@ -350,7 +365,8 @@ Schema schema = ConfigurationReader
   .asSchema();
 ```
 
-A YAML example
+A YAML example:
+
 ```yaml
 format: json
 fields:
@@ -451,20 +467,30 @@ The same in JSON:
 }
 ```
 
-The central piece is the `fields` array. Each item represents the properties of a single data elements (a JsonBranch in the API). Its properties are:
+The central piece is the `fields` array. Each item represents the properties of
+a single data elements (a JsonBranch in the API). Its properties are:
+
 * `name` (String): the name or label of the data element
-* `path` (String): a address of the data element. If the format is XML, ir should be an XPath expression. If format is JSON, it should be a JSONPath expression. If the format is CSV, it should be the name of the column. 
-* `categories` (List<String>): a list of categories this field belongs to. Categories can be anything, in Europeana's use case these are the core functionalities the field supports
-* `extractable` (boolean): whether the field can be extracted if field extraction is turned on
-* `rules` (List<Rule>): a set of rules or constraints which will be checked against
-* `indexField` (String): the name which can be used in a search engine connected to the application (at the time of writing Apache Solr is supported)
+* `path` (String): a address of the data element. If the format is XML, it
+  should be an XPath expression. If format is JSON, it should be a JSONPath
+  expression. If the format is CSV, it should be the name of the column. 
+* `categories` (List<String>): a list of categories this field belongs to.
+  Categories can be anything, in Europeana's use case these are the core
+  functionalities the field supports
+* `extractable` (boolean): whether the field can be extracted if field
+  extraction is turned on
+* `rules` (List<Rule>): a set of rules or constraints which will be checked
+  against
+* `indexField` (String): the name which can be used in a search engine connected
+  to the application (at the time of writing Apache Solr is supported)
 
 Optionaly you can set the "canonical list" of categories. It provides
 two additional functionalities 
-* if a field contains a category which is not listed in the list, 
-that will be excluded (with a warning in the log)
-* the order of the categories in the output follows the order set 
-in the configuration.
+
+* if a field contains a category which is not listed in the list, that will be
+  excluded (with a warning in the log)
+* the order of the categories in the output follows the order set in the
+  configuration.
 
 Here is an example (in YAML):
 
@@ -486,7 +512,8 @@ One can add constraints to the fields. There are content rules, which
 the tool will check. In this version the tool mimin SHACL constraints.
 
 #### Cardinality
-One can specify with this properties how many occurrences of a data elemens a record can have.
+One can specify with this properties how many occurrences of a data elemens
+a record can have.
 
 ##### `minCount <number>`
 Specifies the minimum number of field occurence (API: `setMinCount()` or `withMinCount()`)
@@ -514,8 +541,9 @@ Example: the field might have maximum one occurrence
 
 #### Value Range
 
-You can set a range of value within which the field's value should remain. You can set a lower and higher bound with boolean 
-operators. You can specify either integers or floating point numbers.
+You can set a range of value within which the field's value should remain. You
+can set a lower and higher bound with boolean operators. You can specify either
+integers or floating point numbers.
 
 ##### `minExclusive <number>`
 The minimum exclusive value ([field value] > limit, API: `setMinExclusive(Double)` or `withMinExclusive(Double)`)
@@ -604,10 +632,12 @@ Example: the value should be either "dataverse", "dataset" or "file".
 ```
 
 ##### `pattern <regular expression>`
-A regular expression that each field value matches to satisfy the condition. The expression should cover
-the whole string, not only a part of it (API: `setPattern(String)` or `withPattern(String)`)
+A regular expression that each field value matches to satisfy the condition.
+The expression should cover the whole string, not only a part of it
+(API: `setPattern(String)` or `withPattern(String)`)
 
-Example: the field value should start with http:// or https:// and end with .jpg, .jpeg, .jpe, .jfif, .png, .tiff, .tif, .gif, .svg, .svgz, or .pdf.
+Example: the field value should start with http:// or https:// and end with
+.jpg, .jpeg, .jpe, .jfif, .png, .tiff, .tif, .gif, .svg, .svgz, or .pdf.
 
 ```yaml
 - name: thumbnail
@@ -645,7 +675,8 @@ Example: the value should be at least 3 character long, but should not contain m
 #### Comparision of properties
 
 ##### `equals <field label>`
-The set of all values of a field is equal to the set of all values of another field (API: `setEquals(String)` or `withEquals(String)`)
+The set of all values of a field is equal to the set of all values of another
+field (API: `setEquals(String)` or `withEquals(String)`)
 
 Example: The ID should be equal to the ISBN number.
 
@@ -660,8 +691,8 @@ fields:
 ```
 
 ##### `disjoint <field label>`
-The set of values of a field is disjoint (not equal) with the set of all values of another field 
- (API: `setDisjoint(String)` or `withDisjoint(String)`)
+The set of values of a field is disjoint (not equal) with the set of all values
+of another field (API: `setDisjoint(String)` or `withDisjoint(String)`)
 
 Example: The title should be different from description.
 
@@ -675,8 +706,9 @@ fields:
     path:  $.['description']
 ```
 ##### `lessThan <field label>`
+
 Each values of a field is smaller than each values of another field
-  (API: `setLessThan(String)` or `withLessThan(String)`)
+(API: `setLessThan(String)` or `withLessThan(String)`)
 
 Example: the date of birth is less than the date of death
 
@@ -688,10 +720,12 @@ Example: the date of birth is less than the date of death
 ```
 
 ##### `lessThanOrEquals <field label>`
-Each values of a field is smaller than or equals to each values of another field
-  (API: `setLessThanOrEquals(String)` or `withLessThanOrEquals(String)`)
 
-Example: the starting page of the article should be less than or equal to the ending page
+Each values of a field is smaller than or equals to each values of another field
+(API: `setLessThanOrEquals(String)` or `withLessThanOrEquals(String)`)
+
+Example: the starting page of the article should be less than or equal to the
+ending page:
 
 ```yaml
 - name: startingPage
@@ -705,6 +739,7 @@ Example: the starting page of the article should be less than or equal to the en
 With logical operators you can build complex rules. Each component should fit to its own rules. 
 
 ##### `and [<rule1>, ..., <ruleN>]`
+
 Passes if all the rules in the set passed. (API: `setAnd(List<Rule>)` or `withAnd(List<Rule>)`)
 
 Example: The ID should have one and only one occurrence, and is should not be an empty string.
@@ -720,9 +755,11 @@ Example: The ID should have one and only one occurrence, and is should not be an
 ```
 
 ##### `or [<rule1>, ..., <ruleN>]`
+
 Passes if at least one of the rules in the set passed. (API: `setOr(List<Rule>)` or `withOr(List<Rule>)`)
 
-Example: The thumbnail should either end with a known image extension or its content type should be one of the provided MIME image types.
+Example: The thumbnail should either end with a known image extension or its
+content type should be one of the provided MIME image types.
 
 ```yaml
 - name: thumbnail
@@ -734,8 +771,8 @@ Example: The thumbnail should either end with a known image extension or its con
 ```
 
 ##### `not [<rule1>, ..., <ruleN>]`
-Passes if none of the rules in the set passed.
-  (API: `setNot(List<Rule>)` or `withNot(List<Rule>)`)
+
+Passes if none of the rules in the set passed. (API: `setNot(List<Rule>)` or `withNot(List<Rule>)`)
 
 Example: make sure that the title and the description is different.
 
@@ -752,11 +789,13 @@ Example: make sure that the title and the description is different.
 These rules don't have parallel in SHACL.
 
 
-##### <a name="contentType">`contentType [type1, ..., typeN]`
+##### `contentType [type1, ..., typeN]`
+
 This rule interprets the value as a URL, fetches it and extracts the HTTP header's
 content type, then checks if it is one of those allowed.
 
-Example: The HTTP content type should be image/jpeg, image/png, image/tiff, image/tiff-fx, image/gif, or image/svg+xml.
+Example: The HTTP content type should be image/jpeg, image/png, image/tiff,
+image/tiff-fx, image/gif, or image/svg+xml.
 
 ```yaml
 - name: thumbnail
@@ -767,25 +806,28 @@ Example: The HTTP content type should be image/jpeg, image/png, image/tiff, imag
 
 ##### `unique <boolean>`
 
-(since v0.9.0-SNAPSHOT)
+(since v0.9.0)
 
-This rule checks if the value of the field is unique. Prerequisite: the field should have indexField property, and  
-the content should be indexed with Apache Solr.
+This rule checks if the value of the field is unique. Prerequisite: the field
+should have indexField property, and the content should be indexed with Apache
+Solr.
 
 ##### `dependencies [id1, id2, ..., idN]`
 
-(since v0.9.0-SNAPSHOT)
+(since v0.9.0)
 
-This rule checks if other rules has already checked and passed. It passes if all dependent rules has passed or 
-resulted NA, otherwise fail. The ids should be valid, and the dependent rule should take place after the ones from
-which it depends.
+This rule checks if other rules has already checked and passed. It passes if
+all dependent rules has passed or resulted NA, otherwise fail. The ids should
+be valid, and the dependent rule should take place after the ones from which
+it depends.
 
 ##### `dimension [criteria1, criteria2, ..., criteriaN]`
 
-(since v0.9.0-SNAPSHOT)
+(since v0.9.0)
 
-This checks if a linked image fits to some dimension constraints (unit in pixel) - if the value is an URL for an 
-image. One can check the minimum and maximum size of width, height and shorter or longer sides (in case it is not 
+This checks if a linked image fits to some dimension constraints (unit in
+pixel) - if the value is an URL for an image. One can check the minimum and
+maximum size of width, height and shorter or longer sides (in case it is not
 important if width or height is the shorter). The criteria:
 
 - `minWidth`: the minimum width
@@ -816,24 +858,28 @@ fields:
 
 ##### `id <String>`
 
-You can define an identifier to the rule, which will be reflected in the output. If you miss it, the
-system will assign a count number. ID might also help if you transform a human readable document such as cataloguing 
-rules into a configuration file, and you want to keep linkage between them. (API `setId(String)` or `withId(String)`)
+You can define an identifier to the rule, which will be reflected in the output.
+If you miss it, the system will assign a count number. ID might also help if
+you transform a human readable document such as cataloguing rules into a
+configuration file, and you want to keep linkage between them. 
+(API `setId(String)` or `withId(String)`)
 
 ##### `description <String>`
 
-Provide a description to document what the particular rule is doing. It can be anything reasonable, it does not play 
-a role in the calculation.
+Provide a description to document what the particular rule is doing. It can be
+anything reasonable, it does not play a role in the calculation.
 
 ##### `failureScore <integer>`
 
-A score which will be calculated if the validation fails. The score should be a negative o positive integer (including zero). 
+A score which will be calculated if the validation fails. The score should be a
+negative o positive integer (including zero). 
 (API `setFailureScore(nteger)` or `withFailureScore(Integer)`)
 
 ##### `successScore <integer>`
 
-A score which will be calculated if the validation passes. The score should be a negative o positive integer (including zero).
- (API `setSuccessScore(nteger)` or `withSuccessScore(Integer)`)
+A score which will be calculated if the validation passes. The score should be
+a negative o positive integer (including zero).
+(API `setSuccessScore(nteger)` or `withSuccessScore(Integer)`)
 
 Example: set of rules with IDs and scores.
 
@@ -862,18 +908,21 @@ Example: set of rules with IDs and scores.
 
 ##### `hidden <boolean>`
 
-(since v0.9.0-SNAPSHOT)
+(since v0.9.0)
 
-If the rule is hidden it will be calculated, but its output will not be present in the overall output. It can be 
-used together width dependencies to set up compound conditions.  
+If the rule is hidden it will be calculated, but its output will not be present
+in the overall output. It can be used together width dependencies to set up
+compound conditions.  
 
 ##### `skip <boolean>`
 
-(since v0.9.0-SNAPSHOT)
+(since v0.9.0)
 
-This rule prevents a particular rule to be part of calculation. This could be useful in development phase when you 
-started to create a complex rule but haven't yet finished, or when the execution of the rule takes long time (e.g. 
-checking content type or image dimension), and temporary you would like to turn it off.
+This rule prevents a particular rule to be part of calculation. This could be
+useful in development phase when you started to create a complex rule but
+haven't yet finished, or when the execution of the rule takes long time (e.g.
+checking content type or image dimension), and temporary you would like to
+turn it off.
 
 #### Set rules via Java API 
 
@@ -917,19 +966,24 @@ fields:
       pattern: ^https?://.*$
 ```
 
-In both cases we defined two fields. `title` has one constraints: it should not be equal to 
-the value of `description` field (which is masked out from the example). Note: if this hypothetical
-`description` field is not available the API drops an error message into the log. `url` should have
-one and only one instance, and its value should start with "http://" or "https://".
+In both cases we defined two fields. `title` has one constraints: it should
+not be equal to the value of `description` field (which is masked out from
+the example). Note: if this hypothetical `description` field is not available
+the API drops an error message into the log. `url` should have one and only
+one instance, and its value should start with "http://" or "https://".
 
-As you can see there are two types of setters in the API: setSomething and withSomething. The
-difference is that setSomething returs with void, but withSomething returns with the Rule object,
-so you can use it in a chain such as `new Rule().withMinCount(1).withMaxCount(3)` 
-(while `new Rule().setMinCount(1).setMaxCount(3)` doesn't work).
+As you can see there are two types of setters in the API: `setSomething` and 
+`withSomething`. The difference is that `setSomething` returs with void, but
+`withSomething` returns with the Rule object, so you can use it in a chain
+such as `new Rule().withMinCount(1).withMaxCount(3)` 
+(while `new Rule().setMinCount(1).setMaxCount(3)` doesn't work, because
+`setMinCount()` does returns nothing, and one can not apply `setMaxCount(3)`
+on that nothing).
 
 ## Defining MeasurementConfiguration with a configuration file
 
-MeasurementConfiguration can be created from JSON or YAML configuration files with the following methods:
+MeasurementConfiguration can be created from JSON or YAML configuration files
+with the following methods:
 
 * `ConfigurationReader.readMeasurementJson(String filePath)`: reading configuration from JSON
 * `ConfigurationReader.readMeasurementYaml(String filePath)`: reading configuration from YAML
@@ -962,46 +1016,72 @@ An example JSON file:
 }
 ```
 
-* `fieldExtractorEnabled`: Flag whether or not the field extractor is enabled (default: false).
-  (API calls: setters: `enableFieldExtractor()`, `disableFieldExtractor()`, getter: `isFieldExtractorEnabled()`)
-* `fieldExistenceMeasurementEnabled`: Flag whether or not run the field existence measurement (default: true).
-  (API calls: setters: `enableFieldExistenceMeasurement()`, `disableFieldExistenceMeasurement()`, getter: `isFieldExistenceMeasurementEnabled()`)
-* `fieldCardinalityMeasurementEnabled`: Flag whether or not run the field cardinality measurement (default: true).
-  (API calls: setters: `enableFieldCardinalityMeasurement()`, `disableFieldCardinalityMeasurement()`, getter: `isFieldCardinalityMeasurementEnabled()`)
-* `completenessMeasurementEnabled`: Flag whether or not run the completeness measurement (default: true).
-  (API calls: setters: `enableCompletenessMeasurement()`, `disableCompletenessMeasurement()`, getter: `isCompletenessMeasurementEnabled()`)
-* `tfIdfMeasurementEnabled`: Flag whether or not run the uniqueness measurement (default: false).
-  (API calls: setters: `enableTfIdfMeasurement()`, `disableTfIdfMeasurement()`, getter: `isTfIdfMeasurementEnabled()`)
+* `fieldExtractorEnabled`: Flag whether or not the field extractor is enabled
+  (default: false). (API calls: setters: `enableFieldExtractor()`,
+  `disableFieldExtractor()`, getter: `isFieldExtractorEnabled()`)
+* `fieldExistenceMeasurementEnabled`: Flag whether or not run the field
+  existence measurement (default: true). (API calls: setters:
+  `enableFieldExistenceMeasurement()`, `disableFieldExistenceMeasurement()`,
+  getter: `isFieldExistenceMeasurementEnabled()`)
+* `fieldCardinalityMeasurementEnabled`: Flag whether or not run the field
+  cardinality measurement (default: true). (API calls: setters:
+  `enableFieldCardinalityMeasurement()`, `disableFieldCardinalityMeasurement()`,
+  getter: `isFieldCardinalityMeasurementEnabled()`)
+* `completenessMeasurementEnabled`: Flag whether or not run the completeness
+  measurement (default: true). (API calls: setters: `enableCompletenessMeasurement()`,
+  `disableCompletenessMeasurement()`, getter: `isCompletenessMeasurementEnabled()`)
+* `tfIdfMeasurementEnabled`: Flag whether or not run the uniqueness measurement
+  (default: false). (API calls: setters: `enableTfIdfMeasurement()`, `disableTfIdfMeasurement()`,
+  getter: `isTfIdfMeasurementEnabled()`)
 * `problemCatalogMeasurementEnabled`: Flag whether or not run the problem catalog (default: false).
-  (API calls: setters: `enableProblemCatalogMeasurement()`, `disableProblemCatalogMeasurement()`, getter: `isProblemCatalogMeasurementEnabled()`)
+  (API calls: setters: `enableProblemCatalogMeasurement()`, `disableProblemCatalogMeasurement()`,
+  getter: `isProblemCatalogMeasurementEnabled()`)
 * `ruleCatalogMeasurementEnabled`: Flag whether or not run the rule catalog (default: false).
-  (API calls: setters: `enableRuleCatalogMeasurement()`, `disableRuleCatalogMeasurement()`, getter: `isRuleCatalogMeasurementEnabled()`)
+  (API calls: setters: `enableRuleCatalogMeasurement()`, `disableRuleCatalogMeasurement()`,
+  getter: `isRuleCatalogMeasurementEnabled()`)
 * `languageMeasurementEnabled`: Flag whether or not run the language detector (default: false).
-  (API calls: setters: `enableLanguageMeasurement()`, `disableLanguageMeasurement()`, getter: `isLanguageMeasurementEnabled()`)
-* `multilingualSaturationMeasurementEnabled`: Flag whether or not run the multilingual saturation measurement (default: false).
-  (API calls: setters: `enableMultilingualSaturationMeasurement()`, `disableMultilingualSaturationMeasurement()`, getter: `isMultilingualSaturationMeasurementEnabled()`)
-* `collectTfIdfTerms`: Flag whether or not collect TF-IDF terms in uniqueness measurement (default: false).
-  (API calls: setters: `collectTfIdfTerms(boolean)`, getter: `collectTfIdfTerms()`)
-* `uniquenessMeasurementEnabled`: Flag whether or not to run in uniqueness measurement (default: false).
-  (API calls: setters: `enableUniquenessMeasurement()`, `disableUniquenessMeasurement()`, getter: `isUniquenessMeasurementEnabled()`)
-* `completenessCollectFields`: Flag whether or not run missing/empty/existing field collection in completeness (default: false).
-  (API calls: setters: `enableCompletenessFieldCollecting(boolean)`, getter: `isCompletenessFieldCollectingEnabled()`)
-* `saturationExtendedResult`: Flag whether or not to create extended result in multilingual saturation calculation (default: false).
-  (API calls: setters: `enableSaturationExtendedResult(boolean)`, getter: `isSaturationExtendedResult()`)
+  (API calls: setters: `enableLanguageMeasurement()`, `disableLanguageMeasurement()`,
+  getter: `isLanguageMeasurementEnabled()`)
+* `multilingualSaturationMeasurementEnabled`: Flag whether or not run the multilingual
+  saturation measurement (default: false).  (API calls: setters:
+  `enableMultilingualSaturationMeasurement()`, `disableMultilingualSaturationMeasurement()`,
+  getter: `isMultilingualSaturationMeasurementEnabled()`)
+* `collectTfIdfTerms`: Flag whether or not collect TF-IDF terms in uniqueness
+  measurement (default: false). (API calls: setters: `collectTfIdfTerms(boolean)`,
+  getter: `collectTfIdfTerms()`)
+* `uniquenessMeasurementEnabled`: Flag whether or not to run in uniqueness
+  measurement (default: false). (API calls: setters: `enableUniquenessMeasurement()`,
+  `disableUniquenessMeasurement()`, getter: `isUniquenessMeasurementEnabled()`)
+* `completenessCollectFields`: Flag whether or not run missing/empty/existing field
+  collection in completeness (default: false). (API calls: setters:
+  `enableCompletenessFieldCollecting(boolean)`,
+  getter: `isCompletenessFieldCollectingEnabled()`)
+* `saturationExtendedResult`: Flag whether or not to create extended result in
+  multilingual saturation calculation (default: false).
+  (API calls: setters: `enableSaturationExtendedResult(boolean)`,
+  getter: `isSaturationExtendedResult()`)
 * `checkSkippableCollections`: Flag whether or not to check skipable collections (default: false).
-  (API calls: setters: `enableCheckSkippableCollections(boolean)`, getter: `isCheckSkippableCollections()`)
+  (API calls: setters: `enableCheckSkippableCollections(boolean)`,
+  getter: `isCheckSkippableCollections()`)
 * `String solrHost`: The hostname of the Solr server.
-  (API calls: setters: `setSolrHost(String)`, `withSolrHost(String):MeasurementConfiguration`, getter: `getSolrHost()`)
+  (API calls: setters: `setSolrHost(String)`, `withSolrHost(String):MeasurementConfiguration`,
+  getter: `getSolrHost()`)
 * `String solrPort`: The port of the Solr server.
-  (API calls: setters: `setSolrPort(String)`, `withSolrPort(String):MeasurementConfiguration`, getter: `getSolrPort()`)
+  (API calls: setters: `setSolrPort(String)`, `withSolrPort(String):MeasurementConfiguration`,
+  getter: `getSolrPort()`)
 * `String solrPath`: The path part of of the Solr server URL.
-  (API calls: setters: `setSolrPath(String)`, `withSolrPath(String):MeasurementConfiguration`, getter: `getSolrPath()`)
-* `String onlyIdInHeader`: the Rules should return the ID in the header instead of a generated value.
-  (API calls: setters: `setOnlyIdInHeader(boolean)`, `withOnlyIdInHeader(boolean):MeasurementConfiguration`, getter: `isOnlyIdInHeader()`)
+  (API calls: setters: `setSolrPath(String)`, `withSolrPath(String):MeasurementConfiguration`,
+  getter: `getSolrPath()`)
+* `String onlyIdInHeader`: the Rules should return the ID in the header instead of a
+  generated value. (API calls: setters: `setOnlyIdInHeader(boolean)`,
+  `withOnlyIdInHeader(boolean):MeasurementConfiguration`,
+  getter: `isOnlyIdInHeader()`)
 
 ## Using an experimental version
   
-If you want to try an experimental version (which has `SNAPSHOT` in its version name), you have to enable the retrieval of those versions in the `pom.xml` file:
+If you want to try an experimental version (which has `SNAPSHOT` in its
+version name), you have to enable the retrieval of those versions in the `pom.xml` file:
+
 ```xml
 <repositories>
   <repository>
@@ -1027,7 +1107,7 @@ If you want to try an experimental version (which has `SNAPSHOT` in its version 
 </dependencies>
 ```
 
-Thanks Miel Vander Sande ([@mielvds](https://github.com/mielvds)) for the hint!
+Thanks to Miel Vander Sande ([@mielvds](https://github.com/mielvds)) for the hint!
 
 ## More info
 
