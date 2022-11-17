@@ -1118,6 +1118,7 @@ For the usage and implementation of the API see https://github.com/pkiraly/europ
 Java doc for the actual development version of the API: https://pkiraly.github.io/metadata-qa-api.
 
 [![Build Status](https://travis-ci.org/pkiraly/metadata-qa-api.svg?branch=main)](https://travis-ci.com/pkiraly/metadata-qa-api)
-[![Coverage Status](https://coveralls.io/repos/github/pkiraly/metadata-qa-api/badge.svg?branch=main)](https://coveralls.io/github/pkiraly/metadata-qa-api?branch=main)
+[![Coverage Status (@coveralls)](https://coveralls.io/repos/github/pkiraly/metadata-qa-api/badge.svg?branch=main)](https://coveralls.io/github/pkiraly/metadata-qa-api?branch=main)
+[![Coverage Status (@codecov)](https://codecov.io/gh/pkiraly/metadata-qa-api/branch/main/graph/badge.svg?token=HLLGXJSVZL)](https://codecov.io/gh/pkiraly/metadata-qa-api)
 [![javadoc](https://javadoc.io/badge2/de.gwdg.metadataqa/metadata-qa-api/javadoc.svg)](https://javadoc.io/doc/de.gwdg.metadataqa/metadata-qa-api)
 [![Maven Central](https://img.shields.io/maven-central/v/de.gwdg.metadataqa/metadata-qa-api)](https://search.maven.org/artifact/de.gwdg.metadataqa/metadata-qa-api)
