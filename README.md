@@ -22,7 +22,7 @@ digital collections.
         * [`minLength <number>`](#minlength-number)
         * [`maxLength <number>`](#maxlength-number)
         * [`hasValue <String>`](#hasvalue-string)
-        * [`in [String1, ..., StringN]`](#in-string1----stringn)
+        * [`in [String1, ..., StringN]`](#in-string1--stringn)
         * [`pattern <regular expression>`](#pattern-regular-expression)
         * [`minWords <number>`](#minwords-number)
         * [`maxWords <number>`](#maxwords-number)
