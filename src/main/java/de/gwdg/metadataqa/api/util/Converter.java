@@ -14,6 +14,7 @@ import net.minidev.json.JSONArray;
 import org.apache.commons.lang3.StringUtils;
 
 /**
+ * Converter utility
  *
  * @author Péter Király <peter.kiraly at gwdg.de>
  */
@@ -94,7 +95,7 @@ public interface Converter {
     } else if (value instanceof Integer) {
       text = Integer.toString((Integer) value);
     } else if (value instanceof Double) {
-      text = String.format("%.6f", value);
+      text = String.format("%.6f", (Double) value);
     } else if (value instanceof String) {
       text = (String) value;
     } else if (value instanceof List) {

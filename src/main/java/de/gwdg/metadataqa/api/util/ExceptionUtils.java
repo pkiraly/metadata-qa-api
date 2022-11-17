@@ -5,6 +5,7 @@ import java.util.List;
 import org.apache.commons.lang3.StringUtils;
 
 /**
+ * Utility method for exceptions
  *
  * @author Péter Király <peter.kiraly at gwdg.de>
  */

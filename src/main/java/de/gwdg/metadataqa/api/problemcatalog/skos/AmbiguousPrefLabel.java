@@ -13,15 +13,13 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.logging.Logger;
 
 /**
+ * Checking ambigous PrefLabel
  *
  * @author Péter Király <peter.kiraly at gwdg.de>
  */
 public class AmbiguousPrefLabel extends ProblemDetector implements Serializable {
-
-  private static final Logger LOGGER = Logger.getLogger(AmbiguousPrefLabel.class.getCanonicalName());
 
   private static final String NAME = "AmbiguousPrefLabel";
   private static final List<String> LABELS = Arrays.asList(

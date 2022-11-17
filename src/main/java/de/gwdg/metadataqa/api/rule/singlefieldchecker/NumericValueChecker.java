@@ -13,7 +13,6 @@ import java.util.logging.Logger;
 public class NumericValueChecker extends SingleFieldChecker {
 
   private static final long serialVersionUID = 6281320551990118341L;
-  private static final Logger LOGGER = Logger.getLogger(NumericValueChecker.class.getCanonicalName());
 
   public enum TYPE {
     MIN_INCLUSIVE("minInclusive"),
@@ -21,7 +20,7 @@ public class NumericValueChecker extends SingleFieldChecker {
     MIN_EXCLUSIVE("minExclusive"),
     MAX_EXCLUSIVE("maxExclusive");
 
-    private String prefix;
+    private final String prefix;
 
     TYPE(String prefix) {
       this.prefix = prefix;

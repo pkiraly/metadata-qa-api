@@ -20,7 +20,6 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
-import java.util.logging.Logger;
 
 import org.apache.commons.lang3.BooleanUtils;
 import org.apache.commons.lang3.StringUtils;
@@ -28,19 +27,15 @@ import org.apache.commons.lang3.StringUtils;
 import static java.util.stream.Collectors.toList;
 
 /**
+ * Completeness calculator
  *
  * @author Péter Király <peter.kiraly at gwdg.de>
- * @param <T>
+ * @param <T> A field instance class
  */
 public class CompletenessCalculator<T extends XmlFieldInstance>
       implements Calculator, Serializable {
 
   public static final String CALCULATOR_NAME = "completeness";
-
-  private static final Logger LOGGER = Logger.getLogger(
-    CompletenessCalculator.class.getCanonicalName()
-  );
-
   private String inputFileName;
 
   private CompletenessCounter completenessCounter;

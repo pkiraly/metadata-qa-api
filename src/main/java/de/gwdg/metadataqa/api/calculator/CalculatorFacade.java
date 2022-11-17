@@ -100,12 +100,10 @@ public class CalculatorFacade implements Serializable {
 
   /**
    * Run the measurements with each Calculator then returns the result as CSV.
-   * @param inputRecord
-   *   The JSON record string
-   * @return
-   *   The result of measurements as a CSV string
-   * @throws InvalidJsonException
-   *   Invalid Json exception
+   *
+   * @param inputRecord The JSON record string
+   * @return The result of measurements as a CSV string
+   * @throws InvalidJsonException If the JSON is invalid
    */
   public String measure(String inputRecord) throws InvalidJsonException {
     return (String) this.<XmlFieldInstance>measureWithGenerics(inputRecord);
@@ -165,11 +163,9 @@ public class CalculatorFacade implements Serializable {
    * @param <T>
    *   A class defining the internal representation of a field. It should be
    *   an extension of XmlFieldInstance
-   * @param content
-   *   The JSON record
-   * @return
-   *   The result of measurements as a CSV string
-   * @throws InvalidJsonException
+   * @param content The JSON record
+   * @return The result of measurements as a CSV string
+   * @throws InvalidJsonException If the JSON is invalid
    */
   protected <T extends XmlFieldInstance> Object measureWithGenerics(String content)
     throws InvalidJsonException {
@@ -238,10 +234,11 @@ public class CalculatorFacade implements Serializable {
   }
 
   private void runMeasurements(OutputCollector collector) {
-    for (Calculator calculator : getCalculators()) {
-      List<MetricResult> result = calculator.measure(cache);
-      collector.addResult(calculator, result, compressionLevel);
-    }
+    if (calculators != null)
+      for (Calculator calculator : getCalculators()) {
+        List<MetricResult> result = calculator.measure(cache);
+        collector.addResult(calculator, result, compressionLevel);
+      }
   }
 
   /**
@@ -300,9 +297,9 @@ public class CalculatorFacade implements Serializable {
   public List<String> getHeader() {
     conditionalConfiguration();
     List<String> header = new ArrayList<>();
-    for (Calculator calculator : getCalculators()) {
-      header.addAll(calculator.getHeader());
-    }
+    if (calculators != null)
+      for (Calculator calculator : getCalculators())
+        header.addAll(calculator.getHeader());
 
     return header;
   }

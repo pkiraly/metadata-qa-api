@@ -1,6 +1,7 @@
 package de.gwdg.metadataqa.api.model;
 
 /**
+ * Types for language saturation
  *
  * @author Péter Király <peter.kiraly at gwdg.de>
  */

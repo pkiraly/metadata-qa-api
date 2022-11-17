@@ -4,18 +4,16 @@ import de.gwdg.metadataqa.api.counter.FieldCounter;
 import de.gwdg.metadataqa.api.model.EdmFieldInstance;
 import java.io.Serializable;
 import java.util.List;
-import java.util.logging.Logger;
 
 import de.gwdg.metadataqa.api.model.pathcache.PathCache;
 import org.apache.commons.lang3.StringUtils;
 
 /**
+ * Empty string detector
  *
  * @author Péter Király <peter.kiraly at gwdg.de>
  */
 public class EmptyStrings extends ProblemDetector implements Serializable {
-
-  private static final Logger LOGGER = Logger.getLogger(EmptyStrings.class.getCanonicalName());
 
   private static final String NAME = "EmptyStrings";
   private static final long serialVersionUID = 2943902241047693938L;

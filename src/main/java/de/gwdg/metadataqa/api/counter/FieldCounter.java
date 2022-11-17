@@ -6,7 +6,6 @@ import de.gwdg.metadataqa.api.util.Converter;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
-import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
@@ -14,6 +13,7 @@ import de.gwdg.metadataqa.api.util.FileUtils;
 import org.apache.commons.lang3.StringUtils;
 
 /**
+ * Generic field counter
  *
  * @author Péter Király <peter.kiraly at gwdg.de>
  * @param <T> the type of elements held in this collection
@@ -83,7 +83,7 @@ public class FieldCounter<T> implements Serializable {
   }
 
   public List<Object> getCsv() {
-    List<Object> values = new LinkedList<>();
+    List<Object> values = new ArrayList<>();
     for (T value : fieldMap.values()) {
       values.add(value);
     }

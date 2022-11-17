@@ -3,6 +3,7 @@ package de.gwdg.metadataqa.api.counter;
 import java.io.Serializable;
 
 /**
+ * A Basic counter
  *
  * @author Péter Király <peter.kiraly at gwdg.de>
  */

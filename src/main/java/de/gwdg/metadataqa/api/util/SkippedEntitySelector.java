@@ -8,6 +8,7 @@ import java.io.Serializable;
 import java.util.List;
 
 /**
+ * Seleting skippable entities
  *
  * @author Péter Király <peter.kiraly at gwdg.de>
 

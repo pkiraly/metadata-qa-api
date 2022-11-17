@@ -15,7 +15,6 @@ import de.gwdg.metadataqa.api.util.SkippedEntitySelector;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.LinkedHashMap;
-import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -323,7 +322,7 @@ public class Multilinguality {
   }
 
   private Object normalizeRawValue(List<SortedMap<LanguageSaturationType, Double>> values) {
-    List<SortedMap<LanguageSaturationType, Double>> normalized = new LinkedList<>();
+    List<SortedMap<LanguageSaturationType, Double>> normalized = new ArrayList<>();
     for (SortedMap<LanguageSaturationType, Double> value : values) {
       SortedMap<LanguageSaturationType, Double> norm = new TreeMap<>();
       double saturation = value.firstKey().value();

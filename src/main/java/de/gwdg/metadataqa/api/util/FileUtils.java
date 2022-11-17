@@ -19,6 +19,7 @@ import java.util.Scanner;
 import org.apache.commons.lang3.StringUtils;
 
 /**
+ * Utility methods for files
  *
  * @author Péter Király <peter.kiraly at gwdg.de>
  */
@@ -70,7 +71,7 @@ public abstract class FileUtils {
 
   public static List<String> readLinesFromFile(String fileName) throws IOException {
     List<String> lines = new ArrayList<>();
-    var scanner = new Scanner(new File(fileName));
+    var scanner = new Scanner(new File(fileName), StandardCharsets.UTF_8);
     while (scanner.hasNextLine()) {
       lines.add(scanner.nextLine());
     }

@@ -12,6 +12,7 @@ import java.util.List;
 import java.util.Map;
 
 /**
+ * JSON based MARC21 schema
  *
  * @author Péter Király <peter.kiraly at gwdg.de>
  */

@@ -17,6 +17,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
+ * Uniquness calculator
  *
  * @author Péter Király <peter.kiraly at gwdg.de>
  */

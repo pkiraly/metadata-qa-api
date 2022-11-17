@@ -126,7 +126,8 @@ public class CalculatorFactory {
         );
       }
       if (configuration.getSolrClient() == null) {
-        configuration.setSolrClient(new DefaultSolrClient(configuration.getSolrConfiguration()));
+        if (configuration.getSolrConfiguration() != null)
+          configuration.setSolrClient(new DefaultSolrClient(configuration.getSolrConfiguration()));
       }
       calculators.add(new UniquenessCalculator(configuration.getSolrClient(), schema));
     }
@@ -140,7 +141,8 @@ public class CalculatorFactory {
         );
       }
       if (configuration.getSolrClient() == null) {
-        configuration.setSolrClient(new DefaultSolrClient(configuration.getSolrConfiguration()));
+        if (configuration.getSolrConfiguration() != null)
+          configuration.setSolrClient(new DefaultSolrClient(configuration.getSolrConfiguration()));
       }
       calculators.add(new Indexer(configuration.getSolrClient(), schema));
     }

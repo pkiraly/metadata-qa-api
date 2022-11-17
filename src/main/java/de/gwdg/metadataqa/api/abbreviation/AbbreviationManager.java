@@ -121,8 +121,8 @@ public class AbbreviationManager implements Serializable {
    *
    * @param fileName The file name.
    *
-   * @throws FileNotFoundException
-   * @throws UnsupportedEncodingException
+   * @throws FileNotFoundException if the file is not existing
+   * @throws UnsupportedEncodingException If the encoding is not supported
    */
   public void save(String fileName)
       throws FileNotFoundException, UnsupportedEncodingException {
@@ -144,10 +144,11 @@ public class AbbreviationManager implements Serializable {
 
   /**
    * A get a java.nio.file.Path object from a file name.
+   *
    * @param fileName The file name
    * @return The Path object
-   * @throws IOException
-   * @throws URISyntaxException
+   * @throws IOException if general I/O problem happens
+   * @throws URISyntaxException if the URL syntax is not valid
    */
   private static Path getPath(String fileName)
       throws IOException, URISyntaxException {
@@ -159,7 +160,7 @@ public class AbbreviationManager implements Serializable {
     var uri = url.toURI();
     Map<String, String> env = new HashMap<>();
     if (uri.toString().contains("!")) {
-      String[] parts = uri.toString().split("!");
+      String[] parts = uri.toString().split("!", 2);
       if (fs == null)
         fs = FileSystems.newFileSystem(URI.create(parts[0]), env);
       path = fs.getPath(parts[1]);
@@ -175,9 +176,9 @@ public class AbbreviationManager implements Serializable {
 
   /**
    * Do not create new abbreviation, simply returns an existing or a default number
-   * @param key
-   * @param defaultValue
-   * @return
+   * @param key The abbreviation
+   * @param defaultValue A default value if the abbreviation is not found
+   * @return the saved value, or if key doesn't exist a default value
    */
   public Integer getOrDefault(String key, Integer defaultValue) {
     return data.getOrDefault(key, defaultValue);

@@ -6,7 +6,6 @@ import de.gwdg.metadataqa.api.model.pathcache.PathCache;
 
 import java.io.Serializable;
 import java.util.List;
-import java.util.logging.Logger;
 
 /**
  * Detects if title and description contains the same value.
@@ -16,10 +15,6 @@ import java.util.logging.Logger;
  */
 public class TitleAndDescriptionAreSame extends ProblemDetector
     implements Serializable {
-
-  private static final Logger LOGGER = Logger.getLogger(
-      TitleAndDescriptionAreSame.class.getCanonicalName()
-  );
 
   private static final String NAME = "TitleAndDescriptionAreSame";
   private static final long serialVersionUID = 1973864683478009809L;

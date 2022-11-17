@@ -20,6 +20,7 @@ import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.Serializable;
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -108,7 +109,7 @@ public class OaiPmhXPath implements Serializable {
 
   public void parseContent(String content) {
     initialize();
-    parseContent(new ByteArrayInputStream(content.getBytes()));
+    parseContent(new ByteArrayInputStream(content.getBytes(StandardCharsets.UTF_8)));
   }
 
   private void parseContent(InputStream content) {

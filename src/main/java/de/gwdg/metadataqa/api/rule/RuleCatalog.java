@@ -10,11 +10,8 @@ import de.gwdg.metadataqa.api.schema.Schema;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.logging.Logger;
 
 public class RuleCatalog implements Calculator, Serializable {
-
-  private static final Logger LOGGER = Logger.getLogger(RuleCatalog.class.getCanonicalName());
 
   private static final String CALCULATOR_NAME = "ruleCatalog";
   private Schema schema;

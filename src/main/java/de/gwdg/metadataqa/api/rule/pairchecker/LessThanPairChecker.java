@@ -14,12 +14,14 @@ public class LessThanPairChecker extends PropertyPairChecker {
 
   private static final long serialVersionUID = 2271685635591166409L;
 
+  private final TYPE type;
+
   public enum TYPE {
     LESS_THAN("lessThan"),
     LESS_THAN_OR_EQUALS("lessThanOrEquals")
     ;
 
-    private String prefix;
+    private final String prefix;
 
     TYPE(String prefix) {
       this.prefix = prefix;
@@ -29,8 +31,6 @@ public class LessThanPairChecker extends PropertyPairChecker {
       return prefix;
     }
   }
-
-  private final TYPE type;
   private static final Pattern isNumericPattern = Pattern.compile("^\\d+(\\.\\d+)?$");
 
   public LessThanPairChecker(JsonBranch field1, JsonBranch field2, TYPE type) {

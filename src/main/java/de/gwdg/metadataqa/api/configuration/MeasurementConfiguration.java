@@ -195,7 +195,7 @@ public class MeasurementConfiguration {
    * Sets whether or not to run the field existence measurement.
    * @param runFieldExistence
    *    field existence measurement flag
-   * @return
+   * @return the configuration object
    */
   public MeasurementConfiguration enableFieldExistenceMeasurement(boolean runFieldExistence) {
     this.fieldExistenceMeasurementEnabled = runFieldExistence;
@@ -227,7 +227,7 @@ public class MeasurementConfiguration {
    * configure to run the cardinality measurement.
    * @param runFieldCardinality
    *    cardinality measurement flag
-   * @return
+   * @return the configuration object
    */
   public MeasurementConfiguration enableFieldCardinalityMeasurement(boolean runFieldCardinality) {
     this.fieldCardinalityMeasurementEnabled = runFieldCardinality;
@@ -259,7 +259,7 @@ public class MeasurementConfiguration {
    * Sets the flag whether or not run the completeness measurement.
    * @param runCompleteness
    *    flag whether or not run the completeness measurement
-   * @return
+   * @return the configuration object
    */
   public MeasurementConfiguration enableCompletenessMeasurement(boolean runCompleteness) {
     this.completenessMeasurementEnabled = runCompleteness;
@@ -292,7 +292,7 @@ public class MeasurementConfiguration {
    * Configure whether or not run the language detector.
    *
    * @param runLanguage
-   * @return
+   * @return the configuration object
    */
   public MeasurementConfiguration enableLanguageMeasurement(boolean runLanguage) {
     this.languageMeasurementEnabled = runLanguage;
@@ -325,7 +325,7 @@ public class MeasurementConfiguration {
    * Configure whether or not run the language detector.
    *
    * @param runMultilingualSaturation
-   * @return
+   * @return the configuration object
    */
   public MeasurementConfiguration enableMultilingualSaturationMeasurement(boolean runMultilingualSaturation) {
     this.multilingualSaturationMeasurementEnabled = runMultilingualSaturation;
@@ -358,7 +358,7 @@ public class MeasurementConfiguration {
    * Configure whether or not run the uniqueness measurement.
    * @param runTfIdf
    *   uniqueness measurement flag
-   * @return
+   * @return the configuration object
    */
   public MeasurementConfiguration enableTfIdfMeasurement(boolean runTfIdf) {
     this.tfIdfMeasurementEnabled = runTfIdf;
@@ -390,7 +390,7 @@ public class MeasurementConfiguration {
    * Configure to run the problem catalog measurement.
    * @param runProblemCatalog
    *   problem catalog measurement flag
-   * @return
+   * @return the configuration object
    */
   public MeasurementConfiguration enableProblemCatalogMeasurement(boolean runProblemCatalog) {
     this.problemCatalogMeasurementEnabled = runProblemCatalog;
@@ -422,7 +422,7 @@ public class MeasurementConfiguration {
    * Configure to run the problem catalog measurement.
    * @param run
    *   problem catalog measurement flag
-   * @return
+   * @return the configuration object
    */
   public MeasurementConfiguration enableRuleCatalogMeasurement(boolean run) {
     this.ruleCatalogMeasurementEnabled = run;
@@ -452,7 +452,7 @@ public class MeasurementConfiguration {
   /**
    * Flag to enable uniqueness measurement.
    * @param uniquenessMeasurementEnabled The flag
-   * @return
+   * @return the configuration object
    */
   public MeasurementConfiguration enableUniquenessMeasurement(boolean uniquenessMeasurementEnabled) {
     this.uniquenessMeasurementEnabled = uniquenessMeasurementEnabled;
@@ -479,7 +479,7 @@ public class MeasurementConfiguration {
   /**
    * Flag to enable uniqueness measurement.
    * @param indexingEnabled The flag
-   * @return
+   * @return the configuration object
    */
   public MeasurementConfiguration enableIndexing(boolean indexingEnabled) {
     this.indexingEnabled = indexingEnabled;
@@ -507,7 +507,7 @@ public class MeasurementConfiguration {
    *
    * @param collectTfIdfTerms
    *   The TF-IDF collector flag
-   * @return
+   * @return the configuration object
    */
   public MeasurementConfiguration collectTfIdfTerms(boolean collectTfIdfTerms) {
     this.collectTfIdfTerms = collectTfIdfTerms;
@@ -533,7 +533,7 @@ public class MeasurementConfiguration {
    *
    * @param completenessCollectFields
    *   The completenessCollectFields flag
-   * @return
+   * @return the configuration object
    */
   public MeasurementConfiguration enableCompletenessFieldCollecting(boolean completenessCollectFields) {
     this.completenessCollectFields = completenessCollectFields;

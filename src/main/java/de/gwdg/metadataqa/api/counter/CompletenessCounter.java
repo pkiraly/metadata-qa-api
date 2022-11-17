@@ -3,7 +3,6 @@ package de.gwdg.metadataqa.api.counter;
 import de.gwdg.metadataqa.api.model.Category;
 import de.gwdg.metadataqa.api.schema.Schema;
 import de.gwdg.metadataqa.api.json.FieldGroup;
-import org.apache.commons.lang3.StringUtils;
 
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -12,6 +11,7 @@ import java.util.List;
 import java.util.Map;
 
 /**
+ * Completeness counter
  *
  * @author Péter Király <peter.kiraly at gwdg.de>
  */

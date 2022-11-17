@@ -15,6 +15,7 @@ import java.util.List;
 import java.util.Map;
 
 /**
+ * Abstract EDM schema
  *
  * @author Péter Király <peter.kiraly at gwdg.de>
  */

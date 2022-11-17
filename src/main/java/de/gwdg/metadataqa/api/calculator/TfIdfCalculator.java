@@ -28,6 +28,7 @@ import org.apache.commons.httpclient.params.HttpMethodParams;
 import org.apache.commons.io.IOUtils;
 
 /**
+ * TF-IDF calculator
  *
  * @author Péter Király <peter.kiraly at gwdg.de>
  */
