@@ -1,6 +1,6 @@
 package de.gwdg.metadataqa.api.similarity;
 
-import org.apache.commons.text.similarity.JaroWinklerDistance;
+import org.apache.commons.text.similarity.JaroWinklerSimilarity;
 
 import java.util.HashMap;
 import java.util.List;
@@ -14,7 +14,7 @@ import java.util.ArrayList;
  */
 public class Clustering {
 
-  private JaroWinklerDistance jaroWinkler = new JaroWinklerDistance();
+  private JaroWinklerSimilarity jaroWinkler = new JaroWinklerSimilarity();
   private Map<String, Cluster> clusterIndex = new HashMap<>();
   private double treshold;
 
@@ -44,6 +44,7 @@ public class Clustering {
         String otherPattern = patterns.get(j);
         var otherTerm = getOrCreateTerm(otherPattern);
         double distance = jaroWinkler.apply(pattern, otherPattern);
+        System.err.printf("%s vs %s: %f\n", pattern, otherPattern, distance);
         if (distance >= treshold) {
           term.setDistance(otherTerm, distance);
           otherTerm.setDistance(term, distance);
