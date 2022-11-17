@@ -745,7 +745,8 @@ Example: make sure that the title and the description is different.
 
 These rules don't have parallel in SHACL.
 
-##### `contentType [type1, ..., typeN]`
+
+##### <a name="contentType">`contentType [type1, ..., typeN]`
 This rule interprets the value as a URL, fetches it and extracts the HTTP header's
 content type, then checks if it is one of those allowed.
 
