@@ -14,6 +14,7 @@ import java.util.Map;
 public class AnnotationCalculator implements Calculator, Serializable {
 
   public static final String CALCULATOR_NAME = "annotation";
+  private static final long serialVersionUID = -4143015622078755424L;
 
   private Map<String, Object> annotaionColumns;
   private List<MetricResult> results;
