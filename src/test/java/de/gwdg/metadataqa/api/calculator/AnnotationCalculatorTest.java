@@ -3,7 +3,6 @@ package de.gwdg.metadataqa.api.calculator;
 import de.gwdg.metadataqa.api.interfaces.MetricResult;
 import de.gwdg.metadataqa.api.model.pathcache.JsonPathCache;
 import de.gwdg.metadataqa.api.util.FileUtils;
-import junit.framework.TestCase;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -12,7 +11,9 @@ import java.net.URISyntaxException;
 import java.util.List;
 import java.util.Map;
 
-public class AnnotationCalculatorTest extends TestCase {
+import static org.junit.Assert.assertEquals;
+
+public class AnnotationCalculatorTest {
 
   JsonPathCache cache;
   AnnotationCalculator calculator;
@@ -24,11 +25,21 @@ public class AnnotationCalculatorTest extends TestCase {
   }
 
   @Test
-  public void testName() {
+  public void measure() {
     List<MetricResult> result = calculator.measure(cache);
     assertEquals(1, result.size());
     assertEquals("annotation", result.get(0).getName());
     assertEquals(1, result.get(0).getResultMap().size());
     assertEquals("1", result.get(0).getResultMap().get("one"));
+  }
+
+  @Test
+  public void getCalculatorName() {
+    assertEquals("annotation", calculator.getCalculatorName());
+  }
+
+  @Test
+  public void getHeader() {
+    assertEquals(List.of("one"), calculator.getHeader());
   }
 }
