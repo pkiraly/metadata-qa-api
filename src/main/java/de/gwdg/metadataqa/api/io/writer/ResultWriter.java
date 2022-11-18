@@ -1,4 +1,4 @@
-package de.gwdg.metadataqa.api.calculator.output;
+package de.gwdg.metadataqa.api.io.writer;
 
 import de.gwdg.metadataqa.api.interfaces.MetricResult;
 
@@ -32,6 +32,6 @@ public abstract class ResultWriter implements Closeable {
     this.outputWriter.close();
   }
 
-  abstract void writeResult(Map<String, List<MetricResult>> result) throws IOException;
-  abstract void writeHeader(List<String> header) throws IOException;
+  abstract public void writeResult(Map<String, List<MetricResult>> result) throws IOException;
+  abstract public void writeHeader(List<String> header) throws IOException;
 }

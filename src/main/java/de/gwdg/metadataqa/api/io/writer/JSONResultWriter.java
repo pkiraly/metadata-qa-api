@@ -1,4 +1,4 @@
-package de.gwdg.metadataqa.api.calculator.output;
+package de.gwdg.metadataqa.api.io.writer;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import de.gwdg.metadataqa.api.interfaces.MetricResult;
@@ -39,7 +39,7 @@ public class JSONResultWriter extends ResultWriter {
   }
 
   @Override
-  void writeResult(Map<String, List<MetricResult>> result) throws IOException {
+  public void writeResult(Map<String, List<MetricResult>> result) throws IOException {
     Object json = getJson(result);
 
     this.outputWriter.write(json.toString());
@@ -47,5 +47,5 @@ public class JSONResultWriter extends ResultWriter {
   }
 
   @Override
-  void writeHeader(List<String> header) throws IOException {}
+  public void writeHeader(List<String> header) throws IOException {}
 }
