@@ -14,16 +14,16 @@ import java.util.StringTokenizer;
 public class MinWordsChecker extends SingleFieldChecker {
 
   private static final long serialVersionUID = 3259638493041988749L;
-  public static final String PREFIX = "maxWords";
-  protected Integer maxWords;
+  public static final String PREFIX = "minWords";
+  protected Integer minWords;
 
-  public MinWordsChecker(JsonBranch field, int maxWords) {
-    this(field, field.getLabel(), maxWords);
+  public MinWordsChecker(JsonBranch field, int minWords) {
+    this(field, field.getLabel(), minWords);
   }
 
-  public MinWordsChecker(JsonBranch field, String header, int maxWords) {
+  public MinWordsChecker(JsonBranch field, String header, int minWords) {
     super(field, header + ":" + PREFIX);
-    this.maxWords = maxWords;
+    this.minWords = minWords;
   }
 
   @Override
@@ -41,7 +41,8 @@ public class MinWordsChecker extends SingleFieldChecker {
           isNA = false;
           if (isDebug())
             LOGGER.info("value: " + instance.getValue());
-          if (countWords(instance.getValue()) > maxWords) {
+          LOGGER.info("countWords: " + countWords(instance.getValue()));
+          if (countWords(instance.getValue()) < minWords) {
             allPassed = false;
             break;
           }
