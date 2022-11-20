@@ -52,6 +52,7 @@ digital collections.
   * [Using an experimental version](#using-an-experimental-version)
   * [More info](#more-info)
 
+
 ## Quality dimensions
 
 The framework measures the following features:
@@ -83,8 +84,22 @@ above these there are some helper calculators:
 
 ## Running as command-line application
 
-Go to the project https://github.com/viaacode/metadata-quality-assessment to
-run this framework as a CLI.
+usage:
+
+```
+./mqa -i <file> -s <file> -m <file>
+      [-f <format>] [-h <arg>] [-o <file>] [-r <path>] [-v <format>] [-w <format>] [-z]
+```
+* `-i,--input <file>` Input file.
+* `-s,--schema <file>` Schema file describing the metadata structure to run assessment against.
+* `-v,--schemaFormat <format>` Format of schema file: json, yaml. Default: based on file extension, else json.
+* `-m,--measurements <file>` Configuration file for measurements.
+* `-w,--measurementsFormat <format>` Format of measurements config file: json, yaml. Default: based on file extension, else json.
+* `-o,--output <file>` Output file.
+* `-f,--outputFormat <format>` Format of the output: json, ndjson (new line delimited JSON), csv, csvjson (json encoded in csv; useful for RDB bulk loading). Default: ndjson.
+* `-r,--recordAddress <path>` An XPath or JSONPath expression to separate individual records in an XML or JSON files.
+* `-z,--gzip` Flag to indicate that input is gzipped.
+* `-h,--headers <arg>` Headers to copy from source
 
 ## Using the library
 

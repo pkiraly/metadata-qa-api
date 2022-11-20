@@ -156,7 +156,7 @@ public class App {
 
     Option inputOption = Option.builder("i")
       .numberOfArgs(1)
-      .argName("input file")
+      .argName("file")
       .required(true)
       .longOpt(INPUT_FILE)
       .desc("Input file.")
@@ -164,7 +164,7 @@ public class App {
 
     Option outputOption = Option.builder("o")
       .numberOfArgs(1)
-      .argName("output file")
+      .argName("file")
       .required(false)
       .longOpt(OUTPUT_FILE)
       .desc("Output file.")
@@ -172,7 +172,7 @@ public class App {
 
     Option outputFormatOption = Option.builder("f")
       .numberOfArgs(1)
-      .argName("output format")
+      .argName("format")
       .required(false)
       .longOpt(OUTPUT_FORMAT)
       .desc("Format of the output: json, ndjson (new line delimited JSON), csv, csvjson (json encoded in csv; useful for RDB bulk loading). Default: ndjson.")
@@ -180,7 +180,7 @@ public class App {
 
     Option schemaConfigOption = Option.builder("s")
       .numberOfArgs(1)
-      .argName("schema configuration")
+      .argName("file")
       .required(true)
       .longOpt(SCHEMA_CONFIG)
       .desc("Schema file to run assessment against.")
@@ -188,7 +188,7 @@ public class App {
 
     Option schemaFormatOption = Option.builder("v")
       .numberOfArgs(1)
-      .argName("schema format")
+      .argName("format")
       .required(false)
       .longOpt(SCHEMA_FORMAT)
       .desc("Format of schema file: json, yaml. Default: based on file extension, else json.")
@@ -196,7 +196,7 @@ public class App {
 
     Option measurementsConfigOption = Option.builder("m")
       .numberOfArgs(1)
-      .argName("measurement configuration")
+      .argName("file")
       .required(true)
       .longOpt(MEASUREMENTS_CONFIG)
       .desc("Configuration file for measurements.")
@@ -204,7 +204,7 @@ public class App {
 
     Option measurementsFormatOption = Option.builder("w")
       .numberOfArgs(1)
-      .argName("measurement format")
+      .argName("format")
       .required(false)
       .longOpt(MEASUREMENTS_FORMAT)
       .desc("Format of measurements config file: json, yaml. Default: based on file extension, else json.")
@@ -226,7 +226,7 @@ public class App {
 
     Option recordAddressOption = Option.builder("r")
       .numberOfArgs(1)
-      .argName("record address")
+      .argName("path")
       .required(false)
       .longOpt(RECORD_ADDRESS)
       .desc("An XPath or JSONPath expression to separate individual records in an XML or JSON files.")
