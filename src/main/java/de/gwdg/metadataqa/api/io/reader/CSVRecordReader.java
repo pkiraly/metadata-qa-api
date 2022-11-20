@@ -25,7 +25,7 @@ public class CSVRecordReader extends RecordReader {
     this.csvIterator = csvReader.iterator();
 
     // read header
-    final List<String> header = Arrays.asList(csvReader.readNext());
+    final List<String> header = Arrays.asList(csvIterator.next());
 
     // right now it is a CSV source, so we set how to parse it
     this.calculator.setCsvReader(
