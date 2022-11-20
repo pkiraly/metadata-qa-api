@@ -10,18 +10,20 @@ import de.gwdg.metadataqa.api.schema.Schema;
 public class ReaderTestBase {
 
   protected CalculatorFacade getCalculator(Format format) {
-    Schema schema = new BaseSchema()
-      .setFormat(format)
-      .addField(new JsonBranch("url").setExtractable())
-      .addField(new JsonBranch("name").setExtractable());
-
     MeasurementConfiguration config = new MeasurementConfiguration()
       .enableFieldExtractor()
       .disableCompletenessMeasurement();
 
-    CalculatorFacade facade = new CalculatorFacade(config).setSchema(schema);
+    CalculatorFacade facade = new CalculatorFacade(config).setSchema(getSchema(format));
 
     return facade;
   }
 
+  protected Schema getSchema(Format format) {
+    Schema schema = new BaseSchema()
+      .setFormat(format)
+      .addField(new JsonBranch("url").setExtractable())
+      .addField(new JsonBranch("name").setExtractable());
+    return schema;
+  }
 }
