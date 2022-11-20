@@ -32,7 +32,6 @@ public class Indexer extends QaSolrClient implements Calculator, Shutdownable, S
 
   @Override
   public List<MetricResult> measure(PathCache cache) {
-    schema.getRecordId();
     try {
       String recordId = extractValue(cache, schema.getRecordId().getJsonPath()).get(0);
 

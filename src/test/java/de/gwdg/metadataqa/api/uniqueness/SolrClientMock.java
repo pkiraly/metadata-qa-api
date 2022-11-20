@@ -8,6 +8,10 @@ import java.util.Map;
 
 public class SolrClientMock implements SolrClient {
 
+  private String id;
+  private Map<String, List<String>> objectMap;
+  private boolean commited = false;
+
   public SolrClientMock(SolrConfiguration configuration) {
   }
 
@@ -35,16 +39,29 @@ public class SolrClientMock implements SolrClient {
 
   @Override
   public void indexMap(String id, Map<String, List<String>> objectMap) throws IOException, SolrServerException {
-
+    this.id = id;
+    this.objectMap = objectMap;
   }
 
   @Override
   public void commit() {
-
+    commited = true;
   }
 
   @Override
   public void deleteAll() {
 
+  }
+
+  public String getId() {
+    return id;
+  }
+
+  public Map<String, List<String>> getObjectMap() {
+    return objectMap;
+  }
+
+  public boolean isCommited() {
+    return commited;
   }
 }
