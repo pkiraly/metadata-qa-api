@@ -30,6 +30,13 @@ public class RecordFactoryTest {
   }
 
   @Test
+  public void getRecordReader_csv_unknown() throws IOException, CsvValidationException {
+    RecordReader reader = RecordFactory.getRecordReader(BASE_DIR + "/csv/meemoo-simple.csvx", getCalculator(Format.CSV), false);
+    assertNotNull(reader);
+    assertEquals("CSVRecordReader", reader.getClass().getSimpleName());
+  }
+
+  @Test
   public void getRecordReader_csv_gz() throws IOException, CsvValidationException {
     RecordReader reader = RecordFactory.getRecordReader(BASE_DIR + "/csv/meemoo-simple.csv.gz", getCalculator(Format.CSV), true);
     assertNotNull(reader);
@@ -63,6 +70,20 @@ public class RecordFactoryTest {
   @Test
   public void getResultWriter_csv_file() throws IOException {
     ResultWriter writer = RecordFactory.getResultWriter("csv", OUTPUT_DIR + "/output.csv");
+    assertNotNull(writer);
+    assertEquals("CSVResultWriter", writer.getClass().getSimpleName());
+  }
+
+  @Test
+  public void getResultWriter_csv_unknownformat_file() throws IOException {
+    ResultWriter writer = RecordFactory.getResultWriter("csvx", OUTPUT_DIR + "/output.csv");
+    assertNotNull(writer);
+    assertEquals("CSVResultWriter", writer.getClass().getSimpleName());
+  }
+
+  @Test
+  public void getResultWriter_csv_unknownformat_stdout() throws IOException {
+    ResultWriter writer = RecordFactory.getResultWriter("csvx");
     assertNotNull(writer);
     assertEquals("CSVResultWriter", writer.getClass().getSimpleName());
   }
