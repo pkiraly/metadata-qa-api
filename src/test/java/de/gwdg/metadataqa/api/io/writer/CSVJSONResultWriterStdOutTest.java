@@ -20,7 +20,7 @@ import java.util.Map;
 
 import static org.junit.Assert.assertEquals;
 
-public class JSONResultWriterTest extends IOTestBase {
+public class CSVJSONResultWriterStdOutTest extends IOTestBase {
 
   String inputFile = "src/test/resources/csv/meemoo-simple.csv";
   RecordReader reader;
@@ -34,7 +34,7 @@ public class JSONResultWriterTest extends IOTestBase {
 
     BufferedReader inputReader = Files.newBufferedReader(Paths.get(inputFile));
     reader = new CSVRecordReader(inputReader, getCalculator(Format.CSV));
-    writer = new JSONResultWriter();
+    writer = new CSVJSONResultWriter();
   }
 
   @After
@@ -48,7 +48,9 @@ public class JSONResultWriterTest extends IOTestBase {
     writer.writeResult(result);
     writer.close();
 
-    assertEquals("{\"fieldExtractor\":{\"fieldExtractor\":{\"url\":\"https://neurovault.org/images/384958/\",\"name\":\"massivea uditory lexical decision\"}}}", outputStreamCaptor.toString().trim());
+    assertEquals(
+      "\"{\"\"fieldExtractor\"\":{\"\"fieldExtractor\"\":{\"\"url\"\":\"\"https://neurovault.org/images/384958/\"\",\"\"name\"\":\"\"massivea uditory lexical decision\"\"}}}\"",
+      outputStreamCaptor.toString().trim());
   }
 
   @Test
@@ -57,6 +59,6 @@ public class JSONResultWriterTest extends IOTestBase {
     writer.writeHeader(header);
     writer.close();
 
-    assertEquals("", outputStreamCaptor.toString().trim());
+    assertEquals("\"json_data\"", outputStreamCaptor.toString().trim());
   }
 }

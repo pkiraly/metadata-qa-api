@@ -13,6 +13,7 @@ import java.io.BufferedReader;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.PrintStream;
+import java.net.URISyntaxException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.List;
@@ -20,11 +21,12 @@ import java.util.Map;
 
 import static org.junit.Assert.assertEquals;
 
-public class CSVJSONResultWriterTest extends IOTestBase {
+public class CSVResultWriterStdOutTest extends IOTestBase {
 
   String inputFile = "src/test/resources/csv/meemoo-simple.csv";
   RecordReader reader;
   ResultWriter writer;
+
   PrintStream standardOut = System.out;
   ByteArrayOutputStream outputStreamCaptor = new ByteArrayOutputStream();
 
@@ -34,7 +36,7 @@ public class CSVJSONResultWriterTest extends IOTestBase {
 
     BufferedReader inputReader = Files.newBufferedReader(Paths.get(inputFile));
     reader = new CSVRecordReader(inputReader, getCalculator(Format.CSV));
-    writer = new CSVJSONResultWriter();
+    writer = new CSVResultWriter();
   }
 
   @After
@@ -43,14 +45,12 @@ public class CSVJSONResultWriterTest extends IOTestBase {
   }
 
   @Test
-  public void writeResult() throws IOException {
+  public void writeResult() throws IOException, URISyntaxException {
     Map<String, List<MetricResult>> result = reader.next();
     writer.writeResult(result);
     writer.close();
 
-    assertEquals(
-      "\"{\"\"fieldExtractor\"\":{\"\"fieldExtractor\"\":{\"\"url\"\":\"\"https://neurovault.org/images/384958/\"\",\"\"name\"\":\"\"massivea uditory lexical decision\"\"}}}\"",
-      outputStreamCaptor.toString().trim());
+    assertEquals("\"https://neurovault.org/images/384958/\",\"massivea uditory lexical decision\"", outputStreamCaptor.toString().trim());
   }
 
   @Test
@@ -59,6 +59,6 @@ public class CSVJSONResultWriterTest extends IOTestBase {
     writer.writeHeader(header);
     writer.close();
 
-    assertEquals("\"json_data\"", outputStreamCaptor.toString().trim());
+    assertEquals("\"url\",\"name\"", outputStreamCaptor.toString().trim());
   }
 }
