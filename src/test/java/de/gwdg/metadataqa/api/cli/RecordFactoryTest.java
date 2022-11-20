@@ -12,6 +12,7 @@ import de.gwdg.metadataqa.api.schema.Format;
 import de.gwdg.metadataqa.api.schema.Schema;
 import org.junit.Test;
 
+import java.io.File;
 import java.io.IOException;
 import java.util.List;
 import java.util.Map;
@@ -72,6 +73,7 @@ public class RecordFactoryTest {
     ResultWriter writer = RecordFactory.getResultWriter("csv", OUTPUT_DIR + "/output.csv");
     assertNotNull(writer);
     assertEquals("CSVResultWriter", writer.getClass().getSimpleName());
+    new File(OUTPUT_DIR + "/output.csv").delete();
   }
 
   @Test
@@ -79,6 +81,7 @@ public class RecordFactoryTest {
     ResultWriter writer = RecordFactory.getResultWriter("csvx", OUTPUT_DIR + "/output.csv");
     assertNotNull(writer);
     assertEquals("CSVResultWriter", writer.getClass().getSimpleName());
+    new File(OUTPUT_DIR + "/output.csv").delete();
   }
 
   @Test
@@ -100,6 +103,7 @@ public class RecordFactoryTest {
     ResultWriter writer = RecordFactory.getResultWriter("ndjson", OUTPUT_DIR + "/output.json");
     assertNotNull(writer);
     assertEquals("JSONResultWriter", writer.getClass().getSimpleName());
+    new File(OUTPUT_DIR + "/output.json").delete();
   }
 
   @Test
@@ -114,6 +118,7 @@ public class RecordFactoryTest {
     ResultWriter writer = RecordFactory.getResultWriter("csvjson", OUTPUT_DIR + "/output.csvjson");
     assertNotNull(writer);
     assertEquals("CSVJSONResultWriter", writer.getClass().getSimpleName());
+    new File(OUTPUT_DIR + "/output.csvjson").delete();
   }
 
   private CalculatorFacade getCalculator(Format format) {
