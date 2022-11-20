@@ -21,6 +21,7 @@ import org.apache.commons.io.FilenameUtils;
 import org.apache.commons.lang3.StringUtils;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.logging.Logger;
@@ -132,10 +133,16 @@ public class App {
       CommandLine cmd = parser.parse(options, args);
       new App(cmd).run();
     } catch (MissingOptionException ex) {
-      formatter.printHelp(appName, appHeader, options, "Missing options: " + ex.getMissingOptions().toString(), true);
+      List<String> missingOptions = new ArrayList<>();
+      for (String option : (List<String>) ex.getMissingOptions()) {
+        missingOptions.add(String.format("--%s (-%s)", options.getOption(option).getLongOpt(), option));
+      }
+      formatter.printHelp(appName, appHeader, options, "ERROR\nMissing options: \n  " + StringUtils.join(missingOptions, "\n  "), true);
       System.exit(1);
     } catch (MissingArgumentException ex) {
-      formatter.printHelp(appName, appHeader, options, "Missing arguments: " + ex.getOption().getArgName(), true);
+      Option missingOption = ex.getOption();
+      String err = String.format("%s for option --%s (-%s)", missingOption.getArgName(), missingOption.getLongOpt(), missingOption.getOpt());
+      formatter.printHelp(appName, appHeader, options, "ERROR\nMissing arguments: " + err, true);
       System.exit(1);
     } catch (Exception ex) {
       formatter.printHelp(appName, appHeader, options, "Error: " + ex.getMessage(), true);
@@ -149,6 +156,7 @@ public class App {
 
     Option inputOption = Option.builder("i")
       .numberOfArgs(1)
+      .argName("input file")
       .required(true)
       .longOpt(INPUT_FILE)
       .desc("Input file.")
@@ -156,6 +164,7 @@ public class App {
 
     Option outputOption = Option.builder("o")
       .numberOfArgs(1)
+      .argName("output file")
       .required(false)
       .longOpt(OUTPUT_FILE)
       .desc("Output file.")
@@ -163,6 +172,7 @@ public class App {
 
     Option outputFormatOption = Option.builder("f")
       .numberOfArgs(1)
+      .argName("output format")
       .required(false)
       .longOpt(OUTPUT_FORMAT)
       .desc("Format of the output: json, ndjson (new line delimited JSON), csv, csvjson (json encoded in csv; useful for RDB bulk loading). Default: ndjson.")
@@ -170,6 +180,7 @@ public class App {
 
     Option schemaConfigOption = Option.builder("s")
       .numberOfArgs(1)
+      .argName("schema configuration")
       .required(true)
       .longOpt(SCHEMA_CONFIG)
       .desc("Schema file to run assessment against.")
@@ -177,6 +188,7 @@ public class App {
 
     Option schemaFormatOption = Option.builder("v")
       .numberOfArgs(1)
+      .argName("schema format")
       .required(false)
       .longOpt(SCHEMA_FORMAT)
       .desc("Format of schema file: json, yaml. Default: based on file extension, else json.")
@@ -184,13 +196,15 @@ public class App {
 
     Option measurementsConfigOption = Option.builder("m")
       .numberOfArgs(1)
+      .argName("measurement configuration")
       .required(true)
       .longOpt(MEASUREMENTS_CONFIG)
-      .desc("Config file for measurements.")
+      .desc("Configuration file for measurements.")
       .build();
 
     Option measurementsFormatOption = Option.builder("w")
       .numberOfArgs(1)
+      .argName("measurement format")
       .required(false)
       .longOpt(MEASUREMENTS_FORMAT)
       .desc("Format of measurements config file: json, yaml. Default: based on file extension, else json.")
@@ -212,6 +226,7 @@ public class App {
 
     Option recordAddressOption = Option.builder("r")
       .numberOfArgs(1)
+      .argName("record address")
       .required(false)
       .longOpt(RECORD_ADDRESS)
       .desc("An XPath or JSONPath expression to separate individual records in an XML or JSON files.")

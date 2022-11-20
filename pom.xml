@@ -170,6 +170,12 @@
       <artifactId>jackson-databind</artifactId>
       <version>2.13.4.2</version>
     </dependency>
+    <dependency>
+      <groupId>com.github.stefanbirkner</groupId>
+      <artifactId>system-lambda</artifactId>
+      <version>1.2.1</version>
+      <scope>test</scope>
+    </dependency>
   </dependencies>
 
   <build>

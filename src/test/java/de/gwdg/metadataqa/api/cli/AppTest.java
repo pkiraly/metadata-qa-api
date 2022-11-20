@@ -1,5 +1,6 @@
 package de.gwdg.metadataqa.api.cli;
 
+import com.github.stefanbirkner.systemlambda.SystemLambda;
 import de.gwdg.metadataqa.api.util.FileUtils;
 import org.junit.Before;
 import org.junit.Test;
@@ -8,7 +9,9 @@ import java.io.File;
 import java.io.IOException;
 import java.util.List;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
 
 public class AppTest {
 
@@ -63,5 +66,33 @@ public class AppTest {
     assertEquals("\"url\",\"name\"", output.get(0).trim());
     assertEquals("\"https://neurovault.org/images/384958/\",\"massivea uditory lexical decision\"", output.get(1).trim());
     assertEquals("\"https://neurovault.org/images/93390/\",\"Language in the aging brain\"", output.get(2).trim());
+  }
+
+  @Test
+  public void missingOptions() throws Exception {
+    int status = SystemLambda.catchSystemExit(() -> {
+        App.main(new String[]{
+          "--input", BASE_DIR + "csv/meemoo-simple.csv",
+          "--schema", BASE_DIR + "configuration/schema/simple-meemoo.yaml"
+        });
+      });
+    assertEquals(1, status);
+
+    assertFalse(outputFile.exists());
+  }
+
+  @Test
+  public void missingArguments() throws Exception {
+    int status = SystemLambda.catchSystemExit(() -> {
+      App.main(new String[]{
+        "--input", BASE_DIR + "csv/meemoo-simple.csv",
+        "--schema", BASE_DIR + "configuration/schema/simple-meemoo.yaml",
+        "--measurements", BASE_DIR + "configuration/measurement/simple-meemoo.yaml",
+        "--outputFormat"
+      });
+    });
+    assertEquals(1, status);
+
+    assertFalse(outputFile.exists());
   }
 }
