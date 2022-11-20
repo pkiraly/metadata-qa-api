@@ -14,15 +14,15 @@ import java.util.Map;
 
 import static org.junit.Assert.*;
 
-public class CSVRecordReaderTest extends ReaderTestBase {
+public class JSONRecordReaderTest extends ReaderTestBase {
 
-  String inputFile = "src/test/resources/csv/meemoo-simple.csv";
+  String inputFile = "src/test/resources/json/meemoo-simple.ndjson";
   RecordReader reader;
 
   @Before
   public void setUp() throws Exception {
     BufferedReader inputReader = Files.newBufferedReader(Paths.get(inputFile));
-    reader = new CSVRecordReader(inputReader, getCalculator(Format.CSV));
+    reader = new JSONRecordReader(inputReader, getCalculator(Format.JSON));
   }
 
   @Test
@@ -41,5 +41,4 @@ public class CSVRecordReaderTest extends ReaderTestBase {
     assertEquals("https://neurovault.org/images/384958/", fields.get(0).getResultMap().get("url"));
     assertEquals("massivea uditory lexical decision", fields.get(0).getResultMap().get("name"));
   }
-
 }
