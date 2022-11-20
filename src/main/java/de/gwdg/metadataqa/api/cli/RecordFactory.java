@@ -86,5 +86,4 @@ public class RecordFactory {
     }
     return new CSVResultWriter();
   }
-
 }
