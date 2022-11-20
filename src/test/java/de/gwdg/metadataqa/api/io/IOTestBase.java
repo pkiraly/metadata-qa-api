@@ -1,4 +1,4 @@
-package de.gwdg.metadataqa.api.io.reader;
+package de.gwdg.metadataqa.api.io;
 
 import de.gwdg.metadataqa.api.calculator.CalculatorFacade;
 import de.gwdg.metadataqa.api.configuration.MeasurementConfiguration;
@@ -7,23 +7,26 @@ import de.gwdg.metadataqa.api.schema.BaseSchema;
 import de.gwdg.metadataqa.api.schema.Format;
 import de.gwdg.metadataqa.api.schema.Schema;
 
-public class ReaderTestBase {
+public class IOTestBase {
+
+  CalculatorFacade calculator;
 
   protected CalculatorFacade getCalculator(Format format) {
-    MeasurementConfiguration config = new MeasurementConfiguration()
-      .enableFieldExtractor()
-      .disableCompletenessMeasurement();
+    if (calculator == null) {
+      MeasurementConfiguration config = new MeasurementConfiguration()
+        .enableFieldExtractor()
+        .disableCompletenessMeasurement();
 
-    CalculatorFacade facade = new CalculatorFacade(config).setSchema(getSchema(format));
+      calculator = new CalculatorFacade(config).setSchema(getSchema(format));
+    }
 
-    return facade;
+    return calculator;
   }
 
   protected Schema getSchema(Format format) {
-    Schema schema = new BaseSchema()
+    return new BaseSchema()
       .setFormat(format)
       .addField(new JsonBranch("url").setExtractable())
       .addField(new JsonBranch("name").setExtractable());
-    return schema;
   }
 }

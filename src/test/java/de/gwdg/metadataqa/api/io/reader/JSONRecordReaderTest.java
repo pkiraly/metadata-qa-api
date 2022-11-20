@@ -1,6 +1,7 @@
 package de.gwdg.metadataqa.api.io.reader;
 
 import de.gwdg.metadataqa.api.interfaces.MetricResult;
+import de.gwdg.metadataqa.api.io.IOTestBase;
 import de.gwdg.metadataqa.api.schema.Format;
 import org.junit.Before;
 import org.junit.Test;
@@ -14,7 +15,7 @@ import java.util.Map;
 
 import static org.junit.Assert.*;
 
-public class JSONRecordReaderTest extends ReaderTestBase {
+public class JSONRecordReaderTest extends IOTestBase {
 
   String inputFile = "src/test/resources/json/meemoo-simple.ndjson";
   RecordReader reader;

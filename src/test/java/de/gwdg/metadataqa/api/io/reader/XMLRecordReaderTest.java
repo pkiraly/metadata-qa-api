@@ -1,6 +1,7 @@
 package de.gwdg.metadataqa.api.io.reader;
 
 import de.gwdg.metadataqa.api.interfaces.MetricResult;
+import de.gwdg.metadataqa.api.io.IOTestBase;
 import de.gwdg.metadataqa.api.json.JsonBranch;
 import de.gwdg.metadataqa.api.schema.BaseSchema;
 import de.gwdg.metadataqa.api.schema.Format;
@@ -19,7 +20,7 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 
-public class XMLRecordReaderTest extends ReaderTestBase {
+public class XMLRecordReaderTest extends IOTestBase {
 
   String inputFile = "src/test/resources/xml/meemoo-simple.xml";
   RecordReader reader;
