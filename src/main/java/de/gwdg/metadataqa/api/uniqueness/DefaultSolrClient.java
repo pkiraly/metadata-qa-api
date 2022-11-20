@@ -53,6 +53,11 @@ public class DefaultSolrClient implements SolrClient, Serializable {
     return connect(url, solrField, value);
   }
 
+  @Override
+  public String getTfIdfResponse(String params, String recordId) {
+    return connect(getSolrBasePath() + params, "tf-idf", recordId);
+  }
+
   public String buildUrl(String solrField, String value) {
     String url;
     if (value.equals("*")) {

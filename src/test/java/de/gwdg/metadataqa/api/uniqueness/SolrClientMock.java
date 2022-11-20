@@ -41,6 +41,19 @@ public class SolrClientMock implements SolrClient {
     return null;
   }
 
+  public String getTfIdfResponse(String params, String recordId) {
+    return "{\"responseHeader\":{\"status\":0,\"QTime\":74}," +
+      "\"response\":{\"numFound\":1,\"start\":0,\"docs\":[{\"id\":\"2022320/3F61C612ED9C42CCB85E533B4736795E8BDC7E77\"}]}," +
+      "\"termVectors\":{\"warnings\":{\"noPayloads\":[\"dc_title_txt\",\"dc_description_txt\",\"dcterms_alternative_txt\"]}," +
+      "\"URL\":{\"uniqueKey\":\"2022320/3F61C612ED9C42CCB85E533B4736795E8BDC7E77\"," +
+      "\"url\":{" +
+      "\"fleming\":{\"tf\":1,\"positions\":{\"position\":0},\"offsets\":{\"start\":0,\"end\":7},\"df\":1073,\"tf-idf\":9.319664492078285E-4}," +
+      "\"huddersfield\":{\"tf\":1,\"positions\":{\"position\":4},\"offsets\":{\"start\":35,\"end\":47},\"df\":12073,\"tf-idf\":8.282945415389712E-5}," +
+      "\"mair\":{\"tf\":1,\"positions\":{\"position\":1},\"offsets\":{\"start\":8,\"end\":12},\"df\":178,\"tf-idf\":0.0056179775280898875}," +
+      "\"slaithwaite\":{\"tf\":1,\"positions\":{\"position\":3},\"offsets\":{\"start\":22,\"end\":33},\"df\":477,\"tf-idf\":0.0020964360587002098}," +
+      "\"wedding\":{\"tf\":1,\"positions\":{\"position\":2},\"offsets\":{\"start\":13,\"end\":20},\"df\":10226,\"tf-idf\":9.778994719342852E-5}}}}}";
+  }
+
   @Override
   public void indexMap(String id, Map<String, List<String>> objectMap) throws IOException, SolrServerException {
     this.id = id;

@@ -7,6 +7,7 @@ import de.gwdg.metadataqa.api.json.JsonBranch;
 import de.gwdg.metadataqa.api.model.pathcache.PathCache;
 import de.gwdg.metadataqa.api.problemcatalog.FieldCounterBasedResult;
 import de.gwdg.metadataqa.api.schema.Schema;
+import de.gwdg.metadataqa.api.uniqueness.SolrClient;
 import de.gwdg.metadataqa.api.uniqueness.SolrConfiguration;
 import de.gwdg.metadataqa.api.uniqueness.TfIdf;
 import de.gwdg.metadataqa.api.uniqueness.TfIdfExtractor;
@@ -60,6 +61,7 @@ public class TfIdfCalculator implements Calculator, Serializable {
   private Map<String, List<TfIdf>> termsCollection;
   private boolean termCollectionEnabled = false;
   private Schema schema;
+  private SolrClient solrClient;
 
   public TfIdfCalculator() {
   }
@@ -80,7 +82,9 @@ public class TfIdfCalculator implements Calculator, Serializable {
       recordId = recordId.substring(1);
     }
 
-    String solrJsonResponse = getSolrResponse(recordId);
+    String solrJsonResponse = solrClient != null
+      ? solrClient.getTfIdfResponse(String.format(SOLR_SEARCH_PARAMS, recordId).replace("\"", "%22"), recordId)
+      : getSolrResponse(recordId);
     var extractor = new TfIdfExtractor(schema);
     FieldCounter<Double> resultMap = extractor.extract(solrJsonResponse, recordId, termCollectionEnabled);
     termsCollection = extractor.getTermsCollection();
@@ -152,5 +156,9 @@ public class TfIdfCalculator implements Calculator, Serializable {
       );
     }
     return this.solrSearchPath;
+  }
+
+  public void setSolrClient(SolrClient solrClient) {
+    this.solrClient = solrClient;
   }
 }

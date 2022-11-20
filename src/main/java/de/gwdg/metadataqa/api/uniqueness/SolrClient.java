@@ -9,6 +9,7 @@ import java.util.Map;
 
 public interface SolrClient extends Serializable {
   String getSolrSearchResponse(String solrField, String value);
+  String getTfIdfResponse(String params, String recordId);
   void indexMap(String id, Map<String, List<String>> objectMap) throws IOException, SolrServerException;
   void commit();
   void deleteAll();

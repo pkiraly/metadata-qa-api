@@ -62,6 +62,7 @@ public class TfIdfExtractor {
     Object document = JSON_PROVIDER.parse(jsonString);
     var path = String.format("$.termVectors.['%s']", recordId);
     Map value = (LinkedHashMap) JsonPath.read(document, path);
+
     for (JsonBranch jsonBranch : schema.getIndexFields()) {
       if (doCollectTerms) {
         termsCollection.put(jsonBranch.getJsonPath(), new ArrayList<>());
