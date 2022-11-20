@@ -1,0 +1,13 @@
+{
+  "format": "csv",
+  "fields": [
+    {
+      "name": "url",
+      "extractable": true
+    },
+    {
+      "name": "name",
+      "extractable": true
+    }
+  ]
+}
