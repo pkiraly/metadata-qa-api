@@ -9,7 +9,7 @@ import de.gwdg.metadataqa.api.problemcatalog.TitleAndDescriptionAreSame;
 import de.gwdg.metadataqa.api.rule.RuleCatalog;
 import de.gwdg.metadataqa.api.rule.RuleChecker;
 import de.gwdg.metadataqa.api.rule.logical.LogicalChecker;
-import de.gwdg.metadataqa.api.rule.singlefieldchecker.UniqunessChecker;
+import de.gwdg.metadataqa.api.rule.singlefieldchecker.UniquenessChecker;
 import de.gwdg.metadataqa.api.schema.Schema;
 import de.gwdg.metadataqa.api.schema.edm.EdmSchema;
 import de.gwdg.metadataqa.api.uniqueness.DefaultSolrClient;
@@ -109,9 +109,9 @@ public class CalculatorFactory {
 
   private void injectSolr(List<RuleChecker> ruleCheckers) {
     for (RuleChecker ruleChecker : ruleCheckers) {
-      if (ruleChecker instanceof UniqunessChecker) {
+      if (ruleChecker instanceof UniquenessChecker) {
         initializeSolrConfiguration();
-        ((UniqunessChecker)ruleChecker).setSolrClient(configuration.getSolrClient());
+        ((UniquenessChecker)ruleChecker).setSolrClient(configuration.getSolrClient());
       } else if (ruleChecker instanceof LogicalChecker) {
         injectSolr(((LogicalChecker)ruleChecker).getCheckers());
       }

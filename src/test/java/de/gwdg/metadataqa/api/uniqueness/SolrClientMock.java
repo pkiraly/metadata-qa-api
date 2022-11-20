@@ -31,6 +31,10 @@ public class SolrClientMock implements SolrClient {
     } else if (solrField.equals("dc_title_ss")
         && value.equals("Pyrker-Oberwart, Johann Ladislaus")) {
       return "{\"response\":{\"numFound\":3}}";
+    } else if (solrField.equals("url_ss") && value.equals("URL")) {
+      return "{\"response\":{\"numFound\":3}}";
+    } else if (solrField.equals("name_ss") && value.equals("two three")) {
+      return "{\"response\":{\"numFound\":1}}";
     } else {
       System.err.printf("solrField: %s, value: %s\n", solrField, value);
     }

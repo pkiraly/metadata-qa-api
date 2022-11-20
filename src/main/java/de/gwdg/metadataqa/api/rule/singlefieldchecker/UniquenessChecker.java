@@ -10,22 +10,20 @@ import de.gwdg.metadataqa.api.rule.RuleCheckingOutputType;
 import de.gwdg.metadataqa.api.uniqueness.SolrClient;
 import de.gwdg.metadataqa.api.uniqueness.UniquenessExtractor;
 
-import java.util.ArrayList;
 import java.util.List;
-import java.util.logging.Level;
 
-public class UniqunessChecker extends SingleFieldChecker {
+public class UniquenessChecker extends SingleFieldChecker {
 
   private static final long serialVersionUID = -1432138574479246596L;
-  public static final String PREFIX = "uniquness";
+  public static final String PREFIX = "uniqueness";
   protected String solrField;
   private SolrClient solrClient;
 
-  public UniqunessChecker(JsonBranch field) {
+  public UniquenessChecker(JsonBranch field) {
     this(field, field.getLabel());
   }
 
-  public UniqunessChecker(JsonBranch field, String header) {
+  public UniquenessChecker(JsonBranch field, String header) {
     super(field, header + ":" + PREFIX);
     this.solrField = field.getLabel().equals("recordId") ? "id" : field.getIndexField() + "_ss";
   }

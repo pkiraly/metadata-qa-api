@@ -23,7 +23,7 @@ import de.gwdg.metadataqa.api.rule.singlefieldchecker.MinWordsChecker;
 import de.gwdg.metadataqa.api.rule.singlefieldchecker.NumericValueChecker;
 import de.gwdg.metadataqa.api.rule.singlefieldchecker.PatternChecker;
 import de.gwdg.metadataqa.api.rule.RuleChecker;
-import de.gwdg.metadataqa.api.rule.singlefieldchecker.UniqunessChecker;
+import de.gwdg.metadataqa.api.rule.singlefieldchecker.UniquenessChecker;
 import org.apache.commons.lang3.StringUtils;
 
 import java.util.ArrayList;
@@ -123,7 +123,7 @@ public class SchemaUtils {
       ruleCheckers.add(new DependencyChecker(branch, rule.getDependencies()));
 
     if (rule.getUnique() != null && rule.getUnique().equals(Boolean.TRUE))
-      ruleCheckers.add(new UniqunessChecker(branch));
+      ruleCheckers.add(new UniquenessChecker(branch));
 
     if (rule.getLessThan() != null)
       pair(schema, ruleCheckers, branch, rule.getLessThan(), "LessThan");
