@@ -27,6 +27,8 @@ public class RecordFactory {
 
   private static Logger logger = Logger.getLogger(RecordFactory.class.getCanonicalName());;
 
+  private RecordFactory() {}
+
   public static RecordReader getRecordReader(String inputFile,
                                              CalculatorFacade calculator,
                                              boolean gzip)

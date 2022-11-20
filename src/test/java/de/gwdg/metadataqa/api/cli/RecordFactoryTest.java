@@ -85,6 +85,14 @@ public class RecordFactoryTest {
   }
 
   @Test
+  public void getResultWriter_csv_nullformat_file() throws IOException {
+    ResultWriter writer = RecordFactory.getResultWriter(null, OUTPUT_DIR + "/output.csv");
+    assertNotNull(writer);
+    assertEquals("CSVResultWriter", writer.getClass().getSimpleName());
+    new File(OUTPUT_DIR + "/output.csv").delete();
+  }
+
+  @Test
   public void getResultWriter_csv_unknownformat_stdout() throws IOException {
     ResultWriter writer = RecordFactory.getResultWriter("csvx");
     assertNotNull(writer);
