@@ -3,7 +3,7 @@ package de.gwdg.metadataqa.api.calculator;
 import de.gwdg.metadataqa.api.counter.FieldCounter;
 import de.gwdg.metadataqa.api.interfaces.Calculator;
 import de.gwdg.metadataqa.api.interfaces.MetricResult;
-import de.gwdg.metadataqa.api.json.JsonBranch;
+import de.gwdg.metadataqa.api.json.DataElement;
 import de.gwdg.metadataqa.api.model.pathcache.PathCache;
 import de.gwdg.metadataqa.api.problemcatalog.FieldCounterBasedResult;
 import de.gwdg.metadataqa.api.schema.Schema;
@@ -134,9 +134,9 @@ public class TfIdfCalculator implements Calculator, Serializable {
   @Override
   public List<String> getHeader() {
     List<String> headers = new ArrayList<>();
-    for (JsonBranch jsonBranch : schema.getIndexFields()) {
-      headers.add(jsonBranch.getLabel() + ":sum");
-      headers.add(jsonBranch.getLabel() + ":avg");
+    for (DataElement dataElement : schema.getIndexFields()) {
+      headers.add(dataElement.getLabel() + ":sum");
+      headers.add(dataElement.getLabel() + ":avg");
     }
     return headers;
   }

@@ -75,7 +75,7 @@ public class App {
     if (cmd.hasOption(HEADERS_CONFIG)) {
       String[] headers = cmd.getOptionValues(HEADERS_CONFIG);
       for (String h : headers) {
-        this.schema.addExtractableField(h, this.schema.getPathByLabel(h).getJsonPath());
+        this.schema.addExtractableField(h, this.schema.getPathByLabel(h).getPath());
       }
     }
 

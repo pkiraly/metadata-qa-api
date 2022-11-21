@@ -42,7 +42,7 @@ public class UniquenessFieldCalculator {
   }
 
   public void calculate() {
-    List<XmlFieldInstance> values = cache.get(uniquenessField.getJsonPath());
+    List<XmlFieldInstance> values = cache.get(uniquenessField.getPath());
     if (values != null) {
       for (XmlFieldInstance fieldInstance : values) {
         String value = fieldInstance.getValue();

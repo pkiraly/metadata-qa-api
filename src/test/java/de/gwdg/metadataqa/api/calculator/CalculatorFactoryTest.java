@@ -2,7 +2,7 @@ package de.gwdg.metadataqa.api.calculator;
 
 import de.gwdg.metadataqa.api.configuration.MeasurementConfiguration;
 import de.gwdg.metadataqa.api.interfaces.Calculator;
-import de.gwdg.metadataqa.api.json.JsonBranch;
+import de.gwdg.metadataqa.api.json.DataElement;
 import de.gwdg.metadataqa.api.schema.BaseSchema;
 import de.gwdg.metadataqa.api.schema.Format;
 import de.gwdg.metadataqa.api.schema.Schema;
@@ -18,8 +18,8 @@ public class CalculatorFactoryTest {
   public void createWithExtractable() {
     Schema schema = new BaseSchema()
       .setFormat(Format.CSV)
-      .addField(new JsonBranch("url"))
-      .addField(new JsonBranch("name").setExtractable());
+      .addField(new DataElement("url"))
+      .addField(new DataElement("name").setExtractable());
 
     MeasurementConfiguration config = new MeasurementConfiguration()
       .enableFieldExtractor()
@@ -35,8 +35,8 @@ public class CalculatorFactoryTest {
   public void createWithoutExtractable() {
     Schema schema = new BaseSchema()
       .setFormat(Format.CSV)
-      .addField(new JsonBranch("url"))
-      .addField(new JsonBranch("name"));
+      .addField(new DataElement("url"))
+      .addField(new DataElement("name"));
 
     MeasurementConfiguration config = new MeasurementConfiguration()
       .enableFieldExtractor()

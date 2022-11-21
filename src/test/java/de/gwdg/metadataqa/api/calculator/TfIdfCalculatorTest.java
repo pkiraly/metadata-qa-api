@@ -1,7 +1,7 @@
 package de.gwdg.metadataqa.api.calculator;
 
 import de.gwdg.metadataqa.api.interfaces.MetricResult;
-import de.gwdg.metadataqa.api.json.JsonBranch;
+import de.gwdg.metadataqa.api.json.DataElement;
 import de.gwdg.metadataqa.api.model.PathCacheFactory;
 import de.gwdg.metadataqa.api.model.XmlFieldInstance;
 import de.gwdg.metadataqa.api.model.pathcache.CsvPathCache;
@@ -86,7 +86,7 @@ public class TfIdfCalculatorTest {
     SolrClient solrClient = new SolrClientMock(solrConfiguration);
     CsvPathCache cache = (CsvPathCache) PathCacheFactory.getInstance(schema.getFormat(), "URL,two three");
     cache.setCsvReader(new CsvReader().setHeader( ((CsvAwareSchema) schema).getHeader() ));
-    cache.setRecordId(((List<XmlFieldInstance>)cache.get(schema.getRecordId().getJsonPath())).get(0).getValue());
+    cache.setRecordId(((List<XmlFieldInstance>)cache.get(schema.getRecordId().getPath())).get(0).getValue());
 
     TfIdfCalculator calculator = new TfIdfCalculator(schema);
     calculator.setSolrClient(solrClient);
@@ -102,8 +102,8 @@ public class TfIdfCalculatorTest {
   private Schema getSchema(Format format) {
     BaseSchema schema = new BaseSchema()
       .setFormat(format)
-      .addField(new JsonBranch("url").setExtractable().setIndexField("url"))
-      .addField(new JsonBranch("name").setExtractable().setIndexField("name"));
+      .addField(new DataElement("url").setExtractable().setIndexField("url"))
+      .addField(new DataElement("name").setExtractable().setIndexField("name"));
     schema.setRecordId(schema.getPathByLabel("url"));
     return schema;
   }

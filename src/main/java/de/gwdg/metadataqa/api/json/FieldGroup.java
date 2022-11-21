@@ -20,7 +20,7 @@ import java.util.List;
 public class FieldGroup {
 
   /**
-   * The list of fields as in the label of JsonBranch objects.
+   * The list of fields as in the label of DataElement objects.
    */
   private List<String> fields;
 
@@ -35,9 +35,9 @@ public class FieldGroup {
    * @param sCategory
    *   A sub-dimension of completeness
    * @param sFields
-   *   The field names as in the label of JsonBranch objects
+   *   The field names as in the label of DataElement objects
    *
-   * @see JsonBranch
+   * @see DataElement
    */
   public FieldGroup(String sCategory, List<String> sFields) {
     this.category = sCategory;

@@ -1,7 +1,7 @@
 package de.gwdg.metadataqa.api.rule.singlefieldchecker;
 
 import de.gwdg.metadataqa.api.counter.FieldCounter;
-import de.gwdg.metadataqa.api.json.JsonBranch;
+import de.gwdg.metadataqa.api.json.DataElement;
 import de.gwdg.metadataqa.api.model.XmlFieldInstance;
 import de.gwdg.metadataqa.api.model.pathcache.PathCache;
 import de.gwdg.metadataqa.api.rule.RuleCheckerOutput;
@@ -16,11 +16,11 @@ public class EnumerationChecker extends SingleFieldChecker {
   public static final String PREFIX = "in";
   protected List<String> fixedValues;
 
-  public EnumerationChecker(JsonBranch field, List<String> fixedValues) {
+  public EnumerationChecker(DataElement field, List<String> fixedValues) {
     this(field, field.getLabel(), fixedValues);
   }
 
-  public EnumerationChecker(JsonBranch field, String header, List<String> fixedValues) {
+  public EnumerationChecker(DataElement field, String header, List<String> fixedValues) {
     super(field, header + ":" + PREFIX);
     this.fixedValues = fixedValues;
   }
@@ -32,7 +32,7 @@ public class EnumerationChecker extends SingleFieldChecker {
 
     var allPassed = true;
     var isNA = true;
-    List<XmlFieldInstance> instances = cache.get(field.getJsonPath());
+    List<XmlFieldInstance> instances = cache.get(field.getPath());
     if (instances != null && !instances.isEmpty()) {
       for (XmlFieldInstance instance : instances) {
         if (instance.hasValue()) {

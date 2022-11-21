@@ -7,7 +7,7 @@ import com.opencsv.exceptions.CsvValidationException;
 import de.gwdg.metadataqa.api.calculator.CalculatorFacade;
 import de.gwdg.metadataqa.api.configuration.*;
 import de.gwdg.metadataqa.api.configuration.schema.Rule;
-import de.gwdg.metadataqa.api.json.JsonBranch;
+import de.gwdg.metadataqa.api.json.DataElement;
 import de.gwdg.metadataqa.api.model.Category;
 import de.gwdg.metadataqa.api.rule.singlefieldchecker.HasValueChecker;
 import de.gwdg.metadataqa.api.rule.RuleCatalog;
@@ -29,23 +29,23 @@ public class BaseSchemaTest {
   public void testConstructor() throws Exception {
     Schema schema = new BaseSchema()
       .setFormat(Format.CSV)
-      .addField(new JsonBranch("url").setCategories(Category.MANDATORY).setExtractable())
-      .addField(new JsonBranch("name"))
-      .addField(new JsonBranch("alternateName"))
-      .addField(new JsonBranch("description"))
-      .addField(new JsonBranch("variablesMeasured"))
-      .addField(new JsonBranch("measurementTechnique"))
-      .addField(new JsonBranch("sameAs"))
-      .addField(new JsonBranch("doi"))
-      .addField(new JsonBranch("identifier"))
-      .addField(new JsonBranch("author"))
-      .addField(new JsonBranch("isAccessibleForFree"))
-      .addField(new JsonBranch("dateModified"))
-      .addField(new JsonBranch("distribution"))
-      .addField(new JsonBranch("spatialCoverage"))
-      .addField(new JsonBranch("provider"))
-      .addField(new JsonBranch("funder"))
-      .addField(new JsonBranch("temporalCoverage"));
+      .addField(new DataElement("url").setCategories(Category.MANDATORY).setExtractable())
+      .addField(new DataElement("name"))
+      .addField(new DataElement("alternateName"))
+      .addField(new DataElement("description"))
+      .addField(new DataElement("variablesMeasured"))
+      .addField(new DataElement("measurementTechnique"))
+      .addField(new DataElement("sameAs"))
+      .addField(new DataElement("doi"))
+      .addField(new DataElement("identifier"))
+      .addField(new DataElement("author"))
+      .addField(new DataElement("isAccessibleForFree"))
+      .addField(new DataElement("dateModified"))
+      .addField(new DataElement("distribution"))
+      .addField(new DataElement("spatialCoverage"))
+      .addField(new DataElement("provider"))
+      .addField(new DataElement("funder"))
+      .addField(new DataElement("temporalCoverage"));
 
     assertEquals(
       Arrays.asList("url", "name", "alternateName", "description", "variablesMeasured",
@@ -68,23 +68,23 @@ public class BaseSchemaTest {
   public void testCalculation() throws Exception {
     Schema schema = new BaseSchema()
       .setFormat(Format.CSV)
-      .addField(new JsonBranch("url").setCategories(Category.MANDATORY).setExtractable())
-      .addField(new JsonBranch("name"))
-      .addField(new JsonBranch("alternateName"))
-      .addField(new JsonBranch("description"))
-      .addField(new JsonBranch("variablesMeasured"))
-      .addField(new JsonBranch("measurementTechnique"))
-      .addField(new JsonBranch("sameAs"))
-      .addField(new JsonBranch("doi"))
-      .addField(new JsonBranch("identifier"))
-      .addField(new JsonBranch("author"))
-      .addField(new JsonBranch("isAccessibleForFree"))
-      .addField(new JsonBranch("dateModified"))
-      .addField(new JsonBranch("distribution"))
-      .addField(new JsonBranch("spatialCoverage"))
-      .addField(new JsonBranch("provider"))
-      .addField(new JsonBranch("funder"))
-      .addField(new JsonBranch("temporalCoverage"));
+      .addField(new DataElement("url").setCategories(Category.MANDATORY).setExtractable())
+      .addField(new DataElement("name"))
+      .addField(new DataElement("alternateName"))
+      .addField(new DataElement("description"))
+      .addField(new DataElement("variablesMeasured"))
+      .addField(new DataElement("measurementTechnique"))
+      .addField(new DataElement("sameAs"))
+      .addField(new DataElement("doi"))
+      .addField(new DataElement("identifier"))
+      .addField(new DataElement("author"))
+      .addField(new DataElement("isAccessibleForFree"))
+      .addField(new DataElement("dateModified"))
+      .addField(new DataElement("distribution"))
+      .addField(new DataElement("spatialCoverage"))
+      .addField(new DataElement("provider"))
+      .addField(new DataElement("funder"))
+      .addField(new DataElement("temporalCoverage"));
 
     MeasurementConfiguration config = new MeasurementConfiguration()
       .enableCompletenessMeasurement()
@@ -147,23 +147,23 @@ public class BaseSchemaTest {
   public void testCalculation_noHeader_nonexistent() throws Exception {
     Schema schema = new BaseSchema()
       .setFormat(Format.CSV)
-      .addField(new JsonBranch("url").setCategories(Category.MANDATORY).setExtractable())
-      .addField(new JsonBranch("name"))
-      .addField(new JsonBranch("alternateName"))
-      .addField(new JsonBranch("description"))
-      .addField(new JsonBranch("variablesMeasured"))
-      .addField(new JsonBranch("measurementTechnique"))
-      .addField(new JsonBranch("sameAs"))
-      .addField(new JsonBranch("doi"))
-      .addField(new JsonBranch("identifier"))
-      .addField(new JsonBranch("author"))
-      .addField(new JsonBranch("isAccessibleForFree"))
-      .addField(new JsonBranch("dateModified"))
-      .addField(new JsonBranch("distribution"))
-      .addField(new JsonBranch("spatialCoverage"))
-      .addField(new JsonBranch("provider"))
-      .addField(new JsonBranch("funder"))
-      .addField(new JsonBranch("temporalCoverageX"));
+      .addField(new DataElement("url").setCategories(Category.MANDATORY).setExtractable())
+      .addField(new DataElement("name"))
+      .addField(new DataElement("alternateName"))
+      .addField(new DataElement("description"))
+      .addField(new DataElement("variablesMeasured"))
+      .addField(new DataElement("measurementTechnique"))
+      .addField(new DataElement("sameAs"))
+      .addField(new DataElement("doi"))
+      .addField(new DataElement("identifier"))
+      .addField(new DataElement("author"))
+      .addField(new DataElement("isAccessibleForFree"))
+      .addField(new DataElement("dateModified"))
+      .addField(new DataElement("distribution"))
+      .addField(new DataElement("spatialCoverage"))
+      .addField(new DataElement("provider"))
+      .addField(new DataElement("funder"))
+      .addField(new DataElement("temporalCoverageX"));
 
     CalculatorFacade facade = new CalculatorFacade(new MeasurementConfiguration()
         .enableCompletenessMeasurement()
@@ -226,23 +226,23 @@ public class BaseSchemaTest {
   public void testCalculation_setFirstRowAsHeader() throws Exception {
     Schema schema = new BaseSchema()
       .setFormat(Format.CSV)
-      .addField(new JsonBranch("url").setCategories(Category.MANDATORY).setExtractable())
-      .addField(new JsonBranch("name"))
-      .addField(new JsonBranch("alternateName"))
-      .addField(new JsonBranch("description"))
-      .addField(new JsonBranch("variablesMeasured"))
-      .addField(new JsonBranch("measurementTechnique"))
-      .addField(new JsonBranch("sameAs"))
-      .addField(new JsonBranch("doi"))
-      .addField(new JsonBranch("identifier"))
-      .addField(new JsonBranch("author"))
-      .addField(new JsonBranch("isAccessibleForFree"))
-      .addField(new JsonBranch("dateModified"))
-      .addField(new JsonBranch("distribution"))
-      .addField(new JsonBranch("spatialCoverage"))
-      .addField(new JsonBranch("provider"))
-      .addField(new JsonBranch("funder"))
-      .addField(new JsonBranch("temporalCoverage"));
+      .addField(new DataElement("url").setCategories(Category.MANDATORY).setExtractable())
+      .addField(new DataElement("name"))
+      .addField(new DataElement("alternateName"))
+      .addField(new DataElement("description"))
+      .addField(new DataElement("variablesMeasured"))
+      .addField(new DataElement("measurementTechnique"))
+      .addField(new DataElement("sameAs"))
+      .addField(new DataElement("doi"))
+      .addField(new DataElement("identifier"))
+      .addField(new DataElement("author"))
+      .addField(new DataElement("isAccessibleForFree"))
+      .addField(new DataElement("dateModified"))
+      .addField(new DataElement("distribution"))
+      .addField(new DataElement("spatialCoverage"))
+      .addField(new DataElement("provider"))
+      .addField(new DataElement("funder"))
+      .addField(new DataElement("temporalCoverage"));
 
     CalculatorFacade facade = new CalculatorFacade(
         new MeasurementConfiguration()
@@ -303,9 +303,9 @@ public class BaseSchemaTest {
   public void testCalculation_limitFields() throws Exception {
     Schema schema = new BaseSchema()
       .setFormat(Format.CSV)
-      .addField(new JsonBranch("url").setCategories(Category.MANDATORY).setExtractable())
-      .addField(new JsonBranch("name"))
-      .addField(new JsonBranch("alternateName"))
+      .addField(new DataElement("url").setCategories(Category.MANDATORY).setExtractable())
+      .addField(new DataElement("name"))
+      .addField(new DataElement("alternateName"))
     ;
 
     CalculatorFacade facade = new CalculatorFacade(new MeasurementConfiguration()
@@ -357,9 +357,9 @@ public class BaseSchemaTest {
   public void testCalculation_nonexistentFields() throws Exception {
     Schema schema = new BaseSchema()
       .setFormat(Format.CSV)
-      .addField(new JsonBranch("url").setCategories(Category.MANDATORY).setExtractable())
-      .addField(new JsonBranch("name"))
-      .addField(new JsonBranch("nonexistent"))
+      .addField(new DataElement("url").setCategories(Category.MANDATORY).setExtractable())
+      .addField(new DataElement("name"))
+      .addField(new DataElement("nonexistent"))
     ;
 
     CalculatorFacade facade = new CalculatorFacade(
@@ -607,7 +607,7 @@ public class BaseSchemaTest {
 
     assertEquals(1, schema.getPaths().size());
     assertEquals("url", schema.getPaths().get(0).getLabel());
-    assertEquals("url", schema.getPaths().get(0).getJsonPath());
+    assertEquals("url", schema.getPaths().get(0).getPath());
   }
 
   @Test
@@ -618,9 +618,9 @@ public class BaseSchemaTest {
 
     assertEquals(2, schema.getPaths().size());
     assertEquals("url", schema.getPaths().get(0).getLabel());
-    assertEquals("url", schema.getPaths().get(0).getJsonPath());
+    assertEquals("url", schema.getPaths().get(0).getPath());
     assertEquals("name", schema.getPaths().get(1).getLabel());
-    assertEquals("name", schema.getPaths().get(1).getJsonPath());
+    assertEquals("name", schema.getPaths().get(1).getPath());
   }
 
   @Test
@@ -656,7 +656,7 @@ public class BaseSchemaTest {
       .setFormat(Format.CSV)
       .addFields("url", "name");
 
-    List<JsonBranch> indexFields = schema.getIndexFields();
+    List<DataElement> indexFields = schema.getIndexFields();
     assertNotNull(indexFields);
     assertTrue(indexFields.isEmpty());
   }
@@ -668,7 +668,7 @@ public class BaseSchemaTest {
       .addFields("url", "name");
     schema.getPathByLabel("url").setIndexField("url");
 
-    List<JsonBranch> indexFields = schema.getIndexFields();
+    List<DataElement> indexFields = schema.getIndexFields();
     assertNotNull(indexFields);
     assertFalse(indexFields.isEmpty());
     assertEquals(1, indexFields.size());
@@ -719,8 +719,8 @@ public class BaseSchemaTest {
 
     Schema schema = new BaseSchema()
       .setFormat(Format.CSV)
-      .addField(new JsonBranch("url", "url").setRule(Arrays.asList(rule)))
-      .addField(new JsonBranch("uri", "uri"))
+      .addField(new DataElement("url", "url").setRule(Arrays.asList(rule)))
+      .addField(new DataElement("uri", "uri"))
     ;
 
     assertEquals(8, schema.getRuleCheckers().size());
@@ -753,8 +753,8 @@ public class BaseSchemaTest {
   @Test
   public void testCollection() {
     Schema schema = new BaseSchema()
-      .addField(new JsonBranch("author", "author").setCollection(true))
-      .addField(new JsonBranch("title", "title").setCollection(false))
+      .addField(new DataElement("author", "author").setCollection(true))
+      .addField(new DataElement("title", "title").setCollection(false))
       ;
     assertNotNull(schema.getCollectionPaths());
     assertEquals(1, schema.getCollectionPaths().size());
@@ -764,10 +764,10 @@ public class BaseSchemaTest {
   @Test
   public void getRuleChecker() {
     Schema schema = new BaseSchema()
-      .addField(new JsonBranch("author", "author").addRule(
+      .addField(new DataElement("author", "author").addRule(
         new Rule().withHasValue("a")
       ))
-      .addField(new JsonBranch("title", "title").setCollection(false))
+      .addField(new DataElement("title", "title").setCollection(false))
       ;
     List<RuleChecker> checkers = schema.getRuleCheckers();
     assertNotNull(checkers);
@@ -783,7 +783,7 @@ public class BaseSchemaTest {
 
     assertNotNull(schema);
     assertNotNull(schema.getPathByLabel("url"));
-    JsonBranch branch = schema.getPathByLabel("url");
+    DataElement branch = schema.getPathByLabel("url");
     assertEquals("url", branch.getLabel());
     assertEquals("url", branch.getIndexField());
     assertNotNull(schema.getIndexFields());

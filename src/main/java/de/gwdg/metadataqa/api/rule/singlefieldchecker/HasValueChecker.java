@@ -1,7 +1,7 @@
 package de.gwdg.metadataqa.api.rule.singlefieldchecker;
 
 import de.gwdg.metadataqa.api.counter.FieldCounter;
-import de.gwdg.metadataqa.api.json.JsonBranch;
+import de.gwdg.metadataqa.api.json.DataElement;
 import de.gwdg.metadataqa.api.model.XmlFieldInstance;
 import de.gwdg.metadataqa.api.model.pathcache.PathCache;
 import de.gwdg.metadataqa.api.rule.RuleCheckerOutput;
@@ -20,11 +20,11 @@ public class HasValueChecker extends SingleFieldChecker {
    * @param field The field
    * @param fixedValue The fixed value  check against
    */
-  public HasValueChecker(JsonBranch field, String fixedValue) {
+  public HasValueChecker(DataElement field, String fixedValue) {
     this(field, field.getLabel(), fixedValue);
   }
 
-  public HasValueChecker(JsonBranch field, String header, String fixedValue) {
+  public HasValueChecker(DataElement field, String header, String fixedValue) {
     super(field, header + ":" + PREFIX);
     this.fixedValue = fixedValue;
   }
@@ -36,7 +36,7 @@ public class HasValueChecker extends SingleFieldChecker {
 
     var allPassed = false;
     var isNA = true;
-    List<XmlFieldInstance> instances = cache.get(field.getJsonPath());
+    List<XmlFieldInstance> instances = cache.get(field.getPath());
     if (instances != null && !instances.isEmpty()) {
       for (XmlFieldInstance instance : instances) {
         if (instance.hasValue()) {

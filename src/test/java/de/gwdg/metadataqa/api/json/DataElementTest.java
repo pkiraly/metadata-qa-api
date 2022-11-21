@@ -10,71 +10,71 @@ import java.util.Arrays;
 
 import static org.junit.Assert.*;
 
-public class JsonBranchTest {
+public class DataElementTest {
 
   @Test
   public void IfCloned_ObjectAreDifferent() {
     Schema schema = new EdmFullBeanSchema();
-    JsonBranch providerProxy = schema.getPathByLabel("Proxy");
+    DataElement providerProxy = schema.getPathByLabel("Proxy");
 
-    JsonBranch europeanaProxy = null;
+    DataElement europeanaProxy = null;
     try {
-      europeanaProxy = JsonBranch.copy(providerProxy);
+      europeanaProxy = DataElement.copy(providerProxy);
     } catch (CloneNotSupportedException e) {
       e.printStackTrace();
     }
 
     assertNotNull(europeanaProxy);
-    europeanaProxy.setJsonPath(
-      providerProxy.getJsonPath().replace("false", "true"));
+    europeanaProxy.setPath(
+      providerProxy.getPath().replace("false", "true"));
 
-    assertEquals("$.['proxies'][?(@['europeanaProxy'] == false)]", providerProxy.getJsonPath());
+    assertEquals("$.['proxies'][?(@['europeanaProxy'] == false)]", providerProxy.getPath());
     assertEquals(56, providerProxy.getChildren().size());
     assertEquals(providerProxy.hashCode(), providerProxy.getChildren().get(0).getParent().hashCode());
     assertEquals("$.['proxies'][?(@['europeanaProxy'] == false)]",
-      providerProxy.getChildren().get(0).getParent().getJsonPath());
+      providerProxy.getChildren().get(0).getParent().getPath());
     assertEquals("$.['proxies'][?(@['europeanaProxy'] == false)][*]['about']",
-      providerProxy.getChildren().get(0).getAbsoluteJsonPath());
+      providerProxy.getChildren().get(0).getAbsolutePath());
 
-    assertEquals("$.['proxies'][?(@['europeanaProxy'] == true)]", europeanaProxy.getJsonPath());
+    assertEquals("$.['proxies'][?(@['europeanaProxy'] == true)]", europeanaProxy.getPath());
     assertEquals(56, europeanaProxy.getChildren().size());
     assertEquals(europeanaProxy.hashCode(), europeanaProxy.getChildren().get(0).getParent().hashCode());
     assertEquals("$.['proxies'][?(@['europeanaProxy'] == true)]",
-      europeanaProxy.getChildren().get(0).getParent().getJsonPath());
+      europeanaProxy.getChildren().get(0).getParent().getPath());
     assertEquals("$.['proxies'][?(@['europeanaProxy'] == true)][*]['about']",
-      europeanaProxy.getChildren().get(0).getAbsoluteJsonPath());
+      europeanaProxy.getChildren().get(0).getAbsolutePath());
   }
 
   @Test
   public void testParent() {
     Schema schema = new EdmOaiPmhXmlSchema();
-    JsonBranch providerProxyXml = schema.getPathByLabel("Proxy");
+    DataElement providerProxyXml = schema.getPathByLabel("Proxy");
     assertEquals("//ore:Proxy[edm:europeanaProxy/text() = 'false']/@rdf:about",
-      providerProxyXml.getChildren().get(0).getAbsoluteJsonPath(schema.getFormat()));
+      providerProxyXml.getChildren().get(0).getAbsolutePath(schema.getFormat()));
 
     schema = new EdmOaiPmhJsonSchema();
-    JsonBranch providerProxyJson = schema.getPathByLabel("Proxy");
+    DataElement providerProxyJson = schema.getPathByLabel("Proxy");
     assertEquals("$.['ore:Proxy'][?(@['edm:europeanaProxy'][0] == 'false')][*]['@about']",
-      providerProxyJson.getChildren().get(0).getAbsoluteJsonPath(schema.getFormat()));
+      providerProxyJson.getChildren().get(0).getAbsolutePath(schema.getFormat()));
 
     schema = new EdmFullBeanSchema();
     providerProxyJson = schema.getPathByLabel("Proxy");
     assertEquals("$.['proxies'][?(@['europeanaProxy'] == false)][*]['about']",
-      providerProxyJson.getChildren().get(0).getAbsoluteJsonPath(schema.getFormat()));
+      providerProxyJson.getChildren().get(0).getAbsolutePath(schema.getFormat()));
   }
 
   @Test
   public void constructWithSolr() {
-    JsonBranch path = new JsonBranch("author", "author", "author");
+    DataElement path = new DataElement("author", "author", "author");
     assertEquals("author", path.getLabel());
-    assertEquals("author", path.getJsonPath());
+    assertEquals("author", path.getPath());
     assertEquals("author", path.getSolrFieldName());
   }
 
   @Test
   public void setLabel() {
-    JsonBranch path1 = new JsonBranch("author", "author", "author");
-    JsonBranch path2 = path1.setLabel("author2");
+    DataElement path1 = new DataElement("author", "author", "author");
+    DataElement path2 = path1.setLabel("author2");
     assertEquals(path1, path2);
     assertTrue(path1.equals(path2));
     assertEquals("author2", path1.getLabel());
@@ -83,8 +83,8 @@ public class JsonBranchTest {
 
   @Test
   public void setSolrFieldName() {
-    JsonBranch path1 = new JsonBranch("author", "author", "author");
-    JsonBranch path2 = path1.setSolrFieldName("author2");
+    DataElement path1 = new DataElement("author", "author", "author");
+    DataElement path2 = path1.setSolrFieldName("author2");
     assertEquals(path1, path2);
     assertTrue(path1.equals(path2));
     assertEquals("author2", path1.getSolrFieldName());
@@ -93,8 +93,8 @@ public class JsonBranchTest {
 
   @Test
   public void setExtractable_notChained() {
-    JsonBranch path1 = new JsonBranch("author", "author", "author");
-    JsonBranch path2 = path1.setExtractable();
+    DataElement path1 = new DataElement("author", "author", "author");
+    DataElement path2 = path1.setExtractable();
     assertEquals(path1, path2);
     assertTrue(path1.equals(path2));
     assertTrue(path1.isExtractable());
@@ -103,17 +103,17 @@ public class JsonBranchTest {
 
   @Test
   public void setExtractable_chained() {
-    JsonBranch path1 = new JsonBranch("author", "author", "author")
+    DataElement path1 = new DataElement("author", "author", "author")
       .setExtractable();
     assertEquals("author", path1.getSolrFieldName());
     assertTrue(path1.isExtractable());
 
-    JsonBranch path2 = new JsonBranch("author", "author", "author")
+    DataElement path2 = new DataElement("author", "author", "author")
       .setExtractable(true);
     assertEquals("author", path2.getSolrFieldName());
     assertTrue(path2.isExtractable());
 
-    JsonBranch path3 = new JsonBranch("author", "author", "author")
+    DataElement path3 = new DataElement("author", "author", "author")
       .setExtractable(false);
     assertEquals("author", path3.getSolrFieldName());
     assertFalse(path3.isExtractable());
@@ -121,47 +121,47 @@ public class JsonBranchTest {
 
   @Test
   public void getAbsolutePath() {
-    JsonBranch path = new JsonBranch("author", "author", "author");
-    assertEquals("author", path.getAbsoluteJsonPath(Format.CSV));
-    assertEquals("author", path.getAbsoluteJsonPath(0));
+    DataElement path = new DataElement("author", "author", "author");
+    assertEquals("author", path.getAbsolutePath(Format.CSV));
+    assertEquals("author", path.getAbsolutePath(0));
   }
 
   @Test
   public void test_toString() {
-    JsonBranch path1 = new JsonBranch("author", "author");
+    DataElement path = new DataElement("author", "author");
     assertEquals(
-      "JsonBranch{label=author, jsonPath=author, categories=[], " +
+      "DataElement{label=author, path=author, categories=[], " +
         "solrFieldName=null, parent=null, identifier=null, nr_of_children=0, collection=false}",
-      path1.toString());
+      path.toString());
   }
 
   @Test
   public void test_toString_withParent() {
-    JsonBranch path1 = new JsonBranch("author", "author")
-      .setParent(new JsonBranch("book", "book"));
+    DataElement path = new DataElement("author", "author")
+      .setParent(new DataElement("book", "book"));
     assertEquals(
-      "JsonBranch{label=author, jsonPath=author, categories=[], " +
+      "DataElement{label=author, path=author, categories=[], " +
         "solrFieldName=null, parent=book, identifier=null, nr_of_children=0, collection=false}",
-      path1.toString());
+      path.toString());
   }
 
   @Test
   public void test_toString_withIdentifier() {
-    JsonBranch path1 = new JsonBranch("author", "author")
-      .setParent(new JsonBranch("book", "book"))
-      .setIdentifier(new JsonBranch("id"));
+    DataElement path = new DataElement("author", "author")
+      .setParent(new DataElement("book", "book"))
+      .setIdentifier(new DataElement("id"));
     assertEquals(
-      "JsonBranch{label=author, jsonPath=author, categories=[], " +
+      "DataElement{label=author, path=author, categories=[], " +
         "solrFieldName=null, parent=book, identifier=id, nr_of_children=0, collection=false}",
-      path1.toString());
+      path.toString());
   }
 
   @Test
   public void setChildren() {
-    JsonBranch path = new JsonBranch("author", "author")
+    DataElement path = new DataElement("author", "author")
       .setChildren(Arrays.asList(
-        new JsonBranch("name", "name"),
-        new JsonBranch("date", "date")
+        new DataElement("name", "name"),
+        new DataElement("date", "date")
       ));
 
     assertEquals(2, path.getChildren().size());

@@ -27,10 +27,10 @@ import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-public class OaiPmhXPath implements Serializable {
+public class XPathWrapper implements Serializable {
   private static final long serialVersionUID = 3040547541095974755L;
 
-  private static final Logger LOGGER = Logger.getLogger(OaiPmhXPath.class.getCanonicalName());
+  private static final Logger LOGGER = Logger.getLogger(XPathWrapper.class.getCanonicalName());
 
   private static transient XPath xpathEngine;
   private static final DocumentBuilder builder = initializeDocumentBuilder();
@@ -51,11 +51,11 @@ public class OaiPmhXPath implements Serializable {
 
   Document document;
 
-  public OaiPmhXPath(String input) {
+  public XPathWrapper(String input) {
     parseContent(input);
   }
 
-  public OaiPmhXPath(String input, Map<String, String> customNamespaces) {
+  public XPathWrapper(String input, Map<String, String> customNamespaces) {
     if (this.namespaces != customNamespaces) {
       namespaceChanged = true;
       this.namespaces = customNamespaces;
@@ -63,11 +63,11 @@ public class OaiPmhXPath implements Serializable {
     parseContent(input);
   }
 
-  public OaiPmhXPath(File input) {
+  public XPathWrapper(File input) {
     parseFile(input.getPath());
   }
 
-  public OaiPmhXPath(File input, Map<String, String> customNamespaces) {
+  public XPathWrapper(File input, Map<String, String> customNamespaces) {
     if (this.namespaces != customNamespaces) {
       namespaceChanged = true;
       this.namespaces = customNamespaces;
@@ -87,7 +87,7 @@ public class OaiPmhXPath implements Serializable {
     }
   }
 
-  public OaiPmhXPath(String input, boolean fromString) {
+  public XPathWrapper(String input, boolean fromString) {
     if (fromString) {
       parseContent(input);
     } else {

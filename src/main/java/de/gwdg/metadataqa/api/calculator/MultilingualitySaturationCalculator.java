@@ -4,7 +4,7 @@ import com.jayway.jsonpath.InvalidJsonException;
 import de.gwdg.metadataqa.api.calculator.language.Multilinguality;
 import de.gwdg.metadataqa.api.counter.FieldCounter;
 import de.gwdg.metadataqa.api.interfaces.MetricResult;
-import de.gwdg.metadataqa.api.json.JsonBranch;
+import de.gwdg.metadataqa.api.json.DataElement;
 import de.gwdg.metadataqa.api.model.pathcache.PathCache;
 import de.gwdg.metadataqa.api.problemcatalog.FieldCounterBasedResult;
 import de.gwdg.metadataqa.api.schema.Schema;
@@ -64,17 +64,17 @@ public class MultilingualitySaturationCalculator extends BaseLanguageCalculator 
   @Override
   public List<String> getHeader() {
     List<String> headers = new ArrayList<>();
-    for (JsonBranch jsonBranch : schema.getPaths()) {
-      if (jsonBranch.isActive() && !schema.getNoLanguageFields().contains(jsonBranch.getLabel())) {
+    for (DataElement dataElement : schema.getPaths()) {
+      if (dataElement.isActive() && !schema.getNoLanguageFields().contains(dataElement.getLabel())) {
         switch (resultType) {
           case EXTENDED:
-            headers.add("lang:sum:" + jsonBranch.getLabel());
-            headers.add("lang:average:" + jsonBranch.getLabel());
-            headers.add("lang:normalized:" + jsonBranch.getLabel());
+            headers.add("lang:sum:" + dataElement.getLabel());
+            headers.add("lang:average:" + dataElement.getLabel());
+            headers.add("lang:normalized:" + dataElement.getLabel());
             break;
           case NORMAL:
           default:
-            headers.add("lang:" + jsonBranch.getLabel());
+            headers.add("lang:" + dataElement.getLabel());
             break;
         }
       }

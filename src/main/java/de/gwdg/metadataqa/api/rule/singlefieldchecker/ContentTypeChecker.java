@@ -1,7 +1,7 @@
 package de.gwdg.metadataqa.api.rule.singlefieldchecker;
 
 import de.gwdg.metadataqa.api.counter.FieldCounter;
-import de.gwdg.metadataqa.api.json.JsonBranch;
+import de.gwdg.metadataqa.api.json.DataElement;
 import de.gwdg.metadataqa.api.model.XmlFieldInstance;
 import de.gwdg.metadataqa.api.model.pathcache.PathCache;
 import de.gwdg.metadataqa.api.rule.RuleCheckerOutput;
@@ -20,11 +20,11 @@ public class ContentTypeChecker extends SingleFieldChecker {
   public static final String PREFIX = "contentType";
   protected List<String> fixedValues;
 
-  public ContentTypeChecker(JsonBranch field, List<String> contentType) {
+  public ContentTypeChecker(DataElement field, List<String> contentType) {
     this(field, field.getLabel(), contentType);
   }
 
-  public ContentTypeChecker(JsonBranch field, String header, List<String> fixedValues) {
+  public ContentTypeChecker(DataElement field, String header, List<String> fixedValues) {
     super(field, header + ":" + PREFIX);
     this.fixedValues = fixedValues;
   }
@@ -36,7 +36,7 @@ public class ContentTypeChecker extends SingleFieldChecker {
 
     var allPassed = true;
     var isNA = true;
-    List<XmlFieldInstance> instances = cache.get(field.getJsonPath());
+    List<XmlFieldInstance> instances = cache.get(field.getPath());
     if (instances != null && !instances.isEmpty()) {
       for (XmlFieldInstance instance : instances) {
         if (instance.hasValue()) {

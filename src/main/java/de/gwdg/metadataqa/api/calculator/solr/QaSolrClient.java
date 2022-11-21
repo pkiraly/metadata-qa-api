@@ -1,6 +1,6 @@
 package de.gwdg.metadataqa.api.calculator.solr;
 
-import de.gwdg.metadataqa.api.json.JsonBranch;
+import de.gwdg.metadataqa.api.json.DataElement;
 import de.gwdg.metadataqa.api.schema.Schema;
 import de.gwdg.metadataqa.api.uniqueness.SolrClient;
 import de.gwdg.metadataqa.api.uniqueness.UniquenessExtractor;
@@ -28,16 +28,16 @@ public class QaSolrClient {
 
   private void initialize(Schema schema) {
     solrFields = new ArrayList<>();
-    for (JsonBranch jsonBranch : schema.getIndexFields()) {
-      var field = new UniquenessField(jsonBranch.getLabel());
-      field.setJsonPath(
-        jsonBranch.getAbsoluteJsonPath().replace("[*]", "")
+    for (DataElement dataElement : schema.getIndexFields()) {
+      var field = new UniquenessField(dataElement.getLabel());
+      field.setPath(
+        dataElement.getAbsolutePath().replace("[*]", "")
       );
 
-      if (schema.getRecordId() != null && jsonBranch.equals(schema.getRecordId()))
+      if (schema.getRecordId() != null && dataElement.equals(schema.getRecordId()))
         continue;
 
-      String solrField = getSolrField(jsonBranch);
+      String solrField = getSolrField(dataElement);
       field.setSolrField(solrField);
 
       var solrResponse = solrClient.getSolrSearchResponse(solrField, "*");
@@ -51,8 +51,8 @@ public class QaSolrClient {
     }
   }
 
-  public static String getSolrField(JsonBranch jsonBranch) {
-    String solrField = jsonBranch.getIndexField() != null ? jsonBranch.getIndexField() : jsonBranch.generateIndexField();
+  public static String getSolrField(DataElement dataElement) {
+    String solrField = dataElement.getIndexField() != null ? dataElement.getIndexField() : dataElement.generateIndexField();
     if (solrField.endsWith("_txt")) {
       solrField = solrField.replaceAll("_txt$", "_ss");
     } else if (!solrField.endsWith(SUFFIX)) {

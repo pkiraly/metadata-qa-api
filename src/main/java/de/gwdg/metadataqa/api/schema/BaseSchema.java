@@ -2,7 +2,7 @@ package de.gwdg.metadataqa.api.schema;
 
 import de.gwdg.metadataqa.api.configuration.schema.Rule;
 import de.gwdg.metadataqa.api.json.FieldGroup;
-import de.gwdg.metadataqa.api.json.JsonBranch;
+import de.gwdg.metadataqa.api.json.DataElement;
 import de.gwdg.metadataqa.api.model.Category;
 import de.gwdg.metadataqa.api.rule.RuleChecker;
 import org.apache.commons.lang3.StringUtils;
@@ -19,15 +19,15 @@ public class BaseSchema implements Schema, CsvAwareSchema, Serializable {
   private static final long serialVersionUID = 6775942932769040511L;
   private static final Logger LOGGER = Logger.getLogger(BaseSchema.class.getCanonicalName());
 
-  private final Map<String, JsonBranch> paths = new LinkedHashMap<>();
-  private final Map<String, JsonBranch> collectionPaths = new LinkedHashMap<>();
-  private final Map<String, JsonBranch> directChildren = new LinkedHashMap<>();
+  private final Map<String, DataElement> paths = new LinkedHashMap<>();
+  private final Map<String, DataElement> collectionPaths = new LinkedHashMap<>();
+  private final Map<String, DataElement> directChildren = new LinkedHashMap<>();
   private Map<String, String> extractableFields = new LinkedHashMap<>();
   private List<FieldGroup> fieldGroups = new ArrayList<>();
   private List<String> categories = null;
   private List<RuleChecker> ruleCheckers;
-  private List<JsonBranch> indexFields;
-  private JsonBranch recordId;
+  private List<DataElement> indexFields;
+  private DataElement recordId;
 
   private Format format;
   private Map<String, String> namespaces;
@@ -36,7 +36,7 @@ public class BaseSchema implements Schema, CsvAwareSchema, Serializable {
     // initialize without parameters
   }
 
-  public BaseSchema addField(JsonBranch branch) {
+  public BaseSchema addField(DataElement branch) {
     branch.setSchema(this);
     paths.put(branch.getLabel(), branch);
 
@@ -47,13 +47,13 @@ public class BaseSchema implements Schema, CsvAwareSchema, Serializable {
       collectionPaths.put(branch.getLabel(), branch);
 
     if (branch.isExtractable())
-      addExtractableField(branch.getLabel(), branch.getJsonPath());
+      addExtractableField(branch.getLabel(), branch.getPath());
 
     return this;
   }
 
   public BaseSchema addField(String fieldName) {
-    addField(new JsonBranch(fieldName));
+    addField(new DataElement(fieldName));
     return this;
   }
 
@@ -75,22 +75,22 @@ public class BaseSchema implements Schema, CsvAwareSchema, Serializable {
   }
 
   @Override
-  public List<JsonBranch> getCollectionPaths() {
+  public List<DataElement> getCollectionPaths() {
     return new ArrayList(collectionPaths.values());
   }
 
   @Override
-  public List<JsonBranch> getRootChildrenPaths() {
+  public List<DataElement> getRootChildrenPaths() {
     return new ArrayList(directChildren.values());
   }
 
   @Override
-  public List<JsonBranch> getPaths() {
+  public List<DataElement> getPaths() {
     return new ArrayList<>(paths.values());
   }
 
   @Override
-  public JsonBranch getPathByLabel(String label) {
+  public DataElement getPathByLabel(String label) {
     return paths.get(label);
   }
 
@@ -110,17 +110,17 @@ public class BaseSchema implements Schema, CsvAwareSchema, Serializable {
   }
 
   @Override
-  public List<JsonBranch> getIndexFields() {
+  public List<DataElement> getIndexFields() {
     if (indexFields == null) {
       indexFields = new ArrayList<>();
-      for (JsonBranch jsonBranch : getPaths()) {
-        if (StringUtils.isNotBlank(jsonBranch.getIndexField())) {
-          indexFields.add(jsonBranch);
-        } else if (jsonBranch.getRules() != null) {
-          for (Rule rule : jsonBranch.getRules()) {
+      for (DataElement dataElement : getPaths()) {
+        if (StringUtils.isNotBlank(dataElement.getIndexField())) {
+          indexFields.add(dataElement);
+        } else if (dataElement.getRules() != null) {
+          for (Rule rule : dataElement.getRules()) {
             if (rule.getUnique() != null && rule.getUnique().equals(Boolean.TRUE)) {
-              LOGGER.warning(jsonBranch + " does not have index field");
-              indexFields.add(jsonBranch);
+              LOGGER.warning(dataElement + " does not have index field");
+              indexFields.add(dataElement);
             }
           }
         }
@@ -140,8 +140,8 @@ public class BaseSchema implements Schema, CsvAwareSchema, Serializable {
   }
 
   @Override
-  public void addExtractableField(String label, String jsonPath) {
-    extractableFields.put(label, jsonPath);
+  public void addExtractableField(String label, String path) {
+    extractableFields.put(label, path);
   }
 
   @Override
@@ -163,8 +163,8 @@ public class BaseSchema implements Schema, CsvAwareSchema, Serializable {
   @Override
   public List<String> getHeader() {
     List<String> headers = new ArrayList<>();
-    for (JsonBranch branch : paths.values()) {
-      headers.add(branch.getJsonPath());
+    for (DataElement branch : paths.values()) {
+      headers.add(branch.getPath());
     }
     return headers;
   }
@@ -191,11 +191,11 @@ public class BaseSchema implements Schema, CsvAwareSchema, Serializable {
   }
 
   @Override
-  public JsonBranch getRecordId() {
+  public DataElement getRecordId() {
     return recordId;
   }
 
-  public void setRecordId(JsonBranch recordId) {
+  public void setRecordId(DataElement recordId) {
     this.recordId = recordId;
   }
 }

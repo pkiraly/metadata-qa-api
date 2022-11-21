@@ -1,7 +1,7 @@
 package de.gwdg.metadataqa.api.schema;
 
 import de.gwdg.metadataqa.api.configuration.schema.Rule;
-import de.gwdg.metadataqa.api.json.JsonBranch;
+import de.gwdg.metadataqa.api.json.DataElement;
 import de.gwdg.metadataqa.api.rule.logical.AndChecker;
 import de.gwdg.metadataqa.api.rule.logical.LogicalChecker;
 import de.gwdg.metadataqa.api.rule.logical.NotChecker;
@@ -50,7 +50,7 @@ public class SchemaUtils {
     setSchemaForFields(schema);
     id = 0;
     List<RuleChecker> allRuleCheckers = new ArrayList<>();
-    for (JsonBranch branch : schema.getPaths()) {
+    for (DataElement branch : schema.getPaths()) {
       if (branch.getRules() != null) {
         List<Rule> rules = branch.getRules();
         for (Rule rule : rules) {
@@ -63,7 +63,7 @@ public class SchemaUtils {
     return allRuleCheckers;
   }
 
-  private static List<RuleChecker> processRule(Schema schema, JsonBranch branch, Rule rule) {
+  private static List<RuleChecker> processRule(Schema schema, DataElement branch, Rule rule) {
     List<RuleChecker> ruleCheckers = new ArrayList<>();
     if (rule.getSkip().equals(Boolean.TRUE))
       return ruleCheckers;
@@ -170,7 +170,7 @@ public class SchemaUtils {
     return ruleCheckers;
   }
 
-  private static List<RuleChecker> getChildRuleCheckers(Schema schema, JsonBranch branch, List<Rule> rules, String id) {
+  private static List<RuleChecker> getChildRuleCheckers(Schema schema, DataElement branch, List<Rule> rules, String id) {
     List<RuleChecker> childRuleCheckers = new ArrayList<>();
     for (Rule childRule : rules) {
       if (StringUtils.isBlank(childRule.getId()))
@@ -184,10 +184,10 @@ public class SchemaUtils {
 
   private static void pair(Schema schema,
                            List<RuleChecker> ruleCheckers,
-                           JsonBranch branch,
+                           DataElement branch,
                            String fieldReference,
                            String type) {
-    JsonBranch field2 = schema.getPathByLabel(fieldReference);
+    DataElement field2 = schema.getPathByLabel(fieldReference);
     if (field2 != null) {
       RuleChecker ruleChecker = null;
       if ("equals".equals(type)) {
@@ -208,7 +208,7 @@ public class SchemaUtils {
   }
 
   public static void setSchemaForFields(Schema schema) {
-    for (JsonBranch branch : schema.getPaths())
+    for (DataElement branch : schema.getPaths())
       branch.setSchema(schema);
   }
 }

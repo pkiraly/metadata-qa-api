@@ -3,7 +3,7 @@ package de.gwdg.metadataqa.api.calculator;
 import com.jayway.jsonpath.InvalidJsonException;
 import de.gwdg.metadataqa.api.counter.FieldCounter;
 import de.gwdg.metadataqa.api.json.FieldGroup;
-import de.gwdg.metadataqa.api.json.JsonBranch;
+import de.gwdg.metadataqa.api.json.DataElement;
 import de.gwdg.metadataqa.api.model.Category;
 import de.gwdg.metadataqa.api.model.pathcache.JsonPathCache;
 import de.gwdg.metadataqa.api.schema.edm.EdmOaiPmLimitedJsonSchema;
@@ -18,7 +18,6 @@ import java.util.List;
 import java.util.Map;
 
 import org.apache.commons.lang3.BooleanUtils;
-import org.apache.commons.lang3.StringUtils;
 import org.junit.After;
 import org.junit.AfterClass;
 
@@ -75,23 +74,23 @@ public class CompletenessCalculatorLimitedTest {
     FieldCounter<Integer> cardinalityCounter = calculator.getCardinalityCounter();
     // calculator.getExistenceMap();
     assertEquals((Double) 0.4, fieldCounter.get("TOTAL"));
-    // printCheck(JsonBranch.Category.VIEWING, calculator);
+    // printCheck(Category.VIEWING, calculator);
     assertEquals((Double) 0.75, fieldCounter.get("VIEWING"));
-    // printCheck(JsonBranch.Category.CONTEXTUALIZATION, calculator);
+    // printCheck(Category.CONTEXTUALIZATION, calculator);
     assertEquals((Double) 0.2727272727272727, fieldCounter.get("CONTEXTUALIZATION"));
-    // printCheck(JsonBranch.Category.MANDATORY, calculator);
+    // printCheck(Category.MANDATORY, calculator);
     assertEquals((Double) 1.0, fieldCounter.get("MANDATORY"));
-    // printCheck(JsonBranch.Category.MULTILINGUALITY, calculator);
+    // printCheck(Category.MULTILINGUALITY, calculator);
     assertEquals((Double) 0.4, fieldCounter.get("MULTILINGUALITY"));
-    // printCheck(JsonBranch.Category.DESCRIPTIVENESS, calculator);
+    // printCheck(Category.DESCRIPTIVENESS, calculator);
     assertEquals((Double) 0.18181818181818182, fieldCounter.get("DESCRIPTIVENESS"));
-    // printCheck(JsonBranch.Category.BROWSING, calculator);
+    // printCheck(Category.BROWSING, calculator);
     assertEquals((Double) 0.35714285714285715, fieldCounter.get("BROWSING"));
-    // printCheck(JsonBranch.Category.IDENTIFICATION, calculator);
+    // printCheck(Category.IDENTIFICATION, calculator);
     assertEquals((Double) 0.5, fieldCounter.get("IDENTIFICATION"));
-    // printCheck(JsonBranch.Category.SEARCHABILITY, calculator);
+    // printCheck(Category.SEARCHABILITY, calculator);
     assertEquals((Double) 0.3888888888888889, fieldCounter.get("SEARCHABILITY"));
-    // printCheck(JsonBranch.Category.REUSABILITY, calculator);
+    // printCheck(Category.REUSABILITY, calculator);
     assertEquals((Double) 0.36363636363636365, fieldCounter.get("REUSABILITY"));
     assertEquals(35, existenceCounter.size());
     assertEquals(35, cardinalityCounter.size());
@@ -103,7 +102,7 @@ public class CompletenessCalculatorLimitedTest {
 
   private List<String> getFieldsByCategory(Category category, Schema schema) {
     List<String> labels = new ArrayList<>();
-    for (JsonBranch branch : schema.getPaths()) {
+    for (DataElement branch : schema.getPaths()) {
       if (branch.getCategories().contains(category)) {
         labels.add(branch.getLabel());
       }

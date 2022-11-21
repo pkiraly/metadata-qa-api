@@ -15,26 +15,26 @@ public abstract class BasePathCache<T extends XmlFieldInstance> implements PathC
   protected final Map<String, Object> typedCache = new HashMap<>();
   protected final Map<String, Object> fragmentCache = new HashMap<>();
 
-  abstract void set(String address, String jsonPath, Object jsonFragment, Class clazz);
+  abstract void set(String address, String path, Object jsonFragment, Class clazz);
 
-  public List<T> get(String jsonPath) {
-    return get(jsonPath, jsonPath, null, null);
+  public List<T> get(String path) {
+    return get(path, path, null, null);
   }
 
-  public <E> E get(String jsonPath, Class<E> clazz) {
-    if (!typedCache.containsKey(jsonPath)) {
-      set(jsonPath, jsonPath, null, clazz);
+  public <E> E get(String path, Class<E> clazz) {
+    if (!typedCache.containsKey(path)) {
+      set(path, path, null, clazz);
     }
-    return (E) typedCache.get(jsonPath);
+    return (E) typedCache.get(path);
   }
 
-  public List<T> get(String address, String jsonPath, Object jsonFragment) {
-    return get(address, jsonPath, jsonFragment, null);
+  public List<T> get(String address, String path, Object jsonFragment) {
+    return get(address, path, jsonFragment, null);
   }
 
-  public List<T> get(String address, String jsonPath, Object jsonFragment, Class clazz) {
+  public List<T> get(String address, String path, Object jsonFragment, Class clazz) {
     if (!cache.containsKey(address)) {
-      set(address, jsonPath, jsonFragment, clazz);
+      set(address, path, jsonFragment, clazz);
     }
     return cache.get(address);
   }
@@ -43,16 +43,16 @@ public abstract class BasePathCache<T extends XmlFieldInstance> implements PathC
    * Get a JSON fragment from cache.
    *
    * @param address - a unique address for cahce
-   * @param jsonPath - a JSON path expression
+   * @param path - a JSON path expression
    * @param jsonFragment - a JSON fragment in which the path should be searched for
    *
    * @return
    *   The JSON fragment
    */
-  public Object getFragment(String address, String jsonPath, Object jsonFragment) {
+  public Object getFragment(String address, String path, Object jsonFragment) {
     Object jsonFragment2 = null;
     if (!fragmentCache.containsKey(address)) {
-      jsonFragment2 = read(jsonPath, jsonFragment);
+      jsonFragment2 = read(path, jsonFragment);
       fragmentCache.put(address, jsonFragment2);
     } else {
       jsonFragment2 = fragmentCache.get(address);

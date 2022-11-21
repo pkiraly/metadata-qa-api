@@ -1,7 +1,7 @@
 package de.gwdg.metadataqa.api.rule.singlefieldchecker;
 
 import de.gwdg.metadataqa.api.counter.FieldCounter;
-import de.gwdg.metadataqa.api.json.JsonBranch;
+import de.gwdg.metadataqa.api.json.DataElement;
 import de.gwdg.metadataqa.api.model.XmlFieldInstance;
 import de.gwdg.metadataqa.api.model.pathcache.PathCache;
 import de.gwdg.metadataqa.api.rule.RuleCheckerOutput;
@@ -9,7 +9,6 @@ import de.gwdg.metadataqa.api.rule.RuleCheckingOutputStatus;
 import de.gwdg.metadataqa.api.rule.RuleCheckingOutputType;
 
 import java.util.List;
-import java.util.logging.Logger;
 
 public class NumericValueChecker extends SingleFieldChecker {
 
@@ -31,11 +30,11 @@ public class NumericValueChecker extends SingleFieldChecker {
   protected double limit;
   protected TYPE type;
 
-  public NumericValueChecker(JsonBranch field, int limit, TYPE type) {
+  public NumericValueChecker(DataElement field, int limit, TYPE type) {
     this(field, (double) limit, type);
   }
 
-  public NumericValueChecker(JsonBranch field, double limit, TYPE type) {
+  public NumericValueChecker(DataElement field, double limit, TYPE type) {
     super(field, field.getLabel() + ":" + type.prefix);
     this.type = type;
     this.limit = limit;
@@ -48,7 +47,7 @@ public class NumericValueChecker extends SingleFieldChecker {
 
     var allPassed = true;
     var isNA = true;
-    List<XmlFieldInstance> instances = cache.get(field.getJsonPath());
+    List<XmlFieldInstance> instances = cache.get(field.getPath());
     if (instances != null && !instances.isEmpty()) {
       for (XmlFieldInstance instance : instances) {
         if (instance.hasValue()) {

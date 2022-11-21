@@ -4,7 +4,7 @@ import de.gwdg.metadataqa.api.calculator.MultilingualitySaturationCalculator;
 import de.gwdg.metadataqa.api.calculator.SkippedEntryChecker;
 import de.gwdg.metadataqa.api.counter.BasicCounter;
 import de.gwdg.metadataqa.api.counter.FieldCounter;
-import de.gwdg.metadataqa.api.json.JsonBranch;
+import de.gwdg.metadataqa.api.json.DataElement;
 import de.gwdg.metadataqa.api.model.EdmFieldInstance;
 import de.gwdg.metadataqa.api.model.LanguageSaturationType;
 import de.gwdg.metadataqa.api.model.pathcache.PathCache;
@@ -74,21 +74,21 @@ public class Multilinguality {
   }
 
   private void measureFlatSchema() {
-    for (JsonBranch jsonBranch : schema.getPaths()) {
-      if (jsonBranch.isActive()
-        && !schema.getNoLanguageFields().contains(jsonBranch.getLabel())) {
-        extractLanguageTags(null, jsonBranch, jsonBranch.getJsonPath());
+    for (DataElement dataElement : schema.getPaths()) {
+      if (dataElement.isActive()
+        && !schema.getNoLanguageFields().contains(dataElement.getLabel())) {
+        extractLanguageTags(null, dataElement, dataElement.getPath());
       }
     }
   }
 
   private void measureHierarchicalSchema() {
     List<String> skippableIds = getSkippableIds();
-    for (JsonBranch collection : schema.getCollectionPaths()) {
+    for (DataElement collection : schema.getCollectionPaths()) {
       if (!collection.isActive()) {
         continue;
       }
-      Object rawJsonFragment = cache.getFragment(collection.getJsonPath());
+      Object rawJsonFragment = cache.getFragment(collection.getPath());
       if (rawJsonFragment == null) {
         measureMissingCollection(collection);
       } else {
@@ -97,8 +97,8 @@ public class Multilinguality {
     }
   }
 
-  private void measureMissingCollection(JsonBranch collection) {
-    for (JsonBranch child : collection.getChildren()) {
+  private void measureMissingCollection(DataElement collection) {
+    for (DataElement child : collection.getChildren()) {
       if (child.isActive() && !schema.getNoLanguageFields().contains(child.getLabel())) {
         Map<LanguageSaturationType, BasicCounter> languages = new TreeMap<>();
         increase(languages, LanguageSaturationType.NA);
@@ -108,7 +108,7 @@ public class Multilinguality {
   }
 
   private void measureExistingCollection(Object rawJsonFragment,
-                                         JsonBranch collection,
+                                         DataElement collection,
                                          List<String> skippableIds) {
     List<Object> jsonFragments = Converter.jsonObjectToList(rawJsonFragment, schema);
     if (jsonFragments.isEmpty()) {
@@ -122,12 +122,12 @@ public class Multilinguality {
           measureMissingCollection(collection);
           // TODO???
         } else {
-          for (JsonBranch child : collection.getChildren()) {
+          for (DataElement child : collection.getChildren()) {
             if (child.isActive()
               && !schema.getNoLanguageFields().contains(child.getLabel())) {
               var address = String.format(
                 "%s/%d/%s",
-                collection.getJsonPath(), i, child.getJsonPath()
+                collection.getPath(), i, child.getPath()
               );
               extractLanguageTags(jsonFragment, child, address);
             }
@@ -138,9 +138,9 @@ public class Multilinguality {
   }
 
   private void extractLanguageTags(Object jsonFragment,
-                                   JsonBranch jsonBranch,
+                                   DataElement dataElement,
                                    String address) {
-    List<EdmFieldInstance> values = cache.get(address, jsonBranch.getJsonPath(), jsonFragment);
+    List<EdmFieldInstance> values = cache.get(address, dataElement.getPath(), jsonFragment);
     Map<LanguageSaturationType, BasicCounter> languages = new TreeMap<>();
     Set<String> individualLanguages = new HashSet<>();
     if (values != null && !values.isEmpty()) {
@@ -160,7 +160,7 @@ public class Multilinguality {
       increase(languages, LanguageSaturationType.NA);
     }
 
-    updateMaps(jsonBranch.getLabel(), transformLanguages(languages, individualLanguages.size()));
+    updateMaps(dataElement.getLabel(), transformLanguages(languages, individualLanguages.size()));
   }
 
   private void updateMaps(String label,

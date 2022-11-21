@@ -1,7 +1,7 @@
 package de.gwdg.metadataqa.api.rule.singlefieldchecker;
 
 import de.gwdg.metadataqa.api.counter.FieldCounter;
-import de.gwdg.metadataqa.api.json.JsonBranch;
+import de.gwdg.metadataqa.api.json.DataElement;
 import de.gwdg.metadataqa.api.model.XmlFieldInstance;
 import de.gwdg.metadataqa.api.model.pathcache.PathCache;
 import de.gwdg.metadataqa.api.rule.RuleCheckerOutput;
@@ -17,11 +17,11 @@ public class MinWordsChecker extends SingleFieldChecker {
   public static final String PREFIX = "minWords";
   protected Integer minWords;
 
-  public MinWordsChecker(JsonBranch field, int minWords) {
+  public MinWordsChecker(DataElement field, int minWords) {
     this(field, field.getLabel(), minWords);
   }
 
-  public MinWordsChecker(JsonBranch field, String header, int minWords) {
+  public MinWordsChecker(DataElement field, String header, int minWords) {
     super(field, header + ":" + PREFIX);
     this.minWords = minWords;
   }
@@ -33,7 +33,7 @@ public class MinWordsChecker extends SingleFieldChecker {
 
     var allPassed = true;
     var isNA = true;
-    List<XmlFieldInstance> instances = cache.get(field.getJsonPath());
+    List<XmlFieldInstance> instances = cache.get(field.getPath());
     if (instances != null && !instances.isEmpty()) {
       for (XmlFieldInstance instance : instances) {
         if (instance.hasValue()) {

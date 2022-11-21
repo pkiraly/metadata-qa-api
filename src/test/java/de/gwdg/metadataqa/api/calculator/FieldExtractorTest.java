@@ -6,7 +6,7 @@ import com.opencsv.exceptions.CsvValidationException;
 import de.gwdg.metadataqa.api.configuration.ConfigurationReader;
 import de.gwdg.metadataqa.api.configuration.MeasurementConfiguration;
 import de.gwdg.metadataqa.api.interfaces.MetricResult;
-import de.gwdg.metadataqa.api.json.JsonBranch;
+import de.gwdg.metadataqa.api.json.DataElement;
 import de.gwdg.metadataqa.api.model.pathcache.JsonPathCache;
 import de.gwdg.metadataqa.api.schema.BaseSchema;
 import de.gwdg.metadataqa.api.schema.CsvAwareSchema;
@@ -63,8 +63,8 @@ public class FieldExtractorTest {
   public void testHeaderWithComma() throws URISyntaxException, IOException, CsvValidationException {
     Schema schema = new BaseSchema()
       .setFormat(Format.CSV)
-      .addField(new JsonBranch("url"))
-      .addField(new JsonBranch("name,with,comma").setExtractable());
+      .addField(new DataElement("url"))
+      .addField(new DataElement("name,with,comma").setExtractable());
 
     MeasurementConfiguration config = new MeasurementConfiguration()
       .enableFieldExtractor()
@@ -145,8 +145,8 @@ public class FieldExtractorTest {
   private CalculatorFacade configureTest() {
     Schema schema = new BaseSchema()
       .setFormat(Format.CSV)
-      .addField(new JsonBranch("url").setExtractable())
-      .addField(new JsonBranch("name"));
+      .addField(new DataElement("url").setExtractable())
+      .addField(new DataElement("name"));
 
     MeasurementConfiguration config = new MeasurementConfiguration()
       .enableFieldExtractor()

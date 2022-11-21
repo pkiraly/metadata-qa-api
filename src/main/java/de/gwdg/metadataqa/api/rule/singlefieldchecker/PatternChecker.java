@@ -1,7 +1,7 @@
 package de.gwdg.metadataqa.api.rule.singlefieldchecker;
 
 import de.gwdg.metadataqa.api.counter.FieldCounter;
-import de.gwdg.metadataqa.api.json.JsonBranch;
+import de.gwdg.metadataqa.api.json.DataElement;
 import de.gwdg.metadataqa.api.model.XmlFieldInstance;
 import de.gwdg.metadataqa.api.model.pathcache.PathCache;
 import de.gwdg.metadataqa.api.rule.RuleCheckerOutput;
@@ -17,11 +17,11 @@ public class PatternChecker extends SingleFieldChecker {
   public static final String PREFIX = "pattern";
   protected Pattern pattern;
 
-  public PatternChecker(JsonBranch field, String pattern) {
+  public PatternChecker(DataElement field, String pattern) {
     this(field, field.getLabel(), pattern);
   }
 
-  public PatternChecker(JsonBranch field, String header, String pattern) {
+  public PatternChecker(DataElement field, String header, String pattern) {
     super(field, header + ":" + PREFIX);
     this.pattern = Pattern.compile(pattern);
   }
@@ -33,7 +33,7 @@ public class PatternChecker extends SingleFieldChecker {
 
     var allPassed = true;
     var isNA = true;
-    List<XmlFieldInstance> instances = cache.get(field.getJsonPath());
+    List<XmlFieldInstance> instances = cache.get(field.getPath());
     if (instances != null && !instances.isEmpty()) {
       for (XmlFieldInstance instance : instances) {
         if (instance.hasValue()) {

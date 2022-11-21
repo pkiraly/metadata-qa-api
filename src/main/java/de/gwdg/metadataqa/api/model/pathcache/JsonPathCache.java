@@ -42,12 +42,12 @@ public class JsonPathCache<T extends XmlFieldInstance> extends BasePathCache<T> 
   }
 
   @Override
-  protected void set(String address, String jsonPath, Object jsonFragment, Class clazz) {
+  protected void set(String address, String path, Object jsonFragment, Class clazz) {
     List<T> instances = null;
-    Object value = read(jsonPath, jsonFragment);
+    Object value = read(path, jsonFragment);
     if (value != null) {
       if (clazz == null) {
-        instances = (List<T>) JsonUtils.extractFieldInstanceList(value, recordId, jsonPath);
+        instances = (List<T>) JsonUtils.extractFieldInstanceList(value, recordId, path);
       } else {
         if (value instanceof JSONArray) {
           typedCache.put(address, clazz.cast(((JSONArray) value).get(0)));
@@ -59,31 +59,31 @@ public class JsonPathCache<T extends XmlFieldInstance> extends BasePathCache<T> 
     cache.put(address, instances);
   }
 
-  public Object read(String jsonPath, Object jsonFragment) {
+  public Object read(String path, Object jsonFragment) {
     Object value = null;
     try {
       if (jsonFragment != null) {
-        value = JsonPath.read(jsonFragment, jsonPath);
+        value = JsonPath.read(jsonFragment, path);
       } else {
-        value = JsonPath.read(document, jsonPath);
+        value = JsonPath.read(document, path);
       }
     } catch (PathNotFoundException e) {
-      // LOGGER.severe("PathNotFound: " + jsonPath + " " + e.getLocalizedMessage() + extractRelevantPath(e));
+      // LOGGER.severe("PathNotFound: " + path + " " + e.getLocalizedMessage() + extractRelevantPath(e));
     } catch (InvalidPathException e) {
       LOGGER.log(Level.SEVERE, "Invalid Path: {0} {1}\n{2}", new Object[]{
-        jsonPath, e.getLocalizedMessage(), ExceptionUtils.extractRelevantPath(e)
+        path, e.getLocalizedMessage(), ExceptionUtils.extractRelevantPath(e)
       });
     }
     return value;
   }
 
-  public Object getFragment(String jsonPath) {
+  public Object getFragment(String path) {
     Object jsonFragment = null;
-    if (!fragmentCache.containsKey(jsonPath)) {
-      jsonFragment = read(jsonPath, null);
-      fragmentCache.put(jsonPath, jsonFragment);
+    if (!fragmentCache.containsKey(path)) {
+      jsonFragment = read(path, null);
+      fragmentCache.put(path, jsonFragment);
     } else {
-      jsonFragment = fragmentCache.get(jsonPath);
+      jsonFragment = fragmentCache.get(path);
     }
     return jsonFragment;
   }

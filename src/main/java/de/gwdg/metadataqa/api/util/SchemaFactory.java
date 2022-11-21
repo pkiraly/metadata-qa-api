@@ -3,7 +3,7 @@ package de.gwdg.metadataqa.api.util;
 import de.gwdg.metadataqa.api.configuration.SchemaConfiguration;
 import de.gwdg.metadataqa.api.configuration.schema.Field;
 import de.gwdg.metadataqa.api.configuration.schema.Group;
-import de.gwdg.metadataqa.api.json.JsonBranch;
+import de.gwdg.metadataqa.api.json.DataElement;
 import de.gwdg.metadataqa.api.json.FieldGroup;
 import de.gwdg.metadataqa.api.schema.BaseSchema;
 import de.gwdg.metadataqa.api.schema.Format;
@@ -29,10 +29,10 @@ public class SchemaFactory {
       schema.setCategories(config.getCategories());
 
     for (Field field : config.getFields()) {
-      var branch = new JsonBranch(field.getName());
+      var branch = new DataElement(field.getName());
 
       if (StringUtils.isNotBlank(field.getPath()))
-        branch.setJsonPath(field.getPath());
+        branch.setPath(field.getPath());
 
       if (field.getCategories() != null) {
         List<String> categories = new ArrayList<>();

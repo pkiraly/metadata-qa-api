@@ -2,7 +2,7 @@ package de.gwdg.metadataqa.api.calculator.language;
 
 import de.gwdg.metadataqa.api.counter.BasicCounter;
 import de.gwdg.metadataqa.api.counter.FieldCounter;
-import de.gwdg.metadataqa.api.json.JsonBranch;
+import de.gwdg.metadataqa.api.json.DataElement;
 import de.gwdg.metadataqa.api.model.EdmFieldInstance;
 import de.gwdg.metadataqa.api.model.pathcache.PathCache;
 import de.gwdg.metadataqa.api.schema.Schema;
@@ -29,17 +29,17 @@ public class Language {
     languageMap = new FieldCounter<>();
     rawLanguageMap = new LinkedHashMap<>();
     if (schema.getCollectionPaths().isEmpty()) {
-      for (JsonBranch jsonBranch : schema.getPaths()) {
-        if (jsonBranch.isActive()
-          && !schema.getNoLanguageFields().contains(jsonBranch.getLabel())) {
-          extractLanguageTags(null, jsonBranch, jsonBranch.getJsonPath());
+      for (DataElement dataElement : schema.getPaths()) {
+        if (dataElement.isActive()
+          && !schema.getNoLanguageFields().contains(dataElement.getLabel())) {
+          extractLanguageTags(null, dataElement, dataElement.getPath());
         }
       }
     } else {
-      for (JsonBranch collection : schema.getCollectionPaths()) {
-        Object rawJsonFragment = cache.getFragment(collection.getJsonPath());
+      for (DataElement collection : schema.getCollectionPaths()) {
+        Object rawJsonFragment = cache.getFragment(collection.getPath());
         if (rawJsonFragment == null) {
-          for (JsonBranch child : collection.getChildren()) {
+          for (DataElement child : collection.getChildren()) {
             if (child.isActive() && !schema.getNoLanguageFields().contains(child.getLabel())) {
               Map<String, BasicCounter> languages = new TreeMap<>();
               increase(languages, "_1");
@@ -50,10 +50,10 @@ public class Language {
           List<Object> jsonFragments = Converter.jsonObjectToList(rawJsonFragment, schema);
           for (int i = 0, len = jsonFragments.size(); i < len; i++) {
             Object jsonFragment = jsonFragments.get(i);
-            for (JsonBranch child : collection.getChildren()) {
+            for (DataElement child : collection.getChildren()) {
               if (child.isActive() && !schema.getNoLanguageFields().contains(child.getLabel())) {
                 var address = String.format("%s/%d/%s",
-                  collection.getJsonPath(), i, child.getJsonPath());
+                  collection.getPath(), i, child.getPath());
                 extractLanguageTags(jsonFragment, child, address);
               }
             }
@@ -65,9 +65,9 @@ public class Language {
   }
 
   private void extractLanguageTags(Object jsonFragment,
-                                   JsonBranch jsonBranch,
+                                   DataElement dataElement,
                                    String address) {
-    List<EdmFieldInstance> values = cache.get(address, jsonBranch.getJsonPath(), jsonFragment);
+    List<EdmFieldInstance> values = cache.get(address, dataElement.getPath(), jsonFragment);
     Map<String, BasicCounter> languages = new TreeMap<>();
     if (values != null && !values.isEmpty()) {
       for (EdmFieldInstance field : values) {
@@ -84,7 +84,7 @@ public class Language {
     } else {
       increase(languages, "_1");
     }
-    updateMaps(jsonBranch.getLabel(), transformLanguages(languages));
+    updateMaps(dataElement.getLabel(), transformLanguages(languages));
   }
 
   private void increase(Map<String, BasicCounter> languages, String key) {

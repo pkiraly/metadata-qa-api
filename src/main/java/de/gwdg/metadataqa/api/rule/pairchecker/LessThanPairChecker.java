@@ -1,7 +1,7 @@
 package de.gwdg.metadataqa.api.rule.pairchecker;
 
 import de.gwdg.metadataqa.api.counter.FieldCounter;
-import de.gwdg.metadataqa.api.json.JsonBranch;
+import de.gwdg.metadataqa.api.json.DataElement;
 import de.gwdg.metadataqa.api.model.XmlFieldInstance;
 import de.gwdg.metadataqa.api.model.pathcache.PathCache;
 import de.gwdg.metadataqa.api.rule.RuleCheckerOutput;
@@ -34,7 +34,7 @@ public class LessThanPairChecker extends PropertyPairChecker {
   }
   private static final Pattern isNumericPattern = Pattern.compile("^\\d+(\\.\\d+)?$");
 
-  public LessThanPairChecker(JsonBranch field1, JsonBranch field2, TYPE type) {
+  public LessThanPairChecker(DataElement field1, DataElement field2, TYPE type) {
     super(field1, field2, type.prefix);
     this.type = type;
   }
@@ -46,8 +46,8 @@ public class LessThanPairChecker extends PropertyPairChecker {
 
     var allPassed = true;
     var isNA = false;
-    List<XmlFieldInstance> instances1 = cache.get(field1.getAbsoluteJsonPath().replace("[*]", ""));
-    List<XmlFieldInstance> instances2 = cache.get(field2.getAbsoluteJsonPath().replace("[*]", ""));
+    List<XmlFieldInstance> instances1 = cache.get(field1.getAbsolutePath().replace("[*]", ""));
+    List<XmlFieldInstance> instances2 = cache.get(field2.getAbsolutePath().replace("[*]", ""));
     if (instances1 != null && !instances1.isEmpty() && instances2 != null && !instances2.isEmpty()) {
       for (XmlFieldInstance instance1 : instances1) {
         if (instance1.hasValue()) {

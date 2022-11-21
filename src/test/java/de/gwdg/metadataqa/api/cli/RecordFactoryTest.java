@@ -6,7 +6,7 @@ import de.gwdg.metadataqa.api.configuration.MeasurementConfiguration;
 import de.gwdg.metadataqa.api.interfaces.MetricResult;
 import de.gwdg.metadataqa.api.io.reader.RecordReader;
 import de.gwdg.metadataqa.api.io.writer.ResultWriter;
-import de.gwdg.metadataqa.api.json.JsonBranch;
+import de.gwdg.metadataqa.api.json.DataElement;
 import de.gwdg.metadataqa.api.schema.BaseSchema;
 import de.gwdg.metadataqa.api.schema.Format;
 import de.gwdg.metadataqa.api.schema.Schema;
@@ -140,7 +140,7 @@ public class RecordFactoryTest {
   private Schema getSchema(Format format) {
     return new BaseSchema()
       .setFormat(format)
-      .addField(new JsonBranch("url").setExtractable())
-      .addField(new JsonBranch("name").setExtractable());
+      .addField(new DataElement("url").setExtractable())
+      .addField(new DataElement("name").setExtractable());
   }
 }

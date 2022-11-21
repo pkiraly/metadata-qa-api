@@ -8,9 +8,8 @@ import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 
-import de.gwdg.metadataqa.api.json.JsonBranch;
+import de.gwdg.metadataqa.api.json.DataElement;
 import de.gwdg.metadataqa.api.schema.Schema;
 import de.gwdg.metadataqa.api.util.Converter;
 
@@ -63,11 +62,11 @@ public class TfIdfExtractor {
     var path = String.format("$.termVectors.['%s']", recordId);
     Map value = (LinkedHashMap) JsonPath.read(document, path);
 
-    for (JsonBranch jsonBranch : schema.getIndexFields()) {
+    for (DataElement dataElement : schema.getIndexFields()) {
       if (doCollectTerms) {
-        termsCollection.put(jsonBranch.getJsonPath(), new ArrayList<>());
+        termsCollection.put(dataElement.getPath(), new ArrayList<>());
       }
-      String solrField = jsonBranch.getIndexField();
+      String solrField = dataElement.getIndexField();
       double sum = 0;
       double count = 0;
       if (value.containsKey(solrField)) {
@@ -79,15 +78,15 @@ public class TfIdfExtractor {
           if (doCollectTerms) {
             int tf = Converter.asInteger(termInfo.get("tf"));
             int df = Converter.asInteger(termInfo.get("df"));
-            termsCollection.get(jsonBranch.getLabel()).add(new TfIdf(term, tf, df, tfIdf));
+            termsCollection.get(dataElement.getLabel()).add(new TfIdf(term, tf, df, tfIdf));
           }
           sum += tfIdf;
           count++;
         }
       }
       double avg = count > 0 ? sum / count : 0;
-      results.put(jsonBranch.getLabel() + ":sum", sum);
-      results.put(jsonBranch.getLabel() + ":avg", avg);
+      results.put(dataElement.getLabel() + ":sum", sum);
+      results.put(dataElement.getLabel() + ":avg", avg);
     }
     return results;
   }

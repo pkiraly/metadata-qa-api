@@ -3,7 +3,6 @@ package de.gwdg.metadataqa.api.util;
 import com.opencsv.CSVParser;
 import com.opencsv.CSVWriter;
 import com.opencsv.ICSVParser;
-import org.apache.commons.lang3.StringUtils;
 
 import java.io.IOException;
 import java.io.Serializable;

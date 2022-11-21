@@ -1,7 +1,7 @@
 package de.gwdg.metadataqa.api.problemcatalog.skos;
 
 import de.gwdg.metadataqa.api.counter.FieldCounter;
-import de.gwdg.metadataqa.api.json.JsonBranch;
+import de.gwdg.metadataqa.api.json.DataElement;
 import de.gwdg.metadataqa.api.model.EdmFieldInstance;
 import de.gwdg.metadataqa.api.model.pathcache.PathCache;
 import de.gwdg.metadataqa.api.problemcatalog.ProblemCatalog;
@@ -40,8 +40,8 @@ public class AmbiguousPrefLabel extends ProblemDetector implements Serializable 
   public void update(PathCache cache, FieldCounter<Double> results) {
     var value = 0;
     for (String label : LABELS) {
-      JsonBranch branch = ((Schema) schema).getPathByLabel(label);
-      String parentPath = branch.getParent().getJsonPath();
+      DataElement branch = ((Schema) schema).getPathByLabel(label);
+      String parentPath = branch.getParent().getPath();
       Object rawEntityFragment = cache.getFragment(parentPath);
       if (rawEntityFragment != null) {
         List<Object> entities = Converter.jsonObjectToList(rawEntityFragment, (Schema) schema);
@@ -53,8 +53,8 @@ public class AmbiguousPrefLabel extends ProblemDetector implements Serializable 
     results.put(NAME, (double) value);
   }
 
-  private int countPerEntity(int entityCounter, JsonBranch branch, PathCache cache) {
-    List<EdmFieldInstance> subjects = cache.get(branch.getAbsoluteJsonPath(entityCounter));
+  private int countPerEntity(int entityCounter, DataElement branch, PathCache cache) {
+    List<EdmFieldInstance> subjects = cache.get(branch.getAbsolutePath(entityCounter));
     Map<String, Integer> labelCounter = countLabelsPerFields(subjects);
     return countAmbiguousPrefLabels(labelCounter);
   }

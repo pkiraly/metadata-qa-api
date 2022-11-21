@@ -1,7 +1,7 @@
 package de.gwdg.metadataqa.api.util;
 
 import de.gwdg.metadataqa.api.calculator.SkippedEntryChecker;
-import de.gwdg.metadataqa.api.json.JsonBranch;
+import de.gwdg.metadataqa.api.json.DataElement;
 import de.gwdg.metadataqa.api.model.pathcache.PathCache;
 import de.gwdg.metadataqa.api.model.XmlFieldInstance;
 import java.io.Serializable;
@@ -29,15 +29,15 @@ public class SkippedEntitySelector<T extends XmlFieldInstance> implements Serial
   }
 
   public boolean isCollectionSkippable(List<String> skippableIds,
-                                       JsonBranch collectionBranch,
+                                       DataElement collectionBranch,
                                        int i,
                                        PathCache<T> cache,
                                        Object jsonFragment) {
     var skippable = false;
-    JsonBranch identifierPath = collectionBranch.getIdentifier();
+    DataElement identifierPath = collectionBranch.getIdentifier();
     if (!skippableIds.isEmpty() && identifierPath != null) {
-      var address = String.format("%s/%d/%s", collectionBranch.getJsonPath(), i, identifierPath.getJsonPath());
-      List<T> values = cache.get(address, identifierPath.getJsonPath(), jsonFragment);
+      var address = String.format("%s/%d/%s", collectionBranch.getPath(), i, identifierPath.getPath());
+      List<T> values = cache.get(address, identifierPath.getPath(), jsonFragment);
       var id = (skippedEntryChecker != null)
             ? skippedEntryChecker.extractId(values.get(0))
             : values.get(0).getValue();

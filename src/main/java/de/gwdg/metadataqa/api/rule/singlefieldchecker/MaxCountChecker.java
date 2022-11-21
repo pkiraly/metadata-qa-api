@@ -1,7 +1,7 @@
 package de.gwdg.metadataqa.api.rule.singlefieldchecker;
 
 import de.gwdg.metadataqa.api.counter.FieldCounter;
-import de.gwdg.metadataqa.api.json.JsonBranch;
+import de.gwdg.metadataqa.api.json.DataElement;
 import de.gwdg.metadataqa.api.model.pathcache.PathCache;
 import de.gwdg.metadataqa.api.rule.RuleCheckerOutput;
 import de.gwdg.metadataqa.api.rule.RuleCheckingOutputStatus;
@@ -15,17 +15,17 @@ public class MaxCountChecker extends SingleFieldChecker {
   private boolean allowEmptyInstances = false;
   protected Integer maxCount;
 
-  public MaxCountChecker(JsonBranch field, int maxCount) {
+  public MaxCountChecker(DataElement field, int maxCount) {
     this(field, field.getLabel(), maxCount);
   }
 
-  public MaxCountChecker(JsonBranch field, int maxCount, boolean allowEmptyInstances) {
+  public MaxCountChecker(DataElement field, int maxCount, boolean allowEmptyInstances) {
     this(field, field.getLabel(), maxCount);
     this.allowEmptyInstances = allowEmptyInstances;
   }
 
 
-  public MaxCountChecker(JsonBranch field, String header, int maxCount) {
+  public MaxCountChecker(DataElement field, String header, int maxCount) {
     super(field, header + ":" + PREFIX);
     this.maxCount = maxCount;
   }

@@ -5,7 +5,7 @@ import com.opencsv.CSVReaderHeaderAware;
 import com.opencsv.exceptions.CsvValidationException;
 import de.gwdg.metadataqa.api.configuration.MeasurementConfiguration;
 import de.gwdg.metadataqa.api.interfaces.MetricResult;
-import de.gwdg.metadataqa.api.json.JsonBranch;
+import de.gwdg.metadataqa.api.json.DataElement;
 import de.gwdg.metadataqa.api.model.Category;
 import de.gwdg.metadataqa.api.schema.*;
 import de.gwdg.metadataqa.api.schema.edm.EdmOaiPmhJsonSchema;
@@ -361,23 +361,23 @@ public class CalculatorFacadeTest {
   private CalculatorFacade createCalculatorFacadeForCsv() {
     Schema schema = new BaseSchema()
       .setFormat(Format.CSV)
-      .addField(new JsonBranch("url").setCategories(Category.MANDATORY).setExtractable())
-      .addField(new JsonBranch("name"))
-      .addField(new JsonBranch("alternateName"))
-      .addField(new JsonBranch("description"))
-      .addField(new JsonBranch("variablesMeasured"))
-      .addField(new JsonBranch("measurementTechnique"))
-      .addField(new JsonBranch("sameAs"))
-      .addField(new JsonBranch("doi"))
-      .addField(new JsonBranch("identifier"))
-      .addField(new JsonBranch("author"))
-      .addField(new JsonBranch("isAccessibleForFree"))
-      .addField(new JsonBranch("dateModified"))
-      .addField(new JsonBranch("distribution"))
-      .addField(new JsonBranch("spatialCoverage"))
-      .addField(new JsonBranch("provider"))
-      .addField(new JsonBranch("funder"))
-      .addField(new JsonBranch("temporalCoverage"));
+      .addField(new DataElement("url").setCategories(Category.MANDATORY).setExtractable())
+      .addField(new DataElement("name"))
+      .addField(new DataElement("alternateName"))
+      .addField(new DataElement("description"))
+      .addField(new DataElement("variablesMeasured"))
+      .addField(new DataElement("measurementTechnique"))
+      .addField(new DataElement("sameAs"))
+      .addField(new DataElement("doi"))
+      .addField(new DataElement("identifier"))
+      .addField(new DataElement("author"))
+      .addField(new DataElement("isAccessibleForFree"))
+      .addField(new DataElement("dateModified"))
+      .addField(new DataElement("distribution"))
+      .addField(new DataElement("spatialCoverage"))
+      .addField(new DataElement("provider"))
+      .addField(new DataElement("funder"))
+      .addField(new DataElement("temporalCoverage"));
 
     MeasurementConfiguration config = new MeasurementConfiguration()
       .enableCompletenessMeasurement()

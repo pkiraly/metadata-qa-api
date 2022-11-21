@@ -2,7 +2,7 @@ package de.gwdg.metadataqa.api.io.reader;
 
 import de.gwdg.metadataqa.api.interfaces.MetricResult;
 import de.gwdg.metadataqa.api.io.IOTestBase;
-import de.gwdg.metadataqa.api.json.JsonBranch;
+import de.gwdg.metadataqa.api.json.DataElement;
 import de.gwdg.metadataqa.api.schema.BaseSchema;
 import de.gwdg.metadataqa.api.schema.Format;
 import de.gwdg.metadataqa.api.schema.Schema;
@@ -51,8 +51,8 @@ public class XMLRecordReaderTest extends IOTestBase {
   protected Schema getSchema(Format format) {
     Schema schema = new BaseSchema()
       .setFormat(format)
-      .addField(new JsonBranch("record/url").setExtractable())
-      .addField(new JsonBranch("record/name").setExtractable());
+      .addField(new DataElement("record/url").setExtractable())
+      .addField(new DataElement("record/name").setExtractable());
     return schema;
   }
 }

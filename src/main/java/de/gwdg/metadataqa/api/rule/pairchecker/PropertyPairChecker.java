@@ -1,15 +1,15 @@
 package de.gwdg.metadataqa.api.rule.pairchecker;
 
-import de.gwdg.metadataqa.api.json.JsonBranch;
+import de.gwdg.metadataqa.api.json.DataElement;
 import de.gwdg.metadataqa.api.rule.BaseRuleChecker;
 
 public abstract class PropertyPairChecker extends BaseRuleChecker {
 
   private static final long serialVersionUID = -6579708841667005135L;
-  protected JsonBranch field1;
-  protected JsonBranch field2;
+  protected DataElement field1;
+  protected DataElement field2;
 
-  protected PropertyPairChecker(JsonBranch field1, JsonBranch field2, String prefix) {
+  protected PropertyPairChecker(DataElement field1, DataElement field2, String prefix) {
     if (field1 == null)
       throw new IllegalArgumentException("field1 should not be null");
     if (field2 == null)

@@ -1,7 +1,7 @@
 package de.gwdg.metadataqa.api.rule.singlefieldchecker;
 
 import de.gwdg.metadataqa.api.counter.FieldCounter;
-import de.gwdg.metadataqa.api.json.JsonBranch;
+import de.gwdg.metadataqa.api.json.DataElement;
 import de.gwdg.metadataqa.api.model.XmlFieldInstance;
 import de.gwdg.metadataqa.api.model.pathcache.PathCache;
 import de.gwdg.metadataqa.api.rule.RuleCheckerOutput;
@@ -22,11 +22,11 @@ public class ImageDimensionChecker extends SingleFieldChecker {
   public static final String PREFIX = "imageDimension";
   protected Dimension dimensionRule;
 
-  public ImageDimensionChecker(JsonBranch field, Dimension dimension) {
+  public ImageDimensionChecker(DataElement field, Dimension dimension) {
     this(field, field.getLabel(), dimension);
   }
 
-  public ImageDimensionChecker(JsonBranch field, String header, Dimension dimension) {
+  public ImageDimensionChecker(DataElement field, String header, Dimension dimension) {
     super(field, header + ":" + PREFIX);
     this.dimensionRule = dimension;
   }
@@ -38,7 +38,7 @@ public class ImageDimensionChecker extends SingleFieldChecker {
 
     var allPassed = true;
     var isNA = true;
-    List<XmlFieldInstance> instances = cache.get(field.getJsonPath());
+    List<XmlFieldInstance> instances = cache.get(field.getPath());
     if (instances != null && !instances.isEmpty()) {
       for (XmlFieldInstance instance : instances) {
         if (instance.hasValue()) {

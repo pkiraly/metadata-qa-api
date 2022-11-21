@@ -1,7 +1,7 @@
 package de.gwdg.metadataqa.api.schema.edm;
 
 import de.gwdg.metadataqa.api.json.FieldGroup;
-import de.gwdg.metadataqa.api.json.JsonBranch;
+import de.gwdg.metadataqa.api.json.DataElement;
 import de.gwdg.metadataqa.api.schema.Format;
 
 import java.io.Serializable;
@@ -39,237 +39,237 @@ public class EdmFullBeanSchema extends EdmSchema implements Serializable {
     titlePath = "$.['proxies'][?(@['europeanaProxy'] == false)]['dcTitle']";
     descriptionPath = "$.['proxies'][?(@['europeanaProxy'] == false)]['dcDescription']";
 
-    var providedCHO = new JsonBranch("ProvidedCHO", "$.['providedCHOs'][0]");
+    var providedCHO = new DataElement("ProvidedCHO", "$.['providedCHOs'][0]");
     providedCHO.setCollection(true);
     addPath(providedCHO);
 
-    var providedCHOIdentifier = new JsonBranch("ProvidedCHO/rdf:about",
+    var providedCHOIdentifier = new DataElement("ProvidedCHO/rdf:about",
       providedCHO, ABOUT)
       .setCategories(MANDATORY);
     providedCHO.setIdentifier(providedCHOIdentifier);
     addPath(providedCHOIdentifier);
 
-    var proxy = new JsonBranch("Proxy", "$.['proxies'][?(@['europeanaProxy'] == false)]");
+    var proxy = new DataElement("Proxy", "$.['proxies'][?(@['europeanaProxy'] == false)]");
     proxy.setCollection(true);
     addPath(proxy);
 
-    var proxyIdentifier = new JsonBranch("Proxy/rdf:about", proxy, ABOUT);
+    var proxyIdentifier = new DataElement("Proxy/rdf:about", proxy, ABOUT);
     proxy.setIdentifier(proxyIdentifier);
     addPath(proxyIdentifier);
 
-    addPath(new JsonBranch("Proxy/dc:title", proxy, "$.['dcTitle']")
+    addPath(new DataElement("Proxy/dc:title", proxy, "$.['dcTitle']")
       .setCategories(DESCRIPTIVENESS, SEARCHABILITY, IDENTIFICATION, MULTILINGUALITY)
       .setIndexField("dc_title_txt"));
-    addPath(new JsonBranch("Proxy/dcterms:alternative", proxy, "$.['dctermsAlternative']")
+    addPath(new DataElement("Proxy/dcterms:alternative", proxy, "$.['dctermsAlternative']")
       .setCategories(DESCRIPTIVENESS, SEARCHABILITY, IDENTIFICATION, MULTILINGUALITY)
       .setIndexField("dcterms_alternative_txt"));
-    addPath(new JsonBranch("Proxy/dc:description", proxy, "$.['dcDescription']")
+    addPath(new DataElement("Proxy/dc:description", proxy, "$.['dcDescription']")
       .setCategories(DESCRIPTIVENESS, SEARCHABILITY, CONTEXTUALIZATION, IDENTIFICATION, MULTILINGUALITY)
       .setIndexField("dc_description_txt"));
-    addPath(new JsonBranch("Proxy/dc:creator", proxy, "$.['dcCreator']")
+    addPath(new DataElement("Proxy/dc:creator", proxy, "$.['dcCreator']")
       .setCategories(DESCRIPTIVENESS, SEARCHABILITY, CONTEXTUALIZATION, BROWSING));
-    addPath(new JsonBranch("Proxy/dc:publisher", proxy, "$.['dcPublisher']")
+    addPath(new DataElement("Proxy/dc:publisher", proxy, "$.['dcPublisher']")
       .setCategories(SEARCHABILITY, REUSABILITY));
-    addPath(new JsonBranch("Proxy/dc:contributor", proxy, "$.['dcContributor']")
+    addPath(new DataElement("Proxy/dc:contributor", proxy, "$.['dcContributor']")
       .setCategories(SEARCHABILITY));
-    addPath(new JsonBranch("Proxy/dc:type", proxy, "$.['dcType']")
+    addPath(new DataElement("Proxy/dc:type", proxy, "$.['dcType']")
       .setCategories(SEARCHABILITY, CONTEXTUALIZATION, IDENTIFICATION, BROWSING));
-    addPath(new JsonBranch("Proxy/dc:identifier", proxy, "$.['dcIdentifier']")
+    addPath(new DataElement("Proxy/dc:identifier", proxy, "$.['dcIdentifier']")
       .setCategories(IDENTIFICATION));
-    addPath(new JsonBranch("Proxy/dc:language", proxy, "$.['dcLanguage']")
+    addPath(new DataElement("Proxy/dc:language", proxy, "$.['dcLanguage']")
       .setCategories(DESCRIPTIVENESS, MULTILINGUALITY));
-    addPath(new JsonBranch("Proxy/dc:coverage", proxy, "$.['dcCoverage']")
+    addPath(new DataElement("Proxy/dc:coverage", proxy, "$.['dcCoverage']")
       .setCategories(SEARCHABILITY, CONTEXTUALIZATION, BROWSING));
-    addPath(new JsonBranch("Proxy/dcterms:temporal", proxy, "$.['dctermsTemporal']")
+    addPath(new DataElement("Proxy/dcterms:temporal", proxy, "$.['dctermsTemporal']")
       .setCategories(SEARCHABILITY, CONTEXTUALIZATION, BROWSING));
-    addPath(new JsonBranch("Proxy/dcterms:spatial", proxy, "$.['dctermsSpatial']")
+    addPath(new DataElement("Proxy/dcterms:spatial", proxy, "$.['dctermsSpatial']")
       .setCategories(SEARCHABILITY, CONTEXTUALIZATION, BROWSING));
-    addPath(new JsonBranch("Proxy/dc:subject", proxy, "$.['dcSubject']")
+    addPath(new DataElement("Proxy/dc:subject", proxy, "$.['dcSubject']")
       .setCategories(DESCRIPTIVENESS, SEARCHABILITY, CONTEXTUALIZATION, MULTILINGUALITY));
-    addPath(new JsonBranch("Proxy/dc:date", proxy, "$.['dcDate']")
+    addPath(new DataElement("Proxy/dc:date", proxy, "$.['dcDate']")
       .setCategories(IDENTIFICATION, BROWSING, REUSABILITY));
-    addPath(new JsonBranch("Proxy/dcterms:created", proxy, "$.['dctermsCreated']")
+    addPath(new DataElement("Proxy/dcterms:created", proxy, "$.['dctermsCreated']")
       .setCategories(IDENTIFICATION, REUSABILITY));
-    addPath(new JsonBranch("Proxy/dcterms:issued", proxy, "$.['dctermsIssued']")
+    addPath(new DataElement("Proxy/dcterms:issued", proxy, "$.['dctermsIssued']")
       .setCategories(IDENTIFICATION, REUSABILITY));
-    addPath(new JsonBranch("Proxy/dcterms:extent", proxy, "$.['dctermsExtent']")
+    addPath(new DataElement("Proxy/dcterms:extent", proxy, "$.['dctermsExtent']")
       .setCategories(DESCRIPTIVENESS, REUSABILITY));
-    addPath(new JsonBranch("Proxy/dcterms:medium", proxy, "$.['dctermsMedium']")
+    addPath(new DataElement("Proxy/dcterms:medium", proxy, "$.['dctermsMedium']")
       .setCategories(DESCRIPTIVENESS, REUSABILITY));
-    addPath(new JsonBranch("Proxy/dcterms:provenance", proxy, "$.['dctermsProvenance']")
+    addPath(new DataElement("Proxy/dcterms:provenance", proxy, "$.['dctermsProvenance']")
       .setCategories(DESCRIPTIVENESS));
-    addPath(new JsonBranch("Proxy/dcterms:hasPart", proxy, "$.['dctermsHasPart']")
+    addPath(new DataElement("Proxy/dcterms:hasPart", proxy, "$.['dctermsHasPart']")
       .setCategories(SEARCHABILITY, CONTEXTUALIZATION, BROWSING));
-    addPath(new JsonBranch("Proxy/dcterms:isPartOf", proxy, "$.['dctermsIsPartOf']")
+    addPath(new DataElement("Proxy/dcterms:isPartOf", proxy, "$.['dctermsIsPartOf']")
       .setCategories(SEARCHABILITY, CONTEXTUALIZATION, BROWSING));
-    addPath(new JsonBranch("Proxy/dc:format", proxy, "$.['dcFormat']")
+    addPath(new DataElement("Proxy/dc:format", proxy, "$.['dcFormat']")
       .setCategories(DESCRIPTIVENESS, REUSABILITY));
-    addPath(new JsonBranch("Proxy/dc:source", proxy, "$.['dcSource']")
+    addPath(new DataElement("Proxy/dc:source", proxy, "$.['dcSource']")
       .setCategories(DESCRIPTIVENESS));
-    addPath(new JsonBranch("Proxy/dc:rights", proxy, "$.['dcRights']")
+    addPath(new DataElement("Proxy/dc:rights", proxy, "$.['dcRights']")
       .setCategories(REUSABILITY));
-    addPath(new JsonBranch("Proxy/dc:relation", proxy, "$.['dcRelation']")
+    addPath(new DataElement("Proxy/dc:relation", proxy, "$.['dcRelation']")
       .setCategories(SEARCHABILITY, CONTEXTUALIZATION, BROWSING));
-    addPath(new JsonBranch("Proxy/edm:isNextInSequence", proxy, "$.['edmIsNextInSequence']")
+    addPath(new DataElement("Proxy/edm:isNextInSequence", proxy, "$.['edmIsNextInSequence']")
       .setCategories(SEARCHABILITY, CONTEXTUALIZATION, BROWSING));
-    addPath(new JsonBranch("Proxy/edm:type", proxy, "$.['edmType']")
+    addPath(new DataElement("Proxy/edm:type", proxy, "$.['edmType']")
       .setCategories(SEARCHABILITY, BROWSING));
     /*
-    addPath(new JsonBranch("Proxy/edm:rights", proxy, "$.['edm:rights']",
+    addPath(new DataElement("Proxy/edm:rights", proxy, "$.['edm:rights']",
       Category.MANDATORY, Category.REUSABILITY));
     */
 
-    addPath(new JsonBranch("Proxy/edm:europeanaProxy", proxy, "$.['europeanaProxy']"));
-    addPath(new JsonBranch("Proxy/edm:year", proxy, "$.['year']"));
-    addPath(new JsonBranch("Proxy/edm:userTag", proxy, "$.['userTags']"));
-    addPath(new JsonBranch("Proxy/ore:proxyIn", proxy, "$.['proxyIn']"));
-    addPath(new JsonBranch("Proxy/ore:proxyFor", proxy, "$.['proxyFor']"));
-    addPath(new JsonBranch("Proxy/dcterms:conformsTo", proxy, "$.['dctermsConformsTo']"));
-    addPath(new JsonBranch("Proxy/dcterms:hasFormat", proxy, "$.['dctermsHasFormat']"));
-    addPath(new JsonBranch("Proxy/dcterms:hasVersion", proxy, "$.['dctermsHasVersion']"));
-    addPath(new JsonBranch("Proxy/dcterms:isFormatOf", proxy, "$.['dctermsIsFormatOf']"));
-    addPath(new JsonBranch("Proxy/dcterms:isReferencedBy", proxy, "$.['dctermsIsReferencedBy']"));
-    addPath(new JsonBranch("Proxy/dcterms:isReplacedBy", proxy, "$.['dctermsIsReplacedBy']"));
-    addPath(new JsonBranch("Proxy/dcterms:isRequiredBy", proxy, "$.['dctermsIsRequiredBy']"));
-    addPath(new JsonBranch("Proxy/dcterms:isVersionOf", proxy, "$.['dctermsIsVersionOf']"));
-    addPath(new JsonBranch("Proxy/dcterms:references", proxy, "$.['dctermsReferences']"));
-    addPath(new JsonBranch("Proxy/dcterms:replaces", proxy, "$.['dctermsReplaces']"));
-    addPath(new JsonBranch("Proxy/dcterms:requires", proxy, "$.['dctermsRequires']"));
-    addPath(new JsonBranch("Proxy/dcterms:tableOfContents", proxy, "$.['dctermsTOC']"));
-    addPath(new JsonBranch("Proxy/edm:currentLocation", proxy, "$.['edmCurrentLocation']"));
-    addPath(new JsonBranch("Proxy/edm:hasMet", proxy, "$.['edmHasMet']"));
-    addPath(new JsonBranch("Proxy/edm:hasType", proxy, "$.['edmHasType']"));
-    addPath(new JsonBranch("Proxy/edm:incorporates", proxy, "$.['edmIncorporates']"));
-    addPath(new JsonBranch("Proxy/edm:isDerivativeOf", proxy, "$.['edmIsDerivativeOf']"));
-    addPath(new JsonBranch("Proxy/edm:isRelatedTo", proxy, "$.['edmIsRelatedTo']"));
-    addPath(new JsonBranch("Proxy/edm:isRepresentationOf", proxy, "$.['edmIsRepresentationOf']"));
-    addPath(new JsonBranch("Proxy/edm:isSimilarTo", proxy, "$.['edmIsSimilarTo']"));
-    addPath(new JsonBranch("Proxy/edm:isSuccessorOf", proxy, "$.['edmIsSuccessorOf']"));
-    addPath(new JsonBranch("Proxy/edm:realizes", proxy, "$.['edmRealizes']"));
-    addPath(new JsonBranch("Proxy/edm:wasPresentAt", proxy, "$.['edmWasPresentAt']"));
+    addPath(new DataElement("Proxy/edm:europeanaProxy", proxy, "$.['europeanaProxy']"));
+    addPath(new DataElement("Proxy/edm:year", proxy, "$.['year']"));
+    addPath(new DataElement("Proxy/edm:userTag", proxy, "$.['userTags']"));
+    addPath(new DataElement("Proxy/ore:proxyIn", proxy, "$.['proxyIn']"));
+    addPath(new DataElement("Proxy/ore:proxyFor", proxy, "$.['proxyFor']"));
+    addPath(new DataElement("Proxy/dcterms:conformsTo", proxy, "$.['dctermsConformsTo']"));
+    addPath(new DataElement("Proxy/dcterms:hasFormat", proxy, "$.['dctermsHasFormat']"));
+    addPath(new DataElement("Proxy/dcterms:hasVersion", proxy, "$.['dctermsHasVersion']"));
+    addPath(new DataElement("Proxy/dcterms:isFormatOf", proxy, "$.['dctermsIsFormatOf']"));
+    addPath(new DataElement("Proxy/dcterms:isReferencedBy", proxy, "$.['dctermsIsReferencedBy']"));
+    addPath(new DataElement("Proxy/dcterms:isReplacedBy", proxy, "$.['dctermsIsReplacedBy']"));
+    addPath(new DataElement("Proxy/dcterms:isRequiredBy", proxy, "$.['dctermsIsRequiredBy']"));
+    addPath(new DataElement("Proxy/dcterms:isVersionOf", proxy, "$.['dctermsIsVersionOf']"));
+    addPath(new DataElement("Proxy/dcterms:references", proxy, "$.['dctermsReferences']"));
+    addPath(new DataElement("Proxy/dcterms:replaces", proxy, "$.['dctermsReplaces']"));
+    addPath(new DataElement("Proxy/dcterms:requires", proxy, "$.['dctermsRequires']"));
+    addPath(new DataElement("Proxy/dcterms:tableOfContents", proxy, "$.['dctermsTOC']"));
+    addPath(new DataElement("Proxy/edm:currentLocation", proxy, "$.['edmCurrentLocation']"));
+    addPath(new DataElement("Proxy/edm:hasMet", proxy, "$.['edmHasMet']"));
+    addPath(new DataElement("Proxy/edm:hasType", proxy, "$.['edmHasType']"));
+    addPath(new DataElement("Proxy/edm:incorporates", proxy, "$.['edmIncorporates']"));
+    addPath(new DataElement("Proxy/edm:isDerivativeOf", proxy, "$.['edmIsDerivativeOf']"));
+    addPath(new DataElement("Proxy/edm:isRelatedTo", proxy, "$.['edmIsRelatedTo']"));
+    addPath(new DataElement("Proxy/edm:isRepresentationOf", proxy, "$.['edmIsRepresentationOf']"));
+    addPath(new DataElement("Proxy/edm:isSimilarTo", proxy, "$.['edmIsSimilarTo']"));
+    addPath(new DataElement("Proxy/edm:isSuccessorOf", proxy, "$.['edmIsSuccessorOf']"));
+    addPath(new DataElement("Proxy/edm:realizes", proxy, "$.['edmRealizes']"));
+    addPath(new DataElement("Proxy/edm:wasPresentAt", proxy, "$.['edmWasPresentAt']"));
 
-    var aggregation = new JsonBranch("Aggregation", "$.['aggregations'][0]");
+    var aggregation = new DataElement("Aggregation", "$.['aggregations'][0]");
     aggregation.setCollection(true);
     addPath(aggregation);
-    var aggregationIdentifier = new JsonBranch("Aggregation/rdf:about", aggregation, ABOUT);
+    var aggregationIdentifier = new DataElement("Aggregation/rdf:about", aggregation, ABOUT);
     addPath(aggregationIdentifier);
     aggregation.setIdentifier(aggregationIdentifier);
 
-    addPath(new JsonBranch("Aggregation/edm:rights", aggregation, "$.['edmRights']")
+    addPath(new DataElement("Aggregation/edm:rights", aggregation, "$.['edmRights']")
       .setCategories(MANDATORY, REUSABILITY));
-    addPath(new JsonBranch("Aggregation/edm:provider", aggregation, "$.['edmProvider']")
+    addPath(new DataElement("Aggregation/edm:provider", aggregation, "$.['edmProvider']")
       .setCategories(MANDATORY, SEARCHABILITY, IDENTIFICATION));
-    addPath(new JsonBranch("Aggregation/edm:dataProvider", aggregation, "$.['edmDataProvider']")
+    addPath(new DataElement("Aggregation/edm:dataProvider", aggregation, "$.['edmDataProvider']")
       .setCategories(MANDATORY, SEARCHABILITY, IDENTIFICATION));
-    addPath(new JsonBranch("Aggregation/edm:isShownAt", aggregation, "$.['edmIsShownAt']")
+    addPath(new DataElement("Aggregation/edm:isShownAt", aggregation, "$.['edmIsShownAt']")
       .setCategories(BROWSING, VIEWING));
-    addPath(new JsonBranch("Aggregation/edm:isShownBy", aggregation, "$.['edmIsShownBy']")
+    addPath(new DataElement("Aggregation/edm:isShownBy", aggregation, "$.['edmIsShownBy']")
       .setCategories(BROWSING, VIEWING, REUSABILITY));
-    addPath(new JsonBranch("Aggregation/edm:object", aggregation, "$.['edmObject']")
+    addPath(new DataElement("Aggregation/edm:object", aggregation, "$.['edmObject']")
       .setCategories(VIEWING, REUSABILITY));
-    addPath(new JsonBranch("Aggregation/edm:hasView", aggregation, "$.['hasView']")
+    addPath(new DataElement("Aggregation/edm:hasView", aggregation, "$.['hasView']")
       .setCategories(BROWSING, VIEWING));
-    addPath(new JsonBranch("Aggregation/dc:rights", aggregation, "$.['dcRights']"));
-    addPath(new JsonBranch("Aggregation/edm:ugc", aggregation, "$.['edmUgc']"));
-    addPath(new JsonBranch("Aggregation/edm:aggregatedCHO", aggregation, "$.['aggregatedCHO']"));
-    addPath(new JsonBranch("Aggregation/edm:intermediateProvider", aggregation, "$.['edmIntermediateProvider']"));
+    addPath(new DataElement("Aggregation/dc:rights", aggregation, "$.['dcRights']"));
+    addPath(new DataElement("Aggregation/edm:ugc", aggregation, "$.['edmUgc']"));
+    addPath(new DataElement("Aggregation/edm:aggregatedCHO", aggregation, "$.['aggregatedCHO']"));
+    addPath(new DataElement("Aggregation/edm:intermediateProvider", aggregation, "$.['edmIntermediateProvider']"));
 
-    var place = new JsonBranch("Place", "$.['places']");
+    var place = new DataElement("Place", "$.['places']");
     place.setCollection(true);
     addPath(place);
-    var placeIdentifier = new JsonBranch("Place/rdf:about", place, ABOUT);
+    var placeIdentifier = new DataElement("Place/rdf:about", place, ABOUT);
     addPath(placeIdentifier);
     place.setIdentifier(placeIdentifier);
 
-    addPath(new JsonBranch("Place/rdf:about", place, ABOUT));
-    addPath(new JsonBranch("Place/wgs84:lat", place, "$.['latitude']"));
-    addPath(new JsonBranch("Place/wgs84:long", place, "$.['longitude']"));
-    addPath(new JsonBranch("Place/wgs84:alt", place, "$.['altitude']"));
-    addPath(new JsonBranch("Place/dcterms:isPartOf", place, "$.['isPartOf']"));
-    addPath(new JsonBranch("Place/wgs84_pos:lat_long", place, "$.['position']"));
-    addPath(new JsonBranch("Place/dcterms:hasPart", place, "$.['dctermsHasPart']"));
-    addPath(new JsonBranch("Place/owl:sameAs", place, "$.['owlSameAs']"));
-    addPath(new JsonBranch("Place/skos:prefLabel", place, "$.['prefLabel']"));
-    addPath(new JsonBranch("Place/skos:altLabel", place, "$.['altLabel']"));
-    addPath(new JsonBranch("Place/skos:note", place, "$.['note']"));
+    addPath(new DataElement("Place/rdf:about", place, ABOUT));
+    addPath(new DataElement("Place/wgs84:lat", place, "$.['latitude']"));
+    addPath(new DataElement("Place/wgs84:long", place, "$.['longitude']"));
+    addPath(new DataElement("Place/wgs84:alt", place, "$.['altitude']"));
+    addPath(new DataElement("Place/dcterms:isPartOf", place, "$.['isPartOf']"));
+    addPath(new DataElement("Place/wgs84_pos:lat_long", place, "$.['position']"));
+    addPath(new DataElement("Place/dcterms:hasPart", place, "$.['dctermsHasPart']"));
+    addPath(new DataElement("Place/owl:sameAs", place, "$.['owlSameAs']"));
+    addPath(new DataElement("Place/skos:prefLabel", place, "$.['prefLabel']"));
+    addPath(new DataElement("Place/skos:altLabel", place, "$.['altLabel']"));
+    addPath(new DataElement("Place/skos:note", place, "$.['note']"));
 
-    var agent = new JsonBranch("Agent", "$.['agents']");
+    var agent = new DataElement("Agent", "$.['agents']");
     agent.setCollection(true);
     addPath(agent);
-    var agentIdentifier = new JsonBranch("Agent/rdf:about", agent, ABOUT);
+    var agentIdentifier = new DataElement("Agent/rdf:about", agent, ABOUT);
     addPath(agentIdentifier);
     agent.setIdentifier(agentIdentifier);
 
-    addPath(new JsonBranch("Agent/edm:begin", agent, "$.['begin']"));
-    addPath(new JsonBranch("Agent/edm:end", agent, "$.['end']"));
-    addPath(new JsonBranch("Agent/edm:hasMet", agent, "$.['edmHasMet']"));
-    addPath(new JsonBranch("Agent/edm:isRelatedTo", agent, "$.['edmIsRelatedTo']"));
-    addPath(new JsonBranch("Agent/owl:sameAs", agent, "$.['owlSameAs']"));
-    addPath(new JsonBranch("Agent/foaf:name", agent, "$.['foafName']"));
-    addPath(new JsonBranch("Agent/dc:date", agent, "$.['dcDate']"));
-    addPath(new JsonBranch("Agent/dc:identifier", agent, "$.['dcIdentifier']"));
-    addPath(new JsonBranch("Agent/rdaGr2:dateOfBirth", agent, "$.['rdaGr2DateOfBirth']"));
-    addPath(new JsonBranch("Agent/rdaGr2:placeOfBirth", agent, "$.['rdaGr2PlaceOfBirth']"));
-    addPath(new JsonBranch("Agent/rdaGr2:dateOfDeath", agent, "$.['rdaGr2DateOfDeath']"));
-    addPath(new JsonBranch("Agent/rdaGr2:placeOfDeath", agent, "$.['rdaGr2PlaceOfDeath']"));
-    addPath(new JsonBranch("Agent/rdaGr2:dateOfEstablishment", agent, "$.['rdaGr2DateOfEstablishment']"));
-    addPath(new JsonBranch("Agent/rdaGr2:dateOfTermination", agent, "$.['rdaGr2DateOfTermination']"));
-    addPath(new JsonBranch("Agent/rdaGr2:gender", agent, "$.['rdaGr2Gender']"));
-    addPath(new JsonBranch("Agent/rdaGr2:professionOrOccupation", agent, "$.['rdaGr2ProfessionOrOccupation']"));
-    addPath(new JsonBranch("Agent/rdaGr2:biographicalInformation", agent, "$.['rdaGr2BiographicalInformation']"));
-    addPath(new JsonBranch("Agent/skos:prefLabel", agent, "$.['prefLabel']"));
-    addPath(new JsonBranch("Agent/skos:altLabel", agent, "$.['altLabel']"));
-    addPath(new JsonBranch("Agent/skos:note", agent, "$.['note']"));
+    addPath(new DataElement("Agent/edm:begin", agent, "$.['begin']"));
+    addPath(new DataElement("Agent/edm:end", agent, "$.['end']"));
+    addPath(new DataElement("Agent/edm:hasMet", agent, "$.['edmHasMet']"));
+    addPath(new DataElement("Agent/edm:isRelatedTo", agent, "$.['edmIsRelatedTo']"));
+    addPath(new DataElement("Agent/owl:sameAs", agent, "$.['owlSameAs']"));
+    addPath(new DataElement("Agent/foaf:name", agent, "$.['foafName']"));
+    addPath(new DataElement("Agent/dc:date", agent, "$.['dcDate']"));
+    addPath(new DataElement("Agent/dc:identifier", agent, "$.['dcIdentifier']"));
+    addPath(new DataElement("Agent/rdaGr2:dateOfBirth", agent, "$.['rdaGr2DateOfBirth']"));
+    addPath(new DataElement("Agent/rdaGr2:placeOfBirth", agent, "$.['rdaGr2PlaceOfBirth']"));
+    addPath(new DataElement("Agent/rdaGr2:dateOfDeath", agent, "$.['rdaGr2DateOfDeath']"));
+    addPath(new DataElement("Agent/rdaGr2:placeOfDeath", agent, "$.['rdaGr2PlaceOfDeath']"));
+    addPath(new DataElement("Agent/rdaGr2:dateOfEstablishment", agent, "$.['rdaGr2DateOfEstablishment']"));
+    addPath(new DataElement("Agent/rdaGr2:dateOfTermination", agent, "$.['rdaGr2DateOfTermination']"));
+    addPath(new DataElement("Agent/rdaGr2:gender", agent, "$.['rdaGr2Gender']"));
+    addPath(new DataElement("Agent/rdaGr2:professionOrOccupation", agent, "$.['rdaGr2ProfessionOrOccupation']"));
+    addPath(new DataElement("Agent/rdaGr2:biographicalInformation", agent, "$.['rdaGr2BiographicalInformation']"));
+    addPath(new DataElement("Agent/skos:prefLabel", agent, "$.['prefLabel']"));
+    addPath(new DataElement("Agent/skos:altLabel", agent, "$.['altLabel']"));
+    addPath(new DataElement("Agent/skos:note", agent, "$.['note']"));
 
-    var timespan = new JsonBranch("Timespan", "$.['timespans']");
+    var timespan = new DataElement("Timespan", "$.['timespans']");
     timespan.setCollection(true);
     addPath(timespan);
 
-    var timespanIdentifier = new JsonBranch("Timespan/rdf:about", timespan, ABOUT);
+    var timespanIdentifier = new DataElement("Timespan/rdf:about", timespan, ABOUT);
     addPath(timespanIdentifier);
     timespan.setIdentifier(timespanIdentifier);
 
-    addPath(new JsonBranch("Timespan/rdf:about", timespan, ABOUT));
-    addPath(new JsonBranch("Timespan/edm:begin", timespan, "$.['begin']"));
-    addPath(new JsonBranch("Timespan/edm:end", timespan, "$.['end']"));
-    addPath(new JsonBranch("Timespan/dcterms:isPartOf", timespan, "$.['isPartOf']"));
-    addPath(new JsonBranch("Timespan/dcterms:hasPart", timespan, "$.['hasPart']"));
-    addPath(new JsonBranch("Timespan/edm:isNextInSequence", timespan, "$.['edm:isNextInSequence']"));
-    addPath(new JsonBranch("Timespan/owl:sameAs", timespan, "$.['owlSameAs']"));
-    addPath(new JsonBranch("Timespan/skos:prefLabel", timespan, "$.['prefLabel']"));
-    addPath(new JsonBranch("Timespan/skos:altLabel", timespan, "$.['altLabel']"));
-    addPath(new JsonBranch("Timespan/skos:note", timespan, "$.['note']"));
+    addPath(new DataElement("Timespan/rdf:about", timespan, ABOUT));
+    addPath(new DataElement("Timespan/edm:begin", timespan, "$.['begin']"));
+    addPath(new DataElement("Timespan/edm:end", timespan, "$.['end']"));
+    addPath(new DataElement("Timespan/dcterms:isPartOf", timespan, "$.['isPartOf']"));
+    addPath(new DataElement("Timespan/dcterms:hasPart", timespan, "$.['hasPart']"));
+    addPath(new DataElement("Timespan/edm:isNextInSequence", timespan, "$.['edm:isNextInSequence']"));
+    addPath(new DataElement("Timespan/owl:sameAs", timespan, "$.['owlSameAs']"));
+    addPath(new DataElement("Timespan/skos:prefLabel", timespan, "$.['prefLabel']"));
+    addPath(new DataElement("Timespan/skos:altLabel", timespan, "$.['altLabel']"));
+    addPath(new DataElement("Timespan/skos:note", timespan, "$.['note']"));
 
-    var concept = new JsonBranch("Concept", "$.['concepts']");
+    var concept = new DataElement("Concept", "$.['concepts']");
     concept.setCollection(true);
     addPath(concept);
 
-    var conceptIdentifier = new JsonBranch("Concept/rdf:about", concept, ABOUT);
+    var conceptIdentifier = new DataElement("Concept/rdf:about", concept, ABOUT);
     addPath(conceptIdentifier);
     concept.setIdentifier(conceptIdentifier);
 
-    addPath(new JsonBranch("Concept/rdf:about", concept, ABOUT));
-    addPath(new JsonBranch("Concept/skos:broader", concept, "$.['broader']"));
-    addPath(new JsonBranch("Concept/skos:narrower", concept, "$.['narrower']"));
-    addPath(new JsonBranch("Concept/skos:related", concept, "$.['related']"));
-    addPath(new JsonBranch("Concept/skos:broadMatch", concept, "$.['broadMatch']"));
-    addPath(new JsonBranch("Concept/skos:narrowMatch", concept, "$.['narrowMatch']"));
-    addPath(new JsonBranch("Concept/skos:relatedMatch", concept, "$.['relatedMatch']"));
-    addPath(new JsonBranch("Concept/skos:exactMatch", concept, "$.['exactMatch']"));
-    addPath(new JsonBranch("Concept/skos:closeMatch", concept, "$.['closeMatch']"));
-    addPath(new JsonBranch("Concept/skos:notation", concept, "$.['notation']"));
-    addPath(new JsonBranch("Concept/skos:inScheme", concept, "$.['inScheme']"));
-    addPath(new JsonBranch("Concept/skos:prefLabel", concept, "$.['prefLabel']"));
-    addPath(new JsonBranch("Concept/skos:altLabel", concept, "$.['altLabel']"));
-    addPath(new JsonBranch("Concept/skos:note", concept, "$.['note']"));
+    addPath(new DataElement("Concept/rdf:about", concept, ABOUT));
+    addPath(new DataElement("Concept/skos:broader", concept, "$.['broader']"));
+    addPath(new DataElement("Concept/skos:narrower", concept, "$.['narrower']"));
+    addPath(new DataElement("Concept/skos:related", concept, "$.['related']"));
+    addPath(new DataElement("Concept/skos:broadMatch", concept, "$.['broadMatch']"));
+    addPath(new DataElement("Concept/skos:narrowMatch", concept, "$.['narrowMatch']"));
+    addPath(new DataElement("Concept/skos:relatedMatch", concept, "$.['relatedMatch']"));
+    addPath(new DataElement("Concept/skos:exactMatch", concept, "$.['exactMatch']"));
+    addPath(new DataElement("Concept/skos:closeMatch", concept, "$.['closeMatch']"));
+    addPath(new DataElement("Concept/skos:notation", concept, "$.['notation']"));
+    addPath(new DataElement("Concept/skos:inScheme", concept, "$.['inScheme']"));
+    addPath(new DataElement("Concept/skos:prefLabel", concept, "$.['prefLabel']"));
+    addPath(new DataElement("Concept/skos:altLabel", concept, "$.['altLabel']"));
+    addPath(new DataElement("Concept/skos:note", concept, "$.['note']"));
 
-    var europeanaAggregation = new JsonBranch("EuropeanaAggregation", "$.['europeanaAggregation']")
+    var europeanaAggregation = new DataElement("EuropeanaAggregation", "$.['europeanaAggregation']")
       .setActive(false);
     europeanaAggregation.setCollection(true);
     addPath(europeanaAggregation);
-    addPath(new JsonBranch("EuropeanaAggregation/edm:country", europeanaAggregation, "$.['edmCountry']")
+    addPath(new DataElement("EuropeanaAggregation/edm:country", europeanaAggregation, "$.['edmCountry']")
       .setActive(false));
-    addPath(new JsonBranch("EuropeanaAggregation/edm:language", europeanaAggregation, "$.['edmLanguage']")
+    addPath(new DataElement("EuropeanaAggregation/edm:language", europeanaAggregation, "$.['edmLanguage']")
       .setActive(false));
 
     fieldGroups.add(
@@ -329,7 +329,7 @@ public class EdmFullBeanSchema extends EdmSchema implements Serializable {
   }
 
   @Override
-  public List<JsonBranch> getCollectionPaths() {
+  public List<DataElement> getCollectionPaths() {
     return new ArrayList(collectionPaths.values());
   }
 

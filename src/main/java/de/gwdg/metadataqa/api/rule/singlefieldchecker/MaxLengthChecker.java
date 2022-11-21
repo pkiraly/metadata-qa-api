@@ -1,7 +1,7 @@
 package de.gwdg.metadataqa.api.rule.singlefieldchecker;
 
 import de.gwdg.metadataqa.api.counter.FieldCounter;
-import de.gwdg.metadataqa.api.json.JsonBranch;
+import de.gwdg.metadataqa.api.json.DataElement;
 import de.gwdg.metadataqa.api.model.XmlFieldInstance;
 import de.gwdg.metadataqa.api.model.pathcache.PathCache;
 import de.gwdg.metadataqa.api.rule.RuleCheckerOutput;
@@ -16,11 +16,11 @@ public class MaxLengthChecker extends SingleFieldChecker {
   public static final String PREFIX = "maxLength";
   protected Integer maxLength;
 
-  public MaxLengthChecker(JsonBranch field, Integer maxLength) {
+  public MaxLengthChecker(DataElement field, Integer maxLength) {
     this(field, field.getLabel(), maxLength);
   }
 
-  public MaxLengthChecker(JsonBranch field, String header, Integer maxLength) {
+  public MaxLengthChecker(DataElement field, String header, Integer maxLength) {
     super(field, header + ":" + PREFIX);
     this.maxLength = maxLength;
   }
@@ -32,7 +32,7 @@ public class MaxLengthChecker extends SingleFieldChecker {
 
     var allPassed = true;
     var isNA = true;
-    List<XmlFieldInstance> instances = cache.get(field.getJsonPath());
+    List<XmlFieldInstance> instances = cache.get(field.getPath());
     if (instances != null && !instances.isEmpty()) {
       for (XmlFieldInstance instance : instances) {
         if (instance.hasValue()) {

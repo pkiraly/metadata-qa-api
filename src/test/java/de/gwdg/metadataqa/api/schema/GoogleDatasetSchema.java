@@ -1,7 +1,7 @@
 package de.gwdg.metadataqa.api.schema;
 
 import de.gwdg.metadataqa.api.json.FieldGroup;
-import de.gwdg.metadataqa.api.json.JsonBranch;
+import de.gwdg.metadataqa.api.json.DataElement;
 import de.gwdg.metadataqa.api.model.Category;
 import de.gwdg.metadataqa.api.rule.RuleChecker;
 
@@ -12,31 +12,31 @@ import java.util.Map;
 
 public class GoogleDatasetSchema implements Schema, CsvAwareSchema {
 
-  private static final Map<String, JsonBranch> PATHS = new LinkedHashMap<>();
-  private static final Map<String, JsonBranch> COLLECTION_PATHS = new LinkedHashMap<>();
-  private static final Map<String, JsonBranch> DIRECT_CHILDREN = new LinkedHashMap<>();
+  private static final Map<String, DataElement> PATHS = new LinkedHashMap<>();
+  private static final Map<String, DataElement> COLLECTION_PATHS = new LinkedHashMap<>();
+  private static final Map<String, DataElement> DIRECT_CHILDREN = new LinkedHashMap<>();
   private static Map<String, String> extractableFields = new LinkedHashMap<>();
   private static List<String> categories = null;
   private static List<RuleChecker> ruleCheckers = null;
 
   static {
-    addPath(new JsonBranch("url", "url").setCategories(Category.MANDATORY));
-    addPath(new JsonBranch("name", "name"));
-    addPath(new JsonBranch("alternateName", "alternateName"));
-    addPath(new JsonBranch("description", "description"));
-    addPath(new JsonBranch("variablesMeasured", "variablesMeasured"));
-    addPath(new JsonBranch("measurementTechnique", "measurementTechnique"));
-    addPath(new JsonBranch("sameAs", "sameAs"));
-    addPath(new JsonBranch("doi", "doi"));
-    addPath(new JsonBranch("identifier", "identifier"));
-    addPath(new JsonBranch("author", "author"));
-    addPath(new JsonBranch("isAccessibleForFree", "isAccessibleForFree"));
-    addPath(new JsonBranch("dateModified", "dateModified"));
-    addPath(new JsonBranch("distribution", "distribution"));
-    addPath(new JsonBranch("spatialCoverage", "spatialCoverage"));
-    addPath(new JsonBranch("provider", "provider"));
-    addPath(new JsonBranch("funder", "funder"));
-    addPath(new JsonBranch("temporalCoverage", "temporalCoverage"));
+    addPath(new DataElement("url", "url").setCategories(Category.MANDATORY));
+    addPath(new DataElement("name", "name"));
+    addPath(new DataElement("alternateName", "alternateName"));
+    addPath(new DataElement("description", "description"));
+    addPath(new DataElement("variablesMeasured", "variablesMeasured"));
+    addPath(new DataElement("measurementTechnique", "measurementTechnique"));
+    addPath(new DataElement("sameAs", "sameAs"));
+    addPath(new DataElement("doi", "doi"));
+    addPath(new DataElement("identifier", "identifier"));
+    addPath(new DataElement("author", "author"));
+    addPath(new DataElement("isAccessibleForFree", "isAccessibleForFree"));
+    addPath(new DataElement("dateModified", "dateModified"));
+    addPath(new DataElement("distribution", "distribution"));
+    addPath(new DataElement("spatialCoverage", "spatialCoverage"));
+    addPath(new DataElement("provider", "provider"));
+    addPath(new DataElement("funder", "funder"));
+    addPath(new DataElement("temporalCoverage", "temporalCoverage"));
 
     extractableFields.put("url", "url");
   }
@@ -48,22 +48,22 @@ public class GoogleDatasetSchema implements Schema, CsvAwareSchema {
   }
 
   @Override
-  public List<JsonBranch> getCollectionPaths() {
+  public List<DataElement> getCollectionPaths() {
     return new ArrayList(COLLECTION_PATHS.values());
   }
 
   @Override
-  public List<JsonBranch> getRootChildrenPaths() {
+  public List<DataElement> getRootChildrenPaths() {
     return new ArrayList(DIRECT_CHILDREN.values());
   }
 
   @Override
-  public List<JsonBranch> getPaths() {
+  public List<DataElement> getPaths() {
     return new ArrayList(PATHS.values());
   }
 
   @Override
-  public JsonBranch getPathByLabel(String label) {
+  public DataElement getPathByLabel(String label) {
     return PATHS.get(label);
   }
 
@@ -78,7 +78,7 @@ public class GoogleDatasetSchema implements Schema, CsvAwareSchema {
   }
 
   @Override
-  public List<JsonBranch> getIndexFields() {
+  public List<DataElement> getIndexFields() {
     throw new UnsupportedOperationException("Not supported yet.");
   }
 
@@ -93,8 +93,8 @@ public class GoogleDatasetSchema implements Schema, CsvAwareSchema {
   }
 
   @Override
-  public void addExtractableField(String label, String jsonPath) {
-    extractableFields.put(label, jsonPath);
+  public void addExtractableField(String label, String path) {
+    extractableFields.put(label, path);
   }
 
   @Override
@@ -110,7 +110,7 @@ public class GoogleDatasetSchema implements Schema, CsvAwareSchema {
     return ruleCheckers;
   }
 
-  private static void addPath(JsonBranch branch) {
+  private static void addPath(DataElement branch) {
     PATHS.put(branch.getLabel(), branch);
 
     if (branch.getParent() == null)
@@ -123,14 +123,14 @@ public class GoogleDatasetSchema implements Schema, CsvAwareSchema {
   @Override
   public List<String> getHeader() {
     List<String> headers = new ArrayList<>();
-    for (JsonBranch branch : PATHS.values()) {
-      headers.add(branch.getJsonPath());
+    for (DataElement branch : PATHS.values()) {
+      headers.add(branch.getPath());
     }
     return headers;
   }
 
   @Override
-  public JsonBranch getRecordId() {
+  public DataElement getRecordId() {
     return PATHS.get("url");
   }
 }

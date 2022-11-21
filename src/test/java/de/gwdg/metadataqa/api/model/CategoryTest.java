@@ -1,6 +1,6 @@
 package de.gwdg.metadataqa.api.model;
 
-import de.gwdg.metadataqa.api.json.JsonBranch;
+import de.gwdg.metadataqa.api.json.DataElement;
 import de.gwdg.metadataqa.api.schema.BaseSchema;
 import de.gwdg.metadataqa.api.schema.Schema;
 import de.gwdg.metadataqa.api.schema.edm.EdmFullBeanSchema;
@@ -12,8 +12,8 @@ import static org.junit.Assert.*;
 
 public class CategoryTest {
 
-  Schema schemaWithActiveField = new BaseSchema().addField(new JsonBranch("contentWarning").setCategories("CONTEXT"));
-  Schema schemaWithInactiveField = new BaseSchema().addField(new JsonBranch("contentWarning").setCategories("CONTEXT").setActive(false));
+  Schema schemaWithActiveField = new BaseSchema().addField(new DataElement("contentWarning").setCategories("CONTEXT"));
+  Schema schemaWithInactiveField = new BaseSchema().addField(new DataElement("contentWarning").setCategories("CONTEXT").setActive(false));
 
   @Test
   public void extractCategories_withActive() {

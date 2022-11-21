@@ -1,7 +1,7 @@
 package de.gwdg.metadataqa.api.rule.singlefieldchecker;
 
 import de.gwdg.metadataqa.api.counter.FieldCounter;
-import de.gwdg.metadataqa.api.json.JsonBranch;
+import de.gwdg.metadataqa.api.json.DataElement;
 import de.gwdg.metadataqa.api.model.XmlFieldInstance;
 import de.gwdg.metadataqa.api.model.pathcache.PathCache;
 import de.gwdg.metadataqa.api.rule.RuleCheckerOutput;
@@ -19,11 +19,11 @@ public class DependencyChecker extends SingleFieldChecker {
   public static final String PREFIX = "dependency";
   protected List<String> dependencies;
 
-  public DependencyChecker(JsonBranch field, List<String> dependencies) {
+  public DependencyChecker(DataElement field, List<String> dependencies) {
     this(field, field.getLabel(), dependencies);
   }
 
-  public DependencyChecker(JsonBranch field, String header, List<String> dependencies) {
+  public DependencyChecker(DataElement field, String header, List<String> dependencies) {
     super(field, header + ":" + PREFIX);
     this.dependencies = dependencies;
   }
@@ -44,7 +44,7 @@ public class DependencyChecker extends SingleFieldChecker {
     // boolean debug = id.equals("Q-4.3");
     var allPassed = true;
     var isNA = true;
-    List<XmlFieldInstance> instances = cache.get(field.getJsonPath());
+    List<XmlFieldInstance> instances = cache.get(field.getPath());
     if (instances != null && !instances.isEmpty()) {
       for (XmlFieldInstance instance : instances) {
         if (instance.hasValue()) {

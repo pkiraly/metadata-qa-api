@@ -2,7 +2,7 @@ package de.gwdg.metadataqa.api.xml;
 
 import de.gwdg.metadataqa.api.calculator.CalculatorFacade;
 import de.gwdg.metadataqa.api.configuration.MeasurementConfiguration;
-import de.gwdg.metadataqa.api.json.JsonBranch;
+import de.gwdg.metadataqa.api.json.DataElement;
 import de.gwdg.metadataqa.api.model.EdmFieldInstance;
 import de.gwdg.metadataqa.api.schema.edm.EdmOaiPmhXmlSchema;
 import de.gwdg.metadataqa.api.schema.Schema;
@@ -18,7 +18,7 @@ import java.util.*;
 
 import static org.junit.Assert.assertEquals;
 
-public class OaiPmhXPathTest {
+public class XPathWrapperTest {
   private static Map<String, String> prefixMap = new LinkedHashMap<String, String>() {{
     put("xsi", "http://www.w3.org/2001/XMLSchema-instance");
     put("rdf", "http://www.w3.org/1999/02/22-rdf-syntax-ns#");
@@ -45,8 +45,8 @@ public class OaiPmhXPathTest {
 
   @Test
   public void testNamespaces() {
-    OaiPmhXPath oaiPmhXPath = new OaiPmhXPath(new File(inputFile));
-    XPath xpathEngine = oaiPmhXPath.getXpathEngine();
+    XPathWrapper xPathWrapper = new XPathWrapper(new File(inputFile));
+    XPath xpathEngine = xPathWrapper.getXpathEngine();
 
     for (String prefix : prefixMap.keySet()) {
       String uri = prefixMap.get(prefix);
@@ -57,9 +57,9 @@ public class OaiPmhXPathTest {
 
   @Test
   public void testValueAndLanguage() {
-    OaiPmhXPath oaiPmhXPath = new OaiPmhXPath(new File(inputFile));
+    XPathWrapper xPathWrapper = new XPathWrapper(new File(inputFile));
 
-    List<EdmFieldInstance> list = oaiPmhXPath.extractFieldInstanceList("//skos:prefLabel");
+    List<EdmFieldInstance> list = xPathWrapper.extractFieldInstanceList("//skos:prefLabel");
     assertEquals(346, list.size());
 
     assertEquals("Francis 'Frans' Smith", list.get(0).getValue());
@@ -74,9 +74,9 @@ public class OaiPmhXPathTest {
 
   @Test
   public void testResource() {
-    OaiPmhXPath oaiPmhXPath = new OaiPmhXPath(new File(inputFile));
+    XPathWrapper xPathWrapper = new XPathWrapper(new File(inputFile));
 
-    List<EdmFieldInstance> list = oaiPmhXPath.extractFieldInstanceList("//rdaGr2:professionOrOccupation");
+    List<EdmFieldInstance> list = xPathWrapper.extractFieldInstanceList("//rdaGr2:professionOrOccupation");
     assertEquals(5, list.size());
 
     assertEquals("", list.get(0).getValue());
@@ -91,14 +91,14 @@ public class OaiPmhXPathTest {
 
   @Test
   public void testProxy() {
-    OaiPmhXPath oaiPmhXPath = new OaiPmhXPath(new File(inputFile));
+    XPathWrapper xPathWrapper = new XPathWrapper(new File(inputFile));
 
-    List<EdmFieldInstance> list = oaiPmhXPath.extractFieldInstanceList(
+    List<EdmFieldInstance> list = xPathWrapper.extractFieldInstanceList(
       "//ore:Proxy[edm:europeanaProxy/text() = 'false']"
     );
     assertEquals(1, list.size());
 
-    list = oaiPmhXPath.extractFieldInstanceList(
+    list = xPathWrapper.extractFieldInstanceList(
         "//ore:Proxy[edm:europeanaProxy/text() = 'true']"
     );
     assertEquals(1, list.size());
@@ -106,26 +106,26 @@ public class OaiPmhXPathTest {
 
   @Test
   public void testDifferentContexts() {
-    OaiPmhXPath oaiPmhXPath = new OaiPmhXPath(new File(inputFile));
+    XPathWrapper xPathWrapper = new XPathWrapper(new File(inputFile));
 
     List<Node> proxies = null;
     List<EdmFieldInstance> fields = null;
 
-    proxies = oaiPmhXPath.extractNodes(
+    proxies = xPathWrapper.extractNodes(
       "//ore:Proxy[edm:europeanaProxy/text() = 'false']"
     );
     assertEquals(1, proxies.size());
 
-    fields = oaiPmhXPath.extractFieldInstanceList(proxies.get(0), "dcterms:temporal");
+    fields = xPathWrapper.extractFieldInstanceList(proxies.get(0), "dcterms:temporal");
     assertEquals(2, fields.size());
     assertEquals("1968", fields.get(0).getValue());
     assertEquals("Séc. 19-20", fields.get(1).getValue());
 
-    proxies = oaiPmhXPath.extractNodes(
+    proxies = xPathWrapper.extractNodes(
         "//ore:Proxy[edm:europeanaProxy/text() = 'true']"
     );
     assertEquals(1, proxies.size());
-    fields = oaiPmhXPath.extractFieldInstanceList(proxies.get(0), "dcterms:temporal");
+    fields = xPathWrapper.extractFieldInstanceList(proxies.get(0), "dcterms:temporal");
     assertEquals(2, fields.size());
     assertEquals("http://semium.org/time/19xx", fields.get(0).getResource());
     assertEquals("http://semium.org/time/1968", fields.get(1).getResource());
@@ -133,9 +133,9 @@ public class OaiPmhXPathTest {
 
   @Test
   public void testTops() {
-    OaiPmhXPath oaiPmhXPath = new OaiPmhXPath(new File(inputFile));
+    XPathWrapper xPathWrapper = new XPathWrapper(new File(inputFile));
 
-    List<EdmFieldInstance> list = oaiPmhXPath.extractFieldInstanceList(
+    List<EdmFieldInstance> list = xPathWrapper.extractFieldInstanceList(
       "//oai:header/oai:identifier"
     );
     assertEquals(1, list.size());
@@ -143,13 +143,13 @@ public class OaiPmhXPathTest {
       "http://data.europeana.eu/item/00101/2F29675EB2C8ADFFA488087DB15C5C479C95A2C3",
       list.get(0).getValue());
 
-    list = oaiPmhXPath.extractFieldInstanceList("//oai:header/oai:setSpec");
+    list = xPathWrapper.extractFieldInstanceList("//oai:header/oai:setSpec");
     assertEquals(1, list.size());
     assertEquals(
       "00101",
       list.get(0).getValue());
 
-    list = oaiPmhXPath.extractFieldInstanceList("//ore:Aggregation[1]/edm:dataProvider[1]");
+    list = xPathWrapper.extractFieldInstanceList("//ore:Aggregation[1]/edm:dataProvider[1]");
     assertEquals(1, list.size());
     assertEquals(
       "Fundação Calouste Gulbenkian - Portugal",
@@ -176,17 +176,17 @@ public class OaiPmhXPathTest {
   }
 
   @Test
-  public void testJsonBranch() throws IOException, URISyntaxException {
+  public void testDataElement() throws IOException, URISyntaxException {
     Schema schema = new EdmOaiPmhXmlSchema();
-    JsonBranch branch = schema.getPathByLabel("Concept");
-    String path = branch.getJsonPath();
+    DataElement branch = schema.getPathByLabel("Concept");
+    String path = branch.getPath();
     assertEquals("//skos:Concept", path);
 
-    OaiPmhXPath oaiPmhXPath = new OaiPmhXPath(
+    XPathWrapper xPathWrapper = new XPathWrapper(
       FileUtils.readContentFromResource(
         "general/europeana-oai-pmh-92062-BibliographicResource_1000126015451.xml")
     );
-    List<Node> attr = oaiPmhXPath.extractNodes("//skos:Concept[1]/@rdf:about");
+    List<Node> attr = xPathWrapper.extractNodes("//skos:Concept[1]/@rdf:about");
     assertEquals(1, attr.size());
     assertEquals("http://data.europeana.eu/concept/base/106", attr.get(0).getNodeValue());
   }
@@ -197,10 +197,10 @@ public class OaiPmhXPathTest {
     namespaces.put("xoai", "http://www.lyncode.com/xoai");
     namespaces.put("foaf", "http://xmlns.com/foaf/0.1/");
 
-    OaiPmhXPath.setXpathEngine(XpathEngineFactory.initializeEngine(namespaces));
+    XPathWrapper.setXpathEngine(XpathEngineFactory.initializeEngine(namespaces));
 
-    OaiPmhXPath oaiPmhXPath = new OaiPmhXPath(new File(inputFile));
-    XPath xpathEngine = oaiPmhXPath.getXpathEngine();
+    XPathWrapper xPathWrapper = new XPathWrapper(new File(inputFile));
+    XPath xpathEngine = xPathWrapper.getXpathEngine();
 
     for (String prefix : prefixMap.keySet()) {
       String uri = prefixMap.get(prefix);
@@ -220,10 +220,10 @@ public class OaiPmhXPathTest {
     namespaces.put("xoai", "http://www.lyncode.com/xoai");
     namespaces.put("foaf", "http://xmlns.com/foaf/0.1/");
 
-    OaiPmhXPath.setXpathEngine(namespaces);
+    XPathWrapper.setXpathEngine(namespaces);
 
-    OaiPmhXPath oaiPmhXPath = new OaiPmhXPath(new File(inputFile));
-    XPath xpathEngine = oaiPmhXPath.getXpathEngine();
+    XPathWrapper xPathWrapper = new XPathWrapper(new File(inputFile));
+    XPath xpathEngine = xPathWrapper.getXpathEngine();
 
     for (String prefix : prefixMap.keySet()) {
       String uri = prefixMap.get(prefix);
@@ -240,9 +240,9 @@ public class OaiPmhXPathTest {
   @Test
   public void testDisjunct() {
     String xpath = "//edm:Agent/skos:prefLabel|//edm:Agent/skos:altLabel";
-    OaiPmhXPath oaiPmhXPath = new OaiPmhXPath(new File(inputFile));
+    XPathWrapper xPathWrapper = new XPathWrapper(new File(inputFile));
 
-    List<EdmFieldInstance> list = oaiPmhXPath.extractFieldInstanceList(xpath);
+    List<EdmFieldInstance> list = xPathWrapper.extractFieldInstanceList(xpath);
     list.stream().forEach(x -> System.err.printf("%s @%s\n", x.getValue(), x.getLanguage()));
     System.err.println();
   }

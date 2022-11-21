@@ -24,7 +24,7 @@ public class UniquenessField implements Serializable {
   /**
    * A JSON path expression.
    */
-  String jsonPath;
+  String path;
 
   int total;
   double scoreForUniqueValue;
@@ -41,12 +41,12 @@ public class UniquenessField implements Serializable {
     this.solrField = solrField;
   }
 
-  public String getJsonPath() {
-    return jsonPath;
+  public String getPath() {
+    return path;
   }
 
-  public void setJsonPath(String jsonPath) {
-    this.jsonPath = jsonPath;
+  public void setPath(String path) {
+    this.path = path;
   }
 
   public int getTotal() {
@@ -70,7 +70,7 @@ public class UniquenessField implements Serializable {
     return "UniquenessField{"
         + "label='" + label + '\''
         + ", solrField='" + solrField + '\''
-        + ", jsonPath='" + jsonPath + '\''
+        + ", path='" + path + '\''
         + ", total=" + total
         + ", scoreForUniqueValue=" + scoreForUniqueValue
         + '}';

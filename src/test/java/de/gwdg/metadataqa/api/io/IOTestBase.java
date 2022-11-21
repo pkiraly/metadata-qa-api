@@ -2,7 +2,7 @@ package de.gwdg.metadataqa.api.io;
 
 import de.gwdg.metadataqa.api.calculator.CalculatorFacade;
 import de.gwdg.metadataqa.api.configuration.MeasurementConfiguration;
-import de.gwdg.metadataqa.api.json.JsonBranch;
+import de.gwdg.metadataqa.api.json.DataElement;
 import de.gwdg.metadataqa.api.schema.BaseSchema;
 import de.gwdg.metadataqa.api.schema.Format;
 import de.gwdg.metadataqa.api.schema.Schema;
@@ -26,7 +26,7 @@ public class IOTestBase {
   protected Schema getSchema(Format format) {
     return new BaseSchema()
       .setFormat(format)
-      .addField(new JsonBranch("url").setExtractable())
-      .addField(new JsonBranch("name").setExtractable());
+      .addField(new DataElement("url").setExtractable())
+      .addField(new DataElement("name").setExtractable());
   }
 }

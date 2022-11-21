@@ -1,6 +1,6 @@
 package de.gwdg.metadataqa.api.calculator;
 
-import de.gwdg.metadataqa.api.json.JsonBranch;
+import de.gwdg.metadataqa.api.json.DataElement;
 import de.gwdg.metadataqa.api.model.PathCacheFactory;
 import de.gwdg.metadataqa.api.model.pathcache.CsvPathCache;
 import de.gwdg.metadataqa.api.schema.BaseSchema;
@@ -62,8 +62,8 @@ public class IndexerTest {
   private Schema getSchema(Format format) {
     BaseSchema schema = new BaseSchema()
       .setFormat(format)
-      .addField(new JsonBranch("url").setExtractable().setIndexField("url"))
-      .addField(new JsonBranch("name").setExtractable().setIndexField("name"));
+      .addField(new DataElement("url").setExtractable().setIndexField("url"))
+      .addField(new DataElement("name").setExtractable().setIndexField("name"));
     schema.setRecordId(schema.getPathByLabel("url"));
     return schema;
   }

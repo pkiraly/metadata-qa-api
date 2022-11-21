@@ -1,7 +1,7 @@
 package de.gwdg.metadataqa.api.rule.singlefieldchecker;
 
 import de.gwdg.metadataqa.api.counter.FieldCounter;
-import de.gwdg.metadataqa.api.json.JsonBranch;
+import de.gwdg.metadataqa.api.json.DataElement;
 import de.gwdg.metadataqa.api.model.pathcache.PathCache;
 import de.gwdg.metadataqa.api.rule.RuleCheckerOutput;
 import de.gwdg.metadataqa.api.rule.RuleCheckingOutputStatus;
@@ -15,16 +15,16 @@ public class MinCountChecker extends SingleFieldChecker {
   protected Integer minCount;
   protected boolean allowEmptyInstances = false;
 
-  public MinCountChecker(JsonBranch field, Integer minCount) {
+  public MinCountChecker(DataElement field, Integer minCount) {
     this(field, field.getLabel(), minCount);
   }
 
-  public MinCountChecker(JsonBranch field, Integer minCount, boolean allowEmptyInstances) {
+  public MinCountChecker(DataElement field, Integer minCount, boolean allowEmptyInstances) {
     this(field, field.getLabel(), minCount);
     this.allowEmptyInstances = allowEmptyInstances;
   }
 
-  public MinCountChecker(JsonBranch field, String header, Integer minCount) {
+  public MinCountChecker(DataElement field, String header, Integer minCount) {
     super(field, header + ":" + PREFIX);
     this.minCount = minCount;
   }

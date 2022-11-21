@@ -5,7 +5,7 @@ import com.jayway.jsonpath.InvalidPathException;
 import com.jayway.jsonpath.PathNotFoundException;
 import de.gwdg.metadataqa.api.model.XmlFieldInstance;
 import de.gwdg.metadataqa.api.util.ExceptionUtils;
-import de.gwdg.metadataqa.api.xml.OaiPmhXPath;
+import de.gwdg.metadataqa.api.xml.XPathWrapper;
 
 import java.util.List;
 import java.util.logging.Level;
@@ -25,15 +25,15 @@ public class XmlPathCache<T extends XmlFieldInstance> extends BasePathCache<T> {
   );
   private static final long serialVersionUID = 3351744750302199667L;
 
-  OaiPmhXPath oaiPmhXPath;
+  XPathWrapper xPathWrapper;
 
   public XmlPathCache(String content) throws InvalidJsonException {
     this.content = content;
-    oaiPmhXPath = new OaiPmhXPath(content);
+    xPathWrapper = new XPathWrapper(content);
   }
 
-  protected void set(String address, String jsonPath, Object jsonFragment, Class clazz) {
-    List<T> instances = read(jsonPath, jsonFragment);
+  protected void set(String address, String path, Object jsonFragment, Class clazz) {
+    List<T> instances = read(path, jsonFragment);
     cache.put(address, instances);
   }
 
@@ -41,9 +41,9 @@ public class XmlPathCache<T extends XmlFieldInstance> extends BasePathCache<T> {
     List<T> value = null;
     try {
       if (jsonFragment != null) {
-        value = (List<T>) oaiPmhXPath.extractFieldInstanceList(jsonFragment, path);
+        value = (List<T>) xPathWrapper.extractFieldInstanceList(jsonFragment, path);
       } else {
-        value = (List<T>) oaiPmhXPath.extractFieldInstanceList(path);
+        value = (List<T>) xPathWrapper.extractFieldInstanceList(path);
       }
     } catch (PathNotFoundException e) {
       // LOGGER.severe("PathNotFound: " + jsonPath + " " + e.getLocalizedMessage() + extractRelevantPath(e));
@@ -58,7 +58,7 @@ public class XmlPathCache<T extends XmlFieldInstance> extends BasePathCache<T> {
   public Object getFragment(String path) {
     Object jsonFragment = null;
     if (!fragmentCache.containsKey(path)) {
-      jsonFragment = oaiPmhXPath.extractNodes(path);
+      jsonFragment = xPathWrapper.extractNodes(path);
       fragmentCache.put(path, jsonFragment);
     } else {
       jsonFragment = fragmentCache.get(path);

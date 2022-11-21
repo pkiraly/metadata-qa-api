@@ -40,8 +40,8 @@ public class CsvPathCache<T extends XmlFieldInstance> extends BasePathCache<T> {
   }
 
   @Override
-  protected void set(String address, String jsonPath, Object jsonFragment, Class clazz) {
-    List<T> instances = read(jsonPath, jsonFragment);
+  protected void set(String address, String path, Object jsonFragment, Class clazz) {
+    List<T> instances = read(path, jsonFragment);
     cache.put(address, instances);
   }
 
@@ -63,13 +63,13 @@ public class CsvPathCache<T extends XmlFieldInstance> extends BasePathCache<T> {
    * Get a JSON fragment from cache.
    *
    * @param address - a unique address for cache
-   * @param jsonPath - a JSON path expression
+   * @param path - a JSON path expression
    * @param jsonFragment - a JSON fragment in which the path should be searched for
    *
    * @return
    *   The JSON fragment
    */
-  public Object getFragment(String address, String jsonPath, Object jsonFragment) {
+  public Object getFragment(String address, String path, Object jsonFragment) {
     return content;
   }
 

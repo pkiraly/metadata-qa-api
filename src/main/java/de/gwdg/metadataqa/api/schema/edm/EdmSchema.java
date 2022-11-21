@@ -1,7 +1,7 @@
 package de.gwdg.metadataqa.api.schema.edm;
 
 import de.gwdg.metadataqa.api.json.FieldGroup;
-import de.gwdg.metadataqa.api.json.JsonBranch;
+import de.gwdg.metadataqa.api.json.DataElement;
 import de.gwdg.metadataqa.api.model.Category;
 import de.gwdg.metadataqa.api.rule.RuleChecker;
 import de.gwdg.metadataqa.api.schema.ProblemCatalogSchema;
@@ -21,11 +21,11 @@ import java.util.Map;
  */
 public abstract class EdmSchema implements Schema, ProblemCatalogSchema {
 
-  protected final Map<String, JsonBranch> paths = new LinkedHashMap<>();
-  protected final Map<String, JsonBranch> collectionPaths = new LinkedHashMap<>();
+  protected final Map<String, DataElement> paths = new LinkedHashMap<>();
+  protected final Map<String, DataElement> collectionPaths = new LinkedHashMap<>();
   protected final List<FieldGroup> fieldGroups = new ArrayList<>();
   protected final List<String> noLanguageFields = new ArrayList<>();
-  protected List<JsonBranch> indexFields;
+  protected List<DataElement> indexFields;
   protected final List<String> emptyStrings = new ArrayList<>();
   protected String longSubjectPath;
   protected String titlePath;
@@ -36,24 +36,24 @@ public abstract class EdmSchema implements Schema, ProblemCatalogSchema {
 
   protected Map<String, String> extractableFields = new LinkedHashMap<>();
 
-  protected void addPath(JsonBranch branch) {
+  protected void addPath(DataElement branch) {
     paths.put(branch.getLabel(), branch);
     if (branch.isCollection())
       collectionPaths.put(branch.getLabel(), branch);
   }
 
   @Override
-  public List<JsonBranch> getPaths() {
+  public List<DataElement> getPaths() {
     return new ArrayList(paths.values());
   }
 
   @Override
-  public List<JsonBranch> getRootChildrenPaths() {
+  public List<DataElement> getRootChildrenPaths() {
     throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
   }
 
   @Override
-  public JsonBranch getPathByLabel(String label) {
+  public DataElement getPathByLabel(String label) {
     return paths.get(label);
   }
 
@@ -84,12 +84,12 @@ public abstract class EdmSchema implements Schema, ProblemCatalogSchema {
   }
 
   @Override
-  public List<JsonBranch> getIndexFields() {
+  public List<DataElement> getIndexFields() {
     if (indexFields == null) {
       indexFields = new ArrayList<>();
-      for (JsonBranch jsonBranch : getPaths())
-        if (StringUtils.isNotBlank(jsonBranch.getIndexField()))
-          indexFields.add(jsonBranch);
+      for (DataElement dataElement : getPaths())
+        if (StringUtils.isNotBlank(dataElement.getIndexField()))
+          indexFields.add(dataElement);
     }
     return indexFields;
 
@@ -126,12 +126,12 @@ public abstract class EdmSchema implements Schema, ProblemCatalogSchema {
   }
 
   @Override
-  public void addExtractableField(String label, String jsonPath) {
-    extractableFields.put(label, jsonPath);
+  public void addExtractableField(String label, String path) {
+    extractableFields.put(label, path);
   }
 
   @Override
-  public JsonBranch getRecordId() {
+  public DataElement getRecordId() {
     return null;
   }
 }

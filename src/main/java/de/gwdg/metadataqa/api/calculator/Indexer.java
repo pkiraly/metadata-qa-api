@@ -33,11 +33,11 @@ public class Indexer extends QaSolrClient implements Calculator, Shutdownable, S
   @Override
   public List<MetricResult> measure(PathCache cache) {
     try {
-      String recordId = extractValue(cache, schema.getRecordId().getJsonPath()).get(0);
+      String recordId = extractValue(cache, schema.getRecordId().getPath()).get(0);
 
       Map<String, List<String>> resultMap = new HashMap<>();
       for (UniquenessField solrField : solrFields) {
-        List<String> values = extractValue(cache, solrField.getJsonPath());
+        List<String> values = extractValue(cache, solrField.getPath());
         if (!values.isEmpty())
           resultMap.put(solrField.getSolrField(), values);
       }
@@ -52,9 +52,9 @@ public class Indexer extends QaSolrClient implements Calculator, Shutdownable, S
     return null;
   }
 
-  private List<String> extractValue(PathCache cache, String jsonPath) {
+  private List<String> extractValue(PathCache cache, String path) {
     List<String> values = new ArrayList<>();
-    List<XmlFieldInstance> instances = cache.get(jsonPath);
+    List<XmlFieldInstance> instances = cache.get(path);
     if (instances != null && !instances.isEmpty())
       for (XmlFieldInstance instance : instances)
         if (instance.hasValue())

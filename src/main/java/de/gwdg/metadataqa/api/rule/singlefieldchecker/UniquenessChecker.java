@@ -1,7 +1,7 @@
 package de.gwdg.metadataqa.api.rule.singlefieldchecker;
 
 import de.gwdg.metadataqa.api.counter.FieldCounter;
-import de.gwdg.metadataqa.api.json.JsonBranch;
+import de.gwdg.metadataqa.api.json.DataElement;
 import de.gwdg.metadataqa.api.model.XmlFieldInstance;
 import de.gwdg.metadataqa.api.model.pathcache.PathCache;
 import de.gwdg.metadataqa.api.rule.RuleCheckerOutput;
@@ -19,11 +19,11 @@ public class UniquenessChecker extends SingleFieldChecker {
   protected String solrField;
   private SolrClient solrClient;
 
-  public UniquenessChecker(JsonBranch field) {
+  public UniquenessChecker(DataElement field) {
     this(field, field.getLabel());
   }
 
-  public UniquenessChecker(JsonBranch field, String header) {
+  public UniquenessChecker(DataElement field, String header) {
     super(field, header + ":" + PREFIX);
     this.solrField = field.getLabel().equals("recordId") ? "id" : field.getIndexField() + "_ss";
   }
@@ -34,7 +34,7 @@ public class UniquenessChecker extends SingleFieldChecker {
       LOGGER.info(this.getClass() + " " + this.id);
     var allPassed = true;
     var isNA = true;
-    List<XmlFieldInstance> instances = cache.get(field.getJsonPath());
+    List<XmlFieldInstance> instances = cache.get(field.getPath());
     if (instances != null && !instances.isEmpty()) {
       for (XmlFieldInstance instance : instances) {
         if (instance.hasValue()) {

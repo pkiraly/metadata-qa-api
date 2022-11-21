@@ -115,7 +115,7 @@ First, add the library into your project's `pom.xml` file:
   <dependency>
     <grroupId>de.gwdg.metadata</grroupId>
     <artifactId>metadata-qa-api</artifactId>
-    <version>0.7</version>
+    <version>0.9.0</version>
   </dependency>
 </dependencies>
 ```
@@ -134,16 +134,16 @@ Define a schema:
 Schema schema = new BaseSchema()
   // this schema will be used for a CSV file
   .setFormat(Format.CSV)
-  // JsonBranch represents a data element, which might have 
+  // DataELement represents a data element, which might have 
   // a number of properties
   .addField(
-    new JsonBranch("url", Category.MANDATORY)
+    new DataELement("url", Category.MANDATORY)
         .setExtractable()
   )
-  .addField(new JsonBranch("name"))
-  .addField(new JsonBranch("alternateName"))
+  .addField(new DataELement("name"))
+  .addField(new DataELement("alternateName"))
   ...
-  .addField(new JsonBranch("temporalCoverage"));
+  .addField(new DataELement("temporalCoverage"));
 ```
 
 Build a `CalculatorFacade` object:
@@ -483,7 +483,7 @@ The same in JSON:
 ```
 
 The central piece is the `fields` array. Each item represents the properties of
-a single data elements (a JsonBranch in the API). Its properties are:
+a single data elements (a DataELement in the API). Its properties are:
 
 * `name` (String): the name or label of the data element
 * `path` (String): a address of the data element. If the format is XML, it
@@ -945,14 +945,14 @@ turn it off.
 Schema schema = new BaseSchema()
   .setFormat(Format.CSV)
   .addField(
-    new JsonBranch("title", "title")
+    new DataELement("title", "title")
       .setRule(
         new Rule()
           .withDisjoint("description")
       )
   )
   .addField(
-    new JsonBranch("url", "url")
+    new DataELement("url", "url")
       .setRule(
         new Rule()
           .withMinCount(1)
@@ -1117,7 +1117,7 @@ version name), you have to enable the retrieval of those versions in the `pom.xm
   <dependency>
     <grroupId>de.gwdg.metadata</grroupId>
     <artifactId>metadata-qa-api</artifactId>
-    <version>0.8-SNAPSHOT</version>
+    <version>0.9-SNAPSHOT</version>
   </dependency>
 </dependencies>
 ```

@@ -1,6 +1,6 @@
 package de.gwdg.metadataqa.api.rule.logical;
 
-import de.gwdg.metadataqa.api.json.JsonBranch;
+import de.gwdg.metadataqa.api.json.DataElement;
 import de.gwdg.metadataqa.api.rule.BaseRuleChecker;
 import de.gwdg.metadataqa.api.rule.RuleChecker;
 import org.apache.commons.lang3.StringUtils;
@@ -10,10 +10,10 @@ import java.util.List;
 
 public abstract class LogicalChecker extends BaseRuleChecker {
 
-  protected JsonBranch field;
+  protected DataElement field;
   protected List<RuleChecker> checkers;
 
-  public LogicalChecker(JsonBranch field, String header) {
+  public LogicalChecker(DataElement field, String header) {
     this.field = field;
     this.header = header;
   }

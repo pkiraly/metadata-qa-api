@@ -1,6 +1,6 @@
 package de.gwdg.metadataqa.api.calculator.edm;
 
-import de.gwdg.metadataqa.api.json.JsonBranch;
+import de.gwdg.metadataqa.api.json.DataElement;
 import de.gwdg.metadataqa.api.json.JsonUtils;
 import de.gwdg.metadataqa.api.model.EdmFieldInstance;
 import de.gwdg.metadataqa.api.model.pathcache.PathCache;
@@ -44,7 +44,7 @@ public final class EnhancementIdExtractor implements Serializable {
 
   public static List<String> extractIds(PathCache cache, Schema schema) {
     List<String> enhancementIds = new ArrayList<>();
-    String path = schema.getPathByLabel("Proxy").getJsonPath().replace("false", "true");
+    String path = schema.getPathByLabel("Proxy").getPath().replace("false", "true");
     Object rawJsonFragment = cache.getFragment(path);
     List<Object> jsonFragments = Converter.jsonObjectToList(rawJsonFragment, schema);
     if (schema.getFormat().equals(Format.JSON)) {
@@ -56,12 +56,12 @@ public final class EnhancementIdExtractor implements Serializable {
   }
 
   public static void processXml(PathCache cache, Schema schema, List<String> enhancementIds, List<Object> jsonFragments) {
-    JsonBranch parent = schema.getPathByLabel("Proxy");
-    for (JsonBranch child : parent.getChildren()) {
+    DataElement parent = schema.getPathByLabel("Proxy");
+    for (DataElement child : parent.getChildren()) {
       if (isEnrichmentField(child.getLabel())) {
-        String address = child.getAbsoluteJsonPath(schema.getFormat());
+        String address = child.getAbsolutePath(schema.getFormat());
         Object context = jsonFragments.get(0);
-        List<EdmFieldInstance> fieldInstances = cache.get(address, child.getJsonPath(), context);
+        List<EdmFieldInstance> fieldInstances = cache.get(address, child.getPath(), context);
         if (fieldInstances != null && !fieldInstances.isEmpty()) {
           for (EdmFieldInstance fieldInstance : fieldInstances) {
             if (fieldInstance.isUrl()) {

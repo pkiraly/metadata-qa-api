@@ -2,7 +2,7 @@ package de.gwdg.metadataqa.api.schema;
 
 import de.gwdg.metadataqa.api.configuration.schema.Rule;
 import de.gwdg.metadataqa.api.json.FieldGroup;
-import de.gwdg.metadataqa.api.json.JsonBranch;
+import de.gwdg.metadataqa.api.json.DataElement;
 import de.gwdg.metadataqa.api.rule.RuleChecker;
 
 import java.io.Serializable;
@@ -25,33 +25,33 @@ public interface Schema extends Serializable {
    * Return collection paths.
    * @return List of collection paths
    */
-  List<JsonBranch> getCollectionPaths();
+  List<DataElement> getCollectionPaths();
 
   /**
    * Return the paths of root's direct children.
    * @return Paths.
    */
-  List<JsonBranch> getRootChildrenPaths();
+  List<DataElement> getRootChildrenPaths();
 
   /**
    * The list of fields to investigate in most of the measurements.
    * @return
    *   List of field representations
    */
-  List<JsonBranch> getPaths();
+  List<DataElement> getPaths();
 
   /**
    * Returns a path by its label.
    * @param label The label to look for.
    * @return The branch.
    */
-  JsonBranch getPathByLabel(String label);
+  DataElement getPathByLabel(String label);
 
   /**
    * Returns a path of the record id.
    * @return The branch.
    */
-  JsonBranch getRecordId();
+  DataElement getRecordId();
 
   /**
    * Field groups used in completeness sub-dimensions.
@@ -78,7 +78,7 @@ public interface Schema extends Serializable {
    * @return
    *    The map of fields
    */
-  List<JsonBranch> getIndexFields();
+  List<DataElement> getIndexFields();
 
   /**
    * Get fields for which the values should be extracted from the records.
@@ -97,9 +97,9 @@ public interface Schema extends Serializable {
   /**
    * Add a single field to the map of extractable fields.
    * @param label The label of the field.
-   * @param jsonPath JSON path expression.
+   * @param path A path expression (XPath, JSONPath).
    */
-  void addExtractableField(String label, String jsonPath);
+  void addExtractableField(String label, String path);
 
   List<String> getCategories();
 
@@ -110,7 +110,7 @@ public interface Schema extends Serializable {
   }
 
   default void checkConsistency() {
-    for (JsonBranch path : getPaths()) {
+    for (DataElement path : getPaths()) {
       List<Rule> rules = path.getRules();
       if (rules != null && !rules.isEmpty()) {
         for (Rule rule : rules) {

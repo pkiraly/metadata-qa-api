@@ -1,7 +1,7 @@
 package de.gwdg.metadataqa.api.rule.logical;
 
 import de.gwdg.metadataqa.api.counter.FieldCounter;
-import de.gwdg.metadataqa.api.json.JsonBranch;
+import de.gwdg.metadataqa.api.json.DataElement;
 import de.gwdg.metadataqa.api.model.pathcache.PathCache;
 import de.gwdg.metadataqa.api.rule.RuleChecker;
 import de.gwdg.metadataqa.api.rule.RuleCheckerOutput;
@@ -20,11 +20,11 @@ public class AndChecker extends LogicalChecker {
    * @param field The field
    * @param checkers The list of checkers
    */
-  public AndChecker(JsonBranch field, List<RuleChecker> checkers) {
+  public AndChecker(DataElement field, List<RuleChecker> checkers) {
     this(field, field.getLabel(), checkers);
   }
 
-  public AndChecker(JsonBranch field, String header, List<RuleChecker> checkers) {
+  public AndChecker(DataElement field, String header, List<RuleChecker> checkers) {
     super(field,header + ":" + PREFIX + ":" + getChildrenHeader(checkers));
     this.checkers = checkers;
   }

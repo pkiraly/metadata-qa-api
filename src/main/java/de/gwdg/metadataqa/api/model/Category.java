@@ -1,6 +1,6 @@
 package de.gwdg.metadataqa.api.model;
 
-import de.gwdg.metadataqa.api.json.JsonBranch;
+import de.gwdg.metadataqa.api.json.DataElement;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -27,11 +27,11 @@ public enum Category {
     this.name = name;
   }
 
-  public static List<String> extractCategories(Collection<JsonBranch> paths) {
+  public static List<String> extractCategories(Collection<DataElement> paths) {
     return extractCategories(paths, false);
   }
 
-  public static List<String> extractCategories(Collection<JsonBranch> paths,
+  public static List<String> extractCategories(Collection<DataElement> paths,
                                                boolean reorder) {
     List<String> existingCategories = extractExistingCategories(paths);
 
@@ -41,11 +41,11 @@ public enum Category {
     return existingCategories;
   }
 
-  private static List<String> extractExistingCategories(Collection<JsonBranch> paths) {
+  private static List<String> extractExistingCategories(Collection<DataElement> dataElements) {
     List<String> existingCategories = new ArrayList<>();
-    for (JsonBranch branch : paths)
-      if (branch.isActive())
-        for (String category : branch.getCategories())
+    for (DataElement dataElement : dataElements)
+      if (dataElement.isActive())
+        for (String category : dataElement.getCategories())
           if (!existingCategories.contains(category))
             existingCategories.add(category);
 

@@ -1,7 +1,7 @@
 package de.gwdg.metadataqa.api.rule.singlefieldchecker;
 
 import de.gwdg.metadataqa.api.counter.FieldCounter;
-import de.gwdg.metadataqa.api.json.JsonBranch;
+import de.gwdg.metadataqa.api.json.DataElement;
 import de.gwdg.metadataqa.api.model.XmlFieldInstance;
 import de.gwdg.metadataqa.api.model.pathcache.PathCache;
 import de.gwdg.metadataqa.api.rule.RuleCheckerOutput;
@@ -16,11 +16,11 @@ public class MinLengthChecker extends SingleFieldChecker {
   public static final String PREFIX = "minLength";
   protected Integer minLength;
 
-  public MinLengthChecker(JsonBranch field, Integer minLength) {
+  public MinLengthChecker(DataElement field, Integer minLength) {
     this(field, field.getLabel(), minLength);
   }
 
-  public MinLengthChecker(JsonBranch field, String header, Integer minLength) {
+  public MinLengthChecker(DataElement field, String header, Integer minLength) {
     super(field, header + ":" + PREFIX);
     this.minLength = minLength;
   }
@@ -32,7 +32,7 @@ public class MinLengthChecker extends SingleFieldChecker {
 
     var allPassed = true;
     var isNA = true;
-    List<XmlFieldInstance> instances = cache.get(field.getJsonPath());
+    List<XmlFieldInstance> instances = cache.get(field.getPath());
     if (instances != null && !instances.isEmpty()) {
       for (XmlFieldInstance instance : instances) {
         if (instance.hasValue()) {
