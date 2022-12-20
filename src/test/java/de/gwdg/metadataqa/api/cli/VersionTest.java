@@ -6,13 +6,16 @@ import static org.junit.Assert.assertEquals;
 
 public class VersionTest {
 
+  private final String EXPECTED_VERSION = "1.0.0-SNAPSHOT";
+  ;
+
   @Test
   public void getVersion() {
-    assertEquals("0.9.0", Version.getVersion());
+    assertEquals(EXPECTED_VERSION, Version.getVersion());
   }
 
   @Test
   public void readVersionFromPropertyFile() {
-    assertEquals("0.9.0", Version.readVersionFromPropertyFile());
+    assertEquals(EXPECTED_VERSION, Version.readVersionFromPropertyFile());
   }
 }
