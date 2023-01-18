@@ -162,13 +162,13 @@
     <dependency>
       <artifactId>solr-solrj</artifactId>
       <groupId>org.apache.solr</groupId>
-      <version>9.0.0</version>
+      <version>9.1.0</version>
     </dependency>
     <!-- XML handling https://mvnrepository.com/artifact/com.fasterxml.jackson.core/jackson-databind -->
     <dependency>
       <groupId>com.fasterxml.jackson.core</groupId>
       <artifactId>jackson-databind</artifactId>
-      <version>2.13.4.2</version>
+      <version>2.14.1</version>
     </dependency>
     <dependency>
       <groupId>com.github.stefanbirkner</groupId>
