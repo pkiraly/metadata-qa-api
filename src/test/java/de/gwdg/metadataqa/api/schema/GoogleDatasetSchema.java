@@ -110,21 +110,21 @@ public class GoogleDatasetSchema implements Schema, CsvAwareSchema {
     return ruleCheckers;
   }
 
-  private static void addPath(DataElement branch) {
-    PATHS.put(branch.getLabel(), branch);
+  private static void addPath(DataElement dataElement) {
+    PATHS.put(dataElement.getLabel(), dataElement);
 
-    if (branch.getParent() == null)
-      DIRECT_CHILDREN.put(branch.getLabel(), branch);
+    if (dataElement.getParent() == null)
+      DIRECT_CHILDREN.put(dataElement.getLabel(), dataElement);
 
-    if (branch.isCollection())
-      COLLECTION_PATHS.put(branch.getLabel(), branch);
+    if (dataElement.isCollection())
+      COLLECTION_PATHS.put(dataElement.getLabel(), dataElement);
   }
 
   @Override
   public List<String> getHeader() {
     List<String> headers = new ArrayList<>();
-    for (DataElement branch : PATHS.values()) {
-      headers.add(branch.getPath());
+    for (DataElement dataElement : PATHS.values()) {
+      headers.add(dataElement.getPath());
     }
     return headers;
   }

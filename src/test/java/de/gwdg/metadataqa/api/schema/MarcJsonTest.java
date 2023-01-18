@@ -152,16 +152,16 @@ public class MarcJsonTest {
   public void testMarcSchemaIteration() {
     List<String> skippable = Arrays.asList("leader", "001", "003", "005", "006", "007", "008");
     // fixedValues
-    for (DataElement branch : schema.getPaths()) {
-      if (skippable.contains(branch.getLabel()) || branch.getParent() != null)
+    for (DataElement dataElement : schema.getPaths()) {
+      if (skippable.contains(dataElement.getLabel()) || dataElement.getParent() != null)
         continue;
 
-      List<Map<String, List<String>>> expectedList = fixedValues.get(branch.getLabel());
-      JSONArray fieldInstances = (JSONArray) cache.getFragment(branch.getPath());
+      List<Map<String, List<String>>> expectedList = fixedValues.get(dataElement.getLabel());
+      JSONArray fieldInstances = (JSONArray) cache.getFragment(dataElement.getPath());
       for (int fieldInsanceNr = 0; fieldInsanceNr < fieldInstances.size(); fieldInsanceNr++) {
         Map<String, List<String>> expectedInstances = expectedList.get(fieldInsanceNr);
         Map fieldInstance = (Map)fieldInstances.get(fieldInsanceNr);
-        for(DataElement subfieldDef : branch.getChildren()) {
+        for(DataElement subfieldDef : dataElement.getChildren()) {
           // alternative methods:
           // Object childInstance1 = cache.getFragment(child.getAbsoluteJsonPath(insanceNr), child.getJsonPath(), instance);
           // Object childInstance2 = cache.getFragment(child.getAbsoluteJsonPath(insanceNr));
@@ -194,20 +194,20 @@ public class MarcJsonTest {
     assertEquals("net.minidev.json.JSONArray", fragments.get(0).getClass().getCanonicalName());
     Map first = (Map)((JSONArray)fragments.get(0)).get(0);
 
-    DataElement branch = schema.getPathByLabel("924");
+    DataElement dataElement = schema.getPathByLabel("924");
 
-    rawFragment = cache.getFragment(branch.getPath());
+    rawFragment = cache.getFragment(dataElement.getPath());
     assertNotNull(rawFragment);
     List<Object> fieldInstances = Converter.jsonObjectToList(rawFragment, schema);
     assertEquals(12, fragments.size());
     for (var i = 0; i < fieldInstances.size(); i++) {
       Object fieldInstance = fieldInstances.get(i);
       List<Object> subfieldInstances = null;
-      for (DataElement child : branch.getChildren()) {
+      for (DataElement child : dataElement.getChildren()) {
         List<XmlFieldInstance> values = null;
         if (child.getPath().startsWith("$.subfield")) {
           if (subfieldInstances == null)
-            subfieldInstances = readSubfieldInstances(fieldInstance, branch.getPath() + i);
+            subfieldInstances = readSubfieldInstances(fieldInstance, dataElement.getPath() + i);
           for (int j = 0; j < subfieldInstances.size(); j++) {
             String address = child.getAbsolutePath((i * 100) + j);
             String path = child.getPath().replace("subfield", "");
@@ -246,9 +246,9 @@ public class MarcJsonTest {
     assertEquals(1, values.size());
     assertEquals(" ", values.get(0).getValue());
 
-    DataElement branch = schema.getPathByLabel("016");
+    DataElement dataElement = schema.getPathByLabel("016");
     String path = schema.getPathByLabel("016$ind1").getPath();
-    Object rawJsonFragment = cache.getFragment(branch.getPath());
+    Object rawJsonFragment = cache.getFragment(dataElement.getPath());
     if (rawJsonFragment != null) {
       List<Object> jsonFragments = Converter.jsonObjectToList(rawJsonFragment, schema);
       for (int i = 0, len = jsonFragments.size(); i < len; i++) {
@@ -264,14 +264,14 @@ public class MarcJsonTest {
     List<XmlFieldInstance> values;
     String subfieldPath = "$.subfield";
 
-    for (DataElement branch : schema.getRootChildrenPaths()) {
-      if (branch.isCollection()) {
-        Object rawJsonFragment = cache.getFragment(branch.getPath());
+    for (DataElement dataElement : schema.getRootChildrenPaths()) {
+      if (dataElement.isCollection()) {
+        Object rawJsonFragment = cache.getFragment(dataElement.getPath());
         if (rawJsonFragment != null) {
           List<Object> jsonFragments = Converter.jsonObjectToList(rawJsonFragment, schema);
           for (int i = 0, len = jsonFragments.size(); i < len; i++) {
             Object jsonFragment = jsonFragments.get(i);
-            for (DataElement child : branch.getChildren()) {
+            for (DataElement child : dataElement.getChildren()) {
               if (child.getPath().startsWith("$.subfield")) {
                 Object rawSubfieldFragment = cache.getFragment(subfieldPath);
                 if (rawSubfieldFragment != null) {
@@ -282,8 +282,8 @@ public class MarcJsonTest {
                 }
               } else {
                 values = cache.get(child.getPath(), child.getPath(), jsonFragment);
-                if (fixedValues.containsKey(branch.getLabel())) {
-                  Map<String, List<String>> instance = fixedValues.get(branch.getLabel()).get(i);
+                if (fixedValues.containsKey(dataElement.getLabel())) {
+                  Map<String, List<String>> instance = fixedValues.get(dataElement.getLabel()).get(i);
                   if (instance.containsKey(child.getLabel())) {
                     assertNotNull(
                         String.format(
@@ -297,29 +297,29 @@ public class MarcJsonTest {
                     assertNull(child.getLabel(), values);
                   }
                 } else {
-                  assertNull(branch.getLabel(), values);
+                  assertNull(dataElement.getLabel(), values);
                 }
               }
             }
           }
         }
       } else {
-        values = (List<XmlFieldInstance>) cache.get(branch.getPath());
-        if (fixedValues.containsKey(branch.getLabel())) {
-          assertEquals(branch.getPath(),
-            fixedValues.get(branch.getLabel()).size(), values.size());
+        values = (List<XmlFieldInstance>) cache.get(dataElement.getPath());
+        if (fixedValues.containsKey(dataElement.getLabel())) {
+          assertEquals(dataElement.getPath(),
+            fixedValues.get(dataElement.getLabel()).size(), values.size());
           // printValues(values, branch);
         } else {
-          assertNull(branch.getLabel(), values);
+          assertNull(dataElement.getLabel(), values);
         }
       }
     }
   }
 
-  private void printValues(List<XmlFieldInstance> values, DataElement branch) {
+  private void printValues(List<XmlFieldInstance> values, DataElement dataElement) {
     if (values != null)
       for (XmlFieldInstance value : values)
-        System.err.println(String.format("%s: '%s'", branch.getLabel(), value.getValue()));
+        System.err.println(String.format("%s: '%s'", dataElement.getLabel(), value.getValue()));
   }
 
   private void initializeFixedValues() {

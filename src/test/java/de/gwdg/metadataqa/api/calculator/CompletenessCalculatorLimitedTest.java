@@ -102,9 +102,9 @@ public class CompletenessCalculatorLimitedTest {
 
   private List<String> getFieldsByCategory(Category category, Schema schema) {
     List<String> labels = new ArrayList<>();
-    for (DataElement branch : schema.getPaths()) {
-      if (branch.getCategories().contains(category)) {
-        labels.add(branch.getLabel());
+    for (DataElement dataElement : schema.getPaths()) {
+      if (dataElement.getCategories().contains(category)) {
+        labels.add(dataElement.getLabel());
       }
     }
 

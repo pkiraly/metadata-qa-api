@@ -36,10 +36,10 @@ public abstract class EdmSchema implements Schema, ProblemCatalogSchema {
 
   protected Map<String, String> extractableFields = new LinkedHashMap<>();
 
-  protected void addPath(DataElement branch) {
-    paths.put(branch.getLabel(), branch);
-    if (branch.isCollection())
-      collectionPaths.put(branch.getLabel(), branch);
+  protected void addPath(DataElement dataElement) {
+    paths.put(dataElement.getLabel(), dataElement);
+    if (dataElement.isCollection())
+      collectionPaths.put(dataElement.getLabel(), dataElement);
   }
 
   @Override

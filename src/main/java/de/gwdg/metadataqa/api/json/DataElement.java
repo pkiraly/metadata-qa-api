@@ -12,7 +12,7 @@ import java.util.Arrays;
 import java.util.List;
 
 /**
- * JSON branch object
+ * A data element of a schema
  *
  * @author Péter Király <peter.kiraly at gwdg.de>
  */

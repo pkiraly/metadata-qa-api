@@ -783,9 +783,9 @@ public class BaseSchemaTest {
 
     assertNotNull(schema);
     assertNotNull(schema.getPathByLabel("url"));
-    DataElement branch = schema.getPathByLabel("url");
-    assertEquals("url", branch.getLabel());
-    assertEquals("url", branch.getIndexField());
+    DataElement dataElement = schema.getPathByLabel("url");
+    assertEquals("url", dataElement.getLabel());
+    assertEquals("url", dataElement.getIndexField());
     assertNotNull(schema.getIndexFields());
     assertEquals(2, schema.getIndexFields().size());
     assertEquals("url", schema.getIndexFields().get(0).getLabel());

@@ -50,11 +50,11 @@ public class SchemaUtils {
     setSchemaForFields(schema);
     id = 0;
     List<RuleChecker> allRuleCheckers = new ArrayList<>();
-    for (DataElement branch : schema.getPaths()) {
-      if (branch.getRules() != null) {
-        List<Rule> rules = branch.getRules();
+    for (DataElement dataElement : schema.getPaths()) {
+      if (dataElement.getRules() != null) {
+        List<Rule> rules = dataElement.getRules();
         for (Rule rule : rules) {
-          List<RuleChecker> ruleCheckers = processRule(schema, branch, rule);
+          List<RuleChecker> ruleCheckers = processRule(schema, dataElement, rule);
           if (!ruleCheckers.isEmpty())
             allRuleCheckers.addAll(ruleCheckers);
         }
@@ -63,90 +63,90 @@ public class SchemaUtils {
     return allRuleCheckers;
   }
 
-  private static List<RuleChecker> processRule(Schema schema, DataElement branch, Rule rule) {
+  private static List<RuleChecker> processRule(Schema schema, DataElement dataElement, Rule rule) {
     List<RuleChecker> ruleCheckers = new ArrayList<>();
     if (rule.getSkip().equals(Boolean.TRUE))
       return ruleCheckers;
 
     if (StringUtils.isNotBlank(rule.getPattern()))
-      ruleCheckers.add(new PatternChecker(branch, rule.getPattern()));
+      ruleCheckers.add(new PatternChecker(dataElement, rule.getPattern()));
 
     if (StringUtils.isNotBlank(rule.getEquals()))
-      pair(schema, ruleCheckers, branch, rule.getEquals(), "equals");
+      pair(schema, ruleCheckers, dataElement, rule.getEquals(), "equals");
 
     if (StringUtils.isNotBlank(rule.getDisjoint()))
-      pair(schema, ruleCheckers, branch, rule.getDisjoint(), "disjoint");
+      pair(schema, ruleCheckers, dataElement, rule.getDisjoint(), "disjoint");
 
     if (rule.getIn() != null && !rule.getIn().isEmpty())
-      ruleCheckers.add(new EnumerationChecker(branch, rule.getIn()));
+      ruleCheckers.add(new EnumerationChecker(dataElement, rule.getIn()));
 
     if (rule.getMinCount() != null)
-      ruleCheckers.add(new MinCountChecker(branch, rule.getMinCount(), rule.getAllowEmptyInstances()));
+      ruleCheckers.add(new MinCountChecker(dataElement, rule.getMinCount(), rule.getAllowEmptyInstances()));
 
     if (rule.getMaxCount() != null)
-      ruleCheckers.add(new MaxCountChecker(branch, rule.getMaxCount(), rule.getAllowEmptyInstances()));
+      ruleCheckers.add(new MaxCountChecker(dataElement, rule.getMaxCount(), rule.getAllowEmptyInstances()));
 
     if (rule.getMinLength() != null)
-      ruleCheckers.add(new MinLengthChecker(branch, rule.getMinLength()));
+      ruleCheckers.add(new MinLengthChecker(dataElement, rule.getMinLength()));
 
     if (rule.getMaxLength() != null)
-      ruleCheckers.add(new MaxLengthChecker(branch, rule.getMaxLength()));
+      ruleCheckers.add(new MaxLengthChecker(dataElement, rule.getMaxLength()));
 
     if (rule.getMaxWords() != null)
-      ruleCheckers.add(new MaxWordsChecker(branch, rule.getMaxWords()));
+      ruleCheckers.add(new MaxWordsChecker(dataElement, rule.getMaxWords()));
 
     if (rule.getMinWords() != null)
-      ruleCheckers.add(new MinWordsChecker(branch, rule.getMinWords()));
+      ruleCheckers.add(new MinWordsChecker(dataElement, rule.getMinWords()));
 
     if (StringUtils.isNotBlank(rule.getHasValue()))
-      ruleCheckers.add(new HasValueChecker(branch, rule.getHasValue()));
+      ruleCheckers.add(new HasValueChecker(dataElement, rule.getHasValue()));
 
     if (rule.getMinInclusive() != null)
-      ruleCheckers.add(new NumericValueChecker(branch, rule.getMinInclusive(), MIN_INCLUSIVE));
+      ruleCheckers.add(new NumericValueChecker(dataElement, rule.getMinInclusive(), MIN_INCLUSIVE));
 
     if (rule.getMaxInclusive() != null)
-      ruleCheckers.add(new NumericValueChecker(branch, rule.getMinInclusive(), MAX_INCLUSIVE));
+      ruleCheckers.add(new NumericValueChecker(dataElement, rule.getMinInclusive(), MAX_INCLUSIVE));
 
     if (rule.getMinExclusive() != null)
-      ruleCheckers.add(new NumericValueChecker(branch, rule.getMinInclusive(), MIN_EXCLUSIVE));
+      ruleCheckers.add(new NumericValueChecker(dataElement, rule.getMinInclusive(), MIN_EXCLUSIVE));
 
     if (rule.getMaxExclusive() != null)
-      ruleCheckers.add(new NumericValueChecker(branch, rule.getMinInclusive(), MAX_EXCLUSIVE));
+      ruleCheckers.add(new NumericValueChecker(dataElement, rule.getMinInclusive(), MAX_EXCLUSIVE));
 
     if (rule.getContentType() != null && !rule.getContentType().isEmpty())
-      ruleCheckers.add(new ContentTypeChecker(branch, rule.getContentType()));
+      ruleCheckers.add(new ContentTypeChecker(dataElement, rule.getContentType()));
 
     if (rule.getDimension() != null)
-      ruleCheckers.add(new ImageDimensionChecker(branch, rule.getDimension()));
+      ruleCheckers.add(new ImageDimensionChecker(dataElement, rule.getDimension()));
 
     if (rule.getDependencies() != null && !rule.getDependencies().isEmpty())
-      ruleCheckers.add(new DependencyChecker(branch, rule.getDependencies()));
+      ruleCheckers.add(new DependencyChecker(dataElement, rule.getDependencies()));
 
     if (rule.getUnique() != null && rule.getUnique().equals(Boolean.TRUE))
-      ruleCheckers.add(new UniquenessChecker(branch));
+      ruleCheckers.add(new UniquenessChecker(dataElement));
 
     if (rule.getLessThan() != null)
-      pair(schema, ruleCheckers, branch, rule.getLessThan(), "LessThan");
+      pair(schema, ruleCheckers, dataElement, rule.getLessThan(), "LessThan");
 
     if (rule.getLessThanOrEquals() != null)
-      pair(schema, ruleCheckers, branch, rule.getLessThan(), "lessThanOrEquals");
+      pair(schema, ruleCheckers, dataElement, rule.getLessThan(), "lessThanOrEquals");
 
     if (rule.getLessThanOrEquals() != null)
-      ruleCheckers.add(new DependencyChecker(branch, rule.getDependencies()));
+      ruleCheckers.add(new DependencyChecker(dataElement, rule.getDependencies()));
 
     if (rule.getAnd() != null) {
-      List<RuleChecker> childRuleCheckers = getChildRuleCheckers(schema, branch, rule.getAnd(), rule.getId());
-      ruleCheckers.add(new AndChecker(branch, childRuleCheckers));
+      List<RuleChecker> childRuleCheckers = getChildRuleCheckers(schema, dataElement, rule.getAnd(), rule.getId());
+      ruleCheckers.add(new AndChecker(dataElement, childRuleCheckers));
     }
 
     if (rule.getOr() != null) {
-      List<RuleChecker> childRuleCheckers = getChildRuleCheckers(schema, branch, rule.getOr(), rule.getId());
-      ruleCheckers.add(new OrChecker(branch, childRuleCheckers));
+      List<RuleChecker> childRuleCheckers = getChildRuleCheckers(schema, dataElement, rule.getOr(), rule.getId());
+      ruleCheckers.add(new OrChecker(dataElement, childRuleCheckers));
     }
 
     if (rule.getNot() != null) {
-      List<RuleChecker> childRuleCheckers = getChildRuleCheckers(schema, branch, rule.getNot(), rule.getId());
-      ruleCheckers.add(new NotChecker(branch, childRuleCheckers));
+      List<RuleChecker> childRuleCheckers = getChildRuleCheckers(schema, dataElement, rule.getNot(), rule.getId());
+      ruleCheckers.add(new NotChecker(dataElement, childRuleCheckers));
     }
 
     if (!ruleCheckers.isEmpty())
@@ -170,12 +170,12 @@ public class SchemaUtils {
     return ruleCheckers;
   }
 
-  private static List<RuleChecker> getChildRuleCheckers(Schema schema, DataElement branch, List<Rule> rules, String id) {
+  private static List<RuleChecker> getChildRuleCheckers(Schema schema, DataElement dataElement, List<Rule> rules, String id) {
     List<RuleChecker> childRuleCheckers = new ArrayList<>();
     for (Rule childRule : rules) {
       if (StringUtils.isBlank(childRule.getId()))
         childRule.setId(id);
-      List<RuleChecker> localChildRuleCheckers = processRule(schema, branch, childRule);
+      List<RuleChecker> localChildRuleCheckers = processRule(schema, dataElement, childRule);
       if (!localChildRuleCheckers.isEmpty())
         childRuleCheckers.addAll(localChildRuleCheckers);
     }
@@ -184,20 +184,20 @@ public class SchemaUtils {
 
   private static void pair(Schema schema,
                            List<RuleChecker> ruleCheckers,
-                           DataElement branch,
+                           DataElement dataElement,
                            String fieldReference,
                            String type) {
     DataElement field2 = schema.getPathByLabel(fieldReference);
     if (field2 != null) {
       RuleChecker ruleChecker = null;
       if ("equals".equals(type)) {
-        ruleChecker = new EqualityChecker(branch, field2);
+        ruleChecker = new EqualityChecker(dataElement, field2);
       } else if ("disjoint".equals(type)) {
-        ruleChecker = new DisjointChecker(branch, field2);
+        ruleChecker = new DisjointChecker(dataElement, field2);
       } else if ("lessThan".equals(type)) {
-        ruleChecker = new LessThanPairChecker(branch, field2, LessThanPairChecker.TYPE.LESS_THAN);
+        ruleChecker = new LessThanPairChecker(dataElement, field2, LessThanPairChecker.TYPE.LESS_THAN);
       } else if ("lessThanOrEquals".equals(type)) {
-        ruleChecker = new LessThanPairChecker(branch, field2, LessThanPairChecker.TYPE.LESS_THAN_OR_EQUALS);
+        ruleChecker = new LessThanPairChecker(dataElement, field2, LessThanPairChecker.TYPE.LESS_THAN_OR_EQUALS);
       }
 
       if (ruleChecker != null)
@@ -208,7 +208,7 @@ public class SchemaUtils {
   }
 
   public static void setSchemaForFields(Schema schema) {
-    for (DataElement branch : schema.getPaths())
-      branch.setSchema(schema);
+    for (DataElement dataElement : schema.getPaths())
+      dataElement.setSchema(schema);
   }
 }

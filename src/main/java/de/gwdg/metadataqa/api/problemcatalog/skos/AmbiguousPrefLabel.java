@@ -40,21 +40,21 @@ public class AmbiguousPrefLabel extends ProblemDetector implements Serializable 
   public void update(PathCache cache, FieldCounter<Double> results) {
     var value = 0;
     for (String label : LABELS) {
-      DataElement branch = ((Schema) schema).getPathByLabel(label);
-      String parentPath = branch.getParent().getPath();
+      DataElement dataElement = ((Schema) schema).getPathByLabel(label);
+      String parentPath = dataElement.getParent().getPath();
       Object rawEntityFragment = cache.getFragment(parentPath);
       if (rawEntityFragment != null) {
         List<Object> entities = Converter.jsonObjectToList(rawEntityFragment, (Schema) schema);
         for (var i = 0; i < entities.size(); i++) {
-          value += countPerEntity(i, branch, cache);
+          value += countPerEntity(i, dataElement, cache);
         }
       }
     }
     results.put(NAME, (double) value);
   }
 
-  private int countPerEntity(int entityCounter, DataElement branch, PathCache cache) {
-    List<EdmFieldInstance> subjects = cache.get(branch.getAbsolutePath(entityCounter));
+  private int countPerEntity(int entityCounter, DataElement dataElement, PathCache cache) {
+    List<EdmFieldInstance> subjects = cache.get(dataElement.getAbsolutePath(entityCounter));
     Map<String, Integer> labelCounter = countLabelsPerFields(subjects);
     return countAmbiguousPrefLabels(labelCounter);
   }

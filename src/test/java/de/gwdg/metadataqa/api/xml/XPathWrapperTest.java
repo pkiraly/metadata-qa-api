@@ -178,8 +178,8 @@ public class XPathWrapperTest {
   @Test
   public void testDataElement() throws IOException, URISyntaxException {
     Schema schema = new EdmOaiPmhXmlSchema();
-    DataElement branch = schema.getPathByLabel("Concept");
-    String path = branch.getPath();
+    DataElement dataElement = schema.getPathByLabel("Concept");
+    String path = dataElement.getPath();
     assertEquals("//skos:Concept", path);
 
     XPathWrapper xPathWrapper = new XPathWrapper(

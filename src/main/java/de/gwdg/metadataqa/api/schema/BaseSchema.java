@@ -36,18 +36,18 @@ public class BaseSchema implements Schema, CsvAwareSchema, Serializable {
     // initialize without parameters
   }
 
-  public BaseSchema addField(DataElement branch) {
-    branch.setSchema(this);
-    paths.put(branch.getLabel(), branch);
+  public BaseSchema addField(DataElement dataElement) {
+    dataElement.setSchema(this);
+    paths.put(dataElement.getLabel(), dataElement);
 
-    if (branch.getParent() == null)
-      directChildren.put(branch.getLabel(), branch);
+    if (dataElement.getParent() == null)
+      directChildren.put(dataElement.getLabel(), dataElement);
 
-    if (branch.isCollection())
-      collectionPaths.put(branch.getLabel(), branch);
+    if (dataElement.isCollection())
+      collectionPaths.put(dataElement.getLabel(), dataElement);
 
-    if (branch.isExtractable())
-      addExtractableField(branch.getLabel(), branch.getPath());
+    if (dataElement.isExtractable())
+      addExtractableField(dataElement.getLabel(), dataElement.getPath());
 
     return this;
   }
@@ -163,8 +163,8 @@ public class BaseSchema implements Schema, CsvAwareSchema, Serializable {
   @Override
   public List<String> getHeader() {
     List<String> headers = new ArrayList<>();
-    for (DataElement branch : paths.values()) {
-      headers.add(branch.getPath());
+    for (DataElement dataElement : paths.values()) {
+      headers.add(dataElement.getPath());
     }
     return headers;
   }
