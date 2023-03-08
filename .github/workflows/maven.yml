@@ -61,3 +61,7 @@ jobs:
 #      uses: coverallsapp/github-action@1.1.3
 #      with:
 #        github-token: ${{ secrets.GITHUB_TOKEN }}
+    # COVERALL_REPO_TOKEN is available as the TOKEN variable at https://coveralls.io/github/pkiraly/metadata-qa-api
+    # coverage report: https://coveralls.io/github/pkiraly/metadata-qa-api
+    - name: Coveralls Coverage Report Submission
+      run: mvn coveralls:report -DrepoToken=${{ secrets.COVERALL_REPO_TOKEN }}
