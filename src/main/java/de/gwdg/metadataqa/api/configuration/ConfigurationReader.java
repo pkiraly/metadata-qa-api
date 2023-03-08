@@ -1,6 +1,7 @@
 package de.gwdg.metadataqa.api.configuration;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import org.yaml.snakeyaml.LoaderOptions;
 import org.yaml.snakeyaml.Yaml;
 import org.yaml.snakeyaml.constructor.Constructor;
 
@@ -43,7 +44,7 @@ public class ConfigurationReader {
   }
 
   private static <T> T readYaml(String fileName, Class<T> clazz) throws FileNotFoundException {
-    var yaml = new Yaml(new Constructor(clazz));
+    var yaml = new Yaml(new Constructor(clazz, new LoaderOptions()));
     InputStream inputStream = new FileInputStream(new File(fileName));
     return yaml.load(inputStream);
   }

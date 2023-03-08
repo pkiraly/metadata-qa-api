@@ -11,6 +11,7 @@ import de.gwdg.metadataqa.api.rule.singlefieldchecker.MinCountChecker;
 import de.gwdg.metadataqa.api.schema.Format;
 import de.gwdg.metadataqa.api.schema.Schema;
 import org.junit.Test;
+import org.yaml.snakeyaml.LoaderOptions;
 import org.yaml.snakeyaml.Yaml;
 import org.yaml.snakeyaml.constructor.Constructor;
 
@@ -26,7 +27,7 @@ public class SchemaConfigurationTest {
 
   @Test
   public void testReading_fromResource() {
-    Yaml yaml = new Yaml(new Constructor(SchemaConfiguration.class));
+    Yaml yaml = new Yaml(new Constructor(SchemaConfiguration.class, new LoaderOptions()));
     InputStream inputStream = this.getClass()
       .getClassLoader()
       .getResourceAsStream("configuration/schema/configuration.yaml");
@@ -36,7 +37,7 @@ public class SchemaConfigurationTest {
 
   @Test
   public void testReading_fromFile() throws FileNotFoundException {
-    Yaml yaml = new Yaml(new Constructor(SchemaConfiguration.class));
+    Yaml yaml = new Yaml(new Constructor(SchemaConfiguration.class, new LoaderOptions()));
     InputStream inputStream = new FileInputStream(new File("src/test/resources/configuration/schema/configuration.yaml"));
     SchemaConfiguration config = (SchemaConfiguration) yaml.load(inputStream);
     testConfiguration(config);
@@ -106,7 +107,7 @@ public class SchemaConfigurationTest {
 
   @Test
   public void testReading_rules() {
-    Yaml yaml = new Yaml(new Constructor(Rulex.class));
+    Yaml yaml = new Yaml(new Constructor(Rulex.class, new LoaderOptions()));
     InputStream inputStream = this.getClass()
       .getClassLoader()
       .getResourceAsStream("configuration/schema/rules.yaml");

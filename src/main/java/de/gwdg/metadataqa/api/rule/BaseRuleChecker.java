@@ -87,6 +87,4 @@ public abstract class BaseRuleChecker implements RuleChecker {
   public boolean isDebug() {
     return debug;
   }
-
-
 }
