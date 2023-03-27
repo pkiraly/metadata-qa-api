@@ -177,6 +177,11 @@
       <version>1.2.1</version>
       <scope>test</scope>
     </dependency>
+    <dependency>
+      <groupId>net.minidev</groupId>
+      <artifactId>json-smart</artifactId>
+      <version>2.4.10</version>
+    </dependency>
   </dependencies>
 
   <build>
