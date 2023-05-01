@@ -2,24 +2,24 @@ package de.gwdg.metadataqa.api.util;
 
 import de.gwdg.metadataqa.api.json.DataElement;
 import de.gwdg.metadataqa.api.model.XmlFieldInstance;
-import de.gwdg.metadataqa.api.model.pathcache.PathCache;
+import de.gwdg.metadataqa.api.model.selector.Selector;
 
 import java.util.List;
 
 public class InstanceCounter {
   boolean isNA = true;
   int count = 0;
-  private final PathCache cache;
+  private final Selector cache;
   private final DataElement field;
   private boolean allowEmptyInstances = true;
 
-  public InstanceCounter(PathCache cache, DataElement field) {
+  public InstanceCounter(Selector cache, DataElement field) {
     this.cache = cache;
     this.field = field;
     count();
   }
 
-  public InstanceCounter(PathCache cache, DataElement field, boolean allowEmptyInstances) {
+  public InstanceCounter(Selector cache, DataElement field, boolean allowEmptyInstances) {
     this.cache = cache;
     this.field = field;
     this.allowEmptyInstances = allowEmptyInstances;

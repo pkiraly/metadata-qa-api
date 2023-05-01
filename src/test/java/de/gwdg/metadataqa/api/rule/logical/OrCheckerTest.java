@@ -2,8 +2,8 @@ package de.gwdg.metadataqa.api.rule.logical;
 
 import de.gwdg.metadataqa.api.configuration.schema.Rule;
 import de.gwdg.metadataqa.api.counter.FieldCounter;
-import de.gwdg.metadataqa.api.model.PathCacheFactory;
-import de.gwdg.metadataqa.api.model.pathcache.CsvPathCache;
+import de.gwdg.metadataqa.api.model.selector.SelectorFactory;
+import de.gwdg.metadataqa.api.model.selector.CsvSelector;
 import de.gwdg.metadataqa.api.rule.RuleChecker;
 import de.gwdg.metadataqa.api.rule.RuleCheckerOutput;
 import de.gwdg.metadataqa.api.rule.RuleCheckingOutputStatus;
@@ -27,7 +27,7 @@ import static org.junit.Assert.assertEquals;
 public class OrCheckerTest {
 
   protected Schema schema;
-  protected CsvPathCache cache;
+  protected CsvSelector cache;
 
   @Before
   public void setUp() throws Exception {
@@ -39,7 +39,7 @@ public class OrCheckerTest {
     ;
     schema.getPathByLabel("name").setRule(Arrays.asList(new Rule().withOr(Arrays.asList(new Rule().withMinCount(1), new Rule().withMaxCount(1)))));
 
-    cache = (CsvPathCache) PathCacheFactory.getInstance(schema.getFormat(), "a,b,a");
+    cache = (CsvSelector) SelectorFactory.getInstance(schema.getFormat(), "a,b,a");
     cache.setCsvReader(new CsvReader().setHeader(((CsvAwareSchema) schema).getHeader()));
   }
 

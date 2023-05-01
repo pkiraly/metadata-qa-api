@@ -3,7 +3,7 @@ package de.gwdg.metadataqa.api.rule;
 import de.gwdg.metadataqa.api.counter.FieldCounter;
 import de.gwdg.metadataqa.api.interfaces.Calculator;
 import de.gwdg.metadataqa.api.interfaces.MetricResult;
-import de.gwdg.metadataqa.api.model.pathcache.PathCache;
+import de.gwdg.metadataqa.api.model.selector.Selector;
 import de.gwdg.metadataqa.api.problemcatalog.FieldCounterBasedResult;
 import de.gwdg.metadataqa.api.schema.Schema;
 
@@ -25,7 +25,7 @@ public class RuleCatalog implements Calculator, Serializable {
   }
 
   @Override
-  public List<MetricResult> measure(PathCache cache) {
+  public List<MetricResult> measure(Selector cache) {
     FieldCounter<RuleCheckerOutput> fieldCounter = new FieldCounter<>();
     var totalScore = 0;
 

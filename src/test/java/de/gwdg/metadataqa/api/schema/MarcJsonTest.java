@@ -2,7 +2,7 @@ package de.gwdg.metadataqa.api.schema;
 
 import de.gwdg.metadataqa.api.json.DataElement;
 import de.gwdg.metadataqa.api.model.EdmFieldInstance;
-import de.gwdg.metadataqa.api.model.pathcache.JsonPathCache;
+import de.gwdg.metadataqa.api.model.selector.JsonSelector;
 import de.gwdg.metadataqa.api.model.XmlFieldInstance;
 import de.gwdg.metadataqa.api.util.Converter;
 import de.gwdg.metadataqa.api.util.FileUtils;
@@ -26,7 +26,7 @@ import static org.junit.Assert.assertEquals;
  */
 public class MarcJsonTest {
 
-  JsonPathCache cache;
+  JsonSelector cache;
   Schema schema = new MarcJsonSchema();
   Map<String, List<Map<String, List<String>>>> fixedValues;
 
@@ -43,7 +43,7 @@ public class MarcJsonTest {
 
   @Before
   public void setUp() throws URISyntaxException, IOException {
-    cache = new JsonPathCache(FileUtils.readFirstLineFromResource("general/marc.json"));
+    cache = new JsonSelector(FileUtils.readFirstLineFromResource("general/marc.json"));
     initializeFixedValues();
     // "$.datafield[?(@.tag == '016')]"
   }

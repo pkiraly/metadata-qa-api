@@ -1,8 +1,8 @@
 package de.gwdg.metadataqa.api.rule.singlefieldchecker;
 
 import de.gwdg.metadataqa.api.counter.FieldCounter;
-import de.gwdg.metadataqa.api.model.PathCacheFactory;
-import de.gwdg.metadataqa.api.model.pathcache.CsvPathCache;
+import de.gwdg.metadataqa.api.model.selector.SelectorFactory;
+import de.gwdg.metadataqa.api.model.selector.CsvSelector;
 import de.gwdg.metadataqa.api.rule.CheckerTestBase;
 import de.gwdg.metadataqa.api.rule.RuleCheckerOutput;
 import de.gwdg.metadataqa.api.rule.RuleCheckingOutputStatus;
@@ -61,7 +61,7 @@ public class PatternCheckerTest extends CheckerTestBase {
   }
 
   private void ascii(String input) {
-    cache = (CsvPathCache) PathCacheFactory.getInstance(schema.getFormat(), input);
+    cache = (CsvSelector) SelectorFactory.getInstance(schema.getFormat(), input);
     cache.setCsvReader(new CsvReader().setHeader( ((CsvAwareSchema) schema).getHeader() ));
 
     PatternChecker checker = new PatternChecker(schema.getPathByLabel("name"), "^.*?[^\\p{Graph}].*?$");

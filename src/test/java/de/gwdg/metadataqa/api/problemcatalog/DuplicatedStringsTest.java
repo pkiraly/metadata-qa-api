@@ -1,16 +1,14 @@
 package de.gwdg.metadataqa.api.problemcatalog;
 
 import de.gwdg.metadataqa.api.counter.FieldCounter;
-import de.gwdg.metadataqa.api.model.pathcache.JsonPathCache;
+import de.gwdg.metadataqa.api.model.selector.JsonSelector;
 import de.gwdg.metadataqa.api.schema.edm.EdmOaiPmhJsonSchema;
 import de.gwdg.metadataqa.api.schema.edm.EdmSchema;
 import de.gwdg.metadataqa.api.util.FileUtils;
 import java.io.IOException;
 import java.net.URISyntaxException;
-import org.junit.After;
-import org.junit.AfterClass;
+
 import org.junit.Before;
-import org.junit.BeforeClass;
 import org.junit.Test;
 import static org.junit.Assert.*;
 
@@ -22,7 +20,7 @@ public class DuplicatedStringsTest {
 
   private String problemFileName = "problem-catalog/duplicated-string.json";
   private DuplicatedStrings detector;
-  private JsonPathCache cache;
+  private JsonSelector cache;
 
   @Before
   public void setUp() throws URISyntaxException, IOException {
@@ -30,7 +28,7 @@ public class DuplicatedStringsTest {
     ProblemCatalog catalog = new ProblemCatalog(schema);
     detector = new DuplicatedStrings(catalog);
 
-    cache = new JsonPathCache(FileUtils.readFirstLineFromResource(problemFileName));
+    cache = new JsonSelector(FileUtils.readFirstLineFromResource(problemFileName));
   }
 
   // <edm:provider>Europeana Food and DrinkEuropeana Food and Drink</edm:provider>

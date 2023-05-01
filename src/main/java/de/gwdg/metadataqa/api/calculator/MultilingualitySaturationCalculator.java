@@ -5,7 +5,7 @@ import de.gwdg.metadataqa.api.calculator.language.Multilinguality;
 import de.gwdg.metadataqa.api.counter.FieldCounter;
 import de.gwdg.metadataqa.api.interfaces.MetricResult;
 import de.gwdg.metadataqa.api.json.DataElement;
-import de.gwdg.metadataqa.api.model.pathcache.PathCache;
+import de.gwdg.metadataqa.api.model.selector.Selector;
 import de.gwdg.metadataqa.api.problemcatalog.FieldCounterBasedResult;
 import de.gwdg.metadataqa.api.schema.Schema;
 import de.gwdg.metadataqa.api.util.SkippedEntitySelector;
@@ -89,7 +89,7 @@ public class MultilingualitySaturationCalculator extends BaseLanguageCalculator 
   }
 
   @Override
-  public List<MetricResult> measure(PathCache cache)
+  public List<MetricResult> measure(Selector cache)
       throws InvalidJsonException {
 
     Multilinguality multilinguality = new Multilinguality(schema, cache, resultType, skippedEntryChecker, skippedEntitySelector);

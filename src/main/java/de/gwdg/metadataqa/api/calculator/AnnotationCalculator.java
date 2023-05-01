@@ -3,7 +3,7 @@ package de.gwdg.metadataqa.api.calculator;
 import de.gwdg.metadataqa.api.counter.FieldCounter;
 import de.gwdg.metadataqa.api.interfaces.Calculator;
 import de.gwdg.metadataqa.api.interfaces.MetricResult;
-import de.gwdg.metadataqa.api.model.pathcache.PathCache;
+import de.gwdg.metadataqa.api.model.selector.Selector;
 import de.gwdg.metadataqa.api.problemcatalog.FieldCounterBasedResult;
 
 import java.io.Serializable;
@@ -24,7 +24,7 @@ public class AnnotationCalculator implements Calculator, Serializable {
   }
 
   @Override
-  public List<MetricResult> measure(PathCache cache) {
+  public List<MetricResult> measure(Selector cache) {
     if (results == null) {
       FieldCounter<Object> resultMap = new FieldCounter<>();
       for (Map.Entry<String, Object> entry : annotaionColumns.entrySet())

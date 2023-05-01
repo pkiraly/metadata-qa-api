@@ -7,9 +7,9 @@ import de.gwdg.metadataqa.api.configuration.MeasurementConfiguration;
 import de.gwdg.metadataqa.api.interfaces.Calculator;
 import de.gwdg.metadataqa.api.interfaces.MetricResult;
 import de.gwdg.metadataqa.api.interfaces.Shutdownable;
-import de.gwdg.metadataqa.api.model.pathcache.CsvPathCache;
-import de.gwdg.metadataqa.api.model.pathcache.PathCache;
-import de.gwdg.metadataqa.api.model.PathCacheFactory;
+import de.gwdg.metadataqa.api.model.selector.CsvSelector;
+import de.gwdg.metadataqa.api.model.selector.Selector;
+import de.gwdg.metadataqa.api.model.selector.SelectorFactory;
 import de.gwdg.metadataqa.api.model.XmlFieldInstance;
 import de.gwdg.metadataqa.api.schema.Format;
 import de.gwdg.metadataqa.api.schema.Schema;
@@ -68,7 +68,7 @@ public class CalculatorFacade implements Serializable {
   protected TfIdfCalculator tfidfCalculator;
 
   // protected Format format = Format.JSON;
-  protected PathCache<? extends XmlFieldInstance> cache;
+  protected Selector<? extends XmlFieldInstance> cache;
   protected Schema schema;
   protected CsvReader csvReader;
 
@@ -184,7 +184,7 @@ public class CalculatorFacade implements Serializable {
     } else {
       var format = schema.getFormat();
       if (format != null && content != null) {
-        cache = PathCacheFactory.getInstance(schema.getFormat(), content);
+        cache = SelectorFactory.getInstance(schema.getFormat(), content);
         if (schema.getFormat().equals(Format.CSV))
           initializeCsvCache(content);
 
@@ -208,7 +208,7 @@ public class CalculatorFacade implements Serializable {
         LOGGER.log(Level.WARNING, "initializeCsvCache", e);
       }
 
-    ((CsvPathCache)cache).setCsvReader(csvReader);
+    ((CsvSelector)cache).setCsvReader(csvReader);
   }
 
   protected <T extends XmlFieldInstance> Object measureCsvWithGenerics(List<String> content,
@@ -226,7 +226,7 @@ public class CalculatorFacade implements Serializable {
     MetricCollector collector = new MetricCollector();
 
     if (content != null) {
-      cache = new CsvPathCache<>(csvReader, content);
+      cache = new CsvSelector<>(csvReader, content);
       runMeasurements(collector);
     }
 
@@ -314,7 +314,7 @@ public class CalculatorFacade implements Serializable {
     return this;
   }
 
-  public PathCache<? extends XmlFieldInstance> getCache() {
+  public Selector<? extends XmlFieldInstance> getCache() {
     return cache;
   }
 

@@ -2,8 +2,8 @@ package de.gwdg.metadataqa.api.rule.singlefieldchecker;
 
 import de.gwdg.metadataqa.api.counter.FieldCounter;
 import de.gwdg.metadataqa.api.json.DataElement;
-import de.gwdg.metadataqa.api.model.PathCacheFactory;
-import de.gwdg.metadataqa.api.model.pathcache.CsvPathCache;
+import de.gwdg.metadataqa.api.model.selector.SelectorFactory;
+import de.gwdg.metadataqa.api.model.selector.CsvSelector;
 import de.gwdg.metadataqa.api.rule.RuleCheckerOutput;
 import de.gwdg.metadataqa.api.rule.RuleCheckingOutputStatus;
 import de.gwdg.metadataqa.api.rule.RuleCheckingOutputType;
@@ -23,7 +23,7 @@ import static org.junit.Assert.*;
 
 public class UniquenessCheckerTest {
 
-  CsvPathCache cache;
+  CsvSelector cache;
   SolrClientMock solrClient;
   Schema schema;
 
@@ -33,7 +33,7 @@ public class UniquenessCheckerTest {
     schema = getSchema(Format.CSV);
     solrClient = new SolrClientMock(solrConfiguration);
 
-    cache = (CsvPathCache) PathCacheFactory.getInstance(schema.getFormat(), "URL,two three");
+    cache = (CsvSelector) SelectorFactory.getInstance(schema.getFormat(), "URL,two three");
     cache.setCsvReader(new CsvReader().setHeader( ((CsvAwareSchema) schema).getHeader() ));
   }
 

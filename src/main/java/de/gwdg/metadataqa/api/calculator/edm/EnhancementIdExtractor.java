@@ -3,7 +3,7 @@ package de.gwdg.metadataqa.api.calculator.edm;
 import de.gwdg.metadataqa.api.json.DataElement;
 import de.gwdg.metadataqa.api.json.JsonUtils;
 import de.gwdg.metadataqa.api.model.EdmFieldInstance;
-import de.gwdg.metadataqa.api.model.pathcache.PathCache;
+import de.gwdg.metadataqa.api.model.selector.Selector;
 import de.gwdg.metadataqa.api.schema.Format;
 import de.gwdg.metadataqa.api.schema.Schema;
 import de.gwdg.metadataqa.api.util.Converter;
@@ -42,7 +42,7 @@ public final class EnhancementIdExtractor implements Serializable {
   private EnhancementIdExtractor() {
   }
 
-  public static List<String> extractIds(PathCache cache, Schema schema) {
+  public static List<String> extractIds(Selector cache, Schema schema) {
     List<String> enhancementIds = new ArrayList<>();
     String path = schema.getPathByLabel("Proxy").getPath().replace("false", "true");
     Object rawJsonFragment = cache.getFragment(path);
@@ -55,7 +55,7 @@ public final class EnhancementIdExtractor implements Serializable {
     return enhancementIds;
   }
 
-  public static void processXml(PathCache cache, Schema schema, List<String> enhancementIds, List<Object> jsonFragments) {
+  public static void processXml(Selector cache, Schema schema, List<String> enhancementIds, List<Object> jsonFragments) {
     DataElement parent = schema.getPathByLabel("Proxy");
     for (DataElement child : parent.getChildren()) {
       if (isEnrichmentField(child.getLabel())) {

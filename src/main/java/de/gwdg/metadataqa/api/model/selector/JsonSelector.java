@@ -1,4 +1,4 @@
-package de.gwdg.metadataqa.api.model.pathcache;
+package de.gwdg.metadataqa.api.model.selector;
 
 import de.gwdg.metadataqa.api.json.JsonUtils;
 import de.gwdg.metadataqa.api.model.XmlFieldInstance;
@@ -22,22 +22,22 @@ import java.util.logging.Logger;
  * @param <T> the type of elements held in this object. It should be the
  *           extension of XmlFieldInstance class.
  */
-public class JsonPathCache<T extends XmlFieldInstance> extends BasePathCache<T> {
+public class JsonSelector<T extends XmlFieldInstance> extends BaseSelector<T> {
 
   private static final Logger LOGGER = Logger.getLogger(
-    JsonPathCache.class.getCanonicalName()
+    JsonSelector.class.getCanonicalName()
   );
   private static final long serialVersionUID = -7087854432160794878L;
 
   private final Object document;
   private static final JsonProvider JSON_PROVIDER = Configuration.defaultConfiguration().jsonProvider();
 
-  public JsonPathCache(String content) throws InvalidJsonException {
+  public JsonSelector(String content) throws InvalidJsonException {
     this.content = content;
     this.document = JSON_PROVIDER.parse(content);
   }
 
-  public JsonPathCache(Object jsonDocument) {
+  public JsonSelector(Object jsonDocument) {
     this.document = jsonDocument;
   }
 

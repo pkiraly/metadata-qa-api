@@ -1,7 +1,7 @@
 package de.gwdg.metadataqa.api.interfaces;
 
 import de.gwdg.metadataqa.api.counter.FieldCounter;
-import de.gwdg.metadataqa.api.model.pathcache.PathCache;
+import de.gwdg.metadataqa.api.model.selector.Selector;
 
 /**
  * Implementation of the Observer design pattern
@@ -21,7 +21,7 @@ public interface Observer {
    * @param results
    *   The result map
    */
-  void update(PathCache cache, FieldCounter<Double> results);
+  void update(Selector cache, FieldCounter<Double> results);
 
   /**
    * Get a header, which is the name of metric, the observer measures.

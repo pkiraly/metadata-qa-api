@@ -1,8 +1,8 @@
 package de.gwdg.metadataqa.api.rule.pairchecker;
 
 import de.gwdg.metadataqa.api.counter.FieldCounter;
-import de.gwdg.metadataqa.api.model.PathCacheFactory;
-import de.gwdg.metadataqa.api.model.pathcache.CsvPathCache;
+import de.gwdg.metadataqa.api.model.selector.SelectorFactory;
+import de.gwdg.metadataqa.api.model.selector.CsvSelector;
 import de.gwdg.metadataqa.api.rule.RuleCheckerOutput;
 import de.gwdg.metadataqa.api.rule.RuleCheckingOutputStatus;
 import de.gwdg.metadataqa.api.rule.RuleCheckingOutputType;
@@ -20,7 +20,7 @@ import static org.junit.Assert.assertEquals;
 public class DisjointCheckerTest {
 
   protected Schema schema;
-  protected CsvPathCache cache;
+  protected CsvSelector cache;
 
   @Before
   public void setUp() throws Exception {
@@ -31,7 +31,7 @@ public class DisjointCheckerTest {
       .addField("alt")
     ;
 
-    cache = (CsvPathCache) PathCacheFactory.getInstance(schema.getFormat(), "a,b,a");
+    cache = (CsvSelector) SelectorFactory.getInstance(schema.getFormat(), "a,b,a");
     cache.setCsvReader(new CsvReader().setHeader(((CsvAwareSchema) schema).getHeader()));
   }
 

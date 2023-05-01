@@ -3,8 +3,8 @@ package de.gwdg.metadataqa.api.util;
 import de.gwdg.metadataqa.api.calculator.SkippedEntryChecker;
 import de.gwdg.metadataqa.api.json.DataElement;
 import de.gwdg.metadataqa.api.model.XmlFieldInstance;
-import de.gwdg.metadataqa.api.model.pathcache.JsonPathCache;
-import de.gwdg.metadataqa.api.model.pathcache.PathCache;
+import de.gwdg.metadataqa.api.model.selector.JsonSelector;
+import de.gwdg.metadataqa.api.model.selector.Selector;
 import de.gwdg.metadataqa.api.schema.Schema;
 import de.gwdg.metadataqa.api.schema.edm.EdmFullBeanSchema;
 import org.junit.Test;
@@ -24,7 +24,7 @@ public class SkippedEntitySelectorTest {
   public void testIsCollectionSkippable() throws URISyntaxException, IOException {
     String jsonString = FileUtils.readFirstLineFromResource("issue-examples/issue48.json");
     Schema schema = new EdmFullBeanSchema();
-    JsonPathCache cache = new JsonPathCache(jsonString);
+    JsonSelector cache = new JsonSelector(jsonString);
 
     SkippedEntryChecker checker = new SkippedEntryCheckerImpl();
     SkippedEntitySelector selector = new SkippedEntitySelector();
@@ -55,7 +55,7 @@ public class SkippedEntitySelectorTest {
   class SkippedEntryCheckerImpl implements SkippedEntryChecker {
 
     @Override
-    public List<String> getSkippableCollectionIds(PathCache cache) {
+    public List<String> getSkippableCollectionIds(Selector cache) {
       return null;
     }
 

@@ -1,7 +1,7 @@
 package de.gwdg.metadataqa.api.calculator;
 
 import de.gwdg.metadataqa.api.interfaces.MetricResult;
-import de.gwdg.metadataqa.api.model.pathcache.JsonPathCache;
+import de.gwdg.metadataqa.api.model.selector.JsonSelector;
 import de.gwdg.metadataqa.api.util.FileUtils;
 import org.junit.Before;
 import org.junit.Test;
@@ -15,13 +15,13 @@ import static org.junit.Assert.assertEquals;
 
 public class AnnotationCalculatorTest {
 
-  JsonPathCache cache;
+  JsonSelector cache;
   AnnotationCalculator calculator;
 
   @Before
   public void setUp() throws URISyntaxException, IOException {
     calculator = new AnnotationCalculator(Map.of("one", "1"));
-    cache = new JsonPathCache(FileUtils.readFirstLineFromResource("general/test.json"));
+    cache = new JsonSelector(FileUtils.readFirstLineFromResource("general/test.json"));
   }
 
   @Test

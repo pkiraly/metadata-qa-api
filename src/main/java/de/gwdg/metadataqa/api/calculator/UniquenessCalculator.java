@@ -2,7 +2,7 @@ package de.gwdg.metadataqa.api.calculator;
 
 import de.gwdg.metadataqa.api.calculator.solr.QaSolrClient;
 import de.gwdg.metadataqa.api.interfaces.MetricResult;
-import de.gwdg.metadataqa.api.model.pathcache.PathCache;
+import de.gwdg.metadataqa.api.model.selector.Selector;
 import de.gwdg.metadataqa.api.counter.FieldCounter;
 import de.gwdg.metadataqa.api.interfaces.Calculator;
 import de.gwdg.metadataqa.api.problemcatalog.FieldCounterBasedResult;
@@ -37,7 +37,7 @@ public class UniquenessCalculator extends QaSolrClient implements Calculator, Se
   }
 
   @Override
-  public List<MetricResult> measure(PathCache cache) {
+  public List<MetricResult> measure(Selector cache) {
     String recordId = cache.getRecordId();
     if (StringUtils.isNotBlank(recordId) && recordId.startsWith("/")) {
       recordId = recordId.substring(1);

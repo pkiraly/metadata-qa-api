@@ -2,7 +2,7 @@ package de.gwdg.metadataqa.api.uniqueness;
 
 import com.jayway.jsonpath.Configuration;
 import com.jayway.jsonpath.spi.json.JsonProvider;
-import de.gwdg.metadataqa.api.model.pathcache.JsonPathCache;
+import de.gwdg.metadataqa.api.model.selector.JsonSelector;
 import de.gwdg.metadataqa.api.model.XmlFieldInstance;
 import de.gwdg.metadataqa.api.util.FileUtils;
 import org.apache.commons.lang3.StringUtils;
@@ -57,7 +57,7 @@ public class UniquenessExtractorTest {
 
   @Test
   public void testJsonPath() throws URISyntaxException, IOException {
-    JsonPathCache cache = new JsonPathCache(FileUtils.readFirstLineFromResource("general/edm-fullbean.json"));
+    JsonSelector cache = new JsonSelector(FileUtils.readFirstLineFromResource("general/edm-fullbean.json"));
     String path = "$.['proxies'][?(@['europeanaProxy'] == false)]['dcTitle']";
     List<XmlFieldInstance> values = (List<XmlFieldInstance>) cache.get(path);
     assertEquals(1, values.size());

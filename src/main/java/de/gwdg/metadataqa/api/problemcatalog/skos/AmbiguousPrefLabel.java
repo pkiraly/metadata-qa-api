@@ -3,7 +3,7 @@ package de.gwdg.metadataqa.api.problemcatalog.skos;
 import de.gwdg.metadataqa.api.counter.FieldCounter;
 import de.gwdg.metadataqa.api.json.DataElement;
 import de.gwdg.metadataqa.api.model.EdmFieldInstance;
-import de.gwdg.metadataqa.api.model.pathcache.PathCache;
+import de.gwdg.metadataqa.api.model.selector.Selector;
 import de.gwdg.metadataqa.api.problemcatalog.ProblemCatalog;
 import de.gwdg.metadataqa.api.problemcatalog.ProblemDetector;
 import de.gwdg.metadataqa.api.schema.Schema;
@@ -37,7 +37,7 @@ public class AmbiguousPrefLabel extends ProblemDetector implements Serializable 
   }
 
   @Override
-  public void update(PathCache cache, FieldCounter<Double> results) {
+  public void update(Selector cache, FieldCounter<Double> results) {
     var value = 0;
     for (String label : LABELS) {
       DataElement dataElement = ((Schema) schema).getPathByLabel(label);
@@ -53,7 +53,7 @@ public class AmbiguousPrefLabel extends ProblemDetector implements Serializable 
     results.put(NAME, (double) value);
   }
 
-  private int countPerEntity(int entityCounter, DataElement dataElement, PathCache cache) {
+  private int countPerEntity(int entityCounter, DataElement dataElement, Selector cache) {
     List<EdmFieldInstance> subjects = cache.get(dataElement.getAbsolutePath(entityCounter));
     Map<String, Integer> labelCounter = countLabelsPerFields(subjects);
     return countAmbiguousPrefLabels(labelCounter);

@@ -1,4 +1,4 @@
-package de.gwdg.metadataqa.api.model.pathcache;
+package de.gwdg.metadataqa.api.model.selector;
 
 import de.gwdg.metadataqa.api.model.XmlFieldInstance;
 
@@ -6,7 +6,7 @@ import java.io.Serializable;
 import java.util.List;
 import java.util.Map;
 
-public interface PathCache<T extends XmlFieldInstance> extends Serializable {
+public interface Selector<T extends XmlFieldInstance> extends Serializable {
 
   Object read(String path, Object jsonFragment);
 

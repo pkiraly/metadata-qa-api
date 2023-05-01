@@ -2,9 +2,9 @@ package de.gwdg.metadataqa.api.calculator;
 
 import de.gwdg.metadataqa.api.interfaces.MetricResult;
 import de.gwdg.metadataqa.api.json.DataElement;
-import de.gwdg.metadataqa.api.model.PathCacheFactory;
+import de.gwdg.metadataqa.api.model.selector.SelectorFactory;
 import de.gwdg.metadataqa.api.model.XmlFieldInstance;
-import de.gwdg.metadataqa.api.model.pathcache.CsvPathCache;
+import de.gwdg.metadataqa.api.model.selector.CsvSelector;
 import de.gwdg.metadataqa.api.schema.BaseSchema;
 import de.gwdg.metadataqa.api.schema.CsvAwareSchema;
 import de.gwdg.metadataqa.api.schema.Format;
@@ -84,7 +84,7 @@ public class TfIdfCalculatorTest {
     SolrConfiguration solrConfiguration = new SolrConfiguration("localhost", "8983", "solr");
     Schema schema = getSchema(Format.CSV);
     SolrClient solrClient = new SolrClientMock(solrConfiguration);
-    CsvPathCache cache = (CsvPathCache) PathCacheFactory.getInstance(schema.getFormat(), "URL,two three");
+    CsvSelector cache = (CsvSelector) SelectorFactory.getInstance(schema.getFormat(), "URL,two three");
     cache.setCsvReader(new CsvReader().setHeader( ((CsvAwareSchema) schema).getHeader() ));
     cache.setRecordId(((List<XmlFieldInstance>)cache.get(schema.getRecordId().getPath())).get(0).getValue());
 

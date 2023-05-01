@@ -7,7 +7,7 @@ import de.gwdg.metadataqa.api.interfaces.Calculator;
 import de.gwdg.metadataqa.api.interfaces.MetricResult;
 import de.gwdg.metadataqa.api.json.FieldGroup;
 import de.gwdg.metadataqa.api.json.DataElement;
-import de.gwdg.metadataqa.api.model.pathcache.PathCache;
+import de.gwdg.metadataqa.api.model.selector.Selector;
 import de.gwdg.metadataqa.api.model.XmlFieldInstance;
 import de.gwdg.metadataqa.api.problemcatalog.FieldCounterBasedResult;
 import de.gwdg.metadataqa.api.schema.Schema;
@@ -68,7 +68,7 @@ public class CompletenessCalculator<T extends XmlFieldInstance>
   }
 
   @Override
-  public List<MetricResult> measure(PathCache cache)
+  public List<MetricResult> measure(Selector cache)
       throws InvalidJsonException {
     initializeCounters();
 
@@ -158,7 +158,7 @@ public class CompletenessCalculator<T extends XmlFieldInstance>
   }
 
   public void evaluateDataElement(DataElement dataElement,
-                                  PathCache cache,
+                                  Selector cache,
                                   CompletenessCounter completenessCounter,
                                   String address,
                                   Object jsonFragment) {

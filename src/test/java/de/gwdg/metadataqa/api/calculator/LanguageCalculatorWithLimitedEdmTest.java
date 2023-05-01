@@ -1,7 +1,7 @@
 package de.gwdg.metadataqa.api.calculator;
 
 import de.gwdg.metadataqa.api.interfaces.MetricResult;
-import de.gwdg.metadataqa.api.model.pathcache.JsonPathCache;
+import de.gwdg.metadataqa.api.model.selector.JsonSelector;
 import de.gwdg.metadataqa.api.schema.edm.EdmOaiPmLimitedJsonSchema;
 import de.gwdg.metadataqa.api.util.CompressionLevel;
 import de.gwdg.metadataqa.api.util.FileUtils;
@@ -28,7 +28,7 @@ public class LanguageCalculatorWithLimitedEdmTest {
   @Test
   public void testMeasure() throws URISyntaxException, IOException {
     LanguageCalculator calculator = new LanguageCalculator(new EdmOaiPmLimitedJsonSchema());
-    JsonPathCache cache = new JsonPathCache(FileUtils.readFirstLineFromResource("general/test.json"));
+    JsonSelector cache = new JsonSelector(FileUtils.readFirstLineFromResource("general/test.json"));
     List<MetricResult> results = calculator.measure(cache);
     assertNotNull(results.get(0).getCsv(false, CompressionLevel.NORMAL));
     assertEquals("de:1,_1:1,_1:1,_1:1,_1:1,_1:1,_0:1,_0:1,_1:1,_1:1,_1:1,_1:1,de:4;en:1,_1:1,_1:1,_1:1,_1:1,_1:1,_1:1,_1:1,_2:1,_1:1,_1:1,_0:1,_1:1,_2:1,en:1,_0:1",
@@ -38,7 +38,7 @@ public class LanguageCalculatorWithLimitedEdmTest {
   @Test
   public void testCountersGetLanguageMap() throws URISyntaxException, IOException {
     LanguageCalculator calculator = new LanguageCalculator(new EdmOaiPmLimitedJsonSchema());
-    JsonPathCache cache = new JsonPathCache(FileUtils.readFirstLineFromResource("general/test.json"));
+    JsonSelector cache = new JsonSelector(FileUtils.readFirstLineFromResource("general/test.json"));
     List<MetricResult> results = calculator.measure(cache);
     String languages = results.get(0).getCsv(true, CompressionLevel.NORMAL);
     assertNotNull(languages);
@@ -48,7 +48,7 @@ public class LanguageCalculatorWithLimitedEdmTest {
   @Test
   public void testGetLanguageMap() throws URISyntaxException, IOException {
     LanguageCalculator calculator = new LanguageCalculator(new EdmOaiPmLimitedJsonSchema());
-    JsonPathCache cache = new JsonPathCache(FileUtils.readFirstLineFromResource("general/test.json"));
+    JsonSelector cache = new JsonSelector(FileUtils.readFirstLineFromResource("general/test.json"));
     List<MetricResult> results = calculator.measure(cache);
 
     // Map<String, String> languages = results.get(0).getLanguageMap();

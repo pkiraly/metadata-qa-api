@@ -1,4 +1,4 @@
-package de.gwdg.metadataqa.api.model.pathcache;
+package de.gwdg.metadataqa.api.model.selector;
 
 import de.gwdg.metadataqa.api.model.XmlFieldInstance;
 
@@ -6,7 +6,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public abstract class BasePathCache<T extends XmlFieldInstance> implements PathCache {
+public abstract class BaseSelector<T extends XmlFieldInstance> implements Selector {
 
   protected String recordId;
   protected String content;

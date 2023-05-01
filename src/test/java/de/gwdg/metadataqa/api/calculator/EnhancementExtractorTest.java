@@ -1,9 +1,9 @@
 package de.gwdg.metadataqa.api.calculator;
 
 import de.gwdg.metadataqa.api.calculator.edm.EnhancementIdExtractor;
-import de.gwdg.metadataqa.api.model.pathcache.JsonPathCache;
-import de.gwdg.metadataqa.api.model.pathcache.PathCache;
-import de.gwdg.metadataqa.api.model.pathcache.XmlPathCache;
+import de.gwdg.metadataqa.api.model.selector.JsonSelector;
+import de.gwdg.metadataqa.api.model.selector.Selector;
+import de.gwdg.metadataqa.api.model.selector.XmlSelector;
 import de.gwdg.metadataqa.api.schema.edm.EdmOaiPmhJsonSchema;
 import de.gwdg.metadataqa.api.schema.edm.EdmOaiPmhXmlSchema;
 import de.gwdg.metadataqa.api.util.FileUtils;
@@ -23,7 +23,7 @@ import static org.junit.Assert.*;
  */
 public class EnhancementExtractorTest {
 
-  PathCache cache;
+  Selector cache;
 
   public EnhancementExtractorTest() {
   }
@@ -38,7 +38,7 @@ public class EnhancementExtractorTest {
 
   @Before
   public void setUp() throws URISyntaxException, IOException {
-    cache = new JsonPathCache(FileUtils.readFirstLineFromResource("general/test.json"));
+    cache = new JsonSelector(FileUtils.readFirstLineFromResource("general/test.json"));
   }
 
   @After
@@ -55,7 +55,7 @@ public class EnhancementExtractorTest {
 
   @Test
   public void testXml() throws IOException, URISyntaxException {
-    cache = new XmlPathCache(FileUtils.readContentFromResource("general/europeana-oai-pmh.xml"));
+    cache = new XmlSelector(FileUtils.readContentFromResource("general/europeana-oai-pmh.xml"));
     List<String> enhancementIds = EnhancementIdExtractor.extractIds(cache, new EdmOaiPmhXmlSchema());
     assertTrue(!enhancementIds.isEmpty());
     assertEquals(27, enhancementIds.size());

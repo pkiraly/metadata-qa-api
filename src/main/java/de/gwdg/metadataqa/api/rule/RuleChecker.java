@@ -1,7 +1,7 @@
 package de.gwdg.metadataqa.api.rule;
 
 import de.gwdg.metadataqa.api.counter.FieldCounter;
-import de.gwdg.metadataqa.api.model.pathcache.PathCache;
+import de.gwdg.metadataqa.api.model.selector.Selector;
 
 import java.io.Serializable;
 
@@ -20,7 +20,7 @@ public interface RuleChecker extends Serializable {
    * @param results The result collector
    * @param outputType The type of output to put into the result collector
    */
-  void update(PathCache cache, FieldCounter<RuleCheckerOutput> results, RuleCheckingOutputType outputType);
+  void update(Selector cache, FieldCounter<RuleCheckerOutput> results, RuleCheckingOutputType outputType);
 
   /**
    * Get a header, which is the name of metric, the observer measures.

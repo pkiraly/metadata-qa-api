@@ -7,7 +7,7 @@ import de.gwdg.metadataqa.api.configuration.ConfigurationReader;
 import de.gwdg.metadataqa.api.configuration.MeasurementConfiguration;
 import de.gwdg.metadataqa.api.interfaces.MetricResult;
 import de.gwdg.metadataqa.api.json.DataElement;
-import de.gwdg.metadataqa.api.model.pathcache.JsonPathCache;
+import de.gwdg.metadataqa.api.model.selector.JsonSelector;
 import de.gwdg.metadataqa.api.schema.BaseSchema;
 import de.gwdg.metadataqa.api.schema.CsvAwareSchema;
 import de.gwdg.metadataqa.api.schema.Format;
@@ -32,12 +32,12 @@ import static org.junit.Assert.*;
 public class FieldExtractorTest {
 
   FieldExtractor calculator;
-  JsonPathCache cache;
+  JsonSelector cache;
 
   @Before
   public void setUp() throws URISyntaxException, IOException {
     calculator = new FieldExtractor("$.identifier");
-    cache = new JsonPathCache(FileUtils.readFirstLineFromResource("general/test.json"));
+    cache = new JsonSelector(FileUtils.readFirstLineFromResource("general/test.json"));
   }
 
   @Test

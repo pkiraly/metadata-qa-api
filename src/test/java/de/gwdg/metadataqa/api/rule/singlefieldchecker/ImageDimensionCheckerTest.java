@@ -7,8 +7,8 @@ import de.gwdg.metadataqa.api.calculator.CalculatorFacade;
 import de.gwdg.metadataqa.api.configuration.ConfigurationReader;
 import de.gwdg.metadataqa.api.configuration.MeasurementConfiguration;
 import de.gwdg.metadataqa.api.counter.FieldCounter;
-import de.gwdg.metadataqa.api.model.PathCacheFactory;
-import de.gwdg.metadataqa.api.model.pathcache.CsvPathCache;
+import de.gwdg.metadataqa.api.model.selector.SelectorFactory;
+import de.gwdg.metadataqa.api.model.selector.CsvSelector;
 import de.gwdg.metadataqa.api.rule.CheckerTestBase;
 import de.gwdg.metadataqa.api.rule.RuleChecker;
 import de.gwdg.metadataqa.api.rule.RuleCheckerOutput;
@@ -38,7 +38,7 @@ public class ImageDimensionCheckerTest extends CheckerTestBase {
 
   @Test
   public void successMinWidthHeight() {
-    cache = (CsvPathCache) PathCacheFactory.getInstance(schema.getFormat(),
+    cache = (CsvSelector) SelectorFactory.getInstance(schema.getFormat(),
       "\"https://iiif.deutsche-digitale-bibliothek.de/image/2/b152b0e5-55da-453a-8a53-6530189e98ac/full/!800,600/0/default.jpg\"");
     cache.setCsvReader(new CsvReader().setHeader( ((CsvAwareSchema) schema).getHeader() ));
 
@@ -54,7 +54,7 @@ public class ImageDimensionCheckerTest extends CheckerTestBase {
 
   @Test
   public void successMinShortLong() {
-    cache = (CsvPathCache) PathCacheFactory.getInstance(schema.getFormat(),
+    cache = (CsvSelector) SelectorFactory.getInstance(schema.getFormat(),
       "\"https://iiif.deutsche-digitale-bibliothek.de/image/2/b152b0e5-55da-453a-8a53-6530189e98ac/full/!800,600/0/default.jpg\"");
     cache.setCsvReader(new CsvReader().setHeader( ((CsvAwareSchema) schema).getHeader() ));
 
@@ -70,7 +70,7 @@ public class ImageDimensionCheckerTest extends CheckerTestBase {
 
   @Test
   public void failure() {
-    cache = (CsvPathCache) PathCacheFactory.getInstance(schema.getFormat(),
+    cache = (CsvSelector) SelectorFactory.getInstance(schema.getFormat(),
       "\"https://iiif.deutsche-digitale-bibliothek.de/image/2/b152b0e5-55da-453a-8a53-6530189e98ac/full/!800,600/0/default.jpg\"");
     cache.setCsvReader(new CsvReader().setHeader( ((CsvAwareSchema) schema).getHeader() ));
 
@@ -130,7 +130,7 @@ public class ImageDimensionCheckerTest extends CheckerTestBase {
 
   @Test
   public void unaccessible() {
-    cache = (CsvPathCache) PathCacheFactory.getInstance(schema.getFormat(),
+    cache = (CsvSelector) SelectorFactory.getInstance(schema.getFormat(),
       "http://vb.uni-wuerzburg.de/ub/books/36z1197_57156733/folio-std/unexisting.jpg");
     cache.setCsvReader(new CsvReader().setHeader( ((CsvAwareSchema) schema).getHeader() ));
 

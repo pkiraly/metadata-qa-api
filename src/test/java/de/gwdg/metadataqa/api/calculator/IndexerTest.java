@@ -1,8 +1,8 @@
 package de.gwdg.metadataqa.api.calculator;
 
 import de.gwdg.metadataqa.api.json.DataElement;
-import de.gwdg.metadataqa.api.model.PathCacheFactory;
-import de.gwdg.metadataqa.api.model.pathcache.CsvPathCache;
+import de.gwdg.metadataqa.api.model.selector.SelectorFactory;
+import de.gwdg.metadataqa.api.model.selector.CsvSelector;
 import de.gwdg.metadataqa.api.schema.BaseSchema;
 import de.gwdg.metadataqa.api.schema.CsvAwareSchema;
 import de.gwdg.metadataqa.api.schema.Format;
@@ -20,7 +20,7 @@ import static org.junit.Assert.*;
 public class IndexerTest {
 
   Indexer indexer;
-  CsvPathCache cache;
+  CsvSelector cache;
   SolrClientMock solrClient;
 
   @Before
@@ -31,7 +31,7 @@ public class IndexerTest {
     indexer = new Indexer(solrClient, schema);
     assertNotNull(indexer);
 
-    cache = (CsvPathCache) PathCacheFactory.getInstance(schema.getFormat(), "URL,two three");
+    cache = (CsvSelector) SelectorFactory.getInstance(schema.getFormat(), "URL,two three");
     cache.setCsvReader(new CsvReader().setHeader( ((CsvAwareSchema) schema).getHeader() ));
   }
 

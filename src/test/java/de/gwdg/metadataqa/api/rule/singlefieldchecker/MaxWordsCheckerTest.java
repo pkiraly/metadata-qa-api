@@ -1,8 +1,8 @@
 package de.gwdg.metadataqa.api.rule.singlefieldchecker;
 
 import de.gwdg.metadataqa.api.counter.FieldCounter;
-import de.gwdg.metadataqa.api.model.PathCacheFactory;
-import de.gwdg.metadataqa.api.model.pathcache.CsvPathCache;
+import de.gwdg.metadataqa.api.model.selector.SelectorFactory;
+import de.gwdg.metadataqa.api.model.selector.CsvSelector;
 import de.gwdg.metadataqa.api.rule.CheckerTestBase;
 import de.gwdg.metadataqa.api.rule.RuleCheckerOutput;
 import de.gwdg.metadataqa.api.rule.RuleCheckingOutputStatus;
@@ -35,7 +35,7 @@ public class MaxWordsCheckerTest extends CheckerTestBase {
 
   @Test
   public void failure() {
-    cache = (CsvPathCache) PathCacheFactory.getInstance(schema.getFormat(), "one two three");
+    cache = (CsvSelector) SelectorFactory.getInstance(schema.getFormat(), "one two three");
     cache.setCsvReader(new CsvReader().setHeader( ((CsvAwareSchema) schema).getHeader() ));
 
     MaxWordsChecker checker = new MaxWordsChecker(schema.getPathByLabel("name"), 2);

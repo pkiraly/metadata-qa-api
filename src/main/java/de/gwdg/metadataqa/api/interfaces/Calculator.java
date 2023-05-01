@@ -1,6 +1,6 @@
 package de.gwdg.metadataqa.api.interfaces;
 
-import de.gwdg.metadataqa.api.model.pathcache.PathCache;
+import de.gwdg.metadataqa.api.model.selector.Selector;
 
 import java.io.Serializable;
 import java.util.List;
@@ -16,7 +16,7 @@ public interface Calculator extends Serializable {
    * @param cache
    *   The JSON cache object
    */
-  List<MetricResult> measure(PathCache cache);
+  List<MetricResult> measure(Selector cache);
 
   /**
    * Get header (the name of metrics) as a list.

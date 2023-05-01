@@ -5,7 +5,7 @@ import de.gwdg.metadataqa.api.counter.FieldCounter;
 import de.gwdg.metadataqa.api.interfaces.Calculator;
 import de.gwdg.metadataqa.api.interfaces.MetricResult;
 import de.gwdg.metadataqa.api.model.EdmFieldInstance;
-import de.gwdg.metadataqa.api.model.pathcache.PathCache;
+import de.gwdg.metadataqa.api.model.selector.Selector;
 import de.gwdg.metadataqa.api.model.XmlFieldInstance;
 import de.gwdg.metadataqa.api.problemcatalog.FieldCounterBasedResult;
 import de.gwdg.metadataqa.api.schema.Schema;
@@ -48,7 +48,7 @@ public class FieldExtractor implements Calculator, Serializable {
   }
 
   @Override
-  public List<MetricResult> measure(PathCache cache)
+  public List<MetricResult> measure(Selector cache)
       throws InvalidJsonException {
     FieldCounter<String> resultMap = new FieldCounter<>();
     if (idPath != null)
@@ -66,7 +66,7 @@ public class FieldExtractor implements Calculator, Serializable {
     return List.of(new FieldCounterBasedResult<>(getCalculatorName(), resultMap).withNoCompression());
   }
 
-  private void extractSingleField(PathCache cache, FieldCounter<String> resultMap, String path, String fieldName) {
+  private void extractSingleField(Selector cache, FieldCounter<String> resultMap, String path, String fieldName) {
     List<XmlFieldInstance> values = cache.get(path);
     String value = null;
     if (values == null || values.isEmpty() || values.get(0) == null) {

@@ -2,7 +2,7 @@ package de.gwdg.metadataqa.api.problemcatalog;
 
 import de.gwdg.metadataqa.api.counter.FieldCounter;
 import de.gwdg.metadataqa.api.model.EdmFieldInstance;
-import de.gwdg.metadataqa.api.model.pathcache.PathCache;
+import de.gwdg.metadataqa.api.model.selector.Selector;
 
 import java.io.Serializable;
 import java.util.List;
@@ -26,7 +26,7 @@ public class TitleAndDescriptionAreSame extends ProblemDetector
   }
 
   @Override
-  public void update(PathCache cache, FieldCounter<Double> results) {
+  public void update(Selector cache, FieldCounter<Double> results) {
     double value = 0;
     List<EdmFieldInstance> titles = cache.get(schema.getTitlePath());
     if (titles != null && !titles.isEmpty()) {

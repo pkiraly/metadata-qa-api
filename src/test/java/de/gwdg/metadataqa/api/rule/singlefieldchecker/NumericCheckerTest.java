@@ -1,8 +1,8 @@
 package de.gwdg.metadataqa.api.rule.singlefieldchecker;
 
 import de.gwdg.metadataqa.api.counter.FieldCounter;
-import de.gwdg.metadataqa.api.model.PathCacheFactory;
-import de.gwdg.metadataqa.api.model.pathcache.CsvPathCache;
+import de.gwdg.metadataqa.api.model.selector.SelectorFactory;
+import de.gwdg.metadataqa.api.model.selector.CsvSelector;
 import de.gwdg.metadataqa.api.rule.RuleChecker;
 import de.gwdg.metadataqa.api.rule.RuleCheckerOutput;
 import de.gwdg.metadataqa.api.rule.RuleCheckingOutputStatus;
@@ -21,7 +21,7 @@ import static org.junit.Assert.assertEquals;
 public class NumericCheckerTest {
 
   protected Schema schema;
-  protected CsvPathCache cache;
+  protected CsvSelector cache;
 
   @Before
   public void setUp() throws Exception {
@@ -32,7 +32,7 @@ public class NumericCheckerTest {
       .addField("alt")
     ;
 
-    cache = (CsvPathCache) PathCacheFactory.getInstance(schema.getFormat(), "1,2,auto");
+    cache = (CsvSelector) SelectorFactory.getInstance(schema.getFormat(), "1,2,auto");
     cache.setCsvReader(new CsvReader().setHeader(((CsvAwareSchema) schema).getHeader()));
   }
 

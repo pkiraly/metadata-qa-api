@@ -1,4 +1,4 @@
-package de.gwdg.metadataqa.api.model.pathcache;
+package de.gwdg.metadataqa.api.model.selector;
 
 import com.jayway.jsonpath.InvalidJsonException;
 import de.gwdg.metadataqa.api.model.XmlFieldInstance;
@@ -18,24 +18,24 @@ import java.util.logging.Logger;
  * @param <T> the type of elements held in this object. It should be the
  *           extension of XmlFieldInstance class.
  */
-public class CsvPathCache<T extends XmlFieldInstance> extends BasePathCache<T> {
+public class CsvSelector<T extends XmlFieldInstance> extends BaseSelector<T> {
 
   private static final Logger LOGGER = Logger.getLogger(
-    CsvPathCache.class.getCanonicalName()
+    CsvSelector.class.getCanonicalName()
   );
   private static final long serialVersionUID = -545628995288633641L;
 
   private Map<String, String> record;
 
-  public CsvPathCache(String content) throws InvalidJsonException {
+  public CsvSelector(String content) throws InvalidJsonException {
     this.content = content;
   }
 
-  public CsvPathCache(Object jsonDocument) {
+  public CsvSelector(Object jsonDocument) {
     // this.parsedDocument = jsonDocument;
   }
 
-  public CsvPathCache(CsvReader csvReader, List<String> input) {
+  public CsvSelector(CsvReader csvReader, List<String> input) {
     record = csvReader.createMap(input);
   }
 

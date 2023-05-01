@@ -5,7 +5,7 @@ import com.jayway.jsonpath.spi.json.JsonProvider;
 import de.gwdg.metadataqa.api.calculator.CompletenessCalculator;
 import de.gwdg.metadataqa.api.model.EdmFieldInstance;
 import de.gwdg.metadataqa.api.model.XmlFieldInstance;
-import de.gwdg.metadataqa.api.model.pathcache.JsonPathCache;
+import de.gwdg.metadataqa.api.model.selector.JsonSelector;
 import de.gwdg.metadataqa.api.schema.edm.EdmFullBeanSchema;
 import de.gwdg.metadataqa.api.util.CompressionLevel;
 import de.gwdg.metadataqa.api.util.FileUtils;
@@ -57,7 +57,7 @@ public class JsonUtilsTest {
     calculator.setExistence(true);
     calculator.setCardinality(true);
 
-    JsonPathCache cache = new JsonPathCache(jsonString);
+    JsonSelector cache = new JsonSelector(jsonString);
     calculator.measure(cache);
     String csv = calculator.getCsv(false, CompressionLevel.NORMAL);
     assertEquals(

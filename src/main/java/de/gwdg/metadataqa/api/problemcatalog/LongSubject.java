@@ -5,7 +5,7 @@ import de.gwdg.metadataqa.api.model.EdmFieldInstance;
 import java.io.Serializable;
 import java.util.List;
 
-import de.gwdg.metadataqa.api.model.pathcache.PathCache;
+import de.gwdg.metadataqa.api.model.selector.Selector;
 import org.apache.commons.lang3.StringUtils;
 
 /**
@@ -29,7 +29,7 @@ public class LongSubject extends ProblemDetector implements Serializable {
   }
 
   @Override
-  public void update(PathCache cache, FieldCounter<Double> results) {
+  public void update(Selector cache, FieldCounter<Double> results) {
     double value = 0;
     List<EdmFieldInstance> subjects = cache.get(schema.getSubjectPath());
     if (subjects != null && !subjects.isEmpty())

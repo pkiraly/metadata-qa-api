@@ -1,6 +1,6 @@
 package de.gwdg.metadataqa.api.uniqueness;
 
-import de.gwdg.metadataqa.api.model.pathcache.PathCache;
+import de.gwdg.metadataqa.api.model.selector.Selector;
 import de.gwdg.metadataqa.api.model.XmlFieldInstance;
 import org.apache.commons.lang3.StringUtils;
 
@@ -19,7 +19,7 @@ public class UniquenessFieldCalculator {
       UniquenessFieldCalculator.class.getCanonicalName()
   );
 
-  private PathCache cache;
+  private Selector cache;
   private String recordId;
   private UniquenessField uniquenessField;
   private SolrClient solrClient;
@@ -30,7 +30,7 @@ public class UniquenessFieldCalculator {
   double averageCount;
   double averageScore;
 
-  public UniquenessFieldCalculator(PathCache cache,
+  public UniquenessFieldCalculator(Selector cache,
                                    String recordId,
                                    SolrClient solrClient,
                                    UniquenessField solrField) {

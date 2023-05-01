@@ -1,7 +1,7 @@
 package de.gwdg.metadataqa.api.calculator;
 
 import de.gwdg.metadataqa.api.interfaces.MetricResult;
-import de.gwdg.metadataqa.api.model.pathcache.JsonPathCache;
+import de.gwdg.metadataqa.api.model.selector.JsonSelector;
 import de.gwdg.metadataqa.api.schema.edm.EdmOaiPmhJsonSchema;
 import de.gwdg.metadataqa.api.schema.Schema;
 import de.gwdg.metadataqa.api.util.CompressionLevel;
@@ -23,7 +23,7 @@ import static org.junit.Assert.*;
  */
 public class TruncatedIDTest {
 
-  JsonPathCache cache;
+  JsonSelector cache;
   FieldExtractor calculator;
   Schema schema;
 
@@ -43,7 +43,7 @@ public class TruncatedIDTest {
     schema = new EdmOaiPmhJsonSchema();
     calculator = new FieldExtractor(schema);
     String jsonContent = FileUtils.readFirstLineFromResource("issue-examples/issue41-truncatedID.json");
-    cache = new JsonPathCache(jsonContent);
+    cache = new JsonSelector(jsonContent);
   }
 
   @After

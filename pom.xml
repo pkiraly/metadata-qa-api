@@ -64,7 +64,6 @@
     <project.region>US</project.region>
     <argLine>-Duser.timezone=${project.timezone} -Dfile.encoding=${project.build.sourceEncoding} -Duser.language=${project.language} -Duser.region=${project.region}</argLine>
     <skipUnitTests>false</skipUnitTests>
-    <testsToExclude>edu.harvard.iq.dataverse.NonEssentialTests</testsToExclude>
 
     <!-- sonarcloud properties -->
     <sonar.projectKey>pkiraly_metadata-qa-api</sonar.projectKey>

@@ -5,7 +5,7 @@ import de.gwdg.metadataqa.api.interfaces.Calculator;
 import de.gwdg.metadataqa.api.interfaces.MetricResult;
 import de.gwdg.metadataqa.api.interfaces.Shutdownable;
 import de.gwdg.metadataqa.api.model.XmlFieldInstance;
-import de.gwdg.metadataqa.api.model.pathcache.PathCache;
+import de.gwdg.metadataqa.api.model.selector.Selector;
 import de.gwdg.metadataqa.api.schema.Schema;
 import de.gwdg.metadataqa.api.uniqueness.SolrClient;
 import de.gwdg.metadataqa.api.uniqueness.UniquenessField;
@@ -31,7 +31,7 @@ public class Indexer extends QaSolrClient implements Calculator, Shutdownable, S
   }
 
   @Override
-  public List<MetricResult> measure(PathCache cache) {
+  public List<MetricResult> measure(Selector cache) {
     try {
       String recordId = extractValue(cache, schema.getRecordId().getPath()).get(0);
 
@@ -52,7 +52,7 @@ public class Indexer extends QaSolrClient implements Calculator, Shutdownable, S
     return null;
   }
 
-  private List<String> extractValue(PathCache cache, String path) {
+  private List<String> extractValue(Selector cache, String path) {
     List<String> values = new ArrayList<>();
     List<XmlFieldInstance> instances = cache.get(path);
     if (instances != null && !instances.isEmpty())

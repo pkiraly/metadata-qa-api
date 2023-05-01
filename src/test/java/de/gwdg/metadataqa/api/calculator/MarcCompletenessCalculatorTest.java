@@ -1,7 +1,7 @@
 package de.gwdg.metadataqa.api.calculator;
 
 import de.gwdg.metadataqa.api.counter.FieldCounter;
-import de.gwdg.metadataqa.api.model.pathcache.JsonPathCache;
+import de.gwdg.metadataqa.api.model.selector.JsonSelector;
 import de.gwdg.metadataqa.api.schema.MarcJsonSchema;
 import de.gwdg.metadataqa.api.util.FileUtils;
 import java.io.IOException;
@@ -20,7 +20,7 @@ import static org.junit.Assert.assertEquals;
  */
 public class MarcCompletenessCalculatorTest {
 
-  JsonPathCache cache;
+  JsonSelector cache;
   CompletenessCalculator calculator;
 
   public MarcCompletenessCalculatorTest() {
@@ -37,7 +37,7 @@ public class MarcCompletenessCalculatorTest {
   @Before
   public void setUp() throws URISyntaxException, IOException {
     calculator = new CompletenessCalculator(new MarcJsonSchema());
-    cache = new JsonPathCache(FileUtils.readFirstLineFromResource("general/marc.json"));
+    cache = new JsonSelector(FileUtils.readFirstLineFromResource("general/marc.json"));
   }
 
   @After

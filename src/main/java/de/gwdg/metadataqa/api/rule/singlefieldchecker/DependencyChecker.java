@@ -3,7 +3,7 @@ package de.gwdg.metadataqa.api.rule.singlefieldchecker;
 import de.gwdg.metadataqa.api.counter.FieldCounter;
 import de.gwdg.metadataqa.api.json.DataElement;
 import de.gwdg.metadataqa.api.model.XmlFieldInstance;
-import de.gwdg.metadataqa.api.model.pathcache.PathCache;
+import de.gwdg.metadataqa.api.model.selector.Selector;
 import de.gwdg.metadataqa.api.rule.RuleCheckerOutput;
 import de.gwdg.metadataqa.api.rule.RuleCheckingOutputStatus;
 import de.gwdg.metadataqa.api.rule.RuleCheckingOutputType;
@@ -29,11 +29,11 @@ public class DependencyChecker extends SingleFieldChecker {
   }
 
   @Override
-  public void update(PathCache cache, FieldCounter<RuleCheckerOutput> results, RuleCheckingOutputType outputType) {
+  public void update(Selector cache, FieldCounter<RuleCheckerOutput> results, RuleCheckingOutputType outputType) {
     update(cache, results, outputType, null);
   }
 
-  public void update(PathCache cache, FieldCounter<RuleCheckerOutput> localResults, RuleCheckingOutputType outputType,
+  public void update(Selector cache, FieldCounter<RuleCheckerOutput> localResults, RuleCheckingOutputType outputType,
                      FieldCounter<RuleCheckerOutput> globalResults) {
     if (isDebug())
       LOGGER.info(this.getClass().getSimpleName() + " " + this.id);

@@ -1,7 +1,7 @@
 package de.gwdg.metadataqa.api.rule;
 
-import de.gwdg.metadataqa.api.model.PathCacheFactory;
-import de.gwdg.metadataqa.api.model.pathcache.CsvPathCache;
+import de.gwdg.metadataqa.api.model.selector.SelectorFactory;
+import de.gwdg.metadataqa.api.model.selector.CsvSelector;
 import de.gwdg.metadataqa.api.schema.BaseSchema;
 import de.gwdg.metadataqa.api.schema.CsvAwareSchema;
 import de.gwdg.metadataqa.api.schema.Format;
@@ -12,7 +12,7 @@ import org.junit.Before;
 public class CheckerTestBase {
 
   protected Schema schema;
-  protected CsvPathCache cache;
+  protected CsvSelector cache;
 
   @Before
   public void setUp() throws Exception {
@@ -21,7 +21,7 @@ public class CheckerTestBase {
       .addField("name")
     ;
 
-    cache = (CsvPathCache) PathCacheFactory.getInstance(schema.getFormat(), "a");
+    cache = (CsvSelector) SelectorFactory.getInstance(schema.getFormat(), "a");
     cache.setCsvReader(new CsvReader().setHeader( ((CsvAwareSchema) schema).getHeader() ));
   }
 

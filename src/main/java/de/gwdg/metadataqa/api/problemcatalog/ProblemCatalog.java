@@ -4,7 +4,7 @@ import de.gwdg.metadataqa.api.interfaces.MetricResult;
 import de.gwdg.metadataqa.api.interfaces.Observer;
 import de.gwdg.metadataqa.api.interfaces.Observable;
 import de.gwdg.metadataqa.api.counter.FieldCounter;
-import de.gwdg.metadataqa.api.model.pathcache.PathCache;
+import de.gwdg.metadataqa.api.model.selector.Selector;
 import de.gwdg.metadataqa.api.schema.ProblemCatalogSchema;
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -22,7 +22,7 @@ public class ProblemCatalog extends BaseProblemCatalog<Double> implements Serial
   private static final String CALCULATOR_NAME = "problemCatalog";
 
   private final List<Observer> problems = new ArrayList<>();
-  private PathCache cache;
+  private Selector cache;
   private ProblemCatalogSchema schema;
 
   public ProblemCatalog(ProblemCatalogSchema schema) {
@@ -54,7 +54,7 @@ public class ProblemCatalog extends BaseProblemCatalog<Double> implements Serial
   }
 
   @Override
-  public List<MetricResult> measure(PathCache cache) {
+  public List<MetricResult> measure(Selector cache) {
     this.cache = cache;
     FieldCounter<Double> fieldCounter = new FieldCounter<>();
     notifyObservers(fieldCounter);

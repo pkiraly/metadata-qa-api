@@ -3,8 +3,8 @@ package de.gwdg.metadataqa.api.calculator;
 import de.bechte.junit.runners.context.HierarchicalContextRunner;
 import de.gwdg.metadataqa.api.configuration.MeasurementConfiguration;
 import de.gwdg.metadataqa.api.interfaces.MetricResult;
-import de.gwdg.metadataqa.api.model.pathcache.JsonPathCache;
-import de.gwdg.metadataqa.api.model.pathcache.PathCache;
+import de.gwdg.metadataqa.api.model.selector.JsonSelector;
+import de.gwdg.metadataqa.api.model.selector.Selector;
 import de.gwdg.metadataqa.api.schema.edm.EdmOaiPmhJsonSchema;
 import de.gwdg.metadataqa.api.schema.Schema;
 import de.gwdg.metadataqa.api.uniqueness.SolrClient;
@@ -32,7 +32,7 @@ public class UniquenessCalculatorTest {
   private Schema schema;
   private SolrClient solrClient;
   private String jsonString;
-  private PathCache cache;
+  private Selector cache;
 
   @Before
   public void setUp() throws IOException, URISyntaxException {
@@ -42,7 +42,7 @@ public class UniquenessCalculatorTest {
     schema = new EdmOaiPmhJsonSchema();
     calculator = new UniquenessCalculator(solrClient, schema);
     jsonString = FileUtils.readFirstLineFromResource("general/test.json");
-    cache = new JsonPathCache(jsonString);
+    cache = new JsonSelector(jsonString);
   }
 
   @Test

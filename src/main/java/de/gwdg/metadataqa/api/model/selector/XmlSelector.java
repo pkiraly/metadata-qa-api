@@ -1,4 +1,4 @@
-package de.gwdg.metadataqa.api.model.pathcache;
+package de.gwdg.metadataqa.api.model.selector;
 
 import com.jayway.jsonpath.InvalidJsonException;
 import com.jayway.jsonpath.InvalidPathException;
@@ -18,16 +18,16 @@ import java.util.logging.Logger;
  * @param <T> the type of elements held in this object. It should be the
  *           extension of XmlFieldInstance class.
  */
-public class XmlPathCache<T extends XmlFieldInstance> extends BasePathCache<T> {
+public class XmlSelector<T extends XmlFieldInstance> extends BaseSelector<T> {
 
   private static final Logger LOGGER = Logger.getLogger(
-    XmlPathCache.class.getCanonicalName()
+    XmlSelector.class.getCanonicalName()
   );
   private static final long serialVersionUID = 3351744750302199667L;
 
   XPathWrapper xPathWrapper;
 
-  public XmlPathCache(String content) throws InvalidJsonException {
+  public XmlSelector(String content) throws InvalidJsonException {
     this.content = content;
     xPathWrapper = new XPathWrapper(content);
   }

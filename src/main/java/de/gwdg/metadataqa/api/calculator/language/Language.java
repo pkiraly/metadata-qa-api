@@ -4,7 +4,7 @@ import de.gwdg.metadataqa.api.counter.BasicCounter;
 import de.gwdg.metadataqa.api.counter.FieldCounter;
 import de.gwdg.metadataqa.api.json.DataElement;
 import de.gwdg.metadataqa.api.model.EdmFieldInstance;
-import de.gwdg.metadataqa.api.model.pathcache.PathCache;
+import de.gwdg.metadataqa.api.model.selector.Selector;
 import de.gwdg.metadataqa.api.schema.Schema;
 import de.gwdg.metadataqa.api.util.Converter;
 
@@ -15,12 +15,12 @@ import java.util.SortedMap;
 import java.util.TreeMap;
 
 public class Language {
-  private final PathCache cache;
+  private final Selector cache;
   private final Schema schema;
   FieldCounter<String> languageMap;
   Map<String, SortedMap<String, Integer>> rawLanguageMap;
 
-  public Language(Schema schema, PathCache cache) {
+  public Language(Schema schema, Selector cache) {
     this.schema = schema;
     this.cache = cache;
   }

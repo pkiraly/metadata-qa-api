@@ -7,7 +7,7 @@ import de.gwdg.metadataqa.api.counter.FieldCounter;
 import de.gwdg.metadataqa.api.json.DataElement;
 import de.gwdg.metadataqa.api.model.EdmFieldInstance;
 import de.gwdg.metadataqa.api.model.LanguageSaturationType;
-import de.gwdg.metadataqa.api.model.pathcache.PathCache;
+import de.gwdg.metadataqa.api.model.selector.Selector;
 import de.gwdg.metadataqa.api.schema.Schema;
 import de.gwdg.metadataqa.api.util.Converter;
 import de.gwdg.metadataqa.api.util.SkippedEntitySelector;
@@ -36,7 +36,7 @@ public class Multilinguality {
   public static final String NORMALIZED = MultilingualitySaturationCalculator.CALCULATOR_NAME + ":normalized";
 
   private Schema schema;
-  private PathCache cache;
+  private Selector cache;
   private MultilingualitySaturationCalculator.ResultTypes resultType;
   private SkippedEntryChecker skippedEntryChecker;
   private SkippedEntitySelector skippedEntitySelector;
@@ -45,7 +45,7 @@ public class Multilinguality {
   Map<String, Map<String, Double>> rawScoreMap = new LinkedHashMap<>();
 
   public Multilinguality(Schema schema,
-                         PathCache cache,
+                         Selector cache,
                          MultilingualitySaturationCalculator.ResultTypes resultType,
                          SkippedEntryChecker skippedEntryChecker,
                          SkippedEntitySelector skippedEntitySelector) {

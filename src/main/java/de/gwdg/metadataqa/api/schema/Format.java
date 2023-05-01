@@ -5,5 +5,6 @@ public enum Format {
   XML,
   CSV,
   MARC,
-  PICA;
+  PICA,
+  OTHER;
 }

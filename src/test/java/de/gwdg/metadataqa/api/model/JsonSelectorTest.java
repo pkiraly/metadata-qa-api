@@ -1,6 +1,6 @@
 package de.gwdg.metadataqa.api.model;
 
-import de.gwdg.metadataqa.api.model.pathcache.JsonPathCache;
+import de.gwdg.metadataqa.api.model.selector.JsonSelector;
 import de.gwdg.metadataqa.api.util.FileUtils;
 import java.io.IOException;
 import java.net.URISyntaxException;
@@ -9,10 +9,7 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.List;
-import org.junit.After;
-import org.junit.AfterClass;
-import org.junit.Before;
-import org.junit.BeforeClass;
+
 import org.junit.Test;
 import static org.junit.Assert.*;
 
@@ -20,12 +17,12 @@ import static org.junit.Assert.*;
  *
  * @author Péter Király <peter.kiraly at gwdg.de>
  */
-public class JsonPathCacheTest {
+public class JsonSelectorTest {
 
   private Object jsonDoc;
   private String jsonString;
 
-  public JsonPathCacheTest() throws IOException, URISyntaxException {
+  public JsonSelectorTest() throws IOException, URISyntaxException {
     String fileName = "problem-catalog/long-subject.json";
     Path path = Paths.get(getClass().getClassLoader().getResource(fileName).toURI());
     List<String> lines = Files.readAllLines(path, Charset.defaultCharset());
@@ -37,7 +34,7 @@ public class JsonPathCacheTest {
   public void testSimpleValue() throws IOException, URISyntaxException {
     String jsonPath = "$.['ore:Proxy'][?(@['edm:europeanaProxy'][0] == 'false')]['dc:title']";
 
-    JsonPathCache cache = new JsonPathCache<EdmFieldInstance>(jsonString);
+    JsonSelector cache = new JsonSelector<EdmFieldInstance>(jsonString);
     List<EdmFieldInstance> instances = cache.get(jsonPath);
 
     assertNotNull(instances);
@@ -51,7 +48,7 @@ public class JsonPathCacheTest {
   public void testNonexistingField() throws IOException, URISyntaxException {
     String jsonPath = "$.['ore:Proxy'][?(@['edm:europeanaProxy'][0] == 'false')]['dc:title2']";
 
-    JsonPathCache cache = new JsonPathCache(jsonString);
+    JsonSelector cache = new JsonSelector(jsonString);
     List<EdmFieldInstance> instances = cache.get(jsonPath);
 
     assertNull(instances);
@@ -61,7 +58,7 @@ public class JsonPathCacheTest {
   public void testResourceField() throws IOException, URISyntaxException {
     String jsonPath = "$.['ore:Proxy'][?(@['edm:europeanaProxy'][0] == 'false')]['dcterms:isReferencedBy']";
 
-    JsonPathCache cache = new JsonPathCache(jsonString);
+    JsonSelector cache = new JsonSelector(jsonString);
     List<EdmFieldInstance> instances = cache.get(jsonPath);
 
     assertNotNull(instances);
@@ -76,7 +73,7 @@ public class JsonPathCacheTest {
   public void testAbout() throws IOException, URISyntaxException {
     String jsonPath = "$.['edm:ProvidedCHO'][0]['@about']";
 
-    JsonPathCache cache = new JsonPathCache(jsonString);
+    JsonSelector cache = new JsonSelector(jsonString);
     List<EdmFieldInstance> instances = cache.get(jsonPath);
 
     assertNotNull(instances);
@@ -92,7 +89,7 @@ public class JsonPathCacheTest {
     jsonString = FileUtils.readFirstLineFromResource("problem-catalog/same-title-and-description.json");
     String jsonPath = "$.['edm:Place'][0]['skos:prefLabel']";
 
-    JsonPathCache cache = new JsonPathCache(jsonString);
+    JsonSelector cache = new JsonSelector(jsonString);
     List<EdmFieldInstance> instances = cache.get(jsonPath);
 
     assertNotNull(instances);
@@ -110,7 +107,7 @@ public class JsonPathCacheTest {
     jsonString = FileUtils.readFirstLineFromResource("issue-examples/issue5-array-in-innerarray.json");
     String jsonPath = "$.['ore:Proxy'][?(@['edm:europeanaProxy'][0] == 'false')]['dcterms:created']";
 
-    JsonPathCache cache = new JsonPathCache(jsonString);
+    JsonSelector cache = new JsonSelector(jsonString);
     List<EdmFieldInstance> instances = cache.get(jsonPath);
 
     assertNotNull(instances);
@@ -130,7 +127,7 @@ public class JsonPathCacheTest {
     jsonString = FileUtils.readFirstLineFromResource("issue-examples/issue6-handling-missing-provider.json");
     String jsonPath = "$.['ore:Aggregation'][0]['edm:dataProvider'][0]";
 
-    JsonPathCache cache = new JsonPathCache(jsonString);
+    JsonSelector cache = new JsonSelector(jsonString);
     List<EdmFieldInstance> instances = cache.get(jsonPath);
 
     assertNotNull(instances);

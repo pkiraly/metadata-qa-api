@@ -5,7 +5,7 @@ import de.gwdg.metadataqa.api.counter.FieldCounter;
 import de.gwdg.metadataqa.api.json.FieldGroup;
 import de.gwdg.metadataqa.api.json.DataElement;
 import de.gwdg.metadataqa.api.model.Category;
-import de.gwdg.metadataqa.api.model.pathcache.JsonPathCache;
+import de.gwdg.metadataqa.api.model.selector.JsonSelector;
 import de.gwdg.metadataqa.api.schema.edm.EdmOaiPmLimitedJsonSchema;
 import de.gwdg.metadataqa.api.schema.Schema;
 import de.gwdg.metadataqa.api.util.CompressionLevel;
@@ -35,7 +35,7 @@ import org.junit.rules.ExpectedException;
  */
 public class CompletenessCalculatorLimitedTest {
 
-  private JsonPathCache cache;
+  private JsonSelector cache;
   private CompletenessCalculator calculator;
 
   public CompletenessCalculatorLimitedTest() {
@@ -52,7 +52,7 @@ public class CompletenessCalculatorLimitedTest {
   @Before
   public void setUp() throws URISyntaxException, IOException {
     calculator = new CompletenessCalculator(new EdmOaiPmLimitedJsonSchema());
-    cache = new JsonPathCache(FileUtils.readFirstLineFromResource("general/test.json"));
+    cache = new JsonSelector(FileUtils.readFirstLineFromResource("general/test.json"));
   }
 
   @After
@@ -244,7 +244,7 @@ public class CompletenessCalculatorLimitedTest {
     thrown.expect(InvalidJsonException.class);
     thrown.expectMessage("Unexpected character (:) at position 28");
 
-    cache = new JsonPathCache(FileUtils.readFirstLineFromResource("general/invalid.json"));
+    cache = new JsonSelector(FileUtils.readFirstLineFromResource("general/invalid.json"));
     calculator.measure(cache);
     fail("Should throw an exception if the JSON string is invalid.");
   }

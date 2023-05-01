@@ -1,7 +1,7 @@
 package de.gwdg.metadataqa.api.problemcatalog.skos;
 
 import de.gwdg.metadataqa.api.counter.FieldCounter;
-import de.gwdg.metadataqa.api.model.pathcache.JsonPathCache;
+import de.gwdg.metadataqa.api.model.selector.JsonSelector;
 import de.gwdg.metadataqa.api.problemcatalog.ProblemCatalog;
 import de.gwdg.metadataqa.api.schema.edm.EdmOaiPmhJsonSchema;
 import de.gwdg.metadataqa.api.schema.edm.EdmSchema;
@@ -23,7 +23,7 @@ public class AmbiguousPrefLabelTest {
 
   private String problemFileName = "problem-catalog/same-title-and-description.json";
   private AmbiguousPrefLabel detector;
-  private JsonPathCache cache;
+  private JsonSelector cache;
 
   public AmbiguousPrefLabelTest() {
   }
@@ -42,7 +42,7 @@ public class AmbiguousPrefLabelTest {
     ProblemCatalog catalog = new ProblemCatalog(schema);
     detector = new AmbiguousPrefLabel(catalog);
 
-    cache = new JsonPathCache(FileUtils.readFirstLineFromResource(problemFileName));
+    cache = new JsonSelector(FileUtils.readFirstLineFromResource(problemFileName));
   }
 
   @After

@@ -2,15 +2,14 @@ package de.gwdg.metadataqa.api.rule;
 
 import de.gwdg.metadataqa.api.configuration.schema.Rule;
 import de.gwdg.metadataqa.api.interfaces.MetricResult;
-import de.gwdg.metadataqa.api.model.PathCacheFactory;
-import de.gwdg.metadataqa.api.model.pathcache.CsvPathCache;
+import de.gwdg.metadataqa.api.model.selector.SelectorFactory;
+import de.gwdg.metadataqa.api.model.selector.CsvSelector;
 import de.gwdg.metadataqa.api.schema.BaseSchema;
 import de.gwdg.metadataqa.api.schema.CsvAwareSchema;
 import de.gwdg.metadataqa.api.schema.Format;
 import de.gwdg.metadataqa.api.schema.Schema;
 import de.gwdg.metadataqa.api.util.CompressionLevel;
 import de.gwdg.metadataqa.api.util.CsvReader;
-import org.apache.commons.lang3.StringUtils;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -36,7 +35,7 @@ public class RuleCatalogTest {
 
   @Test
   public void measure() {
-    CsvPathCache cache = (CsvPathCache) PathCacheFactory.getInstance(schema.getFormat(), "a,b,c");
+    CsvSelector cache = (CsvSelector) SelectorFactory.getInstance(schema.getFormat(), "a,b,c");
     cache.setCsvReader(new CsvReader().setHeader( ((CsvAwareSchema) schema).getHeader() ));
 
     RuleCatalog catalog = new RuleCatalog(schema);
@@ -46,7 +45,7 @@ public class RuleCatalogTest {
 
   @Test
   public void measure_() {
-    CsvPathCache cache = (CsvPathCache) PathCacheFactory.getInstance(schema.getFormat(), "a,b,c");
+    CsvSelector cache = (CsvSelector) SelectorFactory.getInstance(schema.getFormat(), "a,b,c");
     cache.setCsvReader(new CsvReader().setHeader( ((CsvAwareSchema) schema).getHeader() ));
 
     RuleCatalog catalog = new RuleCatalog(schema);
