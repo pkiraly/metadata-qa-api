@@ -39,7 +39,7 @@ public class ImageDimensionCheckerTest extends CheckerTestBase {
   @Test
   public void successMinWidthHeight() {
     cache = (CsvSelector) SelectorFactory.getInstance(schema.getFormat(),
-      "\"https://iiif.deutsche-digitale-bibliothek.de/image/2/b152b0e5-55da-453a-8a53-6530189e98ac/full/!800,600/0/default.jpg\"");
+      "\"https://iiif.deutsche-digitale-bibliothek.de/image/2/ec863e48-7e20-4e9c-95fd-babd708b6eaf/full/full/0/default.jpg\"");
     cache.setCsvReader(new CsvReader().setHeader( ((CsvAwareSchema) schema).getHeader() ));
 
     ImageDimensionChecker checker = new ImageDimensionChecker(schema.getPathByLabel("name"), new Dimension().withMinWidth(200).withMinHeight(200));
@@ -55,7 +55,7 @@ public class ImageDimensionCheckerTest extends CheckerTestBase {
   @Test
   public void successMinShortLong() {
     cache = (CsvSelector) SelectorFactory.getInstance(schema.getFormat(),
-      "\"https://iiif.deutsche-digitale-bibliothek.de/image/2/b152b0e5-55da-453a-8a53-6530189e98ac/full/!800,600/0/default.jpg\"");
+      "\"https://iiif.deutsche-digitale-bibliothek.de/image/2/ec863e48-7e20-4e9c-95fd-babd708b6eaf/full/full/0/default.jpg\"");
     cache.setCsvReader(new CsvReader().setHeader( ((CsvAwareSchema) schema).getHeader() ));
 
     ImageDimensionChecker checker = new ImageDimensionChecker(schema.getPathByLabel("name"), new Dimension().withMinShortside(200).withMinLongside(200));
