@@ -40,6 +40,8 @@ public class MinCountChecker extends SingleFieldChecker {
       LOGGER.info(this.getClass().getSimpleName() + " " + this.id + ") value: " + counter.getCount());
     if (counter.getCount() >= minCount)
       allPassed = true;
+    else if (counter.isNA() && minCount > 0)
+      counter.ignoreNA();
 
     addOutput(results, counter.isNA(), allPassed, outputType);
     if (isDebug())

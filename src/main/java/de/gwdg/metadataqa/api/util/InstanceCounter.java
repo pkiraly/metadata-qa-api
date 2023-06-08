@@ -8,10 +8,12 @@ import java.util.List;
 
 public class InstanceCounter {
   boolean isNA = true;
+  boolean ignoreNA = false;
   int count = 0;
   private final Selector cache;
   private final DataElement field;
   private boolean allowEmptyInstances = true;
+
 
   public InstanceCounter(Selector cache, DataElement field) {
     this.cache = cache;
@@ -37,11 +39,17 @@ public class InstanceCounter {
   }
 
   public boolean isNA() {
+    if (ignoreNA)
+      return false;
     return isNA;
   }
 
   public int getCount() {
     return count;
+  }
+
+  public void ignoreNA() {
+    this.ignoreNA = true;
   }
 
   @Override

@@ -42,6 +42,9 @@ public class MaxCountChecker extends SingleFieldChecker {
     if (counter.getCount() <= maxCount)
       allPassed = true;
 
+    if (counter.isNA() && maxCount == 0)
+      counter.ignoreNA();
+
     addOutput(results, counter.isNA(), allPassed, outputType);
     if (isDebug())
       LOGGER.info(this.getClass().getSimpleName() + " " + this.id + ") result: " + RuleCheckingOutputStatus.create(counter.isNA(), allPassed));

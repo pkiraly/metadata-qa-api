@@ -2,6 +2,7 @@ package de.gwdg.metadataqa.api.rule.logical;
 
 import de.gwdg.metadataqa.api.counter.FieldCounter;
 import de.gwdg.metadataqa.api.json.DataElement;
+import de.gwdg.metadataqa.api.model.XmlFieldInstance;
 import de.gwdg.metadataqa.api.model.selector.Selector;
 import de.gwdg.metadataqa.api.rule.RuleChecker;
 import de.gwdg.metadataqa.api.rule.RuleCheckerOutput;
@@ -36,19 +37,23 @@ public class NotChecker extends LogicalChecker {
 
     var allPassed = true;
     var isNA = false;
-    FieldCounter<RuleCheckerOutput> localResults = new FieldCounter<>();
-    for (RuleChecker checker : checkers) {
-      if (checker instanceof DependencyChecker)
-        ((DependencyChecker)checker).update(cache, localResults, outputType, results);
-      else
-        checker.update(cache, localResults, outputType);
-      String key = outputType.equals(RuleCheckingOutputType.BOTH) ? checker.getHeader(RuleCheckingOutputType.SCORE) : checker.getHeader();
-      if (localResults.get(key).getStatus().equals(RuleCheckingOutputStatus.PASSED)) {
-        allPassed = false;
-        break;
+    List<XmlFieldInstance> instances = cache.get(field.getPath());
+    if (instances != null && !instances.isEmpty()) {
+      FieldCounter<RuleCheckerOutput> localResults = new FieldCounter<>();
+      for (RuleChecker checker : checkers) {
+        if (checker instanceof DependencyChecker)
+          ((DependencyChecker)checker).update(cache, localResults, outputType, results);
+        else
+          checker.update(cache, localResults, outputType);
+        String key = outputType.equals(RuleCheckingOutputType.BOTH) ? checker.getHeader(RuleCheckingOutputType.SCORE) : checker.getHeader();
+        if (localResults.get(key).getStatus().equals(RuleCheckingOutputStatus.PASSED)) {
+          allPassed = false;
+          break;
+        }
       }
+    } else {
+      isNA = true;
     }
-
     addOutput(results, isNA, allPassed, outputType);
     if (isDebug())
       LOGGER.info(this.getClass().getSimpleName() + " " + this.id + ") result: " + RuleCheckingOutputStatus.create(isNA, allPassed));
