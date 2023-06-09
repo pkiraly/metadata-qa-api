@@ -47,6 +47,7 @@ digital collections.
         * [`successScore <integer>`](#successscore-integer)
         * [`hidden <boolean>`](#hidden-boolean)
         * [`skip <boolean>`](#skip-boolean)
+        * [`debug <boolean>`](#debug-boolean)
       - [Set rules via Java API](#set-rules-via-java-api)
   * [Defining MeasurementConfiguration with a configuration file](#defining-measurementconfiguration-with-a-configuration-file)
   * [Using an experimental version](#using-an-experimental-version)
@@ -115,7 +116,7 @@ First, add the library into your project's `pom.xml` file:
   <dependency>
     <grroupId>de.gwdg.metadata</grroupId>
     <artifactId>metadata-qa-api</artifactId>
-    <version>0.9.0</version>
+    <version>0.9.2</version>
   </dependency>
 </dependencies>
 ```
@@ -938,6 +939,12 @@ useful in development phase when you started to create a complex rule but
 haven't yet finished, or when the execution of the rule takes long time (e.g.
 checking content type or image dimension), and temporary you would like to
 turn it off.
+
+##### `debug <boolean>`:
+
+(since v0.9.0)
+
+If set, the tool logs the rule identifier, its value and the rule's result.
 
 #### Set rules via Java API 
 
