@@ -51,6 +51,11 @@ public class Rule implements Serializable {
     this.id = id;
   }
 
+  public Rule withId(String id) {
+    this.id = id;
+    return this;
+  }
+
   public String getDescription() {
     return description;
   }
@@ -452,6 +457,11 @@ public class Rule implements Serializable {
 
   public void setDependencies(List<String> dependencies) {
     this.dependencies = dependencies;
+  }
+
+  public Rule withDependencies(List<String> dependencies) {
+    this.dependencies = dependencies;
+    return this;
   }
 
   public Rule withRulesAlreadyPassed(List<String> dependencies) {

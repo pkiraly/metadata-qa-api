@@ -14,7 +14,6 @@ public class InstanceCounter {
   private final DataElement field;
   private boolean allowEmptyInstances = true;
 
-
   public InstanceCounter(Selector cache, DataElement field) {
     this.cache = cache;
     this.field = field;

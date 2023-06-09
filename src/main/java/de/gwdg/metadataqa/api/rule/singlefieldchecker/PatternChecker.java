@@ -40,7 +40,7 @@ public class PatternChecker extends SingleFieldChecker {
           isNA = false;
           if (isDebug())
             LOGGER.info("value: " + instance.getValue());
-          if (!pattern.matcher(instance.getValue()).matches()) {
+          if (!pattern.matcher(instance.getValue()).find()) {
             allPassed = false;
             break;
           }
