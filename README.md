@@ -649,7 +649,8 @@ Example: the value should be either "dataverse", "dataset" or "file".
 
 ##### `pattern <regular expression>`
 A regular expression that each field value matches to satisfy the condition.
-The expression should cover the whole string, not only a part of it
+The expression can match a a part of the whole string (see the Java Matcher 
+object's [find](https://docs.oracle.com/javase/8/docs/api/java/util/regex/Matcher.html#find--) method).
 (API: `setPattern(String)` or `withPattern(String)`)
 
 Example: the field value should start with http:// or https:// and end with
