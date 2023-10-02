@@ -25,7 +25,7 @@ public class ContentTypeExtractor {
       String rawContentType = urlConnection.getHeaderField("Content-Type");
       if (rawContentType != null && StringUtils.isNotBlank(rawContentType))
         contentType = rawContentType.replaceAll("; ?charset.*$", "");
-    } else if (responseCode == 301 || responseCode == 303) {
+    } else if (responseCode == 301 || responseCode == 302 || responseCode == 303) {
       String location = urlConnection.getHeaderField("Location");
       return getContentType(location);
     } else {
