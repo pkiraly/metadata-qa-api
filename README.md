@@ -152,10 +152,17 @@ Build a `CalculatorFacade` object:
 ```Java
 CalculatorFacade calculator = new CalculatorFacade(config) // use configuration
   .setSchema(schema)   // set the schema which describes the source
+  .configure();        // finalize the configuration
+```
+
+If you have a CSV source and you would like to reuse the headers use `setCsvReader()`:
+```Java
+CalculatorFacade calculator = new CalculatorFacade(config) // use configuration
+  .setSchema(schema)   // set the schema which describes the source
   .setCsvReader(       // optional, if it is a CSV source
     new CsvReader()
       .setHeader(((CsvAwareSchema) schema).getHeader()))
-  .donfigure();       // finalize the configuration
+  .configure();        // finalize the configuration
 ```
 
 These are the two important requirements for the start of the measuring.
