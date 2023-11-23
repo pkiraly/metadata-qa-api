@@ -8,6 +8,7 @@ import de.gwdg.metadataqa.api.util.ExceptionUtils;
 import de.gwdg.metadataqa.api.xml.XPathWrapper;
 
 import java.util.List;
+import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -30,6 +31,11 @@ public class XmlSelector<T extends XmlFieldInstance> extends BaseSelector<T> {
   public XmlSelector(String content) throws InvalidJsonException {
     this.content = content;
     xPathWrapper = new XPathWrapper(content);
+  }
+
+  public XmlSelector(String content, Map<String, String> namespaces) throws InvalidJsonException {
+    this.content = content;
+    xPathWrapper = new XPathWrapper(content, namespaces);
   }
 
   protected void set(String address, String path, Object jsonFragment, Class clazz) {

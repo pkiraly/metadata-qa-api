@@ -56,7 +56,7 @@ public class XPathWrapper implements Serializable {
   }
 
   public XPathWrapper(String input, Map<String, String> customNamespaces) {
-    if (this.namespaces != customNamespaces) {
+    if (customNamespaces != null && this.namespaces != customNamespaces) {
       namespaceChanged = true;
       this.namespaces = customNamespaces;
     }

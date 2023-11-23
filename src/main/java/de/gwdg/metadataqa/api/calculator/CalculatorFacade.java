@@ -184,13 +184,11 @@ public class CalculatorFacade implements Serializable {
     } else {
       var format = schema.getFormat();
       if (format != null && content != null) {
-        cache = SelectorFactory.getInstance(schema.getFormat(), content);
+        cache = SelectorFactory.getInstance(schema.getFormat(), content, schema.getNamespaces());
         if (schema.getFormat().equals(Format.CSV))
           initializeCsvCache(content);
 
-        if (!(isFirstRecord
-            && schema.getFormat().equals(Format.CSV)
-            && csvReader.isHeaderAware()))
+        if (!isCsvHeaderLine())
           runMeasurements(collector);
 
         isFirstRecord = false;
@@ -198,6 +196,12 @@ public class CalculatorFacade implements Serializable {
     }
 
     return collector.createOutput(type, compressionLevel);
+  }
+
+  private boolean isCsvHeaderLine() {
+    return isFirstRecord
+      && schema.getFormat().equals(Format.CSV)
+      && csvReader.isHeaderAware();
   }
 
   private void initializeCsvCache(String content) {
