@@ -13,6 +13,7 @@ public class Rule implements Serializable {
   private String description;
   private Integer failureScore;
   private Integer successScore;
+  private Integer naScore;
 
   private String pattern;
   private String equals;
@@ -362,6 +363,19 @@ public class Rule implements Serializable {
 
   public Rule withSuccessScore(Integer successScore) {
     setSuccessScore(successScore);
+    return this;
+  }
+
+  public Integer getNaScore() {
+    return naScore;
+  }
+
+  public void setNaScore(Integer naScore) {
+    this.naScore = naScore;
+  }
+
+  public Rule withNaScore(Integer naScore) {
+    setNaScore(naScore);
     return this;
   }
 

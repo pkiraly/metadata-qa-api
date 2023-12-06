@@ -15,6 +15,8 @@ public class RuleCheckerOutput {
       score = ruleChecker.getFailureScore();
     else if (status.equals(RuleCheckingOutputStatus.PASSED))
       score = ruleChecker.getSuccessScore();
+    else if (status.equals(RuleCheckingOutputStatus.NA))
+      score = ruleChecker.getNaScore();
   }
 
   public RuleCheckerOutput(RuleCheckingOutputStatus status, Integer score) {

@@ -11,6 +11,7 @@ public abstract class BaseRuleChecker implements RuleChecker {
   protected String id;
   protected Integer failureScore;
   protected Integer successScore;
+  protected Integer naScore;
   protected String header;
   protected Boolean hidden = false;
   private Boolean debug = false;
@@ -35,6 +36,11 @@ public abstract class BaseRuleChecker implements RuleChecker {
     this.failureScore = failureScore;
   }
 
+  public RuleChecker withFailureScore(Integer failureScore) {
+    this.failureScore = failureScore;
+    return this;
+  }
+
   @Override
   public Integer getSuccessScore() {
     return successScore;
@@ -43,6 +49,24 @@ public abstract class BaseRuleChecker implements RuleChecker {
   @Override
   public void setSuccessScore(Integer successScore) {
     this.successScore = successScore;
+  }
+
+  public RuleChecker withSuccessScore(Integer successScore) {
+    this.successScore = successScore;
+    return this;
+  }
+
+  public void setNaScore(Integer naScore) {
+    this.naScore = naScore;
+  }
+
+  public Integer getNaScore() {
+    return naScore;
+  }
+
+  public RuleChecker withNaScore(Integer naScore) {
+    this.naScore = naScore;
+    return this;
   }
 
   @Override

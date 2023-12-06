@@ -379,6 +379,8 @@ public class CalculatorFacadeTest {
       .addField(new DataElement("funder"))
       .addField(new DataElement("temporalCoverage"));
 
+    assertTrue(schema.getPathByLabel("url").isMandatory());
+
     MeasurementConfiguration config = new MeasurementConfiguration()
       .enableCompletenessMeasurement()
       .enableFieldCardinalityMeasurement();

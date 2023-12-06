@@ -66,6 +66,8 @@ public class FieldExtractorTest {
       .addField(new DataElement("url"))
       .addField(new DataElement("name,with,comma").setExtractable());
 
+    assertFalse(schema.getPathByLabel("url").isMandatory());
+
     MeasurementConfiguration config = new MeasurementConfiguration()
       .enableFieldExtractor()
       .disableCompletenessMeasurement();

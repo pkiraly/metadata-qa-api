@@ -35,10 +35,17 @@ public interface RuleChecker extends Serializable {
   Integer getFailureScore();
 
   void setFailureScore(Integer failureScore);
+  RuleChecker withFailureScore(Integer failureScore);
 
   Integer getSuccessScore();
 
   void setSuccessScore(Integer successScore);
+  RuleChecker withSuccessScore(Integer successScore);
+
+  Integer getNaScore();
+
+  void setNaScore(Integer naScore);
+  RuleChecker withNaScore(Integer naScore);
 
   String getId();
 

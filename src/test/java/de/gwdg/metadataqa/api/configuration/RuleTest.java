@@ -254,6 +254,17 @@ public class RuleTest {
   }
 
   @Test
+  public void naScore() {
+    Rule rule;
+    rule = new Rule().withNaScore(3);
+    assertEquals(3, rule.getNaScore().intValue());
+
+    rule = new Rule();
+    rule.setNaScore(3);
+    assertEquals(3, rule.getNaScore().intValue());
+  }
+
+  @Test
   public void unique() {
     Rule rule;
 
