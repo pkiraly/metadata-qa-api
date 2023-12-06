@@ -895,14 +895,20 @@ anything reasonable, it does not play a role in the calculation.
 ##### `failureScore <integer>`
 
 A score which will be calculated if the validation fails. The score should be a
-negative o positive integer (including zero). 
-(API `setFailureScore(nteger)` or `withFailureScore(Integer)`)
+negative or positive integer (including zero). 
+(API `setFailureScore(Integer)` or `withFailureScore(Integer)`)
 
 ##### `successScore <integer>`
 
 A score which will be calculated if the validation passes. The score should be
-a negative o positive integer (including zero).
-(API `setSuccessScore(nteger)` or `withSuccessScore(Integer)`)
+a negative or positive integer (including zero).
+(API `setSuccessScore(Integer)` or `withSuccessScore(Integer)`)
+
+##### `naScore <integer>`
+
+A score which will be calculated if the value is missing (there is no such data element).
+The score should be a negative or positive integer (including zero).
+(API `setNaScore(Integer)` or `withNaScore(Integer)`)
 
 Example: set of rules with IDs and scores.
 
@@ -917,15 +923,19 @@ Example: set of rules with IDs and scores.
       id: 2.1
   - pattern: ^(DE-\d+|DE-MUS-\d+|http://id.zdb-services.de\w+|\d{8}|oai\d{13})$
     failureScore: -3
+    naScore: 0
     id: 2.2
   - pattern: ^(DE-\d+|DE-MUS-\d+|http://id.zdb-services.de\w+)$
     successScore: 6
+    naScore: 0
     id: 2.4
   - pattern: ^http://id.zdb-services.de\w+$
     successScore: 3
+    naScore: 0
     id: 2.5
   - pattern: ^http://d-nb.info/gnd/\w+$
     successScore: 3
+    naScore: 0
     id: 2.6
 ```
 
