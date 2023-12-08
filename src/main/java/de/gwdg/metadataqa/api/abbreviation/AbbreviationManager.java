@@ -77,7 +77,7 @@ public class AbbreviationManager implements Serializable {
       List<String> lines = Files.readAllLines(path, Charset.defaultCharset());
       var i = 1;
       for (String line : lines) {
-        processLine(line, i, parse);
+        processLine(line, i++, parse);
       }
     } catch (URISyntaxException | IOException | FileSystemNotFoundException ex) {
       LOGGER.severe(String.format("Error with file: %s, path: %s.", pFileName, path));
@@ -90,7 +90,7 @@ public class AbbreviationManager implements Serializable {
       String[] parts = line.split(";", 2);
       data.put(parts[1].replace("\\n", "\n"), Integer.parseInt(parts[0]));
     } else {
-      data.put(line, i++);
+      data.put(line, i);
     }
   }
 
