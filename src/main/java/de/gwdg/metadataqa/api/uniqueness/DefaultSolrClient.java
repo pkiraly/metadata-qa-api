@@ -1,7 +1,8 @@
 package de.gwdg.metadataqa.api.uniqueness;
 
 import org.apache.solr.client.solrj.SolrServerException;
-import org.apache.solr.client.solrj.impl.HttpSolrClient;
+import org.apache.solr.client.solrj.impl.BaseHttpSolrClient;
+import org.apache.solr.client.solrj.impl.Http2SolrClient;
 import org.apache.solr.common.SolrInputDocument;
 
 import java.io.BufferedInputStream;
@@ -29,6 +30,7 @@ import java.util.logging.Logger;
 public class DefaultSolrClient implements SolrClient, Serializable {
 
   private static final Logger LOGGER = Logger.getLogger(DefaultSolrClient.class.getCanonicalName());
+  private static final String CONNECTION_ERROR_MESSAGE = "Error with connecting to %s: %s";
 
   private static final String USER_AGENT = "Custom Java application";
   private static final int VALUE_LIMIT = 50;
@@ -40,12 +42,12 @@ public class DefaultSolrClient implements SolrClient, Serializable {
   private String solrSearchPattern;
   private String solrSearchAllPattern;
   private SolrConfiguration solrConfiguration;
-  private HttpSolrClient solr;
+  private Http2SolrClient solr;
   boolean trimId = true;
 
   public DefaultSolrClient(SolrConfiguration solrConfiguration) {
     this.solrConfiguration = solrConfiguration;
-    solr = new HttpSolrClient.Builder(solrConfiguration.getUrl()).build();
+    solr = new Http2SolrClient.Builder(solrConfiguration.getUrl()).build();
   }
 
   public String getSolrSearchResponse(String solrField, String value) {
@@ -77,7 +79,7 @@ public class DefaultSolrClient implements SolrClient, Serializable {
 
   private String connect(String url, String solrField, String value) {
     URL fragmentPostUrl = null;
-    String record = null;
+    String rawSolrResponse = null;
     try {
       fragmentPostUrl = new URL(url);
       HttpURLConnection urlConnection = null;
@@ -90,37 +92,36 @@ public class DefaultSolrClient implements SolrClient, Serializable {
         try {
           if (urlConnection.getResponseCode() == HttpURLConnection.HTTP_OK) {
             InputStream in = new BufferedInputStream(urlConnection.getInputStream());
-            record = readStream(in);
+            rawSolrResponse = readStream(in);
           } else {
             int lenght = urlConnection.getContentLength();
+            String shortenedValue = value.length() < VALUE_LIMIT ? value : value.substring(0, VALUE_LIMIT) + "...";
+            String solrResponse = lenght == 0 ? "" : readStream(new BufferedInputStream(urlConnection.getInputStream()));
             LOGGER.severe(String.format("%s: %s returned code %d. Solr responde: %s",
-              solrField,
-              (value.length() < VALUE_LIMIT ? value : value.substring(0, VALUE_LIMIT) + "..."),
-              urlConnection.getResponseCode(),
-              (lenght == 0 ? "" : readStream(new BufferedInputStream(urlConnection.getInputStream())))
+              solrField, shortenedValue, urlConnection.getResponseCode(), solrResponse
             ));
           }
         } catch (IOException e) {
-          LOGGER.severe("Error with connecting to " + url + ": " + e.getMessage());
+          LOGGER.severe(String.format(CONNECTION_ERROR_MESSAGE, url, e.getMessage()));
         }
       } catch (IOException e) {
-        LOGGER.severe("Error with connecting to " + url + ": " + e.getMessage());
+        LOGGER.severe(String.format(CONNECTION_ERROR_MESSAGE, url, e.getMessage()));
       } finally {
         if (urlConnection != null) {
           urlConnection.disconnect();
         }
       }
     } catch (MalformedURLException e) {
-      LOGGER.severe("Error with connecting to " + url + ": " + e.getMessage());
+      LOGGER.severe(String.format(CONNECTION_ERROR_MESSAGE, url, e.getMessage()));
     }
 
     // add request header
-    return record;
+    return rawSolrResponse;
   }
 
   private String readStream(InputStream in) throws IOException {
     var rd = new BufferedReader(new InputStreamReader(in, StandardCharsets.UTF_8));
-    var result = new StringBuffer();
+    var result = new StringBuilder();
     var line = "";
     while ((line = rd.readLine()) != null) {
       result.append(line);
@@ -173,8 +174,8 @@ public class DefaultSolrClient implements SolrClient, Serializable {
 
     try {
       solr.add(document);
-    } catch (HttpSolrClient.RemoteSolrException ex) {
-      LOGGER.log(Level.WARNING, "document", document);
+    } catch (BaseHttpSolrClient.RemoteSolrException ex) {
+      LOGGER.log(Level.WARNING, String.format("Solr input document: %s", document.toString()));
       LOGGER.log(Level.WARNING, "Commit exception", ex);
     }
   }

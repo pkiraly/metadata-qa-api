@@ -20,6 +20,10 @@ public class QaSolrClient {
   protected UniquenessExtractor extractor = new UniquenessExtractor();
   protected final Schema schema;
 
+  public QaSolrClient() {
+    this(null, null);
+  }
+
   public QaSolrClient(SolrClient solrClient, Schema schema) {
     this.solrClient = solrClient;
     this.schema = schema;

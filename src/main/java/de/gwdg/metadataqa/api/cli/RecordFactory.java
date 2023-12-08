@@ -17,15 +17,13 @@ import java.io.BufferedReader;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.util.logging.Logger;
 import java.util.zip.GZIPInputStream;
 
 public class RecordFactory {
-
-  private static Logger logger = Logger.getLogger(RecordFactory.class.getCanonicalName());;
 
   private RecordFactory() {}
 
@@ -35,11 +33,11 @@ public class RecordFactory {
       throws CsvValidationException, IOException {
     final Schema schema = calculator.getSchema();
 
-    BufferedReader inputReader;
+    BufferedReader inputReader = null;
     if (gzip) {
       FileInputStream fis = new FileInputStream(inputFile);
       GZIPInputStream gis = new GZIPInputStream(fis);
-      InputStreamReader inputStreamReader = new InputStreamReader(gis, "UTF-8");
+      InputStreamReader inputStreamReader = new InputStreamReader(gis, StandardCharsets.UTF_8);
       inputReader = new BufferedReader(inputStreamReader);
     } else {
       Path inputPath = Paths.get(inputFile);
@@ -47,15 +45,14 @@ public class RecordFactory {
     }
 
     switch (schema.getFormat()) {
-      case CSV:
-        return new CSVRecordReader(inputReader, calculator);
       case JSON:
         return new JSONRecordReader(inputReader, calculator);
       case XML:
-        XMLRecordReader reader = new XMLRecordReader(inputReader, calculator);
-        return reader;
+        return new XMLRecordReader(inputReader, calculator);
+      case CSV:
+      default:
+        return new CSVRecordReader(inputReader, calculator);
     }
-    return new CSVRecordReader(inputReader, calculator);
   }
 
   public static ResultWriter getResultWriter(String outputFormat, String outputFile) throws IOException {
@@ -65,27 +62,26 @@ public class RecordFactory {
     }
 
     switch (outputFormat) {
-      case App.CSV:
-        return new CSVResultWriter(outputFile);
       case App.JSON:
       case App.NDJSON:
         return new JSONResultWriter(outputFile);
       case App.CSVJSON:
         return new CSVJSONResultWriter(outputFile);
+      case App.CSV:
+      default:
+        return new CSVResultWriter(outputFile);
     }
-
-    return new CSVResultWriter(outputFile);
   }
 
-  public static ResultWriter getResultWriter(String outputFormat) throws IOException {
+  public static ResultWriter getResultWriter(String outputFormat) {
     switch (outputFormat) {
-      case App.CSV:
-        return new CSVResultWriter();
       case App.NDJSON:
         return new JSONResultWriter();
       case App.CSVJSON:
         return new CSVJSONResultWriter();
+      case App.CSV:
+      default:
+        return new CSVResultWriter();
     }
-    return new CSVResultWriter();
   }
 }
