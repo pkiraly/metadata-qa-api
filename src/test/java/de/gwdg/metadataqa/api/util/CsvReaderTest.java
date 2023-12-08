@@ -6,7 +6,9 @@ import de.gwdg.metadataqa.api.calculator.CalculatorFacade;
 import de.gwdg.metadataqa.api.configuration.MeasurementConfiguration;
 import de.gwdg.metadataqa.api.schema.GoogleDatasetSchema;
 import org.apache.commons.lang3.StringUtils;
+import org.junit.Rule;
 import org.junit.Test;
+import org.junit.rules.ExpectedException;
 
 import java.io.File;
 import java.io.FileReader;
@@ -18,6 +20,8 @@ import java.util.Map;
 import static org.junit.Assert.*;
 
 public class CsvReaderTest {
+  @Rule
+  public ExpectedException thrown = ExpectedException.none();
 
   @Test
   public void testExternalLibraryAPI() {
@@ -46,18 +50,15 @@ public class CsvReaderTest {
     assertEquals(2, columns.length);
   }
 
-  @Test(expected = IllegalArgumentException.class)
-  public void testAsMap_noHeader() {
+  @Test
+  public void testAsMap_noHeader() throws IOException {
     CsvReader reader = new CsvReader();
     Map<String, String> record = null;
-    try {
-      record = reader.asMap("Jim,64");
-    } catch (IOException e) {
-      //
-    } catch (IllegalArgumentException e) {
-      assertEquals("The size of columns (2) is different than the size of headers (0)", e.getMessage());
-      throw e;
-    }
+
+    thrown.expect(IllegalArgumentException.class);
+    thrown.expectMessage("The size of columns (2) is different than the size of headers (0)");
+    record = reader.asMap("Jim,64");
+
     fail("This point should not be accessed");
     assertNotNull(record);
     assertEquals(0, record.size());

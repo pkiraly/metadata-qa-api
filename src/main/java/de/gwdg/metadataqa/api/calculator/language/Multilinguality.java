@@ -278,7 +278,7 @@ public class Multilinguality {
         normalized = LanguageSaturationType.NA.value();
         sum = LanguageSaturationType.NA.value();
       } else {
-        average = sum / (double) values.size();
+        average = sum / values.size();
         normalized = normalize(average);
         sums.add(sum);
       }
@@ -297,7 +297,7 @@ public class Multilinguality {
       }
     }
     sum = summarize(sums);
-    average = sum / (double) sums.size();
+    average = sum / sums.size();
     normalized = normalize(average);
     if (resultType.equals(MultilingualitySaturationCalculator.ResultTypes.EXTENDED)) {
       languageMap.put(SUM, sum);

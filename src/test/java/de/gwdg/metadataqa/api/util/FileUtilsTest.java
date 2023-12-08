@@ -1,6 +1,8 @@
 package de.gwdg.metadataqa.api.util;
 
+import org.junit.Rule;
 import org.junit.Test;
+import org.junit.rules.ExpectedException;
 
 import java.io.File;
 import java.io.IOException;
@@ -14,6 +16,9 @@ import java.util.List;
 import static org.junit.Assert.*;
 
 public class FileUtilsTest {
+
+  @Rule
+  public ExpectedException thrown = ExpectedException.none();
 
   @Test
   public void readLinesFromFile() throws IOException {
@@ -77,31 +82,27 @@ public class FileUtilsTest {
     assertEquals("metadata-qa-api", path.getName(count - 5).toString());
   }
 
-  @Test(expected = IOException.class)
+  @Test
   public void getPath_exception() throws IOException, URISyntaxException {
-    try {
-      Path path = FileUtils.getPath("profiles/dummy.csv");
-    } catch (IOException ioException) {
-      assertEquals("File profiles/dummy.csv is not available", ioException.getMessage());
-      throw ioException;
-    }
+    thrown.expect(IOException.class);
+    thrown.expectMessage("File profiles/dummy.csv is not available");
+    Path path = FileUtils.getPath("profiles/dummy.csv");
+    assertNull(path);
     fail("'File is not available' exception did not throw!");
   }
 
-  @Test(expected = InstantiationException.class)
-  public void Constructor_instantiationIsImpossible()
-      throws NoSuchMethodException, IllegalAccessException,
-             InstantiationException, InvocationTargetException {
+  @Test
+  public void Constructor_instantiationIsImpossible() throws NoSuchMethodException,
+                                                             InvocationTargetException,
+                                                             InstantiationException,
+                                                             IllegalAccessException {
     Constructor<FileUtils> constructor = FileUtils.class.getDeclaredConstructor();
     assertTrue(Modifier.isPrivate(constructor.getModifiers()));
     constructor.setAccessible(true);
-    try {
-      FileUtils u = constructor.newInstance();
-      assertNull(u);
-    } catch (InstantiationException e) {
-      assertNotNull(e);
-      throw e;
-    }
+
+    thrown.expect(InstantiationException.class);
+    FileUtils u = constructor.newInstance();
+
     fail("Instantiation exception did not throw!");
   }
 }

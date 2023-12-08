@@ -49,7 +49,7 @@ public abstract class EdmSchema implements Schema, ProblemCatalogSchema {
 
   @Override
   public List<DataElement> getRootChildrenPaths() {
-    throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    throw new UnsupportedOperationException("Not supported yet.");
   }
 
   @Override

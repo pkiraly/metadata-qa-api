@@ -5,7 +5,9 @@ import org.junit.AfterClass;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.ComparisonFailure;
+import org.junit.Rule;
 import org.junit.Test;
+import org.junit.rules.ExpectedException;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
@@ -18,8 +20,10 @@ import static org.junit.Assert.*;
  *
  * @author Péter Király <peter.kiraly at gwdg.de>
  */
-public class 
-ConverterTest {
+public class ConverterTest {
+
+  @Rule
+  public ExpectedException thrown = ExpectedException.none();
 
   public ConverterTest() {
   }
@@ -56,14 +60,12 @@ ConverterTest {
     assertEquals(1.0, Converter.asDouble("1"), 0.00001);
   }
 
-  @Test(expected = NumberFormatException.class)
+  @Test
   public void asDouble_withAlpha() {
-    try {
-      assertEquals(Double.valueOf(2), Converter.asDouble("text"));
-    } catch (NumberFormatException e) {
-      assertEquals("For input string: \"text\"", e.getMessage());
-      throw e;
-    }
+    thrown.expect(NumberFormatException.class);
+    thrown.expectMessage("For input string: \"text\"");
+    assertEquals(Double.valueOf(2), Converter.asDouble("text"));
+
     fail("Exception was not thrown.");
   }
 
@@ -87,25 +89,23 @@ ConverterTest {
     assertEquals(Integer.valueOf(2), Converter.asInteger("1.9"));
   }
 
-  @Test(expected = ComparisonFailure.class)
+  @Test
   public void asInteger_withList() {
-    try {
-      assertEquals(new Integer(2), Converter.asInteger(new ArrayList()));
-    } catch (ClassCastException e) {
-      assertEquals("java.util.ArrayList cannot be cast to java.lang.Integer", e.getMessage());
-      throw e;
-    }
+    thrown.expect(ClassCastException.class);
+    thrown.expectMessage("class java.util.ArrayList cannot be cast to class java.lang.Integer (java.util.ArrayList and java.lang.Integer are in module java.base of loader 'bootstrap')");
+
+    assertEquals(new Integer(2), Converter.asInteger(new ArrayList()));
+
     fail("Exception was not thrown.");
   }
 
-  @Test(expected = NumberFormatException.class)
+  @Test
   public void asInteger_withAlpha() {
-    try {
-      assertEquals(new Integer(2), Converter.asInteger("text"));
-    } catch (NumberFormatException e) {
-      assertEquals("For input string: \"text\"", e.getMessage());
-      throw e;
-    }
+    thrown.expect(NumberFormatException.class);
+    thrown.expectMessage("For input string: \"text\"");
+
+    assertEquals(new Integer(2), Converter.asInteger("text"));
+
     fail("Exception was not thrown.");
   }
 
@@ -125,16 +125,13 @@ ConverterTest {
     assertEquals("NaN", Converter.asString(Double.NaN));
   }
 
-  @Test(expected = IllegalArgumentException.class)
+  @Test
   public void asString_withInvalidInput() {
-    try {
-      assertEquals("NaN", Converter.asString(new HashMap()));
-    } catch (Exception e) {
-      assertEquals(IllegalArgumentException.class, e.getClass());
-      assertEquals("Object has an unhandled type: java.util.HashMap {}", e.getMessage());
-      throw e;
-    }
+    thrown.expect(IllegalArgumentException.class);
+    thrown.expectMessage("Object has an unhandled type: java.util.HashMap {}");
+
+    assertEquals("NaN", Converter.asString(new HashMap()));
+
     fail("Test failed");
   }
-
 }

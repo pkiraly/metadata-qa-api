@@ -23,7 +23,9 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import org.junit.Rule;
 import org.junit.Test;
+import org.junit.rules.ExpectedException;
 
 import static org.junit.Assert.*;
 
@@ -32,6 +34,8 @@ import static org.junit.Assert.*;
  * @author Péter Király <peter.kiraly at gwdg.de>
  */
 public class CalculatorFacadeTest {
+  @Rule
+  public ExpectedException thrown = ExpectedException.none();
 
   public CalculatorFacadeTest() {
   }
@@ -213,8 +217,11 @@ public class CalculatorFacadeTest {
     assertEquals(1, calculators.size());
   }
 
-  @Test(expected = IllegalArgumentException.class)
+  @Test
   public void testTfIdfWithWrongConfiguration() {
+    thrown.expect(IllegalArgumentException.class);
+    thrown.expectMessage("If TF-IDF measurement is enabled, Solr configuration should not be null.");
+
     MeasurementConfiguration configuration = new MeasurementConfiguration().enableTfIdfMeasurement();
     CalculatorFacade calculator = new CalculatorFacade(configuration)
       .setSchema(new EdmOaiPmhJsonSchema());
@@ -223,6 +230,8 @@ public class CalculatorFacadeTest {
     List<Calculator> calculators = calculator.getCalculators();
 
     assertEquals(2, calculators.size());
+
+    fail("Exception did not thrown.");
   }
 
   @Test

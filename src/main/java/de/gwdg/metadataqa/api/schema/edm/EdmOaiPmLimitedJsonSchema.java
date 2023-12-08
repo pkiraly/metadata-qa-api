@@ -208,12 +208,12 @@ public class EdmOaiPmLimitedJsonSchema extends EdmSchema implements Serializable
 
   @Override
   public List<DataElement> getRootChildrenPaths() {
-    throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    throw new UnsupportedOperationException("Not supported yet.");
   }
 
   @Override
   public DataElement getPathByLabel(String label) {
-    throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    throw new UnsupportedOperationException("Not supported yet.");
   }
 
 }

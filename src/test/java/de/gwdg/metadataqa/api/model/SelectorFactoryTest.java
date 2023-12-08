@@ -6,11 +6,17 @@ import de.gwdg.metadataqa.api.model.selector.Selector;
 import de.gwdg.metadataqa.api.model.selector.SelectorFactory;
 import de.gwdg.metadataqa.api.model.selector.XmlSelector;
 import de.gwdg.metadataqa.api.schema.Format;
+import org.junit.Rule;
 import org.junit.Test;
+import org.junit.rules.ExpectedException;
 
 import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.fail;
 
 public class SelectorFactoryTest {
+
+  @Rule
+  public ExpectedException thrown = ExpectedException.none();
 
   @Test
   public void json() {
@@ -30,9 +36,12 @@ public class SelectorFactoryTest {
     assertTrue(cache instanceof CsvSelector);
   }
 
-  @Test(expected = IllegalArgumentException.class)
+  @Test
   public void none() {
+    thrown.expect(IllegalArgumentException.class);
+    thrown.expectMessage("Unrecognized format: null");
     Selector<? extends XmlFieldInstance> cache = SelectorFactory.getInstance(null, "a,b");
     assertTrue(cache instanceof CsvSelector);
+    fail("Exception did not thrown.");
   }
 }
