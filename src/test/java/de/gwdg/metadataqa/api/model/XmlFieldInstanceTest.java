@@ -6,6 +6,30 @@ import org.junit.Test;
 public class XmlFieldInstanceTest extends TestCase {
 
   @Test
+  public void test_isEmpty_1() {
+    XmlFieldInstance x = new XmlFieldInstance("test");
+    assertFalse(x.isEmpty());
+  }
+
+  @Test
+  public void test_isEmpty_2() {
+    XmlFieldInstance x = new XmlFieldInstance(null, "en");
+    assertFalse(x.isEmpty());
+  }
+
+  @Test
+  public void test_isEmpty_3() {
+    XmlFieldInstance x = new XmlFieldInstance(null);
+    assertTrue(x.isEmpty());
+  }
+
+  @Test
+  public void test_isEmpty_4() {
+    XmlFieldInstance x = new XmlFieldInstance(null, null);
+    assertTrue(x.isEmpty());
+  }
+
+  @Test
   public void testToString_noLang() {
     XmlFieldInstance x = new XmlFieldInstance("test");
     assertEquals("XmlFieldInstance{value=test, language=null}", x.toString());
@@ -57,6 +81,21 @@ public class XmlFieldInstanceTest extends TestCase {
   public void testEquals_4() {
     XmlFieldInstance a = new XmlFieldInstance("test", "en");
     XmlFieldInstance b = new XmlFieldInstance("test", "de");
+    assertFalse(a.equals(b));
+    assertFalse(b.equals(a));
+  }
+
+  @Test
+  public void testEquals_5() {
+    XmlFieldInstance a = new XmlFieldInstance("test");
+    assertTrue(a.equals(a));
+    assertTrue(a.equals(a));
+  }
+
+  @Test
+  public void testEquals_6() {
+    XmlFieldInstance a = new XmlFieldInstance("test");
+    String b = "test";
     assertFalse(a.equals(b));
     assertFalse(b.equals(a));
   }

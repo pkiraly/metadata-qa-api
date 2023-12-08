@@ -72,18 +72,14 @@ public class XmlFieldInstance implements Serializable {
 
   @Override
   public boolean equals(Object obj) {
-    if (!(obj instanceof  XmlFieldInstance))
+    if (!(obj instanceof XmlFieldInstance))
       return false;
 
     if (this == obj)
       return true;
 
     final XmlFieldInstance other = (XmlFieldInstance) obj;
-    if (  !Objects.equals(this.value, other.value)
-       || !Objects.equals(this.language, other.language)) {
-      return false;
-    }
-
-    return true;
+    return    Objects.equals(this.value,    other.value)
+           && Objects.equals(this.language, other.language);
   }
 }
