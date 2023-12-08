@@ -183,9 +183,7 @@ public class DefaultSolrClient implements SolrClient, Serializable {
   public void commit() {
     try {
       solr.commit();
-    } catch (SolrServerException e) {
-      e.printStackTrace();
-    } catch (IOException e) {
+    } catch (SolrServerException | IOException e) {
       e.printStackTrace();
     }
   }
@@ -194,9 +192,7 @@ public class DefaultSolrClient implements SolrClient, Serializable {
   public void deleteAll() {
     try {
       solr.deleteByQuery("*:*");
-    } catch (SolrServerException e) {
-      e.printStackTrace();
-    } catch (IOException e) {
+    } catch (SolrServerException | IOException e) {
       e.printStackTrace();
     }
     commit();

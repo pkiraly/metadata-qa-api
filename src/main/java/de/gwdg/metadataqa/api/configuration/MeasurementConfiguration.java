@@ -7,11 +7,12 @@ import de.gwdg.metadataqa.api.uniqueness.SolrClient;
 import de.gwdg.metadataqa.api.uniqueness.SolrConfiguration;
 import org.apache.commons.lang3.StringUtils;
 
+import java.io.Serializable;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
-public class MeasurementConfiguration {
-
+public class MeasurementConfiguration implements Serializable {
+  private static final long serialVersionUID = 7754969792852694442L;
   /**
    * Flag whether or not the field extractor is enabled (default: false).
    */

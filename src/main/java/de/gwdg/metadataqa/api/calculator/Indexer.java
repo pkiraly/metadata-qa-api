@@ -42,9 +42,7 @@ public class Indexer extends QaSolrClient implements Calculator, Shutdownable, S
           resultMap.put(solrField.getSolrField(), values);
       }
       solrClient.indexMap(recordId, resultMap);
-    } catch (IOException e) {
-      e.printStackTrace();
-    } catch (SolrServerException e) {
+    } catch (IOException | SolrServerException e) {
       e.printStackTrace();
     } catch (Exception e) {
       e.printStackTrace();
