@@ -41,8 +41,7 @@ public class JSONResultWriter extends ResultWriter {
   @Override
   public void writeResult(Map<String, List<MetricResult>> result) throws IOException {
     Object json = getJson(result);
-
-    this.outputWriter.write(json.toString());
+    this.outputWriter.write(json == null ? "" : json.toString());
     this.outputWriter.newLine();
   }
 

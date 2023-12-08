@@ -201,6 +201,20 @@ public class SchemaConfigurationTest {
   }
 
   @Test
+  public void yaml_naScore() throws FileNotFoundException {
+    Schema schema = ConfigurationReader.readSchemaYaml("src/test/resources/configuration/schema/rules/naScore.yaml").asSchema();
+    assertEquals(-1, schema.getPathByLabel("about").getRules().get(0).getFailureScore().intValue());
+    assertEquals(0, schema.getPathByLabel("about").getRules().get(0).getNaScore().intValue());
+    assertEquals(1, schema.getPathByLabel("about").getRules().get(0).getSuccessScore().intValue());
+  }
+
+  @Test
+  public void yaml_debug() throws FileNotFoundException {
+    Schema schema = ConfigurationReader.readSchemaYaml("src/test/resources/configuration/schema/rules/debug.yaml").asSchema();
+    assertEquals(true, schema.getPathByLabel("about").getRules().get(0).getDebug());
+  }
+
+  @Test
   public void yaml_successScore() throws FileNotFoundException {
     Schema schema = ConfigurationReader.readSchemaYaml("src/test/resources/configuration/schema/rules/successScore.yaml").asSchema();
     assertEquals(1, schema.getPathByLabel("about").getRules().get(0).getSuccessScore().intValue());
