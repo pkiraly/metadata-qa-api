@@ -68,13 +68,13 @@ public interface Converter {
         intValue = (Integer) value;
         break;
       case "java.lang.Double":
-        intValue = (Integer) ((Long) Math.round((Double) value)).intValue();
+        intValue = ((Long) Math.round((Double) value)).intValue();
         break;
       case "java.lang.Long":
-        intValue = (Integer) ((Long) value).intValue();
+        intValue = ((Long) value).intValue();
         break;
       case "java.lang.Float":
-        intValue = (Integer) Math.round((float)value);
+        intValue = Math.round((float)value);
         break;
       case "java.lang.String":
         intValue = asInteger(Double.parseDouble((String)value));

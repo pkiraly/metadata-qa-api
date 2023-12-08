@@ -676,7 +676,7 @@ public class MeasurementConfiguration implements Serializable {
     ObjectMapper mapper = new ObjectMapper();
     annottaionColumns = new LinkedHashMap<>();
     try {
-      Map<String, Object> map = (Map<String, Object>) mapper.readValue(jsonString, Map.class);
+      Map<String, Object> map = mapper.readValue(jsonString, Map.class);
       for (Map.Entry<String, Object> entry : map.entrySet()) {
         Object value = entry.getValue();
         if (value instanceof String || value instanceof Integer || value instanceof Double)

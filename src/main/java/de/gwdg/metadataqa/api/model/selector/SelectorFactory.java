@@ -1,10 +1,6 @@
 package de.gwdg.metadataqa.api.model.selector;
 
 import de.gwdg.metadataqa.api.model.XmlFieldInstance;
-import de.gwdg.metadataqa.api.model.selector.CsvSelector;
-import de.gwdg.metadataqa.api.model.selector.JsonSelector;
-import de.gwdg.metadataqa.api.model.selector.Selector;
-import de.gwdg.metadataqa.api.model.selector.XmlSelector;
 import de.gwdg.metadataqa.api.schema.Format;
 
 import java.util.Map;

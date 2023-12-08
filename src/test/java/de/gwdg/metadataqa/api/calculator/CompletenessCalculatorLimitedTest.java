@@ -155,6 +155,13 @@ public class CompletenessCalculatorLimitedTest {
       if (existing)
         existingFieldCounter++;
     assertEquals(14, existingFieldCounter);
+  }
+
+  @Test
+  public void testExistenceMap_2() throws URISyntaxException, IOException {
+    calculator.collectFields(true);
+    calculator.measure(cache);
+    Map<String, Boolean> existenceMap = calculator.getExistenceMap();
 
     assertTrue(existenceMap.get("edm:ProvidedCHO/@about"));
     assertTrue(existenceMap.get("Proxy/dc:title"));

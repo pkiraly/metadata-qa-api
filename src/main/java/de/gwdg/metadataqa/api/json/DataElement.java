@@ -2,7 +2,6 @@ package de.gwdg.metadataqa.api.json;
 
 import de.gwdg.metadataqa.api.configuration.schema.Rule;
 import de.gwdg.metadataqa.api.model.Category;
-import de.gwdg.metadataqa.api.rule.singlefieldchecker.MinCountChecker;
 import de.gwdg.metadataqa.api.schema.Format;
 import de.gwdg.metadataqa.api.schema.Schema;
 import org.apache.commons.lang3.SerializationUtils;
@@ -254,12 +253,12 @@ public class DataElement implements Cloneable, Serializable {
   }
 
   public static DataElement copy(DataElement other) throws CloneNotSupportedException {
-    DataElement cloned = (DataElement) SerializationUtils.clone(other);
+    DataElement cloned = SerializationUtils.clone(other);
 
     if (other.children != null && !other.children.isEmpty()) {
       List<DataElement> clonedChildren = new ArrayList<>();
       for (DataElement child : other.children) {
-        DataElement clonedChild = (DataElement) SerializationUtils.clone(child);
+        DataElement clonedChild = SerializationUtils.clone(child);
         clonedChild.parent = cloned;
         clonedChildren.add(clonedChild);
       }
