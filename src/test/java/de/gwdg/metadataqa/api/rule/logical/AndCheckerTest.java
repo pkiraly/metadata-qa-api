@@ -23,6 +23,7 @@ import java.util.Arrays;
 import java.util.List;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 
@@ -46,6 +47,7 @@ public class AndCheckerTest {
           new Rule().withMaxCount(1)))
           .withNaScore(-1)
       ));
+    schema.getPathByLabel("name").getRules().get(0).setDebug(true);
 
     cache = (CsvSelector) SelectorFactory.getInstance(schema.getFormat(), "a,b,a");
     cache.setCsvReader(new CsvReader().setHeader(((CsvAwareSchema) schema).getHeader()));
@@ -62,14 +64,17 @@ public class AndCheckerTest {
     AndChecker andChecker = (AndChecker) checkers.get(0);
     assertEquals(2, andChecker.getCheckers().size());
     assertEquals(-1, (int) andChecker.getNaScore());
+    assertTrue(andChecker.isDebug());
 
     assertEquals(MinCountChecker.class, andChecker.getCheckers().get(0).getClass());
     MinCountChecker minCountChecker = (MinCountChecker) andChecker.getCheckers().get(0);
     assertNull(minCountChecker.getNaScore());
+    assertTrue(minCountChecker.isDebug());
 
     assertEquals(MaxCountChecker.class, andChecker.getCheckers().get(1).getClass());
     MaxCountChecker maxCountChecker = (MaxCountChecker) andChecker.getCheckers().get(1);
     assertNull(maxCountChecker.getNaScore());
+    assertTrue(maxCountChecker.isDebug());
 
     FieldCounter<RuleCheckerOutput> fieldCounter = new FieldCounter<>();
     andChecker.update(cache, fieldCounter, RuleCheckingOutputType.BOTH);
