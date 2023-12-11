@@ -25,8 +25,8 @@ public class MaxCountCheckerTest extends CheckerTestBase {
   public void success() {
     MaxCountChecker checker = (MaxCountChecker) new MaxCountChecker(schema.getPathByLabel("name"), 1)
       .withSuccessScore(1)
-      .withNaScore(0)
-      .withFailureScore(-1);
+      .withNaScore(-1)
+      .withFailureScore(-2);
 
     FieldCounter<RuleCheckerOutput> fieldCounter = new FieldCounter<>();
     checker.update(cache, fieldCounter, RuleCheckingOutputType.BOTH);
@@ -42,8 +42,8 @@ public class MaxCountCheckerTest extends CheckerTestBase {
   public void failure() {
     MaxCountChecker checker = (MaxCountChecker) new MaxCountChecker(schema.getPathByLabel("name"), 0)
       .withSuccessScore(1)
-      .withNaScore(0)
-      .withFailureScore(-1);
+      .withNaScore(-1)
+      .withFailureScore(-2);
 
     FieldCounter<RuleCheckerOutput> fieldCounter = new FieldCounter<>();
     checker.update(cache, fieldCounter, RuleCheckingOutputType.BOTH);
@@ -51,15 +51,15 @@ public class MaxCountCheckerTest extends CheckerTestBase {
     assertEquals(2, fieldCounter.size());
     assertEquals("name:maxCount", checker.getHeaderWithoutId());
     Assert.assertEquals(RuleCheckingOutputStatus.FAILED, fieldCounter.get(checker.getHeader(RuleCheckingOutputType.STATUS)).getStatus());
-    Assert.assertEquals(-1, (int) fieldCounter.get(checker.getHeader(RuleCheckingOutputType.SCORE)).getScore());
+    Assert.assertEquals(-2, (int) fieldCounter.get(checker.getHeader(RuleCheckingOutputType.SCORE)).getScore());
   }
 
   @Test
   public void na() {
     MaxCountChecker checker = (MaxCountChecker) new MaxCountChecker(schema.getPathByLabel("name"), 1)
       .withSuccessScore(1)
-      .withNaScore(0)
-      .withFailureScore(-1);
+      .withNaScore(-1)
+      .withFailureScore(-2);
 
     cache = (CsvSelector) SelectorFactory.getInstance(schema.getFormat(), "");
     cache.setCsvReader(new CsvReader().setHeader( ((CsvAwareSchema) schema).getHeader() ));
@@ -70,6 +70,6 @@ public class MaxCountCheckerTest extends CheckerTestBase {
     assertEquals(2, fieldCounter.size());
     assertEquals("name:maxCount", checker.getHeaderWithoutId());
     Assert.assertEquals(RuleCheckingOutputStatus.NA, fieldCounter.get(checker.getHeader(RuleCheckingOutputType.STATUS)).getStatus());
-    Assert.assertEquals(0, (int) fieldCounter.get(checker.getHeader(RuleCheckingOutputType.SCORE)).getScore());
+    Assert.assertEquals(-1, (int) fieldCounter.get(checker.getHeader(RuleCheckingOutputType.SCORE)).getScore());
   }
 }

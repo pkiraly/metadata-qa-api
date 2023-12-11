@@ -153,6 +153,7 @@ public class SchemaUtils {
       for (RuleChecker ruleChecker : ruleCheckers) {
         ruleChecker.setFailureScore(rule.getFailureScore());
         ruleChecker.setSuccessScore(rule.getSuccessScore());
+        ruleChecker.setNaScore(rule.getNaScore());
         String idValue = StringUtils.isNotBlank(rule.getId()) ? rule.getId() : String.valueOf(++id);
         ruleChecker.setId(idValue);
         if (rule.getHidden().equals(Boolean.TRUE))
