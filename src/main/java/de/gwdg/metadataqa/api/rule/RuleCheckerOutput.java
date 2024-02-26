@@ -4,6 +4,8 @@ public class RuleCheckerOutput {
   private final RuleCheckingOutputStatus status;
   private RuleCheckingOutputType outputType;
   private Integer score = 0;
+  private Integer instanceCount;
+  private Integer failureCount;
 
   public RuleCheckerOutput(RuleChecker ruleChecker, boolean isNA, boolean passed) {
     this(ruleChecker, RuleCheckingOutputStatus.create(isNA, passed));
@@ -32,11 +34,36 @@ public class RuleCheckerOutput {
     return score;
   }
 
+  public Integer getInstanceCount() {
+    return instanceCount;
+  }
+
+  public RuleCheckerOutput setInstanceCount(Integer instanceCount) {
+    this.instanceCount = instanceCount;
+    return this;
+  }
+
+  public Integer getFailureCount() {
+    return failureCount;
+  }
+
+  public RuleCheckerOutput setFailureCount(Integer failureCount) {
+    this.failureCount = failureCount;
+    return this;
+  }
+
   public String toString() {
-    return outputType.equals(RuleCheckingOutputType.STATUS)
+    return outputType != null && outputType.equals(RuleCheckingOutputType.STATUS)
       ? status.asString()
       : score == null
         ? "0" : score.toString();
+  }
+
+  @Override
+  protected Object clone() throws CloneNotSupportedException {
+    return new RuleCheckerOutput(status, score)
+      .setInstanceCount(instanceCount)
+      .setFailureCount(failureCount);
   }
 
   public RuleCheckerOutput setOutputType(RuleCheckingOutputType outputType) {

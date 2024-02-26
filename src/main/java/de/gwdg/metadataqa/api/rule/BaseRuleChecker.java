@@ -15,6 +15,10 @@ public abstract class BaseRuleChecker implements RuleChecker {
   protected String header;
   protected Boolean hidden = false;
   private Boolean debug = false;
+  /**
+   * A flag to denote if the RuleChecker should count the number instances and failures
+   */
+  private Boolean countInstances = false;
 
   @Override
   public String getId() {
@@ -88,11 +92,32 @@ public abstract class BaseRuleChecker implements RuleChecker {
   }
 
   protected void addOutput(FieldCounter<RuleCheckerOutput> results, boolean isNA, boolean allPassed, RuleCheckingOutputType outputType) {
+    addOutput(results, isNA, allPassed, outputType, null, null);
+  }
+  
+  protected void addOutput(FieldCounter<RuleCheckerOutput> results,
+                           boolean isNA,
+                           boolean allPassed,
+                           RuleCheckingOutputType outputType,
+                           Integer instanceCount,
+                           Integer failureCount) {
+
+    RuleCheckerOutput output = new RuleCheckerOutput(this, isNA, allPassed);
+    if (instanceCount != null)
+      output.setInstanceCount(instanceCount);
+    if (failureCount != null)
+      output.setFailureCount(failureCount);
+
     if (outputType.equals(RuleCheckingOutputType.STATUS) || outputType.equals(RuleCheckingOutputType.SCORE)) {
-      results.put(getHeader(), new RuleCheckerOutput(this, isNA, allPassed).setOutputType(outputType));
+      results.put(getHeader(), output.setOutputType(outputType));
     } else {
-      results.put(getHeader(RuleCheckingOutputType.STATUS), new RuleCheckerOutput(this, isNA, allPassed).setOutputType(RuleCheckingOutputType.STATUS));
-      results.put(getHeader(RuleCheckingOutputType.SCORE), new RuleCheckerOutput(this, isNA, allPassed).setOutputType(RuleCheckingOutputType.SCORE));
+      try {
+        RuleCheckerOutput output2 = (RuleCheckerOutput) output.clone();
+        results.put(getHeader(RuleCheckingOutputType.STATUS), output.setOutputType(RuleCheckingOutputType.STATUS));
+        results.put(getHeader(RuleCheckingOutputType.SCORE), output2.setOutputType(RuleCheckingOutputType.SCORE));
+      } catch (CloneNotSupportedException e) {
+        e.printStackTrace(System.err);
+      }
     }
   }
 
@@ -110,5 +135,13 @@ public abstract class BaseRuleChecker implements RuleChecker {
 
   public boolean isDebug() {
     return debug;
+  }
+
+  public Boolean countInstances() {
+    return countInstances;
+  }
+
+  public void setCountInstances(Boolean countInstances) {
+    this.countInstances = countInstances;
   }
 }

@@ -36,10 +36,14 @@ public class ContentTypeChecker extends SingleFieldChecker {
 
     var allPassed = true;
     var isNA = true;
+    int instanceCount = 0;
+    int failureCount = 0;
     List<XmlFieldInstance> instances = cache.get(field.getPath());
     if (instances != null && !instances.isEmpty()) {
       for (XmlFieldInstance instance : instances) {
         if (instance.hasValue()) {
+          if (countInstances())
+            instanceCount++;
           isNA = false;
           try {
             String contentType = ContentTypeExtractor.getContentType(instance.getValue());
@@ -47,17 +51,21 @@ public class ContentTypeChecker extends SingleFieldChecker {
               LOGGER.info(String.format("value: '%s' -> '%s'", instance.getValue(), contentType));
             if (contentType == null || !fixedValues.contains(contentType)) {
               allPassed = false;
+              if (countInstances())
+                failureCount++;
             }
           } catch (IOException e) {
             allPassed = false;
+            if (countInstances())
+              failureCount++;
           }
-          if (!allPassed)
+          if (!countInstances() && !allPassed)
             break;
         }
       }
     }
 
-    addOutput(results, isNA, allPassed, outputType);
+    addOutput(results, isNA, allPassed, outputType, instanceCount, failureCount);
     if (isDebug())
       LOGGER.info(this.getClass().getSimpleName() + " " + this.id + ") result: " + RuleCheckingOutputStatus.create(isNA, allPassed));
   }
