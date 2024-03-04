@@ -798,7 +798,100 @@ public class BaseSchemaTest {
     assertEquals(2, schema.getIndexFields().size());
     assertEquals("url", schema.getIndexFields().get(0).getLabel());
     assertEquals("description", schema.getIndexFields().get(1).getLabel());
+  }
 
+  @Test
+  public void merge_with_different_path() {
+    Schema schemaA = new BaseSchema()
+      .addField(
+        new DataElement("author", "author")
+          .addRule(new Rule().withHasValue("a")
+      ));
+    Schema schemaB = new BaseSchema()
+      .addField(
+        new DataElement("title", "title")
+          .addRule(new Rule().withMinCount(1)
+      ));
 
+    schemaA.merge(schemaB, false);
+    assertEquals(2, schemaA.getPaths().size());
+    DataElement title = schemaA.getPathByLabel("title");
+    assertNotNull(title);
+    assertEquals("title", title.getPath());
+    assertEquals(1, title.getRules().size());
+    assertEquals(1, (int) title.getRules().get(0).getMinCount());
+    assertNull(title.getRules().get(0).getMaxCount());
+
+  }
+
+  @Test
+  public void merge_with_same_path() {
+    Schema schemaA = new BaseSchema()
+      .addField(
+        new DataElement("author", "author")
+          .addRule(new Rule().withHasValue("a")
+          ));
+    Schema schemaB = new BaseSchema()
+      .addField(
+        new DataElement("author", "author")
+          .addRule(new Rule().withMinCount(1)
+          ));
+
+    schemaA.merge(schemaB, false);
+    assertEquals(1, schemaA.getPaths().size());
+    DataElement title = schemaA.getPathByLabel("title");
+    assertNull(title);
+    DataElement author = schemaA.getPathByLabel("author");
+    assertEquals("author", author.getPath());
+    assertEquals(2, author.getRules().size());
+    assertEquals("a", author.getRules().get(0).getHasValue());
+    assertEquals(1, (int) author.getRules().get(1).getMinCount());
+  }
+
+  @Test
+  public void merge_with_samePath_with_no_override() {
+    Schema schemaA = new BaseSchema()
+      .addField(
+        new DataElement("author", "author")
+          .addRule(new Rule().withHasValue("a")
+          ));
+    Schema schemaB = new BaseSchema()
+      .addField(
+        new DataElement("author", "author")
+          .addRule(new Rule().withHasValue("b")
+          ));
+
+    schemaA.merge(schemaB, false);
+    assertEquals(1, schemaA.getPaths().size());
+    DataElement title = schemaA.getPathByLabel("title");
+    assertNull(title);
+    DataElement author = schemaA.getPathByLabel("author");
+    assertEquals("author", author.getPath());
+    assertEquals(2, author.getRules().size());
+    assertEquals("a", author.getRules().get(0).getHasValue());
+    assertEquals("b", author.getRules().get(1).getHasValue());
+  }
+
+  @Test
+  public void merge_with_samePath_with_override() {
+    Schema schemaA = new BaseSchema()
+      .addField(
+        new DataElement("author", "author")
+          .addRule(new Rule().withHasValue("a")
+          ));
+    Schema schemaB = new BaseSchema()
+      .addField(
+        new DataElement("author", "author")
+          .addRule(new Rule().withHasValue("b")
+          ));
+
+    schemaA.merge(schemaB, true);
+    assertEquals(1, schemaA.getPaths().size());
+    DataElement title = schemaA.getPathByLabel("title");
+    assertNull(title);
+    DataElement author = schemaA.getPathByLabel("author");
+    assertEquals("author", author.getPath());
+    assertEquals(1, author.getRules().size());
+    assertEquals("b", author.getRules().get(0).getHasValue());
   }
 }

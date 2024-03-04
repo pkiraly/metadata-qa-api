@@ -133,4 +133,9 @@ public class GoogleDatasetSchema implements Schema, CsvAwareSchema {
   public DataElement getRecordId() {
     return PATHS.get("url");
   }
+
+  @Override
+  public void merge(Schema other, boolean allowOverwrite) {
+    throw new UnsupportedOperationException("The method in ot available in this class.");
+  }
 }

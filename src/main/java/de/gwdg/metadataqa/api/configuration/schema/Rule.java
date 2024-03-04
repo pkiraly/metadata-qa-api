@@ -3,7 +3,11 @@ package de.gwdg.metadataqa.api.configuration.schema;
 import de.gwdg.metadataqa.api.util.Dimension;
 
 import java.io.Serializable;
+import java.lang.reflect.Field;
+import java.util.ArrayList;
+import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Map;
 
 public class Rule implements Serializable {
 
@@ -520,5 +524,50 @@ public class Rule implements Serializable {
   public Rule withAllowEmptyInstances(Boolean allowEmptyInstances) {
     this.allowEmptyInstances = allowEmptyInstances;
     return this;
+  }
+
+  public List<String> getRulenames() {
+    List<String> excludeFromComparision = List.of("serialVersionUID", "id", "description",
+      "failureScore", "successScore", "naScore", "hidden", "dependencies", "skip", "debug", "allowEmptyInstances");
+
+    List<String> existingRules = new ArrayList<>();
+    for (Field field : getClass().getDeclaredFields()) {
+      if (!excludeFromComparision.contains(field.getName())) {
+        field.setAccessible(true);
+        try {
+          Object value = field.get(this);
+          if (value != null)
+            existingRules.add(field.getName());
+        } catch (IllegalAccessException e) {
+          throw new RuntimeException(e);
+        }
+      }
+    }
+    return existingRules;
+  }
+
+  public Object get(String key) {
+    for (Field field : getClass().getDeclaredFields()) {
+      if (field.getName().equals(key)) {
+        try {
+          return field.get(this);
+        } catch (IllegalAccessException e) {
+          throw new RuntimeException(e);
+        }
+      }
+    }
+    return null;
+  }
+
+  public void set(String key, Object value) {
+    for (Field field : getClass().getDeclaredFields()) {
+      if (field.getName().equals(key)) {
+        try {
+          field.set(this, value);
+        } catch (IllegalAccessException e) {
+          throw new RuntimeException(e);
+        }
+      }
+    }
   }
 }

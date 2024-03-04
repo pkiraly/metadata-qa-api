@@ -134,4 +134,9 @@ public abstract class EdmSchema implements Schema, ProblemCatalogSchema {
   public DataElement getRecordId() {
     return null;
   }
+
+  @Override
+  public void merge(Schema other, boolean allowOverwrite) {
+    throw new UnsupportedOperationException("The method in ot available in this class.");
+  }
 }

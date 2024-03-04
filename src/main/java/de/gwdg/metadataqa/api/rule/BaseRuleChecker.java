@@ -94,7 +94,7 @@ public abstract class BaseRuleChecker implements RuleChecker {
   protected void addOutput(FieldCounter<RuleCheckerOutput> results, boolean isNA, boolean allPassed, RuleCheckingOutputType outputType) {
     addOutput(results, isNA, allPassed, outputType, null, null);
   }
-  
+
   protected void addOutput(FieldCounter<RuleCheckerOutput> results,
                            boolean isNA,
                            boolean allPassed,

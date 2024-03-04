@@ -8,11 +8,14 @@ import de.gwdg.metadataqa.api.rule.RuleChecker;
 import org.apache.commons.lang3.StringUtils;
 
 import java.io.Serializable;
+import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import java.util.logging.Logger;
+import java.util.stream.Collectors;
 
 public class BaseSchema implements Schema, CsvAwareSchema, Serializable {
 
@@ -197,5 +200,39 @@ public class BaseSchema implements Schema, CsvAwareSchema, Serializable {
 
   public void setRecordId(DataElement recordId) {
     this.recordId = recordId;
+  }
+
+  @Override
+  public void merge(Schema other, boolean allowOverwrite) {
+    for (DataElement path : other.getPaths()) {
+      DataElement myDataELement = getPathByLabel(path.getLabel());
+      if (myDataELement == null) {
+        addField(path);
+      } else {
+        if (!allowOverwrite) {
+          for (Rule rule : path.getRules()) {
+            myDataELement.addRule(rule);
+          }
+        } else {
+          List<String> myRules;
+          for (Rule myRule : myDataELement.getRules()) {
+            myRules = myRule.getRulenames();
+            for (Rule rule : path.getRules()) {
+              List<String> otherRules = rule.getRulenames();
+              Set<String> commonKeys = myRules.stream()
+                .distinct()
+                .filter(otherRules::contains)
+                .collect(Collectors.toSet());
+              if (!commonKeys.isEmpty()) {
+                for (String key : commonKeys)
+                  myRule.set(key, rule.get(key));
+              } else {
+                myDataELement.addRule(rule);
+              }
+            }
+          }
+        }
+      }
+    }
   }
 }

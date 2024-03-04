@@ -490,5 +490,8 @@ public class MarcJsonSchema implements Schema, ProblemCatalogSchema, Serializabl
     return ruleCheckers;
   }
 
-
+  @Override
+  public void merge(Schema schemaB, boolean allowOverwrite) {
+    throw new UnsupportedOperationException("The method in ot available in this class.");
+  }
 }

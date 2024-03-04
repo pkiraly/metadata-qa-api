@@ -126,4 +126,11 @@ public interface Schema extends Serializable {
       }
     }
   }
+
+  /**
+   * Merge the properties of another schema to this schema
+   * @param other The other schema to merge
+   * @param allowOverwrite Flad to denote if overwrite of rules is allowed
+   */
+  void merge(Schema other, boolean allowOverwrite);
 }
