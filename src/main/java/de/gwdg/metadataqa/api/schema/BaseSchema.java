@@ -1,5 +1,7 @@
 package de.gwdg.metadataqa.api.schema;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonInclude;
 import de.gwdg.metadataqa.api.configuration.schema.Rule;
 import de.gwdg.metadataqa.api.json.FieldGroup;
 import de.gwdg.metadataqa.api.json.DataElement;
@@ -17,6 +19,7 @@ import java.util.Set;
 import java.util.logging.Logger;
 import java.util.stream.Collectors;
 
+@JsonInclude(JsonInclude.Include.NON_NULL)
 public class BaseSchema implements Schema, CsvAwareSchema, Serializable {
 
   private static final long serialVersionUID = 6775942932769040511L;
@@ -78,11 +81,13 @@ public class BaseSchema implements Schema, CsvAwareSchema, Serializable {
   }
 
   @Override
+  @JsonIgnore
   public List<DataElement> getCollectionPaths() {
     return new ArrayList(collectionPaths.values());
   }
 
   @Override
+  @JsonIgnore
   public List<DataElement> getRootChildrenPaths() {
     return new ArrayList(directChildren.values());
   }
@@ -108,11 +113,13 @@ public class BaseSchema implements Schema, CsvAwareSchema, Serializable {
   }
 
   @Override
+  @JsonIgnore
   public List<String> getNoLanguageFields() {
     throw new UnsupportedOperationException("Not supported yet.");
   }
 
   @Override
+  @JsonIgnore
   public List<DataElement> getIndexFields() {
     if (indexFields == null) {
       indexFields = new ArrayList<>();
@@ -133,6 +140,7 @@ public class BaseSchema implements Schema, CsvAwareSchema, Serializable {
   }
 
   @Override
+  @JsonIgnore
   public Map<String, String> getExtractableFields() {
     return extractableFields;
   }
@@ -156,6 +164,7 @@ public class BaseSchema implements Schema, CsvAwareSchema, Serializable {
   }
 
   @Override
+  @JsonIgnore
   public List<RuleChecker> getRuleCheckers() {
     if (ruleCheckers == null) {
       ruleCheckers = SchemaUtils.getRuleCheckers(this);
@@ -164,6 +173,7 @@ public class BaseSchema implements Schema, CsvAwareSchema, Serializable {
   }
 
   @Override
+  @JsonIgnore
   public List<String> getHeader() {
     List<String> headers = new ArrayList<>();
     for (DataElement dataElement : paths.values()) {

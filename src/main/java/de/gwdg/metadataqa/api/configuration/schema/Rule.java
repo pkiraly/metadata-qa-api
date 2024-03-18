@@ -1,5 +1,9 @@
 package de.gwdg.metadataqa.api.configuration.schema;
 
+import com.fasterxml.jackson.annotation.JsonGetter;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonInclude;
 import de.gwdg.metadataqa.api.util.Dimension;
 
 import java.io.Serializable;
@@ -9,6 +13,7 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
+@JsonInclude(JsonInclude.Include.NON_NULL)
 public class Rule implements Serializable {
 
   private static final long serialVersionUID = 4101184421853217836L;
@@ -126,6 +131,7 @@ public class Rule implements Serializable {
     return this;
   }
 
+  @JsonGetter("and")
   public List<Rule> getAnd() {
     return and;
   }
@@ -526,6 +532,7 @@ public class Rule implements Serializable {
     return this;
   }
 
+  @JsonIgnore
   public List<String> getRulenames() {
     List<String> excludeFromComparision = List.of("serialVersionUID", "id", "description",
       "failureScore", "successScore", "naScore", "hidden", "dependencies", "skip", "debug", "allowEmptyInstances");

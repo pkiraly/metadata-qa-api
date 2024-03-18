@@ -15,11 +15,14 @@ import de.gwdg.metadataqa.api.rule.RuleChecker;
 import de.gwdg.metadataqa.api.util.CsvReader;
 import org.junit.Test;
 import org.junit.rules.ExpectedException;
+import org.yaml.snakeyaml.Yaml;
+import org.yaml.snakeyaml.nodes.Tag;
 
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
+import java.io.StringWriter;
 import java.util.*;
 
 import static org.junit.Assert.*;
@@ -893,5 +896,33 @@ public class BaseSchemaTest {
     assertEquals("author", author.getPath());
     assertEquals(1, author.getRules().size());
     assertEquals("b", author.getRules().get(0).getHasValue());
+  }
+
+  @Test
+  public void toYaml() {
+    Schema schemaObj = new BaseSchema()
+      .addField(
+        new DataElement("author", "author")
+          .addRule(new Rule().withHasValue("a")
+          ));
+    String schemaString = ConfigurationReader.toYaml(schemaObj);
+    assertEquals("categories: []\n" +
+      "extractableFields: {}\n" +
+      "namespaces: null\n" +
+      "recordId: null\n", schemaString);
+  }
+
+  @Test
+  public void toJson() {
+    Schema schemaObj = new BaseSchema()
+      .addField(
+        new DataElement("author", "author")
+          .addRule(new Rule().withHasValue("a")
+          ));
+    String schemaString = ConfigurationReader.toJson(schemaObj);
+    assertEquals(
+      "{\"paths\":[{\"label\":\"author\",\"path\":\"author\",\"categories\":[],\"children\":[],\"collection\":false,\"rules\":[{\"hasValue\":\"a\",\"hidden\":false,\"skip\":false,\"debug\":false,\"allowEmptyInstances\":false}],\"absolutePath\":\"author\",\"active\":true,\"extractable\":false,\"mandatory\":false}],\"fieldGroups\":[],\"categories\":[]}",
+      schemaString
+    );
   }
 }

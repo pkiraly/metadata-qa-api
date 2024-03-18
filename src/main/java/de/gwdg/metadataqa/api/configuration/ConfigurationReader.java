@@ -1,19 +1,28 @@
 package de.gwdg.metadataqa.api.configuration;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import de.gwdg.metadataqa.api.configuration.schema.Rule;
+import de.gwdg.metadataqa.api.json.DataElement;
+import de.gwdg.metadataqa.api.schema.BaseSchema;
+import org.yaml.snakeyaml.DumperOptions;
 import org.yaml.snakeyaml.LoaderOptions;
 import org.yaml.snakeyaml.Yaml;
 import org.yaml.snakeyaml.constructor.Constructor;
+import org.yaml.snakeyaml.nodes.Tag;
+import org.yaml.snakeyaml.representer.Representer;
 
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.FileInputStream;
+import java.io.StringWriter;
 
 public class ConfigurationReader {
 
-  private ConfigurationReader() {}
+  private ConfigurationReader() {
+  }
 
   public static SchemaConfiguration readSchemaJson(String fileName) throws FileNotFoundException {
     return readJson(fileName, SchemaConfiguration.class);
@@ -47,5 +56,26 @@ public class ConfigurationReader {
     var yaml = new Yaml(new Constructor(clazz, new LoaderOptions()));
     InputStream inputStream = new FileInputStream(new File(fileName));
     return yaml.load(inputStream);
+  }
+
+  public static <T> String toJson(T object) {
+    var objectMapper = new ObjectMapper();
+    try {
+      return objectMapper.writeValueAsString(object);
+    } catch (JsonProcessingException e) {
+      throw new RuntimeException(e);
+    }
+  }
+
+  public static <T> String toYaml(T object) {
+    DumperOptions options = new DumperOptions();
+    // options.setDefaultFlowStyle(DumperOptions.FlowStyle.BLOCK);
+
+    Representer representer = new Representer(options);
+    representer.addClassTag(DataElement.class, Tag.MAP);
+    representer.addClassTag(BaseSchema.class, Tag.MAP);
+    representer.addClassTag(Rule.class, Tag.MAP);
+    Yaml yaml = new Yaml(representer, new DumperOptions());
+    return yaml.dumpAs(object, Tag.MAP, DumperOptions.FlowStyle.AUTO);
   }
 }

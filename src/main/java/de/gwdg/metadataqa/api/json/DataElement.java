@@ -1,5 +1,7 @@
 package de.gwdg.metadataqa.api.json;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonInclude;
 import de.gwdg.metadataqa.api.configuration.schema.Rule;
 import de.gwdg.metadataqa.api.model.Category;
 import de.gwdg.metadataqa.api.schema.Format;
@@ -16,6 +18,7 @@ import java.util.List;
  *
  * @author Péter Király <peter.kiraly at gwdg.de>
  */
+@JsonInclude(JsonInclude.Include.NON_NULL)
 public class DataElement implements Cloneable, Serializable {
 
   private String label;
@@ -272,6 +275,7 @@ public class DataElement implements Cloneable, Serializable {
     this.schema = schema;
   }
 
+  @JsonIgnore
   public Schema getSchema() {
     return schema;
   }
