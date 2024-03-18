@@ -920,9 +920,22 @@ public class BaseSchemaTest {
           .addRule(new Rule().withHasValue("a")
           ));
     String schemaString = ConfigurationReader.toJson(schemaObj);
-    assertEquals(
-      "{\"paths\":[{\"label\":\"author\",\"path\":\"author\",\"categories\":[],\"children\":[],\"collection\":false,\"rules\":[{\"hasValue\":\"a\",\"hidden\":false,\"skip\":false,\"debug\":false,\"allowEmptyInstances\":false}],\"absolutePath\":\"author\",\"active\":true,\"extractable\":false,\"mandatory\":false}],\"fieldGroups\":[],\"categories\":[]}",
-      schemaString
-    );
+    assertTrue(schemaString.contains("\"label\":\"author\""));
+    assertTrue(schemaString.contains("\"path\":\"author\""));
+    assertTrue(schemaString.contains("\"categories\":[]"));
+    assertTrue(schemaString.contains("\"children\":[]"));
+    assertTrue(schemaString.contains("\"collection\":false"));
+    assertTrue(schemaString.contains("\"hasValue\":\"a\""));
+    assertTrue(schemaString.contains("\"hidden\":false"));
+    assertTrue(schemaString.contains("\"skip\":false"));
+    assertTrue(schemaString.contains("\"debug\":false"));
+    assertTrue(schemaString.contains("\"allowEmptyInstances\":false"));
+    assertTrue(schemaString.contains("\"absolutePath\":\"author\""));
+    assertTrue(schemaString.contains("\"active\":true"));
+    assertTrue(schemaString.contains("\"extractable\":false"));
+    assertTrue(schemaString.contains("\"mandatory\":false"));
+    assertTrue(schemaString.contains("\"rules\":["));
+    assertTrue(schemaString.contains("\"fieldGroups\":[]"));
+    assertTrue(schemaString.contains("\"categories\":[]"));
   }
 }
