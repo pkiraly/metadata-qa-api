@@ -1,5 +1,11 @@
 # Metadata Quality Assessment Framework API Changelog
 
+## v0.9.4 (2024-04-04)
+
+The release contains dependency updates.
+
+The artefacts of the release are available in Maven Central as well: https://central.sonatype.dev/artifact/de.gwdg.metadataqa/metadata-qa-api/0.9.4
+
 ## v0.9.3 (2023-07-14)
 
 Important API change:

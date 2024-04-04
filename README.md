@@ -116,7 +116,7 @@ First, add the library into your project's `pom.xml` file:
   <dependency>
     <groupId>de.gwdg.metadata</groupId>
     <artifactId>metadata-qa-api</artifactId>
-    <version>0.9.2</version>
+    <version>0.9.4</version>
   </dependency>
 </dependencies>
 ```

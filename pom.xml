@@ -5,7 +5,7 @@
   <groupId>de.gwdg.metadataqa</groupId>
   <artifactId>metadata-qa-api</artifactId>
   <packaging>jar</packaging>
-  <version>0.9.3</version>
+  <version>0.9.4</version>
   <name>Metadata Quality Assurance Framework API</name>
   <description>
     A metadata quality assurance framework. It checks some metrics of 
@@ -22,10 +22,10 @@
       <organization>
         Gesellschaft für wissenschaftliche Datenverarbeitung mbH Göttingen (GWDG)
       </organization>
-      <organizationUrl>http://gwdg.de/</organizationUrl>
+      <organizationUrl>https://gwdg.de/</organizationUrl>
     </developer>
   </developers>
-  <url>http://pkiraly.github.io</url>
+  <url>https://pkiraly.github.io</url>
 
   <licenses>
     <license>
