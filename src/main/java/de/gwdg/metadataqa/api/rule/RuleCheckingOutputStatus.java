@@ -53,4 +53,6 @@ public enum RuleCheckingOutputStatus {
   public RuleCheckingOutputStatus negate() {
     return this.equals(FAILED) ? PASSED : FAILED;
   }
+
+
 }

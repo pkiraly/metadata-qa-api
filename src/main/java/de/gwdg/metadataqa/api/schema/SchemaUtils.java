@@ -119,8 +119,9 @@ public class SchemaUtils {
     if (rule.getDimension() != null)
       ruleCheckers.add(new ImageDimensionChecker(dataElement, rule.getDimension()));
 
-    if (rule.getDependencies() != null && !rule.getDependencies().isEmpty())
+    if (rule.getDependencies() != null && !rule.getDependencies().isEmpty()) {
       ruleCheckers.add(new DependencyChecker(dataElement, rule.getDependencies()));
+    }
 
     if (rule.getUnique() != null && rule.getUnique().equals(Boolean.TRUE))
       ruleCheckers.add(new UniquenessChecker(dataElement));
@@ -131,6 +132,7 @@ public class SchemaUtils {
     if (rule.getLessThanOrEquals() != null)
       pair(schema, ruleCheckers, dataElement, rule.getLessThan(), "lessThanOrEquals");
 
+    //
     if (rule.getLessThanOrEquals() != null)
       ruleCheckers.add(new DependencyChecker(dataElement, rule.getDependencies()));
 
