@@ -1,5 +1,6 @@
 package de.gwdg.metadataqa.api.cli;
 
+import com.jayway.jsonpath.InvalidJsonException;
 import com.opencsv.exceptions.CsvValidationException;
 import de.gwdg.metadataqa.api.calculator.CalculatorFacade;
 import de.gwdg.metadataqa.api.io.reader.XMLRecordReader;
@@ -9,6 +10,7 @@ import de.gwdg.metadataqa.api.configuration.MeasurementConfiguration;
 import de.gwdg.metadataqa.api.interfaces.MetricResult;
 import de.gwdg.metadataqa.api.io.reader.RecordReader;
 import de.gwdg.metadataqa.api.schema.Schema;
+import net.minidev.json.parser.ParseException;
 import org.apache.commons.cli.CommandLine;
 import org.apache.commons.cli.CommandLineParser;
 import org.apache.commons.cli.DefaultParser;
@@ -42,6 +44,7 @@ public class App {
 
   // Arguments
   private static final String INPUT_FILE = "input";
+  private static final String INPUT_FORMAT = "inputFormat";
   private static final String OUTPUT_FILE = "output";
   private static final String OUTPUT_FORMAT = "outputFormat";
   private static final String SCHEMA_CONFIG = "schema";
@@ -101,7 +104,8 @@ public class App {
 
     // initialize input
     String inputFile = cmd.getOptionValue(INPUT_FILE);
-    this.inputReader = RecordFactory.getRecordReader(inputFile, calculator, cmd.hasOption(GZIP_FLAG));
+    InputFormat inputFormat = InputFormat.byCode(cmd.getOptionValue(INPUT_FORMAT));
+    this.inputReader = RecordFactory.getRecordReader(inputFile, calculator, cmd.hasOption(GZIP_FLAG), inputFormat);
 
     // initialize output
     String outFormat = cmd.getOptionValue(OUTPUT_FORMAT, NDJSON);
@@ -160,6 +164,14 @@ public class App {
       .required(true)
       .longOpt(INPUT_FILE)
       .desc("Input file.")
+      .build();
+
+    Option inputFormatOption = Option.builder("n")
+      .numberOfArgs(1)
+      .argName("inputFormat")
+      .required(false)
+      .longOpt(INPUT_FORMAT)
+      .desc("Format of the input: json, ndjson (new line delimited JSON), json-array (JSON file that contains an array of objects). Default: ndjson.")
       .build();
 
     Option outputOption = Option.builder("o")
@@ -233,6 +245,7 @@ public class App {
       .build();
 
     options.addOption(inputOption);
+    options.addOption(inputFormatOption);
     options.addOption(outputOption);
     options.addOption(outputFormatOption);
     options.addOption(schemaConfigOption);
@@ -253,7 +266,6 @@ public class App {
       outputWriter.writeHeader(header);
 
       while (inputReader.hasNext()) {
-
         Map<String, List<MetricResult>> measurement = inputReader.next();
         outputWriter.writeResult(measurement);
 
@@ -265,9 +277,10 @@ public class App {
       }
       logger.info(String.format("Assessment completed successfully with %s records. ", counter));
       outputWriter.close();
-    } catch (IOException e) {
+    } catch (InvalidJsonException | IOException e) {
       logger.severe(String.format("Assessment failed with %s records. ", counter));
       logger.severe(e.getMessage());
+      e.printStackTrace();
     }
   }
 }

@@ -534,7 +534,7 @@ One can add constraints to the fields. There are content rules, which
 the tool will check. In this version the tool mimin SHACL constraints.
 
 #### Cardinality
-One can specify with this properties how many occurrences of a data elemens
+One can specify with these constraints how many occurrences of a data element
 a record can have.
 
 ##### `minCount <number>`

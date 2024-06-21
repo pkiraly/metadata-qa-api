@@ -16,7 +16,6 @@ public class ContentTypeExtractor {
     URL urlObj = new URL(url);
     HttpURLConnection urlConnection = (HttpURLConnection) urlObj.openConnection();
 
-    int timeout = 1000;
     urlConnection.setConnectTimeout(timeout);
     urlConnection.setReadTimeout(timeout);
     urlConnection.connect();
