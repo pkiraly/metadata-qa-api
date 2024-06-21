@@ -92,6 +92,9 @@ usage:
       [-f <format>] [-h <arg>] [-o <file>] [-r <path>] [-v <format>] [-w <format>] [-z]
 ```
 * `-i,--input <file>` Input file.
+* `-n,--inputFormat <format>` (optional, String) The format of input file. Right now it supports two JSON variants:
+  * `ndjson`: line delimited JSON in which every line is a new record (the default value)
+  * `json-array`: JSON file that contains an array of objects
 * `-s,--schema <file>` Schema file describing the metadata structure to run assessment against.
 * `-v,--schemaFormat <format>` Format of schema file: json, yaml. Default: based on file extension, else json.
 * `-m,--measurements <file>` Configuration file for measurements.
