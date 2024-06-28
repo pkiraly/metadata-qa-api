@@ -58,7 +58,6 @@ public class FieldExtractor implements Calculator, Serializable {
     if (schema != null) {
       String path;
       DataElement dataELement;
-      boolean asLanguageTagged;
       for (String fieldName : schema.getExtractableFields().keySet()) {
         if (idPath == null || !fieldName.equals(FIELD_NAME)) {
           dataELement = schema.getPathByLabel(fieldName);
