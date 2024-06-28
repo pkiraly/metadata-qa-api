@@ -37,7 +37,7 @@ public class AndChecker extends LogicalChecker {
 
     var allPassed = true;
     var isNA = false;
-    List<XmlFieldInstance> instances = cache.get(field.getPath());
+    List<XmlFieldInstance> instances = cache.get(field);
     if (instances != null && !instances.isEmpty()) {
       FieldCounter<RuleCheckerOutput> localResults = new FieldCounter<>();
       for (RuleChecker checker : checkers) {

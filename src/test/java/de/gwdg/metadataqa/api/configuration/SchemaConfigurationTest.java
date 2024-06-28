@@ -348,4 +348,10 @@ public class SchemaConfigurationTest {
     assertEquals(List.of("image/jpeg", "image/png", "image/tiff", "image/tiff-fx", "image/gif", "image/svg+xml", "application/pdf"),
       contentTypeRule.getContentType());
   }
+
+  @Test
+  public void yaml_ssLanguageTagged() throws FileNotFoundException {
+    Schema schema = ConfigurationReader.readSchemaYaml("src/test/resources/configuration/schema/asLanguageTagged.yaml").asSchema();
+    assertEquals(true, schema.getPathByLabel("description").isAsLanguageTagged());
+  }
 }

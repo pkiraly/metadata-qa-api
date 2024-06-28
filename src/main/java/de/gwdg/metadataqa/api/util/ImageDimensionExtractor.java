@@ -14,7 +14,7 @@ public class ImageDimensionExtractor {
 
     HttpURLConnection urlConnection = (HttpURLConnection) urlObj.openConnection();
 
-    int timeout = 1000;
+    int timeout = 2000;
     urlConnection.setConnectTimeout(timeout);
     urlConnection.setReadTimeout(timeout);
     urlConnection.connect();

@@ -1,5 +1,6 @@
 package de.gwdg.metadataqa.api.model.selector;
 
+import de.gwdg.metadataqa.api.json.DataElement;
 import de.gwdg.metadataqa.api.model.XmlFieldInstance;
 
 import java.util.HashMap;
@@ -19,6 +20,9 @@ public abstract class BaseSelector<T extends XmlFieldInstance> implements Select
 
   public List<T> get(String path) {
     return get(path, path, null, null);
+  }
+  public List<T> get(DataElement dataElement) {
+    return get(dataElement.getPath(), dataElement.getPath(), null, null);
   }
 
   public <E> E get(String path, Class<E> clazz) {

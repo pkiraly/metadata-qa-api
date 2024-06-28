@@ -508,6 +508,11 @@ a single data elements (a DataELement in the API). Its properties are:
   against
 * `indexField` (String): the name which can be used in a search engine connected
   to the application (at the time of writing Apache Solr is supported)
+* `inactive` (boolean): the data element is inactive, do not run checks on this
+* `identifierField` (boolean): the data element is the identifier of the record
+* `asLanguageTagged` (boolean): treat the data element as language tagged. It works 
+  for JSON where the content of the data element is encoded with an associated 
+  array, where the keys are the language tags.
 
 Optionaly you can set the "canonical list" of categories. It provides
 two additional functionalities 

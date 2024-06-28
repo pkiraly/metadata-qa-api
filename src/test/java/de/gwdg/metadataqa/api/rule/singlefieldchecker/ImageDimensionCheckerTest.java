@@ -58,7 +58,9 @@ public class ImageDimensionCheckerTest extends CheckerTestBase {
       "\"https://iiif.deutsche-digitale-bibliothek.de/image/2/ec863e48-7e20-4e9c-95fd-babd708b6eaf/full/full/0/default.jpg\"");
     cache.setCsvReader(new CsvReader().setHeader( ((CsvAwareSchema) schema).getHeader() ));
 
-    ImageDimensionChecker checker = new ImageDimensionChecker(schema.getPathByLabel("name"), new Dimension().withMinShortside(200).withMinLongside(200));
+    ImageDimensionChecker checker = new ImageDimensionChecker(
+      schema.getPathByLabel("name"),
+      new Dimension().withMinShortside(200).withMinLongside(200));
 
     FieldCounter<RuleCheckerOutput> fieldCounter = new FieldCounter<>();
     checker.update(cache, fieldCounter, RuleCheckingOutputType.BOTH);

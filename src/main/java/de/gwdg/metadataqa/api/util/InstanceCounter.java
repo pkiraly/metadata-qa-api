@@ -28,7 +28,7 @@ public class InstanceCounter {
   }
 
   private void count() {
-    List<XmlFieldInstance> instances = cache.get(field.getPath());
+    List<XmlFieldInstance> instances = cache.get(field);
     if (instances != null && !instances.isEmpty())
       for (XmlFieldInstance instance : instances)
         if (allowEmptyInstances || instance.hasValue()) {

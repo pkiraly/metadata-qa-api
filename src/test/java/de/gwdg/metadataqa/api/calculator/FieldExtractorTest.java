@@ -37,7 +37,8 @@ public class FieldExtractorTest {
   @Before
   public void setUp() throws URISyntaxException, IOException {
     calculator = new FieldExtractor("$.identifier");
-    cache = new JsonSelector(FileUtils.readFirstLineFromResource("general/test.json"));
+    String content = FileUtils.readFirstLineFromResource("general/test.json");
+    cache = new JsonSelector(content);
   }
 
   @Test

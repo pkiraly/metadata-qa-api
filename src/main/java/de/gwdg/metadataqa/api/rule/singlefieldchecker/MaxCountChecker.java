@@ -24,7 +24,6 @@ public class MaxCountChecker extends SingleFieldChecker {
     this.allowEmptyInstances = allowEmptyInstances;
   }
 
-
   public MaxCountChecker(DataElement field, String header, int maxCount) {
     super(field, header + ":" + PREFIX);
     this.maxCount = maxCount;

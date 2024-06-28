@@ -4,6 +4,7 @@ import com.jayway.jsonpath.InvalidJsonException;
 import de.gwdg.metadataqa.api.counter.FieldCounter;
 import de.gwdg.metadataqa.api.interfaces.Calculator;
 import de.gwdg.metadataqa.api.interfaces.MetricResult;
+import de.gwdg.metadataqa.api.json.DataElement;
 import de.gwdg.metadataqa.api.model.EdmFieldInstance;
 import de.gwdg.metadataqa.api.model.selector.Selector;
 import de.gwdg.metadataqa.api.model.XmlFieldInstance;
@@ -56,10 +57,13 @@ public class FieldExtractor implements Calculator, Serializable {
 
     if (schema != null) {
       String path;
+      DataElement dataELement;
+      boolean asLanguageTagged;
       for (String fieldName : schema.getExtractableFields().keySet()) {
         if (idPath == null || !fieldName.equals(FIELD_NAME)) {
+          dataELement = schema.getPathByLabel(fieldName);
           path = schema.getExtractableFields().get(fieldName);
-          extractSingleField(cache, resultMap, path, fieldName);
+          extractSingleField(cache, resultMap, path, fieldName, dataELement);
         }
       }
     }
@@ -67,7 +71,20 @@ public class FieldExtractor implements Calculator, Serializable {
   }
 
   private void extractSingleField(Selector cache, FieldCounter<String> resultMap, String path, String fieldName) {
-    List<XmlFieldInstance> values = cache.get(path);
+    extractSingleField(cache, resultMap, path, fieldName,null);
+  }
+
+  private void extractSingleField(Selector cache,
+                                    FieldCounter<String> resultMap,
+                                    String path,
+                                    String fieldName,
+                                    DataElement dataELement) {
+    List<XmlFieldInstance> values;
+    if (dataELement != null) {
+      values = cache.get(dataELement);
+    } else {
+      values = cache.get(path);
+    }
     String value = null;
     if (values == null || values.isEmpty() || values.get(0) == null) {
       value = nullValue;

@@ -40,7 +40,7 @@ public class OrChecker extends LogicalChecker {
 
     var allPassed = false;
     var isNA = false;
-    List<XmlFieldInstance> instances = cache.get(field.getPath());
+    List<XmlFieldInstance> instances = cache.get(field);
     if (instances != null && !instances.isEmpty()) {
       FieldCounter<RuleCheckerOutput> localResults = new FieldCounter<>();
       for (RuleChecker checker : checkers) {

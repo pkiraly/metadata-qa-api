@@ -240,6 +240,7 @@ public class CalculatorFacade implements Serializable {
   private void runMeasurements(OutputCollector collector) {
     if (calculators != null)
       for (Calculator calculator : getCalculators()) {
+        System.err.println(calculator);
         List<MetricResult> result = calculator.measure(cache);
         collector.addResult(calculator, result, compressionLevel);
       }

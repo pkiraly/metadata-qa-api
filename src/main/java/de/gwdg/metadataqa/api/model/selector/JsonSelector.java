@@ -1,5 +1,6 @@
 package de.gwdg.metadataqa.api.model.selector;
 
+import de.gwdg.metadataqa.api.json.DataElement;
 import de.gwdg.metadataqa.api.json.JsonUtils;
 import de.gwdg.metadataqa.api.model.XmlFieldInstance;
 import de.gwdg.metadataqa.api.util.ExceptionUtils;
@@ -41,13 +42,50 @@ public class JsonSelector<T extends XmlFieldInstance> extends BaseSelector<T> {
     this.document = jsonDocument;
   }
 
+  public List<T> get(DataElement dataElement) {
+    if (!cache.containsKey(dataElement.getPath())) {
+      set(dataElement, null, null);
+    }
+    return cache.get(dataElement.getPath());
+  }
+
+  protected void set(DataElement dataElement, Object jsonFragment, Class clazz) {
+    List<T> instances = null;
+    Object value = read(dataElement.getPath(), jsonFragment);
+    if (value != null) {
+      if (clazz == null) {
+        instances = (List<T>) JsonUtils.extractFieldInstanceList(
+          value, recordId, dataElement.getPath(), dataElement.isAsLanguageTagged()
+        );
+      } else {
+        if (value instanceof JSONArray) {
+          typedCache.put(dataElement.getPath(), clazz.cast(((JSONArray) value).get(0)));
+        } else {
+          typedCache.put(dataElement.getPath(), value);
+        }
+      }
+    }
+    cache.put(dataElement.getPath(), instances);
+  }
+
+  public List<T> get(String path) {
+    return get(path, path, null, null);
+  }
+
+  public List<T> get(String address, String path, Object jsonFragment, Class clazz) {
+    if (!cache.containsKey(address)) {
+      set(address, path, jsonFragment, clazz);
+    }
+    return cache.get(address);
+  }
+
   @Override
   protected void set(String address, String path, Object jsonFragment, Class clazz) {
     List<T> instances = null;
     Object value = read(path, jsonFragment);
     if (value != null) {
       if (clazz == null) {
-        instances = (List<T>) JsonUtils.extractFieldInstanceList(value, recordId, path);
+        instances = (List<T>) JsonUtils.extractFieldInstanceList(value, recordId, path, false);
       } else {
         if (value instanceof JSONArray) {
           typedCache.put(address, clazz.cast(((JSONArray) value).get(0)));
