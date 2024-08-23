@@ -350,8 +350,20 @@ public class SchemaConfigurationTest {
   }
 
   @Test
-  public void yaml_ssLanguageTagged() throws FileNotFoundException {
+  public void yaml_asLanguageTagged() throws FileNotFoundException {
     Schema schema = ConfigurationReader.readSchemaYaml("src/test/resources/configuration/schema/asLanguageTagged.yaml").asSchema();
     assertEquals(true, schema.getPathByLabel("description").isAsLanguageTagged());
+  }
+
+  @Test
+  public void yaml_isMultilingual() throws FileNotFoundException {
+    Schema schema = ConfigurationReader.readSchemaYaml("src/test/resources/configuration/schema/rules/isMultilingual.yaml").asSchema();
+    assertEquals(true, schema.getPathByLabel("description").getRules().get(0).getMultilingual());
+  }
+
+  @Test
+  public void yaml_hasLanguaggeTag() throws FileNotFoundException {
+    Schema schema = ConfigurationReader.readSchemaYaml("src/test/resources/configuration/schema/rules/hasLanguageTag.yaml").asSchema();
+    assertEquals(true, schema.getPathByLabel("description").getRules().get(0).getHasLanguageTag());
   }
 }

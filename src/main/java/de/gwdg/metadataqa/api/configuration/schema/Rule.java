@@ -53,6 +53,8 @@ public class Rule implements Serializable {
   private Boolean skip = Boolean.FALSE;
   private Boolean debug = Boolean.FALSE;
   private Boolean allowEmptyInstances = Boolean.FALSE;
+  private Boolean multilingual;
+  private Boolean hasLanguageTag;
 
   public String getId() {
     return id;
@@ -530,6 +532,32 @@ public class Rule implements Serializable {
 
   public Rule withAllowEmptyInstances(Boolean allowEmptyInstances) {
     this.allowEmptyInstances = allowEmptyInstances;
+    return this;
+  }
+
+  public Boolean getMultilingual() {
+    return multilingual;
+  }
+
+  public void setIsMultilingual(Boolean multilingual) {
+    this.multilingual = multilingual;
+  }
+
+  public Rule withMultilingual(Boolean multilingual) {
+    this.multilingual = multilingual;
+    return this;
+  }
+
+  public Boolean getHasLanguageTag() {
+    return hasLanguageTag;
+  }
+
+  public void setHasLanguageTag(Boolean hasLanguageTag) {
+    this.hasLanguageTag = hasLanguageTag;
+  }
+
+  public Rule withHasLanguageTag(Boolean hasLanguageTag) {
+    this.hasLanguageTag = hasLanguageTag;
     return this;
   }
 
