@@ -1,9 +1,11 @@
 package de.gwdg.metadataqa.api.rule.singlefieldchecker;
 
+import de.gwdg.metadataqa.api.configuration.schema.ApplicationScope;
 import de.gwdg.metadataqa.api.counter.FieldCounter;
 import de.gwdg.metadataqa.api.json.DataElement;
 import de.gwdg.metadataqa.api.model.XmlFieldInstance;
 import de.gwdg.metadataqa.api.model.selector.Selector;
+import de.gwdg.metadataqa.api.rule.RuleChecker;
 import de.gwdg.metadataqa.api.rule.RuleCheckerOutput;
 import de.gwdg.metadataqa.api.rule.RuleCheckingOutputStatus;
 import de.gwdg.metadataqa.api.rule.RuleCheckingOutputType;
@@ -14,6 +16,7 @@ import java.util.List;
 public class LanguageTagChecker extends SingleFieldChecker {
   private static final long serialVersionUID = 7236047216814906713L;
   public static final String PREFIX = "languageTag";
+  private ApplicationScope scope = ApplicationScope.anyOf;
 
   public LanguageTagChecker(DataElement field) {
     this(field, field.getLabel());
@@ -45,5 +48,10 @@ public class LanguageTagChecker extends SingleFieldChecker {
     if (isDebug())
       LOGGER.info(this.getClass().getSimpleName() + " " + this.id + ") result: " + RuleCheckingOutputStatus.create(isNA, allPassed));
 
+  }
+
+  public RuleChecker withScope(ApplicationScope hasLanguageTag) {
+    this.scope = scope;
+    return this;
   }
 }

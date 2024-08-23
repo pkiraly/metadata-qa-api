@@ -133,8 +133,8 @@ public class SchemaUtils {
       ruleCheckers.add(new MultilingualChecker(dataElement));
 
     // TODO
-    if (rule.getHasLanguageTag() != null && rule.getHasLanguageTag().equals(Boolean.TRUE))
-      ruleCheckers.add(new LanguageTagChecker(dataElement));
+    if (rule.getHasLanguageTag() != null)
+      ruleCheckers.add(new LanguageTagChecker(dataElement).withScope(rule.getHasLanguageTag()));
 
     if (rule.getLessThan() != null)
       pair(schema, ruleCheckers, dataElement, rule.getLessThan(), "LessThan");

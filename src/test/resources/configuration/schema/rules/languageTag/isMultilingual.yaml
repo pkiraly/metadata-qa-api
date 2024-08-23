@@ -1,0 +1,9 @@
+format: json
+fields:
+  - name: id
+    path:  $.['id']
+  - name: description
+    path: $.['description']
+    asLanguageTagged: true
+    rules:
+      - isMultilingual: true

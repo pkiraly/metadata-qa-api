@@ -1,5 +1,6 @@
 package de.gwdg.metadataqa.api.configuration;
 
+import de.gwdg.metadataqa.api.configuration.schema.ApplicationScope;
 import de.gwdg.metadataqa.api.configuration.schema.Field;
 import de.gwdg.metadataqa.api.configuration.schema.Group;
 import de.gwdg.metadataqa.api.configuration.schema.Rule;
@@ -364,6 +365,6 @@ public class SchemaConfigurationTest {
   @Test
   public void yaml_hasLanguaggeTag() throws FileNotFoundException {
     Schema schema = ConfigurationReader.readSchemaYaml("src/test/resources/configuration/schema/rules/hasLanguageTag.yaml").asSchema();
-    assertEquals(true, schema.getPathByLabel("description").getRules().get(0).getHasLanguageTag());
+    assertEquals(ApplicationScope.allOf, schema.getPathByLabel("description").getRules().get(0).getHasLanguageTag());
   }
 }

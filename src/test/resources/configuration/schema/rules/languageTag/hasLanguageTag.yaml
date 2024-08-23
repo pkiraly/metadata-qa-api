@@ -1,9 +1,7 @@
 format: json
 fields:
-  - name: about
-    path:  $.['about']
-    rules:
-      - lessThanOrEquals: description
+  - name: id
+    path:  $.['id']
   - name: description
     path: $.['description']
     asLanguageTagged: true

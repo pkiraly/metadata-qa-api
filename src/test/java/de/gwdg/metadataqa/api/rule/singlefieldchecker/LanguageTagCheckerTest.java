@@ -18,16 +18,16 @@ import java.util.regex.Pattern;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
-public class MultilingalCheckerTest extends CheckerTestBase {
+public class LanguageTagCheckerTest extends CheckerTestBase {
   private Selector cache;
 
   @Before
   public void setUp() throws Exception {
     schema = ConfigurationReader
-      .readSchemaYaml("src/test/resources/configuration/schema/rules/multilingual/isMultilingual.yaml")
+      .readSchemaYaml("src/test/resources/configuration/schema/rules/languageTag/hasLanguageTag.yaml")
       .asSchema();
     cache = new JsonSelector(FileUtils
-      .readFirstLineFromResource("configuration/schema/rules/multilingual/multilingual.json"));
+      .readFirstLineFromResource("configuration/schema/rules/languageTag/multilingual.json"));
   }
 
   @Test
@@ -45,5 +45,4 @@ public class MultilingalCheckerTest extends CheckerTestBase {
       fieldCounter.get(checker.getHeader(RuleCheckingOutputType.STATUS)).getStatus()
     );
   }
-
 }
