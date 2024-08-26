@@ -7,3 +7,5 @@ fields:
     asLanguageTagged: true
     rules:
       - hasLanguageTag: allOf
+        debug: true
+        id: 1.1

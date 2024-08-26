@@ -66,6 +66,7 @@ public class SchemaUtils {
   }
 
   private static List<RuleChecker> processRule(Schema schema, DataElement dataElement, Rule rule) {
+    System.err.println("processRule");
     List<RuleChecker> ruleCheckers = new ArrayList<>();
     if (rule.getSkip().equals(Boolean.TRUE))
       return ruleCheckers;
@@ -128,11 +129,9 @@ public class SchemaUtils {
     if (rule.getUnique() != null && rule.getUnique().equals(Boolean.TRUE))
       ruleCheckers.add(new UniquenessChecker(dataElement));
 
-    // TODO
     if (rule.getMultilingual() != null && rule.getMultilingual().equals(Boolean.TRUE))
       ruleCheckers.add(new MultilingualChecker(dataElement));
 
-    // TODO
     if (rule.getHasLanguageTag() != null)
       ruleCheckers.add(new LanguageTagChecker(dataElement).withScope(rule.getHasLanguageTag()));
 
@@ -142,7 +141,6 @@ public class SchemaUtils {
     if (rule.getLessThanOrEquals() != null)
       pair(schema, ruleCheckers, dataElement, rule.getLessThan(), "lessThanOrEquals");
 
-    //
     if (rule.getLessThanOrEquals() != null)
       ruleCheckers.add(new DependencyChecker(dataElement, rule.getDependencies()));
 
@@ -161,7 +159,8 @@ public class SchemaUtils {
       ruleCheckers.add(new NotChecker(dataElement, childRuleCheckers));
     }
 
-    if (!ruleCheckers.isEmpty())
+    if (!ruleCheckers.isEmpty()) {
+      System.err.println("ruleCheckers is not empty");
       for (RuleChecker ruleChecker : ruleCheckers) {
         ruleChecker.setFailureScore(rule.getFailureScore());
         ruleChecker.setSuccessScore(rule.getSuccessScore());
@@ -171,6 +170,7 @@ public class SchemaUtils {
         if (rule.getHidden().equals(Boolean.TRUE))
           ruleChecker.setHidden();
         if (rule.getDebug().equals(Boolean.TRUE)) {
+          System.err.println("det debug");
           ruleChecker.setDebug();
           if (ruleChecker instanceof LogicalChecker) {
             for (RuleChecker child : ((LogicalChecker) ruleChecker).getCheckers()) {
@@ -179,6 +179,7 @@ public class SchemaUtils {
           }
         }
       }
+    }
 
     return ruleCheckers;
   }

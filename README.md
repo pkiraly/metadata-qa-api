@@ -885,6 +885,79 @@ fields:
       minHeight: 200
 ```
 
+##### `hasLanguageTag (anyOf|oneOf|allOf)`
+
+(since v0.9.6)
+
+It checks if the data element value has language tag. In XML the language tag is
+found in `@xml:lang` attribute. In JSON it might be encoded differently. Right now 
+MQAF suppoert the following encoding:
+
+```json
+"description": {
+  "de": ["Porträt"]
+}
+```
+
+Since this kind of structure might be applied not only for the language annotation, at
+the field level we should set that the field is expected to have language annotation:
+
+```yaml
+format: json
+fields:
+  - name: description
+    path: $.['description']
+    asLanguageTagged: true
+```
+
+The parameters defines if any, one or all instances should have language annottation:
+
+* `anyOf`: the test passes if at least one instance has language tag
+* `oneOf`: the test passes if one and only one instance has language tag
+* `allOf`: the test passes if at least all instances have language tag
+
+A full example:
+
+```yaml
+format: json
+fields:
+- name: description
+  path: $.['description']
+  asLanguageTagged: true
+  rules:
+  - hasLanguageTag: allOf
+```
+
+##### `isMultilingual (boolean)`
+
+(since v0.9.6)
+
+It checks if the data element is multilingual, so it has at least two instances with
+different language annotations.
+
+```json
+{
+  "description":{
+    "de":["Portr\u00e4t"],
+    "zh":["\u8096\u50cf"]
+  }
+}
+
+```
+
+an example schema
+
+```yaml
+format: json
+fields:
+  - name: description
+    path: $.['description']
+    asLanguageTagged: true
+    rules:
+      - isMultilingual: true
+```
+
+
 #### General properties
 
 ##### `id <String>`
