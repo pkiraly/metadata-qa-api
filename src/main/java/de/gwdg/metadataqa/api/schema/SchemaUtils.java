@@ -66,7 +66,6 @@ public class SchemaUtils {
   }
 
   private static List<RuleChecker> processRule(Schema schema, DataElement dataElement, Rule rule) {
-    System.err.println("processRule");
     List<RuleChecker> ruleCheckers = new ArrayList<>();
     if (rule.getSkip().equals(Boolean.TRUE))
       return ruleCheckers;
@@ -160,7 +159,6 @@ public class SchemaUtils {
     }
 
     if (!ruleCheckers.isEmpty()) {
-      System.err.println("ruleCheckers is not empty");
       for (RuleChecker ruleChecker : ruleCheckers) {
         ruleChecker.setFailureScore(rule.getFailureScore());
         ruleChecker.setSuccessScore(rule.getSuccessScore());
@@ -170,7 +168,6 @@ public class SchemaUtils {
         if (rule.getHidden().equals(Boolean.TRUE))
           ruleChecker.setHidden();
         if (rule.getDebug().equals(Boolean.TRUE)) {
-          System.err.println("det debug");
           ruleChecker.setDebug();
           if (ruleChecker instanceof LogicalChecker) {
             for (RuleChecker child : ((LogicalChecker) ruleChecker).getCheckers()) {
