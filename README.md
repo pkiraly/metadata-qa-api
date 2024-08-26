@@ -40,6 +40,8 @@ digital collections.
         * [`unique <boolean>`](#unique-boolean)
         * [`dependencies [id1, id2, ..., idN]`](#dependencies-id1-id2--idn)
         * [`dimension [criteria1, criteria2, ..., criteriaN]`](#dimension-criteria1-criteria2--criterian)
+        * [`hasLanguageTag <anyOf|oneOf|allOf>`](#haslanguagetag-anyofoneofallof)
+        * [`isMultilingual <boolean>`](#ismultilingual-boolean)
       - [General properties](#general-properties)
         * [`id <String>`](#id-string)
         * [`description <String>`](#description-string)
@@ -885,7 +887,7 @@ fields:
       minHeight: 200
 ```
 
-##### `hasLanguageTag (anyOf|oneOf|allOf)`
+##### `hasLanguageTag <anyOf|oneOf|allOf>`
 
 (since v0.9.6)
 
@@ -928,7 +930,7 @@ fields:
   - hasLanguageTag: allOf
 ```
 
-##### `isMultilingual (boolean)`
+##### `isMultilingual <boolean>`
 
 (since v0.9.6)
 
