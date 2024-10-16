@@ -33,7 +33,10 @@ public class Indexer extends QaSolrClient implements Calculator, Shutdownable, S
   @Override
   public List<MetricResult> measure(Selector cache) {
     try {
-      String recordId = extractValue(cache, schema.getRecordId().getPath()).get(0);
+      List<String> extractedValues = extractValue(cache, schema.getRecordId().getPath());
+      if (extractedValues.isEmpty())
+        throw new RuntimeException(String.format("Missing record ID (path: %s)", schema.getRecordId().getPath()));
+      String recordId = extractedValues.get(0);
 
       Map<String, List<String>> resultMap = new HashMap<>();
       for (UniquenessField solrField : solrFields) {

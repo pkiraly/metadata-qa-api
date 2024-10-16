@@ -11,10 +11,14 @@ import de.gwdg.metadataqa.api.model.XmlFieldInstance;
 import de.gwdg.metadataqa.api.problemcatalog.FieldCounterBasedResult;
 import de.gwdg.metadataqa.api.schema.Schema;
 import de.gwdg.metadataqa.api.util.FileUtils;
+import org.apache.commons.lang3.StringUtils;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.LinkedHashSet;
 import java.util.List;
+import java.util.Set;
+import java.util.logging.Logger;
 
 /**
  * Field extractor
@@ -22,6 +26,8 @@ import java.util.List;
  * @author Péter Király <peter.kiraly at gwdg.de>
  */
 public class FieldExtractor implements Calculator, Serializable {
+
+  private static final Logger LOGGER = Logger.getLogger(FieldExtractor.class.getCanonicalName());
 
   public static final String CALCULATOR_NAME = "fieldExtractor";
   public static final String FIELD_NAME = "recordId";
@@ -78,24 +84,31 @@ public class FieldExtractor implements Calculator, Serializable {
                                     String path,
                                     String fieldName,
                                     DataElement dataELement) {
-    List<XmlFieldInstance> values;
+    List<XmlFieldInstance> fieldInstances;
     if (dataELement != null) {
-      values = cache.get(dataELement);
+      fieldInstances = cache.get(dataELement);
     } else {
-      values = cache.get(path);
+      fieldInstances = cache.get(path);
     }
     String value = null;
-    if (values == null || values.isEmpty() || values.get(0) == null) {
+    if (fieldInstances == null || fieldInstances.isEmpty() || fieldInstances.get(0) == null) {
       value = nullValue;
     } else {
-      XmlFieldInstance instance = values.get(0);
-      boolean isEdm = instance instanceof EdmFieldInstance;
-      if (isEdm && ((EdmFieldInstance)instance).getResource() != null) {
-        value = ((EdmFieldInstance) instance).getResource();
-      } else if (instance.getValue() != null) {
-        value = instance.getValue();
+      Set<String> values = new LinkedHashSet<>();
+      for (XmlFieldInstance instance : fieldInstances) {
+        boolean isEdm = instance instanceof EdmFieldInstance;
+        if (isEdm && ((EdmFieldInstance)instance).getResource() != null) {
+          value = ((EdmFieldInstance) instance).getResource();
+        } else if (instance.getValue() != null) {
+          value = instance.getValue();
+        }
+        // if (!values.contains(values))
+        if (StringUtils.isNotBlank(value))
+          values.add(value);
       }
+      value = StringUtils.join(values, " --- ");
     }
+    // LOGGER.info("value: " + value);
     resultMap.put(fieldName, value);
   }
 

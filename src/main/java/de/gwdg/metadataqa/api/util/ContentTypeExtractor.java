@@ -9,7 +9,7 @@ import java.util.logging.Logger;
 
 public class ContentTypeExtractor {
   private static final Logger LOGGER = Logger.getLogger(ContentTypeExtractor.class.getCanonicalName());
-  private static int timeout = 1000;
+  private static int timeout = 3000;
 
   public static String getContentType(String url) throws IOException {
     String contentType = null;
