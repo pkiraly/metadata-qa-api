@@ -9,14 +9,13 @@ import java.util.logging.Logger;
 
 public class ContentTypeExtractor {
   private static final Logger LOGGER = Logger.getLogger(ContentTypeExtractor.class.getCanonicalName());
-  private static int timeout = 1000;
+  private static int timeout = 3000;
 
   public static String getContentType(String url) throws IOException {
     String contentType = null;
     URL urlObj = new URL(url);
     HttpURLConnection urlConnection = (HttpURLConnection) urlObj.openConnection();
 
-    int timeout = 1000;
     urlConnection.setConnectTimeout(timeout);
     urlConnection.setReadTimeout(timeout);
     urlConnection.connect();

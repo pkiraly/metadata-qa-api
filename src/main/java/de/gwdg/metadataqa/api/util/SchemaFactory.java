@@ -29,10 +29,10 @@ public class SchemaFactory {
       schema.setCategories(config.getCategories());
 
     for (Field field : config.getFields()) {
-      var branch = new DataElement(field.getName());
+      var dataElement = new DataElement(field.getName());
 
       if (StringUtils.isNotBlank(field.getPath()))
-        branch.setPath(field.getPath());
+        dataElement.setPath(field.getPath());
 
       if (field.getCategories() != null) {
         List<String> categories = new ArrayList<>();
@@ -47,25 +47,28 @@ public class SchemaFactory {
             categories.add(category);
           }
         }
-        branch.setCategories(categories);
+        dataElement.setCategories(categories);
       }
 
       if (field.isExtractable())
-        branch.setExtractable();
+        dataElement.setExtractable();
 
       if (field.isInactive())
-        branch.setActive(false);
+        dataElement.setActive(false);
 
       if (field.getRules() != null)
-        branch.setRule(field.getRules());
+        dataElement.setRule(field.getRules());
 
       if (StringUtils.isNotBlank(field.getIndexField()))
-        branch.setIndexField(field.getIndexField());
+        dataElement.setIndexField(field.getIndexField());
 
-      schema.addField(branch);
+      if (field.isAsLanguageTagged())
+        dataElement.setAsLanguageTagged();
+
+      schema.addField(dataElement);
 
       if (field.isIdentifierField())
-        schema.setRecordId(branch);
+        schema.setRecordId(dataElement);
     }
 
     if (config.getGroups() != null)

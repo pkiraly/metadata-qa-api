@@ -3,6 +3,7 @@ package de.gwdg.metadataqa.api.cli;
 import com.opencsv.exceptions.CsvValidationException;
 import de.gwdg.metadataqa.api.calculator.CalculatorFacade;
 import de.gwdg.metadataqa.api.io.reader.CSVRecordReader;
+import de.gwdg.metadataqa.api.io.reader.JSONArrayRecordReader;
 import de.gwdg.metadataqa.api.io.reader.JSONRecordReader;
 import de.gwdg.metadataqa.api.io.reader.RecordReader;
 import de.gwdg.metadataqa.api.io.reader.XMLRecordReader;
@@ -25,11 +26,19 @@ import java.util.zip.GZIPInputStream;
 
 public class RecordFactory {
 
-  private RecordFactory() {}
+  private RecordFactory() {
+  }
 
   public static RecordReader getRecordReader(String inputFile,
                                              CalculatorFacade calculator,
-                                             boolean gzip)
+                                             boolean gzip) throws CsvValidationException, IOException {
+    return getRecordReader(inputFile, calculator, gzip, null);
+  }
+
+  public static RecordReader getRecordReader(String inputFile,
+                                             CalculatorFacade calculator,
+                                             boolean gzip,
+                                             InputFormat inputFormat)
       throws CsvValidationException, IOException {
     final Schema schema = calculator.getSchema();
 
@@ -46,7 +55,11 @@ public class RecordFactory {
 
     switch (schema.getFormat()) {
       case JSON:
-        return new JSONRecordReader(inputReader, calculator);
+        if (inputFormat == null || inputFormat.equals(InputFormat.NDJSON))
+          return new JSONRecordReader(inputReader, calculator);
+        else if (inputFormat.equals(InputFormat.JSON_ARRAY)) {
+          return new JSONArrayRecordReader(inputReader, calculator);
+        }
       case XML:
         return new XMLRecordReader(inputReader, calculator);
       case CSV:

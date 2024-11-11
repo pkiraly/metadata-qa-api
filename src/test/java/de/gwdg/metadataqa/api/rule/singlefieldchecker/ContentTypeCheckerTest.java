@@ -161,7 +161,8 @@ public class ContentTypeCheckerTest extends CheckerTestBase {
 
   @Test
   public void t301() {
-    cache = (CsvSelector) SelectorFactory.getInstance(schema.getFormat(), "http://creativecommons.org/licenses/by-nc-sa/4.0/");
+    cache = (CsvSelector) SelectorFactory.getInstance(schema.getFormat(),
+      "http://creativecommons.org/licenses/by-nc-sa/4.0/");
     cache.setCsvReader(new CsvReader().setHeader( ((CsvAwareSchema) schema).getHeader() ));
 
     ContentTypeChecker checker = new ContentTypeChecker(schema.getPathByLabel("name"),

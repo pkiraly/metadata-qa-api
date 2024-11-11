@@ -1,0 +1,1151 @@
+[
+  {
+    "success": true,
+    "statsDuration": 202,
+    "requestNumber": 999,
+    "object": {
+      "about": "/999/WILDLIFEXSOUNDSXXXSOUNDSCAPEXXC808089",
+      "aggregations": [
+        {
+          "about": "/aggregation/provider/999/WILDLIFEXSOUNDSXXXSOUNDSCAPEXXC808089",
+          "edmDataProvider": {
+            "def": [
+              "http://data.europeana.eu/organization/1482250000000370517"
+            ]
+          },
+          "edmIsShownBy": "https://xeno-canto.org/sounds/uploaded/TJSRKPHQNP/XC808089-230512_0100a.mp3",
+          "edmIsShownAt": "https://data.biodiversitydata.nl/xeno-canto/observation/XC808089",
+          "edmObject": "https://xeno-canto.org/sounds/uploaded/TJSRKPHQNP/wave/XC808089-large.png",
+          "edmProvider": {
+            "def": [
+              "http://data.europeana.eu/organization/1482250000004671150"
+            ]
+          },
+          "edmRights": {
+            "def": [
+              "http://creativecommons.org/licenses/by-nc-sa/4.0/"
+            ]
+          },
+          "edmUgc": "false",
+          "hasView": [
+            "https://xeno-canto.org/sounds/uploaded/TJSRKPHQNP/ffts/XC808089-large.png",
+            "https://xeno-canto.org/sounds/uploaded/TJSRKPHQNP/wave/XC808089-large.png"
+          ],
+          "aggregatedCHO": "/item/999/WILDLIFEXSOUNDSXXXSOUNDSCAPEXXC808089",
+          "webResources": [
+            {
+              "about": "https://data.biodiversitydata.nl/xeno-canto/observation/XC808089",
+              "dcFormat": {
+                "en": [
+                  "text/html"
+                ]
+              },
+              "textAttributionSnippet": "(la) Sonus naturalis - https://www.europeana.eu/item/999/WILDLIFEXSOUNDSXXXSOUNDSCAPEXXC808089. Naturalis Biodiversity Center - https://data.biodiversitydata.nl/xeno-canto/observation/XC808089. CC BY-NC-SA - http://creativecommons.org/licenses/by-nc-sa/4.0/",
+              "htmlAttributionSnippet": "<link rel='stylesheet' type='text/css' href='https://api.europeana.eu/attribution/style.css'/><dl class='europeana-attribution' lang='en'><dt>Title</dt><dd lang='la'><a href='http://data.europeana.eu/item/999/WILDLIFEXSOUNDSXXXSOUNDSCAPEXXC808089' target='_blank' rel='noopener'>Sonus naturalis</a></dd><dt>Institution</dt><dd lang=''><a href='https://data.biodiversitydata.nl/xeno-canto/observation/XC808089' target='_blank' rel='noopener'>Naturalis Biodiversity Center</a></dd><dt>Country</dt><dd lang=''>Netherlands</dd><dt>Rights</dt><dd><a href='http://creativecommons.org/licenses/by-nc-sa/4.0/' target='_blank' rel='noopener'><span class='icon-cc'/><span class='icon-by'/><span class='icon-nc'/><span class='icon-sa'/>CC BY-NC-SA</a></dd></dl>"
+            },
+            {
+              "webResourceEdmRights": {
+                "def": [
+                  "http://creativecommons.org/licenses/by-nc-sa/4.0/"
+                ]
+              },
+              "about": "https://xeno-canto.org/sounds/uploaded/TJSRKPHQNP/ffts/XC808089-large.png",
+              "dcFormat": {
+                "en": [
+                  "image/png"
+                ]
+              },
+              "dcCreator": {
+                "def": [
+                  "Stichting Xeno-canto voor Natuurgeluiden"
+                ]
+              },
+              "dcType": {
+                "def": [
+                  "StillImage"
+                ]
+              },
+              "textAttributionSnippet": "(la) Sonus naturalis - https://www.europeana.eu/item/999/WILDLIFEXSOUNDSXXXSOUNDSCAPEXXC808089. Stichting Xeno-canto voor Natuurgeluiden. Naturalis Biodiversity Center - https://data.biodiversitydata.nl/xeno-canto/observation/XC808089. CC BY-NC-SA - http://creativecommons.org/licenses/by-nc-sa/4.0/",
+              "htmlAttributionSnippet": "<link rel='stylesheet' type='text/css' href='https://api.europeana.eu/attribution/style.css'/><dl class='europeana-attribution' lang='en'><dt>Title</dt><dd lang='la'><a href='http://data.europeana.eu/item/999/WILDLIFEXSOUNDSXXXSOUNDSCAPEXXC808089' target='_blank' rel='noopener'>Sonus naturalis</a></dd><dt>Creator</dt><dd lang=''>Stichting Xeno-canto voor Natuurgeluiden</dd><dt>Institution</dt><dd lang=''><a href='https://data.biodiversitydata.nl/xeno-canto/observation/XC808089' target='_blank' rel='noopener'>Naturalis Biodiversity Center</a></dd><dt>Country</dt><dd lang=''>Netherlands</dd><dt>Rights</dt><dd><a href='http://creativecommons.org/licenses/by-nc-sa/4.0/' target='_blank' rel='noopener'><span class='icon-cc'/><span class='icon-by'/><span class='icon-nc'/><span class='icon-sa'/>CC BY-NC-SA</a></dd></dl>",
+              "dctermsIsReferencedBy": [
+                "https://iiif.europeana.eu/presentation/999/WILDLIFEXSOUNDSXXXSOUNDSCAPEXXC808089/manifest"
+              ],
+              "ebucoreHasMimeType": "image/png",
+              "ebucoreFileByteSize": 203697,
+              "ebucoreWidth": 1022,
+              "ebucoreHeight": 396,
+              "edmHasColorSpace": "sRGB",
+              "edmComponentColor": [
+                "#696969",
+                "#808080",
+                "#F5F5F5",
+                "#FAF0E6",
+                "#BC8F8F",
+                "#FFFAFA"
+              ],
+              "ebucoreOrientation": "landscape"
+            },
+            {
+              "webResourceEdmRights": {
+                "def": [
+                  "http://creativecommons.org/licenses/by-nc-sa/4.0/"
+                ]
+              },
+              "about": "https://xeno-canto.org/sounds/uploaded/TJSRKPHQNP/wave/XC808089-large.png",
+              "dcFormat": {
+                "en": [
+                  "image/png"
+                ]
+              },
+              "dcCreator": {
+                "def": [
+                  "Stichting Xeno-canto voor Natuurgeluiden"
+                ]
+              },
+              "dcType": {
+                "def": [
+                  "StillImage"
+                ]
+              },
+              "textAttributionSnippet": "(la) Sonus naturalis - https://www.europeana.eu/item/999/WILDLIFEXSOUNDSXXXSOUNDSCAPEXXC808089. Stichting Xeno-canto voor Natuurgeluiden. Naturalis Biodiversity Center - https://data.biodiversitydata.nl/xeno-canto/observation/XC808089. CC BY-NC-SA - http://creativecommons.org/licenses/by-nc-sa/4.0/",
+              "htmlAttributionSnippet": "<link rel='stylesheet' type='text/css' href='https://api.europeana.eu/attribution/style.css'/><dl class='europeana-attribution' lang='en'><dt>Title</dt><dd lang='la'><a href='http://data.europeana.eu/item/999/WILDLIFEXSOUNDSXXXSOUNDSCAPEXXC808089' target='_blank' rel='noopener'>Sonus naturalis</a></dd><dt>Creator</dt><dd lang=''>Stichting Xeno-canto voor Natuurgeluiden</dd><dt>Institution</dt><dd lang=''><a href='https://data.biodiversitydata.nl/xeno-canto/observation/XC808089' target='_blank' rel='noopener'>Naturalis Biodiversity Center</a></dd><dt>Country</dt><dd lang=''>Netherlands</dd><dt>Rights</dt><dd><a href='http://creativecommons.org/licenses/by-nc-sa/4.0/' target='_blank' rel='noopener'><span class='icon-cc'/><span class='icon-by'/><span class='icon-nc'/><span class='icon-sa'/>CC BY-NC-SA</a></dd></dl>",
+              "dctermsIsReferencedBy": [
+                "https://iiif.europeana.eu/presentation/999/WILDLIFEXSOUNDSXXXSOUNDSCAPEXXC808089/manifest"
+              ],
+              "ebucoreHasMimeType": "image/png",
+              "ebucoreFileByteSize": 3165,
+              "ebucoreWidth": 960,
+              "ebucoreHeight": 320,
+              "edmHasColorSpace": "sRGB",
+              "edmComponentColor": [
+                "#FFFAFA",
+                "#E6E6FA",
+                "#C0C0C0",
+                "#FAF0E6",
+                "#FFFFFF",
+                "#000000"
+              ],
+              "ebucoreOrientation": "landscape"
+            },
+            {
+              "webResourceEdmRights": {
+                "def": [
+                  "http://creativecommons.org/licenses/by-nc-sa/4.0/"
+                ]
+              },
+              "about": "https://xeno-canto.org/sounds/uploaded/TJSRKPHQNP/XC808089-230512_0100a.mp3",
+              "dcDescription": {
+                "en": [
+                  "4760 s"
+                ]
+              },
+              "dcFormat": {
+                "en": [
+                  "audio/mp3"
+                ]
+              },
+              "dcCreator": {
+                "def": [
+                  "Cedric Mroczko"
+                ]
+              },
+              "dcType": {
+                "def": [
+                  "Sound"
+                ]
+              },
+              "textAttributionSnippet": "(la) Sonus naturalis - https://www.europeana.eu/item/999/WILDLIFEXSOUNDSXXXSOUNDSCAPEXXC808089. Cedric Mroczko. Naturalis Biodiversity Center - https://data.biodiversitydata.nl/xeno-canto/observation/XC808089. CC BY-NC-SA - http://creativecommons.org/licenses/by-nc-sa/4.0/",
+              "htmlAttributionSnippet": "<link rel='stylesheet' type='text/css' href='https://api.europeana.eu/attribution/style.css'/><dl class='europeana-attribution' lang='en'><dt>Title</dt><dd lang='la'><a href='http://data.europeana.eu/item/999/WILDLIFEXSOUNDSXXXSOUNDSCAPEXXC808089' target='_blank' rel='noopener'>Sonus naturalis</a></dd><dt>Creator</dt><dd lang=''>Cedric Mroczko</dd><dt>Institution</dt><dd lang=''><a href='https://data.biodiversitydata.nl/xeno-canto/observation/XC808089' target='_blank' rel='noopener'>Naturalis Biodiversity Center</a></dd><dt>Country</dt><dd lang=''>Netherlands</dd><dt>Rights</dt><dd><a href='http://creativecommons.org/licenses/by-nc-sa/4.0/' target='_blank' rel='noopener'><span class='icon-cc'/><span class='icon-by'/><span class='icon-nc'/><span class='icon-sa'/>CC BY-NC-SA</a></dd></dl>",
+              "dctermsIsReferencedBy": [
+                "https://iiif.europeana.eu/presentation/999/WILDLIFEXSOUNDSXXXSOUNDSCAPEXXC808089/manifest"
+              ],
+              "edmCodecName": "mp3",
+              "ebucoreHasMimeType": "audio/mpeg",
+              "ebucoreFileByteSize": 114246100,
+              "ebucoreAudioChannelNumber": 2,
+              "ebucoreDuration": "4760033",
+              "ebucoreSampleSize": 0,
+              "ebucoreSampleRate": 44100,
+              "ebucoreBitRate": 192000
+            },
+            {
+              "about": "https://iiif.europeana.eu/presentation/999/WILDLIFEXSOUNDSXXXSOUNDSCAPEXXC808089/manifest",
+              "rdfType": "http://iiif.io/api/presentation/3#Manifest"
+            }
+          ],
+          "dqvHasQualityAnnotation": [
+            {
+              "created": "2024-01-18T13:34:48.847776Z",
+              "target": [
+                "/aggregation/provider/999/WILDLIFEXSOUNDSXXXSOUNDSCAPEXXC808089"
+              ],
+              "body": "http://www.europeana.eu/schemas/epf/contentTier3"
+            },
+            {
+              "created": "2024-01-18T13:34:48.847787Z",
+              "target": [
+                "/aggregation/provider/999/WILDLIFEXSOUNDSXXXSOUNDSCAPEXXC808089"
+              ],
+              "body": "http://www.europeana.eu/schemas/epf/metadataTierA"
+            }
+          ]
+        }
+      ],
+      "edmDatasetName": [
+        "999__Naturalis_Wildlife_Sounds_batch3"
+      ],
+      "europeanaAggregation": {
+        "about": "/aggregation/europeana/999/WILDLIFEXSOUNDSXXXSOUNDSCAPEXXC808089",
+        "aggregatedCHO": "/item/999/WILDLIFEXSOUNDSXXXSOUNDSCAPEXXC808089",
+        "edmCountry": {
+          "def": [
+            "Netherlands"
+          ]
+        },
+        "edmLanguage": {
+          "def": [
+            "en"
+          ]
+        },
+        "edmPreview": "https://api.europeana.eu/thumbnail/v2/url.json?uri=https%3A%2F%2Fxeno-canto.org%2Fsounds%2Fuploaded%2FTJSRKPHQNP%2Fwave%2FXC808089-large.png&type=SOUND",
+        "edmLandingPage": "https://www.europeana.eu/item/999/WILDLIFEXSOUNDSXXXSOUNDSCAPEXXC808089"
+      },
+      "europeanaCollectionName": [
+        "999__Naturalis_Wildlife_Sounds_batch3"
+      ],
+      "europeanaCompleteness": 6,
+      "organizations": [
+        {
+          "about": "http://data.europeana.eu/organization/1482250000000370517",
+          "prefLabel": {
+            "en": [
+              "Naturalis Biodiversity Center"
+            ]
+          }
+        },
+        {
+          "about": "http://data.europeana.eu/organization/1482250000004671150",
+          "prefLabel": {
+            "en": [
+              "OpenUp!"
+            ]
+          }
+        }
+      ],
+      "places": [
+        {
+          "about": "geo:48.4696,23.7651",
+          "prefLabel": {
+            "def": [
+              "Kolochava, Mizhhirs'kyi district, Zakarpattia Oblast"
+            ]
+          },
+          "note": {
+            "def": [
+              "Ukraine"
+            ]
+          },
+          "isPartOf": {
+            "def": [
+              "https://sws.geonames.org/690791/"
+            ]
+          },
+          "latitude": 48.4696,
+          "longitude": 23.7651
+        }
+      ],
+      "providedCHOs": [
+        {
+          "about": "/item/999/WILDLIFEXSOUNDSXXXSOUNDSCAPEXXC808089"
+        }
+      ],
+      "proxies": [
+        {
+          "about": "/proxy/europeana/999/WILDLIFEXSOUNDSXXXSOUNDSCAPEXXC808089",
+          "dcDate": {
+            "def": [
+              "#2023-05-12"
+            ]
+          },
+          "dcIdentifier": {
+            "def": [
+              "WILDLIFEXSOUNDSXXXSOUNDSCAPEXXC808089"
+            ]
+          },
+          "proxyIn": [
+            "/aggregation/europeana/999/WILDLIFEXSOUNDSXXXSOUNDSCAPEXXC808089"
+          ],
+          "proxyFor": "/item/999/WILDLIFEXSOUNDSXXXSOUNDSCAPEXXC808089",
+          "lineage": [
+            "/proxy/provider/999/WILDLIFEXSOUNDSXXXSOUNDSCAPEXXC808089"
+          ],
+          "europeanaProxy": true
+        },
+        {
+          "about": "/proxy/provider/999/WILDLIFEXSOUNDSXXXSOUNDSCAPEXXC808089",
+          "dcContributor": {
+            "def": [
+              "Cedric Mroczko (collector)"
+            ]
+          },
+          "dcDate": {
+            "def": [
+              "2023-05-12",
+              "07:30"
+            ]
+          },
+          "dcDescription": {
+            "def": [
+              "High-pass filtered. ls14 + stereo clippy em272"
+            ]
+          },
+          "dcIdentifier": {
+            "def": [
+              "808089@XC",
+              "https://data.biodiversitydata.nl/xeno-canto/observation/XC808089",
+              "XC808089"
+            ]
+          },
+          "dcRelation": {
+            "def": [
+              "http://www.biodiversitylibrary.org/name/Sonus+naturalis"
+            ]
+          },
+          "dcRights": {
+            "def": [
+              "Stichting Xeno-canto voor Natuurgeluiden",
+              "Cedric Mroczko"
+            ]
+          },
+          "dcSubject": {
+            "en": [
+              "Wildlife sounds - Soundscape"
+            ]
+          },
+          "dcTitle": {
+            "la": [
+              "Sonus naturalis"
+            ]
+          },
+          "dcType": {
+            "en": [
+              "Machine Observation"
+            ]
+          },
+          "dctermsAlternative": {
+            "def": [
+              "Soundscape"
+            ]
+          },
+          "dctermsSpatial": {
+            "def": [
+              "1300 m",
+              "geo:48.4696,23.7651"
+            ]
+          },
+          "edmHasMet": {
+            "def": [
+              "808089XXCX2023X05X12",
+              "geo:48.4696,23.7651"
+            ]
+          },
+          "edmHasType": {
+            "def": [
+              "http://rs.tdwg.org/dwc/terms/MachineObservation"
+            ]
+          },
+          "proxyIn": [
+            "/aggregation/provider/999/WILDLIFEXSOUNDSXXXSOUNDSCAPEXXC808089"
+          ],
+          "proxyFor": "/item/999/WILDLIFEXSOUNDSXXXSOUNDSCAPEXXC808089",
+          "edmType": "SOUND",
+          "europeanaProxy": false
+        }
+      ],
+      "timespans": [
+        {
+          "about": "808089XXCX2023X05X12",
+          "begin": {
+            "def": [
+              "2023-05-12"
+            ]
+          }
+        },
+        {
+          "about": "http://data.europeana.eu/timespan/21",
+          "prefLabel": {
+            "de": [
+              "21. Jahrhundert"
+            ],
+            "ru": [
+              "XXI век"
+            ],
+            "fi": [
+              "2000-luku"
+            ],
+            "pt": [
+              "Século XXI"
+            ],
+            "bg": [
+              "21 век"
+            ],
+            "lt": [
+              "XXI amžius"
+            ],
+            "lv": [
+              "21. gadsimts"
+            ],
+            "hr": [
+              "21. stoljeće"
+            ],
+            "fr": [
+              "XXIe siècle"
+            ],
+            "hu": [
+              "21. század"
+            ],
+            "sk": [
+              "21. storočie"
+            ],
+            "sl": [
+              "21. stoletje"
+            ],
+            "ga": [
+              "21ú haois"
+            ],
+            "ca": [
+              "Segle XXI"
+            ],
+            "sv": [
+              "2000-talet"
+            ],
+            "el": [
+              "21ος αιώνας"
+            ],
+            "en": [
+              "21st century"
+            ],
+            "it": [
+              "XXI secolo"
+            ],
+            "es": [
+              "Siglo XXI"
+            ],
+            "et": [
+              "21. sajand"
+            ],
+            "eu": [
+              "XXI. mendea"
+            ],
+            "cs": [
+              "21. století"
+            ],
+            "pl": [
+              "XXI wiek"
+            ],
+            "ro": [
+              "Secolul al XXI-lea"
+            ],
+            "da": [
+              "21. århundrede"
+            ],
+            "nl": [
+              "21e eeuw"
+            ]
+          },
+          "altLabel": {
+            "de": [
+              "21. Jh.",
+              "21. Jhd.",
+              "21. Jhdt.",
+              "21. Jhrh.",
+              "21. Jahrh.",
+              "21. Zentennium",
+              "21. Centennium",
+              "21. Hektode"
+            ],
+            "sv": [
+              "21:a århundradet",
+              "21:a seklet",
+              "2000-tal",
+              "2000-talet (århundrade)",
+              "2000-talet (sekel)"
+            ],
+            "fi": [
+              "21. vuosisata"
+            ],
+            "ru": [
+              "21 век"
+            ],
+            "en": [
+              "21st-century",
+              "21st-century",
+              "Twenty-first century",
+              "History, 21st Century",
+              "XXI Century",
+              "Current century"
+            ],
+            "it": [
+              "21° secolo",
+              "Secolo XXI",
+              "Ventunesimo secolo",
+              "XXI Secolo",
+              "Duemila"
+            ],
+            "pl": [
+              "21 wiek",
+              "21 stulecie",
+              "XXI stulecie",
+              "XXI w"
+            ],
+            "fr": [
+              "21e siècle",
+              "Vingt et unième siècle"
+            ],
+            "es": [
+              "Historia, siglo 21",
+              "Siglo 21",
+              "Este siglo",
+              "Siglo veintiuno"
+            ],
+            "ca": [
+              "Segle 21"
+            ]
+          },
+          "begin": {
+            "def": [
+              "2001-01-01"
+            ]
+          },
+          "end": {
+            "def": [
+              "2100-12-31"
+            ]
+          },
+          "owlSameAs": [
+            "http://www.wikidata.org/entity/Q6939",
+            "http://data.culture.fr/thesaurus/resource/ark:/67717/T4-46",
+            "http://id.loc.gov/authorities/names/sh85139024",
+            "http://data.bnf.fr/ark:/12148/cb11930812p",
+            "http://id.nlm.nih.gov/mesh/D049674",
+            "https://www.freebase.com/m/08b43",
+            "https://g.co/kg/m/08b43",
+            "http://id.nlm.nih.gov/mesh/K01.400.504.984",
+            "http://vocab.getty.edu/aat/300404515",
+            "http://id.worldcat.org/fast/1159816",
+            "http://babelnet.org/rdf/s01157225n",
+            "http://dbpedia.org/resource/21st_century"
+          ]
+        },
+        {
+          "about": "#2023-05-12",
+          "prefLabel": {
+            "zxx": [
+              "2023-05-12"
+            ]
+          },
+          "begin": {
+            "def": [
+              "2023-05-01"
+            ]
+          },
+          "end": {
+            "def": [
+              "2023-05-31"
+            ]
+          },
+          "isPartOf": {
+            "def": [
+              "http://data.europeana.eu/timespan/21"
+            ]
+          },
+          "skosNotation": {
+            "def": [
+              "2023-05-12"
+            ]
+          }
+        }
+      ],
+      "timestamp_created": "2024-01-18T11:16:27.079Z",
+      "timestamp_created_epoch": 1705576587079,
+      "timestamp_update": "2024-01-18T11:16:27.079Z",
+      "timestamp_update_epoch": 1705576587079,
+      "type": "SOUND"
+    }
+  },
+  {
+    "success": true,
+    "statsDuration": 197,
+    "requestNumber": 999,
+    "object": {
+      "about": "/999/WILDLIFEXSOUNDSXXXSOUNDSCAPEXXC808057",
+      "aggregations": [
+        {
+          "about": "/aggregation/provider/999/WILDLIFEXSOUNDSXXXSOUNDSCAPEXXC808057",
+          "edmDataProvider": {
+            "def": [
+              "http://data.europeana.eu/organization/1482250000000370517"
+            ]
+          },
+          "edmIsShownBy": "https://xeno-canto.org/sounds/uploaded/TJSRKPHQNP/XC808057-0608_045233b.mp3",
+          "edmIsShownAt": "https://data.biodiversitydata.nl/xeno-canto/observation/XC808057",
+          "edmObject": "https://xeno-canto.org/sounds/uploaded/TJSRKPHQNP/wave/XC808057-large.png",
+          "edmProvider": {
+            "def": [
+              "http://data.europeana.eu/organization/1482250000004671150"
+            ]
+          },
+          "edmRights": {
+            "def": [
+              "http://creativecommons.org/licenses/by-nc-sa/4.0/"
+            ]
+          },
+          "edmUgc": "false",
+          "hasView": [
+            "https://xeno-canto.org/sounds/uploaded/TJSRKPHQNP/ffts/XC808057-large.png",
+            "https://xeno-canto.org/sounds/uploaded/TJSRKPHQNP/wave/XC808057-large.png"
+          ],
+          "aggregatedCHO": "/item/999/WILDLIFEXSOUNDSXXXSOUNDSCAPEXXC808057",
+          "webResources": [
+            {
+              "webResourceEdmRights": {
+                "def": [
+                  "http://creativecommons.org/licenses/by-nc-sa/4.0/"
+                ]
+              },
+              "about": "https://xeno-canto.org/sounds/uploaded/TJSRKPHQNP/wave/XC808057-large.png",
+              "dcFormat": {
+                "en": [
+                  "image/png"
+                ]
+              },
+              "dcCreator": {
+                "def": [
+                  "Stichting Xeno-canto voor Natuurgeluiden"
+                ]
+              },
+              "dcType": {
+                "def": [
+                  "StillImage"
+                ]
+              },
+              "textAttributionSnippet": "(la) Sonus naturalis - https://www.europeana.eu/item/999/WILDLIFEXSOUNDSXXXSOUNDSCAPEXXC808057. Stichting Xeno-canto voor Natuurgeluiden. Naturalis Biodiversity Center - https://data.biodiversitydata.nl/xeno-canto/observation/XC808057. CC BY-NC-SA - http://creativecommons.org/licenses/by-nc-sa/4.0/",
+              "htmlAttributionSnippet": "<link rel='stylesheet' type='text/css' href='https://api.europeana.eu/attribution/style.css'/><dl class='europeana-attribution' lang='en'><dt>Title</dt><dd lang='la'><a href='http://data.europeana.eu/item/999/WILDLIFEXSOUNDSXXXSOUNDSCAPEXXC808057' target='_blank' rel='noopener'>Sonus naturalis</a></dd><dt>Creator</dt><dd lang=''>Stichting Xeno-canto voor Natuurgeluiden</dd><dt>Institution</dt><dd lang=''><a href='https://data.biodiversitydata.nl/xeno-canto/observation/XC808057' target='_blank' rel='noopener'>Naturalis Biodiversity Center</a></dd><dt>Country</dt><dd lang=''>Netherlands</dd><dt>Rights</dt><dd><a href='http://creativecommons.org/licenses/by-nc-sa/4.0/' target='_blank' rel='noopener'><span class='icon-cc'/><span class='icon-by'/><span class='icon-nc'/><span class='icon-sa'/>CC BY-NC-SA</a></dd></dl>",
+              "dctermsIsReferencedBy": [
+                "https://iiif.europeana.eu/presentation/999/WILDLIFEXSOUNDSXXXSOUNDSCAPEXXC808057/manifest"
+              ],
+              "ebucoreHasMimeType": "image/png",
+              "ebucoreFileByteSize": 3161,
+              "ebucoreWidth": 960,
+              "ebucoreHeight": 320,
+              "edmHasColorSpace": "sRGB",
+              "edmComponentColor": [
+                "#2F4F4F",
+                "#F5F5F5",
+                "#C0C0C0",
+                "#E6E6FA",
+                "#FAF0E6",
+                "#FFFFFF"
+              ],
+              "ebucoreOrientation": "landscape"
+            },
+            {
+              "webResourceEdmRights": {
+                "def": [
+                  "http://creativecommons.org/licenses/by-nc-sa/4.0/"
+                ]
+              },
+              "about": "https://xeno-canto.org/sounds/uploaded/TJSRKPHQNP/ffts/XC808057-large.png",
+              "dcFormat": {
+                "en": [
+                  "image/png"
+                ]
+              },
+              "dcCreator": {
+                "def": [
+                  "Stichting Xeno-canto voor Natuurgeluiden"
+                ]
+              },
+              "dcType": {
+                "def": [
+                  "StillImage"
+                ]
+              },
+              "textAttributionSnippet": "(la) Sonus naturalis - https://www.europeana.eu/item/999/WILDLIFEXSOUNDSXXXSOUNDSCAPEXXC808057. Stichting Xeno-canto voor Natuurgeluiden. Naturalis Biodiversity Center - https://data.biodiversitydata.nl/xeno-canto/observation/XC808057. CC BY-NC-SA - http://creativecommons.org/licenses/by-nc-sa/4.0/",
+              "htmlAttributionSnippet": "<link rel='stylesheet' type='text/css' href='https://api.europeana.eu/attribution/style.css'/><dl class='europeana-attribution' lang='en'><dt>Title</dt><dd lang='la'><a href='http://data.europeana.eu/item/999/WILDLIFEXSOUNDSXXXSOUNDSCAPEXXC808057' target='_blank' rel='noopener'>Sonus naturalis</a></dd><dt>Creator</dt><dd lang=''>Stichting Xeno-canto voor Natuurgeluiden</dd><dt>Institution</dt><dd lang=''><a href='https://data.biodiversitydata.nl/xeno-canto/observation/XC808057' target='_blank' rel='noopener'>Naturalis Biodiversity Center</a></dd><dt>Country</dt><dd lang=''>Netherlands</dd><dt>Rights</dt><dd><a href='http://creativecommons.org/licenses/by-nc-sa/4.0/' target='_blank' rel='noopener'><span class='icon-cc'/><span class='icon-by'/><span class='icon-nc'/><span class='icon-sa'/>CC BY-NC-SA</a></dd></dl>",
+              "dctermsIsReferencedBy": [
+                "https://iiif.europeana.eu/presentation/999/WILDLIFEXSOUNDSXXXSOUNDSCAPEXXC808057/manifest"
+              ],
+              "ebucoreHasMimeType": "image/png",
+              "ebucoreFileByteSize": 174416,
+              "ebucoreWidth": 1022,
+              "ebucoreHeight": 396,
+              "edmHasColorSpace": "sRGB",
+              "edmComponentColor": [
+                "#F8F8FF",
+                "#A9A9A9",
+                "#FFFAFA",
+                "#F5F5F5",
+                "#FFE4E1",
+                "#556B2F"
+              ],
+              "ebucoreOrientation": "landscape"
+            },
+            {
+              "webResourceEdmRights": {
+                "def": [
+                  "http://creativecommons.org/licenses/by-nc-sa/4.0/"
+                ]
+              },
+              "about": "https://xeno-canto.org/sounds/uploaded/TJSRKPHQNP/XC808057-0608_045233b.mp3",
+              "dcDescription": {
+                "en": [
+                  "1561 s"
+                ]
+              },
+              "dcFormat": {
+                "en": [
+                  "audio/mp3"
+                ]
+              },
+              "dcCreator": {
+                "def": [
+                  "Cedric Mroczko"
+                ]
+              },
+              "dcType": {
+                "def": [
+                  "Sound"
+                ]
+              },
+              "textAttributionSnippet": "(la) Sonus naturalis - https://www.europeana.eu/item/999/WILDLIFEXSOUNDSXXXSOUNDSCAPEXXC808057. Cedric Mroczko. Naturalis Biodiversity Center - https://data.biodiversitydata.nl/xeno-canto/observation/XC808057. CC BY-NC-SA - http://creativecommons.org/licenses/by-nc-sa/4.0/",
+              "htmlAttributionSnippet": "<link rel='stylesheet' type='text/css' href='https://api.europeana.eu/attribution/style.css'/><dl class='europeana-attribution' lang='en'><dt>Title</dt><dd lang='la'><a href='http://data.europeana.eu/item/999/WILDLIFEXSOUNDSXXXSOUNDSCAPEXXC808057' target='_blank' rel='noopener'>Sonus naturalis</a></dd><dt>Creator</dt><dd lang=''>Cedric Mroczko</dd><dt>Institution</dt><dd lang=''><a href='https://data.biodiversitydata.nl/xeno-canto/observation/XC808057' target='_blank' rel='noopener'>Naturalis Biodiversity Center</a></dd><dt>Country</dt><dd lang=''>Netherlands</dd><dt>Rights</dt><dd><a href='http://creativecommons.org/licenses/by-nc-sa/4.0/' target='_blank' rel='noopener'><span class='icon-cc'/><span class='icon-by'/><span class='icon-nc'/><span class='icon-sa'/>CC BY-NC-SA</a></dd></dl>",
+              "dctermsIsReferencedBy": [
+                "https://iiif.europeana.eu/presentation/999/WILDLIFEXSOUNDSXXXSOUNDSCAPEXXC808057/manifest"
+              ],
+              "edmCodecName": "mp3",
+              "ebucoreHasMimeType": "audio/mpeg",
+              "ebucoreFileByteSize": 62447767,
+              "ebucoreAudioChannelNumber": 2,
+              "ebucoreDuration": "1561051",
+              "ebucoreSampleSize": 0,
+              "ebucoreSampleRate": 44100,
+              "ebucoreBitRate": 320000
+            },
+            {
+              "about": "https://data.biodiversitydata.nl/xeno-canto/observation/XC808057",
+              "dcFormat": {
+                "en": [
+                  "text/html"
+                ]
+              },
+              "textAttributionSnippet": "(la) Sonus naturalis - https://www.europeana.eu/item/999/WILDLIFEXSOUNDSXXXSOUNDSCAPEXXC808057. Naturalis Biodiversity Center - https://data.biodiversitydata.nl/xeno-canto/observation/XC808057. CC BY-NC-SA - http://creativecommons.org/licenses/by-nc-sa/4.0/",
+              "htmlAttributionSnippet": "<link rel='stylesheet' type='text/css' href='https://api.europeana.eu/attribution/style.css'/><dl class='europeana-attribution' lang='en'><dt>Title</dt><dd lang='la'><a href='http://data.europeana.eu/item/999/WILDLIFEXSOUNDSXXXSOUNDSCAPEXXC808057' target='_blank' rel='noopener'>Sonus naturalis</a></dd><dt>Institution</dt><dd lang=''><a href='https://data.biodiversitydata.nl/xeno-canto/observation/XC808057' target='_blank' rel='noopener'>Naturalis Biodiversity Center</a></dd><dt>Country</dt><dd lang=''>Netherlands</dd><dt>Rights</dt><dd><a href='http://creativecommons.org/licenses/by-nc-sa/4.0/' target='_blank' rel='noopener'><span class='icon-cc'/><span class='icon-by'/><span class='icon-nc'/><span class='icon-sa'/>CC BY-NC-SA</a></dd></dl>"
+            },
+            {
+              "about": "https://iiif.europeana.eu/presentation/999/WILDLIFEXSOUNDSXXXSOUNDSCAPEXXC808057/manifest",
+              "rdfType": "http://iiif.io/api/presentation/3#Manifest"
+            }
+          ],
+          "dqvHasQualityAnnotation": [
+            {
+              "created": "2024-01-18T15:37:47.630360Z",
+              "target": [
+                "/aggregation/provider/999/WILDLIFEXSOUNDSXXXSOUNDSCAPEXXC808057"
+              ],
+              "body": "http://www.europeana.eu/schemas/epf/contentTier3"
+            },
+            {
+              "created": "2024-01-18T15:37:47.630373Z",
+              "target": [
+                "/aggregation/provider/999/WILDLIFEXSOUNDSXXXSOUNDSCAPEXXC808057"
+              ],
+              "body": "http://www.europeana.eu/schemas/epf/metadataTierA"
+            }
+          ]
+        }
+      ],
+      "edmDatasetName": [
+        "999__Naturalis_Wildlife_Sounds_batch3"
+      ],
+      "europeanaAggregation": {
+        "about": "/aggregation/europeana/999/WILDLIFEXSOUNDSXXXSOUNDSCAPEXXC808057",
+        "aggregatedCHO": "/item/999/WILDLIFEXSOUNDSXXXSOUNDSCAPEXXC808057",
+        "edmCountry": {
+          "def": [
+            "Netherlands"
+          ]
+        },
+        "edmLanguage": {
+          "def": [
+            "en"
+          ]
+        },
+        "edmPreview": "https://api.europeana.eu/thumbnail/v2/url.json?uri=https%3A%2F%2Fxeno-canto.org%2Fsounds%2Fuploaded%2FTJSRKPHQNP%2Fwave%2FXC808057-large.png&type=SOUND",
+        "edmLandingPage": "https://www.europeana.eu/item/999/WILDLIFEXSOUNDSXXXSOUNDSCAPEXXC808057"
+      },
+      "europeanaCollectionName": [
+        "999__Naturalis_Wildlife_Sounds_batch3"
+      ],
+      "europeanaCompleteness": 7,
+      "organizations": [
+        {
+          "about": "http://data.europeana.eu/organization/1482250000000370517",
+          "prefLabel": {
+            "en": [
+              "Naturalis Biodiversity Center"
+            ]
+          }
+        },
+        {
+          "about": "http://data.europeana.eu/organization/1482250000004671150",
+          "prefLabel": {
+            "en": [
+              "OpenUp!"
+            ]
+          }
+        }
+      ],
+      "places": [
+        {
+          "about": "geo:42.9178,2.2289",
+          "prefLabel": {
+            "def": [
+              "Espéraza, Aude, Occitanie"
+            ]
+          },
+          "note": {
+            "def": [
+              "France"
+            ]
+          },
+          "isPartOf": {
+            "def": [
+              "https://sws.geonames.org/3017382/"
+            ]
+          },
+          "latitude": 42.9178,
+          "longitude": 2.2289
+        }
+      ],
+      "providedCHOs": [
+        {
+          "about": "/item/999/WILDLIFEXSOUNDSXXXSOUNDSCAPEXXC808057"
+        }
+      ],
+      "proxies": [
+        {
+          "about": "/proxy/europeana/999/WILDLIFEXSOUNDSXXXSOUNDSCAPEXXC808057",
+          "dcDate": {
+            "def": [
+              "#2023-06-08"
+            ]
+          },
+          "dcIdentifier": {
+            "def": [
+              "WILDLIFEXSOUNDSXXXSOUNDSCAPEXXC808057"
+            ]
+          },
+          "proxyIn": [
+            "/aggregation/europeana/999/WILDLIFEXSOUNDSXXXSOUNDSCAPEXXC808057"
+          ],
+          "proxyFor": "/item/999/WILDLIFEXSOUNDSXXXSOUNDSCAPEXXC808057",
+          "lineage": [
+            "/proxy/provider/999/WILDLIFEXSOUNDSXXXSOUNDSCAPEXXC808057"
+          ],
+          "europeanaProxy": true
+        },
+        {
+          "about": "/proxy/provider/999/WILDLIFEXSOUNDSXXXSOUNDSCAPEXXC808057",
+          "dcContributor": {
+            "def": [
+              "Cedric Mroczko (collector)"
+            ]
+          },
+          "dcDate": {
+            "def": [
+              "2023-06-08",
+              "05:30"
+            ]
+          },
+          "dcDescription": {
+            "def": [
+              "field recording",
+              "Dawn chorus. r05 +stereo clippy em272; animal seen:no; playback used:no"
+            ]
+          },
+          "dcIdentifier": {
+            "def": [
+              "808057@XC",
+              "https://data.biodiversitydata.nl/xeno-canto/observation/XC808057",
+              "XC808057"
+            ]
+          },
+          "dcRelation": {
+            "def": [
+              "http://www.biodiversitylibrary.org/name/Sonus+naturalis"
+            ]
+          },
+          "dcRights": {
+            "def": [
+              "Stichting Xeno-canto voor Natuurgeluiden",
+              "Cedric Mroczko"
+            ]
+          },
+          "dcSubject": {
+            "en": [
+              "Wildlife sounds - Soundscape"
+            ]
+          },
+          "dcTitle": {
+            "la": [
+              "Sonus naturalis"
+            ]
+          },
+          "dcType": {
+            "en": [
+              "Machine Observation"
+            ]
+          },
+          "dctermsAlternative": {
+            "def": [
+              "Soundscape"
+            ]
+          },
+          "dctermsSpatial": {
+            "def": [
+              "360 m",
+              "geo:42.9178,2.2289"
+            ]
+          },
+          "edmHasMet": {
+            "def": [
+              "808057XXCX2023X06X08",
+              "geo:42.9178,2.2289"
+            ]
+          },
+          "edmHasType": {
+            "def": [
+              "http://rs.tdwg.org/dwc/terms/MachineObservation"
+            ]
+          },
+          "proxyIn": [
+            "/aggregation/provider/999/WILDLIFEXSOUNDSXXXSOUNDSCAPEXXC808057"
+          ],
+          "proxyFor": "/item/999/WILDLIFEXSOUNDSXXXSOUNDSCAPEXXC808057",
+          "edmType": "SOUND",
+          "europeanaProxy": false
+        }
+      ],
+      "timespans": [
+        {
+          "about": "#2023-06-08",
+          "prefLabel": {
+            "zxx": [
+              "2023-06-08"
+            ]
+          },
+          "begin": {
+            "def": [
+              "2023-06-08"
+            ]
+          },
+          "end": {
+            "def": [
+              "2023-06-08"
+            ]
+          },
+          "isPartOf": {
+            "def": [
+              "http://data.europeana.eu/timespan/21"
+            ]
+          },
+          "skosNotation": {
+            "def": [
+              "2023-06-08"
+            ]
+          }
+        },
+        {
+          "about": "http://data.europeana.eu/timespan/21",
+          "prefLabel": {
+            "de": [
+              "21. Jahrhundert"
+            ],
+            "ru": [
+              "XXI век"
+            ],
+            "fi": [
+              "2000-luku"
+            ],
+            "pt": [
+              "Século XXI"
+            ],
+            "bg": [
+              "21 век"
+            ],
+            "lt": [
+              "XXI amžius"
+            ],
+            "lv": [
+              "21. gadsimts"
+            ],
+            "hr": [
+              "21. stoljeće"
+            ],
+            "fr": [
+              "XXIe siècle"
+            ],
+            "hu": [
+              "21. század"
+            ],
+            "sk": [
+              "21. storočie"
+            ],
+            "sl": [
+              "21. stoletje"
+            ],
+            "ga": [
+              "21ú haois"
+            ],
+            "ca": [
+              "Segle XXI"
+            ],
+            "sv": [
+              "2000-talet"
+            ],
+            "el": [
+              "21ος αιώνας"
+            ],
+            "en": [
+              "21st century"
+            ],
+            "it": [
+              "XXI secolo"
+            ],
+            "es": [
+              "Siglo XXI"
+            ],
+            "et": [
+              "21. sajand"
+            ],
+            "eu": [
+              "XXI. mendea"
+            ],
+            "cs": [
+              "21. století"
+            ],
+            "pl": [
+              "XXI wiek"
+            ],
+            "ro": [
+              "Secolul al XXI-lea"
+            ],
+            "da": [
+              "21. århundrede"
+            ],
+            "nl": [
+              "21e eeuw"
+            ]
+          },
+          "altLabel": {
+            "de": [
+              "21. Jh.",
+              "21. Jhd.",
+              "21. Jhdt.",
+              "21. Jhrh.",
+              "21. Jahrh.",
+              "21. Zentennium",
+              "21. Centennium",
+              "21. Hektode"
+            ],
+            "sv": [
+              "21:a århundradet",
+              "21:a seklet",
+              "2000-tal",
+              "2000-talet (århundrade)",
+              "2000-talet (sekel)"
+            ],
+            "fi": [
+              "21. vuosisata"
+            ],
+            "ru": [
+              "21 век"
+            ],
+            "en": [
+              "21st-century",
+              "21st-century",
+              "Twenty-first century",
+              "History, 21st Century",
+              "XXI Century",
+              "Current century"
+            ],
+            "it": [
+              "21° secolo",
+              "Secolo XXI",
+              "Ventunesimo secolo",
+              "XXI Secolo",
+              "Duemila"
+            ],
+            "pl": [
+              "21 wiek",
+              "21 stulecie",
+              "XXI stulecie",
+              "XXI w"
+            ],
+            "fr": [
+              "21e siècle",
+              "Vingt et unième siècle"
+            ],
+            "es": [
+              "Historia, siglo 21",
+              "Siglo 21",
+              "Este siglo",
+              "Siglo veintiuno"
+            ],
+            "ca": [
+              "Segle 21"
+            ]
+          },
+          "begin": {
+            "def": [
+              "2001-01-01"
+            ]
+          },
+          "end": {
+            "def": [
+              "2100-12-31"
+            ]
+          },
+          "owlSameAs": [
+            "http://www.wikidata.org/entity/Q6939",
+            "http://data.culture.fr/thesaurus/resource/ark:/67717/T4-46",
+            "http://id.loc.gov/authorities/names/sh85139024",
+            "http://data.bnf.fr/ark:/12148/cb11930812p",
+            "http://id.nlm.nih.gov/mesh/D049674",
+            "https://www.freebase.com/m/08b43",
+            "https://g.co/kg/m/08b43",
+            "http://id.nlm.nih.gov/mesh/K01.400.504.984",
+            "http://vocab.getty.edu/aat/300404515",
+            "http://id.worldcat.org/fast/1159816",
+            "http://babelnet.org/rdf/s01157225n",
+            "http://dbpedia.org/resource/21st_century"
+          ]
+        },
+        {
+          "about": "808057XXCX2023X06X08",
+          "begin": {
+            "def": [
+              "2023-06-08"
+            ]
+          }
+        }
+      ],
+      "timestamp_created": "2024-01-18T11:16:27.079Z",
+      "timestamp_created_epoch": 1705576587079,
+      "timestamp_update": "2024-01-18T11:16:27.079Z",
+      "timestamp_update_epoch": 1705576587079,
+      "type": "SOUND"
+    }
+  }
+]

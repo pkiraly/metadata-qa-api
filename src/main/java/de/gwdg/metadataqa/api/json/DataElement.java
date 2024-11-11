@@ -35,6 +35,7 @@ public class DataElement implements Cloneable, Serializable {
   private List<Rule> rules;
   private Schema schema;
   private String indexField;
+  private boolean asLanguageTagged = false;
 
   public DataElement(String label, String path, String solrFieldName) {
     this.label = label;
@@ -291,5 +292,14 @@ public class DataElement implements Cloneable, Serializable {
 
   public String generateIndexField() {
     return label.replaceAll("\\W", "_");
+  }
+
+  public DataElement setAsLanguageTagged() {
+    this.asLanguageTagged = true;
+    return this;
+  }
+
+  public boolean isAsLanguageTagged() {
+    return asLanguageTagged;
   }
 }

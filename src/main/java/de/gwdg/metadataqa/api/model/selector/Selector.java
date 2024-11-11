@@ -1,5 +1,6 @@
 package de.gwdg.metadataqa.api.model.selector;
 
+import de.gwdg.metadataqa.api.json.DataElement;
 import de.gwdg.metadataqa.api.model.XmlFieldInstance;
 
 import java.io.Serializable;
@@ -11,6 +12,7 @@ public interface Selector<T extends XmlFieldInstance> extends Serializable {
   Object read(String path, Object jsonFragment);
 
   List<T> get(String path);
+  List<T> get(DataElement dataElement);
   // <E> E get(String path, Class<E> clazz);
   List<T> get(String address, String path, Object jsonFragment);
   List<T> get(String address, String path, Object jsonFragment, Class clazz);

@@ -11,6 +11,7 @@ public class Field {
   private List<Rule> rules;
   private String indexField;
   private boolean identifierField;
+  private boolean asLanguageTagged;
 
   public String getName() {
     return name;
@@ -74,5 +75,13 @@ public class Field {
 
   public void setIdentifierField(boolean isRecordId) {
     this.identifierField = isRecordId;
+  }
+
+  public boolean isAsLanguageTagged() {
+    return asLanguageTagged;
+  }
+
+  public void setAsLanguageTagged(boolean asLanguageTagged) {
+    this.asLanguageTagged = asLanguageTagged;
   }
 }

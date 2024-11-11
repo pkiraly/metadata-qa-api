@@ -2,16 +2,13 @@ package de.gwdg.metadataqa.api.configuration.schema;
 
 import com.fasterxml.jackson.annotation.JsonGetter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import de.gwdg.metadataqa.api.util.Dimension;
 
 import java.io.Serializable;
 import java.lang.reflect.Field;
 import java.util.ArrayList;
-import java.util.LinkedHashMap;
 import java.util.List;
-import java.util.Map;
 
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public class Rule implements Serializable {
@@ -52,6 +49,8 @@ public class Rule implements Serializable {
   private Boolean skip = Boolean.FALSE;
   private Boolean debug = Boolean.FALSE;
   private Boolean allowEmptyInstances = Boolean.FALSE;
+  private Boolean multilingual;
+  private ApplicationScope hasLanguageTag;
 
   public String getId() {
     return id;
@@ -529,6 +528,32 @@ public class Rule implements Serializable {
 
   public Rule withAllowEmptyInstances(Boolean allowEmptyInstances) {
     this.allowEmptyInstances = allowEmptyInstances;
+    return this;
+  }
+
+  public Boolean getMultilingual() {
+    return multilingual;
+  }
+
+  public void setIsMultilingual(Boolean multilingual) {
+    this.multilingual = multilingual;
+  }
+
+  public Rule withMultilingual(Boolean multilingual) {
+    this.multilingual = multilingual;
+    return this;
+  }
+
+  public ApplicationScope getHasLanguageTag() {
+    return hasLanguageTag;
+  }
+
+  public void setHasLanguageTag(ApplicationScope hasLanguageTag) {
+    this.hasLanguageTag = hasLanguageTag;
+  }
+
+  public Rule withHasLanguageTag(ApplicationScope hasLanguageTag) {
+    this.hasLanguageTag = hasLanguageTag;
     return this;
   }
 

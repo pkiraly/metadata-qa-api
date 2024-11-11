@@ -18,14 +18,23 @@ public class DependencyChecker extends SingleFieldChecker {
 
   public static final String PREFIX = "dependency";
   protected List<String> dependencies;
+  private RuleCheckingOutputStatus failedDepencencyStatus;
 
   public DependencyChecker(DataElement field, List<String> dependencies) {
-    this(field, field.getLabel(), dependencies);
+    this(field, field.getLabel(), dependencies, RuleCheckingOutputStatus.FAILED);
   }
 
-  public DependencyChecker(DataElement field, String header, List<String> dependencies) {
+  public DependencyChecker(DataElement field, List<String> dependencies, RuleCheckingOutputStatus failedDepencencyStatus) {
+    this(field, field.getLabel(), dependencies, failedDepencencyStatus);
+  }
+
+  public DependencyChecker(DataElement field,
+                           String header,
+                           List<String> dependencies,
+                           RuleCheckingOutputStatus failedDepencencyStatus) {
     super(field, header + ":" + PREFIX);
     this.dependencies = dependencies;
+    this.failedDepencencyStatus = failedDepencencyStatus;
   }
 
   @Override
@@ -41,10 +50,9 @@ public class DependencyChecker extends SingleFieldChecker {
     if (globalResults == null)
       globalResults = localResults;
 
-    // boolean debug = id.equals("Q-4.3");
     var allPassed = true;
     var isNA = true;
-    List<XmlFieldInstance> instances = cache.get(field.getPath());
+    List<XmlFieldInstance> instances = cache.get(field);
     if (instances != null && !instances.isEmpty()) {
       for (XmlFieldInstance instance : instances) {
         if (instance.hasValue()) {

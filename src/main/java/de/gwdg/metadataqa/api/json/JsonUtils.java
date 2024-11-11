@@ -9,6 +9,7 @@ import de.gwdg.metadataqa.api.model.XmlFieldInstance;
 import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
@@ -82,6 +83,13 @@ public final class JsonUtils {
   public static List<? extends XmlFieldInstance> extractFieldInstanceList(Object value,
                                                                           String recordId,
                                                                           String jsonPath) {
+    return extractFieldInstanceList(value, recordId, jsonPath, false);
+  }
+
+  public static List<? extends XmlFieldInstance> extractFieldInstanceList(Object value,
+                                                                          String recordId,
+                                                                          String jsonPath,
+                                                                          boolean asLanguageTagged) {
     List<EdmFieldInstance> extracted = new ArrayList<>();
     if (value.getClass() == String.class) {
       extracted.add(new EdmFieldInstance((String) value));
@@ -110,9 +118,13 @@ public final class JsonUtils {
         } else if (outerVal.getClass() == BigInteger.class) {
           extracted.add(new EdmFieldInstance(((BigInteger) outerVal).toString()));
         } else if (outerVal.getClass() == JSONArray.class) {
-          extracted.addAll(extractInnerArray(outerVal, recordId, jsonPath));
+          extracted.addAll(extractInnerArray(outerVal, recordId, jsonPath, asLanguageTagged));
         } else if (outerVal.getClass() == LinkedHashMap.class) {
-          extracted.add(hashToFieldInstance(outerVal, recordId, jsonPath));
+          if (asLanguageTagged) {
+            extracted.addAll(convertLanguageTaggedMap(outerVal, recordId, jsonPath));
+          } else {
+            extracted.add(hashToFieldInstance(outerVal, recordId, jsonPath, asLanguageTagged));
+          }
         } else {
           LOGGER.severe(String.format(
                 "Unhandled outerArray type: %s, %s [record ID: %s, path: %s]",
@@ -121,7 +133,11 @@ public final class JsonUtils {
         }
       }
     } else if (value.getClass() == LinkedHashMap.class) {
-      extracted.add(hashToFieldInstance(value, recordId, jsonPath));
+      if (asLanguageTagged) {
+        extracted.addAll(convertLanguageTaggedMap(value, recordId, jsonPath));
+      } else {
+        extracted.add(hashToFieldInstance(value, recordId, jsonPath, asLanguageTagged));
+      }
     } else if (value.getClass() == Integer.class) {
       extracted.add(new EdmFieldInstance(Integer.toString((int) value)));
     } else if (value.getClass() == Float.class) {
@@ -143,7 +159,8 @@ public final class JsonUtils {
     return extracted;
   }
 
-  private static List<EdmFieldInstance> extractInnerArray(Object outerVal, String recordId, String jsonPath) {
+  private static List<EdmFieldInstance> extractInnerArray(Object outerVal, String recordId, String jsonPath,
+                                                          boolean asLanguageTagged) {
     List<EdmFieldInstance> extracted = new ArrayList<>();
     JSONArray array = (JSONArray) outerVal;
     for (int j = 0, l2 = array.size(); j < l2; j++) {
@@ -151,9 +168,13 @@ public final class JsonUtils {
       if (innerVal.getClass() == String.class) {
         extracted.add(new EdmFieldInstance((String) innerVal));
       } else if (innerVal.getClass() == LinkedHashMap.class) {
-        extracted.add(hashToFieldInstance(innerVal, recordId, jsonPath));
+        if (asLanguageTagged) {
+          extracted.addAll(convertLanguageTaggedMap(innerVal, recordId, jsonPath));
+        } else {
+          extracted.add(hashToFieldInstance(innerVal, recordId, jsonPath, asLanguageTagged));
+        }
       } else if (innerVal.getClass() == JSONArray.class) {
-        extracted.addAll(extractInnerArray(innerVal, recordId, jsonPath));
+        extracted.addAll(extractInnerArray(innerVal, recordId, jsonPath, asLanguageTagged));
       } else {
         LOGGER.severe(String.format(
               "Unhandled inner array type: %s, [record ID: %s, path: %s]",
@@ -164,7 +185,34 @@ public final class JsonUtils {
     return extracted;
   }
 
-  public static EdmFieldInstance hashToFieldInstance(Object innerVal, String recordId, String jsonPath)  {
+  private static Collection<? extends EdmFieldInstance> convertLanguageTaggedMap(Object innerVal,
+                                                                                 String recordId,
+                                                                                 String jsonPath) {
+    List<EdmFieldInstance> instances = new ArrayList<>();
+    Map<String, Object> map = (LinkedHashMap<String, Object>) innerVal;
+    for (Map.Entry<String, Object> entry : map.entrySet()) {
+      String languageTag = entry.getKey();
+      if (entry.getValue() instanceof JSONArray) {
+        JSONArray values = (JSONArray) entry.getValue();
+        for (Object value : values) {
+          if (value instanceof String) {
+            instances.add(new EdmFieldInstance(value.toString(), languageTag));
+          } else {
+            LOGGER.severe("Other type of entry value: " + entry.getValue().getClass().getCanonicalName() +  " " + entry.getValue());
+          }
+        }
+      } else {
+        LOGGER.severe("Other type of entry value: " + entry.getValue().getClass().getCanonicalName()
+        + " " + entry.getValue());
+      }
+    }
+    return instances;
+  }
+
+  public static EdmFieldInstance hashToFieldInstance(Object innerVal,
+                                                     String recordId,
+                                                     String jsonPath,
+                                                     boolean asLanguageTagged)  {
     Map<String, Object> map = (LinkedHashMap<String, Object>) innerVal;
     var instance = new EdmFieldInstance();
     for (Map.Entry<String, Object> entry : map.entrySet()) {
@@ -197,6 +245,14 @@ public final class JsonUtils {
         // instance.setValue(map.get("def"));
       } else if (entry.getKey().equals("@lang")) {
         instance.setLanguage((String) value);
+      } else if (asLanguageTagged) {
+        instance.setLanguage(entry.getKey());
+        if (entry.getValue() instanceof JSONArray) {
+          JSONArray values = (JSONArray) entry.getValue();
+          instance.setValue((String) values.get(0));
+        } else {
+          LOGGER.severe("Other type of entry value: " + entry.getValue().getClass().getCanonicalName());
+        }
       } else {
         LOGGER.severe(String.format(
               "Other type (%s) of map: %s, [record ID: %s, path: %s]",

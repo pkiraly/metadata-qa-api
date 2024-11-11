@@ -42,4 +42,6 @@ public class JSONRecordReaderTest extends IOTestBase {
     assertEquals("https://neurovault.org/images/384958/", fields.get(0).getResultMap().get("url"));
     assertEquals("massivea uditory lexical decision", fields.get(0).getResultMap().get("name"));
   }
+
+  //     path: $.['object']['proxies'][?(@['europeanaProxy'] == false)]['dcTitle'][*]
 }

@@ -40,6 +40,8 @@ digital collections.
         * [`unique <boolean>`](#unique-boolean)
         * [`dependencies [id1, id2, ..., idN]`](#dependencies-id1-id2--idn)
         * [`dimension [criteria1, criteria2, ..., criteriaN]`](#dimension-criteria1-criteria2--criterian)
+        * [`hasLanguageTag <anyOf|oneOf|allOf>`](#haslanguagetag-anyofoneofallof)
+        * [`isMultilingual <boolean>`](#ismultilingual-boolean)
       - [General properties](#general-properties)
         * [`id <String>`](#id-string)
         * [`description <String>`](#description-string)
@@ -92,6 +94,9 @@ usage:
       [-f <format>] [-h <arg>] [-o <file>] [-r <path>] [-v <format>] [-w <format>] [-z]
 ```
 * `-i,--input <file>` Input file.
+* `-n,--inputFormat <format>` (optional, String) The format of input file. Right now it supports two JSON variants:
+  * `ndjson`: line delimited JSON in which every line is a new record (the default value)
+  * `json-array`: JSON file that contains an array of objects
 * `-s,--schema <file>` Schema file describing the metadata structure to run assessment against.
 * `-v,--schemaFormat <format>` Format of schema file: json, yaml. Default: based on file extension, else json.
 * `-m,--measurements <file>` Configuration file for measurements.
@@ -505,6 +510,11 @@ a single data elements (a DataELement in the API). Its properties are:
   against
 * `indexField` (String): the name which can be used in a search engine connected
   to the application (at the time of writing Apache Solr is supported)
+* `inactive` (boolean): the data element is inactive, do not run checks on this
+* `identifierField` (boolean): the data element is the identifier of the record
+* `asLanguageTagged` (boolean): treat the data element as language tagged. It works 
+  for JSON where the content of the data element is encoded with an associated 
+  array, where the keys are the language tags.
 
 Optionaly you can set the "canonical list" of categories. It provides
 two additional functionalities 
@@ -534,7 +544,7 @@ One can add constraints to the fields. There are content rules, which
 the tool will check. In this version the tool mimin SHACL constraints.
 
 #### Cardinality
-One can specify with this properties how many occurrences of a data elemens
+One can specify with these constraints how many occurrences of a data element
 a record can have.
 
 ##### `minCount <number>`
@@ -876,6 +886,79 @@ fields:
       minWidth: 200
       minHeight: 200
 ```
+
+##### `hasLanguageTag <anyOf|oneOf|allOf>`
+
+(since v0.9.6)
+
+It checks if the data element value has language tag. In XML the language tag is
+found in `@xml:lang` attribute. In JSON it might be encoded differently. Right now 
+MQAF suppoert the following encoding:
+
+```json
+"description": {
+  "de": ["Porträt"]
+}
+```
+
+Since this kind of structure might be applied not only for the language annotation, at
+the field level we should set that the field is expected to have language annotation:
+
+```yaml
+format: json
+fields:
+  - name: description
+    path: $.['description']
+    asLanguageTagged: true
+```
+
+The parameters defines if any, one or all instances should have language annottation:
+
+* `anyOf`: the test passes if at least one instance has language tag
+* `oneOf`: the test passes if one and only one instance has language tag
+* `allOf`: the test passes if at least all instances have language tag
+
+A full example:
+
+```yaml
+format: json
+fields:
+- name: description
+  path: $.['description']
+  asLanguageTagged: true
+  rules:
+  - hasLanguageTag: allOf
+```
+
+##### `isMultilingual <boolean>`
+
+(since v0.9.6)
+
+It checks if the data element is multilingual, so it has at least two instances with
+different language annotations.
+
+```json
+{
+  "description":{
+    "de":["Portr\u00e4t"],
+    "zh":["\u8096\u50cf"]
+  }
+}
+
+```
+
+an example schema
+
+```yaml
+format: json
+fields:
+  - name: description
+    path: $.['description']
+    asLanguageTagged: true
+    rules:
+      - isMultilingual: true
+```
+
 
 #### General properties
 

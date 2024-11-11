@@ -36,7 +36,7 @@ public class HasValueChecker extends SingleFieldChecker {
 
     var allPassed = false;
     var isNA = true;
-    List<XmlFieldInstance> instances = cache.get(field.getPath());
+    List<XmlFieldInstance> instances = cache.get(field);
     if (instances != null && !instances.isEmpty()) {
       for (XmlFieldInstance instance : instances) {
         if (instance.hasValue()) {

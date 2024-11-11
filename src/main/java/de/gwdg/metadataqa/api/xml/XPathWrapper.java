@@ -22,6 +22,7 @@ import java.io.InputStream;
 import java.io.Serializable;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.logging.Level;
@@ -36,6 +37,7 @@ public class XPathWrapper implements Serializable {
   private static final DocumentBuilder builder = initializeDocumentBuilder();
   private static transient Map<String, String> namespaces;
   private boolean namespaceChanged = false;
+  private static Map<String, XPathExpression> xpathCache = new HashMap<>();
 
   private static DocumentBuilder initializeDocumentBuilder() {
     DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
@@ -128,7 +130,9 @@ public class XPathWrapper implements Serializable {
   public List<EdmFieldInstance> extractFieldInstanceList(Object context, String xpath) {
     List<EdmFieldInstance> list = new ArrayList<>();
     try {
-      XPathExpression expr = xpathEngine.compile(xpath);
+      if (!xpathCache.containsKey(xpath))
+        xpathCache.put(xpath, xpathEngine.compile(xpath));
+      XPathExpression expr = xpathCache.get(xpath);
       if (xpath.endsWith(")")) {
         String value = String.valueOf(expr.evaluate(context, XPathConstants.STRING));
         list.add(new EdmFieldInstance(value, null, null));
@@ -137,7 +141,9 @@ public class XPathWrapper implements Serializable {
         for (var i = 0; i < nodes.getLength(); i++) {
           Node node = nodes.item(i);
           if (node.getNodeType() == Node.ELEMENT_NODE) {
-            String value = node.getTextContent();
+            String value = node.getTextContent().trim();
+            if (value.contains("\n"))
+              value = value.replaceAll("(\\r|\\n)", " ").replaceAll("\\s+", " ");
             String lang = null;
             String resource = null;
             if (node.hasAttributes()) {
@@ -153,7 +159,7 @@ public class XPathWrapper implements Serializable {
         }
       }
     } catch (XPathExpressionException e) {
-      LOGGER.log(Level.WARNING, "extractFieldInstanceList", e);
+      LOGGER.log(Level.WARNING, "error in extractFieldInstanceList() with xpath: '" + xpath + "' " + e.getMessage());
     }
     return list;
   }
@@ -186,6 +192,8 @@ public class XPathWrapper implements Serializable {
     String value = null;
     if (attribute != null) {
       value = attribute.getNodeValue();
+      if (value != null)
+        value = value.trim();
     }
     return value;
   }

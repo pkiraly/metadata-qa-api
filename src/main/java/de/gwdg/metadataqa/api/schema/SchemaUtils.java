@@ -14,12 +14,14 @@ import de.gwdg.metadataqa.api.rule.singlefieldchecker.EnumerationChecker;
 import de.gwdg.metadataqa.api.rule.pairchecker.EqualityChecker;
 import de.gwdg.metadataqa.api.rule.singlefieldchecker.HasValueChecker;
 import de.gwdg.metadataqa.api.rule.singlefieldchecker.ImageDimensionChecker;
+import de.gwdg.metadataqa.api.rule.singlefieldchecker.LanguageTagChecker;
 import de.gwdg.metadataqa.api.rule.singlefieldchecker.MaxCountChecker;
 import de.gwdg.metadataqa.api.rule.singlefieldchecker.MaxLengthChecker;
 import de.gwdg.metadataqa.api.rule.singlefieldchecker.MaxWordsChecker;
 import de.gwdg.metadataqa.api.rule.singlefieldchecker.MinCountChecker;
 import de.gwdg.metadataqa.api.rule.singlefieldchecker.MinLengthChecker;
 import de.gwdg.metadataqa.api.rule.singlefieldchecker.MinWordsChecker;
+import de.gwdg.metadataqa.api.rule.singlefieldchecker.MultilingualChecker;
 import de.gwdg.metadataqa.api.rule.singlefieldchecker.NumericValueChecker;
 import de.gwdg.metadataqa.api.rule.singlefieldchecker.PatternChecker;
 import de.gwdg.metadataqa.api.rule.RuleChecker;
@@ -119,11 +121,18 @@ public class SchemaUtils {
     if (rule.getDimension() != null)
       ruleCheckers.add(new ImageDimensionChecker(dataElement, rule.getDimension()));
 
-    if (rule.getDependencies() != null && !rule.getDependencies().isEmpty())
+    if (rule.getDependencies() != null && !rule.getDependencies().isEmpty()) {
       ruleCheckers.add(new DependencyChecker(dataElement, rule.getDependencies()));
+    }
 
     if (rule.getUnique() != null && rule.getUnique().equals(Boolean.TRUE))
       ruleCheckers.add(new UniquenessChecker(dataElement));
+
+    if (rule.getMultilingual() != null && rule.getMultilingual().equals(Boolean.TRUE))
+      ruleCheckers.add(new MultilingualChecker(dataElement));
+
+    if (rule.getHasLanguageTag() != null)
+      ruleCheckers.add(new LanguageTagChecker(dataElement).withScope(rule.getHasLanguageTag()));
 
     if (rule.getLessThan() != null)
       pair(schema, ruleCheckers, dataElement, rule.getLessThan(), "LessThan");
@@ -149,7 +158,7 @@ public class SchemaUtils {
       ruleCheckers.add(new NotChecker(dataElement, childRuleCheckers));
     }
 
-    if (!ruleCheckers.isEmpty())
+    if (!ruleCheckers.isEmpty()) {
       for (RuleChecker ruleChecker : ruleCheckers) {
         ruleChecker.setFailureScore(rule.getFailureScore());
         ruleChecker.setSuccessScore(rule.getSuccessScore());
@@ -167,6 +176,7 @@ public class SchemaUtils {
           }
         }
       }
+    }
 
     return ruleCheckers;
   }

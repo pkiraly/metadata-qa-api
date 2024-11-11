@@ -299,8 +299,23 @@ public class JsonUtilsTest {
 
   }
 
+  @Test
+  public void testExtractFieldInstanceMap() {
+    List<EdmFieldInstance> expected = Arrays.asList(
+      new EdmFieldInstance("2023-05-12", "def"),
+      new EdmFieldInstance("07:30", "def")
+    );
+    List<? extends XmlFieldInstance> list = extractFieldInstanceListTagged(
+      "{\"def\": [\"2023-05-12\",\"07:30\"]}", "dcDate");
+    assertEquals(expected, list);
+  }
+
   private List<? extends XmlFieldInstance> extractFieldInstanceList(String json, String path) {
     return JsonUtils.extractFieldInstanceList(PARSER.parse(json), "1", path);
+  }
+
+  private List<? extends XmlFieldInstance> extractFieldInstanceListTagged(String json, String path) {
+    return JsonUtils.extractFieldInstanceList(PARSER.parse(json), "1", path, true);
   }
 
   private List<? extends XmlFieldInstance> createFieldList(String... args) {

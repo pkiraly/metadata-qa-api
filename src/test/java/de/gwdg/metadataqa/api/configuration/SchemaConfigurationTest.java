@@ -1,5 +1,6 @@
 package de.gwdg.metadataqa.api.configuration;
 
+import de.gwdg.metadataqa.api.configuration.schema.ApplicationScope;
 import de.gwdg.metadataqa.api.configuration.schema.Field;
 import de.gwdg.metadataqa.api.configuration.schema.Group;
 import de.gwdg.metadataqa.api.configuration.schema.Rule;
@@ -347,5 +348,23 @@ public class SchemaConfigurationTest {
     assertEquals(7, contentTypeRule.getContentType().size());
     assertEquals(List.of("image/jpeg", "image/png", "image/tiff", "image/tiff-fx", "image/gif", "image/svg+xml", "application/pdf"),
       contentTypeRule.getContentType());
+  }
+
+  @Test
+  public void yaml_asLanguageTagged() throws FileNotFoundException {
+    Schema schema = ConfigurationReader.readSchemaYaml("src/test/resources/configuration/schema/asLanguageTagged.yaml").asSchema();
+    assertEquals(true, schema.getPathByLabel("description").isAsLanguageTagged());
+  }
+
+  @Test
+  public void yaml_isMultilingual() throws FileNotFoundException {
+    Schema schema = ConfigurationReader.readSchemaYaml("src/test/resources/configuration/schema/rules/isMultilingual.yaml").asSchema();
+    assertEquals(true, schema.getPathByLabel("description").getRules().get(0).getMultilingual());
+  }
+
+  @Test
+  public void yaml_hasLanguaggeTag() throws FileNotFoundException {
+    Schema schema = ConfigurationReader.readSchemaYaml("src/test/resources/configuration/schema/rules/hasLanguageTag.yaml").asSchema();
+    assertEquals(ApplicationScope.allOf, schema.getPathByLabel("description").getRules().get(0).getHasLanguageTag());
   }
 }

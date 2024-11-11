@@ -1,0 +1,11 @@
+format: json
+fields:
+  - name: about
+    path:  $.['about']
+    rules:
+      - lessThanOrEquals: description
+  - name: description
+    path: $.['description']
+    asLanguageTagged: true
+    rules:
+      - isMultilingual: true

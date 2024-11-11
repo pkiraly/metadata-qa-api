@@ -38,7 +38,7 @@ public class ContentTypeChecker extends SingleFieldChecker {
     var isNA = true;
     int instanceCount = 0;
     int failureCount = 0;
-    List<XmlFieldInstance> instances = cache.get(field.getPath());
+    List<XmlFieldInstance> instances = cache.get(field);
     if (instances != null && !instances.isEmpty()) {
       for (XmlFieldInstance instance : instances) {
         if (instance.hasValue()) {
