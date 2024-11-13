@@ -24,19 +24,30 @@ public class Indexer extends QaSolrClient implements Calculator, Shutdownable, S
   private static final Logger LOGGER = Logger.getLogger(Indexer.class.getCanonicalName());
 
   public static final String CALCULATOR_NAME = "indexer";
+  private int generatedRecordId;
+  private int indexCounter;
+
 
   public Indexer(SolrClient solrClient, Schema schema) {
     super(solrClient, schema);
     solrClient.deleteAll();
+    generatedRecordId = 1;
+    indexCounter = 0;
+    LOGGER.info("Indexer created " + solrClient.getClass().getCanonicalName());
   }
 
   @Override
   public List<MetricResult> measure(Selector cache) {
     try {
       List<String> extractedValues = extractValue(cache, schema.getRecordId().getPath());
-      if (extractedValues.isEmpty())
-        throw new RuntimeException(String.format("Missing record ID (path: %s)", schema.getRecordId().getPath()));
-      String recordId = extractedValues.get(0);
+      String recordId = null;
+      if (extractedValues.isEmpty()) {
+        LOGGER.severe("id label: " + schema.getRecordId().getLabel());
+        LOGGER.severe(String.format("Missing record ID (path: %s)", schema.getRecordId().getPath()));
+        recordId = "unknownId-" + generatedRecordId++;
+      } else {
+        recordId = extractedValues.get(0);
+      }
 
       Map<String, List<String>> resultMap = new HashMap<>();
       for (UniquenessField solrField : solrFields) {
@@ -45,6 +56,7 @@ public class Indexer extends QaSolrClient implements Calculator, Shutdownable, S
           resultMap.put(solrField.getSolrField(), values);
       }
       solrClient.indexMap(recordId, resultMap);
+      indexCounter++;
     } catch (IOException | SolrServerException e) {
       e.printStackTrace();
     } catch (Exception e) {
@@ -75,7 +87,7 @@ public class Indexer extends QaSolrClient implements Calculator, Shutdownable, S
 
   @Override
   public void shutDown() {
-    LOGGER.info("shutDown");
+    LOGGER.info("shutDown solr. Counter: " + indexCounter);
     solrClient.commit();
   }
 }
