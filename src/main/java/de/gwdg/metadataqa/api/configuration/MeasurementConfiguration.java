@@ -123,6 +123,8 @@ public class MeasurementConfiguration implements Serializable {
   private RuleCheckingOutputType ruleCheckingOutputType = RuleCheckingOutputType.SCORE;
   private Map<String, Object> annottaionColumns;
 
+  private boolean generatedIdentifierEnabled = false;
+
   public MeasurementConfiguration() {}
 
   /**
@@ -693,5 +695,18 @@ public class MeasurementConfiguration implements Serializable {
 
   public Map<String, Object> getAnnottaionColumns() {
     return annottaionColumns;
+  }
+
+  public boolean isGeneratedIdentifierEnabled() {
+    return generatedIdentifierEnabled;
+  }
+
+  public MeasurementConfiguration enableGeneratedIdentifier(boolean flag) {
+    this.generatedIdentifierEnabled = flag;
+    return this;
+  }
+
+  public void setGeneratedIdentifierEnabled(boolean generatedIdentifierEnabled) {
+    this.generatedIdentifierEnabled = generatedIdentifierEnabled;
   }
 }

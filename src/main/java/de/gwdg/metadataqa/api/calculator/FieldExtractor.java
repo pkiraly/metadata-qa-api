@@ -11,6 +11,7 @@ import de.gwdg.metadataqa.api.model.XmlFieldInstance;
 import de.gwdg.metadataqa.api.problemcatalog.FieldCounterBasedResult;
 import de.gwdg.metadataqa.api.schema.Schema;
 import de.gwdg.metadataqa.api.util.FileUtils;
+import de.gwdg.metadataqa.api.util.IdentifierGenerator;
 import org.apache.commons.lang3.StringUtils;
 
 import java.io.Serializable;
@@ -35,6 +36,7 @@ public class FieldExtractor implements Calculator, Serializable {
   private String idPath;
   protected String nullValue = "";
   protected Schema schema;
+  private boolean generatedIdentifierEnabled;
 
   public FieldExtractor() {
   }
@@ -108,8 +110,12 @@ public class FieldExtractor implements Calculator, Serializable {
       }
       value = StringUtils.join(values, " --- ");
     }
-    // LOGGER.info("value: " + value);
+    if (fieldName.equals(FIELD_NAME) && StringUtils.isBlank(value))
+      value = IdentifierGenerator.generate();
+
+    // LOGGER.info(String.format("fieldName: %s, value: %s", fieldName, value));
     resultMap.put(fieldName, value);
+    cache.setRecordId(value);
   }
 
   public String getIdPath() {
@@ -132,5 +138,9 @@ public class FieldExtractor implements Calculator, Serializable {
           headers.add(FileUtils.escape(fieldName));
 
     return headers;
+  }
+
+  public void enableGeneratedIdentifier() {
+    generatedIdentifierEnabled = true;
   }
 }

@@ -9,6 +9,8 @@ import de.gwdg.metadataqa.api.model.selector.Selector;
 import de.gwdg.metadataqa.api.schema.Schema;
 import de.gwdg.metadataqa.api.uniqueness.SolrClient;
 import de.gwdg.metadataqa.api.uniqueness.UniquenessField;
+import de.gwdg.metadataqa.api.util.IdentifierGenerator;
+import org.apache.commons.lang3.StringUtils;
 import org.apache.solr.client.solrj.SolrServerException;
 
 import java.io.IOException;
@@ -26,6 +28,7 @@ public class Indexer extends QaSolrClient implements Calculator, Shutdownable, S
   public static final String CALCULATOR_NAME = "indexer";
   private int generatedRecordId;
   private int indexCounter;
+  private boolean isGeneratedIdentifierEnabled = false;
 
 
   public Indexer(SolrClient solrClient, Schema schema) {
@@ -42,12 +45,15 @@ public class Indexer extends QaSolrClient implements Calculator, Shutdownable, S
       List<String> extractedValues = extractValue(cache, schema.getRecordId().getPath());
       String recordId = null;
       if (extractedValues.isEmpty()) {
-        LOGGER.severe("id label: " + schema.getRecordId().getLabel());
         LOGGER.severe(String.format("Missing record ID (path: %s)", schema.getRecordId().getPath()));
-        recordId = "unknownId-" + generatedRecordId++;
+        if (cache.getRecordId() != null)
+          recordId = cache.getRecordId();
+        else if (isGeneratedIdentifierEnabled)
+          recordId = IdentifierGenerator.generate();
       } else {
-        recordId = extractedValues.get(0);
+        recordId = StringUtils.join(extractedValues, " --- ");
       }
+      cache.setRecordId(recordId);
 
       Map<String, List<String>> resultMap = new HashMap<>();
       for (UniquenessField solrField : solrFields) {
@@ -89,5 +95,9 @@ public class Indexer extends QaSolrClient implements Calculator, Shutdownable, S
   public void shutDown() {
     LOGGER.info("shutDown solr. Counter: " + indexCounter);
     solrClient.commit();
+  }
+
+  public void enableGeneratedIdentifier() {
+    this.isGeneratedIdentifierEnabled = true;
   }
 }

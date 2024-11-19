@@ -52,8 +52,12 @@ public class CalculatorFactory {
   }
 
   private void addExtractor() {
-    if (configuration.isFieldExtractorEnabled() && !schema.getExtractableFields().isEmpty())
-      calculators.add(new FieldExtractor(schema));
+    if (configuration.isFieldExtractorEnabled() && !schema.getExtractableFields().isEmpty()) {
+      FieldExtractor fieldExtractor = new FieldExtractor(schema);
+      if (configuration.isGeneratedIdentifierEnabled())
+        fieldExtractor.enableGeneratedIdentifier();
+      calculators.add(fieldExtractor);
+    }
   }
 
   private void addAnnotator() {
@@ -163,7 +167,10 @@ public class CalculatorFactory {
         if (configuration.getSolrConfiguration() != null)
           configuration.setSolrClient(new DefaultSolrClient(configuration.getSolrConfiguration()));
       }
-      calculators.add(new Indexer(configuration.getSolrClient(), schema));
+      Indexer indexer = new Indexer(configuration.getSolrClient(), schema);
+      if (configuration.isGeneratedIdentifierEnabled())
+        indexer.enableGeneratedIdentifier();
+      calculators.add(indexer);
     }
   }
 

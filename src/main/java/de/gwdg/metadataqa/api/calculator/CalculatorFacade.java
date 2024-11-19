@@ -175,27 +175,31 @@ public class CalculatorFacade implements Serializable {
   protected <T extends XmlFieldInstance> Object measureWithGenerics(String content,
                                                                     OutputCollector.TYPE type)
       throws InvalidJsonException {
-    conditionalConfiguration();
 
-    MetricCollector collector = new MetricCollector();
-
-    if (schema == null) {
-      throw new IllegalStateException("schema is missing");
-    } else {
-      var format = schema.getFormat();
-      if (format != null && content != null) {
-        cache = SelectorFactory.getInstance(schema.getFormat(), content, schema.getNamespaces());
-        if (schema.getFormat().equals(Format.CSV))
-          initializeCsvCache(content);
-
-        if (!isCsvHeaderLine())
-          runMeasurements(collector);
-
-        isFirstRecord = false;
-      }
-    }
+    MetricCollector collector = measureWithoutFormat(content);
 
     return collector.createOutput(type, compressionLevel);
+  }
+
+  public MetricCollector measureWithoutFormat(String content) {
+    if (schema == null)
+      throw new IllegalStateException("schema is missing");
+
+    MetricCollector collector = new MetricCollector();
+    var format = schema.getFormat();
+    if (format != null && content != null) {
+      conditionalConfiguration();
+
+      cache = SelectorFactory.getInstance(schema.getFormat(), content, schema.getNamespaces());
+      if (schema.getFormat().equals(Format.CSV))
+        initializeCsvCache(content);
+
+      if (!isCsvHeaderLine())
+        runMeasurements(collector);
+
+      isFirstRecord = false;
+    }
+    return collector;
   }
 
   private boolean isCsvHeaderLine() {
