@@ -9,6 +9,7 @@ import de.gwdg.metadataqa.api.rule.RuleCheckerOutput;
 import de.gwdg.metadataqa.api.rule.RuleCheckingOutputStatus;
 import de.gwdg.metadataqa.api.rule.RuleCheckingOutputType;
 import de.gwdg.metadataqa.api.rule.singlefieldchecker.DependencyChecker;
+import de.gwdg.metadataqa.api.rule.singlefieldchecker.MinCountChecker;
 
 import java.util.List;
 
@@ -53,6 +54,13 @@ public class AndChecker extends LogicalChecker {
       }
     } else {
       isNA = true;
+      for (RuleChecker checker : checkers) {
+        if (checker instanceof MinCountChecker) {
+          MinCountChecker minCountChecker = (MinCountChecker) checker;
+          if (!minCountChecker.isEmptyInstancesAllowed() || minCountChecker.getMinCount() > 0)
+            allPassed = false;
+        }
+      }
     }
     addOutput(results, isNA, allPassed, outputType);
 

@@ -51,4 +51,12 @@ public class MinCountChecker extends SingleFieldChecker {
   public void setAllowEmptyInstances(boolean allowEmptyInstances) {
     this.allowEmptyInstances = allowEmptyInstances;
   }
+
+  public Integer getMinCount() {
+    return minCount;
+  }
+
+  public boolean isEmptyInstancesAllowed() {
+    return allowEmptyInstances;
+  }
 }
