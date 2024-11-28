@@ -32,6 +32,7 @@ public class XpathEngineFactory {
     defaultNamespaces.put("dqv", "http://www.w3.org/ns/dqv#");
     defaultNamespaces.put("xml", "http://www.w3.org/XML/1998/namespace");
     defaultNamespaces.put("oai", "http://www.openarchives.org/OAI/2.0/");
+    defaultNamespaces.put("lido", "http://www.lido-schema.org");
   }
 
   public static XPath initializeEngine() {

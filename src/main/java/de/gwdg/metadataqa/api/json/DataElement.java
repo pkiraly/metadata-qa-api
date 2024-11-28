@@ -1,5 +1,6 @@
 package de.gwdg.metadataqa.api.json;
 
+import com.fasterxml.jackson.annotation.JsonGetter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import de.gwdg.metadataqa.api.configuration.schema.Rule;
@@ -62,6 +63,7 @@ public class DataElement implements Cloneable, Serializable {
     setParent(parent);
   }
 
+  @JsonGetter("name")
   public String getLabel() {
     return label;
   }
@@ -80,6 +82,7 @@ public class DataElement implements Cloneable, Serializable {
     return this;
   }
 
+  @JsonIgnore
   public String getAbsolutePath() {
     Format format = hasFormat() ? schema.getFormat() : Format.JSON;
     return getAbsolutePath(format);
@@ -159,6 +162,7 @@ public class DataElement implements Cloneable, Serializable {
     return this;
   }
 
+  @JsonIgnore
   public List<DataElement> getChildren() {
     return children;
   }
@@ -186,6 +190,7 @@ public class DataElement implements Cloneable, Serializable {
     return this;
   }
 
+  @JsonIgnore
   public boolean isActive() {
     return isActive;
   }
@@ -238,6 +243,7 @@ public class DataElement implements Cloneable, Serializable {
     return this;
   }
 
+  @JsonIgnore
   public boolean isMandatory() {
     return isMandatory;
   }

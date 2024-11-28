@@ -1,5 +1,6 @@
 package de.gwdg.metadataqa.api.schema;
 
+import com.fasterxml.jackson.annotation.JsonGetter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import de.gwdg.metadataqa.api.configuration.schema.Rule;
@@ -12,6 +13,7 @@ import org.apache.commons.lang3.StringUtils;
 import java.io.Serializable;
 import java.lang.reflect.Field;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
@@ -93,6 +95,7 @@ public class BaseSchema implements Schema, CsvAwareSchema, Serializable {
   }
 
   @Override
+  @JsonGetter("fields")
   public List<DataElement> getPaths() {
     return new ArrayList<>(paths.values());
   }
@@ -104,10 +107,11 @@ public class BaseSchema implements Schema, CsvAwareSchema, Serializable {
 
   public BaseSchema addFieldGroup(FieldGroup fieldgroup) {
     fieldGroups.add(fieldgroup);
-	return this;
+	  return this;
   }
 
   @Override
+  @JsonGetter("groups")
   public List<FieldGroup> getFieldGroups() {
     return fieldGroups;
   }
@@ -198,9 +202,22 @@ public class BaseSchema implements Schema, CsvAwareSchema, Serializable {
     this.namespaces = namespaces;
   }
 
+  public BaseSchema withNamespaces(Map<String, String> namespaces) {
+    this.namespaces = namespaces;
+    return this;
+  }
+
   @Override
   public Map<String, String> getNamespaces() {
     return namespaces;
+  }
+
+  public BaseSchema addNamespace(String prefix, String uri) {
+    if (namespaces == null) {
+      namespaces = new LinkedHashMap<>();
+    }
+    namespaces.put(prefix, uri);
+    return this;
   }
 
   @Override
