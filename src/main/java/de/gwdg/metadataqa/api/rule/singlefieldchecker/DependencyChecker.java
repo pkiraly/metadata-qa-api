@@ -24,7 +24,9 @@ public class DependencyChecker extends SingleFieldChecker {
     this(field, field.getLabel(), dependencies, RuleCheckingOutputStatus.FAILED);
   }
 
-  public DependencyChecker(DataElement field, List<String> dependencies, RuleCheckingOutputStatus failedDepencencyStatus) {
+  public DependencyChecker(DataElement field,
+                           List<String> dependencies,
+                           RuleCheckingOutputStatus failedDepencencyStatus) {
     this(field, field.getLabel(), dependencies, failedDepencencyStatus);
   }
 
@@ -42,7 +44,9 @@ public class DependencyChecker extends SingleFieldChecker {
     update(cache, results, outputType, null);
   }
 
-  public void update(Selector cache, FieldCounter<RuleCheckerOutput> localResults, RuleCheckingOutputType outputType,
+  public void update(Selector cache,
+                     FieldCounter<RuleCheckerOutput> localResults,
+                     RuleCheckingOutputType outputType,
                      FieldCounter<RuleCheckerOutput> globalResults) {
     if (isDebug())
       LOGGER.info(this.getClass().getSimpleName() + " " + this.id);
@@ -81,5 +85,32 @@ public class DependencyChecker extends SingleFieldChecker {
     addOutput(localResults, isNA, allPassed, outputType);
     if (isDebug())
       LOGGER.info(this.getClass().getSimpleName() + " " + this.id + ") result: " + RuleCheckingOutputStatus.create(isNA, allPassed));
+  }
+
+  public List<String> getDependencies() {
+    return dependencies;
+  }
+
+  public boolean getResult(RuleCheckingOutputType outputType,
+                           FieldCounter<RuleCheckerOutput> globalResults) {
+    boolean allPassed = true;
+    for (String ruleId : dependencies) {
+      String keyEnd = outputType.equals(RuleCheckingOutputType.BOTH) ? ruleId + ":status" : ruleId;
+      boolean found = false;
+      for (Map.Entry<String, RuleCheckerOutput> entry : globalResults.getMap().entrySet()) {
+        if (entry.getKey().endsWith(keyEnd)) {
+          found = true;
+          if (entry.getValue().getStatus().equals(RuleCheckingOutputStatus.FAILED)) {
+            allPassed = false;
+            break;
+          }
+        }
+      }
+      if (!found) {
+        allPassed = false;
+        break;
+      }
+    }
+    return allPassed;
   }
 }

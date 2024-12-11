@@ -172,6 +172,7 @@ public class DataElement implements Cloneable, Serializable {
     return this;
   }
 
+  @JsonIgnore
   public boolean isCollection() {
     return collection;
   }

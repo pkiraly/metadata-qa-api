@@ -101,4 +101,36 @@ public class AndCheckerTest {
 
     assertEquals(RuleCheckingOutputStatus.FAILED, fieldCounter.get(andChecker.getHeader(RuleCheckingOutputType.STATUS)).getStatus());
   }
+
+  @Test
+  public void withDependency() {
+    schema.getPathByLabel("name")
+      .setRule(Arrays.asList(
+        new Rule().withAnd(Arrays.asList(
+            new Rule().withMinCount(1),
+            new Rule().withMaxCount(1)))
+          .withNaScore(-1)
+          .withId("Q1"),
+        new Rule().withAnd(Arrays.asList(
+          new Rule().withDependencies(List.of("Q1")),
+          new Rule().withHasValue("a")))
+          .withId("Q2")
+      ));
+
+    cache = (CsvSelector) SelectorFactory.getInstance(schema.getFormat(), ",b,a");
+    cache.setCsvReader(new CsvReader().setHeader(((CsvAwareSchema) schema).getHeader()));
+
+    FieldCounter<RuleCheckerOutput> fieldCounter = new FieldCounter<>();
+    for (RuleChecker checker : schema.getRuleCheckers()) {
+      checker.update(cache, fieldCounter, RuleCheckingOutputType.STATUS);
+    }
+    System.err.println(fieldCounter);
+    // FieldCounter{fieldMap={
+    //   name:and:name:minCount:name:maxCount:Q1:status=0,
+    //   name:and:name:minCount:name:maxCount:Q1:score=0,
+    //   name:and:name:dependency:name:hasValue:Q2:status=0,
+    //   name:and:name:dependency:name:hasValue:Q2:score=0
+    // }}
+
+  }
 }

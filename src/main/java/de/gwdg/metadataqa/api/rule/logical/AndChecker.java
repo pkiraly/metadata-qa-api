@@ -59,7 +59,12 @@ public class AndChecker extends LogicalChecker {
           MinCountChecker minCountChecker = (MinCountChecker) checker;
           if (!minCountChecker.isEmptyInstancesAllowed() || minCountChecker.getMinCount() > 0)
             allPassed = false;
+        } else if (checker instanceof DependencyChecker) {
+          DependencyChecker dependencyChecker = (DependencyChecker) checker;
+          allPassed = dependencyChecker.getResult(outputType, results);
         }
+        if (!allPassed)
+          break;
       }
     }
     addOutput(results, isNA, allPassed, outputType);
