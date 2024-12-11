@@ -8,7 +8,7 @@ digital collections.
   * [Quality dimensions](#quality-dimensions)
   * [Running as command-line application](#running-as-command-line-application)
   * [Using the library](#using-the-library)
-  * [Defining schema with a configuration file](#defining-schema-with-a-configuration-file)
+  * [Defining schema with a MQA Schema file](#defining-schema-with-a-mqa-schema-file)
     + [Rules](#rules)
       - [Cardinality](#cardinality)
         * [`minCount <number>`](#mincount-number)
@@ -97,8 +97,8 @@ usage:
 * `-n,--inputFormat <format>` (optional, String) The format of input file. Right now it supports two JSON variants:
   * `ndjson`: line delimited JSON in which every line is a new record (the default value)
   * `json-array`: JSON file that contains an array of objects
-* `-s,--schema <file>` Schema file describing the metadata structure to run assessment against.
-* `-v,--schemaFormat <format>` Format of schema file: json, yaml. Default: based on file extension, else json.
+* `-s,--schema <file>` MQA Schema file describing the metadata structure to run assessment against.
+* `-v,--schemaFormat <format>` Format of MQA Schema file: json, yaml. Default: based on file extension, else json.
 * `-m,--measurements <file>` Configuration file for measurements.
 * `-w,--measurementsFormat <format>` Format of measurements config file: json, yaml. Default: based on file extension, else json.
 * `-o,--output <file>` Output file.
@@ -382,9 +382,9 @@ while (iterator.hasNext()) {
 String metrics = output.toString();
 ```
 
-## Defining schema with a configuration file
+## Defining schema with a MQA Schema file
 
-It is possible to define the schema with a YAML or JSON configuration file.
+Schemas can be defined using the **MQA Schema** language. A MQA Schema can be given as YAML file or as JSON file.
 
 ```
 Schema schema = ConfigurationReader
@@ -392,7 +392,7 @@ Schema schema = ConfigurationReader
   .asSchema();
 ```
 
-A YAML example:
+A MQA Schema in YAML syntax:
 
 ```yaml
 format: json
@@ -433,7 +433,7 @@ groups:
       - MANDATORY
 ```
 
-The same in JSON:
+The same in JSON syntax:
 
 ```json
 {
