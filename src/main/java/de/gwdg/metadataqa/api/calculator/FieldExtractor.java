@@ -77,7 +77,10 @@ public class FieldExtractor implements Calculator, Serializable {
     return List.of(new FieldCounterBasedResult<>(getCalculatorName(), resultMap).withNoCompression());
   }
 
-  private void extractSingleField(Selector cache, FieldCounter<String> resultMap, String path, String fieldName) {
+  private void extractSingleField(Selector cache,
+                                  FieldCounter<String> resultMap,
+                                  String path,
+                                  String fieldName) {
     extractSingleField(cache, resultMap, path, fieldName,null);
   }
 
@@ -110,8 +113,10 @@ public class FieldExtractor implements Calculator, Serializable {
       }
       value = StringUtils.join(values, " --- ");
     }
-    if (fieldName.equals(FIELD_NAME) && StringUtils.isBlank(value))
-      value = IdentifierGenerator.generate();
+    if (fieldName.equals(FIELD_NAME) && StringUtils.isBlank(value)) {
+      value = cache.getRecordId() != null ?
+        IdentifierGenerator.PREFIX + cache.getRecordId() : IdentifierGenerator.generate();
+    }
 
     // LOGGER.info(String.format("fieldName: %s, value: %s", fieldName, value));
     resultMap.put(fieldName, value);

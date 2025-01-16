@@ -182,6 +182,10 @@ public class CalculatorFacade implements Serializable {
   }
 
   public MetricCollector measureWithoutFormat(String content) {
+    return measureWithoutFormat(content, null);
+  }
+
+  public MetricCollector measureWithoutFormat(String content, String recordId) {
     if (schema == null)
       throw new IllegalStateException("schema is missing");
 
@@ -191,6 +195,8 @@ public class CalculatorFacade implements Serializable {
       conditionalConfiguration();
 
       cache = SelectorFactory.getInstance(schema.getFormat(), content, schema.getNamespaces());
+      if (recordId != null)
+        cache.setRecordId(recordId);
       if (schema.getFormat().equals(Format.CSV))
         initializeCsvCache(content);
 
