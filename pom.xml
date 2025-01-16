@@ -91,7 +91,7 @@
     <dependency>
       <groupId>commons-io</groupId>
       <artifactId>commons-io</artifactId>
-      <version>2.17.0</version>
+      <version>2.18.0</version>
     </dependency>
     <dependency>
       <groupId>commons-httpclient</groupId>
@@ -121,7 +121,7 @@
     <dependency>
       <groupId>org.apache.commons</groupId>
       <artifactId>commons-text</artifactId>
-      <version>1.12.0</version>
+      <version>1.13.0</version>
     </dependency>
     <!--
       Hierarchical context runner for jUnit
@@ -168,7 +168,7 @@
     <dependency>
       <groupId>com.fasterxml.jackson.core</groupId>
       <artifactId>jackson-databind</artifactId>
-      <version>2.18.1</version>
+      <version>2.18.2</version>
     </dependency>
     <dependency>
       <groupId>com.github.stefanbirkner</groupId>
