@@ -1,10 +1,12 @@
 package de.gwdg.metadataqa.api.uniqueness;
 
+import org.apache.commons.lang3.StringUtils;
 import org.apache.solr.client.solrj.SolrServerException;
 
 import java.io.IOException;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 public class SolrClientMock implements SolrClient {
 
@@ -39,6 +41,11 @@ public class SolrClientMock implements SolrClient {
       System.err.printf("solrField: %s, value: %s\n", solrField, value);
     }
     return null;
+  }
+
+  @Override
+  public String getSolrSearchResponse(String solrField, Set<String> values) {
+    return getSolrSearchResponse(solrField, StringUtils.join(values, " --- "));
   }
 
   public String getTfIdfResponse(String params, String recordId) {

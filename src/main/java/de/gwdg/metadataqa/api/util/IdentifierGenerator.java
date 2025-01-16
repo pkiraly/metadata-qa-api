@@ -1,11 +1,17 @@
 package de.gwdg.metadataqa.api.util;
 
+import java.util.logging.Logger;
+
 public class IdentifierGenerator {
+  private static final Logger LOGGER = Logger.getLogger(IdentifierGenerator.class.getCanonicalName());
+
   private static int identifier = 0;
   private static String PREFIX = "UNKNOWN-ID-";
 
   public static String generate() {
-    return PREFIX + ++identifier;
+    String id = PREFIX + String.valueOf(++identifier);
+    LOGGER.info("Generated identifier " + id);
+    return id;
   }
 
   public static void setPrefix(String prefix) {

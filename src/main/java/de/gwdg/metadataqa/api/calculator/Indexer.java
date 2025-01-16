@@ -8,6 +8,7 @@ import de.gwdg.metadataqa.api.model.XmlFieldInstance;
 import de.gwdg.metadataqa.api.model.selector.Selector;
 import de.gwdg.metadataqa.api.schema.Schema;
 import de.gwdg.metadataqa.api.uniqueness.SolrClient;
+import de.gwdg.metadataqa.api.uniqueness.UniquenessExtractor;
 import de.gwdg.metadataqa.api.uniqueness.UniquenessField;
 import de.gwdg.metadataqa.api.util.IdentifierGenerator;
 import org.apache.commons.lang3.StringUtils;
@@ -17,8 +18,10 @@ import java.io.IOException;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import java.util.logging.Logger;
 
 public class Indexer extends QaSolrClient implements Calculator, Shutdownable, Serializable {
@@ -29,7 +32,7 @@ public class Indexer extends QaSolrClient implements Calculator, Shutdownable, S
   private int generatedRecordId;
   private int indexCounter;
   private boolean isGeneratedIdentifierEnabled = false;
-
+  private boolean useGeneratedIdentifier = true;
 
   public Indexer(SolrClient solrClient, Schema schema) {
     super(solrClient, schema);
@@ -42,26 +45,33 @@ public class Indexer extends QaSolrClient implements Calculator, Shutdownable, S
   @Override
   public List<MetricResult> measure(Selector cache) {
     try {
-      List<String> extractedValues = extractValue(cache, schema.getRecordId().getPath());
+      Map<String, List<String>> valuesMap = new HashMap<>();
+
+      Set<String> extractedValues = extractValue(cache, schema.getRecordId().getPath());
       String recordId = null;
-      if (extractedValues.isEmpty()) {
-        LOGGER.severe(String.format("Missing record ID (path: %s)", schema.getRecordId().getPath()));
-        if (cache.getRecordId() != null)
-          recordId = cache.getRecordId();
-        else if (isGeneratedIdentifierEnabled)
-          recordId = IdentifierGenerator.generate();
+      if (isGeneratedIdentifierEnabled && useGeneratedIdentifier) {
+        recordId = IdentifierGenerator.generate();
+        if (!extractedValues.isEmpty())
+          valuesMap.put("recordId", new ArrayList<>(extractedValues));
       } else {
-        recordId = StringUtils.join(extractedValues, " --- ");
+        if (extractedValues.isEmpty()) {
+          LOGGER.severe(String.format("Missing record ID (path: %s)", schema.getRecordId().getPath()));
+          if (cache.getRecordId() != null)
+            recordId = cache.getRecordId();
+          else if (isGeneratedIdentifierEnabled)
+            recordId = IdentifierGenerator.generate();
+        } else {
+          recordId = StringUtils.join(extractedValues, " --- ");
+        }
       }
       cache.setRecordId(recordId);
 
-      Map<String, List<String>> resultMap = new HashMap<>();
       for (UniquenessField solrField : solrFields) {
-        List<String> values = extractValue(cache, solrField.getPath());
+        Set<String> values = extractValue(cache, solrField.getPath());
         if (!values.isEmpty())
-          resultMap.put(solrField.getSolrField(), values);
+          valuesMap.put(solrField.getSolrField(), new ArrayList<>(values));
       }
-      solrClient.indexMap(recordId, resultMap);
+      solrClient.indexMap(recordId, valuesMap);
       indexCounter++;
     } catch (IOException | SolrServerException e) {
       e.printStackTrace();
@@ -71,8 +81,8 @@ public class Indexer extends QaSolrClient implements Calculator, Shutdownable, S
     return null;
   }
 
-  private List<String> extractValue(Selector cache, String path) {
-    List<String> values = new ArrayList<>();
+  private Set<String> extractValue(Selector cache, String path) {
+    Set<String> values = new LinkedHashSet<>();
     List<XmlFieldInstance> instances = cache.get(path);
     if (instances != null && !instances.isEmpty())
       for (XmlFieldInstance instance : instances)
@@ -95,6 +105,8 @@ public class Indexer extends QaSolrClient implements Calculator, Shutdownable, S
   public void shutDown() {
     LOGGER.info("shutDown solr. Counter: " + indexCounter);
     solrClient.commit();
+    LOGGER.info("Number of indexed documents: " + UniquenessExtractor.extractNumFound(
+      solrClient.getSolrSearchResponse("*", "*")));
   }
 
   public void enableGeneratedIdentifier() {

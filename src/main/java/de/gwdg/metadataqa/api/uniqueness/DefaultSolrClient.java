@@ -1,5 +1,6 @@
 package de.gwdg.metadataqa.api.uniqueness;
 
+import org.apache.commons.lang3.StringUtils;
 import org.apache.solr.client.solrj.SolrServerException;
 import org.apache.solr.client.solrj.impl.BaseHttpSolrClient;
 import org.apache.solr.client.solrj.impl.Http2SolrClient;
@@ -17,8 +18,10 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -55,6 +58,11 @@ public class DefaultSolrClient implements SolrClient, Serializable {
     return connect(url, solrField, value);
   }
 
+  public String getSolrSearchResponse(String solrField, Set<String> values) {
+    String url = buildUrl(solrField, values);
+    return connect(url, solrField, StringUtils.join(values, " --- "));
+  }
+
   @Override
   public String getTfIdfResponse(String params, String recordId) {
     return connect(getSolrBasePath() + params, "tf-idf", recordId);
@@ -74,6 +82,23 @@ public class DefaultSolrClient implements SolrClient, Serializable {
         url = String.format(getSolrSearchPattern(), solrField, value);
       }
     }
+    return url;
+  }
+
+  private String buildUrl(String solrField, Set<String> values) {
+    String url;
+      try {
+        List<String> all = new ArrayList<>();
+        for (String value : values) {
+          all.add('"' + value.replace("\"", "\\\"") + '"');
+        }
+        String value = String.format("(%s)", StringUtils.join(all, " AND "));
+        String encodedValue = URLEncoder.encode(value, "UTF-8");
+        url = String.format(getSolrSearchAllPattern(), solrField, encodedValue);
+      } catch (UnsupportedEncodingException e) {
+        LOGGER.log(Level.WARNING, "buildUrl", e);
+        url = String.format(getSolrSearchPattern(), solrField, values.toArray()[0]);
+      }
     return url;
   }
 
@@ -191,6 +216,7 @@ public class DefaultSolrClient implements SolrClient, Serializable {
 
   @Override
   public void deleteAll() {
+    LOGGER.info("deleteAll");
     try {
       solr.deleteByQuery("*:*");
     } catch (SolrServerException | IOException e) {
