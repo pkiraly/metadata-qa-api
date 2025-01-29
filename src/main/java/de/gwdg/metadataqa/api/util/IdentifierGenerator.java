@@ -10,7 +10,7 @@ public class IdentifierGenerator {
 
   public static String generate() {
     String id = PREFIX + String.valueOf(++identifier);
-    LOGGER.info("Generated identifier " + id);
+    // LOGGER.info("Generated identifier " + id);
     return id;
   }
 

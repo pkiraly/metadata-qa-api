@@ -54,13 +54,15 @@ public class DependencyChecker extends SingleFieldChecker {
     if (globalResults == null)
       globalResults = localResults;
 
-    var allPassed = true;
     var isNA = true;
+    var allPassed = true;
     List<XmlFieldInstance> instances = cache.get(field);
     if (instances != null && !instances.isEmpty()) {
       for (XmlFieldInstance instance : instances) {
         if (instance.hasValue()) {
           isNA = false;
+          allPassed = getResult(outputType, globalResults);
+          /*
           for (String ruleId : dependencies) {
             String keyEnd = outputType.equals(RuleCheckingOutputType.BOTH) ? ruleId + ":status" : ruleId;
             boolean found = false;
@@ -78,6 +80,7 @@ public class DependencyChecker extends SingleFieldChecker {
               break;
             }
           }
+           */
         }
       }
     }
