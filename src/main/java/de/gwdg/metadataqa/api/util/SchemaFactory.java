@@ -3,6 +3,7 @@ package de.gwdg.metadataqa.api.util;
 import de.gwdg.metadataqa.api.configuration.SchemaConfiguration;
 import de.gwdg.metadataqa.api.configuration.schema.Field;
 import de.gwdg.metadataqa.api.configuration.schema.Group;
+import de.gwdg.metadataqa.api.configuration.schema.Rule;
 import de.gwdg.metadataqa.api.json.DataElement;
 import de.gwdg.metadataqa.api.json.FieldGroup;
 import de.gwdg.metadataqa.api.schema.BaseSchema;
@@ -28,8 +29,16 @@ public class SchemaFactory {
     if (hasCategories)
       schema.setCategories(config.getCategories());
 
+    // containers used for checking duplicates
+    List<String> names = new ArrayList<>();
+    List<String> ruleIds = new ArrayList<>();
+
     for (Field field : config.getFields()) {
-      var dataElement = new DataElement(field.getName());
+      String name = field.getName();
+      if (names.contains(name))
+        LOGGER.warning("Duplicate field name: " + name);
+      names.add(name);
+      var dataElement = new DataElement(name);
 
       if (StringUtils.isNotBlank(field.getPath()))
         dataElement.setPath(field.getPath());
@@ -41,8 +50,7 @@ public class SchemaFactory {
             if (config.getCategories().contains(category))
               categories.add(category);
             else
-              LOGGER.warning(String.format("Invalid category for field '%s': '%s'",
-                field.getName(), category));
+              LOGGER.warning(String.format("Invalid category for field '%s': '%s'", name, category));
           } else {
             categories.add(category);
           }
@@ -56,8 +64,14 @@ public class SchemaFactory {
       if (field.isInactive())
         dataElement.setActive(false);
 
-      if (field.getRules() != null)
+      if (field.getRules() != null) {
         dataElement.setRule(field.getRules());
+        for (Rule rule : field.getRules()) {
+          if (ruleIds.contains(rule.getId()))
+            LOGGER.warning("Duplicate rule id: " + rule.getId());
+          ruleIds.add(rule.getId());
+        }
+      }
 
       if (StringUtils.isNotBlank(field.getIndexField()))
         dataElement.setIndexField(field.getIndexField());

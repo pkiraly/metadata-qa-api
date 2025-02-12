@@ -54,7 +54,7 @@ public class ConfigurationReader {
 
   private static <T> T readYaml(String fileName, Class<T> clazz) throws FileNotFoundException {
     var yaml = new Yaml(new Constructor(clazz, new LoaderOptions()));
-    InputStream inputStream = new FileInputStream(new File(fileName));
+    InputStream inputStream = new FileInputStream(fileName);
     return yaml.load(inputStream);
   }
 
