@@ -167,7 +167,6 @@ public class SchemaUtils {
         ruleChecker.setId(idValue);
         if (rule.getHidden().equals(Boolean.TRUE))
           ruleChecker.setHidden();
-        // System.err.println(rule.getId() + "'s debug status: " + rule.getDebug());
         if (rule.getDebug().equals(Boolean.TRUE)) {
           ruleChecker.setDebug();
           if (ruleChecker instanceof LogicalChecker) {
