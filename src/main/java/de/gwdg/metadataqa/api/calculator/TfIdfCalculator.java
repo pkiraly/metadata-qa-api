@@ -12,21 +12,20 @@ import de.gwdg.metadataqa.api.uniqueness.SolrConfiguration;
 import de.gwdg.metadataqa.api.uniqueness.TfIdf;
 import de.gwdg.metadataqa.api.uniqueness.TfIdfExtractor;
 
-import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.Serializable;
-import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.logging.Logger;
-import org.apache.commons.httpclient.HttpClient;
-import org.apache.commons.httpclient.HttpException;
-import org.apache.commons.httpclient.HttpMethod;
-import org.apache.commons.httpclient.HttpStatus;
-import org.apache.commons.httpclient.methods.GetMethod;
-import org.apache.commons.httpclient.params.HttpMethodParams;
-import org.apache.commons.io.IOUtils;
+
+import org.apache.http.HttpEntity;
+import org.apache.http.ParseException;
+import org.apache.http.client.methods.CloseableHttpResponse;
+import org.apache.http.client.methods.HttpGet;
+import org.apache.http.impl.client.CloseableHttpClient;
+import org.apache.http.impl.client.HttpClients;
+import org.apache.http.util.EntityUtils;
 
 /**
  * TF-IDF calculator
@@ -53,7 +52,7 @@ public class TfIdfCalculator implements Calculator, Serializable {
         + "&json.nl=map"
         + "&rows=1000"
         + "&fl=id";
-  private static final HttpClient HTTP_CLIENT = new HttpClient();
+  private static final CloseableHttpClient HTTP_CLIENT = HttpClients.createDefault();
 
   private SolrConfiguration solrConfiguration;
   private String solrSearchPath;
@@ -95,25 +94,22 @@ public class TfIdfCalculator implements Calculator, Serializable {
     String jsonString = null;
 
     String url = String.format(getSolrSearchPath(), recordId).replace("\"", "%22");
-    HttpMethod method = new GetMethod(url);
-    var params = new HttpMethodParams();
-    params.setIntParameter(HttpMethodParams.BUFFER_WARN_TRIGGER_LIMIT, MEGABYTE);
-    method.setParams(params);
-    try {
-      var statusCode = HTTP_CLIENT.executeMethod(method);
-      if (statusCode != HttpStatus.SC_OK) {
-        LOGGER.severe("Method failed: " + method.getStatusLine());
-      }
 
-      var baos = new ByteArrayOutputStream();
-      IOUtils.copy(method.getResponseBodyAsStream(), baos);
-      jsonString = baos.toString(StandardCharsets.UTF_8);
-    } catch (HttpException e) {
-      LOGGER.severe("Fatal protocol violation: " + e.getMessage());
+    HttpGet httpGet = new HttpGet(url);
+    try {
+      CloseableHttpResponse response = HTTP_CLIENT.execute(httpGet);
+      try {
+        HttpEntity entity = response.getEntity();
+        if (entity != null) {
+          jsonString = EntityUtils.toString(entity);
+        }
+      } catch (ParseException e) {
+        throw new RuntimeException(e);
+      } finally {
+        response.close();
+      }
     } catch (IOException e) {
       LOGGER.severe("Fatal transport error: " + e.getMessage());
-    } finally {
-      method.releaseConnection();
     }
 
     return jsonString;

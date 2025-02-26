@@ -12,6 +12,7 @@ import de.gwdg.metadataqa.api.rule.singlefieldchecker.ContentTypeChecker;
 import de.gwdg.metadataqa.api.rule.singlefieldchecker.DependencyChecker;
 import de.gwdg.metadataqa.api.rule.singlefieldchecker.EnumerationChecker;
 import de.gwdg.metadataqa.api.rule.pairchecker.EqualityChecker;
+import de.gwdg.metadataqa.api.rule.singlefieldchecker.HasChildrenChecker;
 import de.gwdg.metadataqa.api.rule.singlefieldchecker.HasValueChecker;
 import de.gwdg.metadataqa.api.rule.singlefieldchecker.ImageDimensionChecker;
 import de.gwdg.metadataqa.api.rule.singlefieldchecker.LanguageTagChecker;
@@ -103,6 +104,9 @@ public class SchemaUtils {
     if (StringUtils.isNotBlank(rule.getHasValue()))
       ruleCheckers.add(new HasValueChecker(dataElement, rule.getHasValue()));
 
+    if (rule.getHasChildren() != null && !rule.getHasChildren().isEmpty())
+      ruleCheckers.add(new HasChildrenChecker(dataElement, rule.getHasChildren()));
+
     if (rule.getMinInclusive() != null)
       ruleCheckers.add(new NumericValueChecker(dataElement, rule.getMinInclusive(), MIN_INCLUSIVE));
 
@@ -121,9 +125,8 @@ public class SchemaUtils {
     if (rule.getDimension() != null)
       ruleCheckers.add(new ImageDimensionChecker(dataElement, rule.getDimension()));
 
-    if (rule.getDependencies() != null && !rule.getDependencies().isEmpty()) {
+    if (rule.getDependencies() != null && !rule.getDependencies().isEmpty())
       ruleCheckers.add(new DependencyChecker(dataElement, rule.getDependencies()));
-    }
 
     if (rule.getUnique() != null && rule.getUnique().equals(Boolean.TRUE))
       ruleCheckers.add(new UniquenessChecker(dataElement));

@@ -51,6 +51,7 @@ public class Rule implements Serializable {
   private Boolean allowEmptyInstances = Boolean.FALSE;
   private Boolean multilingual;
   private ApplicationScope hasLanguageTag;
+  private List<String> hasChildren;
 
   public String getId() {
     return id;
@@ -346,6 +347,19 @@ public class Rule implements Serializable {
 
   public Rule withHasValue(String hasValue) {
     setHasValue(hasValue);
+    return this;
+  }
+
+  public List<String> getHasChildren() {
+    return hasChildren;
+  }
+
+  public void setHasChildren(List<String> hasChildren) {
+    this.hasChildren = hasChildren;
+  }
+
+  public Rule withHasChildren(List<String> hasChildren) {
+    setHasChildren(hasChildren);
     return this;
   }
 
