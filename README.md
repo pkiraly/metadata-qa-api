@@ -959,6 +959,33 @@ fields:
       - isMultilingual: true
 ```
 
+##### `hasChildren [element1, element2, ...]`
+
+(since v0.9.7)
+
+It checks if the data element has all the specified child elements.
+
+```xml
+<lido:date>
+  <lido:earliestDate>1801</lido:earliestDate>
+  <lido:latestDate>1900</lido:latestDate>
+</lido:date>
+```
+
+an example schema
+
+```yaml
+format: json
+fields:
+  - name: description
+    path: lido:date
+    rules:
+      - hasChildren:
+          - lido:earliestDate
+          - lido:latestDate
+```
+
+It checks if all the `lido:date` elements have both `lido:earliestDate` and `lido:latestDate`.
 
 #### General properties
 
