@@ -62,11 +62,11 @@ public class OrCheckerTest {
 
     FieldCounter<RuleCheckerOutput> fieldCounter = new FieldCounter<>();
     orChecker.update(cache, fieldCounter, RuleCheckingOutputType.BOTH);
-    assertEquals(RuleCheckingOutputStatus.PASSED, fieldCounter.get(orChecker.getHeader(RuleCheckingOutputType.STATUS)).getStatus());
+    assertEquals(RuleCheckingOutputStatus.PASSED, fieldCounter.get(orChecker.getIdOrHeader(RuleCheckingOutputType.STATUS)).getStatus());
 
     fieldCounter = new FieldCounter<>();
     orChecker.update(cache, fieldCounter, RuleCheckingOutputType.STATUS);
-    assertEquals(RuleCheckingOutputStatus.PASSED, fieldCounter.get(orChecker.getHeader()).getStatus());
+    assertEquals(RuleCheckingOutputStatus.PASSED, fieldCounter.get(orChecker.getIdOrHeader()).getStatus());
   }
 
   @Test
@@ -86,6 +86,6 @@ public class OrCheckerTest {
     FieldCounter<RuleCheckerOutput> fieldCounter = new FieldCounter<>();
     orChecker.update(cache, fieldCounter, RuleCheckingOutputType.BOTH);
 
-    assertEquals(RuleCheckingOutputStatus.FAILED, fieldCounter.get(orChecker.getHeader(RuleCheckingOutputType.STATUS)).getStatus());
+    assertEquals(RuleCheckingOutputStatus.FAILED, fieldCounter.get(orChecker.getIdOrHeader(RuleCheckingOutputType.STATUS)).getStatus());
   }
 }

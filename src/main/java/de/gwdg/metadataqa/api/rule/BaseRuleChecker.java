@@ -82,13 +82,25 @@ public abstract class BaseRuleChecker implements RuleChecker {
     return header + ":" + getId();
   }
 
+  public String getIdOrHeader() {
+    return id != null ? id : header + ":" + getId();
+  }
+
   public String getHeader(RuleCheckingOutputType outputType) {
+    return getHeader() + getKeySuffix(outputType);
+  }
+
+  private static String getKeySuffix(RuleCheckingOutputType outputType) {
     String suffix = "";
     if (outputType.equals(RuleCheckingOutputType.STATUS))
       suffix = ":status";
     else if (outputType.equals(RuleCheckingOutputType.SCORE))
       suffix = ":score";
-    return header + ":" + getId() + suffix;
+    return suffix;
+  }
+
+  public String getIdOrHeader(RuleCheckingOutputType outputType) {
+    return getIdOrHeader() + getKeySuffix(outputType);
   }
 
   protected void addOutput(FieldCounter<RuleCheckerOutput> results,
@@ -112,12 +124,12 @@ public abstract class BaseRuleChecker implements RuleChecker {
       output.setFailureCount(failureCount);
 
     if (outputType.equals(RuleCheckingOutputType.STATUS) || outputType.equals(RuleCheckingOutputType.SCORE)) {
-      results.put(getHeader(), output.setOutputType(outputType));
+      results.put(getIdOrHeader(), output.setOutputType(outputType));
     } else {
       try {
         RuleCheckerOutput output2 = (RuleCheckerOutput) output.clone();
-        results.put(getHeader(RuleCheckingOutputType.STATUS), output.setOutputType(RuleCheckingOutputType.STATUS));
-        results.put(getHeader(RuleCheckingOutputType.SCORE), output2.setOutputType(RuleCheckingOutputType.SCORE));
+        results.put(getIdOrHeader(RuleCheckingOutputType.STATUS), output.setOutputType(RuleCheckingOutputType.STATUS));
+        results.put(getIdOrHeader(RuleCheckingOutputType.SCORE), output2.setOutputType(RuleCheckingOutputType.SCORE));
       } catch (CloneNotSupportedException e) {
         e.printStackTrace(System.err);
       }

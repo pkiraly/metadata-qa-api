@@ -79,7 +79,7 @@ public class AndCheckerTest {
     FieldCounter<RuleCheckerOutput> fieldCounter = new FieldCounter<>();
     andChecker.update(cache, fieldCounter, RuleCheckingOutputType.BOTH);
 
-    assertEquals(RuleCheckingOutputStatus.PASSED, fieldCounter.get(andChecker.getHeader(RuleCheckingOutputType.STATUS)).getStatus());
+    assertEquals(RuleCheckingOutputStatus.PASSED, fieldCounter.get(andChecker.getIdOrHeader(RuleCheckingOutputType.STATUS)).getStatus());
   }
 
   @Test
@@ -99,7 +99,7 @@ public class AndCheckerTest {
     FieldCounter<RuleCheckerOutput> fieldCounter = new FieldCounter<>();
     andChecker.update(cache, fieldCounter, RuleCheckingOutputType.BOTH);
 
-    assertEquals(RuleCheckingOutputStatus.FAILED, fieldCounter.get(andChecker.getHeader(RuleCheckingOutputType.STATUS)).getStatus());
+    assertEquals(RuleCheckingOutputStatus.FAILED, fieldCounter.get(andChecker.getIdOrHeader(RuleCheckingOutputType.STATUS)).getStatus());
   }
 
   @Test

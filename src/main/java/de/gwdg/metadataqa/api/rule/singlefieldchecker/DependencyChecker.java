@@ -62,25 +62,6 @@ public class DependencyChecker extends SingleFieldChecker {
         if (instance.hasValue()) {
           isNA = false;
           allPassed = getResult(outputType, globalResults);
-          /*
-          for (String ruleId : dependencies) {
-            String keyEnd = outputType.equals(RuleCheckingOutputType.BOTH) ? ruleId + ":status" : ruleId;
-            boolean found = false;
-            for (Map.Entry<String, RuleCheckerOutput> entry : globalResults.getMap().entrySet()) {
-              if (entry.getKey().endsWith(keyEnd)) {
-                found = true;
-                if (entry.getValue().getStatus().equals(RuleCheckingOutputStatus.FAILED)) {
-                  allPassed = false;
-                  break;
-                }
-              }
-            }
-            if (!found) {
-              allPassed = false;
-              break;
-            }
-          }
-           */
         }
       }
     }
@@ -99,17 +80,11 @@ public class DependencyChecker extends SingleFieldChecker {
     boolean allPassed = true;
     for (String ruleId : dependencies) {
       String keyEnd = outputType.equals(RuleCheckingOutputType.BOTH) ? ruleId + ":status" : ruleId;
-      boolean found = false;
-      for (Map.Entry<String, RuleCheckerOutput> entry : globalResults.getMap().entrySet()) {
-        if (entry.getKey().endsWith(keyEnd)) {
-          found = true;
-          if (entry.getValue().getStatus().equals(RuleCheckingOutputStatus.FAILED)) {
-            allPassed = false;
-            break;
-          }
+      if (globalResults.has(keyEnd)) {
+        if (!globalResults.get(keyEnd).getStatus().equals(RuleCheckingOutputStatus.PASSED)) {
+          allPassed = false;
         }
-      }
-      if (!found) {
+      } else {
         allPassed = false;
         break;
       }

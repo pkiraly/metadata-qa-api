@@ -1,0 +1,16 @@
+format: xml
+fields:
+  - name: date
+    path: lido:date
+    rules:
+      - id: Q-9.4d
+        description: There must be at least one preferred designation for a thematic relation in the data record.
+        successScore: 2
+        # hidden: true
+        # debug: true
+        hasChildren:
+          - lido:earliestDate
+          - lido:latestDate
+
+namespaces:
+  lido: http://www.lido-schema.org

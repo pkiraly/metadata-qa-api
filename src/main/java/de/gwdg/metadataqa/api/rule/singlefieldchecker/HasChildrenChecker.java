@@ -34,12 +34,11 @@ public class HasChildrenChecker extends SingleFieldChecker {
   @Override
   public void update(Selector cache, FieldCounter<RuleCheckerOutput> results, RuleCheckingOutputType outputType) {
     if (isDebug())
-      LOGGER.info(this.getClass().getSimpleName() + " " + this.id + " field: " + field);
+      LOGGER.info(this.getClass().getSimpleName() + " " + this.id + " field: " + field.getLabel());
 
     var allPassed = false;
     var isNA = true;
     if (cache.getClass().equals(XmlSelector.class)) {
-      Object fragment = cache.getFragment(field.getPath());
       List<Node> nodes = (List<Node>) cache.getFragment(field.getPath());
       if (!nodes.isEmpty()) {
         isNA = false;
@@ -56,6 +55,8 @@ public class HasChildrenChecker extends SingleFieldChecker {
           if (!allPassed)
             break;
         }
+      } else {
+        allPassed = true;
       }
     }
     addOutput(results, isNA, allPassed, outputType);

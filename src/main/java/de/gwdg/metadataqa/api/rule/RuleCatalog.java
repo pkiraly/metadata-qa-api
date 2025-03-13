@@ -32,7 +32,7 @@ public class RuleCatalog implements Calculator, Serializable {
     for (RuleChecker ruleChecker : schema.getRuleCheckers()) {
       ruleChecker.update(cache, fieldCounter, outputType);
       if (outputType != RuleCheckingOutputType.STATUS && !ruleChecker.isHidden()) {
-        String key = outputType.equals(RuleCheckingOutputType.BOTH) ? ruleChecker.getHeader(RuleCheckingOutputType.SCORE) : ruleChecker.getHeader();
+        String key = outputType.equals(RuleCheckingOutputType.BOTH) ? ruleChecker.getIdOrHeader(RuleCheckingOutputType.SCORE) : ruleChecker.getIdOrHeader();
         Integer score = fieldCounter.get(key).getScore();
         if (score != null)
           totalScore += score.intValue();
@@ -45,6 +45,7 @@ public class RuleCatalog implements Calculator, Serializable {
     if (outputType != RuleCheckingOutputType.STATUS)
       fieldCounter.put(CALCULATOR_NAME + ":score", new RuleCheckerOutput(RuleCheckingOutputStatus.NA, totalScore).setOutputType(outputType));
 
+    // TODO: fix it
     removeHiddenScores(fieldCounter, hiddenIds);
 
     return List.of(new FieldCounterBasedResult<>(getCalculatorName(), fieldCounter));
@@ -86,10 +87,10 @@ public class RuleCatalog implements Calculator, Serializable {
   private void collectHiddenIds(List<String> hiddenIds, RuleChecker ruleChecker) {
     if (ruleChecker.isHidden()) {
       if (outputType.equals(RuleCheckingOutputType.BOTH)) {
-        hiddenIds.add(ruleChecker.getHeader(RuleCheckingOutputType.SCORE));
-        hiddenIds.add(ruleChecker.getHeader(RuleCheckingOutputType.STATUS));
+        hiddenIds.add(ruleChecker.getIdOrHeader(RuleCheckingOutputType.SCORE));
+        hiddenIds.add(ruleChecker.getIdOrHeader(RuleCheckingOutputType.STATUS));
       } else {
-        hiddenIds.add(ruleChecker.getHeader());
+        hiddenIds.add(ruleChecker.getIdOrHeader());
       }
     }
   }

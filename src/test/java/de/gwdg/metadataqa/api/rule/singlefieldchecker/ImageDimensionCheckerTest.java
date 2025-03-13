@@ -17,7 +17,7 @@ import de.gwdg.metadataqa.api.rule.RuleCheckingOutputType;
 import de.gwdg.metadataqa.api.schema.CsvAwareSchema;
 import de.gwdg.metadataqa.api.schema.Schema;
 import de.gwdg.metadataqa.api.util.CsvReader;
-import de.gwdg.metadataqa.api.util.Dimension;
+import de.gwdg.metadataqa.api.configuration.schema.Dimension;
 import org.junit.Assert;
 import org.junit.Test;
 

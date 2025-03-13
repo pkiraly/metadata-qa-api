@@ -3,7 +3,6 @@ package de.gwdg.metadataqa.api.configuration.schema;
 import com.fasterxml.jackson.annotation.JsonGetter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
-import de.gwdg.metadataqa.api.util.Dimension;
 
 import java.io.Serializable;
 import java.lang.reflect.Field;
@@ -52,6 +51,7 @@ public class Rule implements Serializable {
   private Boolean multilingual;
   private ApplicationScope hasLanguageTag;
   private List<String> hasChildren;
+  private MQAFPattern mqafPattern;
 
   public String getId() {
     return id;
@@ -568,6 +568,19 @@ public class Rule implements Serializable {
 
   public Rule withHasLanguageTag(ApplicationScope hasLanguageTag) {
     this.hasLanguageTag = hasLanguageTag;
+    return this;
+  }
+
+  public MQAFPattern getMqafPattern() {
+    return mqafPattern;
+  }
+
+  public void setMqafPattern(MQAFPattern mqafPattern) {
+    this.mqafPattern = mqafPattern;
+  }
+
+  public Rule withMqafPattern(MQAFPattern mqafPattern) {
+    this.mqafPattern = mqafPattern;
     return this;
   }
 

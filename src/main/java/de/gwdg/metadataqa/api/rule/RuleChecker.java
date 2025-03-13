@@ -32,6 +32,10 @@ public interface RuleChecker extends Serializable {
 
   String getHeader(RuleCheckingOutputType outputType);
 
+  String getIdOrHeader();
+
+  String getIdOrHeader(RuleCheckingOutputType outputType);
+
   Integer getFailureScore();
 
   void setFailureScore(Integer failureScore);

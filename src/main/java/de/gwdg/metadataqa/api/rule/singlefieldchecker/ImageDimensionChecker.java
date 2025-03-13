@@ -7,7 +7,7 @@ import de.gwdg.metadataqa.api.model.selector.Selector;
 import de.gwdg.metadataqa.api.rule.RuleCheckerOutput;
 import de.gwdg.metadataqa.api.rule.RuleCheckingOutputStatus;
 import de.gwdg.metadataqa.api.rule.RuleCheckingOutputType;
-import de.gwdg.metadataqa.api.util.Dimension;
+import de.gwdg.metadataqa.api.configuration.schema.Dimension;
 import de.gwdg.metadataqa.api.util.DimensionDao;
 import de.gwdg.metadataqa.api.util.ImageDimensionExtractor;
 

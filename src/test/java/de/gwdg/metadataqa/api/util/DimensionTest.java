@@ -1,5 +1,6 @@
 package de.gwdg.metadataqa.api.util;
 
+import de.gwdg.metadataqa.api.configuration.schema.Dimension;
 import org.junit.Test;
 
 import static org.junit.Assert.*;

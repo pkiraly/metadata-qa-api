@@ -6,8 +6,13 @@ import com.opencsv.exceptions.CsvValidationException;
 import de.gwdg.metadataqa.api.calculator.CalculatorFacade;
 import de.gwdg.metadataqa.api.configuration.ConfigurationReader;
 import de.gwdg.metadataqa.api.configuration.MeasurementConfiguration;
+import de.gwdg.metadataqa.api.counter.FieldCounter;
+import de.gwdg.metadataqa.api.json.DataElement;
 import de.gwdg.metadataqa.api.rule.CheckerTestBase;
 import de.gwdg.metadataqa.api.rule.RuleChecker;
+import de.gwdg.metadataqa.api.rule.RuleCheckerOutput;
+import de.gwdg.metadataqa.api.rule.RuleCheckingOutputStatus;
+import de.gwdg.metadataqa.api.rule.RuleCheckingOutputType;
 import de.gwdg.metadataqa.api.schema.CsvAwareSchema;
 import de.gwdg.metadataqa.api.schema.Schema;
 import de.gwdg.metadataqa.api.util.CsvReader;
@@ -20,6 +25,8 @@ import java.util.Arrays;
 import java.util.List;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
 
 public class DependencyCheckerTest extends CheckerTestBase {
 
@@ -68,5 +75,32 @@ public class DependencyCheckerTest extends CheckerTestBase {
       Arrays.asList("1.0", "1", "1", "0", "0", "0"),
       result.get(0));
      */
+  }
+
+  @Test
+  public void getResult_single_passed() {
+    FieldCounter<RuleCheckerOutput> globalResults = new FieldCounter<>();
+    globalResults.put("Q1", new RuleCheckerOutput(RuleCheckingOutputStatus.PASSED, 0));
+
+    DependencyChecker checker = new DependencyChecker(new DataElement("a"), List.of("Q1"));
+    assertTrue(checker.getResult(RuleCheckingOutputType.STATUS, globalResults));
+  }
+
+  @Test
+  public void getResult_single_failed() {
+    FieldCounter<RuleCheckerOutput> globalResults = new FieldCounter<>();
+    globalResults.put("Q1", new RuleCheckerOutput(RuleCheckingOutputStatus.FAILED, 0));
+
+    DependencyChecker checker = new DependencyChecker(new DataElement("a"), List.of("Q1"));
+    assertFalse(checker.getResult(RuleCheckingOutputType.STATUS, globalResults));
+  }
+
+  @Test
+  public void getResult_single_na() {
+    FieldCounter<RuleCheckerOutput> globalResults = new FieldCounter<>();
+    globalResults.put("Q1", new RuleCheckerOutput(RuleCheckingOutputStatus.NA, 0));
+
+    DependencyChecker checker = new DependencyChecker(new DataElement("a"), List.of("Q1"));
+    assertFalse(checker.getResult(RuleCheckingOutputType.STATUS, globalResults));
   }
 }

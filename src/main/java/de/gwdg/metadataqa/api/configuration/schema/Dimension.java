@@ -1,4 +1,4 @@
-package de.gwdg.metadataqa.api.util;
+package de.gwdg.metadataqa.api.configuration.schema;
 
 public class Dimension {
   private Integer minWidth;

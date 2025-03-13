@@ -16,6 +16,7 @@ import de.gwdg.metadataqa.api.rule.singlefieldchecker.HasChildrenChecker;
 import de.gwdg.metadataqa.api.rule.singlefieldchecker.HasValueChecker;
 import de.gwdg.metadataqa.api.rule.singlefieldchecker.ImageDimensionChecker;
 import de.gwdg.metadataqa.api.rule.singlefieldchecker.LanguageTagChecker;
+import de.gwdg.metadataqa.api.rule.singlefieldchecker.MQAFPatternChecker;
 import de.gwdg.metadataqa.api.rule.singlefieldchecker.MaxCountChecker;
 import de.gwdg.metadataqa.api.rule.singlefieldchecker.MaxLengthChecker;
 import de.gwdg.metadataqa.api.rule.singlefieldchecker.MaxWordsChecker;
@@ -73,6 +74,9 @@ public class SchemaUtils {
 
     if (StringUtils.isNotBlank(rule.getPattern()))
       ruleCheckers.add(new PatternChecker(dataElement, rule.getPattern()));
+
+    if (rule.getMqafPattern() != null)
+      ruleCheckers.add(new MQAFPatternChecker(dataElement, rule.getMqafPattern()));
 
     if (StringUtils.isNotBlank(rule.getEquals()))
       pair(schema, ruleCheckers, dataElement, rule.getEquals(), "equals");

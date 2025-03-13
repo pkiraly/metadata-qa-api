@@ -44,11 +44,14 @@ public class OrChecker extends LogicalChecker {
     if (instances != null && !instances.isEmpty()) {
       FieldCounter<RuleCheckerOutput> localResults = new FieldCounter<>();
       for (RuleChecker checker : checkers) {
-        if (checker instanceof DependencyChecker)
-          ((DependencyChecker)checker).update(cache, localResults, outputType, results);
-        else
+        if (checker instanceof DependencyChecker) {
+          ((DependencyChecker) checker).update(cache, localResults, outputType, results);
+        } else {
           checker.update(cache, localResults, outputType);
-        String key = outputType.equals(RuleCheckingOutputType.BOTH) ? checker.getHeader(RuleCheckingOutputType.SCORE) : checker.getHeader();
+        }
+        String key = outputType.equals(RuleCheckingOutputType.BOTH)
+                   ? checker.getIdOrHeader(RuleCheckingOutputType.SCORE)
+                   : checker.getIdOrHeader();
         if (localResults.get(key).getStatus().equals(RuleCheckingOutputStatus.PASSED)) {
           allPassed = true;
           break;
@@ -59,6 +62,6 @@ public class OrChecker extends LogicalChecker {
     }
     addOutput(results, isNA, allPassed, outputType);
     if (isDebug())
-      LOGGER.info(this.getClass().getSimpleName() + " " + this.id + ") result: " + RuleCheckingOutputStatus.create(isNA, allPassed));
+      LOGGER.info(String.format("%s %s) isNA: %s, allPassed: %s, result: %s", this.getClass().getSimpleName(), this.id, isNA, allPassed, RuleCheckingOutputStatus.create(isNA, allPassed)));
   }
 }

@@ -51,7 +51,7 @@ public class AndChecker extends LogicalChecker {
           ((DependencyChecker)checker).update(cache, localResults, outputType, results);
         else
           checker.update(cache, localResults, outputType);
-        String key = outputType.equals(RuleCheckingOutputType.BOTH) ? checker.getHeader(RuleCheckingOutputType.SCORE) : checker.getHeader();
+        String key = outputType.equals(RuleCheckingOutputType.BOTH) ? checker.getIdOrHeader(RuleCheckingOutputType.SCORE) : checker.getIdOrHeader();
         if (!localResults.get(key).getStatus().equals(RuleCheckingOutputStatus.PASSED)) {
           allPassed = false;
           break;
