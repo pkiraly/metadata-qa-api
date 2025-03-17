@@ -11,7 +11,6 @@ import de.gwdg.metadataqa.api.rule.RuleCheckingOutputStatus;
 import de.gwdg.metadataqa.api.rule.RuleCheckingOutputType;
 
 import java.util.List;
-import java.util.regex.Pattern;
 
 public class MQAFPatternChecker extends SingleFieldChecker {
 
@@ -43,12 +42,13 @@ public class MQAFPatternChecker extends SingleFieldChecker {
           isNA = false;
           if (isDebug())
             LOGGER.info("value: " + instance.getValue());
-          if (!mqafPattern.getCompitedPattern().matcher(instance.getValue()).find()) {
+          if (!mqafPattern.getCompiledPattern().matcher(instance.getValue()).find()) {
             if (mqafPattern.getScope().equals(ApplicationScope.allOf)) {
               allPassed = false;
               break;
             }
           } else {
+            // TODO: implement ApplicationScope.oneOf
             onePassed = true;
           }
         }

@@ -1,25 +1,28 @@
 package de.gwdg.metadataqa.api.configuration.schema;
 
+import org.apache.commons.lang3.StringUtils;
+
+import java.util.List;
 import java.util.regex.Pattern;
 
 public class MQAFPattern {
-  String pattern;
-  Pattern compitedPattern;
-  ApplicationScope scope;
+  List<String> pattern;
+  Pattern compiledPattern;
+  ApplicationScope scope = ApplicationScope.anyOf;
 
   public MQAFPattern() {
   }
 
-  public String getPattern() {
+  public List<String> getPattern() {
     return pattern;
   }
 
-  public void setPattern(String pattern) {
+  public void setPattern(List<String> pattern) {
     this.pattern = pattern;
-    this.compitedPattern = Pattern.compile(pattern);
+    this.compiledPattern = Pattern.compile(StringUtils.join(pattern, "|"));
   }
 
-  public MQAFPattern withPattern(String pattern) {
+  public MQAFPattern withPattern(List<String> pattern) {
     setPattern(pattern);
     return this;
   }
@@ -37,7 +40,7 @@ public class MQAFPattern {
     return this;
   }
 
-  public Pattern getCompitedPattern() {
-    return compitedPattern;
+  public Pattern getCompiledPattern() {
+    return compiledPattern;
   }
 }
