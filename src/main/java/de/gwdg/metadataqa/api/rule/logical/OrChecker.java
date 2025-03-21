@@ -62,6 +62,6 @@ public class OrChecker extends LogicalChecker {
     }
     addOutput(results, isNA, allPassed, outputType);
     if (isDebug())
-      LOGGER.info(String.format("%s %s) isNA: %s, allPassed: %s, result: %s", this.getClass().getSimpleName(), this.id, isNA, allPassed, RuleCheckingOutputStatus.create(isNA, allPassed)));
+      LOGGER.info(String.format("%s %s) isNA: %s, allPassed: %s, result: %s", this.getClass().getSimpleName(), this.id, isNA, allPassed, RuleCheckingOutputStatus.create(isNA, allPassed, isMandatory())));
   }
 }

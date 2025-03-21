@@ -1,5 +1,6 @@
 package de.gwdg.metadataqa.api.rule;
 
+import de.gwdg.metadataqa.api.configuration.schema.ApplicationScope;
 import de.gwdg.metadataqa.api.counter.FieldCounter;
 
 import java.util.logging.Logger;
@@ -15,6 +16,9 @@ public abstract class BaseRuleChecker implements RuleChecker {
   protected String header;
   protected Boolean hidden = false;
   private Boolean debug = false;
+  private Boolean mandatory = false;
+  private ApplicationScope scope;
+
   /**
    * A flag to denote if the RuleChecker should count the number instances and failures
    */
@@ -150,6 +154,26 @@ public abstract class BaseRuleChecker implements RuleChecker {
 
   public boolean isDebug() {
     return debug;
+  }
+
+  @Override
+  public void setMandatory() {
+    this.mandatory = true;
+  }
+
+  @Override
+  public boolean isMandatory() {
+    return mandatory;
+  }
+
+  @Override
+  public ApplicationScope getScope() {
+    return scope;
+  }
+
+  @Override
+  public void setScope(ApplicationScope scope) {
+    this.scope = scope;
   }
 
   public Boolean countInstances() {

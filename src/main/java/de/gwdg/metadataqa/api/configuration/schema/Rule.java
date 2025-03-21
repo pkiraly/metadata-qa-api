@@ -14,12 +14,19 @@ public class Rule implements Serializable {
 
   private static final long serialVersionUID = 4101184421853217836L;
 
+  // general parameters
   private String id;
   private String description;
   private Integer failureScore;
   private Integer successScore;
   private Integer naScore;
+  private Boolean hidden = Boolean.FALSE;
+  private Boolean skip = Boolean.FALSE;
+  private Boolean debug = Boolean.FALSE;
+  private ApplicationScope scope;
+  private Boolean mandatory = Boolean.FALSE;
 
+  // checkers
   private String pattern;
   private String equals;
   private String disjoint;
@@ -43,15 +50,13 @@ public class Rule implements Serializable {
   private Integer maxWords;
   private Integer minWords;
   private Dimension dimension;
-  private Boolean hidden = Boolean.FALSE;
   private List<String> dependencies;
-  private Boolean skip = Boolean.FALSE;
-  private Boolean debug = Boolean.FALSE;
   private Boolean allowEmptyInstances = Boolean.FALSE;
   private Boolean multilingual;
   private ApplicationScope hasLanguageTag;
   private List<String> hasChildren;
   private MQAFPattern mqafPattern;
+  private Boolean alwaysCheckDependencies = Boolean.FALSE;
 
   public String getId() {
     return id;
@@ -402,6 +407,32 @@ public class Rule implements Serializable {
     return this;
   }
 
+  public ApplicationScope getScope() {
+    return scope;
+  }
+
+  public void setScope(ApplicationScope scope) {
+    this.scope = scope;
+  }
+
+  public Rule withScope(ApplicationScope scope) {
+    this.scope = scope;
+    return this;
+  }
+
+  public Boolean getMandatory() {
+    return mandatory;
+  }
+
+  public void setMandatory(Boolean mandatory) {
+    this.mandatory = mandatory;
+  }
+
+  public Rule withMandatory(Boolean mandatory) {
+    this.mandatory = mandatory;
+    return this;
+  }
+
   public Boolean getUnique() {
     return unique;
   }
@@ -581,6 +612,19 @@ public class Rule implements Serializable {
 
   public Rule withMqafPattern(MQAFPattern mqafPattern) {
     this.mqafPattern = mqafPattern;
+    return this;
+  }
+
+  public Boolean getAlwaysCheckDependencies() {
+    return alwaysCheckDependencies;
+  }
+
+  public void setAlwaysCheckDependencies(Boolean alwaysCheckDependencies) {
+    this.alwaysCheckDependencies = alwaysCheckDependencies;
+  }
+
+  public Rule withAlwaysCheckDependencies(Boolean alwaysCheckDependencies) {
+    this.alwaysCheckDependencies = alwaysCheckDependencies;
     return this;
   }
 

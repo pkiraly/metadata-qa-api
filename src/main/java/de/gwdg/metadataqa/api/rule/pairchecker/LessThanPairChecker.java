@@ -66,7 +66,7 @@ public class LessThanPairChecker extends PropertyPairChecker {
     }
     addOutput(results, isNA, allPassed, outputType);
     if (isDebug())
-      LOGGER.info(this.getClass().getSimpleName() + " " + this.id + ") result: " + RuleCheckingOutputStatus.create(isNA, allPassed));
+      LOGGER.info(this.getClass().getSimpleName() + " " + this.id + ") result: " + RuleCheckingOutputStatus.create(isNA, allPassed, isMandatory()));
   }
 
   private boolean checkValues(String value1, String value2) {

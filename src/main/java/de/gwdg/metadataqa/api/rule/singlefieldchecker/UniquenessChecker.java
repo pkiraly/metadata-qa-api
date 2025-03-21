@@ -77,7 +77,7 @@ public class UniquenessChecker extends SingleFieldChecker {
 
     addOutput(results, isNA, allPassed, outputType);
     if (isDebug())
-      LOGGER.info(this.getClass().getSimpleName() + " " + this.id + ") result: " + RuleCheckingOutputStatus.create(isNA, allPassed));
+      LOGGER.info(this.getClass().getSimpleName() + " " + this.id + ") result: " + RuleCheckingOutputStatus.create(isNA, allPassed, isMandatory()));
   }
 
   public void setSolrClient(SolrClient solrClient) {

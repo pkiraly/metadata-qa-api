@@ -19,11 +19,6 @@ public class AndChecker extends LogicalChecker {
   public static final String PREFIX = "and";
 
   /**
-   * If the values is NA, check dependencies. and that will decide if it passes or not
-   */
-  private boolean ifIsNACheckDependency = false;
-
-  /**
    * @param field The field
    * @param checkers The list of checkers
    */
@@ -65,7 +60,7 @@ public class AndChecker extends LogicalChecker {
           if (!minCountChecker.isEmptyInstancesAllowed() || minCountChecker.getMinCount() > 0)
             allPassed = false;
         }
-        else if (ifIsNACheckDependency && checker instanceof DependencyChecker) {
+        else if (alwaysCheckDependencies && checker instanceof DependencyChecker) {
           DependencyChecker dependencyChecker = (DependencyChecker) checker;
           allPassed = dependencyChecker.getResult(outputType, results);
         }
@@ -77,10 +72,6 @@ public class AndChecker extends LogicalChecker {
     addOutput(results, isNA, allPassed, outputType);
 
     if (isDebug())
-      LOGGER.info(this.getClass().getSimpleName() + " " + this.id + ") result: " + RuleCheckingOutputStatus.create(isNA, allPassed));
-  }
-
-  public void setIfIsNACheckDependency(boolean ifIsNACheckDependency) {
-    this.ifIsNACheckDependency = ifIsNACheckDependency;
+      LOGGER.info(this.getClass().getSimpleName() + " " + this.id + ") result: " + RuleCheckingOutputStatus.create(isNA, allPassed, isMandatory()));
   }
 }

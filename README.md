@@ -912,7 +912,7 @@ fields:
     asLanguageTagged: true
 ```
 
-The parameters defines if any, one or all instances should have language annottation:
+The parameter defines if any, one or all instances should have language annotation:
 
 * `anyOf`: the test passes if at least one instance has language tag
 * `oneOf`: the test passes if one and only one instance has language tag
@@ -1072,6 +1072,29 @@ turn it off.
 (since v0.9.0)
 
 If set, the tool logs the rule identifier, its value and the rule's result.
+
+##### `mandatory <boolean>`:
+
+(since v0.9.0)
+
+If set, the data element should exists, should have a value, and should pass the checks.
+
+##### `alwaysCheckDependencies <boolean>`:
+
+(since v0.9.0)
+
+If set, and the dependencies are set, they will be checked even if the
+data element is not existing.
+
+##### `scope <anyOf|oneOf|allOf>`:
+
+(since v0.9.0)
+
+The parameter defines if any, one or all instances should pass the check:
+
+* `anyOf`: the test passes if at least one instance passes the test
+* `oneOf`: the test passes if one and only one instance passes the test
+* `allOf`: the test passes if at least all instances pass the test
 
 #### Set rules via Java API 
 

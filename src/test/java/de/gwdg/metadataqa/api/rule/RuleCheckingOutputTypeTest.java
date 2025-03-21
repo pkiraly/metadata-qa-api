@@ -22,29 +22,29 @@ public class RuleCheckingOutputTypeTest {
 
   @Test
   public void testCreate() {
-    assertEquals(RuleCheckingOutputStatus.NA, RuleCheckingOutputStatus.create(true, true));
-    assertEquals(RuleCheckingOutputStatus.FAILED, RuleCheckingOutputStatus.create(true, false));
-    assertEquals(RuleCheckingOutputStatus.PASSED, RuleCheckingOutputStatus.create(false, true));
-    assertEquals(RuleCheckingOutputStatus.FAILED, RuleCheckingOutputStatus.create(false, false));
+    assertEquals(RuleCheckingOutputStatus.NA, RuleCheckingOutputStatus.create(true, true, false));
+    assertEquals(RuleCheckingOutputStatus.FAILED, RuleCheckingOutputStatus.create(true, false, false));
+    assertEquals(RuleCheckingOutputStatus.PASSED, RuleCheckingOutputStatus.create(false, true, false));
+    assertEquals(RuleCheckingOutputStatus.FAILED, RuleCheckingOutputStatus.create(false, false, false));
   }
 
   @Test
   public void negate_passed() {
-    RuleCheckingOutputStatus type = RuleCheckingOutputStatus.create(false, true);
+    RuleCheckingOutputStatus type = RuleCheckingOutputStatus.create(false, true, false);
     assertEquals(RuleCheckingOutputStatus.PASSED, type);
     assertEquals(RuleCheckingOutputStatus.FAILED, type.negate());
   }
 
   @Test
   public void negate_failed() {
-    RuleCheckingOutputStatus type = RuleCheckingOutputStatus.create(false, false);
+    RuleCheckingOutputStatus type = RuleCheckingOutputStatus.create(false, false, false);
     assertEquals(RuleCheckingOutputStatus.FAILED, type);
     assertEquals(RuleCheckingOutputStatus.PASSED, type.negate());
   }
 
   @Test
   public void negate_NA() {
-    RuleCheckingOutputStatus type = RuleCheckingOutputStatus.create(true, false);
+    RuleCheckingOutputStatus type = RuleCheckingOutputStatus.create(true, false, false);
     assertEquals(RuleCheckingOutputStatus.FAILED, type);
     assertEquals(RuleCheckingOutputStatus.PASSED, type.negate());
   }

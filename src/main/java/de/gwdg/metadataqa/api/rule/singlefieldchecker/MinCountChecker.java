@@ -45,7 +45,7 @@ public class MinCountChecker extends SingleFieldChecker {
 
     addOutput(results, counter.isNA(), allPassed, outputType);
     if (isDebug())
-      LOGGER.info(this.getClass().getSimpleName() + " " + this.id + ") result: " + RuleCheckingOutputStatus.create(counter.isNA(), allPassed));
+      LOGGER.info(this.getClass().getSimpleName() + " " + this.id + ") result: " + RuleCheckingOutputStatus.create(counter.isNA(), allPassed, isMandatory()));
   }
 
   public void setAllowEmptyInstances(boolean allowEmptyInstances) {

@@ -152,12 +152,18 @@ public class SchemaUtils {
 
     if (rule.getAnd() != null) {
       List<RuleChecker> childRuleCheckers = getChildRuleCheckers(schema, dataElement, rule.getAnd(), rule.getId());
-      ruleCheckers.add(new AndChecker(dataElement, childRuleCheckers));
+      AndChecker checker = new AndChecker(dataElement, childRuleCheckers);
+      if (rule.getAlwaysCheckDependencies().equals(Boolean.TRUE))
+        checker.setAlwaysCheckDependencies(true);
+      ruleCheckers.add(checker);
     }
 
     if (rule.getOr() != null) {
       List<RuleChecker> childRuleCheckers = getChildRuleCheckers(schema, dataElement, rule.getOr(), rule.getId());
-      ruleCheckers.add(new OrChecker(dataElement, childRuleCheckers));
+      OrChecker checker = new OrChecker(dataElement, childRuleCheckers);
+      if (rule.getAlwaysCheckDependencies().equals(Boolean.TRUE))
+        checker.setAlwaysCheckDependencies(true);
+      ruleCheckers.add(checker);
     }
 
     if (rule.getNot() != null) {
@@ -165,6 +171,7 @@ public class SchemaUtils {
       ruleCheckers.add(new NotChecker(dataElement, childRuleCheckers));
     }
 
+    // General properties
     if (!ruleCheckers.isEmpty()) {
       for (RuleChecker ruleChecker : ruleCheckers) {
         ruleChecker.setFailureScore(rule.getFailureScore());
@@ -172,8 +179,11 @@ public class SchemaUtils {
         ruleChecker.setNaScore(rule.getNaScore());
         String idValue = StringUtils.isNotBlank(rule.getId()) ? rule.getId() : String.valueOf(++id);
         ruleChecker.setId(idValue);
+        ruleChecker.setScope(rule.getScope());
         if (rule.getHidden().equals(Boolean.TRUE))
           ruleChecker.setHidden();
+        if (rule.getMandatory().equals(Boolean.TRUE))
+          ruleChecker.setMandatory();
         if (rule.getDebug().equals(Boolean.TRUE)) {
           ruleChecker.setDebug();
           if (ruleChecker instanceof LogicalChecker) {

@@ -8,7 +8,7 @@ public class RuleCheckerOutput {
   private Integer failureCount;
 
   public RuleCheckerOutput(RuleChecker ruleChecker, boolean isNA, boolean passed) {
-    this(ruleChecker, RuleCheckingOutputStatus.create(isNA, passed));
+    this(ruleChecker, RuleCheckingOutputStatus.create(isNA, passed, ruleChecker.isMandatory()));
   }
 
   public RuleCheckerOutput(RuleChecker ruleChecker, RuleCheckingOutputStatus status) {

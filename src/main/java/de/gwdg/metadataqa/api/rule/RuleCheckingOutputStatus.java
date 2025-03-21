@@ -41,8 +41,10 @@ public enum RuleCheckingOutputStatus {
    * @param passed Is rule passed?
    * @return the output status
    */
-  public static RuleCheckingOutputStatus create(boolean isNA, boolean passed) {
-    if (isNA && passed)
+  public static RuleCheckingOutputStatus create(boolean isNA, boolean passed, boolean isMandatory) {
+    if (isNA && isMandatory)
+      return FAILED;
+    else if (isNA && passed)
       return NA;
     else if (passed)
       return PASSED;

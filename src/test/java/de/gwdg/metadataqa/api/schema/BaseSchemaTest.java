@@ -921,6 +921,7 @@ public class BaseSchemaTest {
           ))
       .addNamespace("lido", "http://www.lido-schema.org");
     String schemaString = ConfigurationReader.toJson(schemaObj);
+    System.err.println(schemaString);
     assertTrue(schemaString.contains("\"name\":\"author\""));
     assertTrue(schemaString.contains("\"path\":\"author\""));
     assertTrue(schemaString.contains("\"categories\":[]"));
@@ -934,7 +935,7 @@ public class BaseSchemaTest {
     assertFalse(schemaString.contains("\"absolutePath\":\"author\""));
     assertFalse(schemaString.contains("\"active\":true"));
     assertTrue(schemaString.contains("\"extractable\":false"));
-    assertFalse(schemaString.contains("\"mandatory\":false"));
+    assertTrue(schemaString.contains("\"mandatory\":false"));
     assertTrue(schemaString.contains("\"rules\":["));
     assertTrue(schemaString.contains("\"groups\":[]"));
     assertTrue(schemaString.contains("\"categories\":[]"));

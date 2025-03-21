@@ -1,5 +1,6 @@
 package de.gwdg.metadataqa.api.rule;
 
+import de.gwdg.metadataqa.api.configuration.schema.ApplicationScope;
 import de.gwdg.metadataqa.api.counter.FieldCounter;
 import de.gwdg.metadataqa.api.model.selector.Selector;
 
@@ -60,4 +61,12 @@ public interface RuleChecker extends Serializable {
   boolean isHidden();
 
   void setDebug();
+
+  void setMandatory();
+
+  boolean isMandatory();
+
+  void setScope(ApplicationScope scope);
+
+  ApplicationScope getScope();
 }
