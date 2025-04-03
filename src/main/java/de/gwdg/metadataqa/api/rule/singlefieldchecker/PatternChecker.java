@@ -31,8 +31,9 @@ public class PatternChecker extends SingleFieldChecker {
     if (isDebug())
       LOGGER.info(this.getClass().getSimpleName() + " " + this.id);
 
-    var allPassed = true;
     var isNA = true;
+    boolean hasFailed = false;
+    int passCount = 0;
     List<XmlFieldInstance> instances = cache.get(field);
     if (instances != null && !instances.isEmpty()) {
       for (XmlFieldInstance instance : instances) {
@@ -41,12 +42,17 @@ public class PatternChecker extends SingleFieldChecker {
           if (isDebug())
             LOGGER.info("value: " + instance.getValue());
           if (!pattern.matcher(instance.getValue()).find()) {
-            allPassed = false;
-            break;
+            hasFailed = true;
+            if (scopeIsAllOf()) {
+              break;
+            }
+          } else {
+            passCount++;
           }
         }
       }
     }
+    boolean allPassed = isPassed(passCount, hasFailed);
     addOutput(results, isNA, allPassed, outputType);
     if (isDebug())
       LOGGER.info(this.getClass().getSimpleName() + " " + this.id + ") result: " + RuleCheckingOutputStatus.create(isNA, allPassed, isMandatory()));

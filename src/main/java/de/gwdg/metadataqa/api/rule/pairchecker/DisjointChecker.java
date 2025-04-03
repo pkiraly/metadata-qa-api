@@ -24,8 +24,9 @@ public class DisjointChecker extends PropertyPairChecker {
     if (isDebug())
       LOGGER.info(this.getClass().getSimpleName() + " " + this.id);
 
-    var allPassed = true;
     var isNA = false;
+    boolean hasFailed = false;
+    int passCount = 0;
     List<XmlFieldInstance> instances1 = cache.get(field1.getAbsolutePath().replace("[*]", ""));
     List<XmlFieldInstance> instances2 = cache.get(field2.getAbsolutePath().replace("[*]", ""));
     if (instances1 != null && !instances1.isEmpty() && instances2 != null && !instances2.isEmpty()) {
@@ -35,13 +36,18 @@ public class DisjointChecker extends PropertyPairChecker {
             if (isDebug())
               LOGGER.info(String.format("%s %s values: '%s' vs '%s'", this.getClass().getSimpleName(), this.id, instance1.getValue(), instance2.getValue()));
             if (instance2.hasValue() && instance1.getValue().equals(instance2.getValue())) {
-              allPassed = false;
-              break;
+              hasFailed = true;
+              if (scopeIsAllOf()) {
+                break;
+              }
+            } else {
+              passCount++;
             }
           }
         }
       }
     }
+    boolean allPassed = isPassed(passCount, hasFailed);
     addOutput(results, isNA, allPassed, outputType);
     if (isDebug())
       LOGGER.info(this.getClass().getSimpleName() + " " + this.id + ") result: " + RuleCheckingOutputStatus.create(isNA, allPassed, isMandatory()));

@@ -30,23 +30,28 @@ public class MaxWordsChecker extends SingleFieldChecker {
     if (isDebug())
       LOGGER.info(this.getClass().getSimpleName() + " " + this.id);
 
-    var allPassed = true;
     var isNA = true;
+    boolean hasFailed = false;
+    int passCount = 0;
     List<XmlFieldInstance> instances = cache.get(field);
     if (instances != null && !instances.isEmpty()) {
       for (XmlFieldInstance instance : instances) {
         if (instance.hasValue()) {
-
           isNA = false;
           if (isDebug())
             LOGGER.info("value: " + instance.getValue());
           if (countWords(instance.getValue()) > maxWords) {
-            allPassed = false;
-            break;
+            hasFailed = true;
+            if (scopeIsAllOf()) {
+              break;
+            }
+          } else {
+            passCount++;
           }
         }
       }
     }
+    boolean allPassed = isPassed(passCount, hasFailed);
     addOutput(results, isNA, allPassed, outputType);
   }
 

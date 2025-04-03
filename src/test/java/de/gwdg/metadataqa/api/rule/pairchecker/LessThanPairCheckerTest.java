@@ -87,6 +87,8 @@ public class LessThanPairCheckerTest {
   public RuleCheckerOutput run(String field1, String field2, TYPE type) {
     LessThanPairChecker checker = new LessThanPairChecker(
       schema.getPathByLabel(field1), schema.getPathByLabel(field2), type);
+    // checker.setId("Q1");
+    // checker.setDebug();
 
     FieldCounter<RuleCheckerOutput> fieldCounter = new FieldCounter<>();
     checker.update(cache, fieldCounter, RuleCheckingOutputType.BOTH);

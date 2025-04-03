@@ -176,11 +176,50 @@ public abstract class BaseRuleChecker implements RuleChecker {
     this.scope = scope;
   }
 
+  @Override
+  public boolean hasScope() {
+    return scope != null;
+  }
+
   public Boolean countInstances() {
     return countInstances;
   }
 
   public void setCountInstances(Boolean countInstances) {
     this.countInstances = countInstances;
+  }
+
+  /**
+   * Decide if the criterium has been passed base on the results, and the scope
+   * @param passCount The number of times the check has been passed
+   * @param hasFailed Whether there were a failure
+   * @return
+   */
+  public boolean isPassed(int passCount, boolean hasFailed) {
+    boolean passed = false;
+    if (hasScope()) {
+      if (scopeIsAllOf()) {
+        passed = passCount > 0 && !hasFailed;
+      } else if (scopeIsAnyOf()) {
+        passed = passCount > 0;
+      } else if (scopeIsOneOf()) {
+        passed = passCount == 1;
+      }
+    } else {
+      passed = passCount > 0;
+    }
+    return passed;
+  }
+
+  protected boolean scopeIsAllOf() {
+    return hasScope() && scope.equals(ApplicationScope.allOf);
+  }
+
+  protected boolean scopeIsAnyOf() {
+    return hasScope() && scope.equals(ApplicationScope.anyOf);
+  }
+
+  protected boolean scopeIsOneOf() {
+    return hasScope() && scope.equals(ApplicationScope.oneOf);
   }
 }

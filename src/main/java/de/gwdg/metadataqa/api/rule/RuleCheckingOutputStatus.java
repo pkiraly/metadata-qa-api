@@ -44,7 +44,7 @@ public enum RuleCheckingOutputStatus {
   public static RuleCheckingOutputStatus create(boolean isNA, boolean passed, boolean isMandatory) {
     if (isNA && isMandatory)
       return FAILED;
-    else if (isNA && passed)
+    else if (isNA) // && passed)
       return NA;
     else if (passed)
       return PASSED;

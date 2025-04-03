@@ -34,8 +34,9 @@ public class HasValueChecker extends SingleFieldChecker {
     if (isDebug())
       LOGGER.info(this.getClass().getSimpleName() + " " + this.id);
 
-    var allPassed = false;
     var isNA = true;
+    boolean hasFailed = false;
+    int passCount = 0;
     List<XmlFieldInstance> instances = cache.get(field);
     if (instances != null && !instances.isEmpty()) {
       for (XmlFieldInstance instance : instances) {
@@ -43,16 +44,20 @@ public class HasValueChecker extends SingleFieldChecker {
           isNA = false;
           if (isDebug())
             LOGGER.info("value: " + instance.getValue());
-          if (instance.getValue().equals(fixedValue)) {
-            allPassed = true;
-            break;
+          if (!instance.getValue().equals(fixedValue)) {
+            hasFailed = true;
+            if (scopeIsAllOf()) {
+              break;
+            }
+          } else {
+            passCount++;
           }
         }
       }
     }
+    boolean allPassed = isPassed(passCount, hasFailed);
     addOutput(results, isNA, allPassed, outputType);
     if (isDebug())
       LOGGER.info(this.getClass().getSimpleName() + " " + this.id + ") result: " + RuleCheckingOutputStatus.create(isNA, allPassed, isMandatory()));
   }
-
 }

@@ -32,30 +32,28 @@ public class MQAFPatternChecker extends SingleFieldChecker {
     if (isDebug())
       LOGGER.info(this.getClass().getSimpleName() + " " + this.id);
 
-    var allPassed = true;
     var isNA = true;
+    boolean hasFailed = false;
+    int passCount = 0;
     List<XmlFieldInstance> instances = cache.get(field);
     if (instances != null && !instances.isEmpty()) {
-      boolean onePassed = false;
       for (XmlFieldInstance instance : instances) {
         if (instance.hasValue()) {
           isNA = false;
           if (isDebug())
             LOGGER.info("value: " + instance.getValue());
           if (!mqafPattern.getCompiledPattern().matcher(instance.getValue()).find()) {
-            if (mqafPattern.getScope().equals(ApplicationScope.allOf)) {
-              allPassed = false;
+            hasFailed = true;
+            if (scopeIsAllOf()) {
               break;
             }
           } else {
-            // TODO: implement ApplicationScope.oneOf
-            onePassed = true;
+            passCount++;
           }
         }
       }
-      if (!onePassed)
-        allPassed = false;
     }
+    boolean allPassed = isPassed(passCount, hasFailed);
     addOutput(results, isNA, allPassed, outputType);
     if (isDebug())
       LOGGER.info(this.getClass().getSimpleName() + " " + this.id + ") result: " + RuleCheckingOutputStatus.create(isNA, allPassed, isMandatory()));

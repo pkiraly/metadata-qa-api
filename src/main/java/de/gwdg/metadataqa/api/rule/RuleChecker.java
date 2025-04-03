@@ -69,4 +69,6 @@ public interface RuleChecker extends Serializable {
   void setScope(ApplicationScope scope);
 
   ApplicationScope getScope();
+
+  boolean hasScope();
 }
