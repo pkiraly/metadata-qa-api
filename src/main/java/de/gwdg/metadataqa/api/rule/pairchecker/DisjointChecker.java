@@ -30,6 +30,7 @@ public class DisjointChecker extends PropertyPairChecker {
     List<XmlFieldInstance> instances1 = cache.get(field1.getAbsolutePath().replace("[*]", ""));
     List<XmlFieldInstance> instances2 = cache.get(field2.getAbsolutePath().replace("[*]", ""));
     if (instances1 != null && !instances1.isEmpty() && instances2 != null && !instances2.isEmpty()) {
+      // TODO: handle multiple values on both sides
       for (XmlFieldInstance instance1 : instances1) {
         if (instance1.hasValue()) {
           for (XmlFieldInstance instance2 : instances2) {

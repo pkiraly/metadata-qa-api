@@ -31,8 +31,8 @@ public class EqualityChecker extends PropertyPairChecker {
     List<XmlFieldInstance> instances2 = cache.get(field2.getAbsolutePath().replace("[*]", ""));
     if (instances1 != null && !instances1.isEmpty() && instances2 != null && !instances2.isEmpty()) {
       for (XmlFieldInstance instance1 : instances1) {
+        isNA = false;
         if (instance1.hasValue()) {
-          isNA = false;
           boolean hasValue2 = false;
           for (XmlFieldInstance instance2 : instances2) {
             if (isDebug())

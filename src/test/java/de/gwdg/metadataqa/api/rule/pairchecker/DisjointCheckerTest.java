@@ -48,13 +48,15 @@ public class DisjointCheckerTest {
   @Test
   public void success() {
     DisjointChecker checker = new DisjointChecker(schema.getPathByLabel("name"), schema.getPathByLabel("title"));
+    checker.setId("1");
+    checker.setDebug();
 
     FieldCounter<RuleCheckerOutput> fieldCounter = new FieldCounter<>();
     checker.update(cache, fieldCounter, RuleCheckingOutputType.BOTH);
 
     assertEquals(2, fieldCounter.size());
     assertEquals("name:disjoint:title", checker.getHeaderWithoutId());
-    Assert.assertEquals(RuleCheckingOutputStatus.PASSED, fieldCounter.get(checker.getHeader(RuleCheckingOutputType.STATUS)).getStatus());
+    Assert.assertEquals(RuleCheckingOutputStatus.PASSED, fieldCounter.get(checker.getIdOrHeader(RuleCheckingOutputType.STATUS)).getStatus());
   }
 
   @Test
