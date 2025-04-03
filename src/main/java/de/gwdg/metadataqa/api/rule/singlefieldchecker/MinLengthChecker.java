@@ -36,19 +36,20 @@ public class MinLengthChecker extends SingleFieldChecker {
     List<XmlFieldInstance> instances = cache.get(field);
     if (instances != null && !instances.isEmpty()) {
       for (XmlFieldInstance instance : instances) {
+        isNA = false;
         if (instance.hasValue()) {
-          isNA = false;
           if (isDebug())
             LOGGER.info("value: " + instance.getValue());
           if (instance.getValue().length() < minLength) {
             hasFailed = true;
-            if (scopeIsAllOf()) {
-              break;
-            }
           } else {
             passCount++;
           }
+        } else {
+          hasFailed = true;
         }
+        if (hasFailed && scopeIsAllOf())
+          break;
       }
     }
     boolean allPassed = isPassed(passCount, hasFailed);
