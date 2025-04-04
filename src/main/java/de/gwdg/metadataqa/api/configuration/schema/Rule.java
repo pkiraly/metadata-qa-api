@@ -615,6 +615,7 @@ public class Rule implements Serializable {
     return this;
   }
 
+  @JsonGetter("alwaysCheckDependencies")
   public Boolean getAlwaysCheckDependencies() {
     return alwaysCheckDependencies;
   }

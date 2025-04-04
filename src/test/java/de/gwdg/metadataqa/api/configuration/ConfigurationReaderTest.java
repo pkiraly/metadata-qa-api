@@ -1,6 +1,6 @@
 package de.gwdg.metadataqa.api.configuration;
 
-import com.jayway.jsonpath.InvalidJsonException;
+import de.gwdg.metadataqa.api.json.DataElement;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.ExpectedException;
@@ -18,7 +18,13 @@ public class ConfigurationReaderTest {
   public ExpectedException thrown = ExpectedException.none();
 
   @Test
-  public void readSchemaJson() {
+  public void readSchemaJson_allowEmptyInstances() throws FileNotFoundException {
+    String file = "src/test/resources/configuration/schema/json/allowEmptyInstances.json";
+    SchemaConfiguration schema = ConfigurationReader.readSchemaJson(file);
+    assertNotNull(schema);
+    DataElement field = schema.asSchema().getPathByLabel("field");
+    assertNotNull(field);
+    assertFalse(field.getRules().get(0).getAlwaysCheckDependencies());
   }
 
   @Test
@@ -68,5 +74,9 @@ public class ConfigurationReaderTest {
     assertFalse(configuration.isCompletenessFieldCollectingEnabled());
     assertFalse(configuration.isSaturationExtendedResult());
     assertFalse(configuration.isCheckSkippableCollections());
+  }
+
+  @Test
+  public void testReadSchemaJson() {
   }
 }
