@@ -172,6 +172,7 @@ public class SchemaUtils {
     }
 
     // General properties
+    // List<String> debuggables = new ArrayList<>();
     if (!ruleCheckers.isEmpty()) {
       for (RuleChecker ruleChecker : ruleCheckers) {
         ruleChecker.setFailureScore(rule.getFailureScore());
@@ -191,9 +192,20 @@ public class SchemaUtils {
               child.setDebug();
             }
           }
+          // if (ruleChecker instanceof DependencyChecker)
+          //   debuggables.addAll(((DependencyChecker) ruleChecker).getDependencies());
         }
       }
     }
+
+    /*
+    if (!debuggables.isEmpty()) {
+      for (RuleChecker ruleChecker : ruleCheckers) {
+        if (debuggables.contains(ruleChecker.getId()))
+          ruleChecker.setDebug();
+      }
+    }
+     */
 
     return ruleCheckers;
   }

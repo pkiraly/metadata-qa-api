@@ -37,8 +37,8 @@ public class PatternChecker extends SingleFieldChecker {
     List<XmlFieldInstance> instances = cache.get(field);
     if (instances != null && !instances.isEmpty()) {
       for (XmlFieldInstance instance : instances) {
+        isNA = false;
         if (instance.hasValue()) {
-          isNA = false;
           if (isDebug())
             LOGGER.info("value: " + instance.getValue());
           if (!pattern.matcher(instance.getValue()).find()) {
