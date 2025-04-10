@@ -73,6 +73,8 @@ public class OrChecker extends LogicalChecker {
           boolean dependenciesPassed = dependencyChecker.getResult(outputType, results);
           if (dependenciesPassed == false)
             output = new RuleCheckerOutput(this, RuleCheckingOutputStatus.FAILED);
+          else
+            output = new RuleCheckerOutput(this, RuleCheckingOutputStatus.PASSED);
         }
 
         if (!allPassed)
