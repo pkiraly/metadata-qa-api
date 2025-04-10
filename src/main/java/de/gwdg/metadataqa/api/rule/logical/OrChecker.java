@@ -9,6 +9,7 @@ import de.gwdg.metadataqa.api.rule.RuleCheckerOutput;
 import de.gwdg.metadataqa.api.rule.RuleCheckingOutputStatus;
 import de.gwdg.metadataqa.api.rule.RuleCheckingOutputType;
 import de.gwdg.metadataqa.api.rule.singlefieldchecker.DependencyChecker;
+import de.gwdg.metadataqa.api.rule.singlefieldchecker.MinCountChecker;
 
 import java.util.List;
 import java.util.logging.Logger;
@@ -38,8 +39,10 @@ public class OrChecker extends LogicalChecker {
     if (isDebug())
       LOGGER.info(this.getClass().getSimpleName() + " " + this.id);
 
+    // if NA and dependency checker FAILED -> FAILED
     var allPassed = false;
     var isNA = false;
+    RuleCheckerOutput output = null;
     List<XmlFieldInstance> instances = cache.get(field);
     if (instances != null && !instances.isEmpty()) {
       FieldCounter<RuleCheckerOutput> localResults = new FieldCounter<>();
@@ -59,9 +62,33 @@ public class OrChecker extends LogicalChecker {
       }
     } else {
       isNA = true;
+      for (RuleChecker checker : checkers) {
+        if (checker instanceof MinCountChecker) {
+          MinCountChecker minCountChecker = (MinCountChecker) checker;
+          if (!minCountChecker.isEmptyInstancesAllowed() || minCountChecker.getMinCount() > 0)
+            allPassed = false;
+        }
+        else if (alwaysCheckDependencies && checker instanceof DependencyChecker) {
+          DependencyChecker dependencyChecker = (DependencyChecker) checker;
+          boolean dependenciesPassed = dependencyChecker.getResult(outputType, results);
+          if (dependenciesPassed == false)
+            output = new RuleCheckerOutput(this, RuleCheckingOutputStatus.FAILED);
+        }
+
+        if (!allPassed)
+          break;
+      }
     }
-    addOutput(results, isNA, allPassed, outputType);
-    if (isDebug())
-      LOGGER.info(String.format("%s %s) isNA: %s, allPassed: %s, result: %s", this.getClass().getSimpleName(), this.id, isNA, allPassed, RuleCheckingOutputStatus.create(isNA, allPassed, isMandatory())));
+    if (output != null) {
+      addOutput(results, output, outputType);
+    } else {
+      addOutput(results, isNA, allPassed, outputType);
+    }
+    if (isDebug()) {
+      RuleCheckingOutputStatus status = output != null
+        ? output.getStatus()
+        : RuleCheckingOutputStatus.create(isNA, allPassed, isMandatory());
+      LOGGER.info(String.format("%s %s) isNA: %s, allPassed: %s, result: %s", this.getClass().getSimpleName(), this.id, isNA, allPassed, status));
+    }
   }
 }

@@ -127,6 +127,12 @@ public abstract class BaseRuleChecker implements RuleChecker {
     if (failureCount != null)
       output.setFailureCount(failureCount);
 
+    addOutput(results, output, outputType);
+  }
+
+  protected void addOutput(FieldCounter<RuleCheckerOutput> results,
+                           RuleCheckerOutput output,
+                           RuleCheckingOutputType outputType) {
     if (outputType.equals(RuleCheckingOutputType.STATUS) || outputType.equals(RuleCheckingOutputType.SCORE)) {
       results.put(getIdOrHeader(), output.setOutputType(outputType));
     } else {
