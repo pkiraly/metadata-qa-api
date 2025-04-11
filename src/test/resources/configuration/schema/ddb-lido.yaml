@@ -1,0 +1,841 @@
+format: xml
+fields:
+  # Identifikator für den Datensatz
+  - name: recordId
+    path: lido:lido/lido:lidoRecID
+    extractable: true
+    identifierField: true
+    # indexField: providerItemId
+    indexField: recordId
+    rules:
+      - id: Q-1.1
+        description: There must be an ID for the data record in the data record supplied.
+        mandatory: true
+        and:
+          - minCount: 1
+          - minLength: 1
+      - id: Q-1.2
+        description: The ID for the data record must be unique.
+        and:
+          - dependencies: [ Q-1.1 ]
+          # - maxCount: 1
+          - unique: true
+      # - id: Q-1.3
+      #   description: In data records that represent several hierarchical levels, the description units of the individual
+      #     parts of an object must have a unique identifier within the data record.
+      #   failureScore: -9
+      # - id: Q-1.4
+      #   description: The identifier for the data record must be unchangeable and must not change, especially when updated
+      #     data sets are sent to the DDB.
+      #   failureScore: -6
+      - id: Q-1.5
+        description: The ID for the data record is easy to process by machine
+        successScore: 1
+        and:
+          - dependencies: [ Q-1.1 ]
+          - not:
+              - pattern: ^.*?[^\p{Graph}].*?$
+
+  # Q-2 Identifikator für den Datengeber
+  - name: providerid
+    path: lido:lido/lido:administrativeMetadata/lido:recordWrap/lido:recordSource/lido:legalBodyID
+    extractable: true
+    indexField: providerId
+    rules:
+      - id: Q-2.1
+        description: There must be an ID for the data supplier in the data record supplied.
+        mandatory: true
+        and:
+          - minCount: 1
+          - minLength: 1
+      - id: Q-2.2
+        description: The ID for the data provider must be unique worldwide.
+        successScore: 1
+        and:
+          - dependencies: [ Q-2.1 ]
+          - pattern: ^(DE-\d+|DE-MUS-\d+|https?://ld.zdb-services.de/[\w+/-]+|\d{8}|oid\d{13}|https?://d-nb.info/gnd/[\w-]+)$
+      # - id: Q-2.3
+      #   description:
+      #     Determination of the IDs for the data supplier in the old and newly delivered data sets. Compare if the IDs
+      #     are the same as those in the new dataset.
+      #   failureScore: -6
+      - id: Q-2.4
+        description: Check whether the data supplier ID is an ISIL-ID or ISIL-URI using the rules in the table "Data supplier ID"
+        successScore: 1
+        and:
+          - dependencies: [ Q-2.1 ]
+          - pattern: ^(DE-\d+|DE-MUS-\d+|https?://ld.zdb-services.de/[\w+/-]+)$
+      - id: Q-2.5
+        description: The data provider should be identified by an http-URI from the ISIL registration.
+        successScore: 2
+        and:
+          - dependencies: [ Q-2.1 ]
+          - pattern: ^https?://ld.zdb-services.de/[\w+/-]+$
+      - id: Q-2.6
+        description: The data supplier can be identified by an http-URI from the GND.
+        successScore: 1
+        and:
+          - dependencies: [ Q-2.1 ]
+          - pattern: ^https?://d-nb.info/gnd/[\w-]+$
+
+  - name: thumbnail_order
+    path: lido:lido/lido:administrativeMetadata/lido:resourceWrap/lido:resourceSet/@lido:sortorder
+    rules:
+      - id: Q-3-has-preview-marks
+        hidden: true
+        minCount: 1
+
+  # Q-3 Vorschaubild
+  - name: thumbnail
+    path: lido:lido/lido:administrativeMetadata/lido:resourceWrap/lido:resourceSet/lido:resourceRepresentation/lido:linkResource
+    # path: lido:lido/lido:resourceWrap/lido:resourceSet/lido:ResourceRepresentation/[@type="http://terminology.lido-schema.org/resourceRepresentation_type/preview_image"]
+    rules:
+      - id: Q-3.0
+        hidden: true
+        mandatory: true
+        and:
+          - minCount: 1
+          - minLength: 1
+      - id: Q-3.x
+        hidden: true
+        # debug: true
+        or:
+          - maxCount: 0
+          - and:
+              - minCount: 1
+              - minLength: 1
+              - not:
+                  - pattern: ^[a-zA-Z_0-9:\-]+$
+      - id: Q-3.6
+        description: There must be a reference to an image file in the data record provided (either as a link or as a file name). Check whether there is an element for the preview image in the data record (see table "Mapping the DDB elements"). If yes => check whether it contains a reference to an image file. To do this, either evaluate the MIME type in the Content-Type field in the HTTP response header and/or the file extension in the file name. PDF files also count as image files (see table "File types"). If yes => comparison with the table "File types" to see whether the image file format is supported by the DDB.
+        # skip: true
+        mandatory: true
+        and:
+          - dependencies: [ Q-3.0 ]
+          - or:
+              - pattern: ^.*\.(jpg|jpeg|jpe|jfif|png|tiff|tif|gif|svg|svgz|pdf)$
+              - contentType: [image/jpeg, image/png, image/tiff, image/tiff-fx, image/gif, image/svg+xml, application/pdf]
+      # no longer carry out the test for criterion Q-3.1-old
+      #- id: Q-3.1-old
+      #  description: There must be a reference to an image file in the data record provided (either as a link or as a file name).
+      #  failureScore: -9
+      #  skip: false
+      #  or:
+      #  - pattern: ^.*\.(jpg|jpeg|jpe|jfif|png|tiff|tif|gif|svg|svgz|pdf)$
+      #  - contentType: [image/jpeg, image/png, image/tiff, image/tiff-fx, image/gif, image/svg+xml, application/pdf]
+      - id: Q-3.1
+        description:
+          Check whether there is more than one element for the media file in the data record (see table "Mapping the DDB elements").
+          If yes => check in how many elements there is a reference to an image file.
+          If more than one image file is referenced in the elements => check whether, for example, an attribute
+          indicates which of the image files should be used as a preview image (see table "Mapping of DDB elements")
+        mandatory: true
+        or:
+          - maxCount: 1
+          - dependencies: [Q-3-has-preview-marks]
+      - id: Q-3.2
+        description: "Check whether there are spaces or one of the following special characters in the URL or file name: [a-zA-Z_0-9:-]"
+        successScore: 1
+        alwaysCheckDependencies: true
+        and:
+          - dependencies: [ Q-3.6 ]
+          - pattern: ^[a-zA-Z_0-9&%\?\./:\-]+$
+      - id: Q-3.3
+        description: The image must be at least 800 pixels wide and at least 600 pixels high.
+        # skip: true
+        and:
+          - dependencies: [ Q-3.6 ]
+          - dimension:
+              minShortside: 600
+              minLongside: 800
+      - id: Q-3.4
+        description: The preview image should be referenced by a hyperlink.
+        successScore: 1
+        # alwaysCheckDependencies: true
+        and:
+          - dependencies: [ Q-3.6 ]
+          - pattern: ^https?://.*$
+  #      - id: Q-3.5
+  #        description:
+  #          Check whether there is a MIME type for a preferred image file in the Content-Type attribute in the response
+  #          header of the URL (see table "File types"). If the element contains a file name => check whether the file
+  #          extension refers to an image file format preferred by the DDB.
+  #        successScore: 2
+  #        and:
+  #          - dependencies: [ Q-3.0 ]
+  #          - or:
+  #              - pattern: ^.*\.(jpg|jpeg|jpe|jfif|png|tiff|tif|gif|svg|svgz|pdf)$
+  #              - contentType: [image/jpeg, image/png, image/tiff, image/tiff-fx, image/gif, image/svg+xml, application/pdf]
+
+  # Mediendatei - Link Resource
+  #  - name: mediendatei-link_resource
+  #    # path: lido:lido/lido:resourceWrap/lido:resourceSet/lido:resourceRepresentation/lido:linkResource
+  #    path: lido:lido/lido:administrativeMetadata/lido:resourceWrap/lido:resourceSet/lido:resourceRepresentation/lido:linkResource
+  #    extractable: true
+
+  # Mediendatei - Resource Representation Type
+  #  - name: mediendatei-resource_representation_type
+  #    # path: lido:lido/lido:resourceWrap/lido:resourceSet/lido:ResourceRepresentation/@type
+  #    path: lido:lido/lido:administrativeMetadata/lido:resourceWrap/lido:resourceSet/lido:resourceRepresentation/@lido:type
+  #    extractable: true
+
+  # Q-4 Link zum Digitalen Objekt
+  # Objekt im Medienviewer
+  # Objekt im Kontext
+  - name: Mediendatei_Link_Resource
+    # Mediendatei - Link Resource
+    # path: lido:lido/lido:administrativeMetadata/lido:resourceWrap/lido:resourceSet/lido:resourceRepresentation/lido:linkResource
+    # path: lido:lido/lido:resourceWrap/lido:resourceSet/lido:resourceRepresentation/lido:linkResource
+    path: lido:lido/lido:administrativeMetadata/lido:resourceWrap/lido:resourceSet/lido:resourceRepresentation[@lido:type='http://terminology.lido-schema.org/lido00468' or @lido:type='Provided 3D' or @lido:type='provided_3D' or @lido:type='http://terminology.lido-schema.org/lido00465' or @lido:type='Provided audio' or @lido:type='provided_audio' or @lido:type='http://terminology.lido-schema.org/lido00464' or @lido:type='provided_image' or @lido:type='Provided image' or @lido:type='image_master' or @lido:type='http://terminology.lido-schema.org/lido00482' or @lido:type='Provided text' or @lido:type='provided_text' or @lido:type='http://terminology.lido-schema.org/lido00466' or @lido:type='Provided video' or @lido:type='provided_video']/lido:linkResource
+    rules:
+      - id: Q-4.0
+        hidden: true
+        and:
+          - minCount: 1
+          - minLength: 1
+      - id: Q-4.x
+        hidden: true
+        # debug: true
+        or:
+          - maxCount: 0
+          - and:
+              - minCount: 1
+              - minLength: 1
+              - pattern: ^[a-zA-Z_0-9:/\.\-]+$
+      - id: Q-4.1
+        description:
+          Check whether the data record contains either an element for the media file, the object in the media viewer
+          or the object in the context (see table "Mapping the DDB elements"). If yes => check whether the corresponding
+          element contains a value. If it is an object in the media viewer or an object in the context => check whether
+          the value begins with http:// or https://.
+        mandatory: true
+        and:
+          - minCount: 1
+          - minLength: 1
+          - pattern: ^https?://.*$
+      - id: Q-4.2
+        description: Media files must be delivered in a format supported by the DDB.
+        # skip: true
+        and:
+          - minCount: 1
+          - minLength: 1
+          - pattern: ^https?://.*$
+          - contentType:
+              - image/jpeg
+              - image/png
+              - image/tiff
+              - image/tiff-fx
+              - image/gif
+              - image/svg+xml
+              - application/pdf
+              - audio/mpeg
+              - video/mp4
+              - video/webm
+              - application/vnd.openxmlformats-officedocument.wordprocessingml.document
+              - text/plain
+              - text/richtext
+              - text/rtf
+              - video/x-msvideo
+              - video/x-flv
+              - video/quicktime
+              - video/x-ms-wmv
+              - video/mpeg
+              - audio/x-mpeg
+              - audio/mp4
+      - id: Q-4.3
+        description:
+          Check whether there are spaces or impermissible special characters in the URL or in the file name (in the case
+          of a media file that is not referenced by a URL).
+        # debug: true
+        dependencies: [Q-3.x, Q-4.x]
+        # pattern: ^[a-zA-Z_0-9:/\.\-]+$
+      - id: Q-4.4
+        description:
+          Check whether the data record contains a media file (see table "Mapping the DDB elements").
+          If so => check whether these elements contain a value.
+        successScore: 3
+        dependencies: [Q-3.0, Q-4.0]
+      # - id: Q-4.6
+      #   description: The data record contains a link to an object in the media viewer.
+      #   successScore: 3
+      #   dependencies: [Q-4.0]
+
+  # Objekt im Kontext - Record Info Link
+  - name: objekt_im_kontext-record_info_link
+    path: lido:lido/lido:administrativeMetadata/lido:recordWrap/lido:recordInfoSet/lido:recordInfoLink
+    rules:
+      #    extractable: true
+      - id: Q-4.5
+        description:
+          Check whether the data record contains an object in context (see table "Mapping the DDB elements").
+          If so => check whether this element contain a value.
+        successScore: 3
+        and:
+          - minCount: 1
+            allowEmptyInstances: true
+          - minLength: 1
+
+
+  # Rechtsstatus - Concept ID
+  #  - name: rechtsstatus-concept_id
+  #    path: lido:lido/lido:administrativeMetadata/lido:resourceWrap/lido:resourceSet/lido:rightsResource/lido:rightsType/lido:term
+  #    extractable: true
+
+  # Q-5 Rechtsstatus für das Digitale Objekt
+  - name: rights
+    path: lido:lido/lido:administrativeMetadata/lido:resourceWrap/lido:resourceSet/lido:rightsResource/lido:rightsType/lido:conceptID
+    rules:
+      - id: Q-5.1
+        description:
+          Check whether an element for the legal status is available in the data record (see table "Mapping the DDB elements").
+          If yes => check whether the element contains a value
+        mandatory: true
+        scope: allOf
+        and:
+          - minCount: 1
+            scope: allOf
+          - minLength: 1
+            scope: allOf
+      - id: Q-5.2
+        description:
+          Check whether an http-URI for a license or a rights notice from the DDB license basket is referenced in the
+          element for the legal status (see table "DDB license basket")
+        and:
+          - dependencies: [Q-5.1]
+          - minCount: 1
+          - in:
+              - http://creativecommons.org/licenses/by/3.0/de/
+              - http://creativecommons.org/licenses/by/4.0/
+              - http://creativecommons.org/licenses/by-sa/3.0/de/
+              - http://creativecommons.org/licenses/by-sa/4.0/
+              - http://creativecommons.org/licenses/by-nd/3.0/de/
+              - http://creativecommons.org/licenses/by-nd/4.0/
+              - http://creativecommons.org/licenses/by-nc/3.0/de/
+              - http://creativecommons.org/licenses/by-nc/4.0/
+              - http://creativecommons.org/licenses/by-nc-sa/3.0/de/
+              - http://creativecommons.org/licenses/by-nc-sa/4.0/
+              - http://creativecommons.org/licenses/by-nc-nd/3.0/de/
+              - http://creativecommons.org/licenses/by-nc-nd/4.0/
+              - http://creativecommons.org/publicdomain/mark/1.0/
+              - http://creativecommons.org/publicdomain/zero/1.0/
+              - http://www.deutsche-digitale-bibliothek.de/lizenzen/rv-fz/
+              - http://www.deutsche-digitale-bibliothek.de/lizenzen/rv-ez/
+              - http://www.deutsche-digitale-bibliothek.de/lizenzen/unbekannt/
+              - http://www.deutsche-digitale-bibliothek.de/lizenzen/vw/
+              - http://www.deutsche-digitale-bibliothek.de/lizenzen/nug-kkn/
+              - http://rightsstatements.org/vocab/InC/1.0/
+              - http://rightsstatements.org/vocab/InC-OW-EU/1.0/
+              - http://rightsstatements.org/vocab/CNE/1.0/
+              - http://rightsstatements.org/vocab/NoC-NC/1.0/
+              - http://rightsstatements.org/vocab/InC-EDU/1.0/
+              - http://rightsstatements.org/vocab/NoC-OKLR/1.0/
+              - http://rightsstatements.org/vocab/NKC/1.0/
+              - http://rightsstatements.org/vocab/UND/1.0/
+              - https://creativecommons.org/licenses/by/3.0/de/
+              - https://creativecommons.org/licenses/by/4.0/
+              - https://creativecommons.org/licenses/by-sa/3.0/de/
+              - https://creativecommons.org/licenses/by-sa/4.0/
+              - https://creativecommons.org/licenses/by-nd/3.0/de/
+              - https://creativecommons.org/licenses/by-nd/4.0/
+              - https://creativecommons.org/licenses/by-nc/3.0/de/
+              - https://creativecommons.org/licenses/by-nc/4.0/
+              - https://creativecommons.org/licenses/by-nc-sa/3.0/de/
+              - https://creativecommons.org/licenses/by-nc-sa/4.0/
+              - https://creativecommons.org/licenses/by-nc-nd/3.0/de/
+              - https://creativecommons.org/licenses/by-nc-nd/4.0/
+              - https://creativecommons.org/publicdomain/mark/1.0/
+              - https://creativecommons.org/publicdomain/zero/1.0/
+              - https://www.deutsche-digitale-bibliothek.de/lizenzen/rv-fz/
+              - https://www.deutsche-digitale-bibliothek.de/lizenzen/rv-ez/
+              - https://www.deutsche-digitale-bibliothek.de/lizenzen/unbekannt/
+              - https://www.deutsche-digitale-bibliothek.de/lizenzen/vw/
+              - https://www.deutsche-digitale-bibliothek.de/lizenzen/nug-kkn/
+              - https://rightsstatements.org/vocab/InC/1.0/
+              - https://rightsstatements.org/vocab/InC-OW-EU/1.0/
+              - https://rightsstatements.org/vocab/CNE/1.0/
+              - https://rightsstatements.org/vocab/NoC-NC/1.0/
+              - https://rightsstatements.org/vocab/InC-EDU/1.0/
+              - https://rightsstatements.org/vocab/NoC-OKLR/1.0/
+              - https://rightsstatements.org/vocab/NKC/1.0/
+              - https://rightsstatements.org/vocab/UND/1.0/
+
+      - id: Q-5.3
+        description:
+          The legal status must be specified for each media file referenced in the data set.
+          Is there more than one media file referenced in the data record?
+          If yes => Has a legal status been given for each media file?
+          Determination of all media files that are referenced in the data record (see table "Mapping the DDB elements").
+          Check whether an element for the legal status is identified for each media file.
+          If so, check whether each of these elements contains a value.
+        # "Der Rechtsstatus muss für jede Mediendatei, die im Datensatz referenziert ist, angegeben sein.
+        # Ist im Datensatz mehr als eine Mediendatei referenziert?
+        # Wenn ja => Ist für jede Mediendatei ein Rechtsstatus angegeben?
+        # "Ermittlung aller Mediendateien, die im Datensatz referenziert sind (s. Tabelle ""Mapping der DDB-Elemente"").
+        # Prüfung, ob für jede Mediendatei ein Element für den Rechtsstatus ausgewiesen ist.
+        # Wenn ja, Prüfung ob jedes dieser Elemente einen Wert enthält.
+        # - - -
+        #  failureScore: -3
+        scope: allOf
+        and:
+          - dependencies: [ Q-5.1 ]
+          - minCount: 1
+
+      - id: Q-5.4
+        description: Check whether an http-URI is specified for an open license or for an open license with name (see table "DDB license basket")
+        successScore: 6
+        and:
+          - dependencies: [Q-5.1]
+          - minCount: 1
+          - in:
+              - http://creativecommons.org/publicdomain/mark/1.0/
+              - http://creativecommons.org/publicdomain/zero/1.0/
+              - https://creativecommons.org/publicdomain/mark/1.0/
+              - https://creativecommons.org/publicdomain/zero/1.0/
+
+      - id: Q-5.5
+        description:
+          Check whether an http-URI is specified for a rights notice with restricted use (see table "DDB license basket").
+          Check whether an http-URI is specified for a rights notice with the possibility of use on request
+          (see table "DDB license basket")
+        successScore: 1
+        and:
+          - dependencies: [Q-5.1]
+          - minCount: 1
+          - in:
+              - http://creativecommons.org/licenses/by/3.0/de/
+              - http://creativecommons.org/licenses/by/4.0/
+              - http://creativecommons.org/licenses/by-sa/3.0/de/
+              - http://creativecommons.org/licenses/by-sa/4.0/
+              - http://creativecommons.org/licenses/by-nd/3.0/de/
+              - http://creativecommons.org/licenses/by-nd/4.0/
+              - http://creativecommons.org/licenses/by-nc/3.0/de/
+              - http://creativecommons.org/licenses/by-nc/4.0/
+              - http://creativecommons.org/licenses/by-nc-sa/3.0/de/
+              - http://creativecommons.org/licenses/by-nc-sa/4.0/
+              - http://creativecommons.org/licenses/by-nc-nd/3.0/de/
+              - http://creativecommons.org/licenses/by-nc-nd/4.0/
+              - http://www.deutsche-digitale-bibliothek.de/lizenzen/nug-kkn/
+              - http://rightsstatements.org/vocab/NoC-NC/1.0/
+              - http://rightsstatements.org/vocab/NoC-OKLR/1.0/
+              - https://creativecommons.org/licenses/by/3.0/de/
+              - https://creativecommons.org/licenses/by/4.0/
+              - https://creativecommons.org/licenses/by-sa/3.0/de/
+              - https://creativecommons.org/licenses/by-sa/4.0/
+              - https://creativecommons.org/licenses/by-nd/3.0/de/
+              - https://creativecommons.org/licenses/by-nd/4.0/
+              - https://creativecommons.org/licenses/by-nc/3.0/de/
+              - https://creativecommons.org/licenses/by-nc/4.0/
+              - https://creativecommons.org/licenses/by-nc-sa/3.0/de/
+              - https://creativecommons.org/licenses/by-nc-sa/4.0/
+              - https://creativecommons.org/licenses/by-nc-nd/3.0/de/
+              - https://creativecommons.org/licenses/by-nc-nd/4.0/
+              - https://www.deutsche-digitale-bibliothek.de/lizenzen/nug-kkn/
+              - https://rightsstatements.org/vocab/NoC-NC/1.0/
+              - https://rightsstatements.org/vocab/NoC-OKLR/1.0/
+
+      - id: Q-5.6
+        description: A standardized notice of rights is used. The digital object may be used with restrictions.
+        and:
+          - dependencies: [Q-5.1]
+          - in:
+              - http://www.deutsche-digitale-bibliothek.de/lizenzen/rv-fz/
+              - http://www.deutsche-digitale-bibliothek.de/lizenzen/rv-ez/
+              - http://www.deutsche-digitale-bibliothek.de/lizenzen/unbekannt/
+              - http://www.deutsche-digitale-bibliothek.de/lizenzen/vw/
+              - http://rightsstatements.org/vocab/InC/1.0/
+              - http://rightsstatements.org/vocab/InC-OW-EU/1.0/
+              - http://rightsstatements.org/vocab/CNE/1.0/
+              - http://rightsstatements.org/vocab/InC-EDU/1.0/
+              - http://rightsstatements.org/vocab/NKC/1.0/
+              - http://rightsstatements.org/vocab/UND/1.0/
+              - https://www.deutsche-digitale-bibliothek.de/lizenzen/rv-fz/
+              - https://www.deutsche-digitale-bibliothek.de/lizenzen/rv-ez/
+              - https://www.deutsche-digitale-bibliothek.de/lizenzen/unbekannt/
+              - https://www.deutsche-digitale-bibliothek.de/lizenzen/vw/
+              - https://rightsstatements.org/vocab/InC/1.0/
+              - https://rightsstatements.org/vocab/InC-OW-EU/1.0/
+              - https://rightsstatements.org/vocab/CNE/1.0/
+              - https://rightsstatements.org/vocab/InC-EDU/1.0/
+              - https://rightsstatements.org/vocab/NKC/1.0/
+              - https://rightsstatements.org/vocab/UND/1.0/
+
+  # Objekttitel - Appellation Value
+  #  - name: objekttitel-appellation_value
+  #    path: lido:lido/lido:descriptiveMetadata/lido:objectIdentificationWrap/lido:titleWrap/lido:titleSet/lido:appellationValue
+  #    extractable: true
+
+  # Q-6 Objekttitel
+  - name: dc:title
+    path: lido:lido/lido:descriptiveMetadata/lido:objectIdentificationWrap/lido:titleWrap/lido:titleSet/lido:appellationValue | lido:lido/lido:descriptiveMetadata/lido:objectIdentificationWrap/lido:titleWrap/lido:titleSet
+    indexField: dc_title
+    rules:
+      - id: Q-6.1
+        description:
+          Check whether an element for the object title is available in the data record (see table "Mapping the DDB elements").
+          If yes => check whether the element contains a value.
+        mandatory: true
+        and:
+          - minCount: 1
+          - pattern: ^.+$
+      - id: Q-6.2
+        description: Check whether the same object title occurs more than once in a data set or in several data sets
+        and:
+          - dependencies: [ Q-6.1 ]
+          - unique: true
+      - id: Q-6.3
+        description: Check whether there are fewer than three characters in the object title.
+        and:
+          - dependencies: [ Q-6.1 ]
+          - minLength: 3
+      - id: Q-6.4
+        description:
+          Comparison of the values in the object title element with a predefined list of undesired values.
+          This list must first be created. If necessary, the output lists for 6.2 and 6.3.
+        and:
+          - dependencies: [ Q-6.1 ]
+          - not:
+              - in:
+                  - "?"
+                  - "ohne Title"
+                  - "unbekannter Titel"
+      - id: Q-6.5
+        description: Check whether the same string is contained in the element for the object title and the object type
+        and:
+          - dependencies: [ Q-6.1 ]
+          - not:
+              - equals: Objekttyp
+
+  # Objekttyp - Object/Work Type
+  #  - name: objekttyp-object_work_type
+  #    path: lido:lido/lido:descriptiveMetadata/lido:objectClassificationWrap/lido:objectWorkTypeWrap/lido:objectWorkType
+  #    extractable: true
+
+  # Objekttyp (Bezeichnung) - Term/Label
+  #  - name: objekttyp-term_Label
+  #    path: lido:lido/lido:descriptiveMetadata/lido:objectClassificationWrap/lido:objectWorkTypeWrap/lido:objectWorkType/lido:term
+  #    extractable: true
+  #    skip: true
+
+  # Objekttyp (Bezeichnung) - preferred
+  #  - name: objekttyp-preferred
+  #    # path: lido:lido/lido:descriptiveMetadata/lido:objectClassificationWrap/lido:objectWorkTypeWrap/lido:objectWorkType/lido:term/@pref
+  #    path: lido:lido/lido:descriptiveMetadata/lido:objectClassificationWrap/lido:objectWorkTypeWrap/lido:objectWorkType/lido:term/@lido:pref
+  #    extractable: true
+  #    skip: true
+
+  # Objekttyp (Sprache der Bezeichnung)
+  #  - name: objekttyp-sprache
+  #    path: lido:lido/lido:descriptiveMetadata/lido:objectClassificationWrap/lido:objectWorkTypeWrap/lido:objectWorkType/lido:term/@xml:lang
+  #    extractable: true
+  #    skip: true
+
+  # Objekttyp (URI) - Concept Identifier
+  #  - name: objekttyp-sprache
+  #    path: lido:lido/lido:descriptiveMetadata/lido:objectClassificationWrap/lido:objectWorkTypeWrap/lido:objectWorkType/lido:conceptID
+  #    extractable: true
+  #    skip: true
+
+  # Objekttyp (Quellenangabe)
+  #  - name: objekttyp-quellenangabe
+  #    # path: lido:lido/lido:descriptiveMetadata/lido:objectClassificationWrap/lido:objectWorkTypeWrap/lido:objectWorkType/lido:conceptID/lido:source
+  #    path: lido:lido/lido:descriptiveMetadata/lido:objectClassificationWrap/lido:objectWorkTypeWrap/lido:objectWorkType/lido:conceptID/@lido:source
+  #    extractable: true
+  #    skip: true
+
+  # Q-7 Objekttyp (Term)
+  - name: Objekttyp
+    path: lido:lido/lido:descriptiveMetadata/lido:objectClassificationWrap/lido:objectWorkTypeWrap/lido:objectWorkType/lido:term
+    # | lido:lido/lido:descriptiveMetadata/lido:objectClassificationWrap/lido:objectWorkTypeWrap/lido:objectWorkType
+    rules:
+      - id: Q-7.1
+        description: There must be at least one preferred designation for the object type in the data record.
+        mandatory: true
+        and:
+          - minCount: 1
+          - pattern: ^.+$
+      - id: Q-7.4
+        description: It is a specific object type designation and not an object description or object classification.
+        and:
+          - dependencies: [ Q-7.1 ]
+          - maxWords: 2
+
+  # TODO: 7.2
+
+  # Q-7 Objekttyp (URI)
+  - name: Objekttyp_URI
+    path: lido:lido/lido:descriptiveMetadata/lido:objectClassificationWrap/lido:objectWorkTypeWrap/lido:objectWorkType/lido:conceptID[@lido:type='http://terminology.lido-schema.org/lido00099' or @lido:type='URI' or @lido:type='uri']
+    rules:
+      - id: Q-7.6
+        description:
+          Check whether the value in the element for the URI of the object type begins with http:// or https://.
+          If yes => check whether the URI begins with a namespace for a LOD vocabulary accepted by the DDB (see Sect.  Objekttyp-Vok)
+        successScore: 1
+        pattern: ^https?://(vocab.getty.edu/aat/|vocab.getty.edu/ulan/|vocab.getty.edu/tgn/|viaf.org/viaf/|iconclass.org/|d-nb.info/gnd|www.wikidata.org/entity/Q).*$
+        # pattern: ^https?://(vocab.getty.edu/aat/|vocab.getty.edu/ulan/|vocab.getty.edu/tgn/|viaf.org/viaf/|sws.geonames.org/|iconclass.org/|d-nb.info/gnd|www.imj.org.il/imagine/thesaurus/objects/|id.loc.gov/authorities/subjects/|data.europeana.eu/concept/loc|data.europeana.eu/concept/soundgenres/|udcdata.info/rdf/|vocabularies.unesco.org/thesaurus/|finto.fi/yso/en/|www.wikidata.org/entity/|thesaurus.europeanafashion.eu/thesaurus/|www.mimo-db.eu/).*$
+      - id: Q-7.5
+        description:
+          If there is an http-URI for the object type => check whether the URI begins with the
+          namespace "http://d-nb.info/gnd/" or "http://vocab.getty.edu/aat/".
+          If there is no http-URI for the object type => check whether the attribute for the source of the object type
+          term contains the value "AAT", "gnd", "GND", "gnd-music" or "gnd-content".
+        successScore: 1
+        and:
+          - dependencies: [ Q-7.6 ]
+          - or:
+              - and:
+                  - pattern: ^http.*$
+                  - pattern: ^https?://(d-nb.info/gnd/|vocab.getty.edu/aat/|www.wikidata.org/entity/Q).*$
+              - and:
+                  - not:
+                      - pattern: ^http.*$
+                  - in: [AAT, gnd, GND, gnd-music, gnd-content]
+      - id: Q-7.7
+        description: Check whether the URI starts with "http://d-nb.info/gnd/" or "http://vocab.getty.edu/aat/".
+        successScore: 2
+        and:
+          - dependencies: [ Q-7.6 ]
+          - pattern: ^https://(d-nb.info/gnd/|vocab.getty.edu/aat/).*$
+      - id: Q-7.8
+        description: Check whether the URI starts with "http://www.wikidata.org/entity/Q".
+        successScore: 1
+        and:
+          - dependencies: [ Q-7.6 ]
+          - pattern: ^https?://www.wikidata.org/entity/Q.*$
+
+  # Objekttyp (Quellenangabe)
+  #  - name: Objekttyp_Quellenangabe
+  #    path: lido:lido/lido:descriptiveMetadata/lido:objectClassificationWrap/lido:objectWorkTypeWrap/lido:objectWorkType/lido:conceptID/@lido:source
+  #    rules:
+  #      - id: Q-7.3
+  #        description: The object type must come from a controlled vocabulary.
+  #        successScore: 1
+  #        or:
+  #        - in:
+  #          - gnd
+  #          - GND
+  #          - gnd-music
+  #          - gnd-content
+  #          - gatbeg
+  #          - aad
+  #          - VD17
+  #          - marcgt
+  #          - http://partage.vocnet.org/PPObjectType
+  #          - http://partage.vocnet.org/PPRefiningObjectType
+  #          - AAT
+  #        - pattern: ^(http://(d-nb.info/gnd/|uri.gbv.de/terminology/aadgenres/|partage.vocnet.org/|vocab.getty.edu/aat/)|https://www.wikidata.org/wiki/Q).*$
+
+  # Objektkategorie (Strukturelement) | Objektkategorie (Bezeichnung) | Objektkategorie (URI)
+  - name: Objektkategorie (term)
+    path: lido:lido/lido:descriptiveMetadata/lido:objectClassificationWrap/lido:classificationWrap/lido:classification[@lido:type='Object genre' or @lido:type='http://terminology.lido-schema.org/lido00853']/lido:term
+    # extractable: true
+    rules:
+      - id: Q-8.1
+        description: There must be at least one preferred designation for the object category in the data record.
+        successScore: 2
+        mandatory: true
+        and:
+          - minCount: 1
+          - pattern: ^.+$
+
+  - name: Objektkategorie (URI)
+    path: lido:lido/lido:descriptiveMetadata/lido:objectClassificationWrap/lido:classificationWrap/lido:classification[@lido:type='Object genre' or @lido:type='http://terminology.lido-schema.org/lido00853']/lido:conceptID
+    # extractable: true
+    rules:
+      - id: Q-8.2
+        description: The object category is referenced by an http URI from a LOD vocabulary.
+        successScore: 1
+        pattern: ^https?://(d-nb.info/gnd/|uri.gbv.de/terminology/aadgenres/|partage.vocnet.org/|vocab.getty.edu/aat/|www.wikidata.org/entity/Q|sws.geonames.org/)
+      - id: Q-8.3
+        description: The http-URI refers to a term in the GND or the AAT.
+        successScore: 2
+        and:
+          - dependencies: [ Q-8.2 ]
+          - pattern: ^https?://(d-nb.info/gnd/|vocab.getty.edu/aat/)
+      - id: Q-8.4
+        description: The http-URI refers to a term in Wikidata.
+        successScore: 1
+        and:
+          - dependencies: [ Q-8.2 ]
+          - pattern: ^https?://www.wikidata.org/entity/Q
+
+  # Sachkategorie (term)
+  - name: Sachkategorie-term
+    # TODO: check it
+    path: lido:lido/lido:descriptiveMetadata/lido:objectClassificationWrap/lido:classificationWrap/lido:classification[@lido:type='Subject category' or @lido:type='http://terminology.lido-schema.org/lido00932']/lido:term
+    # path: lido:lido/lido:descriptiveMetadata/lido:objectClassificationWrap/lido:classificationWrap/lido:classification/lido:term
+    #    extractable: true
+    rules:
+      - id: Q-9.1
+        description: There must be at least one preferred designation for the object type in the data record.
+        successScore: 1
+        # debug: true
+        and:
+          - minCount: 1
+          - minLength: 1
+          - pattern: ^.+$
+
+  # Sachkategorie (Strukturelement bzw. blinder typisierter Knoten) | Sachkategorie (Bezeichnung) | Sachkategorie (URI)
+  - name: Sachkategorie-URI
+    # TODO: check it
+    path: lido:lido/lido:descriptiveMetadata/lido:objectClassificationWrap/lido:classificationWrap/lido:classification[@lido:type='Subject category' or @lido:type='http://terminology.lido-schema.org/lido00932']/lido:conceptID
+    #    extractable: true
+    rules:
+      # - id: Q-9.1
+      #  description: There must be at least one preferred designation for the object type in the data record.
+      #  successScore: 1
+      #  and:
+      #    - minCount: 1
+      #    - pattern: ^.+$
+      - id: Q-9.2
+        description: The subject category must come from a controlled vocabulary.
+        successScore: 1
+        pattern: ^http.*$
+      - id: Q-9.3
+        description: The http-URI refers to a term GND-subject categories.
+        successScore: 1
+        and:
+          - dependencies: [ Q-9.2 ]
+          - pattern: ^https://d-nb.info/standards/vocab/gnd/gnd-sc#
+
+  # Schlagwort (Thema) | Schlagwort (Thema)
+  #  - name: Schlagwort
+  #    path: lido:lido/lido:descriptiveMetadata/lido:objectRelationWrap/lido:subjectWrap/lido:subjectSet/lido:subject/lido:subjectConcept/lido:term | lido:lido/lido:descriptiveMetadata/lido:objectRelationWrap/lido:subjectWrap/lido:subjectSet/lido:subject/lido:subjectConcept/lido:conceptID
+  #    extractable: true
+
+  # Akteur als Thema (Bevorzugte Bezeichnung für die Anzeige) | Akteur als Thema (URI) | Akteur als Thema (Standardisierte Bezeichnung)
+  #  - name: Akteur
+  #    path: lido:lido/lido:descriptiveMetadata/lido:objectRelationWrap/lido:subjectWrap/lido:subjectSet/lido:subject/lido:subjectActor/lido:displayActor | lido:lido/lido:descriptiveMetadata/lido:objectRelationWrap/lido:subjectWrap/lido:subjectSet/lido:subject/lido:subjectActor/lido:actor/lido:actorID[@lido:type='http://terminology.lido-schema.org/lido00099' or @lido:type='URI' or @lido:type='uri'] | lido:lido/lido:descriptiveMetadata/lido:objectRelationWrap/lido:subjectWrap/lido:subjectSet/lido:subject/lido:subjectActor/lido:actor/lido:nameActorSet/lido:appellationValue
+  #    extractable: true
+
+  # Ort als Thema (Bevorzugte Bezeichnung für die Anzeige) | Ort als Thema (URI) | Ort als Thema (Standardisierte Bezeichnung)
+  #  - name: Ort
+  #    path: lido:lido/lido:descriptiveMetadata/lido:objectRelationWrap/lido:subjectWrap/lido:subjectSet/lido:subject/lido:subjectPlace/lido:displayPlace | lido:lido/lido:descriptiveMetadata/lido:objectRelationWrap/lido:subjectWrap/lido:subjectSet/lido:subject/lido:subjectPlace/lido:place/lido:placeID | lido:lido/lido:descriptiveMetadata/lido:objectRelationWrap/lido:subjectWrap/lido:subjectSet/lido:subject/lido:subjectPlace/lido:place/lido:namePlaceSet/lido:appellationValue
+  #    extractable: true
+
+  # Zeit als Thema (Bevorzugte Bezeichnung für die Anzeige) | Zeit als Thema
+  #  - name: Zeit
+  #    path: lido:lido/lido:descriptiveMetadata/lido:objectRelationWrap/lido:subjectWrap/lido:subjectSet/lido:subject/lido:subjectDate/lido:displayDate | lido:lido/lido:descriptiveMetadata/lido:objectRelationWrap/lido:subjectWrap/lido:subjectSet/lido:subject/lido:subjectDate/lido:date/lido:earliestDate | lido:lido/lido:descriptiveMetadata/lido:objectRelationWrap/lido:subjectWrap/lido:subjectSet/lido:subject/lido:subjectDate/lido:date/lido:latestDate
+  #    extractable: true
+
+  # Werk als Thema (Bevorzugte Bezeichnung für die Anzeige) | Werk als Thema
+  #  - name: Werk
+  #    path: lido:lido/lido:descriptiveMetadata/lido:objectRelationWrap/lido:subjectWrap/lido:subjectSet/lido:subject/lido:subjectObject/lido:displayObject | lido:lido/lido:descriptiveMetadata/lido:objectRelationWrap/lido:subjectWrap/lido:subjectSet/lido:subject/lido:subjectObject/lido:object/lido:objectNote
+  #    extractable: true
+
+  - name: Inhaltliche Beschreibung - date
+    path: lido:lido/lido:descriptiveMetadata/lido:objectRelationWrap/lido:subjectWrap/lido:subjectSet/lido:subject/lido:subjectDate/lido:date
+    rules:
+      - id: Q-9.4a
+        description: There must be at least one preferred designation for a thematic relation in the data record.
+        # successScore: 2
+        # hidden: true
+        # debug: true
+        hasChildren:
+          - lido:earliestDate
+          - lido:latestDate
+
+  - name: Inhaltliche Beschreibung - displayDate
+    path: lido:lido/lido:descriptiveMetadata/lido:objectRelationWrap/lido:subjectWrap/lido:subjectSet/lido:subject/lido:subjectDate/lido:displayDate
+    rules:
+      - id: Q-9.4b
+        description: There must be at least one preferred designation for a thematic relation in the data record.
+        # successScore: 2
+        # hidden: true
+        # debug: true
+        and:
+          # - minCount: 1
+          - pattern: ^.+$
+
+  - name: Inhaltliche Beschreibung - subjectDate
+    path: lido:lido/lido:descriptiveMetadata/lido:objectRelationWrap/lido:subjectWrap/lido:subjectSet/lido:subject/lido:subjectDate
+    rules:
+      - id: Q-9.4c
+        description: date or displayDate
+        # successScore: 2
+        # hidden: true
+        # debug: true
+        or:
+          - dependencies: [ Q-9.4a ]
+          - dependencies: [ Q-9.4b ]
+
+  # Inhaltliche Beschreibung (term)
+  - name: Inhaltliche Beschreibung
+    path: lido:lido/lido:descriptiveMetadata/lido:objectRelationWrap/lido:subjectWrap/lido:subjectSet/lido:subject/lido:subjectActor/lido:displayActor | lido:lido/lido:descriptiveMetadata/lido:objectRelationWrap/lido:subjectWrap/lido:subjectSet/lido:subject/lido:subjectActor/lido:actor/lido:nameActorSet/lido:appellationValue | lido:lido/lido:descriptiveMetadata/lido:objectRelationWrap/lido:subjectWrap/lido:subjectSet/lido:subject/lido:subjectPlace/lido:displayPlace | lido:lido/lido:descriptiveMetadata/lido:objectRelationWrap/lido:subjectWrap/lido:subjectSet/lido:subject/lido:subjectPlace/lido:place/lido:namePlaceSet/lido:appellationValue | lido:lido/lido:descriptiveMetadata/lido:objectRelationWrap/lido:subjectWrap/lido:subjectSet/lido:subject/lido:subjectObject/lido:displayObject | lido:lido/lido:descriptiveMetadata/lido:objectRelationWrap/lido:subjectWrap/lido:subjectSet/lido:subject/lido:subjectObject/lido:object/lido:objectNote | lido:lido/lido:descriptiveMetadata/lido:objectRelationWrap/lido:subjectWrap/lido:subjectSet/lido:subject/lido:subjectConcept/lido:term
+    # TODO: There is one special rule for date as thematic relation: lido:earliestDate and lido:latestDate are only valid if they appear together. The alternative displayDate is just one element
+    # extractable: true
+    rules:
+      # term check!!!
+      - id: Q-9.4
+        description: There must be at least one preferred designation for a thematic relation in the data record.
+        successScore: 2
+        # debug: true
+        alwaysCheckDependencies: true
+        or:
+          - dependencies: [ Q-9.4c ]
+          - and:
+              - minCount: 1
+              - pattern: ^.+$
+
+  # Inhaltliche Beschreibung (URI)
+  - name: Inhaltliche Beschreibung (URI)
+    path: lido:lido/lido:descriptiveMetadata/lido:objectRelationWrap/lido:subjectWrap/lido:subjectSet/lido:subject/lido:subjectActor/lido:actor/lido:actorID[@lido:type='http://terminology.lido-schema.org/lido00099' or @lido:type='URI' or @lido:type='uri'] | lido:lido/lido:descriptiveMetadata/lido:objectRelationWrap/lido:subjectWrap/lido:subjectSet/lido:subject/lido:subjectPlace/lido:place/lido:placeID | lido:lido/lido:descriptiveMetadata/lido:objectRelationWrap/lido:subjectWrap/lido:subjectSet/lido:subject/lido:subjectConcept/lido:conceptID
+    # extractable: true
+    rules:
+      # URI check!!! TODO: move it
+      - id: Q-9.5
+        description: The thematic relation must come from a controlled vocabulary.
+        successScore: 1
+        pattern: ^http.*$
+      - id: Q-9.6
+        description: The http-URI refers to a term in the GND or the AAT.
+        successScore: 2
+        and:
+          - dependencies: [ Q-9.5 ]
+          - pattern: ^https?://(d-nb.info/gnd/|vocab.getty.edu/aat/)
+      # Q-9.6 and Q-9.7 can not be true at the same time
+      - id: Q-9.7
+        description: The http-URI refers to a term in Wikidata.
+        successScore: 1
+        and:
+          - dependencies: [ Q-9.5 ]
+          - pattern: ^https?://www.wikidata.org/entity/Q
+
+  # Objektbeschreibung (term)
+  - name: Objektbeschreibung
+    path: lido:lido/lido:descriptiveMetadata/lido:objectIdentificationWrap/lido:objectDescriptionWrap/lido:objectDescriptionSet/lido:descriptiveNoteValue
+    # extractable: true
+    indexField: object_description
+    rules:
+      - id: Q-9.8
+        description: There must be at least one object description in the data record.
+        successScore: 1
+        and:
+          - minCount: 1
+          - pattern: ^.+$
+      - id: Q-9.9
+        description: The object description must be meaningful.
+        # Does the object description consist of less than fifty characters?
+        # Check whether there are fewer than fifty characters in the object description. For more than one object description, the longest counts.
+        successScore: 2
+        and:
+          - dependencies: [ Q-9.8 ]
+          - minLength: 50
+      - id: Q-9.10
+        description: The object description must be unique.
+        # Is the value in the element for the object title identical to that for the object description?
+        # Check whether the same string is contained in the element for the object title and the object description.
+        and:
+          - dependencies: [ Q-9.8 ]
+          - unique: true
+          - disjoint: dc:title
+
+namespaces:
+  doc: http://www.lyncode.com/xoai
+  foaf: http://xmlns.com/foaf/0.1/
+  europeana: http://www.europeana.eu/schemas/ese/
+  dcterms: http://purl.org/dc/terms/
+  dc: http://purl.org/dc/elements/1.1/
+  oai: http://www.openarchives.org/OAI/2.0/
+  gml: http://www.opengis.net/gml
+  lido: http://www.lido-schema.org
+  xalan: http://xml.apache.org/xalan

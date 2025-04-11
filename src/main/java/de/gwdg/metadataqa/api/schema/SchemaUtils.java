@@ -31,8 +31,12 @@ import de.gwdg.metadataqa.api.rule.singlefieldchecker.UniquenessChecker;
 import org.apache.commons.lang3.StringUtils;
 
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.logging.Logger;
+import java.util.stream.Collectors;
 
 import static de.gwdg.metadataqa.api.rule.singlefieldchecker.NumericValueChecker.TYPE.MAX_EXCLUSIVE;
 import static de.gwdg.metadataqa.api.rule.singlefieldchecker.NumericValueChecker.TYPE.MAX_INCLUSIVE;
@@ -250,5 +254,80 @@ public class SchemaUtils {
   public static void setSchemaForFields(Schema schema) {
     for (DataElement dataElement : schema.getPaths())
       dataElement.setSchema(schema);
+  }
+
+  /**
+   * Get a rule object by its identifier
+   * @param schema The schema
+   * @param id The identifier of the rule
+   * @return the rule object
+   */
+  public static Rule getRuleById(Schema schema, String id) {
+    for (DataElement dataElement : schema.getPaths()) {
+      for (Rule rule : dataElement.getRules()) {
+        if (rule.getId().equals(id))
+          return rule;
+      }
+    }
+    return null;
+  }
+
+  /**
+   * Get the direct dependencies of a rule
+   * @param rule A rule
+   * @return List of the rule identifiers on that the current rule depends on
+   */
+  public static List<String> getDependencies(Rule rule) {
+    List<String> dependencies = new ArrayList<>();
+    if (rule.getDependencies() != null) {
+      dependencies.addAll(rule.getDependencies());
+    }
+    if (rule.getAnd() != null && !rule.getAnd().isEmpty()) {
+      for (Rule childRule : rule.getAnd()) {
+        dependencies.addAll(getDependencies(childRule));
+      }
+    }
+    if (rule.getOr() != null && !rule.getOr().isEmpty()) {
+      for (Rule childRule : rule.getOr()) {
+        dependencies.addAll(getDependencies(childRule));
+      }
+    }
+    if (rule.getNot() != null && !rule.getNot().isEmpty()) {
+      for (Rule childRule : rule.getNot()) {
+        dependencies.addAll(getDependencies(childRule));
+      }
+    }
+    return dependencies;
+  }
+
+  /**
+   * Returns all dependencies
+   * @param schema The schema
+   * @param rule A rule in the schema
+   * @return List of the rule identifiers on that the current rule directly or independently depends on
+   */
+  public static List<String> getAllDependencies(Schema schema, Rule rule) {
+    Map<String, Boolean> dependenciesMap = new LinkedHashMap<>();
+    getDependencies(rule).stream().forEach(e -> dependenciesMap.put(e, false));
+    boolean runAgain = !dependenciesMap.isEmpty();
+    while (runAgain) {
+      runAgain = false;
+      for (Map.Entry<String, Boolean> entry : dependenciesMap.entrySet()) {
+        String ruleId = entry.getKey();
+        boolean processed = entry.getValue();
+        if (!processed) {
+          Rule depRule = getRuleById(schema, ruleId);
+          List<String> additionalOnes = getDependencies(depRule);
+          for (String additionalOne : additionalOnes) {
+            if (!dependenciesMap.containsKey(additionalOne)) {
+              dependenciesMap.put(additionalOne, false);
+              runAgain = true;
+            }
+          }
+          dependenciesMap.put(ruleId, true);
+        }
+      }
+    }
+    return dependenciesMap.keySet().stream().collect(Collectors.toList());
   }
 }
