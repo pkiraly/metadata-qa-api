@@ -59,36 +59,40 @@ public class DependencyChecker extends SingleFieldChecker {
     List<XmlFieldInstance> instances = cache.get(field);
     if (instances != null && !instances.isEmpty()) {
       for (XmlFieldInstance instance : instances) {
-        if (instance.hasValue()) {
-          isNA = false;
-          allPassed = getResult(outputType, globalResults);
-        }
+        isNA = false;
       }
     }
+    Map<String, Boolean> result = getResult(outputType, globalResults);
+    allPassed = result.get("allPassed");
+    isNA = result.get("isNA");
 
     addOutput(localResults, isNA, allPassed, outputType);
     if (isDebug())
-      LOGGER.info(this.getClass().getSimpleName() + " " + this.id + ") result: " + RuleCheckingOutputStatus.create(isNA, allPassed, isMandatory()));
+      LOGGER.info(String.format("%s %s) result: %s [isNA: %s, allPassed: %s, isMandatory: %s]", this.getClass().getSimpleName(), this.id, RuleCheckingOutputStatus.create(isNA, allPassed, isMandatory()), isNA, allPassed, isMandatory()));
   }
 
   public List<String> getDependencies() {
     return dependencies;
   }
 
-  public boolean getResult(RuleCheckingOutputType outputType,
-                           FieldCounter<RuleCheckerOutput> globalResults) {
+  public Map<String, Boolean> getResult(RuleCheckingOutputType outputType,
+                                        FieldCounter<RuleCheckerOutput> globalResults) {
     boolean allPassed = true;
+    boolean isNA = true;
     for (String ruleId : dependencies) {
       String keyEnd = outputType.equals(RuleCheckingOutputType.BOTH) ? ruleId + ":status" : ruleId;
       if (globalResults.has(keyEnd)) {
-        if (!globalResults.get(keyEnd).getStatus().equals(RuleCheckingOutputStatus.PASSED)) {
+        var status = globalResults.get(keyEnd).getStatus();
+
+        if (!status.equals(RuleCheckingOutputStatus.PASSED))
           allPassed = false;
-        }
+        if (!status.equals(RuleCheckingOutputStatus.NA))
+          isNA = false;
       } else {
         allPassed = false;
         break;
       }
     }
-    return allPassed;
+    return Map.of("allPassed", allPassed, "isNA", isNA);
   }
 }

@@ -12,6 +12,7 @@ import de.gwdg.metadataqa.api.rule.singlefieldchecker.DependencyChecker;
 import de.gwdg.metadataqa.api.rule.singlefieldchecker.MinCountChecker;
 
 import java.util.List;
+import java.util.Map;
 
 public class AndChecker extends LogicalChecker {
 
@@ -47,7 +48,10 @@ public class AndChecker extends LogicalChecker {
         else
           checker.update(cache, localResults, outputType);
         String key = outputType.equals(RuleCheckingOutputType.BOTH) ? checker.getIdOrHeader(RuleCheckingOutputType.SCORE) : checker.getIdOrHeader();
-        if (!localResults.get(key).getStatus().equals(RuleCheckingOutputStatus.PASSED)) {
+        RuleCheckingOutputStatus status = localResults.get(key).getStatus();
+        if (status.equals(RuleCheckingOutputStatus.NA))
+          isNA = true;
+        if (!status.equals(RuleCheckingOutputStatus.PASSED)) {
           allPassed = false;
           break;
         }
@@ -62,7 +66,9 @@ public class AndChecker extends LogicalChecker {
         }
         else if (alwaysCheckDependencies && checker instanceof DependencyChecker) {
           DependencyChecker dependencyChecker = (DependencyChecker) checker;
-          allPassed = dependencyChecker.getResult(outputType, results);
+          Map<String, Boolean> result = dependencyChecker.getResult(outputType, results);
+          allPassed = result.get("allPassed");
+          isNA = result.get("isNA");
         }
 
         if (!allPassed)

@@ -83,7 +83,7 @@ public class DependencyCheckerTest extends CheckerTestBase {
     globalResults.put("Q1", new RuleCheckerOutput(RuleCheckingOutputStatus.PASSED, 0));
 
     DependencyChecker checker = new DependencyChecker(new DataElement("a"), List.of("Q1"));
-    assertTrue(checker.getResult(RuleCheckingOutputType.STATUS, globalResults));
+    assertTrue(checker.getResult(RuleCheckingOutputType.STATUS, globalResults).get("allPassed"));
   }
 
   @Test
@@ -92,7 +92,7 @@ public class DependencyCheckerTest extends CheckerTestBase {
     globalResults.put("Q1", new RuleCheckerOutput(RuleCheckingOutputStatus.FAILED, 0));
 
     DependencyChecker checker = new DependencyChecker(new DataElement("a"), List.of("Q1"));
-    assertFalse(checker.getResult(RuleCheckingOutputType.STATUS, globalResults));
+    assertFalse(checker.getResult(RuleCheckingOutputType.STATUS, globalResults).get("allPassed"));
   }
 
   @Test
@@ -101,6 +101,6 @@ public class DependencyCheckerTest extends CheckerTestBase {
     globalResults.put("Q1", new RuleCheckerOutput(RuleCheckingOutputStatus.NA, 0));
 
     DependencyChecker checker = new DependencyChecker(new DataElement("a"), List.of("Q1"));
-    assertFalse(checker.getResult(RuleCheckingOutputType.STATUS, globalResults));
+    assertFalse(checker.getResult(RuleCheckingOutputType.STATUS, globalResults).get("allPassed"));
   }
 }

@@ -12,6 +12,7 @@ import de.gwdg.metadataqa.api.rule.singlefieldchecker.DependencyChecker;
 import de.gwdg.metadataqa.api.rule.singlefieldchecker.MinCountChecker;
 
 import java.util.List;
+import java.util.Map;
 import java.util.logging.Logger;
 
 public class OrChecker extends LogicalChecker {
@@ -70,7 +71,8 @@ public class OrChecker extends LogicalChecker {
         }
         else if (alwaysCheckDependencies && checker instanceof DependencyChecker) {
           DependencyChecker dependencyChecker = (DependencyChecker) checker;
-          boolean dependenciesPassed = dependencyChecker.getResult(outputType, results);
+          Map<String, Boolean> result = dependencyChecker.getResult(outputType, results);
+          boolean dependenciesPassed = result.get("allPassed");
           if (dependenciesPassed == false)
             output = new RuleCheckerOutput(this, RuleCheckingOutputStatus.FAILED);
           else
