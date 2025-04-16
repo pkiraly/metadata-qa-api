@@ -27,6 +27,7 @@ public class EqualityChecker extends PropertyPairChecker {
 
     var allPassed = true;
     var isNA = true;
+    int matches = 0;
     List<XmlFieldInstance> instances1 = cache.get(field1.getAbsolutePath().replace("[*]", ""));
     List<XmlFieldInstance> instances2 = cache.get(field2.getAbsolutePath().replace("[*]", ""));
     if (instances1 != null && !instances1.isEmpty() && instances2 != null && !instances2.isEmpty()) {
@@ -42,6 +43,8 @@ public class EqualityChecker extends PropertyPairChecker {
               if (!instance1.getValue().equals(instance2.getValue())) {
                 allPassed = false;
                 break;
+              } else {
+                matches++;
               }
             }
             if (!hasValue2)
@@ -50,6 +53,8 @@ public class EqualityChecker extends PropertyPairChecker {
         }
       }
     }
+    if (scopeIsAnyOf() && !isNA && matches > 0)
+      allPassed = true;
     addOutput(results, isNA, allPassed, outputType);
     if (isDebug())
       LOGGER.info(this.getClass().getSimpleName() + " " + this.id + ") result: " + RuleCheckingOutputStatus.create(isNA, allPassed, isMandatory()));
