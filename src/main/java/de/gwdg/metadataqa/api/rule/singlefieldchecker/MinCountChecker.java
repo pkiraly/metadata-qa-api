@@ -37,7 +37,7 @@ public class MinCountChecker extends SingleFieldChecker {
     var allPassed = false;
     var counter = new InstanceCounter(cache, field, allowEmptyInstances);
     if (isDebug())
-      LOGGER.info(this.getClass().getSimpleName() + " " + this.id + ") value: " + counter.getCount());
+      LOGGER.info(this.getClass().getSimpleName() + " " + this.id + ") number of instances: " + counter.getCount());
     if (counter.getCount() >= minCount)
       allPassed = true;
     else if (counter.isNA() && minCount > 0)
