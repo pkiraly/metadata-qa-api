@@ -47,7 +47,7 @@ jobs:
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}  # Needed to get PR information, if any
         SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
-      run: echo "t:${SONAR_TOKEN}" && mvn -B verify org.sonarsource.scanner.maven:sonar-maven-plugin:sonar -DskipGpg=true
+      run: mvn -B verify org.sonarsource.scanner.maven:sonar-maven-plugin:sonar -DskipGpg=true
 
     # https://app.codecov.io/gh/pkiraly/metadata-qa-api
     - name: Pubish code coverage at https://app.codecov.io/gh/pkiraly/metadata-qa-api
