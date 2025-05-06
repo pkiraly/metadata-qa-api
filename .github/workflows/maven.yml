@@ -46,7 +46,7 @@ jobs:
     - name: Build and send to SonarCloud (https://sonarcloud.io/summary/new_code?id=pkiraly_metadata-qa-api)
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}  # Needed to get PR information, if any
-        SONAR_TOKEN: ${{ github.SONAR_TOKEN }}
+        SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
       run: echo "t:${SONAR_TOKEN}" && mvn -B verify org.sonarsource.scanner.maven:sonar-maven-plugin:sonar -DskipGpg=true
 
     # https://app.codecov.io/gh/pkiraly/metadata-qa-api
