@@ -1,6 +1,5 @@
 package de.gwdg.metadataqa.api.rule.singlefieldchecker;
 
-import de.gwdg.metadataqa.api.configuration.schema.ApplicationScope;
 import de.gwdg.metadataqa.api.configuration.schema.MQAFPattern;
 import de.gwdg.metadataqa.api.counter.FieldCounter;
 import de.gwdg.metadataqa.api.json.DataElement;

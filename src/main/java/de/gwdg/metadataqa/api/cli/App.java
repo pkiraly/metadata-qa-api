@@ -10,7 +10,6 @@ import de.gwdg.metadataqa.api.configuration.MeasurementConfiguration;
 import de.gwdg.metadataqa.api.interfaces.MetricResult;
 import de.gwdg.metadataqa.api.io.reader.RecordReader;
 import de.gwdg.metadataqa.api.schema.Schema;
-import net.minidev.json.parser.ParseException;
 import org.apache.commons.cli.CommandLine;
 import org.apache.commons.cli.CommandLineParser;
 import org.apache.commons.cli.DefaultParser;

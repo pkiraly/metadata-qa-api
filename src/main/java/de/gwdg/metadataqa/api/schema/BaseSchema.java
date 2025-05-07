@@ -11,9 +11,7 @@ import de.gwdg.metadataqa.api.rule.RuleChecker;
 import org.apache.commons.lang3.StringUtils;
 
 import java.io.Serializable;
-import java.lang.reflect.Field;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;

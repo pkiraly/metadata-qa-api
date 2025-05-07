@@ -1,6 +1,5 @@
 package de.gwdg.metadataqa.api.io.writer;
 
-import de.gwdg.metadataqa.api.interfaces.MetricResult;
 import de.gwdg.metadataqa.api.io.IOTestBase;
 import de.gwdg.metadataqa.api.io.reader.CSVRecordReader;
 import de.gwdg.metadataqa.api.io.reader.RecordReader;
@@ -11,14 +10,11 @@ import org.junit.Before;
 import org.junit.Test;
 
 import java.io.BufferedReader;
-import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.IOException;
-import java.io.PrintStream;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.List;
-import java.util.Map;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;

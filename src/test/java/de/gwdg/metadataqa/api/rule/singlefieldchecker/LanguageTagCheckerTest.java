@@ -1,10 +1,8 @@
 package de.gwdg.metadataqa.api.rule.singlefieldchecker;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
 import de.gwdg.metadataqa.api.configuration.ConfigurationReader;
 import de.gwdg.metadataqa.api.configuration.schema.ApplicationScope;
 import de.gwdg.metadataqa.api.counter.FieldCounter;
-import de.gwdg.metadataqa.api.json.JsonUtils;
 import de.gwdg.metadataqa.api.model.selector.JsonSelector;
 import de.gwdg.metadataqa.api.model.selector.Selector;
 import de.gwdg.metadataqa.api.rule.CheckerTestBase;

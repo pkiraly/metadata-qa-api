@@ -15,14 +15,11 @@ import de.gwdg.metadataqa.api.rule.RuleChecker;
 import de.gwdg.metadataqa.api.util.CsvReader;
 import org.junit.Test;
 import org.junit.rules.ExpectedException;
-import org.yaml.snakeyaml.Yaml;
-import org.yaml.snakeyaml.nodes.Tag;
 
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
-import java.io.StringWriter;
 import java.util.*;
 
 import static org.junit.Assert.*;

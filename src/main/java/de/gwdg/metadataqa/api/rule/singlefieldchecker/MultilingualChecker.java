@@ -7,7 +7,6 @@ import de.gwdg.metadataqa.api.model.selector.Selector;
 import de.gwdg.metadataqa.api.rule.RuleCheckerOutput;
 import de.gwdg.metadataqa.api.rule.RuleCheckingOutputStatus;
 import de.gwdg.metadataqa.api.rule.RuleCheckingOutputType;
-import de.gwdg.metadataqa.api.uniqueness.UniquenessExtractor;
 
 import java.util.HashSet;
 import java.util.List;
