@@ -93,7 +93,7 @@ public class RuleTest {
     rule = new Rule().withMinCount(3);
     assertEquals(3, rule.getMinCount().intValue());
 
-    rule = new Rule().withMinCount(Integer.valueOf(3));
+    rule = new Rule().withMinCount(3);
     assertEquals(3, rule.getMinCount().intValue());
 
     rule = new Rule();
@@ -101,7 +101,7 @@ public class RuleTest {
     assertEquals(3, rule.getMinCount().intValue());
 
     rule = new Rule();
-    rule.setMinCount(Integer.valueOf(3));
+    rule.setMinCount(3);
     assertEquals(3, rule.getMinCount().intValue());
   }
 
@@ -111,7 +111,7 @@ public class RuleTest {
     rule = new Rule().withMaxCount(3);
     assertEquals(3, rule.getMaxCount().intValue());
 
-    rule = new Rule().withMaxCount(Integer.valueOf(3));
+    rule = new Rule().withMaxCount(3);
     assertEquals(3, rule.getMaxCount().intValue());
 
     rule = new Rule();
@@ -201,7 +201,7 @@ public class RuleTest {
     rule = new Rule().withMinLength(3);
     assertEquals(3, rule.getMinLength().intValue());
 
-    rule = new Rule().withMinLength(Integer.valueOf(3));
+    rule = new Rule().withMinLength(3);
     assertEquals(3, rule.getMinLength().intValue());
 
     rule = new Rule();
@@ -219,7 +219,7 @@ public class RuleTest {
     rule = new Rule().withMaxLength(3);
     assertEquals(3, rule.getMaxLength().intValue());
 
-    rule = new Rule().withMaxLength(Integer.valueOf(3));
+    rule = new Rule().withMaxLength(3);
     assertEquals(3, rule.getMaxLength().intValue());
 
     rule = new Rule();

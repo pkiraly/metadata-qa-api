@@ -13,17 +13,12 @@ import de.gwdg.metadataqa.api.schema.Schema;
 import de.gwdg.metadataqa.api.util.CsvReader;
 import org.junit.Assert;
 import org.junit.Before;
-import org.junit.Rule;
 import org.junit.Test;
-import org.junit.rules.ExpectedException;
 
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.fail;
+import static org.junit.Assert.assertThrows;
 
 public class DisjointCheckerTest {
-  @Rule
-  public ExpectedException thrown = ExpectedException.none();
-
   protected Schema schema;
   protected CsvSelector cache;
 
@@ -74,31 +69,25 @@ public class DisjointCheckerTest {
 
   @Test
   public void failure_constructor1() {
-    thrown.expect(IllegalArgumentException.class);
-    thrown.expectMessage("field1 should not be null");
-
-    DisjointChecker checker = new DisjointChecker(schema.getPathByLabel("nameX"), schema.getPathByLabel("altX"));
-
-    fail("Exception did not thrown.");
+    Exception e = assertThrows(IllegalArgumentException.class, () -> {
+      DisjointChecker checker = new DisjointChecker(schema.getPathByLabel("nameX"), schema.getPathByLabel("altX"));
+    });
+    assertEquals("field1 should not be null", e.getMessage());
   }
 
   @Test
   public void failure_constructor2() {
-    thrown.expect(IllegalArgumentException.class);
-    thrown.expectMessage("field1 should not be null");
-
-    DisjointChecker checker = new DisjointChecker(schema.getPathByLabel("nameX"), schema.getPathByLabel("altX"));
-
-    fail("Exception did not thrown.");
+    Exception e = assertThrows(IllegalArgumentException.class, () -> {
+      DisjointChecker checker = new DisjointChecker(schema.getPathByLabel("nameX"), schema.getPathByLabel("altX"));
+    });
+    assertEquals("field1 should not be null", e.getMessage());
   }
 
   @Test
   public void failure_constructor3() {
-    thrown.expect(IllegalArgumentException.class);
-    thrown.expectMessage("field2 should not be null");
-
-    DisjointChecker checker = new DisjointChecker(schema.getPathByLabel("name"), schema.getPathByLabel("altX"));
-
-    fail("Exception did not thrown.");
+    Exception e = assertThrows(IllegalArgumentException.class, () -> {
+      DisjointChecker checker = new DisjointChecker(schema.getPathByLabel("name"), schema.getPathByLabel("altX"));
+    });
+    assertEquals("field2 should not be null", e.getMessage());
   }
 }

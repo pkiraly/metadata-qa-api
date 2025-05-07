@@ -12,7 +12,6 @@ import de.gwdg.metadataqa.api.rule.singlefieldchecker.MinCountChecker;
 import de.gwdg.metadataqa.api.schema.Format;
 import de.gwdg.metadataqa.api.schema.Schema;
 import org.junit.Test;
-import org.junit.rules.ExpectedException;
 import org.yaml.snakeyaml.LoaderOptions;
 import org.yaml.snakeyaml.Yaml;
 import org.yaml.snakeyaml.constructor.Constructor;
@@ -26,9 +25,6 @@ import java.util.List;
 import static org.junit.Assert.*;
 
 public class SchemaConfigurationTest {
-  @org.junit.Rule
-  public ExpectedException thrown = ExpectedException.none();
-
   @Test
   public void testReading_fromResource() {
     Yaml yaml = new Yaml(new Constructor(SchemaConfiguration.class, new LoaderOptions()));
@@ -240,14 +236,12 @@ public class SchemaConfigurationTest {
   }
 
   @Test
-  public void yaml_equals_wrong() throws FileNotFoundException {
-    thrown.expect(IllegalArgumentException.class);
-    thrown.expectMessage("about refers to a nonexistent field in 'equals: title'");
-
-    Schema schema = ConfigurationReader.readSchemaYaml("src/test/resources/configuration/schema/rules/equals_wrong.yaml").asSchema();
-    assertEquals("description", schema.getPathByLabel("about").getRules().get(0).getEquals());
-
-    fail("Exception did not thrown.");
+  public void yaml_equals_wrong() {
+    Exception e = assertThrows(IllegalArgumentException.class, () -> {
+      Schema schema = ConfigurationReader.readSchemaYaml("src/test/resources/configuration/schema/rules/equals_wrong.yaml").asSchema();
+      assertEquals("description", schema.getPathByLabel("about").getRules().get(0).getEquals());
+    });
+    assertEquals("about refers to a nonexistent field in 'equals: title'", e.getMessage());
   }
 
   @Test
@@ -257,14 +251,12 @@ public class SchemaConfigurationTest {
   }
 
   @Test
-  public void yaml_lessThan_wrong() throws FileNotFoundException {
-    thrown.expect(IllegalArgumentException.class);
-    thrown.expectMessage("about refers to a nonexistent field in 'lessThan: title'");
-
-    Schema schema = ConfigurationReader.readSchemaYaml("src/test/resources/configuration/schema/rules/lessThan_wrong.yaml").asSchema();
-    assertEquals("description", schema.getPathByLabel("about").getRules().get(0).getLessThan());
-
-    fail("Exception did not thrown.");
+  public void yaml_lessThan_wrong() {
+    Exception e = assertThrows(IllegalArgumentException.class, () -> {
+      Schema schema = ConfigurationReader.readSchemaYaml("src/test/resources/configuration/schema/rules/lessThan_wrong.yaml").asSchema();
+      assertEquals("description", schema.getPathByLabel("about").getRules().get(0).getLessThan());
+    });
+    assertEquals("about refers to a nonexistent field in 'lessThan: title'", e.getMessage());
   }
 
   @Test
@@ -274,14 +266,12 @@ public class SchemaConfigurationTest {
   }
 
   @Test
-  public void yaml_lessThanOrEquals_wrong() throws FileNotFoundException {
-    thrown.expect(IllegalArgumentException.class);
-    thrown.expectMessage("about refers to a nonexistent field in 'lessThanOrEquals: title'");
-
-    Schema schema = ConfigurationReader.readSchemaYaml("src/test/resources/configuration/schema/rules/lessThanOrEquals_wrong.yaml").asSchema();
-    assertEquals("description", schema.getPathByLabel("about").getRules().get(0).getLessThanOrEquals());
-
-    fail("Exception did not thrown.");
+  public void yaml_lessThanOrEquals_wrong() {
+    Exception e = assertThrows(IllegalArgumentException.class, () -> {
+      Schema schema = ConfigurationReader.readSchemaYaml("src/test/resources/configuration/schema/rules/lessThanOrEquals_wrong.yaml").asSchema();
+      assertEquals("description", schema.getPathByLabel("about").getRules().get(0).getLessThanOrEquals());
+    });
+    assertEquals("about refers to a nonexistent field in 'lessThanOrEquals: title'", e.getMessage());
   }
 
   @Test

@@ -1,13 +1,10 @@
 package de.gwdg.metadataqa.api.util;
 
-import org.junit.Rule;
 import org.junit.Test;
-import org.junit.rules.ExpectedException;
 
 import java.io.File;
 import java.io.IOException;
 import java.lang.reflect.Constructor;
-import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Modifier;
 import java.net.URISyntaxException;
 import java.nio.file.Path;
@@ -16,9 +13,6 @@ import java.util.List;
 import static org.junit.Assert.*;
 
 public class FileUtilsTest {
-
-  @Rule
-  public ExpectedException thrown = ExpectedException.none();
 
   @Test
   public void readLinesFromFile() throws IOException {
@@ -83,26 +77,22 @@ public class FileUtilsTest {
   }
 
   @Test
-  public void getPath_exception() throws IOException, URISyntaxException {
-    thrown.expect(IOException.class);
-    thrown.expectMessage("File profiles/dummy.csv is not available");
-    Path path = FileUtils.getPath("profiles/dummy.csv");
-    assertNull(path);
-    fail("'File is not available' exception did not throw!");
+  public void getPath_exception() {
+    Exception e = assertThrows(IOException.class, () -> {
+      Path path = FileUtils.getPath("profiles/dummy.csv");
+    });
+    assertEquals("File profiles/dummy.csv is not available", e.getMessage());
   }
 
   @Test
-  public void Constructor_instantiationIsImpossible() throws NoSuchMethodException,
-                                                             InvocationTargetException,
-                                                             InstantiationException,
-                                                             IllegalAccessException {
+  public void Constructor_instantiationIsImpossible() throws NoSuchMethodException {
     Constructor<FileUtils> constructor = FileUtils.class.getDeclaredConstructor();
     assertTrue(Modifier.isPrivate(constructor.getModifiers()));
     constructor.setAccessible(true);
 
-    thrown.expect(InstantiationException.class);
-    FileUtils u = constructor.newInstance();
-
-    fail("Instantiation exception did not throw!");
+    Exception e = assertThrows(InstantiationException.class, () -> {
+      FileUtils u = constructor.newInstance();
+    });
+    assertNull(e.getMessage());
   }
 }

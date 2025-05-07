@@ -14,7 +14,6 @@ import de.gwdg.metadataqa.api.rule.RuleCatalog;
 import de.gwdg.metadataqa.api.rule.RuleChecker;
 import de.gwdg.metadataqa.api.util.CsvReader;
 import org.junit.Test;
-import org.junit.rules.ExpectedException;
 
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -25,8 +24,6 @@ import java.util.*;
 import static org.junit.Assert.*;
 
 public class BaseSchemaTest {
-  @org.junit.Rule
-  public ExpectedException thrown = ExpectedException.none();
 
   @Test
   public void testConstructor() throws Exception {
@@ -646,16 +643,14 @@ public class BaseSchemaTest {
 
   @Test
   public void testGetNoLanguageFields() {
-    thrown.expect(UnsupportedOperationException.class);
-    thrown.expectMessage("Not supported yet.");
+    Exception e = assertThrows(UnsupportedOperationException.class, () -> {
+      Schema schema = new BaseSchema()
+        .setFormat(Format.CSV)
+        .addFields("url", "name");
 
-    Schema schema = new BaseSchema()
-      .setFormat(Format.CSV)
-      .addFields("url", "name");
-
-    schema.getNoLanguageFields();
-
-    fail("Exception did not thrown.");
+      schema.getNoLanguageFields();
+    });
+    assertEquals("Not supported yet.", e.getMessage());
   }
 
   @Test

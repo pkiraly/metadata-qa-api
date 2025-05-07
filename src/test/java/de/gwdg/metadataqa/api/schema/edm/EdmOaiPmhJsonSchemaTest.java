@@ -1,17 +1,15 @@
 package de.gwdg.metadataqa.api.schema.edm;
 
+import com.jayway.jsonpath.InvalidJsonException;
+import de.gwdg.metadataqa.api.model.selector.JsonSelector;
 import de.gwdg.metadataqa.api.schema.Schema;
-import org.junit.Rule;
+import de.gwdg.metadataqa.api.util.FileUtils;
 import org.junit.Test;
-import org.junit.rules.ExpectedException;
 
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.fail;
+import static org.junit.Assert.assertThrows;
 
 public class EdmOaiPmhJsonSchemaTest  {
-
-  @Rule
-  public ExpectedException thrown = ExpectedException.none();
 
   Schema schema = new EdmOaiPmhJsonSchema();
 
@@ -27,10 +25,9 @@ public class EdmOaiPmhJsonSchemaTest  {
 
   @Test
   public void getRootChildrenPaths() {
-    thrown.expect(UnsupportedOperationException.class);
-    thrown.expectMessage("Not supported yet.");
-
-    assertEquals(3, schema.getRootChildrenPaths().size());
-    fail("Exception did not thrown.");
+    Exception e = assertThrows(UnsupportedOperationException.class, () -> {
+      assertEquals(3, schema.getRootChildrenPaths().size());
+    });
+    assertEquals("Not supported yet.", e.getMessage());
   }
 }

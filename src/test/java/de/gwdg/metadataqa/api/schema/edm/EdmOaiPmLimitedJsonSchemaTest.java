@@ -1,16 +1,12 @@
 package de.gwdg.metadataqa.api.schema.edm;
 
 import de.gwdg.metadataqa.api.schema.Format;
-import org.junit.Rule;
 import org.junit.Test;
-import org.junit.rules.ExpectedException;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertThrows;
 
 public class EdmOaiPmLimitedJsonSchemaTest {
-
-  @Rule
-  public ExpectedException thrown = ExpectedException.none();
 
   EdmSchema schema = new EdmOaiPmLimitedJsonSchema();
 
@@ -26,16 +22,15 @@ public class EdmOaiPmLimitedJsonSchemaTest {
 
   @Test
   public void getRootChildrenPaths() {
-    thrown.expect(UnsupportedOperationException.class);
-    thrown.expectMessage("Not supported yet.");
-    assertEquals(3, schema.getRootChildrenPaths().size());
+    UnsupportedOperationException e = assertThrows(UnsupportedOperationException.class, () ->
+      schema.getRootChildrenPaths().size());
+    assertEquals("Not supported yet.", e.getMessage());
   }
 
   @Test
   public void getPathByLabel() {
-    thrown.expect(UnsupportedOperationException.class);
-    thrown.expectMessage("Not supported yet.");
-    assertEquals(3, schema.getPathByLabel("label"));
+    UnsupportedOperationException e = assertThrows(UnsupportedOperationException.class, () -> schema.getPathByLabel("label"));
+    assertEquals("Not supported yet.", e.getMessage());
   }
 
   @Test

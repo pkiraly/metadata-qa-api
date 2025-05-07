@@ -26,9 +26,7 @@ import static java.util.stream.Collectors.toList;
 import static org.junit.Assert.*;
 import org.junit.Before;
 import org.junit.BeforeClass;
-import org.junit.Rule;
 import org.junit.Test;
-import org.junit.rules.ExpectedException;
 
 /**
  *
@@ -454,18 +452,13 @@ public class CompletenessCalculatorTest {
       calculator.getCsv(false, CompressionLevel.NORMAL));
   }
 
-  @Rule
-  public ExpectedException thrown = ExpectedException.none();
-
   @Test
-  public void testInvalidRecord() throws URISyntaxException, IOException {
-
-    thrown.expect(InvalidJsonException.class);
-    thrown.expectMessage("Unexpected character (:) at position 28");
-
-    cache = new JsonSelector(FileUtils.readFirstLineFromResource("general/invalid.json"));
-    calculator.measure(cache);
-    fail("Should throw an exception if the JSON string is invalid.");
+  public void testInvalidRecord() {
+    Exception e = assertThrows(InvalidJsonException.class, () -> {
+      cache = new JsonSelector(FileUtils.readFirstLineFromResource("general/invalid.json"));
+      calculator.measure(cache);
+    });
+    assertEquals("net.minidev.json.parser.ParseException: Unexpected character (:) at position 28.", e.getMessage());
   }
 
   @Test

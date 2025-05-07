@@ -2,22 +2,17 @@ package de.gwdg.metadataqa.api.configuration;
 
 import de.gwdg.metadataqa.api.json.DataElement;
 import de.gwdg.metadataqa.api.schema.Format;
-import org.junit.Rule;
 import org.junit.Test;
-import org.junit.rules.ExpectedException;
 
 import java.io.FileNotFoundException;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertThrows;
 import static org.junit.Assert.assertTrue;
-import static org.junit.Assert.fail;
 
 public class ConfigurationReaderTest {
-
-  @Rule
-  public ExpectedException thrown = ExpectedException.none();
 
   @Test
   public void readSchemaJson_allowEmptyInstances() throws FileNotFoundException {
@@ -47,14 +42,12 @@ public class ConfigurationReaderTest {
   }
 
   @Test
-  public void readNonexistentConfiguration() throws FileNotFoundException {
-    thrown.expect(FileNotFoundException.class);
-    thrown.expectMessage("src/test/resources/configuration/measurement/non-existent-configuration.json (No such file or directory)");
-
-    MeasurementConfiguration configuration = ConfigurationReader
-      .readMeasurementJson("src/test/resources/configuration/measurement/non-existent-configuration.json");
-
-    fail("Should throw an exception if the JSON file is not existent.");
+  public void readNonexistentConfiguration() {
+    Exception e = assertThrows(FileNotFoundException.class, () -> {
+      MeasurementConfiguration configuration = ConfigurationReader
+        .readMeasurementJson("src/test/resources/configuration/measurement/non-existent-configuration.json");
+    });
+    assertEquals("src/test/resources/configuration/measurement/non-existent-configuration.json (No such file or directory)", e.getMessage());
   }
 
     @Test
