@@ -52,7 +52,6 @@ public class MaxLengthChecker extends SingleFieldChecker {
       }
     }
     boolean allPassed = isPassed(passCount, hasFailed);
-    System.err.println("allPassed: " + allPassed);
     addOutput(results, isNA, allPassed, outputType);
     if (isDebug())
       LOGGER.info(this.getClass().getSimpleName() + " " + this.id + ") result: " + RuleCheckingOutputStatus.create(isNA, allPassed, isMandatory()));

@@ -57,10 +57,10 @@ public class MaxLenghCheckerTest extends CheckerTestBase {
 
     FieldCounter<RuleCheckerOutput> fieldCounter = new FieldCounter<>();
     checker.update(cache, fieldCounter, RuleCheckingOutputType.BOTH);
-    System.err.println(checker.getHeader());
 
     assertEquals(2, fieldCounter.size());
     assertEquals("name:maxLength", checker.getHeaderWithoutId());
+    assertEquals("name:maxLength:0", checker.getHeader());
     Assert.assertEquals(RuleCheckingOutputStatus.NA, fieldCounter.get(checker.getHeader(RuleCheckingOutputType.STATUS)).getStatus());
     Assert.assertEquals(-1, (int) fieldCounter.get(checker.getHeader(RuleCheckingOutputType.SCORE)).getScore());
   }

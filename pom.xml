@@ -123,7 +123,7 @@
     <dependency>
       <groupId>com.opencsv</groupId>
       <artifactId>opencsv</artifactId>
-      <version>5.10</version>
+      <version>5.11</version>
     </dependency>
     <!--
       http://commons.apache.org/proper/commons-text/
@@ -173,7 +173,7 @@
     <dependency>
       <artifactId>solr-solrj</artifactId>
       <groupId>org.apache.solr</groupId>
-      <version>9.8.0</version>
+      <version>9.8.1</version>
     </dependency>
     <!-- XML handling https://mvnrepository.com/artifact/com.fasterxml.jackson.core/jackson-databind -->
     <dependency>

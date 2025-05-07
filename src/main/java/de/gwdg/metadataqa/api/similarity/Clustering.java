@@ -44,7 +44,6 @@ public class Clustering {
         String otherPattern = patterns.get(j);
         var otherTerm = getOrCreateTerm(otherPattern);
         double distance = jaroWinkler.apply(pattern, otherPattern);
-        System.err.printf("%s vs %s: %f\n", pattern, otherPattern, distance);
         if (distance >= treshold) {
           term.setDistance(otherTerm, distance);
           otherTerm.setDistance(term, distance);

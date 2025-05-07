@@ -10,9 +10,12 @@ import org.apache.commons.lang3.StringUtils;
 import java.io.Serializable;
 import java.util.LinkedHashMap;
 import java.util.Map;
+import java.util.logging.Logger;
 
 public class MeasurementConfiguration implements Serializable {
   private static final long serialVersionUID = 7754969792852694442L;
+  private static final Logger logger = Logger.getLogger(MeasurementConfiguration.class.getCanonicalName());
+
   /**
    * Flag whether or not the field extractor is enabled (default: false).
    */
@@ -684,9 +687,8 @@ public class MeasurementConfiguration implements Serializable {
         if (value instanceof String || value instanceof Integer || value instanceof Double)
           annottaionColumns.put(entry.getKey(), value);
         else
-          System.err.println(String.format("The %s key has a value, which is a %s: %s", entry.getKey(), value.getClass(), value));
+          logger.severe(String.format("The %s key has a value: %s, of an unhandled type %s", entry.getKey(), value, value.getClass()));
       }
-      System.err.println(map.keySet());
     } catch (JsonProcessingException e) {
       e.printStackTrace();
     }

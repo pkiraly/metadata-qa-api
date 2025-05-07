@@ -38,7 +38,6 @@ public class SimilarityTest {
     double treshold = 0.70;
     var clustering = new Clustering(patterns, treshold);
     List<List<String>> clusters = clustering.getClusters();
-    System.err.println(clusters);
 
     assertEquals(Arrays.asList("Shostakovic", "Sosztakovics"), clusters.get(0));
     assertEquals(Arrays.asList("Rubens"), clusters.get(1));

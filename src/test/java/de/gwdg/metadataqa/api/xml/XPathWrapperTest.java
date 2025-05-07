@@ -19,6 +19,7 @@ import java.util.*;
 import static org.junit.Assert.assertEquals;
 
 public class XPathWrapperTest {
+
   private static Map<String, String> prefixMap = new LinkedHashMap<String, String>() {{
     put("xsi", "http://www.w3.org/2001/XMLSchema-instance");
     put("rdf", "http://www.w3.org/1999/02/22-rdf-syntax-ns#");
@@ -242,9 +243,39 @@ public class XPathWrapperTest {
     String xpath = "//edm:Agent/skos:prefLabel|//edm:Agent/skos:altLabel";
     XPathWrapper xPathWrapper = new XPathWrapper(new File(inputFile));
 
-    List<EdmFieldInstance> list = xPathWrapper.extractFieldInstanceList(xpath);
-    list.stream().forEach(x -> System.err.printf("%s @%s\n", x.getValue(), x.getLanguage()));
-    System.err.println();
+    List<String> expected = List.of(
+      "Francis 'Frans' Smith @en", "Francis Smith @en", "Francis Frans Smith @en",
+      "Smith, Francis Frans @en", "Eduardo Afonso Viana @pt", "Eduardo Viana @en", "Viana, Eduardo @en",
+      "Júlio Pomar @de", "Júlio Pomar @pt", "Júlio Pomar @gl", "Júlio Pomar @en", "Júlio Pomar @es",
+      "Julio Pomar @en", "Henrique Pousão @fi", "Henrique Pousão @pt", "Henrique Pousão @en",
+      "Henrique Pousao @en", "Paula Rego @de", "Рего, Паула @ru", "Paula Rego @sv", "Paula Rego @fi",
+      "Paula Rego @pt", "Paula Rego @gl", "Paula Rego @en", "Paula Rego @fr", "Paula Rego @es",
+      "ポーラ・レゴ @ja", "Paula Rego @pl", "פאולה רגו @he", "Paula Rego @nl", "Paula Rego @tr",
+      "Paula Rego @ca", "Rego, Paula @en", "José Sobral de Almada Negreiros @de", "José de Almada Negreiros @fi",
+      "Almada Negreiros @pt", "Almada Negreiros @gl", "José de Almada Negreiros @en",
+      "José de Almada-Negreiros @it", "Almada Negreiros @fr", "José de Almada Negreiros @es",
+      "Almada Jose De Negreiros @en", "Sá Nogueira @pt", "Sá Nogueira @en", "António Palolo @pt",
+      "António Palolo @en", "Antonio Palolo @en", "António Pedro @pt", "António Pedro @en", "António Pedro @es",
+      "Antonio Pedro @en", "Diogo de Macedo @pt", "Diogo de Macedo @en", "Diogo de Macedo @es",
+      "Macedo, Diogo de @en", "José Malhoa @de", "Мальоа, Жозе @ru", "José Malhoa @fi", "José Malhoa @pt",
+      "José Malhoa @gl", "Ζουζέ Μαλιόα @el", "José Malhoa @en", "José Malhoa @fr", "José Malhoa @pl",
+      "José Malhoa @es", "Jose Malhoa @en", "Menez @de", "Menez @pt", "Maria Inês Ribeiro da Fonseca @en",
+      "Menez (peintre) @fr", "Maria Ines Ribeiro Da Fonseca @en", "Nadir Afonso @de", "Nadir Afonso @fi",
+      "Nadir Afonso @pt", "Надир Афонсо @bg", "Nadir Afonso @en", "Nadir Afonso @it", "Nadir Afonso @fr",
+      "Nadir Afonso @es", "那德爾·亞馮梭 @zh", "Afonso, Nadir @en", "António Carneiro @pt", "António Carneiro @en",
+      "António Carneiro @fr", "António Carneiro @es", "Antonio Carneiro @en", "Columbano Bordalo Pinheiro @de",
+      "Бордалу Пиньейру, Колумбану @ru", "Columbano Bordalo Pinheiro @fi", "Columbano Bordalo Pinheiro @pt",
+      "Columbano Bordalo Pinheiro @gl", "Columbano Bordalo Pinheiro @en", "Columbano Bordalo Pinheiro @fr",
+      "Columbano Bordalo Pinheiro @pl", "Columbano Bordalo Pinheiro @es", "Columbano Bordalo Pinheiro @ca",
+      "Bordalo Pinheiro, Columbano @en", "João Cutileiro @pt", "João Cutileiro @en", "Joao Cutileiro @en",
+      "António Dacosta @pt", "António Dacosta @en", "Mário Eloy @de", "Mário Eloy @pt", "Mário Eloy @en",
+      "Mário Eloy @fr", "Mario Eloy @en", "João Hogan @pt", "João Hogan @en", "Joao Hogan @en",
+      "Fernando Lanhas @pt", "Fernando Lanhas @en", "Fernando Lanhas @fr", "Lanhas, Fernando @en"
+    );
+    List<EdmFieldInstance> extractedFields = xPathWrapper.extractFieldInstanceList(xpath);
+    for (int i = 1; i < extractedFields.size(); i++) {
+      EdmFieldInstance actual = extractedFields.get(i);
+      assertEquals(expected.get(i), String.format("%s @%s", actual.getValue(), actual.getLanguage()));
+    }
   }
-
 }

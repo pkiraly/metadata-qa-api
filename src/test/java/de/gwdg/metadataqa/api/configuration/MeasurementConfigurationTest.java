@@ -53,43 +53,50 @@ public class MeasurementConfigurationTest {
 
   @Test
   public void enableMultilingualSaturationMeasurement() {
-    MeasurementConfiguration conf = new MeasurementConfiguration().enableMultilingualSaturationMeasurement();
+    MeasurementConfiguration conf = new MeasurementConfiguration()
+      .enableMultilingualSaturationMeasurement();
     assertTrue(conf.isMultilingualSaturationMeasurementEnabled());
   }
 
   @Test
   public void enableMultilingualSaturationMeasurement_boolean() {
-    MeasurementConfiguration conf = new MeasurementConfiguration().enableMultilingualSaturationMeasurement(true);
+    MeasurementConfiguration conf = new MeasurementConfiguration()
+      .enableMultilingualSaturationMeasurement(true);
     assertTrue(conf.isMultilingualSaturationMeasurementEnabled());
   }
 
   @Test
   public void disableMultilingualSaturationMeasurement() {
-    MeasurementConfiguration conf = new MeasurementConfiguration().disableMultilingualSaturationMeasurement();
+    MeasurementConfiguration conf = new MeasurementConfiguration()
+      .disableMultilingualSaturationMeasurement();
     assertFalse(conf.isMultilingualSaturationMeasurementEnabled());
   }
 
   @Test
   public void enableProblemCatalogMeasurement() {
-    MeasurementConfiguration conf = new MeasurementConfiguration().enableProblemCatalogMeasurement();
+    MeasurementConfiguration conf = new MeasurementConfiguration()
+      .enableProblemCatalogMeasurement();
     assertTrue(conf.isProblemCatalogMeasurementEnabled());
   }
 
   @Test
   public void enableProblemCatalogMeasurement_boolean() {
-    MeasurementConfiguration conf = new MeasurementConfiguration().enableProblemCatalogMeasurement(true);
+    MeasurementConfiguration conf = new MeasurementConfiguration()
+      .enableProblemCatalogMeasurement(true);
     assertTrue(conf.isProblemCatalogMeasurementEnabled());
   }
 
   @Test
   public void disableProblemCatalogMeasurement() {
-    MeasurementConfiguration conf = new MeasurementConfiguration().disableProblemCatalogMeasurement();
+    MeasurementConfiguration conf = new MeasurementConfiguration()
+      .disableProblemCatalogMeasurement();
     assertFalse(conf.isProblemCatalogMeasurementEnabled());
   }
 
   @Test
   public void disableRuleCatalogMeasurement() {
-    MeasurementConfiguration conf = new MeasurementConfiguration().disableRuleCatalogMeasurement();
+    MeasurementConfiguration conf = new MeasurementConfiguration()
+      .disableRuleCatalogMeasurement();
     assertFalse(conf.isRuleCatalogMeasurementEnabled());
   }
 
