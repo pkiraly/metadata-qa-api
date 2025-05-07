@@ -137,7 +137,7 @@ public abstract class BaseRuleChecker implements RuleChecker {
       results.put(getIdOrHeader(), output.setOutputType(outputType));
     } else {
       try {
-        RuleCheckerOutput output2 = (RuleCheckerOutput) output.clone();
+        RuleCheckerOutput output2 = (RuleCheckerOutput) output.copy();
         results.put(getIdOrHeader(RuleCheckingOutputType.STATUS), output.setOutputType(RuleCheckingOutputType.STATUS));
         results.put(getIdOrHeader(RuleCheckingOutputType.SCORE), output2.setOutputType(RuleCheckingOutputType.SCORE));
       } catch (CloneNotSupportedException e) {

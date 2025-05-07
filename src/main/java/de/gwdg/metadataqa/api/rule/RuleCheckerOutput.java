@@ -59,8 +59,7 @@ public class RuleCheckerOutput {
         ? "0" : score.toString();
   }
 
-  @Override
-  protected Object clone() throws CloneNotSupportedException {
+  protected Object copy() throws CloneNotSupportedException {
     return new RuleCheckerOutput(status, score)
       .setInstanceCount(instanceCount)
       .setFailureCount(failureCount);

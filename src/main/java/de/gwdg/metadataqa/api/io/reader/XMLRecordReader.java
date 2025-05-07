@@ -37,11 +37,10 @@ public class XMLRecordReader extends RecordReader {
   private NamedNodeMap rootAttributes;
   private int current = 0;
   private Document xmlDocument;
-  private CalculatorFacade calculator;
 
-  public XMLRecordReader(BufferedReader inputReader, CalculatorFacade calculator) throws IOException {
+  public XMLRecordReader(BufferedReader inputReader,
+                         CalculatorFacade calculator) throws IOException {
     super(inputReader, calculator);
-    this.calculator = calculator;
     DocumentBuilderFactory builderFactory = DocumentBuilderFactory.newInstance();
     builderFactory.setNamespaceAware(true);
     try {
