@@ -22,6 +22,7 @@ import org.junit.Test;
 import java.util.Arrays;
 import java.util.List;
 
+import static de.gwdg.metadataqa.api.rule.RuleCheckingOutputStatus.NA;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
@@ -83,7 +84,11 @@ public class AndCheckerTest {
 
   @Test
   public void failure() {
-    schema.getPathByLabel("name").setRule(Arrays.asList(new Rule().withAnd(Arrays.asList(new Rule().withMinCount(1), new Rule().withMinLength(10)))));
+    schema.getPathByLabel("name").setRule(
+      Arrays.asList(
+        new Rule()
+          .withAnd(Arrays.asList(new Rule().withMinCount(1), new Rule().withMinLength(10))))
+    );
 
     List<RuleChecker> checkers = schema.getRuleCheckers();
     AndChecker andChecker = (AndChecker) checkers.get(0);
@@ -93,7 +98,7 @@ public class AndCheckerTest {
     MinCountChecker minCountChecker = (MinCountChecker) andChecker.getCheckers().get(0);
 
     assertEquals(MinLengthChecker.class, andChecker.getCheckers().get(1).getClass());
-    MinLengthChecker maxCountChecker = (MinLengthChecker) andChecker.getCheckers().get(1);
+    MinLengthChecker minLengthChecker = (MinLengthChecker) andChecker.getCheckers().get(1);
 
     FieldCounter<RuleCheckerOutput> fieldCounter = new FieldCounter<>();
     andChecker.update(cache, fieldCounter, RuleCheckingOutputType.BOTH);
@@ -123,13 +128,8 @@ public class AndCheckerTest {
     for (RuleChecker checker : schema.getRuleCheckers()) {
       checker.update(cache, fieldCounter, RuleCheckingOutputType.STATUS);
     }
-    System.err.println(fieldCounter);
-    // FieldCounter{fieldMap={
-    //   name:and:name:minCount:name:maxCount:Q1:status=0,
-    //   name:and:name:minCount:name:maxCount:Q1:score=0,
-    //   name:and:name:dependency:name:hasValue:Q2:status=0,
-    //   name:and:name:dependency:name:hasValue:Q2:score=0
-    // }}
-
+    assertEquals(2, fieldCounter.size());
+    assertEquals(NA, fieldCounter.getMap().get("Q1").getStatus());
+    assertEquals(NA, fieldCounter.getMap().get("Q2").getStatus());
   }
 }

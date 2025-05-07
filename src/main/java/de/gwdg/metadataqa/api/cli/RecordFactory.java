@@ -57,9 +57,10 @@ public class RecordFactory {
       case JSON:
         if (inputFormat == null || inputFormat.equals(InputFormat.NDJSON))
           return new JSONRecordReader(inputReader, calculator);
-        else if (inputFormat.equals(InputFormat.JSON_ARRAY)) {
+        else if (inputFormat.equals(InputFormat.JSON_ARRAY))
           return new JSONArrayRecordReader(inputReader, calculator);
-        }
+        else
+          throw new IllegalArgumentException("Unsupported input format: " + inputFormat);
       case XML:
         return new XMLRecordReader(inputReader, calculator);
       case CSV:

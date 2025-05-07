@@ -65,7 +65,7 @@ public class ContentTypeCheckerTest extends CheckerTestBase {
   @Test
   public void success_withCountInstance() {
     cache = (CsvSelector) SelectorFactory.getInstance(schema.getFormat(),
-      "\"https://iiif.deutsche-digitale-bibliothek.de/image/2/ec863e48-7e20-4e9c-95fd-babd708b6eaf/full/full/0/default.jpg\"");
+      "\"https://iiif.deutsche-digitale-bibliothek.de/image/2/d3/a3/d3a3a84c-1fb5-4390-9bbf-e14cd8b746f8/full/full/0/default.jpg\"");
     cache.setCsvReader(new CsvReader().setHeader( ((CsvAwareSchema) schema).getHeader() ));
 
     ContentTypeChecker checker = new ContentTypeChecker(
@@ -77,15 +77,12 @@ public class ContentTypeCheckerTest extends CheckerTestBase {
     FieldCounter<RuleCheckerOutput> fieldCounter = new FieldCounter<>();
     checker.update(cache, fieldCounter, RuleCheckingOutputType.BOTH);
 
-    // TODO
-    /*
     assertEquals(2, fieldCounter.size());
     assertEquals("name:contentType", checker.getHeaderWithoutId());
     Assert.assertEquals(RuleCheckingOutputStatus.PASSED, fieldCounter.get(checker.getHeader(RuleCheckingOutputType.STATUS)).getStatus());
     Assert.assertNull(fieldCounter.get(checker.getHeader(RuleCheckingOutputType.SCORE)).getScore());
     Assert.assertEquals(1, (int) fieldCounter.get(checker.getHeader(RuleCheckingOutputType.SCORE)).getInstanceCount());
     Assert.assertEquals(0, (int) fieldCounter.get(checker.getHeader(RuleCheckingOutputType.SCORE)).getFailureCount());
-     */
   }
 
   @Test
