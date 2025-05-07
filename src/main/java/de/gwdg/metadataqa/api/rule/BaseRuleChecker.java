@@ -187,7 +187,7 @@ public abstract class BaseRuleChecker implements RuleChecker {
     return scope != null;
   }
 
-  public Boolean countInstances() {
+  public boolean countInstances() {
     return countInstances;
   }
 

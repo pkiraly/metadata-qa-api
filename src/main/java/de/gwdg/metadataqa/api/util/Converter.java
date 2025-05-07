@@ -28,7 +28,7 @@ public interface Converter {
    * @return
    *   The double value
    */
-  public static Double asDouble(Object value) {
+  static Double asDouble(Object value) {
     double doubleValue;
     switch (value.getClass().getCanonicalName()) {
       case "java.math.BigDecimal":
@@ -55,7 +55,7 @@ public interface Converter {
    * @return
    *   The double value
    */
-  public static Integer asInteger(Object value) {
+  static Integer asInteger(Object value) {
     int intValue;
     switch (value.getClass().getCanonicalName()) {
       case "java.math.BigDecimal":
@@ -86,7 +86,7 @@ public interface Converter {
     return intValue;
   }
 
-  public static String asString(Object value) {
+  static String asString(Object value) {
     var text = "";
     if (value == null) {
       text = "null";
@@ -120,8 +120,8 @@ public interface Converter {
    * @param compressionLevel The level of compression
    * @return The "compressed" representation without zeros at the end
    */
-  public static String compressNumber(String value, CompressionLevel compressionLevel) {
-    value = value.replaceAll("([0-9])0+$", "$1");
+  static String compressNumber(String value, CompressionLevel compressionLevel) {
+    value = value.replaceAll("(\\d)0+$", "$1");
     if (compressionLevel.equals(CompressionLevel.NORMAL)) {
       value = value.replaceAll("\\.0+$", ".0");
     } else if (compressionLevel.equals(CompressionLevel.WITHOUT_TRAILING_ZEROS)) {
@@ -130,7 +130,7 @@ public interface Converter {
     return value;
   }
 
-  public static List<Object> jsonObjectToList(Object jsonFragment, Schema schema) {
+  static List<Object> jsonObjectToList(Object jsonFragment, Schema schema) {
     List<Object> list = null;
     if (schema.getFormat().equals(Format.JSON))
       list = Converter.jsonObjectToList(jsonFragment);
@@ -139,7 +139,7 @@ public interface Converter {
     return list;
   }
 
-  public static List<Object> jsonObjectToList(Object jsonFragment) {
+  static List<Object> jsonObjectToList(Object jsonFragment) {
     List<Object> list = new ArrayList<>();
     if (jsonFragment != null) {
       if (jsonFragment instanceof JSONArray) {

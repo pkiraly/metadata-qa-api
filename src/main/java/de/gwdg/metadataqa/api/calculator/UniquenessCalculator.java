@@ -25,8 +25,6 @@ public class UniquenessCalculator extends QaSolrClient implements Calculator, Se
 
   public static final String CALCULATOR_NAME = "uniqueness";
 
-  private FieldCounter<Double> resultMap;
-
   public UniquenessCalculator(SolrClient solrClient, Schema schema) {
     super(solrClient, schema);
   }
@@ -43,7 +41,7 @@ public class UniquenessCalculator extends QaSolrClient implements Calculator, Se
       recordId = recordId.substring(1);
     }
 
-    resultMap = new FieldCounter<>();
+    FieldCounter<Double> resultMap = new FieldCounter<>();
     for (UniquenessField solrField : solrFields) {
       var fieldCalculator = new UniquenessFieldCalculator(
           cache, recordId, solrClient, solrField
@@ -58,7 +56,7 @@ public class UniquenessCalculator extends QaSolrClient implements Calculator, Se
           fieldCalculator.getAverageScore()
       );
     }
-    return List.of(new FieldCounterBasedResult<Double>(getCalculatorName(), resultMap));
+    return List.of(new FieldCounterBasedResult<>(getCalculatorName(), resultMap));
   }
 
   public String getTotals() {

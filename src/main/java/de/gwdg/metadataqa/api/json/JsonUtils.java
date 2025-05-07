@@ -27,7 +27,7 @@ public final class JsonUtils {
   public static final String ABOUT = "@about";
   public static final String RESOURCE = "@resource";
   public static final String VALUE = "#value";
-  public static ObjectMapper jsonMapper;
+  public static final ObjectMapper jsonMapper = new ObjectMapper();
 
   private JsonUtils() {
     throw new AssertionError();
@@ -283,9 +283,6 @@ public final class JsonUtils {
   }
 
   public static String toJson(Object object) throws JsonProcessingException {
-    if (jsonMapper == null)
-      jsonMapper = new ObjectMapper();
-
     return jsonMapper.writeValueAsString(object);
   }
 }

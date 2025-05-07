@@ -32,6 +32,6 @@ public abstract class ResultWriter implements Closeable {
     this.outputWriter.close();
   }
 
-  abstract public void writeResult(Map<String, List<MetricResult>> result) throws IOException;
-  abstract public void writeHeader(List<String> header) throws IOException;
+  public abstract void writeResult(Map<String, List<MetricResult>> result) throws IOException;
+  public abstract void writeHeader(List<String> header) throws IOException;
 }

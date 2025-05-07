@@ -73,10 +73,10 @@ public class OrChecker extends LogicalChecker {
           DependencyChecker dependencyChecker = (DependencyChecker) checker;
           Map<String, Boolean> result = dependencyChecker.getResult(outputType, results);
           boolean dependenciesPassed = result.get("allPassed");
-          if (dependenciesPassed == false)
-            output = new RuleCheckerOutput(this, RuleCheckingOutputStatus.FAILED);
-          else
+          if (dependenciesPassed)
             output = new RuleCheckerOutput(this, RuleCheckingOutputStatus.PASSED);
+          else
+            output = new RuleCheckerOutput(this, RuleCheckingOutputStatus.FAILED);
         }
 
         if (!allPassed)

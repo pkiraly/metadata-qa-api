@@ -63,7 +63,8 @@ public class Multilinguality {
       measureHierarchicalSchema();
     }
     FieldCounter<Double> saturationMap = calculateScore();
-    Map<String, Map<String, Object>> mergedMap = mergeMaps(rawLanguageMap, rawScoreMap);
+    mergeMaps(rawLanguageMap, rawScoreMap);
+    // Map<String, Map<String, Object>> mergedMap = mergeMaps(rawLanguageMap, rawScoreMap);
     return saturationMap;
   }
 
