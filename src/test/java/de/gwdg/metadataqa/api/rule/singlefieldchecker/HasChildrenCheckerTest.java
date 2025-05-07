@@ -23,7 +23,7 @@ import static org.junit.Assert.*;
 
 public class HasChildrenCheckerTest {
 
-  String BASE_DIR = "src/test/resources/configuration/schema/rules/hasChildren/";
+  private static final String BASE_DIR = "src/test/resources/configuration/schema/rules/hasChildren/";
 
   @Test
   public void prefix() {

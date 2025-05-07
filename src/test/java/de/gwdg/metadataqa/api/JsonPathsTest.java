@@ -7,10 +7,13 @@ import com.jayway.jsonpath.Filter;
 import com.jayway.jsonpath.JsonPath;
 import java.io.IOException;
 import java.net.URISyntaxException;
+import java.text.SimpleDateFormat;
 import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
+import java.util.SimpleTimeZone;
+
 import org.junit.Before;
 import org.junit.Test;
 import static org.junit.Assert.*;
@@ -54,7 +57,10 @@ public class JsonPathsTest {
 
     String json = "{\"date_as_long\" : 1411455611975}";
     Date date = JsonPath.parse(json).read("$['date_as_long']", Date.class);
-    assertEquals("23 Sep 2014 07:00:11 GMT", date.toGMTString());
+    SimpleDateFormat sdf = new SimpleDateFormat();
+    sdf.setTimeZone(new SimpleTimeZone(0, "GMT"));
+    sdf.applyPattern("dd MMM yyyy HH:mm:ss z");
+    assertEquals("23 Sep 2014 07:00:11 GMT", sdf.format(date));
 
     List<Map<String, Object>> books = JsonPath.read(document, "$.store.book[?(@.price < 10)]");
     assertEquals(2, books.size());

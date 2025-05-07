@@ -9,6 +9,7 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.util.List;
 import java.util.Map;
+import java.util.NoSuchElementException;
 
 public class JSONArrayRecordReader extends RecordReader {
 
@@ -32,6 +33,8 @@ public class JSONArrayRecordReader extends RecordReader {
 
   @Override
   public Map<String, List<MetricResult>> next() {
+    if (!hasNext())
+      throw new NoSuchElementException();
     String record = records.get(current++).toString();
     return this.calculator.measureAsMetricResult(record);
   }

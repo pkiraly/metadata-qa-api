@@ -317,12 +317,11 @@ public class SchemaUtils {
         if (!processed) {
           Rule depRule = getRuleById(schema, ruleId);
           List<String> additionalOnes = getDependencies(depRule);
-          for (String additionalOne : additionalOnes) {
-            if (!dependenciesMap.containsKey(additionalOne)) {
-              dependenciesMap.put(additionalOne, false);
-              runAgain = true;
-            }
-          }
+          int size = dependenciesMap.size();
+          for (String additionalOne : additionalOnes)
+            dependenciesMap.putIfAbsent(additionalOne, false);
+          if (dependenciesMap.size() > size)
+            runAgain = true;
           dependenciesMap.put(ruleId, true);
         }
       }

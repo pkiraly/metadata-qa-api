@@ -76,7 +76,6 @@ public class DataElementTest {
     DataElement path1 = new DataElement("author", "author", "author");
     DataElement path2 = path1.setLabel("author2");
     assertEquals(path1, path2);
-    assertTrue(path1.equals(path2));
     assertEquals("author2", path1.getLabel());
     assertEquals("author2", path2.getLabel());
   }
@@ -86,7 +85,6 @@ public class DataElementTest {
     DataElement path1 = new DataElement("author", "author", "author");
     DataElement path2 = path1.setSolrFieldName("author2");
     assertEquals(path1, path2);
-    assertTrue(path1.equals(path2));
     assertEquals("author2", path1.getSolrFieldName());
     assertEquals("author2", path2.getSolrFieldName());
   }
@@ -96,7 +94,6 @@ public class DataElementTest {
     DataElement path1 = new DataElement("author", "author", "author");
     DataElement path2 = path1.setExtractable();
     assertEquals(path1, path2);
-    assertTrue(path1.equals(path2));
     assertTrue(path1.isExtractable());
     assertTrue(path2.isExtractable());
   }

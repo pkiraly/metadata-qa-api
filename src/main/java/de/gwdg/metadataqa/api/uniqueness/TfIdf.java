@@ -29,7 +29,7 @@ public class TfIdf implements Serializable {
   /**
    * The TF-IDF number read from Apache Solr.
    */
-  private double tfIdf;
+  private double tfIdfScore;
 
   /**
    * Creates the TF-IDF object.
@@ -47,7 +47,7 @@ public class TfIdf implements Serializable {
     this.term = term;
     this.tf = tf;
     this.df = df;
-    this.tfIdf = tfIdf;
+    this.tfIdfScore = tfIdf;
   }
 
   /**
@@ -87,7 +87,7 @@ public class TfIdf implements Serializable {
    *    The TF-IDF number read from Apache Solr.
    */
   public double getTfIdf() {
-    return tfIdf;
+    return tfIdfScore;
   }
 
   /**
@@ -98,6 +98,6 @@ public class TfIdf implements Serializable {
    */
   @Override
   public String toString() {
-    return term + "(tf=" + tf + ", df=" + df + ", tfIdf=" + tfIdf + ')';
+    return term + "(tf=" + tf + ", df=" + df + ", tfIdf=" + tfIdfScore + ')';
   }
 }

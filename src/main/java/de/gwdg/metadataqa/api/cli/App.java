@@ -31,8 +31,8 @@ public class App {
 
   private static final Logger logger = Logger.getLogger(App.class.getCanonicalName());
 
-  private static final String appName = "mqa";
-  private static final String appHeader = "Command-line application for the Metadata Quality API (https://github.com/pkiraly/metadata-qa-api). Read line-based metadata records and output quality assessment results using various metrics.";
+  private static final String APP_NAME = "mqa";
+  private static final String APP_HEADER = "Command-line application for the Metadata Quality API (https://github.com/pkiraly/metadata-qa-api). Read line-based metadata records and output quality assessment results using various metrics.";
 
   // constants
   public static final String NDJSON = "ndjson";
@@ -140,15 +140,15 @@ public class App {
       for (String option : (List<String>) ex.getMissingOptions()) {
         missingOptions.add(String.format("--%s (-%s)", options.getOption(option).getLongOpt(), option));
       }
-      formatter.printHelp(appName, appHeader, options, "ERROR\nMissing options: \n  " + StringUtils.join(missingOptions, "\n  "), true);
+      formatter.printHelp(APP_NAME, APP_HEADER, options, "ERROR\nMissing options: \n  " + StringUtils.join(missingOptions, "\n  "), true);
       System.exit(1);
     } catch (MissingArgumentException ex) {
       Option missingOption = ex.getOption();
       String err = String.format("%s for option --%s (-%s)", missingOption.getArgName(), missingOption.getLongOpt(), missingOption.getOpt());
-      formatter.printHelp(appName, appHeader, options, "ERROR\nMissing arguments: " + err, true);
+      formatter.printHelp(APP_NAME, APP_HEADER, options, "ERROR\nMissing arguments: " + err, true);
       System.exit(1);
     } catch (Exception ex) {
-      formatter.printHelp(appName, appHeader, options, "Error: " + ex.getMessage(), true);
+      formatter.printHelp(APP_NAME, APP_HEADER, options, "Error: " + ex.getMessage(), true);
       ex.printStackTrace();
       System.exit(1);
     }

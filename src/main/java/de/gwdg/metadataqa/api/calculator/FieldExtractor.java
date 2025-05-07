@@ -115,7 +115,7 @@ public class FieldExtractor implements Calculator, Serializable {
     }
     if (fieldName.equals(FIELD_NAME) && StringUtils.isBlank(value)) {
       value = cache.getRecordId() != null ?
-        IdentifierGenerator.PREFIX + cache.getRecordId() : IdentifierGenerator.generate();
+        IdentifierGenerator.prefix + cache.getRecordId() : IdentifierGenerator.generate();
     }
 
     // LOGGER.info(String.format("fieldName: %s, value: %s", fieldName, value));

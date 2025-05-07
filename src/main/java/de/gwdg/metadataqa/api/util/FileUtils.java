@@ -87,7 +87,7 @@ public abstract class FileUtils {
   public static String escape(String value) {
     if (value.contains(",") || value.contains("\"")) {
       if (value.contains("\"")) {
-        value = value.replaceAll("\"", "\"\"");
+        value = value.replace("\"", "\"\"");
       }
       value = '"' + value + '"';
     }

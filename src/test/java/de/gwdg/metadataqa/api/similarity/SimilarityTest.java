@@ -48,8 +48,8 @@ public class SimilarityTest {
   public void JaroWinkler() {
     JaroWinklerSimilarity jaroWinkler = new JaroWinklerSimilarity();
     JaccardDistance jaccard = new JaccardDistance();
-    LevenshteinDistance levenshtein = new LevenshteinDistance();
-    LevenshteinDetailedDistance LevenshteinDetailed = new LevenshteinDetailedDistance();
+    LevenshteinDistance levenshtein = LevenshteinDistance.getDefaultInstance();
+    LevenshteinDetailedDistance levenshteinDetailed = LevenshteinDetailedDistance.getDefaultInstance();
 
     List<String> patterns = Arrays.asList("0001", "0011", "0000", "1001");
     Map<List<String>, Double> atomicDistance = new HashMap<>();
@@ -72,7 +72,7 @@ public class SimilarityTest {
           jaroWinkler.apply(a, b),
           jaccard.apply(a, b),
           levenshtein.apply(a, b),
-          LevenshteinDetailed.apply(a, b).getDistance()
+          levenshteinDetailed.apply(a, b).getDistance()
         ));
       }
     }

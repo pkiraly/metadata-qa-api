@@ -129,10 +129,10 @@ public class AbbreviationManagerTest {
   @Test
   public void lookup_havingFile() {
     OutputStream logCapturingStream = new ByteArrayOutputStream();
-    Logger LOGGER = Logger.getLogger(AbbreviationManager.class.getCanonicalName());
-    Handler[] handlers = LOGGER.getParent().getHandlers();
+    Logger logger = Logger.getLogger(AbbreviationManager.class.getCanonicalName());
+    Handler[] handlers = logger.getParent().getHandlers();
     StreamHandler customLogHandler = new StreamHandler(logCapturingStream, handlers[0].getFormatter());
-    LOGGER.addHandler(customLogHandler);
+    logger.addHandler(customLogHandler);
 
     AbbreviationManager manager = new DummyAbbreviationManager();
     manager.lookup("New value");

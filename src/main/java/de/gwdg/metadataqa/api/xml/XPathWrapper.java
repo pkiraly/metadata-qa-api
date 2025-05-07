@@ -206,8 +206,8 @@ public class XPathWrapper implements Serializable {
     return document;
   }
 
-  public static void setXpathEngine(XPath _xpathEngine) {
-    xpathEngine = _xpathEngine;
+  public static void setXpathEngine(XPath xpathEngine) {
+    XPathWrapper.xpathEngine = xpathEngine;
   }
 
   public static void setXpathEngine(Map<String, String> namespaces) {

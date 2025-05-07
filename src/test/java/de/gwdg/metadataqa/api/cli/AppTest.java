@@ -2,6 +2,7 @@ package de.gwdg.metadataqa.api.cli;
 
 import com.github.stefanbirkner.systemlambda.SystemLambda;
 import de.gwdg.metadataqa.api.util.FileUtils;
+import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -17,14 +18,15 @@ public class AppTest {
 
   private final static String BASE_DIR = "src/test/resources/";
   private final static String OUTPUT_DIR = BASE_DIR + "output/";
-  private final static String outputFileName = OUTPUT_DIR + "output.csv";
+  private final static String OUTPUT_FILE_NAME = OUTPUT_DIR + "output.csv";
   File outputFile;
 
   @Before
   public void setUp() throws Exception {
-    outputFile = new File(outputFileName);
+    outputFile = new File(OUTPUT_FILE_NAME);
   }
 
+  @After
   public void tearDown() throws Exception {
     if (outputFile.exists())
       outputFile.delete();
@@ -37,12 +39,12 @@ public class AppTest {
       "--schema", BASE_DIR + "configuration/schema/simple-meemoo.yaml",
       "--measurements", BASE_DIR + "configuration/measurement/simple-meemoo.yaml",
       "--outputFormat", "csv",
-      "--output", outputFileName,
+      "--output", OUTPUT_FILE_NAME,
     });
 
     assertTrue(outputFile.exists());
 
-    List<String> output = FileUtils.readLinesFromFile(outputFileName);
+    List<String> output = FileUtils.readLinesFromFile(OUTPUT_FILE_NAME);
     assertEquals(3, output.size());
     assertEquals("\"url\",\"name\"", output.get(0).trim());
     assertEquals("\"https://neurovault.org/images/384958/\",\"massivea uditory lexical decision\"", output.get(1).trim());
@@ -56,12 +58,12 @@ public class AppTest {
       "--schema", BASE_DIR + "configuration/schema/simple-meemoo.json",
       "--measurements", BASE_DIR + "configuration/measurement/simple-meemoo.json",
       "--outputFormat", "csv",
-      "--output", outputFileName,
+      "--output", OUTPUT_FILE_NAME,
     });
 
     assertTrue(outputFile.exists());
 
-    List<String> output = FileUtils.readLinesFromFile(outputFileName);
+    List<String> output = FileUtils.readLinesFromFile(OUTPUT_FILE_NAME);
     assertEquals(3, output.size());
     assertEquals("\"url\",\"name\"", output.get(0).trim());
     assertEquals("\"https://neurovault.org/images/384958/\",\"massivea uditory lexical decision\"", output.get(1).trim());

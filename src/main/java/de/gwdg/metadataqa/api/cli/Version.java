@@ -5,31 +5,31 @@ import java.io.InputStream;
 import java.util.Properties;
 
 public class Version {
-  private static String version;
+  private static final String PATH = "/version.prop";
+  private static String currentVersion;
 
   public static void main(String[] args) {
     System.err.println(Version.getVersion());
   }
 
   public static String getVersion() {
-    if (version == null) {
+    if (currentVersion == null) {
       initialize();
     }
-    return version;
+    return currentVersion;
   }
 
   private static void initialize() {
     String versionCandidate = Version.class.getPackage().getImplementationVersion();
     if (versionCandidate != null)
-      version = versionCandidate;
+      currentVersion = versionCandidate;
     else {
-      version = readVersionFromPropertyFile();
+      currentVersion = readVersionFromPropertyFile();
     }
   }
 
   public static String readVersionFromPropertyFile() {
-    String path = "/version.prop";
-    InputStream stream = Version.class.getResourceAsStream(path);
+    InputStream stream = Version.class.getResourceAsStream(PATH);
     if (stream == null)
       return "UNKNOWN";
     Properties props = new Properties();
