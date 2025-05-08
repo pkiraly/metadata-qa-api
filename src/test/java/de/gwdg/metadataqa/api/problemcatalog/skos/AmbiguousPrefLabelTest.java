@@ -8,10 +8,7 @@ import de.gwdg.metadataqa.api.schema.edm.EdmSchema;
 import de.gwdg.metadataqa.api.util.FileUtils;
 import java.io.IOException;
 import java.net.URISyntaxException;
-import org.junit.After;
-import org.junit.AfterClass;
 import org.junit.Before;
-import org.junit.BeforeClass;
 import org.junit.Test;
 import static org.junit.Assert.*;
 
@@ -25,17 +22,6 @@ public class AmbiguousPrefLabelTest {
   private AmbiguousPrefLabel detector;
   private JsonSelector cache;
 
-  public AmbiguousPrefLabelTest() {
-  }
-
-  @BeforeClass
-  public static void setUpClass() {
-  }
-
-  @AfterClass
-  public static void tearDownClass() {
-  }
-
   @Before
   public void setUp() throws URISyntaxException, IOException {
     EdmSchema schema = new EdmOaiPmhJsonSchema();
@@ -43,10 +29,6 @@ public class AmbiguousPrefLabelTest {
     detector = new AmbiguousPrefLabel(catalog);
 
     cache = new JsonSelector(FileUtils.readFirstLineFromResource(problemFileName));
-  }
-
-  @After
-  public void tearDown() {
   }
 
   @Test

@@ -32,8 +32,6 @@ import static org.junit.Assert.*;
  * @author Péter Király <peter.kiraly at gwdg.de>
  */
 public class CalculatorFacadeTest {
-  public CalculatorFacadeTest() {
-  }
 
   @Test
   public void testNoAbbreviate() throws URISyntaxException, IOException {

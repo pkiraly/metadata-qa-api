@@ -20,25 +20,6 @@ import static org.junit.Assert.assertEquals;
  */
 public class UniquenessExtractorTest {
 
-  public UniquenessExtractorTest() {
-  }
-
-  @BeforeClass
-  public static void setUpClass() {
-  }
-
-  @AfterClass
-  public static void tearDownClass() {
-  }
-
-  @Before
-  public void setUp() {
-  }
-
-  @After
-  public void tearDown() {
-  }
-
   public String readContent(String fileName) throws URISyntaxException, IOException {
     return StringUtils.join(FileUtils.readLinesFromResource(fileName), "");
   }

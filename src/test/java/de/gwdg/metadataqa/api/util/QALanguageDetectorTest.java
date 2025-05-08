@@ -4,10 +4,6 @@ import com.github.pemistahl.lingua.api.Language;
 import java.io.IOException;
 import java.util.SortedMap;
 
-import org.junit.After;
-import org.junit.AfterClass;
-import org.junit.Before;
-import org.junit.BeforeClass;
 import org.junit.Test;
 import static org.junit.Assert.*;
 
@@ -16,25 +12,6 @@ import static org.junit.Assert.*;
  * @author Péter Király <peter.kiraly at gwdg.de>
  */
 public class QALanguageDetectorTest {
-
-  public QALanguageDetectorTest() {
-  }
-
-  @BeforeClass
-  public static void setUpClass() {
-  }
-
-  @AfterClass
-  public static void tearDownClass() {
-  }
-
-  @Before
-  public void setUp() {
-  }
-
-  @After
-  public void tearDown() {
-  }
 
   @Test
   public void constructionTest() throws IOException {

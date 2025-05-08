@@ -6,10 +6,7 @@ import de.gwdg.metadataqa.api.schema.MarcJsonSchema;
 import de.gwdg.metadataqa.api.util.FileUtils;
 import java.io.IOException;
 import java.net.URISyntaxException;
-import org.junit.After;
-import org.junit.AfterClass;
 import org.junit.Before;
-import org.junit.BeforeClass;
 import org.junit.Test;
 
 import static org.junit.Assert.assertEquals;
@@ -23,25 +20,10 @@ public class MarcCompletenessCalculatorTest {
   JsonSelector cache;
   CompletenessCalculator calculator;
 
-  public MarcCompletenessCalculatorTest() {
-  }
-
-  @BeforeClass
-  public static void setUpClass() {
-  }
-
-  @AfterClass
-  public static void tearDownClass() {
-  }
-
   @Before
   public void setUp() throws URISyntaxException, IOException {
     calculator = new CompletenessCalculator(new MarcJsonSchema());
     cache = new JsonSelector(FileUtils.readFirstLineFromResource("general/marc.json"));
-  }
-
-  @After
-  public void tearDown() {
   }
 
   @Test

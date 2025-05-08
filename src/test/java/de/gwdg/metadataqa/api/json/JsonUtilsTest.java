@@ -23,7 +23,6 @@ import static org.junit.Assert.assertNull;
 
 public class JsonUtilsTest {
 
-  Object jsonDoc;
   String jsonString;
   String problemFileName = "issue-examples/issue48.json";
   private static final JsonProvider PARSER = Configuration.defaultConfiguration()
@@ -31,22 +30,6 @@ public class JsonUtilsTest {
 
   public JsonUtilsTest() throws IOException, URISyntaxException {
     jsonString = FileUtils.readFirstLineFromResource(problemFileName);
-  }
-
-  @BeforeClass
-  public static void setUpClass() {
-  }
-
-  @AfterClass
-  public static void tearDownClass() {
-  }
-
-  @Before
-  public void setUp() {
-  }
-
-  @After
-  public void tearDown() {
   }
 
   @Test

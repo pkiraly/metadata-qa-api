@@ -10,10 +10,7 @@ import java.io.IOException;
 import java.net.URISyntaxException;
 import java.util.List;
 
-import org.junit.After;
-import org.junit.AfterClass;
 import org.junit.Before;
-import org.junit.BeforeClass;
 import org.junit.Test;
 import static org.junit.Assert.*;
 
@@ -27,27 +24,12 @@ public class TruncatedIDTest {
   FieldExtractor calculator;
   Schema schema;
 
-  public TruncatedIDTest() {
-  }
-
-  @BeforeClass
-  public static void setUpClass() {
-  }
-
-  @AfterClass
-  public static void tearDownClass() {
-  }
-
   @Before
   public void setUp() throws URISyntaxException, IOException {
     schema = new EdmOaiPmhJsonSchema();
     calculator = new FieldExtractor(schema);
     String jsonContent = FileUtils.readFirstLineFromResource("issue-examples/issue41-truncatedID.json");
     cache = new JsonSelector(jsonContent);
-  }
-
-  @After
-  public void tearDown() {
   }
 
   @Test

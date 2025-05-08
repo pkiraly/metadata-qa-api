@@ -12,10 +12,7 @@ import java.util.*;
 
 import net.minidev.json.JSONArray;
 import org.apache.commons.lang3.StringUtils;
-import org.junit.After;
-import org.junit.AfterClass;
 import org.junit.Before;
-import org.junit.BeforeClass;
 import org.junit.Test;
 import static org.junit.Assert.*;
 import static org.junit.Assert.assertEquals;
@@ -30,26 +27,11 @@ public class MarcJsonTest {
   Schema schema = new MarcJsonSchema();
   Map<String, List<Map<String, List<String>>>> fixedValues;
 
-  public MarcJsonTest() {
-  }
-
-  @BeforeClass
-  public static void setUpClass() {
-  }
-
-  @AfterClass
-  public static void tearDownClass() {
-  }
-
   @Before
   public void setUp() throws URISyntaxException, IOException {
     cache = new JsonSelector(FileUtils.readFirstLineFromResource("general/marc.json"));
     initializeFixedValues();
     // "$.datafield[?(@.tag == '016')]"
-  }
-
-  @After
-  public void tearDown() {
   }
 
   @Test

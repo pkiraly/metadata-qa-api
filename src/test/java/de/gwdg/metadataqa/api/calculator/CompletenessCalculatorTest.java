@@ -19,13 +19,10 @@ import java.util.Map;
 
 import org.apache.commons.lang3.BooleanUtils;
 import org.apache.commons.lang3.StringUtils;
-import org.junit.After;
-import org.junit.AfterClass;
 
 import static java.util.stream.Collectors.toList;
 import static org.junit.Assert.*;
 import org.junit.Before;
-import org.junit.BeforeClass;
 import org.junit.Test;
 
 /**
@@ -37,25 +34,10 @@ public class CompletenessCalculatorTest {
   JsonSelector cache;
   CompletenessCalculator calculator;
 
-  public CompletenessCalculatorTest() {
-  }
-
-  @BeforeClass
-  public static void setUpClass() {
-  }
-
-  @AfterClass
-  public static void tearDownClass() {
-  }
-
   @Before
   public void setUp() throws URISyntaxException, IOException {
     calculator = new CompletenessCalculator(new EdmOaiPmhJsonSchema());
     cache = new JsonSelector(FileUtils.readFirstLineFromResource("general/test.json"));
-  }
-
-  @After
-  public void tearDown() {
   }
 
   @Test

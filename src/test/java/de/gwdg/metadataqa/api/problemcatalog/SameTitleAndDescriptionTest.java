@@ -8,10 +8,6 @@ import de.gwdg.metadataqa.api.schema.edm.EdmSchema;
 
 import java.io.IOException;
 import java.net.URISyntaxException;
-import org.junit.After;
-import org.junit.AfterClass;
-import org.junit.Before;
-import org.junit.BeforeClass;
 import org.junit.Test;
 import static org.junit.Assert.*;
 
@@ -20,25 +16,6 @@ import static org.junit.Assert.*;
  * @author Péter Király <peter.kiraly at gwdg.de>
  */
 public class SameTitleAndDescriptionTest {
-
-  public SameTitleAndDescriptionTest() {
-  }
-
-  @BeforeClass
-  public static void setUpClass() {
-  }
-
-  @AfterClass
-  public static void tearDownClass() {
-  }
-
-  @Before
-  public void setUp() {
-  }
-
-  @After
-  public void tearDown() {
-  }
 
   @Test
   public void hello() throws IOException, URISyntaxException {

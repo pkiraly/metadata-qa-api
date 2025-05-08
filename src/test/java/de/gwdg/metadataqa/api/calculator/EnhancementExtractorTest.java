@@ -10,10 +10,7 @@ import de.gwdg.metadataqa.api.util.FileUtils;
 import java.io.IOException;
 import java.net.URISyntaxException;
 import java.util.List;
-import org.junit.After;
-import org.junit.AfterClass;
 import org.junit.Before;
-import org.junit.BeforeClass;
 import org.junit.Test;
 import static org.junit.Assert.*;
 
@@ -25,24 +22,9 @@ public class EnhancementExtractorTest {
 
   Selector cache;
 
-  public EnhancementExtractorTest() {
-  }
-
-  @BeforeClass
-  public static void setUpClass() {
-  }
-
-  @AfterClass
-  public static void tearDownClass() {
-  }
-
   @Before
   public void setUp() throws URISyntaxException, IOException {
     cache = new JsonSelector(FileUtils.readFirstLineFromResource("general/test.json"));
-  }
-
-  @After
-  public void tearDown() {
   }
 
   @Test

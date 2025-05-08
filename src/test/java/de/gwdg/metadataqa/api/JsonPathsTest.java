@@ -29,13 +29,6 @@ public class JsonPathsTest {
 
   Object document;
 
-  public JsonPathsTest() {
-  }
-
-  @Before
-  public void setUp() throws URISyntaxException, IOException {
-  }
-
   @Test
   public void testJsonPathManual() throws URISyntaxException, IOException {
     document = Configuration.defaultConfiguration()
