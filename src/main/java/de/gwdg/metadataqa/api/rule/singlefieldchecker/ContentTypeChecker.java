@@ -55,6 +55,7 @@ public class ContentTypeChecker extends SingleFieldChecker {
                 failureCount++;
             }
           } catch (IOException e) {
+            LOGGER.warning(String.format("%s: %s", e.getClass().getSimpleName(), e.getMessage()));
             allPassed = false;
             if (countInstances())
               failureCount++;
