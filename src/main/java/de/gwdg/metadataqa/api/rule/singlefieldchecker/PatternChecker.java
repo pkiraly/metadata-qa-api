@@ -27,14 +27,17 @@ public class PatternChecker extends SingleFieldChecker {
   }
 
   @Override
-  public void update(Selector cache, FieldCounter<RuleCheckerOutput> results, RuleCheckingOutputType outputType) {
+  public void update(Selector selector, FieldCounter<RuleCheckerOutput> results, RuleCheckingOutputType outputType) {
     if (isDebug())
       LOGGER.info(this.getClass().getSimpleName() + " " + this.id);
 
+    if (this.hasValuePath())
+      LOGGER.info("valuePath: " + this.getValuePath());
     var isNA = true;
     boolean hasFailed = false;
     int passCount = 0;
-    List<XmlFieldInstance> instances = cache.get(field);
+
+    List<XmlFieldInstance> instances = selectInstances(selector); // selector.get(field)
     if (instances != null && !instances.isEmpty()) {
       for (XmlFieldInstance instance : instances) {
         isNA = false;

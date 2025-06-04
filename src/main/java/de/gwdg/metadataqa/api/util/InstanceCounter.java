@@ -10,25 +10,26 @@ public class InstanceCounter {
   boolean isNA = true;
   boolean ignoreNA = false;
   int count = 0;
-  private final Selector cache;
+  private final Selector selector;
   private final DataElement field;
   private boolean allowEmptyInstances = true;
 
-  public InstanceCounter(Selector cache, DataElement field) {
-    this.cache = cache;
+  public InstanceCounter(Selector selector, DataElement field) {
+    this.selector = selector;
     this.field = field;
     count();
   }
 
-  public InstanceCounter(Selector cache, DataElement field, boolean allowEmptyInstances) {
-    this.cache = cache;
+  public InstanceCounter(Selector selector, DataElement field, boolean allowEmptyInstances) {
+    this.selector = selector;
     this.field = field;
     this.allowEmptyInstances = allowEmptyInstances;
     count();
   }
 
   private void count() {
-    List<XmlFieldInstance> instances = cache.get(field);
+    List<XmlFieldInstance> instances = selector.get(field);
+    // System.err.println(instances.size());
     if (instances != null && !instances.isEmpty())
       for (XmlFieldInstance instance : instances)
         if (allowEmptyInstances || instance.hasValue()) {

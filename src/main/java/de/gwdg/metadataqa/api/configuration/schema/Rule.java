@@ -57,6 +57,7 @@ public class Rule implements Serializable {
   private List<String> hasChildren;
   private MQAFPattern mqafPattern;
   private Boolean alwaysCheckDependencies = Boolean.FALSE;
+  private String valuePath;
 
   public String getId() {
     return id;
@@ -612,6 +613,19 @@ public class Rule implements Serializable {
 
   public Rule withMqafPattern(MQAFPattern mqafPattern) {
     this.mqafPattern = mqafPattern;
+    return this;
+  }
+
+  public String getValuePath() {
+    return valuePath;
+  }
+
+  public void setValuePath(String valuePath) {
+    this.valuePath = valuePath;
+  }
+
+  public Rule withValuePath(String valuePath) {
+    this.valuePath = valuePath;
     return this;
   }
 

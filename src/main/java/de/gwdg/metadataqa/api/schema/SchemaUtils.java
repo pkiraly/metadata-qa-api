@@ -198,6 +198,8 @@ public class SchemaUtils {
           // if (ruleChecker instanceof DependencyChecker)
           //   debuggables.addAll(((DependencyChecker) ruleChecker).getDependencies());
         }
+        if (StringUtils.isNotBlank(rule.getValuePath()))
+          ruleChecker.setValuePath(rule.getValuePath());
       }
     }
 

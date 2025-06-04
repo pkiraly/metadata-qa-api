@@ -30,12 +30,13 @@ public class MinCountChecker extends SingleFieldChecker {
   }
 
   @Override
-  public void update(Selector cache, FieldCounter<RuleCheckerOutput> results, RuleCheckingOutputType outputType) {
+  public void update(Selector selector, FieldCounter<RuleCheckerOutput> results, RuleCheckingOutputType outputType) {
     if (isDebug())
       LOGGER.info(this.getClass().getSimpleName() + " " + this.id);
 
+    // System.err.println(selector);
     var allPassed = false;
-    var counter = new InstanceCounter(cache, field, allowEmptyInstances);
+    var counter = new InstanceCounter(selector, field, allowEmptyInstances);
     if (isDebug())
       LOGGER.info(this.getClass().getSimpleName() + " " + this.id + ") number of instances: " + counter.getCount());
     if (counter.getCount() >= minCount)

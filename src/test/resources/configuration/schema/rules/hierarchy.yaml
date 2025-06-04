@@ -1,0 +1,30 @@
+format: xml
+fields:
+  - name: concept
+    path: rdf:Description/dc:subject/dcterms:Agent
+    rules:
+      - id: 1.1
+        and:
+        - minCount: 1
+          allowEmptyInstances: true
+          debug: true
+        - maxCount: 1
+          allowEmptyInstances: true
+          debug: true
+        - hasChildren: ["@rdf:about"]
+          debug: true
+        - valuePath: "@rdf:about"
+          pattern: ^.+$
+          debug: true
+
+namespaces:
+  doc: http://www.lyncode.com/xoai
+  foaf: http://xmlns.com/foaf/0.1/
+  europeana: http://www.europeana.eu/schemas/ese/
+  dcterms: http://purl.org/dc/terms/
+  dc: http://purl.org/dc/elements/1.1/
+  oai: http://www.openarchives.org/OAI/2.0/
+  dcat: http://www.w3.org/ns/dcat#
+  bf: http://id.loc.gov/ontologies/bibframe/#
+  edm: http://www.europeana.eu/schemas/edm/
+  oai_dc: http://www.openarchives.org/OAI/2.0/oai_dc/

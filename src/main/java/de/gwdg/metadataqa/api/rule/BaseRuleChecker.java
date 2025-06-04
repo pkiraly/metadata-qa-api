@@ -2,6 +2,9 @@ package de.gwdg.metadataqa.api.rule;
 
 import de.gwdg.metadataqa.api.configuration.schema.ApplicationScope;
 import de.gwdg.metadataqa.api.counter.FieldCounter;
+import de.gwdg.metadataqa.api.json.DataElement;
+import de.gwdg.metadataqa.api.model.selector.Selector;
+import org.apache.commons.lang3.StringUtils;
 
 import java.util.logging.Logger;
 
@@ -18,6 +21,7 @@ public abstract class BaseRuleChecker implements RuleChecker {
   private Boolean debug = false;
   private Boolean mandatory = false;
   private ApplicationScope scope;
+  private String valuePath;
 
   /**
    * A flag to denote if the RuleChecker should count the number instances and failures
@@ -187,6 +191,21 @@ public abstract class BaseRuleChecker implements RuleChecker {
     return scope != null;
   }
 
+  public String getValuePath() {
+    return valuePath;
+  }
+
+  @Override
+  public void setValuePath(String valuePath) {
+    System.err.println("setValuePath: " + valuePath);
+    this.valuePath = valuePath;
+  }
+
+  @Override
+  public boolean hasValuePath() {
+    return StringUtils.isNotBlank(valuePath);
+  }
+
   public boolean countInstances() {
     return countInstances;
   }
@@ -228,4 +247,5 @@ public abstract class BaseRuleChecker implements RuleChecker {
   protected boolean scopeIsOneOf() {
     return hasScope() && scope.equals(ApplicationScope.oneOf);
   }
+
 }

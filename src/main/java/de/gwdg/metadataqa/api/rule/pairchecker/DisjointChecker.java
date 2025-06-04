@@ -20,15 +20,15 @@ public class DisjointChecker extends PropertyPairChecker {
   }
 
   @Override
-  public void update(Selector cache, FieldCounter<RuleCheckerOutput> results, RuleCheckingOutputType outputType) {
+  public void update(Selector selector, FieldCounter<RuleCheckerOutput> results, RuleCheckingOutputType outputType) {
     if (isDebug())
       LOGGER.info(this.getClass().getSimpleName() + " " + this.id);
 
     var isNA = false;
     boolean hasFailed = false;
     int passCount = 0;
-    List<XmlFieldInstance> instances1 = cache.get(field1.getAbsolutePath().replace("[*]", ""));
-    List<XmlFieldInstance> instances2 = cache.get(field2.getAbsolutePath().replace("[*]", ""));
+    List<XmlFieldInstance> instances1 = selector.get(field1.getAbsolutePath().replace("[*]", ""));
+    List<XmlFieldInstance> instances2 = selector.get(field2.getAbsolutePath().replace("[*]", ""));
     if (instances1 != null && !instances1.isEmpty() && instances2 != null && !instances2.isEmpty()) {
       // TODO: handle multiple values on both sides
       for (XmlFieldInstance instance1 : instances1) {

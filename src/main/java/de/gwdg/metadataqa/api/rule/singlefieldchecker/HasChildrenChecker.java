@@ -32,19 +32,19 @@ public class HasChildrenChecker extends SingleFieldChecker {
   }
 
   @Override
-  public void update(Selector cache, FieldCounter<RuleCheckerOutput> results, RuleCheckingOutputType outputType) {
+  public void update(Selector selector, FieldCounter<RuleCheckerOutput> results, RuleCheckingOutputType outputType) {
     if (isDebug())
       LOGGER.info(this.getClass().getSimpleName() + " " + this.id + " field: " + field.getLabel());
 
     var allPassed = false;
     var isNA = true;
-    if (cache.getClass().equals(XmlSelector.class)) {
-      List<Node> nodes = (List<Node>) cache.getFragment(field.getPath());
+    if (selector.getClass().equals(XmlSelector.class)) {
+      List<Node> nodes = (List<Node>) selector.getFragment(field.getPath());
       if (!nodes.isEmpty()) {
         isNA = false;
         for (Node node : nodes) {
           for (String childPath : children) {
-            List values = cache.get(childPath, childPath, node);
+            List values = selector.get(childPath, childPath, node);
             if (values.isEmpty()) {
               allPassed = false;
               break;

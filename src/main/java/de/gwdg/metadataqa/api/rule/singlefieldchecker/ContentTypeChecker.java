@@ -30,7 +30,7 @@ public class ContentTypeChecker extends SingleFieldChecker {
   }
 
   @Override
-  public void update(Selector cache, FieldCounter<RuleCheckerOutput> results, RuleCheckingOutputType outputType) {
+  public void update(Selector selector, FieldCounter<RuleCheckerOutput> results, RuleCheckingOutputType outputType) {
     if (isDebug())
       LOGGER.info(this.getClass().getSimpleName() + " " + this.id);
 
@@ -38,7 +38,7 @@ public class ContentTypeChecker extends SingleFieldChecker {
     var isNA = true;
     int instanceCount = 0;
     int failureCount = 0;
-    List<XmlFieldInstance> instances = cache.get(field);
+    List<XmlFieldInstance> instances = selector.get(field);
     if (instances != null && !instances.isEmpty()) {
       for (XmlFieldInstance instance : instances) {
         if (instance.hasValue()) {

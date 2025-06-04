@@ -31,20 +31,20 @@ public class NotChecker extends LogicalChecker {
   }
 
   @Override
-  public void update(Selector cache, FieldCounter<RuleCheckerOutput> results, RuleCheckingOutputType outputType) {
+  public void update(Selector selector, FieldCounter<RuleCheckerOutput> results, RuleCheckingOutputType outputType) {
     if (isDebug())
       LOGGER.info(this.getClass().getSimpleName() + " " + this.id);
 
     var allPassed = true;
     var isNA = false;
-    List<XmlFieldInstance> instances = cache.get(field);
+    List<XmlFieldInstance> instances = selector.get(field);
     if (instances != null && !instances.isEmpty()) {
       FieldCounter<RuleCheckerOutput> localResults = new FieldCounter<>();
       for (RuleChecker checker : checkers) {
         if (checker instanceof DependencyChecker)
-          ((DependencyChecker)checker).update(cache, localResults, outputType, results);
+          ((DependencyChecker)checker).update(selector, localResults, outputType, results);
         else
-          checker.update(cache, localResults, outputType);
+          checker.update(selector, localResults, outputType);
         String key = outputType.equals(RuleCheckingOutputType.BOTH) ? checker.getIdOrHeader(RuleCheckingOutputType.SCORE) : checker.getIdOrHeader();
         if (localResults.get(key).getStatus().equals(RuleCheckingOutputStatus.PASSED)) {
           allPassed = false;

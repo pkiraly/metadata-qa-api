@@ -21,15 +21,15 @@ public class EqualityChecker extends PropertyPairChecker {
   }
 
   @Override
-  public void update(Selector cache, FieldCounter<RuleCheckerOutput> results, RuleCheckingOutputType outputType) {
+  public void update(Selector selector, FieldCounter<RuleCheckerOutput> results, RuleCheckingOutputType outputType) {
     if (isDebug())
       LOGGER.info(this.getClass().getSimpleName() + " " + this.id);
 
     var allPassed = true;
     var isNA = true;
     int matches = 0;
-    List<XmlFieldInstance> instances1 = cache.get(field1.getAbsolutePath().replace("[*]", ""));
-    List<XmlFieldInstance> instances2 = cache.get(field2.getAbsolutePath().replace("[*]", ""));
+    List<XmlFieldInstance> instances1 = selector.get(field1.getAbsolutePath().replace("[*]", ""));
+    List<XmlFieldInstance> instances2 = selector.get(field2.getAbsolutePath().replace("[*]", ""));
     if (instances1 != null && !instances1.isEmpty() && instances2 != null && !instances2.isEmpty()) {
       for (XmlFieldInstance instance1 : instances1) {
         isNA = false;

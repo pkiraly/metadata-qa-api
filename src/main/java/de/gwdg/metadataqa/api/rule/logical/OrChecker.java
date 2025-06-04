@@ -13,6 +13,7 @@ import de.gwdg.metadataqa.api.rule.singlefieldchecker.MinCountChecker;
 
 import java.util.List;
 import java.util.Map;
+import java.util.HashMap;
 import java.util.logging.Logger;
 
 public class OrChecker extends LogicalChecker {
@@ -36,22 +37,22 @@ public class OrChecker extends LogicalChecker {
   }
 
   @Override
-  public void update(Selector cache, FieldCounter<RuleCheckerOutput> results, RuleCheckingOutputType outputType) {
+  public void update(Selector selector, FieldCounter<RuleCheckerOutput> results, RuleCheckingOutputType outputType) {
     if (isDebug())
-      LOGGER.info(this.getClass().getSimpleName() + " " + this.id);
+      LOGGER.info(this.getClass().getSimpleName() + " " + this.id + ", alwaysCheckDependencies: " + alwaysCheckDependencies);
 
     // if NA and dependency checker FAILED -> FAILED
     var allPassed = false;
     var isNA = false;
     RuleCheckerOutput output = null;
-    List<XmlFieldInstance> instances = cache.get(field);
+    List<XmlFieldInstance> instances = selector.get(field);
     if (instances != null && !instances.isEmpty()) {
       FieldCounter<RuleCheckerOutput> localResults = new FieldCounter<>();
       for (RuleChecker checker : checkers) {
         if (checker instanceof DependencyChecker) {
-          ((DependencyChecker) checker).update(cache, localResults, outputType, results);
+          ((DependencyChecker) checker).update(selector, localResults, outputType, results);
         } else {
-          checker.update(cache, localResults, outputType);
+          checker.update(selector, localResults, outputType);
         }
         String key = outputType.equals(RuleCheckingOutputType.BOTH)
                    ? checker.getIdOrHeader(RuleCheckingOutputType.SCORE)
@@ -94,5 +95,19 @@ public class OrChecker extends LogicalChecker {
         : RuleCheckingOutputStatus.create(isNA, allPassed, isMandatory());
       LOGGER.info(String.format("%s %s) isNA: %s, allPassed: %s, result: %s", this.getClass().getSimpleName(), this.id, isNA, allPassed, status));
     }
+  }
+
+  public Map<RuleCheckingOutputType, Object> getResult(RuleCheckingOutputType outputType,
+                                                       FieldCounter<RuleCheckerOutput> globalResults) {
+    Map<RuleCheckingOutputType, Object> result = new HashMap();
+    if (outputType.equals(RuleCheckingOutputType.STATUS)) {
+      result.put(RuleCheckingOutputType.STATUS, globalResults.get(getIdOrHeader()));
+    } else if (outputType.equals(RuleCheckingOutputType.SCORE)) {
+      result.put(RuleCheckingOutputType.SCORE, globalResults.get(getIdOrHeader()));
+    } else if (outputType.equals(RuleCheckingOutputType.BOTH)) {
+      result.put(RuleCheckingOutputType.STATUS, globalResults.get(getIdOrHeader() + ":status"));
+      result.put(RuleCheckingOutputType.SCORE, globalResults.get(getIdOrHeader() + ":score"));
+    }
+    return result;
   }
 }

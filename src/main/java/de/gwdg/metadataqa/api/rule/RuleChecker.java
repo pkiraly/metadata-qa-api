@@ -17,11 +17,11 @@ public interface RuleChecker extends Serializable {
    * A push method which is called by the subject, and which transport
    * information to the Observer objects.
    *
-   * @param cache The JSON cache object
+   * @param selector The JSON selector object
    * @param results The result collector
    * @param outputType The type of output to put into the result collector
    */
-  void update(Selector cache, FieldCounter<RuleCheckerOutput> results, RuleCheckingOutputType outputType);
+  void update(Selector selector, FieldCounter<RuleCheckerOutput> results, RuleCheckingOutputType outputType);
 
   /**
    * Get a header, which is the name of metric, the observer measures.
@@ -71,4 +71,8 @@ public interface RuleChecker extends Serializable {
   ApplicationScope getScope();
 
   boolean hasScope();
+
+  void setValuePath(String valuePath);
+
+  boolean hasValuePath();
 }

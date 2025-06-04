@@ -40,8 +40,8 @@ public class DependencyChecker extends SingleFieldChecker {
   }
 
   @Override
-  public void update(Selector cache, FieldCounter<RuleCheckerOutput> results, RuleCheckingOutputType outputType) {
-    update(cache, results, outputType, null);
+  public void update(Selector selector, FieldCounter<RuleCheckerOutput> results, RuleCheckingOutputType outputType) {
+    update(selector, results, outputType, null);
   }
 
   public void update(Selector cache,
