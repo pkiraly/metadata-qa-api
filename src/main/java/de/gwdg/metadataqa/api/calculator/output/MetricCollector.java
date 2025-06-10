@@ -90,11 +90,12 @@ public class MetricCollector implements OutputCollector {
     for (Map.Entry<String, List<MetricResult>> entry : results.entrySet()) {
       Map<String, Object> calcResult = new LinkedHashMap<>();
 
-      for (MetricResult metricResult : entry.getValue()) {
-        calcResult.put(metricResult.getName(), metricResult.getResultMap());
+      if (entry.getValue() != null) {
+        for (MetricResult metricResult : entry.getValue()) {
+          calcResult.put(metricResult.getName(), metricResult.getResultMap());
+        }
       }
       result.put(entry.getKey(), calcResult);
-
     }
 
     try {

@@ -5,11 +5,14 @@ import de.gwdg.metadataqa.api.interfaces.Calculator;
 import de.gwdg.metadataqa.api.interfaces.MetricResult;
 import de.gwdg.metadataqa.api.model.selector.Selector;
 import de.gwdg.metadataqa.api.problemcatalog.FieldCounterBasedResult;
+import de.gwdg.metadataqa.api.rule.logical.LogicalChecker;
 import de.gwdg.metadataqa.api.schema.Schema;
+import org.apache.commons.lang3.StringUtils;
 
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Logger;
 
 public class RuleCatalog implements Calculator, Serializable {
 
@@ -42,6 +45,7 @@ public class RuleCatalog implements Calculator, Serializable {
     }
     if (!hiddenIdsCollected)
       hiddenIdsCollected = true;
+
     if (outputType != RuleCheckingOutputType.STATUS)
       fieldCounter.put(CALCULATOR_NAME + ":score", new RuleCheckerOutput(RuleCheckingOutputStatus.NA, totalScore).setOutputType(outputType));
 
@@ -85,6 +89,15 @@ public class RuleCatalog implements Calculator, Serializable {
   }
 
   private void collectHiddenIds(List<String> hiddenIds, RuleChecker ruleChecker) {
+    if (ruleChecker.isHidden())
+      addHidden(hiddenIds, ruleChecker);
+
+    if (ruleChecker instanceof LogicalChecker)
+      for (RuleChecker childChecker : ((LogicalChecker) ruleChecker).getCheckers())
+        collectHiddenIds(hiddenIds, childChecker);
+  }
+
+  private void addHidden(List<String> hiddenIds, RuleChecker ruleChecker) {
     if (ruleChecker.isHidden()) {
       if (outputType.equals(RuleCheckingOutputType.BOTH)) {
         hiddenIds.add(ruleChecker.getIdOrHeader(RuleCheckingOutputType.SCORE));
