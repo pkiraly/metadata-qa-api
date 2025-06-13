@@ -37,6 +37,7 @@ digital collections.
         * [`not [<rule1>, ..., <ruleN>]`](#not-rule1--rulen)
       - [Other constraints](#other-constraints)
         * [`contentType [type1, ..., typeN]`](#contenttype-type1--typen)
+        * [`validLink <boolean>`](#validLink-boolean)
         * [`unique <boolean>`](#unique-boolean)
         * [`dependencies [id1, id2, ..., idN]`](#dependencies-id1-id2--idn)
         * [`dimension [criteria1, criteria2, ..., criteriaN]`](#dimension-criteria1-criteria2--criterian)
@@ -835,6 +836,38 @@ image/tiff-fx, image/gif, or image/svg+xml.
   path: oai:record/dc:identifier[@type='binary']
   rules:
     - contentType: [image/jpeg, image/png, image/tiff, image/tiff-fx, image/gif, image/svg+xml]
+```
+
+##### `validLink <boolean>`
+
+(since v0.9.8)
+
+This rule interprets the value as a URL, parse then checks if it returns a valid HTTP response.
+
+Example: The HTTP content type should be image/jpeg, image/png, image/tiff,
+image/tiff-fx, image/gif, or image/svg+xml.
+
+```yaml
+- name: thumbnail
+  path: oai:record/dc:identifier[@type='binary']
+  rules:
+    - validLink: true
+```
+
+You can also add a timout parameter in millisecond (if you not set the default value is 
+5000 ms i.e., 5 seconds). If the request to not retrieve results within this time limit, it
+breaks the connection and the check will return failure. Sometimes the response time is too
+long, and you would like to check several thousands of URLs, which otherwise would take a very
+long time.
+
+Set timeout for 1 second:
+
+```yaml
+- name: thumbnail
+  path: oai:record/dc:identifier[@type='binary']
+  rules:
+    - validLink: true
+      timout: 1000
 ```
 
 ##### `unique <boolean>`

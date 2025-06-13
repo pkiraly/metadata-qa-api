@@ -3,6 +3,7 @@ package de.gwdg.metadataqa.api.configuration.schema;
 import com.fasterxml.jackson.annotation.JsonGetter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
+import org.apache.commons.lang3.StringUtils;
 
 import java.io.Serializable;
 import java.lang.reflect.Field;
@@ -58,6 +59,8 @@ public class Rule implements Serializable {
   private MQAFPattern mqafPattern;
   private Boolean alwaysCheckDependencies = Boolean.FALSE;
   private String valuePath;
+  private int timeout;
+  private Boolean validLink;
 
   public String getId() {
     return id;
@@ -629,6 +632,19 @@ public class Rule implements Serializable {
     return this;
   }
 
+  public Integer getTimeout() {
+    return timeout;
+  }
+
+  public void setTimeout(int timeout) {
+    this.timeout = timeout;
+  }
+
+  public Rule withTimeout(int timeout) {
+    this.timeout = timeout;
+    return this;
+  }
+
   @JsonGetter("alwaysCheckDependencies")
   public Boolean getAlwaysCheckDependencies() {
     return alwaysCheckDependencies;
@@ -640,6 +656,19 @@ public class Rule implements Serializable {
 
   public Rule withAlwaysCheckDependencies(Boolean alwaysCheckDependencies) {
     this.alwaysCheckDependencies = alwaysCheckDependencies;
+    return this;
+  }
+
+  public Boolean getValidLink() {
+    return validLink;
+  }
+
+  public void setValidLink(Boolean validLink) {
+    this.validLink = validLink;
+  }
+
+  public Rule withValidLink(Boolean validLink) {
+    this.validLink = validLink;
     return this;
   }
 

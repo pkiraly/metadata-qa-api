@@ -1,27 +1,24 @@
 package de.gwdg.metadataqa.api.util;
 
-import org.apache.commons.lang3.StringUtils;
-
 import java.io.IOException;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.logging.Logger;
 
-public class ContentTypeExtractor {
-  private static final Logger LOGGER = Logger.getLogger(ContentTypeExtractor.class.getCanonicalName());
+public class LinkValidator {
+  private static final Logger LOGGER = Logger.getLogger(LinkValidator.class.getCanonicalName());
   public static final int DEFAULT_TIMEOUT = 5000;
   private int timeout;
 
-  public ContentTypeExtractor() {
-    this.timeout = DEFAULT_TIMEOUT;
+  public LinkValidator() {
+    this(DEFAULT_TIMEOUT);
   }
 
-  public ContentTypeExtractor(int timeout) {
+  public LinkValidator(int timeout) {
     this.timeout = timeout;
   }
 
-  public String getContentType(String url) throws IOException {
-    String contentType = null;
+  public boolean isValid(String url) throws IOException {
     URL urlObj = new URL(url);
     HttpURLConnection urlConnection = (HttpURLConnection) urlObj.openConnection();
 
@@ -30,16 +27,14 @@ public class ContentTypeExtractor {
     urlConnection.connect();
     int responseCode = urlConnection.getResponseCode();
     if (responseCode == 200) {
-      String rawContentType = urlConnection.getHeaderField("Content-Type");
-      if (rawContentType != null && StringUtils.isNotBlank(rawContentType))
-        contentType = rawContentType.replaceAll("; ?charset.*$", "");
+      return true;
     } else if (responseCode == 301 || responseCode == 302 || responseCode == 303) {
       String location = urlConnection.getHeaderField("Location");
-      return getContentType(location);
+      return isValid(location);
     } else {
       LOGGER.warning(String.format("URL %s returns unhandled status code: %d.\n", url, responseCode));
     }
-    return contentType;
+    return false;
   }
 
 }

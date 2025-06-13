@@ -7,8 +7,8 @@ import de.gwdg.metadataqa.api.calculator.CalculatorFacade;
 import de.gwdg.metadataqa.api.configuration.ConfigurationReader;
 import de.gwdg.metadataqa.api.configuration.MeasurementConfiguration;
 import de.gwdg.metadataqa.api.counter.FieldCounter;
-import de.gwdg.metadataqa.api.model.selector.SelectorFactory;
 import de.gwdg.metadataqa.api.model.selector.CsvSelector;
+import de.gwdg.metadataqa.api.model.selector.SelectorFactory;
 import de.gwdg.metadataqa.api.rule.CheckerTestBase;
 import de.gwdg.metadataqa.api.rule.RuleChecker;
 import de.gwdg.metadataqa.api.rule.RuleCheckerOutput;
@@ -29,11 +29,11 @@ import java.util.List;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 
-public class ContentTypeCheckerTest extends CheckerTestBase {
+public class LinkValidityCheckerTest extends CheckerTestBase {
 
   @Test
   public void prefix() {
-    assertEquals("contentType", ContentTypeChecker.PREFIX);
+    assertEquals("validLink", LinkValidityChecker.PREFIX);
   }
 
   @Test
@@ -42,9 +42,9 @@ public class ContentTypeCheckerTest extends CheckerTestBase {
       "\"https://iiif.deutsche-digitale-bibliothek.de/image/2/d3/a3/d3a3a84c-1fb5-4390-9bbf-e14cd8b746f8/full/full/0/default.jpg\"");
     cache.setCsvReader(new CsvReader().setHeader( ((CsvAwareSchema) schema).getHeader() ));
 
-    ContentTypeChecker checker = new ContentTypeChecker(
+    LinkValidityChecker checker = new LinkValidityChecker(
       schema.getPathByLabel("name"),
-      Arrays.asList("image/jpeg", "image/png", "image/tiff", "image/tiff-fx", "image/gif", "image/svg+xml", "application/pdf")
+      true
     );
     assertFalse(checker.countInstances());
 
@@ -52,11 +52,15 @@ public class ContentTypeCheckerTest extends CheckerTestBase {
     checker.update(cache, fieldCounter, RuleCheckingOutputType.BOTH);
 
     assertEquals(2, fieldCounter.size());
-    assertEquals("name:contentType", checker.getHeaderWithoutId());
-    Assert.assertEquals(RuleCheckingOutputStatus.PASSED, fieldCounter.get(checker.getHeader(RuleCheckingOutputType.STATUS)).getStatus());
+    assertEquals("name:validLink", checker.getHeaderWithoutId());
+    Assert.assertEquals(
+      RuleCheckingOutputStatus.PASSED,
+      fieldCounter.get(checker.getHeader(RuleCheckingOutputType.STATUS)).getStatus());
     Assert.assertNull(fieldCounter.get(checker.getHeader(RuleCheckingOutputType.SCORE)).getScore());
-    Assert.assertEquals(0, (int) fieldCounter.get(checker.getHeader(RuleCheckingOutputType.SCORE)).getInstanceCount());
-    Assert.assertEquals(0, (int) fieldCounter.get(checker.getHeader(RuleCheckingOutputType.SCORE)).getFailureCount());
+    Assert.assertEquals(0,
+      (int) fieldCounter.get(checker.getHeader(RuleCheckingOutputType.SCORE)).getInstanceCount());
+    Assert.assertEquals(0,
+      (int) fieldCounter.get(checker.getHeader(RuleCheckingOutputType.SCORE)).getFailureCount());
   }
 
   @Test
@@ -65,9 +69,9 @@ public class ContentTypeCheckerTest extends CheckerTestBase {
       "\"https://iiif.deutsche-digitale-bibliothek.de/image/2/d3/a3/d3a3a84c-1fb5-4390-9bbf-e14cd8b746f8/full/full/0/default.jpg\"");
     cache.setCsvReader(new CsvReader().setHeader( ((CsvAwareSchema) schema).getHeader() ));
 
-    ContentTypeChecker checker = new ContentTypeChecker(
+    LinkValidityChecker checker = new LinkValidityChecker(
       schema.getPathByLabel("name"),
-      Arrays.asList("image/jpeg", "image/png", "image/tiff", "image/tiff-fx", "image/gif", "image/svg+xml", "application/pdf")
+      true
     );
     checker.setCountInstances(true);
 
@@ -75,7 +79,7 @@ public class ContentTypeCheckerTest extends CheckerTestBase {
     checker.update(cache, fieldCounter, RuleCheckingOutputType.BOTH);
 
     assertEquals(2, fieldCounter.size());
-    assertEquals("name:contentType", checker.getHeaderWithoutId());
+    assertEquals("name:validLink", checker.getHeaderWithoutId());
     Assert.assertEquals(RuleCheckingOutputStatus.PASSED, fieldCounter.get(checker.getHeader(RuleCheckingOutputType.STATUS)).getStatus());
     Assert.assertNull(fieldCounter.get(checker.getHeader(RuleCheckingOutputType.SCORE)).getScore());
     Assert.assertEquals(1, (int) fieldCounter.get(checker.getHeader(RuleCheckingOutputType.SCORE)).getInstanceCount());
@@ -84,17 +88,17 @@ public class ContentTypeCheckerTest extends CheckerTestBase {
 
   @Test
   public void failure() {
-    cache = (CsvSelector) SelectorFactory.getInstance(schema.getFormat(), "http://creativecommons.org/licenses/by-nc-sa/4.0/");
+    cache = (CsvSelector) SelectorFactory.getInstance(schema.getFormat(),
+      "http://creativecommons.org/licenses/by-nc-sa/4.0/");
     cache.setCsvReader(new CsvReader().setHeader( ((CsvAwareSchema) schema).getHeader() ));
 
-    ContentTypeChecker checker = new ContentTypeChecker(schema.getPathByLabel("name"),
-      Arrays.asList("c", "d"));
+    LinkValidityChecker checker = new LinkValidityChecker(schema.getPathByLabel("name"), false);
 
     FieldCounter<RuleCheckerOutput> fieldCounter = new FieldCounter<>();
     checker.update(cache, fieldCounter, RuleCheckingOutputType.BOTH);
 
     assertEquals(2, fieldCounter.size());
-    assertEquals("name:contentType", checker.getHeaderWithoutId());
+    assertEquals("name:validLink", checker.getHeaderWithoutId());
     assertEquals(RuleCheckingOutputStatus.FAILED, fieldCounter.get(checker.getHeader(RuleCheckingOutputType.STATUS)).getStatus());
   }
 

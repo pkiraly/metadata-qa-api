@@ -7,28 +7,28 @@ import de.gwdg.metadataqa.api.model.selector.Selector;
 import de.gwdg.metadataqa.api.rule.RuleCheckerOutput;
 import de.gwdg.metadataqa.api.rule.RuleCheckingOutputStatus;
 import de.gwdg.metadataqa.api.rule.RuleCheckingOutputType;
-import de.gwdg.metadataqa.api.util.ContentTypeExtractor;
+import de.gwdg.metadataqa.api.util.LinkValidator;
 
 import java.io.IOException;
 import java.util.List;
 import java.util.logging.Logger;
 
-public class ContentTypeChecker extends SingleFieldChecker {
+public class LinkValidityChecker extends SingleFieldChecker {
 
-  private static final Logger LOGGER = Logger.getLogger(ContentTypeChecker.class.getCanonicalName());
+  private static final Logger LOGGER = Logger.getLogger(LinkValidityChecker.class.getCanonicalName());
 
-  public static final String PREFIX = "contentType";
-  protected List<String> expectedContentTypes;
-  private ContentTypeExtractor contentTypeExtractor;
+  public static final String PREFIX = "validLink";
+  protected LinkValidator linkValidator;
+  protected Boolean expectedValue;
 
-  public ContentTypeChecker(DataElement field, List<String> expectedContentTypes) {
-    this(field, field.getLabel(), expectedContentTypes, ContentTypeExtractor.DEFAULT_TIMEOUT);
+  public LinkValidityChecker(DataElement field, Boolean expectedValue) {
+    this(field, field.getLabel(), expectedValue, LinkValidator.DEFAULT_TIMEOUT);
   }
 
-  public ContentTypeChecker(DataElement field, String header, List<String> expectedContentTypes, int timeout) {
+  public LinkValidityChecker(DataElement field, String header, Boolean expectedValue, int timeout) {
     super(field, header + ":" + PREFIX);
-    this.expectedContentTypes = expectedContentTypes;
-    contentTypeExtractor = new ContentTypeExtractor(timeout);
+    this.expectedValue = expectedValue;
+    linkValidator = new LinkValidator(timeout);
   }
 
   @Override
@@ -48,10 +48,10 @@ public class ContentTypeChecker extends SingleFieldChecker {
             instanceCount++;
           isNA = false;
           try {
-            String contentType = contentTypeExtractor.getContentType(instance.getValue());
+            boolean isValid = linkValidator.isValid(instance.getValue());
             if (isDebug())
-              LOGGER.info(String.format("value: '%s' -> '%s'", instance.getValue(), contentType));
-            if (contentType == null || !expectedContentTypes.contains(contentType)) {
+              LOGGER.info(String.format("value: '%s' -> '%s'", instance.getValue(), isValid));
+            if (isValid != expectedValue) {
               allPassed = false;
               if (countInstances())
                 failureCount++;

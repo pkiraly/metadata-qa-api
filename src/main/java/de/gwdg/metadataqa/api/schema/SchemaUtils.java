@@ -16,6 +16,7 @@ import de.gwdg.metadataqa.api.rule.singlefieldchecker.HasChildrenChecker;
 import de.gwdg.metadataqa.api.rule.singlefieldchecker.HasValueChecker;
 import de.gwdg.metadataqa.api.rule.singlefieldchecker.ImageDimensionChecker;
 import de.gwdg.metadataqa.api.rule.singlefieldchecker.LanguageTagChecker;
+import de.gwdg.metadataqa.api.rule.singlefieldchecker.LinkValidityChecker;
 import de.gwdg.metadataqa.api.rule.singlefieldchecker.MQAFPatternChecker;
 import de.gwdg.metadataqa.api.rule.singlefieldchecker.MaxCountChecker;
 import de.gwdg.metadataqa.api.rule.singlefieldchecker.MaxLengthChecker;
@@ -126,8 +127,19 @@ public class SchemaUtils {
     if (rule.getMaxExclusive() != null)
       ruleCheckers.add(new NumericValueChecker(dataElement, rule.getMinInclusive(), MAX_EXCLUSIVE));
 
-    if (rule.getContentType() != null && !rule.getContentType().isEmpty())
-      ruleCheckers.add(new ContentTypeChecker(dataElement, rule.getContentType()));
+    if (rule.getContentType() != null && !rule.getContentType().isEmpty()) {
+      ContentTypeChecker contentTypeChecker = rule.getTimeout() == null
+        ? new ContentTypeChecker(dataElement, rule.getContentType())
+        : new ContentTypeChecker(dataElement, dataElement.getLabel(), rule.getContentType(), rule.getTimeout());
+      ruleCheckers.add(contentTypeChecker);
+    }
+
+    if (rule.getValidLink() != null) {
+      LinkValidityChecker checker = rule.getTimeout() == null
+        ? new LinkValidityChecker(dataElement, rule.getValidLink())
+        : new LinkValidityChecker(dataElement, dataElement.getLabel(), rule.getValidLink(), rule.getTimeout());
+      ruleCheckers.add(checker);
+    }
 
     if (rule.getDimension() != null)
       ruleCheckers.add(new ImageDimensionChecker(dataElement, rule.getDimension()));
