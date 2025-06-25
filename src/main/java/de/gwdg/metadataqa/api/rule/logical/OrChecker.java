@@ -74,10 +74,15 @@ public class OrChecker extends LogicalChecker {
           DependencyChecker dependencyChecker = (DependencyChecker) checker;
           Map<String, Boolean> result = dependencyChecker.getResult(outputType, results);
           boolean dependenciesPassed = result.get("allPassed");
-          if (dependenciesPassed)
-            output = new RuleCheckerOutput(this, RuleCheckingOutputStatus.PASSED);
-          else
-            output = new RuleCheckerOutput(this, RuleCheckingOutputStatus.FAILED);
+          isNA = result.get("isNA");
+          if (isNA) {
+            output = new RuleCheckerOutput(this, RuleCheckingOutputStatus.NA);
+          } else {
+            if (dependenciesPassed)
+              output = new RuleCheckerOutput(this, RuleCheckingOutputStatus.PASSED);
+            else
+              output = new RuleCheckerOutput(this, RuleCheckingOutputStatus.FAILED);
+          }
         }
 
         if (!allPassed)
@@ -93,7 +98,8 @@ public class OrChecker extends LogicalChecker {
       RuleCheckingOutputStatus status = output != null
         ? output.getStatus()
         : RuleCheckingOutputStatus.create(isNA, allPassed, isMandatory());
-      LOGGER.info(String.format("%s %s) isNA: %s, allPassed: %s, result: %s", this.getClass().getSimpleName(), this.id, isNA, allPassed, status));
+      LOGGER.info(String.format("%s %s) isNA: %s, allPassed: %s, result: %s",
+        this.getClass().getSimpleName(), this.id, isNA, allPassed, status));
     }
   }
 
