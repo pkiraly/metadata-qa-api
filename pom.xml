@@ -5,7 +5,7 @@
   <groupId>de.gwdg.metadataqa</groupId>
   <artifactId>metadata-qa-api</artifactId>
   <packaging>jar</packaging>
-  <version>0.9.8-SNAPSHOT</version>
+  <version>0.9.8</version>
   <name>Metadata Quality Assurance Framework API</name>
   <description>
     A metadata quality assurance framework. It checks some metrics of 
@@ -278,6 +278,9 @@
           </execution>
         </executions>
       </plugin>
+
+      <!-- deploy to osshr -->
+      <!--
       <plugin>
         <groupId>org.sonatype.plugins</groupId>
         <artifactId>nexus-staging-maven-plugin</artifactId>
@@ -288,6 +291,18 @@
           <nexusUrl>https://oss.sonatype.org/</nexusUrl>
           <autoReleaseAfterClose>false</autoReleaseAfterClose>
           <skipStaging>${skipStaging}</skipStaging>
+        </configuration>
+      </plugin>
+      -->
+
+      <!-- deploy to sonatype central -->
+      <plugin>
+        <groupId>org.sonatype.central</groupId>
+        <artifactId>central-publishing-maven-plugin</artifactId>
+        <version>0.8.0</version>
+        <extensions>true</extensions>
+        <configuration>
+          <publishingServerId>central</publishingServerId>
         </configuration>
       </plugin>
 

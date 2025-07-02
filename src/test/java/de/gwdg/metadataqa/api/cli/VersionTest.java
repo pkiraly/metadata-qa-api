@@ -6,7 +6,7 @@ import static org.junit.Assert.assertEquals;
 
 public class VersionTest {
 
-  private static final String EXPECTED_VERSION = "0.9.8-SNAPSHOT";
+  private static final String EXPECTED_VERSION = "0.9.8";
 
   @Test
   public void getVersion() {

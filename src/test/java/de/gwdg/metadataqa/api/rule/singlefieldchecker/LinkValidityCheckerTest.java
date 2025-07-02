@@ -39,7 +39,7 @@ public class LinkValidityCheckerTest extends CheckerTestBase {
   @Test
   public void success() {
     cache = (CsvSelector) SelectorFactory.getInstance(schema.getFormat(),
-      "\"https://iiif.deutsche-digitale-bibliothek.de/image/2/d3/a3/d3a3a84c-1fb5-4390-9bbf-e14cd8b746f8/full/full/0/default.jpg\"");
+      "\"https://live.staticflickr.com/65535/51913751065_71aa3cf8e6_b.jpg\"");
     cache.setCsvReader(new CsvReader().setHeader( ((CsvAwareSchema) schema).getHeader() ));
 
     LinkValidityChecker checker = new LinkValidityChecker(
@@ -66,7 +66,7 @@ public class LinkValidityCheckerTest extends CheckerTestBase {
   @Test
   public void success_withCountInstance() {
     cache = (CsvSelector) SelectorFactory.getInstance(schema.getFormat(),
-      "\"https://iiif.deutsche-digitale-bibliothek.de/image/2/d3/a3/d3a3a84c-1fb5-4390-9bbf-e14cd8b746f8/full/full/0/default.jpg\"");
+      "\"https://live.staticflickr.com/65535/51913751065_71aa3cf8e6_b.jpg\"");
     cache.setCsvReader(new CsvReader().setHeader( ((CsvAwareSchema) schema).getHeader() ));
 
     LinkValidityChecker checker = new LinkValidityChecker(
