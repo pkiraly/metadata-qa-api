@@ -80,9 +80,9 @@ public class DependencyChecker extends SingleFieldChecker {
     boolean allPassed = true;
     boolean isNA = true;
     for (String ruleId : dependencies) {
-      String keyEnd = outputType.equals(RuleCheckingOutputType.BOTH) ? ruleId + ":status" : ruleId;
-      if (globalResults.has(keyEnd)) {
-        var status = globalResults.get(keyEnd).getStatus();
+      String outputKey = outputType.equals(RuleCheckingOutputType.BOTH) ? ruleId + ":status" : ruleId;
+      if (globalResults.has(outputKey)) {
+        var status = globalResults.get(outputKey).getStatus();
 
         if (!status.equals(RuleCheckingOutputStatus.PASSED))
           allPassed = false;
