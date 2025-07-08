@@ -21,6 +21,10 @@ public class LinkValidityChecker extends SingleFieldChecker {
   protected LinkValidator linkValidator;
   protected Boolean expectedValue;
 
+  /**
+   * @param field The data element to check
+   * @param expectedValue Is the link expected to be valid?
+   */
   public LinkValidityChecker(DataElement field, Boolean expectedValue) {
     this(field, field.getLabel(), expectedValue, LinkValidator.DEFAULT_TIMEOUT);
   }

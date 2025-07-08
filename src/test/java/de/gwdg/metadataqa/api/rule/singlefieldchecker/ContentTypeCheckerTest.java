@@ -53,7 +53,7 @@ public class ContentTypeCheckerTest extends CheckerTestBase {
 
     assertEquals(2, fieldCounter.size());
     assertEquals("name:contentType", checker.getHeaderWithoutId());
-    Assert.assertEquals(RuleCheckingOutputStatus.PASSED, fieldCounter.get(checker.getHeader(RuleCheckingOutputType.STATUS)).getStatus());
+    Assert.assertEquals(RuleCheckingOutputStatus.FAILED, fieldCounter.get(checker.getHeader(RuleCheckingOutputType.STATUS)).getStatus());
     Assert.assertNull(fieldCounter.get(checker.getHeader(RuleCheckingOutputType.SCORE)).getScore());
     Assert.assertEquals(0, (int) fieldCounter.get(checker.getHeader(RuleCheckingOutputType.SCORE)).getInstanceCount());
     Assert.assertEquals(0, (int) fieldCounter.get(checker.getHeader(RuleCheckingOutputType.SCORE)).getFailureCount());
@@ -76,15 +76,18 @@ public class ContentTypeCheckerTest extends CheckerTestBase {
 
     assertEquals(2, fieldCounter.size());
     assertEquals("name:contentType", checker.getHeaderWithoutId());
-    Assert.assertEquals(RuleCheckingOutputStatus.PASSED, fieldCounter.get(checker.getHeader(RuleCheckingOutputType.STATUS)).getStatus());
+    Assert.assertEquals(RuleCheckingOutputStatus.FAILED, fieldCounter.get(checker.getHeader(RuleCheckingOutputType.STATUS)).getStatus());
     Assert.assertNull(fieldCounter.get(checker.getHeader(RuleCheckingOutputType.SCORE)).getScore());
     Assert.assertEquals(1, (int) fieldCounter.get(checker.getHeader(RuleCheckingOutputType.SCORE)).getInstanceCount());
-    Assert.assertEquals(0, (int) fieldCounter.get(checker.getHeader(RuleCheckingOutputType.SCORE)).getFailureCount());
+    Assert.assertEquals(1, (int) fieldCounter.get(checker.getHeader(RuleCheckingOutputType.SCORE)).getFailureCount());
   }
 
   @Test
   public void failure() {
-    cache = (CsvSelector) SelectorFactory.getInstance(schema.getFormat(), "http://creativecommons.org/licenses/by-nc-sa/4.0/");
+    cache = (CsvSelector) SelectorFactory.getInstance(schema.getFormat(),
+      // "http://creativecommons.org/licenses/by-nc-sa/4.0/"
+      "https://github.com/pkiraly/metadata-qa-api"
+    );
     cache.setCsvReader(new CsvReader().setHeader( ((CsvAwareSchema) schema).getHeader() ));
 
     ContentTypeChecker checker = new ContentTypeChecker(schema.getPathByLabel("name"),
@@ -162,7 +165,9 @@ public class ContentTypeCheckerTest extends CheckerTestBase {
   @Test
   public void t301() {
     cache = (CsvSelector) SelectorFactory.getInstance(schema.getFormat(),
-      "http://creativecommons.org/licenses/by-nc-sa/4.0/");
+      // "http://creativecommons.org/licenses/by-nc-sa/4.0/"
+      "https://github.com/pkiraly/metadata-qa-api"
+    );
     cache.setCsvReader(new CsvReader().setHeader( ((CsvAwareSchema) schema).getHeader() ));
 
     ContentTypeChecker checker = new ContentTypeChecker(schema.getPathByLabel("name"),

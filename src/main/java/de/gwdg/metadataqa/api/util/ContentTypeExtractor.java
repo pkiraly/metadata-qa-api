@@ -33,7 +33,13 @@ public class ContentTypeExtractor {
       String rawContentType = urlConnection.getHeaderField("Content-Type");
       if (rawContentType != null && StringUtils.isNotBlank(rawContentType))
         contentType = rawContentType.replaceAll("; ?charset.*$", "");
-    } else if (responseCode == 301 || responseCode == 302 || responseCode == 303) {
+    } else if (responseCode == 301 // Moved Permanently
+            || responseCode == 302 // Found
+            || responseCode == 303 // See Other
+            || responseCode == 304 // Not Modified
+            || responseCode == 307 // Temporary Redirect
+            || responseCode == 308 // Permanent Redirect
+    ) {
       String location = urlConnection.getHeaderField("Location");
       return getContentType(location);
     } else {

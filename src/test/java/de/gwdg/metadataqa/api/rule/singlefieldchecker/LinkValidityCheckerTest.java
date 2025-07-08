@@ -152,14 +152,13 @@ public class LinkValidityCheckerTest extends CheckerTestBase {
       "http://vb.uni-wuerzburg.de/ub/books/36z1197_57156733/folio-std/unexisting.jpg");
     cache.setCsvReader(new CsvReader().setHeader( ((CsvAwareSchema) schema).getHeader() ));
 
-    ContentTypeChecker checker = new ContentTypeChecker(schema.getPathByLabel("name"),
-      Arrays.asList("image/jpeg", "image/png", "image/tiff", "image/tiff-fx", "image/gif", "image/svg+xml", "application/pdf"));
+    LinkValidityChecker checker = new LinkValidityChecker(schema.getPathByLabel("name"), true);
 
     FieldCounter<RuleCheckerOutput> fieldCounter = new FieldCounter<>();
     checker.update(cache, fieldCounter, RuleCheckingOutputType.BOTH);
 
     assertEquals(2, fieldCounter.size());
-    assertEquals("name:contentType", checker.getHeaderWithoutId());
+    assertEquals("name:validLink", checker.getHeaderWithoutId());
     Assert.assertEquals(RuleCheckingOutputStatus.FAILED, fieldCounter.get(checker.getHeader(RuleCheckingOutputType.STATUS)).getStatus());
   }
 
@@ -169,15 +168,14 @@ public class LinkValidityCheckerTest extends CheckerTestBase {
       "http://creativecommons.org/licenses/by-nc-sa/4.0/");
     cache.setCsvReader(new CsvReader().setHeader( ((CsvAwareSchema) schema).getHeader() ));
 
-    ContentTypeChecker checker = new ContentTypeChecker(schema.getPathByLabel("name"),
-      Arrays.asList("text/html"));
+    LinkValidityChecker checker = new LinkValidityChecker(schema.getPathByLabel("name"), true);
 
     FieldCounter<RuleCheckerOutput> fieldCounter = new FieldCounter<>();
 
     checker.update(cache, fieldCounter, RuleCheckingOutputType.BOTH);
 
     assertEquals(2, fieldCounter.size());
-    assertEquals("name:contentType", checker.getHeaderWithoutId());
+    assertEquals("name:validLink", checker.getHeaderWithoutId());
     assertEquals(RuleCheckingOutputStatus.PASSED, fieldCounter.get(checker.getHeader(RuleCheckingOutputType.STATUS)).getStatus());
   }
 

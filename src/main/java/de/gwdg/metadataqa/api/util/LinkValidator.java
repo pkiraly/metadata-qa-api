@@ -28,9 +28,21 @@ public class LinkValidator {
     int responseCode = urlConnection.getResponseCode();
     if (responseCode == 200) {
       return true;
-    } else if (responseCode == 301 || responseCode == 302 || responseCode == 303) {
+    } else if (responseCode == 301 // Moved Permanently
+            || responseCode == 302 // Found
+            || responseCode == 303 // See Other
+            || responseCode == 304 // Not Modified
+            || responseCode == 307 // Temporary Redirect
+            || responseCode == 308 // Permanent Redirect
+    ) {
       String location = urlConnection.getHeaderField("Location");
       return isValid(location);
+    } else if (responseCode == 401 // Unauthorized
+            || responseCode == 402 // Payment Required
+            || responseCode == 403 // Forbidden
+            || responseCode == 407 // Proxy Authentication Required
+    ) {
+      return true;
     } else {
       LOGGER.warning(String.format("URL %s returns unhandled status code: %d.\n", url, responseCode));
     }
