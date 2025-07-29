@@ -156,7 +156,7 @@
     <dependency>
       <groupId>org.apache.commons</groupId>
       <artifactId>commons-text</artifactId>
-      <version>1.13.1</version>
+      <version>1.14.0</version>
     </dependency>
     <!--
       Hierarchical context runner for jUnit
@@ -197,7 +197,7 @@
     <dependency>
       <artifactId>solr-solrj</artifactId>
       <groupId>org.apache.solr</groupId>
-      <version>9.8.1</version>
+      <version>9.9.0</version>
     </dependency>
     <!-- XML handling https://mvnrepository.com/artifact/com.fasterxml.jackson.core/jackson-databind -->
     <dependency>
