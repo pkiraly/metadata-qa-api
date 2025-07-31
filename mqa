@@ -2,5 +2,5 @@
 #-----------------------------------------------------------------------
 # Command line interface for the Metadata Quality Assessment Framework -
 #-----------------------------------------------------------------------
-export VERSION=0.9.8
+export VERSION=0.9.9-SNAPSHOT
 java -jar $(dirname $(readlink -f $0))/metadata-qa-api-${VERSION}-shaded.jar $@

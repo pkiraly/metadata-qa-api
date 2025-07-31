@@ -41,6 +41,7 @@ public class LinkValidator {
             || responseCode == 402 // Payment Required
             || responseCode == 403 // Forbidden
             || responseCode == 407 // Proxy Authentication Required
+            || responseCode == 429 // Too Many Requests
     ) {
       return true;
     } else {
