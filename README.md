@@ -1322,6 +1322,7 @@ For the usage and implementation of the API see https://github.com/pkiraly/europ
 
 Java doc for the actual development version of the API: https://pkiraly.github.io/metadata-qa-api.
 
+[![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.15788411.svg)](https://doi.org/10.5281/zenodo.15788411)
 [![Build Status](https://travis-ci.org/pkiraly/metadata-qa-api.svg?branch=main)](https://travis-ci.com/pkiraly/metadata-qa-api)
 [![Coverage Status (@coveralls)](https://coveralls.io/repos/github/pkiraly/metadata-qa-api/badge.svg?branch=main)](https://coveralls.io/github/pkiraly/metadata-qa-api?branch=main)
 [![Coverage Status (@codecov)](https://codecov.io/gh/pkiraly/metadata-qa-api/branch/main/graph/badge.svg?token=HLLGXJSVZL)](https://codecov.io/gh/pkiraly/metadata-qa-api)
