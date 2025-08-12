@@ -1,5 +1,7 @@
 # Metadata Quality Assessment Framework API
 
+[![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.15788411.svg)](https://doi.org/10.5281/zenodo.15788411)
+
 This project is the central piece of the Metadata Quality Assurance
 Framework, every other project is built on top of it. It provides
 a general framework for measuring metadata quality in different 
