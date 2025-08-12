@@ -89,6 +89,7 @@ public class DependencyChecker extends SingleFieldChecker {
         if (!status.equals(RuleCheckingOutputStatus.NA))
           isNA = false;
       } else {
+        LOGGER.warning(String.format("Referenced rule (id: %s) is missing", ruleId));
         allPassed = false;
         break;
       }
