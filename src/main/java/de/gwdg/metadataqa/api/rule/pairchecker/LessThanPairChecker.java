@@ -9,11 +9,14 @@ import de.gwdg.metadataqa.api.rule.RuleCheckingOutputStatus;
 import de.gwdg.metadataqa.api.rule.RuleCheckingOutputType;
 
 import java.util.List;
+import java.util.logging.Logger;
 import java.util.regex.Pattern;
 
 public class LessThanPairChecker extends PropertyPairChecker {
 
   private static final long serialVersionUID = 2271685635591166409L;
+
+  private static final Logger LOGGER = Logger.getLogger(LessThanPairChecker.class.getCanonicalName());
 
   private final TYPE type;
 

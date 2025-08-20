@@ -10,11 +10,15 @@ import de.gwdg.metadataqa.api.rule.RuleCheckingOutputStatus;
 import de.gwdg.metadataqa.api.rule.RuleCheckingOutputType;
 
 import java.util.List;
+import java.util.logging.Logger;
 
 public class MQAFPatternChecker extends SingleFieldChecker {
 
   private static final long serialVersionUID = -1432138574479246596L;
   public static final String PREFIX = "pattern";
+
+  private static final Logger LOGGER = Logger.getLogger(MQAFPatternChecker.class.getCanonicalName());
+
   protected MQAFPattern mqafPattern;
 
   public MQAFPatternChecker(DataElement field, MQAFPattern mqafPattern) {

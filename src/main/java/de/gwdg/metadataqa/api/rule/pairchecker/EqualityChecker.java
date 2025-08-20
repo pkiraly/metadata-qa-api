@@ -9,12 +9,14 @@ import de.gwdg.metadataqa.api.rule.RuleCheckingOutputStatus;
 import de.gwdg.metadataqa.api.rule.RuleCheckingOutputType;
 
 import java.util.List;
+import java.util.logging.Logger;
 
 public class EqualityChecker extends PropertyPairChecker {
 
   private static final long serialVersionUID = -5363342097255677979L;
   public static final String PREFIX = "equals";
-  protected String fixedValue;
+
+  private static final Logger LOGGER = Logger.getLogger(EqualityChecker.class.getCanonicalName());
 
   public EqualityChecker(DataElement field1, DataElement field2) {
     super(field1, field2, PREFIX);

@@ -38,8 +38,19 @@ public class OrChecker extends LogicalChecker {
 
   @Override
   public void update(Selector selector, FieldCounter<RuleCheckerOutput> results, RuleCheckingOutputType outputType) {
+    update(selector, results, outputType, null);
+  }
+
+  public void update(Selector selector,
+                     FieldCounter<RuleCheckerOutput> results,
+                     RuleCheckingOutputType outputType,
+                     FieldCounter<RuleCheckerOutput> globalResults) {
     if (isDebug())
-      LOGGER.info(this.getClass().getSimpleName() + " " + this.id + ", alwaysCheckDependencies: " + alwaysCheckDependencies);
+      LOGGER.info(this.getClass().getSimpleName() + " " + this.id + ", alwaysCheckDependencies: " + alwaysCheckDependencies + " - " + results);
+
+    if (globalResults == null) {
+      globalResults = results;
+    }
 
     // if NA and dependency checker FAILED -> FAILED
     var allPassed = false;
@@ -47,17 +58,17 @@ public class OrChecker extends LogicalChecker {
     RuleCheckerOutput output = null;
     List<XmlFieldInstance> instances = selector.get(field);
     if (instances != null && !instances.isEmpty()) {
-      FieldCounter<RuleCheckerOutput> localResults = new FieldCounter<>();
+      FieldCounter<RuleCheckerOutput> localResults2 = new FieldCounter<>();
       for (RuleChecker checker : checkers) {
         if (checker instanceof DependencyChecker) {
-          ((DependencyChecker) checker).update(selector, localResults, outputType, results);
+          ((DependencyChecker) checker).update(selector, localResults2, outputType, results);
         } else {
-          checker.update(selector, localResults, outputType);
+          checker.update(selector, localResults2, outputType);
         }
         String key = outputType.equals(RuleCheckingOutputType.BOTH)
                    ? checker.getIdOrHeader(RuleCheckingOutputType.SCORE)
                    : checker.getIdOrHeader();
-        if (localResults.get(key).getStatus().equals(RuleCheckingOutputStatus.PASSED)) {
+        if (localResults2.get(key).getStatus().equals(RuleCheckingOutputStatus.PASSED)) {
           allPassed = true;
           break;
         }
@@ -72,9 +83,9 @@ public class OrChecker extends LogicalChecker {
         }
         else if (alwaysCheckDependencies && checker instanceof DependencyChecker) {
           DependencyChecker dependencyChecker = (DependencyChecker) checker;
-          Map<String, Boolean> result = dependencyChecker.getResult(outputType, results);
-          boolean dependenciesPassed = result.get("allPassed");
-          isNA = result.get("isNA");
+          Map<String, Boolean> localResult = dependencyChecker.getResult(outputType, results);
+          boolean dependenciesPassed = localResult.get("allPassed");
+          isNA = localResult.get("isNA");
           if (isNA) {
             output = new RuleCheckerOutput(this, RuleCheckingOutputStatus.NA);
           } else {

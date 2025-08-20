@@ -119,7 +119,7 @@ public class JsonSelectorTest {
 
   /**
    * Issue #6
-   * Unhandled object type: java.util.LinkedHashMap, 
+   * Unhandled object type: java.util.LinkedHashMap,
    *[record ID: 08541/10442_01_75365, path: $.['ore:Aggregation'][0]['edm:dataProvider'][0]]
    */
   @Test

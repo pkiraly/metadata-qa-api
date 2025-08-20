@@ -8,10 +8,15 @@ import de.gwdg.metadataqa.api.rule.RuleCheckingOutputStatus;
 import de.gwdg.metadataqa.api.rule.RuleCheckingOutputType;
 import de.gwdg.metadataqa.api.util.InstanceCounter;
 
+import java.util.logging.Logger;
+
 public class MaxCountChecker extends SingleFieldChecker {
 
   private static final long serialVersionUID = 3259638493041988749L;
   public static final String PREFIX = "maxCount";
+
+  private static final Logger LOGGER = Logger.getLogger(MaxCountChecker.class.getCanonicalName());
+
   private boolean allowEmptyInstances = false;
   protected Integer maxCount;
 

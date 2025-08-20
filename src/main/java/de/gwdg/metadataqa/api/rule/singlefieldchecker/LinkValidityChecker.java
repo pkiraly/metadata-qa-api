@@ -15,11 +15,11 @@ import java.util.logging.Logger;
 
 public class LinkValidityChecker extends SingleFieldChecker {
 
-  private static final Logger LOGGER = Logger.getLogger(LinkValidityChecker.class.getCanonicalName());
-
   public static final String PREFIX = "validLink";
   protected LinkValidator linkValidator;
   protected Boolean expectedValue;
+
+  private static final Logger LOGGER = Logger.getLogger(LinkValidityChecker.class.getCanonicalName());
 
   /**
    * @param field The data element to check

@@ -105,7 +105,7 @@ public class BaseSchema implements Schema, CsvAwareSchema, Serializable {
 
   public BaseSchema addFieldGroup(FieldGroup fieldgroup) {
     fieldGroups.add(fieldgroup);
-	  return this;
+    return this;
   }
 
   @Override

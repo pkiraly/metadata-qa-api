@@ -9,11 +9,15 @@ import de.gwdg.metadataqa.api.rule.RuleCheckingOutputStatus;
 import de.gwdg.metadataqa.api.rule.RuleCheckingOutputType;
 
 import java.util.List;
+import java.util.logging.Logger;
 
 public class MinLengthChecker extends SingleFieldChecker {
 
   private static final long serialVersionUID = -1842497411816592850L;
   public static final String PREFIX = "minLength";
+
+  private static final Logger LOGGER = Logger.getLogger(MinLengthChecker.class.getCanonicalName());
+
   protected Integer minLength;
 
   public MinLengthChecker(DataElement field, Integer minLength) {

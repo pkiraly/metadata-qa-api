@@ -10,11 +10,15 @@ import de.gwdg.metadataqa.api.rule.RuleCheckingOutputType;
 
 import java.util.List;
 import java.util.StringTokenizer;
+import java.util.logging.Logger;
 
 public class MinWordsChecker extends SingleFieldChecker {
 
   private static final long serialVersionUID = 3259638493041988749L;
   public static final String PREFIX = "minWords";
+
+  private static final Logger LOGGER = Logger.getLogger(MinWordsChecker.class.getCanonicalName());
+
   protected Integer minWords;
 
   public MinWordsChecker(DataElement field, int minWords) {

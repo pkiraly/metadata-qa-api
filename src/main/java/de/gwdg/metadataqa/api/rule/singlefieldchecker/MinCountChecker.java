@@ -8,10 +8,15 @@ import de.gwdg.metadataqa.api.rule.RuleCheckingOutputStatus;
 import de.gwdg.metadataqa.api.rule.RuleCheckingOutputType;
 import de.gwdg.metadataqa.api.util.InstanceCounter;
 
+import java.util.logging.Logger;
+
 public class MinCountChecker extends SingleFieldChecker {
 
   private static final long serialVersionUID = 2298498693779624776L;
   public static final String PREFIX = "minCount";
+
+  private static final Logger LOGGER = Logger.getLogger(MinCountChecker.class.getCanonicalName());
+
   protected Integer minCount;
   protected boolean allowEmptyInstances = false;
 

@@ -9,12 +9,16 @@ import de.gwdg.metadataqa.api.rule.RuleCheckingOutputStatus;
 import de.gwdg.metadataqa.api.rule.RuleCheckingOutputType;
 
 import java.util.List;
+import java.util.logging.Logger;
 import java.util.regex.Pattern;
 
 public class PatternChecker extends SingleFieldChecker {
 
   private static final long serialVersionUID = -1432138574479246596L;
   public static final String PREFIX = "pattern";
+
+  private static final Logger LOGGER = Logger.getLogger(PatternChecker.class.getCanonicalName());
+
   protected Pattern pattern;
 
   public PatternChecker(DataElement field, String pattern) {

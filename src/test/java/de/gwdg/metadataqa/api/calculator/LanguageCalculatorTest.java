@@ -202,7 +202,7 @@ public class LanguageCalculatorTest {
     assertEquals("_1:1", languages.get("Concept/skos:altLabel")); languages.remove("Concept/skos:altLabel");
     assertEquals("_1:1", languages.get("Concept/skos:note")); languages.remove("Concept/skos:note");
 
-    assertEquals("Language has the following values: " + StringUtils.join(languages.keySet(), ", "), 
+    assertEquals("Language has the following values: " + StringUtils.join(languages.keySet(), ", "),
       0, languages.size());
   }
 

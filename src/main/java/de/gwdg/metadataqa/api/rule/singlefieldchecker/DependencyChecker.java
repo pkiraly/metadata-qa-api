@@ -14,11 +14,11 @@ import java.util.logging.Logger;
 
 public class DependencyChecker extends SingleFieldChecker {
 
-  private static final Logger LOGGER = Logger.getLogger(DependencyChecker.class.getCanonicalName());
-
   public static final String PREFIX = "dependency";
   protected List<String> dependencies;
   private RuleCheckingOutputStatus failedDepencencyStatus;
+
+  private static final Logger LOGGER = Logger.getLogger(DependencyChecker.class.getCanonicalName());
 
   public DependencyChecker(DataElement field, List<String> dependencies) {
     this(field, field.getLabel(), dependencies, RuleCheckingOutputStatus.FAILED);
@@ -48,11 +48,14 @@ public class DependencyChecker extends SingleFieldChecker {
                      FieldCounter<RuleCheckerOutput> localResults,
                      RuleCheckingOutputType outputType,
                      FieldCounter<RuleCheckerOutput> globalResults) {
-    if (isDebug())
+    if (isDebug()) {
       LOGGER.info(this.getClass().getSimpleName() + " " + this.id);
+      LOGGER.info("globalResults@enter: " + globalResults);
+    }
 
-    if (globalResults == null)
+    if (globalResults == null) {
       globalResults = localResults;
+    }
 
     var isNA = true;
     var allPassed = true;
@@ -62,6 +65,8 @@ public class DependencyChecker extends SingleFieldChecker {
         isNA = false;
       }
     }
+    if (isDebug())
+      LOGGER.warning(this.id + " update->getResult()");
     Map<String, Boolean> result = getResult(outputType, globalResults);
     allPassed = result.get("allPassed");
     isNA = result.get("isNA");
@@ -83,13 +88,13 @@ public class DependencyChecker extends SingleFieldChecker {
       String outputKey = outputType.equals(RuleCheckingOutputType.BOTH) ? ruleId + ":status" : ruleId;
       if (globalResults.has(outputKey)) {
         var status = globalResults.get(outputKey).getStatus();
-
         if (!status.equals(RuleCheckingOutputStatus.PASSED))
           allPassed = false;
         if (!status.equals(RuleCheckingOutputStatus.NA))
           isNA = false;
       } else {
-        LOGGER.warning(String.format("Referenced rule (id: %s) is missing", ruleId));
+        LOGGER.warning(String.format("Referenced rule (ids: %s->%s) is missing (key: %s)", getId(), ruleId, outputKey));
+        LOGGER.warning("globalResults: " + globalResults.getMap());
         allPassed = false;
         break;
       }

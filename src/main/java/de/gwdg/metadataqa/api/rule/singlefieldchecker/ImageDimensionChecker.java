@@ -17,10 +17,10 @@ import java.util.logging.Logger;
 
 public class ImageDimensionChecker extends SingleFieldChecker {
 
-  private static final Logger LOGGER = Logger.getLogger(ImageDimensionChecker.class.getCanonicalName());
-
   public static final String PREFIX = "imageDimension";
   protected Dimension dimensionRule;
+
+  private static final Logger LOGGER = Logger.getLogger(ImageDimensionChecker.class.getCanonicalName());
 
   public ImageDimensionChecker(DataElement field, Dimension dimension) {
     this(field, field.getLabel(), dimension);

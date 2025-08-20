@@ -11,12 +11,15 @@ import de.gwdg.metadataqa.api.rule.RuleCheckingOutputType;
 import org.w3c.dom.Node;
 
 import java.util.List;
+import java.util.logging.Logger;
 
 public class HasChildrenChecker extends SingleFieldChecker {
 
   private static final long serialVersionUID = 1114999259831619599L;
   public static final String PREFIX = "hasValue";
   protected List<String> children;
+
+  private static final Logger LOGGER = Logger.getLogger(HasChildrenChecker.class.getCanonicalName());
 
   /**
    * @param field The field

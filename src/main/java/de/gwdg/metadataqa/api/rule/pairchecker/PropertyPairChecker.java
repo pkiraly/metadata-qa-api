@@ -6,6 +6,7 @@ import de.gwdg.metadataqa.api.rule.BaseRuleChecker;
 public abstract class PropertyPairChecker extends BaseRuleChecker {
 
   private static final long serialVersionUID = -6579708841667005135L;
+
   protected DataElement field1;
   protected DataElement field2;
 

@@ -61,6 +61,7 @@ public class Rule implements Serializable {
   private String valuePath;
   private int timeout;
   private Boolean validLink;
+  private String skippableUrl;
 
   public String getId() {
     return id;
@@ -672,6 +673,19 @@ public class Rule implements Serializable {
     return this;
   }
 
+  public String getSkippableUrl() {
+    return skippableUrl;
+  }
+
+  public void setSkippableUrl(String skippableUrl) {
+    this.skippableUrl = skippableUrl;
+  }
+
+  public Rule withSkippableUrl(String skippableUrl) {
+    this.skippableUrl = skippableUrl;
+    return this;
+  }
+
   @JsonIgnore
   public List<String> getRulenames() {
     List<String> excludeFromComparision = List.of("serialVersionUID", "id", "description",
@@ -717,4 +731,5 @@ public class Rule implements Serializable {
       }
     }
   }
+
 }

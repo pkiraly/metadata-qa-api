@@ -11,11 +11,14 @@ import de.gwdg.metadataqa.api.rule.RuleCheckingOutputType;
 import de.gwdg.metadataqa.api.rule.singlefieldchecker.DependencyChecker;
 
 import java.util.List;
+import java.util.logging.Logger;
 
 public class NotChecker extends LogicalChecker {
 
   private static final long serialVersionUID = -1304107444331551638L;
   public static final String PREFIX = "not";
+
+  private static final Logger LOGGER = Logger.getLogger(NotChecker.class.getCanonicalName());
 
   /**
    * @param field The field
@@ -32,8 +35,19 @@ public class NotChecker extends LogicalChecker {
 
   @Override
   public void update(Selector selector, FieldCounter<RuleCheckerOutput> results, RuleCheckingOutputType outputType) {
+    update(selector, results, outputType, null);
+  }
+
+  public void update(Selector selector,
+                     FieldCounter<RuleCheckerOutput> results,
+                     RuleCheckingOutputType outputType,
+                     FieldCounter<RuleCheckerOutput> globalResults) {
     if (isDebug())
       LOGGER.info(this.getClass().getSimpleName() + " " + this.id);
+
+    if (globalResults == null) {
+      globalResults = results;
+    }
 
     var allPassed = true;
     var isNA = false;
@@ -42,7 +56,7 @@ public class NotChecker extends LogicalChecker {
       FieldCounter<RuleCheckerOutput> localResults = new FieldCounter<>();
       for (RuleChecker checker : checkers) {
         if (checker instanceof DependencyChecker)
-          ((DependencyChecker)checker).update(selector, localResults, outputType, results);
+          ((DependencyChecker)checker).update(selector, localResults, outputType, globalResults);
         else
           checker.update(selector, localResults, outputType);
         String key = outputType.equals(RuleCheckingOutputType.BOTH) ? checker.getIdOrHeader(RuleCheckingOutputType.SCORE) : checker.getIdOrHeader();

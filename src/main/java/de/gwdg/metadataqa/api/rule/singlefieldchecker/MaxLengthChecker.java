@@ -9,11 +9,15 @@ import de.gwdg.metadataqa.api.rule.RuleCheckingOutputStatus;
 import de.gwdg.metadataqa.api.rule.RuleCheckingOutputType;
 
 import java.util.List;
+import java.util.logging.Logger;
 
 public class MaxLengthChecker extends SingleFieldChecker {
 
   private static final long serialVersionUID = -3991731520985560338L;
   public static final String PREFIX = "maxLength";
+
+  private static final Logger LOGGER = Logger.getLogger(MaxLengthChecker.class.getCanonicalName());
+
   protected Integer maxLength;
 
   public MaxLengthChecker(DataElement field, Integer maxLength) {

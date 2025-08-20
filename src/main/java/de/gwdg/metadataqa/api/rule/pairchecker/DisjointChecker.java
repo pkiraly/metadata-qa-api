@@ -9,11 +9,14 @@ import de.gwdg.metadataqa.api.rule.RuleCheckingOutputStatus;
 import de.gwdg.metadataqa.api.rule.RuleCheckingOutputType;
 
 import java.util.List;
+import java.util.logging.Logger;
 
 public class DisjointChecker extends PropertyPairChecker {
 
   private static final long serialVersionUID = -2921501305139849002L;
   public static final String PREFIX = "disjoint";
+
+  private static final Logger LOGGER = Logger.getLogger(DisjointChecker.class.getCanonicalName());
 
   public DisjointChecker(DataElement field1, DataElement field2) {
     super(field1, field2, PREFIX);

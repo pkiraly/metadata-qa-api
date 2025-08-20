@@ -131,6 +131,8 @@ public class SchemaUtils {
       ContentTypeChecker contentTypeChecker = rule.getTimeout() == null
         ? new ContentTypeChecker(dataElement, rule.getContentType())
         : new ContentTypeChecker(dataElement, dataElement.getLabel(), rule.getContentType(), rule.getTimeout());
+      if (StringUtils.isNotBlank(rule.getSkippableUrl()))
+        contentTypeChecker.setSkippableUrl(rule.getSkippableUrl());
       ruleCheckers.add(contentTypeChecker);
     }
 

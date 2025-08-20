@@ -10,12 +10,14 @@ import de.gwdg.metadataqa.api.rule.RuleCheckingOutputStatus;
 import de.gwdg.metadataqa.api.rule.RuleCheckingOutputType;
 import de.gwdg.metadataqa.api.rule.singlefieldchecker.DependencyChecker;
 import de.gwdg.metadataqa.api.rule.singlefieldchecker.MinCountChecker;
-import de.gwdg.metadataqa.api.rule.logical.OrChecker;
 
 import java.util.List;
 import java.util.Map;
+import java.util.logging.Logger;
 
 public class AndChecker extends LogicalChecker {
+
+  private static final Logger LOGGER = Logger.getLogger(AndChecker.class.getCanonicalName());
 
   private static final long serialVersionUID = 1114999259831619599L;
   public static final String PREFIX = "and";
@@ -44,10 +46,15 @@ public class AndChecker extends LogicalChecker {
     if (instances != null && !instances.isEmpty()) {
       FieldCounter<RuleCheckerOutput> localResults = new FieldCounter<>();
       for (RuleChecker checker : checkers) {
-        if (checker instanceof DependencyChecker)
-          ((DependencyChecker)checker).update(selector, localResults, outputType, results);
-        else
+        if (checker instanceof DependencyChecker) {
+          ((DependencyChecker) checker).update(selector, localResults, outputType, results);
+        } else if (checker instanceof OrChecker) {
+          ((OrChecker) checker).update(selector, localResults, outputType, results);
+        } else if (checker instanceof NotChecker) {
+          ((NotChecker) checker).update(selector, localResults, outputType, results);
+        } else {
           checker.update(selector, localResults, outputType);
+        }
         String key = outputType.equals(RuleCheckingOutputType.BOTH) ? checker.getIdOrHeader(RuleCheckingOutputType.SCORE) : checker.getIdOrHeader();
         RuleCheckingOutputStatus status = localResults.get(key).getStatus();
         if (status.equals(RuleCheckingOutputStatus.NA))
@@ -74,11 +81,11 @@ public class AndChecker extends LogicalChecker {
             LOGGER.info("check DependencyChecker");
           if (checker instanceof DependencyChecker) {
             DependencyChecker dependencyChecker = (DependencyChecker) checker;
-            Map<String, Boolean> result = dependencyChecker.getResult(outputType, results);
+            Map<String, Boolean> localResult = dependencyChecker.getResult(outputType, results);
             if (isDebug())
-              LOGGER.info("DependencyChecker result: " + result);
-            allPassed = result.get("allPassed");
-            isNA = result.get("isNA");
+              LOGGER.info("DependencyChecker result: " + localResult);
+            allPassed = localResult.get("allPassed");
+            isNA = localResult.get("isNA");
           } else if (checker instanceof OrChecker) {
             OrChecker orChecker = (OrChecker) checker;
             boolean hasDependency = false;

@@ -10,11 +10,15 @@ import de.gwdg.metadataqa.api.rule.RuleCheckingOutputStatus;
 import de.gwdg.metadataqa.api.rule.RuleCheckingOutputType;
 
 import java.util.List;
+import java.util.logging.Logger;
 
 public class LanguageTagChecker extends SingleFieldChecker {
+
   private static final long serialVersionUID = 7236047216814906713L;
   public static final String PREFIX = "languageTag";
   private ApplicationScope scope = ApplicationScope.anyOf;
+
+  private static final Logger LOGGER = Logger.getLogger(LanguageTagChecker.class.getCanonicalName());
 
   public LanguageTagChecker(DataElement field) {
     this(field, field.getLabel());

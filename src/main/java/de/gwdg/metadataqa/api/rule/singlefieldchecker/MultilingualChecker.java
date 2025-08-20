@@ -11,10 +11,14 @@ import de.gwdg.metadataqa.api.rule.RuleCheckingOutputType;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+import java.util.logging.Logger;
 
 public class MultilingualChecker extends SingleFieldChecker {
+
   private static final long serialVersionUID = 3911175767180059821L;
   public static final String PREFIX = "multilingual";
+
+  private static final Logger LOGGER = Logger.getLogger(MultilingualChecker.class.getCanonicalName());
 
   public MultilingualChecker(DataElement field) {
     this(field, field.getLabel());

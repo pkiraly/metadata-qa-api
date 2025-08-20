@@ -12,14 +12,18 @@ import de.gwdg.metadataqa.api.util.ContentTypeExtractor;
 import java.io.IOException;
 import java.util.List;
 import java.util.logging.Logger;
+import java.util.regex.Pattern;
 
 public class ContentTypeChecker extends SingleFieldChecker {
 
+  private static final long serialVersionUID = 6376677768166208863L;
+  public static final String PREFIX = "contentType";
+
   private static final Logger LOGGER = Logger.getLogger(ContentTypeChecker.class.getCanonicalName());
 
-  public static final String PREFIX = "contentType";
   protected List<String> expectedContentTypes;
   private ContentTypeExtractor contentTypeExtractor;
+  private Pattern skippableUrl;
 
   public ContentTypeChecker(DataElement field, List<String> expectedContentTypes) {
     this(field, field.getLabel(), expectedContentTypes, ContentTypeExtractor.DEFAULT_TIMEOUT);
@@ -48,13 +52,16 @@ public class ContentTypeChecker extends SingleFieldChecker {
             instanceCount++;
           isNA = false;
           try {
-            String contentType = contentTypeExtractor.getContentType(instance.getValue());
-            if (isDebug())
-              LOGGER.info(String.format("value: '%s' -> '%s'", instance.getValue(), contentType));
-            if (contentType == null || !expectedContentTypes.contains(contentType)) {
-              allPassed = false;
-              if (countInstances())
-                failureCount++;
+            String url = instance.getValue();
+            if (skippableUrl == null || !skippableUrl.matcher(url).find()) {
+              String contentType = contentTypeExtractor.getContentType(url);
+              if (isDebug())
+                LOGGER.info(String.format("value: '%s' -> '%s'", url, contentType));
+              if (contentType == null || !expectedContentTypes.contains(contentType)) {
+                allPassed = false;
+                if (countInstances())
+                  failureCount++;
+              }
             }
           } catch (IOException e) {
             LOGGER.warning(String.format("%s: %s", e.getClass().getSimpleName(), e.getMessage()));
@@ -71,5 +78,9 @@ public class ContentTypeChecker extends SingleFieldChecker {
     addOutput(results, isNA, allPassed, outputType, instanceCount, failureCount);
     if (isDebug())
       LOGGER.info(this.getClass().getSimpleName() + " " + this.id + ") result: " + RuleCheckingOutputStatus.create(isNA, allPassed, isMandatory()));
+  }
+
+  public void setSkippableUrl(String skippableUrl) {
+    this.skippableUrl = Pattern.compile(skippableUrl);
   }
 }

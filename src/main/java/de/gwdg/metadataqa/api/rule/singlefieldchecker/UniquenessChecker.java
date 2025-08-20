@@ -14,11 +14,15 @@ import org.apache.commons.lang3.StringUtils;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+import java.util.logging.Logger;
 
 public class UniquenessChecker extends SingleFieldChecker {
 
   private static final long serialVersionUID = -1432138574479246596L;
   public static final String PREFIX = "uniqueness";
+
+  private static final Logger LOGGER = Logger.getLogger(UniquenessChecker.class.getCanonicalName());
+
   protected String solrField;
   private SolrClient solrClient;
   private enum METHOD {ALL_AT_ONCE, INDIVIDUAL};

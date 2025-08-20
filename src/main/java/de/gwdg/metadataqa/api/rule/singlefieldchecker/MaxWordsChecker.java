@@ -9,11 +9,15 @@ import de.gwdg.metadataqa.api.rule.RuleCheckingOutputType;
 
 import java.util.List;
 import java.util.StringTokenizer;
+import java.util.logging.Logger;
 
 public class MaxWordsChecker extends SingleFieldChecker {
 
   private static final long serialVersionUID = 3259638493041988749L;
   public static final String PREFIX = "maxWords";
+
+  private static final Logger LOGGER = Logger.getLogger(MaxWordsChecker.class.getCanonicalName());
+
   protected Integer maxWords;
 
   public MaxWordsChecker(DataElement field, int maxWords) {
