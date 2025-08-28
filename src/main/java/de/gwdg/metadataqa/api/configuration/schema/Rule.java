@@ -62,6 +62,7 @@ public class Rule implements Serializable {
   private int timeout;
   private Boolean validLink;
   private String skippableUrl;
+  private Boolean priorityOnFail;
 
   public String getId() {
     return id;
@@ -683,6 +684,19 @@ public class Rule implements Serializable {
 
   public Rule withSkippableUrl(String skippableUrl) {
     this.skippableUrl = skippableUrl;
+    return this;
+  }
+
+  public Boolean getPriorityOnFail() {
+    return priorityOnFail;
+  }
+
+  public void setPriorityOnFail(Boolean priorityOnFail) {
+    this.priorityOnFail = priorityOnFail;
+  }
+
+  public Rule withPriorityOnFail(Boolean priorityOnFail) {
+    this.priorityOnFail = priorityOnFail;
     return this;
   }
 

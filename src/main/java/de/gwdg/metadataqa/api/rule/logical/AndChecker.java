@@ -11,6 +11,7 @@ import de.gwdg.metadataqa.api.rule.RuleCheckingOutputType;
 import de.gwdg.metadataqa.api.rule.singlefieldchecker.DependencyChecker;
 import de.gwdg.metadataqa.api.rule.singlefieldchecker.MinCountChecker;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.logging.Logger;
@@ -21,6 +22,7 @@ public class AndChecker extends LogicalChecker {
 
   private static final long serialVersionUID = 1114999259831619599L;
   public static final String PREFIX = "and";
+  private boolean priorityOnFail = false;
 
   /**
    * @param field The field
@@ -38,10 +40,11 @@ public class AndChecker extends LogicalChecker {
   @Override
   public void update(Selector selector, FieldCounter<RuleCheckerOutput> results, RuleCheckingOutputType outputType) {
     if (isDebug())
-      LOGGER.info(this.getClass().getSimpleName() + " " + this.id + " alwaysCheckDependencies: " + alwaysCheckDependencies);
+      LOGGER.info(String.format("%s %s,  alwaysCheckDependencies: %s, priorityOnFail: %s", this.getClass().getSimpleName(), this.id, alwaysCheckDependencies, priorityOnFail));
 
     var allPassed = true;
     var isNA = false;
+    List<RuleCheckingOutputStatus> statuses = new ArrayList<>();
     List<XmlFieldInstance> instances = selector.get(field);
     if (instances != null && !instances.isEmpty()) {
       FieldCounter<RuleCheckerOutput> localResults = new FieldCounter<>();
@@ -55,11 +58,15 @@ public class AndChecker extends LogicalChecker {
         } else {
           checker.update(selector, localResults, outputType);
         }
-        String key = outputType.equals(RuleCheckingOutputType.BOTH) ? checker.getIdOrHeader(RuleCheckingOutputType.SCORE) : checker.getIdOrHeader();
+        String key = outputType.equals(RuleCheckingOutputType.BOTH)
+          ? checker.getIdOrHeader(RuleCheckingOutputType.SCORE)
+          : checker.getIdOrHeader();
         RuleCheckingOutputStatus status = localResults.get(key).getStatus();
+        statuses.add(status);
         if (status.equals(RuleCheckingOutputStatus.NA))
           isNA = true;
-        if (!status.equals(RuleCheckingOutputStatus.PASSED)) {
+
+        if (!status.equals(RuleCheckingOutputStatus.PASSED) && !priorityOnFail) {
           allPassed = false;
           break;
         }
@@ -70,15 +77,11 @@ public class AndChecker extends LogicalChecker {
       isNA = true;
       for (RuleChecker checker : checkers) {
         if (checker instanceof MinCountChecker) {
-          if (isDebug())
-            LOGGER.info("check MinCountChecker");
           MinCountChecker minCountChecker = (MinCountChecker) checker;
           if (!minCountChecker.isEmptyInstancesAllowed() || minCountChecker.getMinCount() > 0)
             allPassed = false;
         }
         else if (alwaysCheckDependencies) {
-          if (isDebug())
-            LOGGER.info("check DependencyChecker");
           if (checker instanceof DependencyChecker) {
             DependencyChecker dependencyChecker = (DependencyChecker) checker;
             Map<String, Boolean> localResult = dependencyChecker.getResult(outputType, results);
@@ -111,11 +114,22 @@ public class AndChecker extends LogicalChecker {
           break;
       }
     }
+
+    if (priorityOnFail) {
+      allPassed = !statuses.contains(RuleCheckingOutputStatus.FAILED);
+      if (!allPassed)
+        isNA = false;
+    }
+
     if (isDebug())
       LOGGER.info(String.format("isNA: %s, allPassed: %s", isNA, allPassed));
     addOutput(results, isNA, allPassed, outputType);
 
     if (isDebug())
       LOGGER.info(this.getClass().getSimpleName() + " " + this.id + ") result: " + RuleCheckingOutputStatus.create(isNA, allPassed, isMandatory()));
+  }
+
+  public void setPriorityOnFail(boolean priorityOnFail) {
+    this.priorityOnFail = priorityOnFail;
   }
 }

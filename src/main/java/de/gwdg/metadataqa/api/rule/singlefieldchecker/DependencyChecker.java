@@ -48,10 +48,8 @@ public class DependencyChecker extends SingleFieldChecker {
                      FieldCounter<RuleCheckerOutput> localResults,
                      RuleCheckingOutputType outputType,
                      FieldCounter<RuleCheckerOutput> globalResults) {
-    if (isDebug()) {
-      LOGGER.info(this.getClass().getSimpleName() + " " + this.id);
-      LOGGER.info("globalResults@enter: " + globalResults);
-    }
+    if (isDebug())
+      LOGGER.info(this.getClass().getSimpleName() + " " + this.id + ", dependencies: " + getDependencies());
 
     if (globalResults == null) {
       globalResults = localResults;
@@ -65,8 +63,6 @@ public class DependencyChecker extends SingleFieldChecker {
         isNA = false;
       }
     }
-    if (isDebug())
-      LOGGER.warning(this.id + " update->getResult()");
     Map<String, Boolean> result = getResult(outputType, globalResults);
     allPassed = result.get("allPassed");
     isNA = result.get("isNA");
