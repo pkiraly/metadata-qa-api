@@ -10,6 +10,13 @@ import de.gwdg.metadataqa.api.rule.RuleCheckingOutputStatus;
 import de.gwdg.metadataqa.api.rule.RuleCheckingOutputType;
 import org.w3c.dom.Node;
 
+import javax.xml.transform.OutputKeys;
+import javax.xml.transform.Transformer;
+import javax.xml.transform.TransformerException;
+import javax.xml.transform.TransformerFactory;
+import javax.xml.transform.dom.DOMSource;
+import javax.xml.transform.stream.StreamResult;
+import java.io.StringWriter;
 import java.util.List;
 import java.util.logging.Logger;
 
@@ -35,33 +42,39 @@ public class HasChildrenChecker extends SingleFieldChecker {
   }
 
   @Override
-  public void update(Selector selector, FieldCounter<RuleCheckerOutput> results, RuleCheckingOutputType outputType) {
+  public void update(Selector selector,
+                     FieldCounter<RuleCheckerOutput> results,
+                     RuleCheckingOutputType outputType) {
     if (isDebug())
-      LOGGER.info(this.getClass().getSimpleName() + " " + this.id + " field: " + field.getLabel());
+      LOGGER.info(String.format("%s %s, field: %s, path(s): %s, children: %s, scope: %s", this.getClass().getSimpleName(), this.id, field.getLabel(), field.getPath(), children, getScope()));
 
-    var allPassed = false;
     var isNA = true;
+    int passCount = 0;
+    boolean hasFailed = false;
     if (selector.getClass().equals(XmlSelector.class)) {
       List<Node> nodes = (List<Node>) selector.getFragment(field.getPath());
       if (!nodes.isEmpty()) {
         isNA = false;
+        int i = 0;
         for (Node node : nodes) {
+          boolean hasAllChildren = true;
           for (String childPath : children) {
-            List values = selector.get(childPath, childPath, node);
+            List values = selector.get(childPath + Math.random(), childPath, node);
             if (values.isEmpty()) {
-              allPassed = false;
-              break;
-            } else {
-              allPassed = true;
+              hasFailed = true;
+              hasAllChildren = false;
+              if (scopeIsAllOf())
+                break;
             }
-          }
-          if (!allPassed)
+          } // children
+          if (hasAllChildren)
+            passCount++;
+          else  if (scopeIsAllOf())
             break;
-        }
-      } else {
-        allPassed = true;
+        } // nodes
       }
     }
+    boolean allPassed = isPassed(passCount, hasFailed);
     addOutput(results, isNA, allPassed, outputType);
     if (isDebug())
       LOGGER.info(this.getClass().getSimpleName() + " " + this.id + ") result: " + RuleCheckingOutputStatus.create(isNA, allPassed, isMandatory()));
