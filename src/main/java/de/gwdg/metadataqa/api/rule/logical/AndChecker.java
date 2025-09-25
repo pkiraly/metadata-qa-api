@@ -116,8 +116,10 @@ public class AndChecker extends LogicalChecker {
     }
 
     if (priorityOnFail) {
+      LOGGER.info("priorityOnFail");
       allPassed = !statuses.contains(RuleCheckingOutputStatus.FAILED);
-      if (!allPassed)
+      LOGGER.info("allPassed: " + allPassed);
+      if (!allPassed || statuses.contains(RuleCheckingOutputStatus.PASSED))
         isNA = false;
     }
 
