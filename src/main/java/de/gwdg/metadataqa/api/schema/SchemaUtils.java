@@ -182,6 +182,8 @@ public class SchemaUtils {
       OrChecker checker = new OrChecker(dataElement, childRuleCheckers);
       if (rule.getAlwaysCheckDependencies().equals(Boolean.TRUE))
         checker.setAlwaysCheckDependencies(true);
+      if (rule.getPriorityOnFail() != null && rule.getPriorityOnFail().equals(Boolean.TRUE))
+        checker.setPriorityOnFail(true);
       ruleCheckers.add(checker);
     }
 

@@ -37,8 +37,10 @@ public class ContentTypeChecker extends SingleFieldChecker {
 
   @Override
   public void update(Selector selector, FieldCounter<RuleCheckerOutput> results, RuleCheckingOutputType outputType) {
-    if (isDebug())
-      LOGGER.info(this.getClass().getSimpleName() + " " + this.id);
+    if (isDebug()) {
+      LOGGER.info(this.getClass().getSimpleName() + " " + this.id + ", debug=" + isDebug());
+      // contentTypeExtractor.setDebug();
+    }
 
     var allPassed = true;
     var isNA = true;
@@ -51,9 +53,9 @@ public class ContentTypeChecker extends SingleFieldChecker {
           if (countInstances())
             instanceCount++;
           isNA = false;
-          try {
-            String url = instance.getValue();
-            if (skippableUrl == null || !skippableUrl.matcher(url).find()) {
+          String url = instance.getValue();
+          if (skippableUrl == null || !skippableUrl.matcher(url).find()) {
+            try {
               String contentType = contentTypeExtractor.getContentType(url);
               if (isDebug())
                 LOGGER.info(String.format("value: '%s' -> '%s'", url, contentType));
@@ -62,12 +64,12 @@ public class ContentTypeChecker extends SingleFieldChecker {
                 if (countInstances())
                   failureCount++;
               }
+            } catch (IOException e) {
+              LOGGER.warning(String.format("%s: %s (url: %s)", e.getClass().getSimpleName(), e.getMessage(), url));
+              allPassed = false;
+              if (countInstances())
+                failureCount++;
             }
-          } catch (IOException e) {
-            LOGGER.warning(String.format("%s: %s", e.getClass().getSimpleName(), e.getMessage()));
-            allPassed = false;
-            if (countInstances())
-              failureCount++;
           }
           if (!countInstances() && !allPassed)
             break;
@@ -82,5 +84,11 @@ public class ContentTypeChecker extends SingleFieldChecker {
 
   public void setSkippableUrl(String skippableUrl) {
     this.skippableUrl = Pattern.compile(skippableUrl);
+  }
+
+  @Override
+  public void setDebug() {
+    super.setDebug();
+    contentTypeExtractor.setDebug();
   }
 }

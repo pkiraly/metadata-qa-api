@@ -14,6 +14,7 @@ public class ContentTypeExtractor {
   private static final List<String> HEADER_KEYS = List.of("Content-Type", "content-type");
 
   private int timeout;
+  private boolean debug = false;
 
   public ContentTypeExtractor() {
     this.timeout = DEFAULT_TIMEOUT;
@@ -60,5 +61,9 @@ public class ContentTypeExtractor {
         break;
     }
     return contentType;
+  }
+
+  public void setDebug() {
+    this.debug = true;
   }
 }

@@ -59,7 +59,7 @@ public class Rule implements Serializable {
   private MQAFPattern mqafPattern;
   private Boolean alwaysCheckDependencies = Boolean.FALSE;
   private String valuePath;
-  private int timeout;
+  private Integer timeout;
   private Boolean validLink;
   private String skippableUrl;
   private Boolean priorityOnFail;

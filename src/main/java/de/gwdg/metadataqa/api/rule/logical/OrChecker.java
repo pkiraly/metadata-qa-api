@@ -11,6 +11,7 @@ import de.gwdg.metadataqa.api.rule.RuleCheckingOutputType;
 import de.gwdg.metadataqa.api.rule.singlefieldchecker.DependencyChecker;
 import de.gwdg.metadataqa.api.rule.singlefieldchecker.MinCountChecker;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.HashMap;
@@ -22,6 +23,7 @@ public class OrChecker extends LogicalChecker {
 
   private static final long serialVersionUID = 1114999259831619599L;
   public static final String PREFIX = "or";
+  private boolean priorityOnFail = false;
 
   /**
    * @param field The field
@@ -46,7 +48,7 @@ public class OrChecker extends LogicalChecker {
                      RuleCheckingOutputType outputType,
                      FieldCounter<RuleCheckerOutput> globalResults) {
     if (isDebug())
-      LOGGER.info(this.getClass().getSimpleName() + " " + this.id + ", alwaysCheckDependencies: " + alwaysCheckDependencies + " - " + results);
+      LOGGER.info(this.getClass().getSimpleName() + " " + this.id + ", alwaysCheckDependencies: " + alwaysCheckDependencies + ", priorityOnFail: " + priorityOnFail + " - " + results);
 
     if (globalResults == null) {
       globalResults = results;
@@ -57,6 +59,7 @@ public class OrChecker extends LogicalChecker {
     var isNA = false;
     RuleCheckerOutput output = null;
     List<XmlFieldInstance> instances = selector.get(field);
+    List<RuleCheckingOutputStatus> statuses = new ArrayList<>();
     if (instances != null && !instances.isEmpty()) {
       FieldCounter<RuleCheckerOutput> localResults2 = new FieldCounter<>();
       for (RuleChecker checker : checkers) {
@@ -68,7 +71,9 @@ public class OrChecker extends LogicalChecker {
         String key = outputType.equals(RuleCheckingOutputType.BOTH)
                    ? checker.getIdOrHeader(RuleCheckingOutputType.SCORE)
                    : checker.getIdOrHeader();
-        if (localResults2.get(key).getStatus().equals(RuleCheckingOutputStatus.PASSED)) {
+        RuleCheckingOutputStatus status = localResults2.get(key).getStatus();
+        statuses.add(status);
+        if (status.equals(RuleCheckingOutputStatus.PASSED)) {
           allPassed = true;
           break;
         }
@@ -94,17 +99,27 @@ public class OrChecker extends LogicalChecker {
             else
               output = new RuleCheckerOutput(this, RuleCheckingOutputStatus.FAILED);
           }
+          statuses.add(output.getStatus());
         }
 
-        if (!allPassed)
-          break;
+        // if (!allPassed)
+        //   break;
       }
     }
+
+    if (priorityOnFail) {
+      output = null;
+      allPassed = !statuses.contains(RuleCheckingOutputStatus.FAILED);
+      if (!allPassed || statuses.contains(RuleCheckingOutputStatus.PASSED))
+        isNA = false;
+    }
+
     if (output != null) {
       addOutput(results, output, outputType);
     } else {
       addOutput(results, isNA, allPassed, outputType);
     }
+
     if (isDebug()) {
       RuleCheckingOutputStatus status = output != null
         ? output.getStatus()
@@ -126,5 +141,9 @@ public class OrChecker extends LogicalChecker {
       result.put(RuleCheckingOutputType.SCORE, globalResults.get(getIdOrHeader() + ":score"));
     }
     return result;
+  }
+
+  public void setPriorityOnFail(boolean priorityOnFail) {
+    this.priorityOnFail = priorityOnFail;
   }
 }

@@ -86,9 +86,11 @@ public class AndChecker extends LogicalChecker {
             DependencyChecker dependencyChecker = (DependencyChecker) checker;
             Map<String, Boolean> localResult = dependencyChecker.getResult(outputType, results);
             if (isDebug())
-              LOGGER.info("DependencyChecker result: " + localResult);
+              LOGGER.info(String.format("DependencyChecker result for %s: %s",
+                dependencyChecker.getDependencies(), localResult));
             allPassed = localResult.get("allPassed");
             isNA = localResult.get("isNA");
+            statuses.add(allPassed ? RuleCheckingOutputStatus.PASSED : RuleCheckingOutputStatus.FAILED);
           } else if (checker instanceof OrChecker) {
             OrChecker orChecker = (OrChecker) checker;
             boolean hasDependency = false;
@@ -110,15 +112,13 @@ public class AndChecker extends LogicalChecker {
           }
         }
 
-        if (!allPassed)
-          break;
+        // if (!allPassed)
+        //  break;
       }
     }
 
     if (priorityOnFail) {
-      LOGGER.info("priorityOnFail");
       allPassed = !statuses.contains(RuleCheckingOutputStatus.FAILED);
-      LOGGER.info("allPassed: " + allPassed);
       if (!allPassed || statuses.contains(RuleCheckingOutputStatus.PASSED))
         isNA = false;
     }
