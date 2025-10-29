@@ -61,6 +61,8 @@ public class OrChecker extends LogicalChecker {
     List<XmlFieldInstance> instances = selector.get(field);
     List<RuleCheckingOutputStatus> statuses = new ArrayList<>();
     if (instances != null && !instances.isEmpty()) {
+      if (isDebug())
+        LOGGER.info("non empty");
       FieldCounter<RuleCheckerOutput> localResults2 = new FieldCounter<>();
       for (RuleChecker checker : checkers) {
         if (checker instanceof DependencyChecker) {
@@ -73,12 +75,14 @@ public class OrChecker extends LogicalChecker {
                    : checker.getIdOrHeader();
         RuleCheckingOutputStatus status = localResults2.get(key).getStatus();
         statuses.add(status);
-        if (status.equals(RuleCheckingOutputStatus.PASSED)) {
+        if (!priorityOnFail && status.equals(RuleCheckingOutputStatus.PASSED)) {
           allPassed = true;
           break;
         }
       }
     } else {
+      if (isDebug())
+        LOGGER.info("empty branch");
       isNA = true;
       for (RuleChecker checker : checkers) {
         if (checker instanceof MinCountChecker) {
