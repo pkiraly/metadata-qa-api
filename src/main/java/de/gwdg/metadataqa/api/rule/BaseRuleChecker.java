@@ -134,6 +134,12 @@ public abstract class BaseRuleChecker implements RuleChecker {
     addOutput(results, output, outputType);
   }
 
+  /**
+   * Add output to the result
+   * @param results
+   * @param output
+   * @param outputType
+   */
   protected void addOutput(FieldCounter<RuleCheckerOutput> results,
                            RuleCheckerOutput output,
                            RuleCheckingOutputType outputType) {

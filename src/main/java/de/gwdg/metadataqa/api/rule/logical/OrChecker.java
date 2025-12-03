@@ -67,6 +67,8 @@ public class OrChecker extends LogicalChecker {
       for (RuleChecker checker : checkers) {
         if (checker instanceof DependencyChecker) {
           ((DependencyChecker) checker).update(selector, localResults2, outputType, results);
+        } else if (checker instanceof AndChecker) {
+          ((AndChecker) checker).update(selector, localResults2, outputType, results);
         } else {
           checker.update(selector, localResults2, outputType);
         }
@@ -94,8 +96,8 @@ public class OrChecker extends LogicalChecker {
           DependencyChecker dependencyChecker = (DependencyChecker) checker;
           Map<String, Boolean> localResult = dependencyChecker.getResult(outputType, results);
           boolean dependenciesPassed = localResult.get("allPassed");
-          isNA = localResult.get("isNA");
-          if (isNA) {
+          var localIsNA = localResult.get("isNA");
+          if (localIsNA) {
             output = new RuleCheckerOutput(this, RuleCheckingOutputStatus.NA);
           } else {
             if (dependenciesPassed)
@@ -113,8 +115,8 @@ public class OrChecker extends LogicalChecker {
 
     if (priorityOnFail) {
       output = null;
-      allPassed = !statuses.contains(RuleCheckingOutputStatus.FAILED);
-      if (!allPassed || statuses.contains(RuleCheckingOutputStatus.PASSED))
+      allPassed = statuses.contains(RuleCheckingOutputStatus.PASSED);
+      if (!statuses.isEmpty() && (!allPassed || statuses.contains(RuleCheckingOutputStatus.PASSED)))
         isNA = false;
     }
 

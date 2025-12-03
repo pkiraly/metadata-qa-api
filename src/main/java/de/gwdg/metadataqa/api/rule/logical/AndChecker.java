@@ -39,6 +39,14 @@ public class AndChecker extends LogicalChecker {
 
   @Override
   public void update(Selector selector, FieldCounter<RuleCheckerOutput> results, RuleCheckingOutputType outputType) {
+    update(selector, results, outputType, null);
+  }
+
+
+  public void update(Selector selector,
+                     FieldCounter<RuleCheckerOutput> results,
+                     RuleCheckingOutputType outputType,
+                     FieldCounter<RuleCheckerOutput> globalResults) {
     if (isDebug())
       LOGGER.info(String.format("%s %s,  alwaysCheckDependencies: %s, priorityOnFail: %s", this.getClass().getSimpleName(), this.id, alwaysCheckDependencies, priorityOnFail));
 
