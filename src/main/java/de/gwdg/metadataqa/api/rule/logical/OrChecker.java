@@ -116,7 +116,9 @@ public class OrChecker extends LogicalChecker {
     if (priorityOnFail) {
       output = null;
       allPassed = statuses.contains(RuleCheckingOutputStatus.PASSED);
-      if (!statuses.isEmpty() && (!allPassed || statuses.contains(RuleCheckingOutputStatus.PASSED)))
+      if (!statuses.isEmpty()
+          && !containsOnlyNAs(statuses)
+          && (!allPassed || statuses.contains(RuleCheckingOutputStatus.PASSED)))
         isNA = false;
     }
 
@@ -151,5 +153,13 @@ public class OrChecker extends LogicalChecker {
 
   public void setPriorityOnFail(boolean priorityOnFail) {
     this.priorityOnFail = priorityOnFail;
+  }
+
+  private boolean containsOnlyNAs(List<RuleCheckingOutputStatus> statuses) {
+    for (RuleCheckingOutputStatus status : statuses) {
+      if (!status.equals(RuleCheckingOutputStatus.NA))
+        return false;
+    }
+    return true;
   }
 }
