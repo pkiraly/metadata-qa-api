@@ -17,6 +17,7 @@ public class DependencyChecker extends SingleFieldChecker {
   public static final String PREFIX = "dependency";
   protected List<String> dependencies;
   private RuleCheckingOutputStatus failedDepencencyStatus;
+  private Boolean isParentCheck = false;
 
   private static final Logger LOGGER = Logger.getLogger(DependencyChecker.class.getCanonicalName());
 
@@ -96,5 +97,13 @@ public class DependencyChecker extends SingleFieldChecker {
       }
     }
     return Map.of("allPassed", allPassed, "isNA", isNA);
+  }
+
+  public Boolean getParentCheck() {
+    return isParentCheck;
+  }
+
+  public void setParentCheck(Boolean parentCheck) {
+    isParentCheck = parentCheck;
   }
 }

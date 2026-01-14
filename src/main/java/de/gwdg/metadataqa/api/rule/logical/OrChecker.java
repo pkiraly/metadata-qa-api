@@ -23,7 +23,6 @@ public class OrChecker extends LogicalChecker {
 
   private static final long serialVersionUID = 1114999259831619599L;
   public static final String PREFIX = "or";
-  private boolean priorityOnFail = false;
 
   /**
    * @param field The field
@@ -58,15 +57,19 @@ public class OrChecker extends LogicalChecker {
     var allPassed = false;
     var isNA = false;
     RuleCheckerOutput output = null;
-    List<XmlFieldInstance> instances = selector.get(field);
     List<RuleCheckingOutputStatus> statuses = new ArrayList<>();
+    boolean parentCheckPassed = true;
+
+    List<XmlFieldInstance> instances = selector.get(field);
     if (instances != null && !instances.isEmpty()) {
       if (isDebug())
-        LOGGER.info("non empty");
+        LOGGER.info("non empty - naIfNoParent: " + isNaIfNoParent());
       FieldCounter<RuleCheckerOutput> localResults2 = new FieldCounter<>();
       for (RuleChecker checker : checkers) {
+        boolean isParentChecker = false;
         if (checker instanceof DependencyChecker) {
           ((DependencyChecker) checker).update(selector, localResults2, outputType, results);
+          isParentChecker = ((DependencyChecker) checker).getParentCheck();
         } else if (checker instanceof AndChecker) {
           ((AndChecker) checker).update(selector, localResults2, outputType, results);
         } else {
@@ -76,7 +79,8 @@ public class OrChecker extends LogicalChecker {
                    ? checker.getIdOrHeader(RuleCheckingOutputType.SCORE)
                    : checker.getIdOrHeader();
         RuleCheckingOutputStatus status = localResults2.get(key).getStatus();
-        statuses.add(status);
+        if (!isParentChecker)
+          statuses.add(status);
         if (!priorityOnFail && status.equals(RuleCheckingOutputStatus.PASSED)) {
           allPassed = true;
           break;
@@ -84,7 +88,7 @@ public class OrChecker extends LogicalChecker {
       }
     } else {
       if (isDebug())
-        LOGGER.info("empty branch");
+        LOGGER.info("empty branch - naIfNoParent: " + isNaIfNoParent());
       isNA = true;
       for (RuleChecker checker : checkers) {
         if (checker instanceof MinCountChecker) {
@@ -96,6 +100,12 @@ public class OrChecker extends LogicalChecker {
           DependencyChecker dependencyChecker = (DependencyChecker) checker;
           Map<String, Boolean> localResult = dependencyChecker.getResult(outputType, results);
           boolean dependenciesPassed = localResult.get("allPassed");
+          LOGGER.info("ParentCheck: " + dependencyChecker.getParentCheck() + ", passed: " + dependenciesPassed);
+          if (dependencyChecker.getParentCheck() && !dependenciesPassed) {
+            if (parentCheckPassed)
+              parentCheckPassed = false;
+            // break;
+          }
           var localIsNA = localResult.get("isNA");
           if (localIsNA) {
             output = new RuleCheckerOutput(this, RuleCheckingOutputStatus.NA);
@@ -105,21 +115,33 @@ public class OrChecker extends LogicalChecker {
             else
               output = new RuleCheckerOutput(this, RuleCheckingOutputStatus.FAILED);
           }
-          statuses.add(output.getStatus());
+          if (!dependencyChecker.getParentCheck())
+            statuses.add(output.getStatus());
+          LOGGER.info("statuses: " + statuses);
         }
-
         // if (!allPassed)
         //   break;
       }
+      LOGGER.info("ends all checkers");
     }
+
+    LOGGER.info("priorityOnFail: " + priorityOnFail + ", isNA: " + isNA + ", statuses: " + statuses);
 
     if (priorityOnFail) {
       output = null;
+      LOGGER.info("priorityOnFail (1)! isNA: " + isNA + ", statuses: " + statuses + ", parentCheckPassed: " + parentCheckPassed);
       allPassed = statuses.contains(RuleCheckingOutputStatus.PASSED);
+      // allPassed = !statuses.contains(RuleCheckingOutputStatus.FAILED);
       if (!statuses.isEmpty()
           && !containsOnlyNAs(statuses)
-          && (!allPassed || statuses.contains(RuleCheckingOutputStatus.PASSED)))
+          && (!allPassed || statuses.contains(RuleCheckingOutputStatus.PASSED))
+          && parentCheckPassed)
         isNA = false;
+      LOGGER.info("priorityOnFail (2)! isNA: " + isNA + ", allPassed: " + allPassed);
+      if (isNaIfNoParent() && isNA && parentCheckPassed) {
+        isNA = false;
+        LOGGER.info("priorityOnFail (3)! isNA: " + isNA + ", allPassed: " + allPassed);
+      }
     }
 
     if (output != null) {
@@ -149,17 +171,5 @@ public class OrChecker extends LogicalChecker {
       result.put(RuleCheckingOutputType.SCORE, globalResults.get(getIdOrHeader() + ":score"));
     }
     return result;
-  }
-
-  public void setPriorityOnFail(boolean priorityOnFail) {
-    this.priorityOnFail = priorityOnFail;
-  }
-
-  private boolean containsOnlyNAs(List<RuleCheckingOutputStatus> statuses) {
-    for (RuleCheckingOutputStatus status : statuses) {
-      if (!status.equals(RuleCheckingOutputStatus.NA))
-        return false;
-    }
-    return true;
   }
 }

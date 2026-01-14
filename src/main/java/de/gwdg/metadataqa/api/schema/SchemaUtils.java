@@ -2,6 +2,7 @@ package de.gwdg.metadataqa.api.schema;
 
 import de.gwdg.metadataqa.api.configuration.schema.Rule;
 import de.gwdg.metadataqa.api.json.DataElement;
+import de.gwdg.metadataqa.api.rule.BaseRuleChecker;
 import de.gwdg.metadataqa.api.rule.logical.AndChecker;
 import de.gwdg.metadataqa.api.rule.logical.LogicalChecker;
 import de.gwdg.metadataqa.api.rule.logical.NotChecker;
@@ -146,8 +147,12 @@ public class SchemaUtils {
     if (rule.getDimension() != null)
       ruleCheckers.add(new ImageDimensionChecker(dataElement, rule.getDimension()));
 
-    if (rule.getDependencies() != null && !rule.getDependencies().isEmpty())
-      ruleCheckers.add(new DependencyChecker(dataElement, rule.getDependencies()));
+    if (rule.getDependencies() != null && !rule.getDependencies().isEmpty()) {
+      DependencyChecker checker = new DependencyChecker(dataElement, rule.getDependencies());
+      if (rule.getParentCheck() != null)
+        checker.setParentCheck(rule.getParentCheck());
+      ruleCheckers.add(checker);
+    }
 
     if (rule.getUnique() != null && rule.getUnique().equals(Boolean.TRUE))
       ruleCheckers.add(new UniquenessChecker(dataElement));
@@ -169,27 +174,17 @@ public class SchemaUtils {
 
     if (rule.getAnd() != null) {
       List<RuleChecker> childRuleCheckers = getChildRuleCheckers(schema, dataElement, rule.getAnd(), rule.getId());
-      AndChecker checker = new AndChecker(dataElement, childRuleCheckers);
-      if (rule.getAlwaysCheckDependencies().equals(Boolean.TRUE))
-        checker.setAlwaysCheckDependencies(true);
-      if (rule.getPriorityOnFail() != null && rule.getPriorityOnFail().equals(Boolean.TRUE))
-        checker.setPriorityOnFail(true);
-      ruleCheckers.add(checker);
+      addLogicalChecker(rule, ruleCheckers, new AndChecker(dataElement, childRuleCheckers));
     }
 
     if (rule.getOr() != null) {
       List<RuleChecker> childRuleCheckers = getChildRuleCheckers(schema, dataElement, rule.getOr(), rule.getId());
-      OrChecker checker = new OrChecker(dataElement, childRuleCheckers);
-      if (rule.getAlwaysCheckDependencies().equals(Boolean.TRUE))
-        checker.setAlwaysCheckDependencies(true);
-      if (rule.getPriorityOnFail() != null && rule.getPriorityOnFail().equals(Boolean.TRUE))
-        checker.setPriorityOnFail(true);
-      ruleCheckers.add(checker);
+      addLogicalChecker(rule, ruleCheckers, new OrChecker(dataElement, childRuleCheckers));
     }
 
     if (rule.getNot() != null) {
       List<RuleChecker> childRuleCheckers = getChildRuleCheckers(schema, dataElement, rule.getNot(), rule.getId());
-      ruleCheckers.add(new NotChecker(dataElement, childRuleCheckers));
+      addLogicalChecker(rule, ruleCheckers, new NotChecker(dataElement, childRuleCheckers));
     }
 
     // General properties
@@ -218,6 +213,8 @@ public class SchemaUtils {
         }
         if (StringUtils.isNotBlank(rule.getValuePath()))
           ruleChecker.setValuePath(rule.getValuePath());
+        if (ruleChecker instanceof BaseRuleChecker && rule.getNaIfNoParent() != null )
+          ((BaseRuleChecker) ruleChecker).setNaIfNoParent(rule.getNaIfNoParent());
       }
     }
 
@@ -231,6 +228,22 @@ public class SchemaUtils {
      */
 
     return ruleCheckers;
+  }
+
+  private static void addLogicalChecker(Rule rule, List<RuleChecker> ruleCheckers, LogicalChecker checker) {
+    setAlwaysCheckDependencies(rule, checker);
+    setPriorityOnFail(rule, checker);
+    ruleCheckers.add(checker);
+  }
+
+  private static void setPriorityOnFail(Rule rule, LogicalChecker checker) {
+    if (rule.getPriorityOnFail() != null && rule.getPriorityOnFail().equals(Boolean.TRUE))
+      checker.setPriorityOnFail(true);
+  }
+
+  private static void setAlwaysCheckDependencies(Rule rule, LogicalChecker checker) {
+    if (rule.getAlwaysCheckDependencies().equals(Boolean.TRUE))
+      checker.setAlwaysCheckDependencies(true);
   }
 
   private static List<RuleChecker> getChildRuleCheckers(Schema schema, DataElement dataElement, List<Rule> rules, String id) {

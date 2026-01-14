@@ -27,6 +27,7 @@ public abstract class BaseRuleChecker implements RuleChecker {
    * A flag to denote if the RuleChecker should count the number instances and failures
    */
   private Boolean countInstances = false;
+  private Boolean naIfNoParent;
 
   @Override
   public String getId() {
@@ -254,4 +255,11 @@ public abstract class BaseRuleChecker implements RuleChecker {
     return hasScope() && scope.equals(ApplicationScope.oneOf);
   }
 
+  public void setNaIfNoParent(Boolean naIfNoParent) {
+    this.naIfNoParent = naIfNoParent;
+  }
+
+  public boolean isNaIfNoParent() {
+    return naIfNoParent != null && naIfNoParent.equals(Boolean.TRUE);
+  }
 }

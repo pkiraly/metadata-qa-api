@@ -3,7 +3,6 @@ package de.gwdg.metadataqa.api.configuration.schema;
 import com.fasterxml.jackson.annotation.JsonGetter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
-import org.apache.commons.lang3.StringUtils;
 
 import java.io.Serializable;
 import java.lang.reflect.Field;
@@ -63,6 +62,8 @@ public class Rule implements Serializable {
   private Boolean validLink;
   private String skippableUrl;
   private Boolean priorityOnFail;
+  private Boolean parentCheck;
+  private Boolean naIfNoParent;
 
   public String getId() {
     return id;
@@ -697,6 +698,32 @@ public class Rule implements Serializable {
 
   public Rule withPriorityOnFail(Boolean priorityOnFail) {
     this.priorityOnFail = priorityOnFail;
+    return this;
+  }
+
+  public Boolean getParentCheck() {
+    return parentCheck;
+  }
+
+  public void setParentCheck(Boolean parentCheck) {
+    this.parentCheck = parentCheck;
+  }
+
+  public Rule withParentCheck(Boolean parentCheck) {
+    this.parentCheck = parentCheck;
+    return this;
+  }
+
+  public Boolean getNaIfNoParent() {
+    return naIfNoParent;
+  }
+
+  public void setNaIfNoParent(Boolean naIfNoParent) {
+    this.naIfNoParent = naIfNoParent;
+  }
+
+  public Rule withNaIfNoParent(Boolean naIfNoParent) {
+    this.naIfNoParent = naIfNoParent;
     return this;
   }
 

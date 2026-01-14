@@ -22,7 +22,6 @@ public class AndChecker extends LogicalChecker {
 
   private static final long serialVersionUID = 1114999259831619599L;
   public static final String PREFIX = "and";
-  private boolean priorityOnFail = false;
 
   /**
    * @param field The field
@@ -137,9 +136,5 @@ public class AndChecker extends LogicalChecker {
 
     if (isDebug())
       LOGGER.info(this.getClass().getSimpleName() + " " + this.id + ") result: " + RuleCheckingOutputStatus.create(isNA, allPassed, isMandatory()));
-  }
-
-  public void setPriorityOnFail(boolean priorityOnFail) {
-    this.priorityOnFail = priorityOnFail;
   }
 }

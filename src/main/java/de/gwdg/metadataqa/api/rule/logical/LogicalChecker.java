@@ -3,6 +3,7 @@ package de.gwdg.metadataqa.api.rule.logical;
 import de.gwdg.metadataqa.api.json.DataElement;
 import de.gwdg.metadataqa.api.rule.BaseRuleChecker;
 import de.gwdg.metadataqa.api.rule.RuleChecker;
+import de.gwdg.metadataqa.api.rule.RuleCheckingOutputStatus;
 import org.apache.commons.lang3.StringUtils;
 
 import java.util.ArrayList;
@@ -17,6 +18,7 @@ public abstract class LogicalChecker extends BaseRuleChecker {
    * If the values is NA, check dependencies. and that will decide if it passes or not
    */
   protected boolean alwaysCheckDependencies = false;
+  protected boolean priorityOnFail = false;
 
   public LogicalChecker(DataElement field, String header) {
     this.field = field;
@@ -34,7 +36,19 @@ public abstract class LogicalChecker extends BaseRuleChecker {
     return StringUtils.join(headers, ":");
   }
 
+  protected boolean containsOnlyNAs(List<RuleCheckingOutputStatus> statuses) {
+    for (RuleCheckingOutputStatus status : statuses) {
+      if (!status.equals(RuleCheckingOutputStatus.NA))
+        return false;
+    }
+    return true;
+  }
+
   public void setAlwaysCheckDependencies(boolean alwaysCheckDependencies) {
     this.alwaysCheckDependencies = alwaysCheckDependencies;
+  }
+
+  public void setPriorityOnFail(boolean priorityOnFail) {
+    this.priorityOnFail = priorityOnFail;
   }
 }
