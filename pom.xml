@@ -206,6 +206,11 @@
       <version>2.21.0</version>
     </dependency>
     <dependency>
+      <groupId>com.fasterxml.jackson.core</groupId>
+      <artifactId>jackson-annotations</artifactId>
+      <version>2.21</version>
+    </dependency>
+    <dependency>
       <groupId>com.github.stefanbirkner</groupId>
       <artifactId>system-lambda</artifactId>
       <version>1.2.1</version>
