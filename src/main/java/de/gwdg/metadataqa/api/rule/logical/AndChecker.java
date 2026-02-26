@@ -52,6 +52,11 @@ public class AndChecker extends LogicalChecker {
     var allPassed = true;
     var isNA = false;
     List<RuleCheckingOutputStatus> statuses = new ArrayList<>();
+    boolean parentCheckPassed = true;
+    boolean hasParentCheck = false;
+    RuleCheckerOutput output = null;
+    Boolean isParentNA = null;
+
     List<XmlFieldInstance> instances = selector.get(field);
     if (instances != null && !instances.isEmpty()) {
       FieldCounter<RuleCheckerOutput> localResults = new FieldCounter<>();
@@ -96,8 +101,17 @@ public class AndChecker extends LogicalChecker {
               LOGGER.info(String.format("DependencyChecker result for %s: %s",
                 dependencyChecker.getDependencies(), localResult));
             allPassed = localResult.get("allPassed");
-            isNA = localResult.get("isNA");
+            if (!dependencyChecker.getParentCheck())
+              isNA = localResult.get("isNA");
             statuses.add(allPassed ? RuleCheckingOutputStatus.PASSED : RuleCheckingOutputStatus.FAILED);
+            if (dependencyChecker.getParentCheck()) {
+              hasParentCheck = true;
+              if (!allPassed) {
+                if (parentCheckPassed)
+                  parentCheckPassed = false;
+              }
+              isParentNA = localResult.get("isNA");
+            }
           } else if (checker instanceof OrChecker) {
             OrChecker orChecker = (OrChecker) checker;
             boolean hasDependency = false;
@@ -124,15 +138,35 @@ public class AndChecker extends LogicalChecker {
       }
     }
 
+    if (isDebug())
+      LOGGER.info("hasParentCheck: " + hasParentCheck + ", parentCheckPassed: " + parentCheckPassed
+      + ", isParentNA: " + isParentNA);
+
     if (priorityOnFail) {
       allPassed = !statuses.contains(RuleCheckingOutputStatus.FAILED);
       if (!allPassed || statuses.contains(RuleCheckingOutputStatus.PASSED))
         isNA = false;
+    } else {
+      if (isNA && hasParentCheck)
+        output = isParentNA
+               ? new RuleCheckerOutput(this, RuleCheckingOutputStatus.NA)
+               : new RuleCheckerOutput(this, RuleCheckingOutputStatus.FAILED);
+      /*
+      if (isNA && hasParentCheck) {
+        allPassed = !parentCheckPassed;
+      }
+      */
     }
 
     if (isDebug())
       LOGGER.info(String.format("isNA: %s, allPassed: %s", isNA, allPassed));
     addOutput(results, isNA, allPassed, outputType);
+
+    if (output != null) {
+      addOutput(results, output, outputType);
+    } else {
+      addOutput(results, isNA, allPassed, outputType);
+    }
 
     if (isDebug())
       LOGGER.info(this.getClass().getSimpleName() + " " + this.id + ") result: " + RuleCheckingOutputStatus.create(isNA, allPassed, isMandatory()));
