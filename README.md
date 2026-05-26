@@ -110,6 +110,12 @@ usage:
 * `-z,--gzip` Flag to indicate that input is gzipped.
 * `-h,--headers <arg>` Headers to copy from source
 
+The command-line application can also be run via Docker. Local files must be mounted into volumes. For instace to process file `input.xml` with schema `schema.yml` and measurement configuration `measurement.yaml` from the current directory:
+
+```sh
+docker run -v .:/data ghcr.io/pkiraly/metadata-qa-api:main ./mqa -m /data/measurement.yaml -s /data/schema.yaml -r /root -i /data/input.xml
+```
+
 ## Using the library
 
 If you want to implement it to your collection you have to define a schema,
