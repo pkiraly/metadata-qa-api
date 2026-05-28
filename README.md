@@ -113,13 +113,16 @@ usage:
 The command-line application can also be run via Docker. Local files must be mounted into volumes. For instace to process file `input.xml` with schema `schema.yml` and measurement configuration `measurement.yaml` from the current directory:
 
 ```sh
-docker run -v .:/data ghcr.io/pkiraly/metadata-qa-api:main \
+docker run \
+       -v .:/data \
+       ghcr.io/pkiraly/metadata-qa-api:main \
        ./mqa \
        -m /data/measurement.yaml \
        -s /data/schema.yaml \
        -r /root \
        -i /data/input.xml
 ```
+where `-v` mounts the working directory to the docker container's `/data` directory, `ghcr.io/pkiraly/metadata-qa-api:main` is the Docker image, the rest is the same as above. If the Docker image is not yet available locally, docker first downloads it.
 
 ## Using the library
 
