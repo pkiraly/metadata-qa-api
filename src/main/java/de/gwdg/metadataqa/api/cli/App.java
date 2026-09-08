@@ -18,9 +18,11 @@ import org.apache.commons.cli.MissingArgumentException;
 import org.apache.commons.cli.MissingOptionException;
 import org.apache.commons.cli.Option;
 import org.apache.commons.cli.Options;
+import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.FilenameUtils;
 import org.apache.commons.lang3.StringUtils;
 
+import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
@@ -61,6 +63,7 @@ public class App {
   private final String recordAddress;
 
   public App(CommandLine cmd) throws IOException, CsvValidationException {
+    logger.severe("it is runnin'");
     // initialize schema
     String schemaFile = cmd.getOptionValue(SCHEMA_CONFIG);
     String schemaFormat = cmd.getOptionValue(SCHEMA_FORMAT, FilenameUtils.getExtension(schemaFile));
@@ -84,15 +87,32 @@ public class App {
     // initialize config
     MeasurementConfiguration measurementConfig = new MeasurementConfiguration();
     if (cmd.hasOption(MEASUREMENTS_CONFIG)) {
-      String measurementFile = cmd.getOptionValue(MEASUREMENTS_CONFIG);
-      String measurementFormat = cmd.getOptionValue(MEASUREMENTS_FORMAT, FilenameUtils.getExtension(measurementFile));
+      logger.severe("has measurements configuration");
+      String measurementFileName = cmd.getOptionValue(MEASUREMENTS_CONFIG);
+      logger.severe("measurementFile: " + measurementFileName + ", exist? " + (new File(measurementFileName).exists()));
+      // String content = FileUtils.readFileToString(new File(measurementFileName));
+      // logger.severe("content: " + content);
+
+      String measurementFormat = cmd.getOptionValue(MEASUREMENTS_FORMAT, FilenameUtils.getExtension(measurementFileName));
+      logger.severe("measurementFormat: " + measurementFormat);
       switch (measurementFormat) {
         case YAML:
-          measurementConfig = ConfigurationReader.readMeasurementYaml(measurementFile);
+          measurementConfig = ConfigurationReader.readMeasurementYaml(measurementFileName);
           break;
         case JSON:
         default:
-          measurementConfig = ConfigurationReader.readMeasurementJson(measurementFile);
+          File measurementFile = new File(measurementFileName);
+          logger.severe("measurementFile: " + measurementFile.length());
+          measurementConfig = ConfigurationReader.readMeasurementJson(measurementFileName);
+      }
+    } else {
+      logger.severe("No measurements configuration provided");
+      // enable rule catalogue measurement if there is no measurement file, but there are rules in the schema
+      if (!this.schema.getRuleCheckers().isEmpty() && this.schema.getRuleCheckers().size() > 0) {
+        logger.severe("There are rule checkers");
+        measurementConfig.enableRuleCatalogMeasurement();
+      } else {
+        logger.severe("There is no any rule checker");
       }
     }
 
@@ -122,8 +142,12 @@ public class App {
 
   public static void main(String[] args) {
 
+    // System.err.println("Starting Metadata Quality API");
+    // System.err.println(StringUtils.join(args, " | "));
+
     // Take input file
     final Options options = buildOptions();
+    // System.err.println("options: " + options.toString());
 
     // create the parser
     CommandLineParser parser = new DefaultParser();
@@ -208,7 +232,7 @@ public class App {
     Option measurementsConfigOption = Option.builder("m")
       .numberOfArgs(1)
       .argName("file")
-      .required(true)
+      .required(false)
       .longOpt(MEASUREMENTS_CONFIG)
       .desc("Configuration file for measurements.")
       .build();

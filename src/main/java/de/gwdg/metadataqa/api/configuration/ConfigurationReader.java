@@ -23,25 +23,32 @@ public class ConfigurationReader {
   private ConfigurationReader() {
   }
 
-  public static SchemaConfiguration readSchemaJson(String fileName) throws FileNotFoundException {
+  public static SchemaConfiguration readSchemaJson(String fileName)
+      throws FileNotFoundException {
     return readJson(fileName, SchemaConfiguration.class);
   }
 
-  public static MeasurementConfiguration readMeasurementJson(String fileName) throws FileNotFoundException {
+  public static MeasurementConfiguration readMeasurementJson(String fileName)
+      throws FileNotFoundException {
     return readJson(fileName, MeasurementConfiguration.class);
   }
 
-  public static SchemaConfiguration readSchemaYaml(String fileName) throws FileNotFoundException {
+  public static SchemaConfiguration readSchemaYaml(String fileName)
+      throws FileNotFoundException {
     return readYaml(fileName, SchemaConfiguration.class);
   }
 
-  public static MeasurementConfiguration readMeasurementYaml(String fileName) throws FileNotFoundException {
+  public static MeasurementConfiguration readMeasurementYaml(String fileName)
+      throws FileNotFoundException {
     return readYaml(fileName, MeasurementConfiguration.class);
   }
 
   private static <T> T readJson(String fileName, Class<T> clazz) throws FileNotFoundException {
+    return readJson(new File(fileName), clazz);
+  }
+
+  private static <T> T readJson(File file, Class<T> clazz) throws FileNotFoundException {
     var objectMapper = new ObjectMapper();
-    var file = new File(fileName);
     T config;
     try {
       config = objectMapper.readValue(file, clazz);
