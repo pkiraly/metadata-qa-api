@@ -1,9 +1,13 @@
 package de.gwdg.metadataqa.api.rule;
 
+import java.util.logging.Logger;
+
 public class RuleCheckerOutput {
+  private static final Logger LOGGER = Logger.getLogger(RuleCheckerOutput.class.getCanonicalName());
+
   private final RuleCheckingOutputStatus status;
   private RuleCheckingOutputType outputType;
-  private Integer score = 0;
+  private Integer score = null;
   private Integer instanceCount;
   private Integer failureCount;
 
@@ -12,16 +16,20 @@ public class RuleCheckerOutput {
   }
 
   public RuleCheckerOutput(RuleChecker ruleChecker, RuleCheckingOutputStatus status) {
+    LOGGER.info("type 1 " + ruleChecker);
     this.status = status;
+    LOGGER.info("status: " + status);
     if (status.equals(RuleCheckingOutputStatus.FAILED))
       score = ruleChecker.getFailureScore();
     else if (status.equals(RuleCheckingOutputStatus.PASSED))
       score = ruleChecker.getSuccessScore();
     else if (status.equals(RuleCheckingOutputStatus.NA))
       score = ruleChecker.getNaScore();
+    LOGGER.info("score: " + score);
   }
 
   public RuleCheckerOutput(RuleCheckingOutputStatus status, Integer score) {
+    LOGGER.info("type 2");
     this.status = status;
     this.score = score;
   }
@@ -56,7 +64,7 @@ public class RuleCheckerOutput {
     return outputType != null && outputType.equals(RuleCheckingOutputType.STATUS)
       ? status.asString()
       : score == null
-        ? "0" : score.toString();
+      ? null : score.toString();
   }
 
   protected Object copy() throws CloneNotSupportedException {

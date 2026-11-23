@@ -40,7 +40,7 @@ public class RuleCatalogTest {
 
     RuleCatalog catalog = new RuleCatalog(schema);
     List<MetricResult> results = catalog.measure(cache);
-    assertEquals("1,0,0", results.get(0).getCsv(false, CompressionLevel.ZERO));
+    assertEquals("1,null,0", results.get(0).getCsv(false, CompressionLevel.ZERO));
   }
 
   @Test
@@ -50,7 +50,7 @@ public class RuleCatalogTest {
 
     RuleCatalog catalog = new RuleCatalog(schema);
     List<MetricResult> results = catalog.measure(cache);
-    assertEquals("1,0,0", results.get(0).getCsv(false, CompressionLevel.ZERO));
+    assertEquals("1,null,0", results.get(0).getCsv(false, CompressionLevel.ZERO));
   }
 
   @Test

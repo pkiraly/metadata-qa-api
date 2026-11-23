@@ -121,6 +121,8 @@ public interface Converter {
    * @return The "compressed" representation without zeros at the end
    */
   static String compressNumber(String value, CompressionLevel compressionLevel) {
+    if (value == null)
+      return value;
     value = value.replaceAll("(\\d)0+$", "$1");
     if (compressionLevel.equals(CompressionLevel.NORMAL)) {
       value = value.replaceAll("\\.0+$", ".0");
